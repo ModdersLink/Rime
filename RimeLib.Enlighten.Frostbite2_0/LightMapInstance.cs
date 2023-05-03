@@ -3,13 +3,14 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using fb;
 using RimeLib.Frostbite;
+using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
 namespace RimeLib.Enlighten.Frostbite2_0;
 
 public class LightMapInstance : IFbSerializable
 {
-    public GUID Guid { get; set; }
+    public GUID Guid { get; set; } = GUID.Empty;
     public LinearTransform Transform { get; set; } = new LinearTransform();
     public Vec4 UVTransform { get; set; } = new Vec4();
     public Vec2 UVTranslation { get; set; } = new Vec2();

@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using fb;
 using RimeLib.Frostbite;
+using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
 namespace RimeLib.Enlighten.Frostbite2_0;
@@ -10,7 +11,7 @@ namespace RimeLib.Enlighten.Frostbite2_0;
 public class EnlightenMaterial : IFbSerializable
 {
     public Vec3 Color { get; set; } = new Vec3();
-    public GUID Guid { get; set; }
+    public GUID Guid { get; set; } = GUID.Empty;
     public ulong ShaderId { get; set; }
     public bool Emissive { get; set; }
 

@@ -45,7 +45,7 @@ public class EnlightenShaderDatabase : IFbSerializable
     public void Deserialize(RimeReader p_Reader)
     {
         MaterialCount = p_Reader.ReadUInt32();
-        Materials = new EnlightenMaterial[MaterialCount];
+        Materials = new List<EnlightenMaterial>((int)MaterialCount);
         for (var i = 0; i < MaterialCount; i++)
             Materials[i] = new EnlightenMaterial(p_Reader);
     }
