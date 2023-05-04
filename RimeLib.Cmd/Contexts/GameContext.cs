@@ -167,6 +167,9 @@ namespace RimeLib.Cmd.Contexts
                 case DumpMeshCommand.ExportType.Obj:
                     s_Converter.ConvertToObj(s_Resource.FirstVariant, m_Mounter, s_Writer);
                     break;
+                case DumpMeshCommand.ExportType.Gltf:
+                    s_Converter.ConvertToGltf(s_Resource.FirstVariant, m_Mounter, s_Writer);
+                    break;
                 default:
                     throw new Exception("Invalid export type.");
             }
