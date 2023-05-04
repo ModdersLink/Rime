@@ -40,7 +40,13 @@ namespace RimeLib.Cmd.Commands.Base
                 p_Writer.WriteLine($"Failed to load supporting texture assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
                 return false;
             }
-            
+
+            if (!AssemblyUtils.LoadSupportAssembly(AssemblyType.Mesh, Engine))
+            {
+                p_Writer.WriteLine($"Failed to load supporting mesh assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
+                return false;
+            }
+
             if (!AssemblyUtils.LoadSupportAssembly(AssemblyType.Serialization, Engine))
             {
                 p_Writer.WriteLine($"Failed to load supporting serialization assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
