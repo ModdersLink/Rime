@@ -183,17 +183,17 @@ namespace RimeLib.Mesh.Frostbite2_0
             // using TextWriter s_Writer = new StreamWriter(File.OpenWrite($"{p_DestinationPath}.obj"));
 
             // Write object name.
-            p_Writer.Write($"o {p_Mesh.Name}");
+            p_Writer.WriteLine($"o {p_Mesh.Name}");
 
             // Loop through each vertex.
             for (int i = 0; i < p_Mesh.Vertices.Count; i++)
             {
                 // Write the position data.
-                p_Writer.Write($"v {p_Mesh.Vertices[i].PositionX} {p_Mesh.Vertices[i].PositionY} {p_Mesh.Vertices[i].PositionZ}");
+                p_Writer.WriteLine($"v {p_Mesh.Vertices[i].PositionX} {p_Mesh.Vertices[i].PositionY} {p_Mesh.Vertices[i].PositionZ}");
                 // Write the normal data.
-                p_Writer.Write($"vn {p_Mesh.Vertices[i].NormalX} {p_Mesh.Vertices[i].NormalY} {p_Mesh.Vertices[i].NormalZ}");
+                p_Writer.WriteLine($"vn {p_Mesh.Vertices[i].NormalX} {p_Mesh.Vertices[i].NormalY} {p_Mesh.Vertices[i].NormalZ}");
                 // Write the UV data.
-                p_Writer.Write($"vt {p_Mesh.Vertices[i].TexCoordX} {p_Mesh.Vertices[i].TexCoordY}");
+                p_Writer.WriteLine($"vt {p_Mesh.Vertices[i].TexCoordX} {p_Mesh.Vertices[i].TexCoordY}");
             }
             // Loop through each face index.
             for (int i = 0; i < p_Mesh.Faces.Count; i++)
@@ -201,7 +201,7 @@ namespace RimeLib.Mesh.Frostbite2_0
                 // Get the current face (for readability).
                 var f = p_Mesh.Faces[i];
                 // Write three face indices (Format: pos/norm/uv).
-                p_Writer.Write($"f {f.A + 1}/{f.A + 1}/{f.A + 1} {f.B + 1}/{f.B + 1}/{f.B + 1} {f.C + 1}/{f.C + 1}/{f.C + 1}");
+                p_Writer.WriteLine($"f {f.A + 1}/{f.A + 1}/{f.A + 1} {f.B + 1}/{f.B + 1}/{f.B + 1} {f.C + 1}/{f.C + 1}/{f.C + 1}");
             }
         }
     }
