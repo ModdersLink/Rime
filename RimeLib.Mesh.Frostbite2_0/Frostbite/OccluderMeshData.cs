@@ -4,12 +4,8 @@ using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.Serialization.Frostbite2_0.Extensions;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace RimeLib.Mesh.Frostbite2_0.Frostbite
 {

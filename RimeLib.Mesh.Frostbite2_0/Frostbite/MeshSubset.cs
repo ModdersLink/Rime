@@ -3,14 +3,15 @@ using System.IO;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
+using RimeLib.Mesh.Frostbite;
 
-namespace RimeLib.Mesh.Frostbite
+namespace RimeLib.Mesh.Frostbite2_0.Frostbite
 {
     /// <summary>
     /// Implementation of fb::MeshSubset
     /// Sizeof MeshSubset = 148 or 0x94
     /// </summary>
-    public class MeshSubset : IFbSerializable
+    public class MeshSubset : Mesh.Frostbite.MeshSubset
     {
         /// <summary>
         /// Geometry declarations
@@ -103,7 +104,7 @@ namespace RimeLib.Mesh.Frostbite
         /// Writes a meshsubset to an opened writer
         /// </summary>
         /// <param name="p_Writer">Writer opened to the position of a MeshSubset</param>
-        public bool Serialize(RimeWriter p_Writer)
+        public override bool Serialize(RimeWriter p_Writer)
         {
             p_Writer.Write(GeometryDeclarations); // 0
             p_Writer.Write(MaterialName.BaseAddress);
@@ -127,13 +128,13 @@ namespace RimeLib.Mesh.Frostbite
             return true;
         }
 
-        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+        public override bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
             p_Data = null;
             throw new System.NotImplementedException();
         }
 
-        public void Deserialize(RimeReader p_Reader)
+        public override void Deserialize(RimeReader p_Reader)
         {
             GeometryDeclarations = p_Reader.ReadUInt64();
             MaterialName = new RelocPtr<string>(p_Reader);
@@ -153,7 +154,7 @@ namespace RimeLib.Mesh.Frostbite
                 TexCoordRatios.Add(p_Reader.ReadSingle());
         }
 
-        public void Deserialize(byte[] p_Data)
+        public override void Deserialize(byte[] p_Data)
         {
             Deserialize(new RimeReader(new MemoryStream(p_Data)));
         }

@@ -2,7 +2,7 @@
 using RimeLib.Content.Mounting;
 using RimeLib.IO;
 using RimeLib.Math;
-using RimeLib.Mesh.Frostbite;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 using System;
 using System.Collections.Generic;
 using System.IO;

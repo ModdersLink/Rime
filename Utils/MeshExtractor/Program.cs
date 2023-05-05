@@ -2,15 +2,12 @@
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.IO;
-using RimeLib.Math;
-using RimeLib.Mesh.Frostbite;
 using SharpGLTF.Geometry;
 using SharpGLTF.Materials;
 using SharpGLTF.Schema2;
 using SharpGLTF.Geometry.VertexTypes;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
@@ -20,9 +17,9 @@ using System.Runtime.InteropServices;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using fb;
 using RimeLib;
-using MeshSubsetCategory = RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory;
-using SharpGLTF.Transforms;
 using System.Text;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
+using RimeLib.Math;
 
 namespace MeshExtractor
 {
@@ -479,7 +476,7 @@ namespace MeshExtractor
                     Console.WriteLine($"Dumping rigid mesh ({s_LodName}) lod {s_LodIndex}");
 
                 // Debug checking to make sure assumptions are correct
-                if (s_Lod.CategorySubsetIndices.Length != (int)RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory.Count)
+                if (s_Lod.CategorySubsetIndices.Length != (int)MeshSubsetCategory.MeshSubsetCategoryCount)
                     throw new Exception("category subset indicies don't match the count");
 
                 // Get the data chunk
@@ -679,7 +676,7 @@ namespace MeshExtractor
                 }
 
                 // We only want to get the opaque meshes, TODO: Iterate through everything
-                var s_Ret = s_Categories[MeshSubsetCategory.Opaque];
+                var s_Ret = s_Categories[MeshSubsetCategory.MeshSubsetCategory_Opaque];
 
                 // TODO: Hold list of subset + parsed verts + primitives
 
@@ -736,7 +733,7 @@ namespace MeshExtractor
                             .WithMetallicRoughnessShader().WithChannelParam(KnownChannel.BaseColor, s_RandomColor);
 
                         // Create a new GLTF mesh
-                        var s_Mesh = new MeshBuilder<VertexPosition, VertexTexture1>($"{MeshSubsetCategory.Opaque}_{s_Lod.ShortName.Object}");
+                        var s_Mesh = new MeshBuilder<VertexPosition, VertexTexture1>($"{MeshSubsetCategory.MeshSubsetCategory_Opaque}_{s_Lod.ShortName.Object}");
                         var s_Primitive = s_Mesh.UsePrimitive(s_DebugMaterial);
 
                         var s_PrimitiveWriter = new StringBuilder();
@@ -778,7 +775,7 @@ namespace MeshExtractor
 
                         var s_Script = File.ReadAllText("Template.txt").Replace("||DATETIME||", DateTime.Now.ToString()).Replace("||NAME||", s_ObjectName).Replace("||VERTEXARRAY||", s_VertexBuilder.ToString()).Replace("||FACEARRAY||", s_PrimitiveWriter.ToString());
 
-                        File.WriteAllText($"{s_ObjectName}_lod{s_LodIndex}_{MeshSubsetCategory.Opaque}_import.py", s_Script);
+                        File.WriteAllText($"{s_ObjectName}_lod{s_LodIndex}_{MeshSubsetCategory.MeshSubsetCategory_Opaque}_import.py", s_Script);
                     }
                 }
             }
@@ -819,7 +816,7 @@ namespace MeshExtractor
                     Console.WriteLine($"Dumping rigid mesh ({s_LodName}) lod {s_LodIndex}");
 
                 // Debug checking to make sure assumptions are correct
-                if (s_Lod.CategorySubsetIndices.Length != (int)RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory.Count)
+                if (s_Lod.CategorySubsetIndices.Length != (int)MeshSubsetCategory.MeshSubsetCategoryCount)
                     throw new Exception("category subset indicies don't match the count");
 
                 // Get the data chunk
@@ -1092,7 +1089,7 @@ namespace MeshExtractor
                 }
 
                 // We only want to get the opaque meshes, TODO: Iterate through everything
-                var s_Ret = s_Categories[MeshSubsetCategory.Opaque];
+                var s_Ret = s_Categories[MeshSubsetCategory.MeshSubsetCategory_Opaque];
 
                 // TODO: Hold list of subset + parsed verts + primitives
                 
@@ -1139,7 +1136,7 @@ namespace MeshExtractor
                             .WithMetallicRoughnessShader().WithChannelParam(KnownChannel.BaseColor, s_RandomColor);
 
                         // Create a new GLTF mesh
-                        var s_Mesh = new MeshBuilder<VertexPosition, VertexTexture1>($"{MeshSubsetCategory.Opaque}_{s_Lod.ShortName.Object}");
+                        var s_Mesh = new MeshBuilder<VertexPosition, VertexTexture1>($"{MeshSubsetCategory.MeshSubsetCategory_Opaque}_{s_Lod.ShortName.Object}");
                         var s_Primitive = s_Mesh.UsePrimitive(s_DebugMaterial);
 
                         // Iterate through all primitives
@@ -1202,12 +1199,14 @@ namespace MeshExtractor
                         //var s_Transform = new RimeLib.Frostbite.Core.
                         //s_SceneBuilder.AddRigidMesh(s_Mesh, l_MatrixTransform.ToMatrix4x4());
 
-                        s_Model.CreateMesh(s_Mesh);
+                        // TODO: UNCOMMENT BELOW
+                        // s_Model.CreateMesh(s_Mesh);
                     }
                 }
 
-                foreach (var s_Mesh in s_Model.LogicalMeshes)
-                    s_Model.UseScene("default").CreateNode().WithMesh(s_Mesh);
+                // TODO: UNCOMMENT BELOW
+                //foreach (var s_Mesh in s_Model.LogicalMeshes)
+                //    s_Model.UseScene("default").CreateNode().WithMesh(s_Mesh);
 
                 var s_ModelPath = Path.Join(p_Options?.OutputPath ?? "./", p_Layout.Name.Object);
                 var s_ModelDirectory = Path.GetDirectoryName(s_ModelPath);

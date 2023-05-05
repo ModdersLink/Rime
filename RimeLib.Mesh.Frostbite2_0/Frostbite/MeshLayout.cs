@@ -2,16 +2,15 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using fb;
-using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
-namespace RimeLib.Mesh.Frostbite
+namespace RimeLib.Mesh.Frostbite2_0.Frostbite
 {
     /// <summary>
     /// Venice (Battlefield 3) Mesh layout
     /// </summary>
-    public class MeshLayout : IFbSerializable
+    public class MeshLayout : Mesh.Frostbite.MeshLayout
     {
         /// <summary>
         /// Flags for the mesh layout
@@ -167,7 +166,7 @@ namespace RimeLib.Mesh.Frostbite
         /// Writes the mesh layout to an opened writer
         /// </summary>
         /// <param name="p_Writer">Writer opened to the position of the mesh layout</param>
-        public bool Serialize(RimeWriter p_Writer)
+        public override bool Serialize(RimeWriter p_Writer)
         {
             p_Writer.Write((uint)Type);
 
@@ -197,14 +196,14 @@ namespace RimeLib.Mesh.Frostbite
             return true;
         }
 
-        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+        public override bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
             p_Data = null;
             throw new NotImplementedException();
         }
 
         /// <inheritdoc />
-        public void Deserialize(RimeReader p_Reader)
+        public override void Deserialize(RimeReader p_Reader)
         {
             Type = (MeshType)p_Reader.ReadUInt32();
             //m_subsetCount = p_Reader.ReadUInt32();
@@ -235,7 +234,7 @@ namespace RimeLib.Mesh.Frostbite
         }
 
         /// <inheritdoc />
-        public void Deserialize(byte[] p_Data)
+        public override void Deserialize(byte[] p_Data)
         {
             Deserialize(new RimeReader(new MemoryStream(p_Data)));
         }

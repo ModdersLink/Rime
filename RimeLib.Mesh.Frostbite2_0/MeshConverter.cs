@@ -6,7 +6,6 @@ using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 using RimeLib.Math;
-using RimeLib.Mesh.Frostbite;
 using SharpGLTF.Schema2;
 using SharpGLTF.Materials;
 using System;
@@ -16,6 +15,7 @@ using System.Linq;
 using System.Runtime.InteropServices;
 using SharpGLTF.Geometry;
 using SharpGLTF.Geometry.VertexTypes;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 
 namespace RimeLib.Mesh.Frostbite2_0
 {
@@ -97,7 +97,7 @@ namespace RimeLib.Mesh.Frostbite2_0
                 //    Console.WriteLine($"Dumping rigid mesh ({s_LodName}) lod {s_LodIndex}");
 
                 // Debug checking to make sure assumptions are correct
-                if (s_Lod.CategorySubsetIndices.Length != (int)RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory.Count)
+                if (s_Lod.CategorySubsetIndices.Length != (int)MeshSubsetCategory.MeshSubsetCategoryCount)
                     throw new Exception("category subset indicies don't match the count");
 
                 // Get the data chunk
