@@ -43,6 +43,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<DumpPartitionJsonCommand>();
             RegisterCommand<DumpTextureCommand>();
+            RegisterCommand<SignatureValidateCommand>();
+            RegisterCommand<SignatureCreateCommand>();
         }
 
         public override string GetShortDescription()
@@ -186,6 +188,12 @@ namespace RimeLib.Cmd.Contexts
         internal IReadOnlyDictionary<string, IMountedObject<IResourceVariant>> GetMountedResourceVariations()
         {
             return m_Mounter.GetResources();
+        }
+
+        internal bool ValidateTocSignature(FileInfo p_TocFile, FileInfo p_PublicKey)
+        {
+           //  RimeLib.Utils.CryptoUtils.VerifySignature()
+            return false;
         }
     }
 }
