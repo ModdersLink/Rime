@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Text;
 using RimeLib.IO.Conversion;
 
 namespace RimeLib.IO
@@ -238,6 +239,12 @@ namespace RimeLib.IO
         public void Write(byte[] p_Value)
 		{
 			WriteInternal(p_Value, 0, p_Value.Length);
+		}
+
+		public void WriteLine(string p_Value)
+		{
+			var s_Bytes = Encoding.UTF8.GetBytes(p_Value + Environment.NewLine);
+			WriteInternal(s_Bytes, 0, s_Bytes.Length);
 		}
 
 		/// <summary>

@@ -1,17 +1,16 @@
-﻿using System;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using fb;
-using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
+using RimeLib.Mesh.Frostbite;
 
-namespace RimeLib.Mesh.Frostbite
+namespace RimeLib.Mesh.Frostbite2_0.Frostbite
 {
     /// <summary>
     /// Implementation for fb::MeshSetLayout
     /// </summary>
-    public class MeshSetLayout : IFbSerializable
+    public class MeshSetLayout : Mesh.Frostbite.MeshSetLayout
     {
         /// <summary>
         /// Mesh type
@@ -84,7 +83,7 @@ namespace RimeLib.Mesh.Frostbite
         /// Writes a MeshSetLayout to an opened writer
         /// </summary>
         /// <param name="p_Writer">Writer opened to the position of a MeshSetLayout</param>
-        public bool Serialize(RimeWriter p_Writer)
+        public override bool Serialize(RimeWriter p_Writer)
         {
             p_Writer.Write((uint)MeshType);
             p_Writer.Write((uint)Flags);
@@ -113,13 +112,13 @@ namespace RimeLib.Mesh.Frostbite
             return true;
         }
 
-        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+        public override bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
             p_Data = null;
             throw new System.NotImplementedException();
         }
 
-        public void Deserialize(RimeReader p_Reader)
+        public override void Deserialize(RimeReader p_Reader)
         {
             MeshType = (MeshType)p_Reader.ReadUInt32();
             Flags = (MeshLayoutFlags)p_Reader.ReadUInt32();
@@ -158,7 +157,7 @@ namespace RimeLib.Mesh.Frostbite
             Padding = p_Reader.ReadUInt32();
         }
 
-        public void Deserialize(byte[] p_Data)
+        public override void Deserialize(byte[] p_Data)
         {
             Deserialize(new RimeReader(new MemoryStream(p_Data)));
         }

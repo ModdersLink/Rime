@@ -1,5 +1,5 @@
 ﻿using RimeLib.Content.Mounting;
-using RimeLib.Mesh.Frostbite;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 using System;
 
 namespace RimeLib.Mesh.Frostbite2_0

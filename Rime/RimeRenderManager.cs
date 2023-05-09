@@ -12,7 +12,7 @@ using RimeLib;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.IO.Conversion;
-using RimeLib.Mesh.Frostbite;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 using RimeLib.Shader.Frostbite2_0.Frostbite;
 using RimeLib.Texture;
 using RimeLib.Texture.DDS;

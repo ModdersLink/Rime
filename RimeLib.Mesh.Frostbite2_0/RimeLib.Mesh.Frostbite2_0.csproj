@@ -22,10 +22,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="SharpGLTF.Core" Version="1.0.0-alpha0015" />
+    <PackageReference Include="SharpGLTF.Core" Version="1.0.0-alpha0029" />
+    <PackageReference Include="SharpGLTF.Toolkit" Version="1.0.0-alpha0029" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\External\ColladaSharp\ColladaSharp.csproj" />
     <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
     <ProjectReference Include="..\RimeLib.Mesh\RimeLib.Mesh.csproj" />
   </ItemGroup>
