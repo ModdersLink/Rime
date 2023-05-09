@@ -565,5 +565,44 @@ namespace RimeLib.Mesh.Frostbite2_0
                 p_Writer.WriteLine($"f {f.A + 1}/{f.A + 1}/{f.A + 1} {f.B + 1}/{f.B + 1}/{f.B + 1} {f.C + 1}/{f.C + 1}/{f.C + 1}");
             }
         }
+
+        public void ConvertToCollada(IResourceObject p_Resource, IEngineMounter p_Mounter, RimeWriter p_Writer)
+        {
+            using var s_MeshReader = p_Resource.GetReader();
+            var s_MeshData = s_MeshReader.ToArray();
+            using var s_TempMeshReader = new RimeReader(new MemoryStream(s_MeshData));
+            var s_MeshSetLayout = new MeshSetLayout(s_TempMeshReader);
+
+            var s_Model = new Collada141.COLLADA();
+
+            var s_Geometries = new Collada141.library_geometries();
+
+            for (var l_LodIndex = 0; l_LodIndex < s_MeshSetLayout.LodCount; ++l_LodIndex)
+            {
+                // Get the level of detail object
+                var s_Lod = s_MeshSetLayout.Lods[l_LodIndex].Object;
+                if (s_Lod == null)
+                    throw new Exception("could not get lod");
+
+                var s_LodName = s_Lod.Name.Object;
+
+                // Debug checking to make sure assumptions are correct
+                if (s_Lod.CategorySubsetIndices.Length != (int)RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory.Count)
+                    throw new Exception("category subset indicies don't match the count");
+
+                // Get the data chunk
+                var s_DataChunkId = s_Lod.DataChunkId;
+                if (!p_Mounter.TryGetChunk(s_DataChunkId, out /*IMountedObject<IChunkVariant>*/ var p_Chunk))
+                {
+                    //if (!p_Options.Quiet)
+                    //    Console.WriteLine($"could not find data: {BitConverter.ToString(s_DataChunkId.Id)}");
+
+                    continue;
+                }
+
+            }
+
+            s_Model.Save(p_Writer.BaseStream);
+        }
     }
 }

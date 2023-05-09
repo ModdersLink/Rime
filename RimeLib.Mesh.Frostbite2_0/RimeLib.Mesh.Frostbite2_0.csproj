@@ -27,6 +27,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\External\ColladaSharp\ColladaSharp.csproj" />
     <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
     <ProjectReference Include="..\RimeLib.Mesh\RimeLib.Mesh.csproj" />
   </ItemGroup>
