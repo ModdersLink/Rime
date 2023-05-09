@@ -7,6 +7,7 @@ using System.Reflection;
 using RimeLib;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
+using RimeLib.Extensions;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
@@ -151,11 +152,13 @@ namespace EbxExtractor
             //    s_ChunkReaderThing.CopyTo(s_TempThing2);
             //}
 
-            if (s_Mounter.TryGetResource("levels/xp5_002/tdm/staticmodelgroup_physics_win32", out IMountedObject<IResourceVariant>? s_ResourceVariant))
+            if (s_Mounter.TryGetResource("levels/xp5_002/tdm/staticmodelgroup_physics_win32", out var s_ResourceVariant))
             {
                 using var s_Reader = s_ResourceVariant.FirstVariant.GetReader();
 
-                if (!s_ResourceVariant.FirstVariant.TryGetMeta(out var s_CookieData))
+                File.WriteAllBytes(@"C:\Users\Orfeas\home\scratch\rime-shit\havok.bin", s_Reader.ToArray());
+
+                /*if (!s_ResourceVariant.FirstVariant.TryGetMeta(out var s_CookieData))
                     throw new Exception("Fuc kyou");
 
                 using var s_CookieReader = new RimeReader(new MemoryStream(s_CookieData));
@@ -174,7 +177,7 @@ namespace EbxExtractor
                     s_HavokDataSize32,
                     s_HavokDataSize64,
                     s_FixupTableSize
-                );
+                );*/
             }
 
 
