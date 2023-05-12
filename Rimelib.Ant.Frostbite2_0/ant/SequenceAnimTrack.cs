@@ -27,7 +27,7 @@ namespace ant
 		public int NumAnims { get; set; }
 
 		[AntField(3)]
-		public List<AntObject?> Anims { get; set; } = new();
+		public List<SequenceAnimation?> Anims { get; set; } = new();
 
 	}
 }

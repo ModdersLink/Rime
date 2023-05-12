@@ -31,6 +31,24 @@ namespace RimeLib.Ant.EA.GenericData
 
         public bool Serialize(RimeWriter p_Writer)
         {
+            // vtable / magic
+            p_Writer.Write(c_kIID);
+            p_Writer.WriteNullBytes(0x4);
+
+            // allocator
+            p_Writer.WriteNullBytes(0x8);
+
+            // layout ptr
+            p_Writer.Write(LayoutHash);
+            p_Writer.WriteNullBytes(0x4);
+
+            // refcount
+            p_Writer.WriteNullBytes(0x4);
+
+            // dataoffset
+            p_Writer.Write((ushort)DataOffset);
+            p_Writer.Write(Mutable);
+
             throw new NotImplementedException();
         }
 
@@ -67,14 +85,8 @@ struct __declspec(align(2)) EA::GD::LayoutData
             //0x0018
             p_Reader.Seek(0x4, SeekOrigin.Current);
 
-            DataOffset = p_Reader.ReadUInt32();
+            DataOffset = p_Reader.ReadUInt16();
             Mutable = p_Reader.ReadBool();
-
-        }
-
-
-        void DumpTypeDefinitions(RimeReader p_Reader, LayoutHeader p_Layout, long p_Offset = 0)
-        {
 
         }
 

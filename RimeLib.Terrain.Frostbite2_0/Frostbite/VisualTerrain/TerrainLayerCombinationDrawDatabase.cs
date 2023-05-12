@@ -4,12 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Rimelib.Ant.Frostbite2_0.EA
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
 {
-    public class GenericDataReader
+    internal class TerrainLayerCombinationDrawDatabase
     {
-
-
-
     }
 }

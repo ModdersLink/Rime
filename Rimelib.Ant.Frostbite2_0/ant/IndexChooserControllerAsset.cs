@@ -18,7 +18,7 @@ namespace ant
 		: AntObject
 	{
 		[AntField(0)]
-		public IdRefArray<NullControllerAsset> ChoiceAssetList { get; set; } = new();
+		public IdRefArray<ControllerAsset> ChoiceAssetList { get; set; } = new();
 
 		[AntField(1)]
 		public bool ChooseOnce { get; set; }

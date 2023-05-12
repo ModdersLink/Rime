@@ -29,6 +29,27 @@ namespace RimeLib.Ant.EA.Reflection
         String = 17,
         DataRef = 18,
 
-        LayoutTypeCount = 19,
+        Double = 19,
+        LayoutTypeCount_FB2 = 19,
+
+        QuatPos = 20,
+        Int8Vec16 = 21,
+        UInt8Vec16 = 22,
+        Int16Vec8 = 23,
+        UInt16Vec8 = 24,
+        Int32Vec2 = 25,
+        Int32Vec3 = 26,
+        Int32Vec4 = 27,
+        UInt32Vec2 = 28,
+        UInt32Vec3 = 29,
+        UInt32Vec4 = 30,
+        BoolVec2 = 31,
+        BoolVec3 = 32,
+        BoolVec4 = 33,
+        Matrix33 = 34,
+        Key = 35
+
+
+
     }
 }

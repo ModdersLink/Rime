@@ -29,7 +29,6 @@ namespace RimeLib.Frostbite.Fs
 
         protected byte[] m_Signature = new byte[c_KeySize];
 
-
         public bool HasHeader => m_HasHeader;
 
 
@@ -161,6 +160,6 @@ namespace RimeLib.Frostbite.Fs
             
             p_Writer.Write(p_Data);
         }
-    
+        
     }
 }

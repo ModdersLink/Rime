@@ -26,11 +26,34 @@ namespace RimeLib.Ant.EA.GenericData
 
         public bool Serialize(RimeWriter p_Writer)
         {
+            var s_LayoutList = new List<long>();
+
+            var s_LayoutStream = new MemoryStream();
+            var s_LayoutWriter = new RimeWriter(s_LayoutStream);
+
+            foreach(var s_Layout in Layouts)
+            {
+                s_LayoutList.Add(s_LayoutWriter.Position);
+                s_Layout.Serialize(s_LayoutWriter);
+            }
+
+
+            var s_BaseOffset = s_LayoutList.Count * 0x8;
+
+            foreach (var s_LayotOffset in s_LayoutList)
+                p_Writer.Write(s_LayotOffset + s_BaseOffset);
+
+            s_LayoutStream.Seek(0, SeekOrigin.Begin);
+            s_LayoutStream.CopyTo(p_Writer);
+
+
             throw new NotImplementedException();
         }
 
         public void Deserialize(RimeReader p_Reader)
         {
+
+
             var s_Count = p_Reader.ReadUInt64();
 
 

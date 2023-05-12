@@ -10,6 +10,7 @@ namespace RimeLib.Serialization.Frostbite2_0.Extensions
 {
     public static class Vec3Extension
     {
+        public static System.Numerics.Vector3 ToVec(this Vec3 p_Vec) => new System.Numerics.Vector3(p_Vec.x, p_Vec.y, p_Vec.z);
 
         public static void Deserialize(this Vec3 p_Value, RimeReader p_Reader)
         {

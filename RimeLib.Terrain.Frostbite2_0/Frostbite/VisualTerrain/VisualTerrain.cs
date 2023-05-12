@@ -114,6 +114,69 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
             DecalsResoruceName = p_Reader.ReadNullTerminatedString();
 
 
+            // TerrainLayerCombinationDrawDatabase
+            var s_CombinationDrawCount = p_Reader.ReadUInt32();
+            for (var i=0; i < s_CombinationDrawCount; i++)
+            {
+
+                // TerrainLayerCombinationDraw
+
+                var s_LayerIndexCount = p_Reader.ReadUInt32();
+
+                var s_LayerIndicies = p_Reader.ReadBytes((int) s_LayerIndexCount);
+
+                var s_MeshScatteringMethodCount = p_Reader.ReadUInt32();
+
+                var s_MeshScatteringMaskScaleLevelEnd = p_Reader.ReadUByte();
+
+                for (var j = 0; j < s_MeshScatteringMethodCount; j++)
+                {
+                    // MeshScatteringMaskScaleDrawMethod 
+
+                    var s_MaskedLayerIndexCount = p_Reader.ReadUInt32();
+                    var s_MaskedLayerIndicies = p_Reader.ReadBytes((int) s_MaskedLayerIndexCount);
+
+                    var s_OutputOrderingIndexCount = p_Reader.ReadUInt32();
+                    var s_OutputLayerOrder = p_Reader.ReadBytes((int)s_OutputOrderingIndexCount);
+
+
+                    var s_ShaderName = p_Reader.ReadNullTerminatedString();
+                    var s_DestructionMaskEnable = p_Reader.ReadBool();
+                    var s_Level = p_Reader.ReadSByte();
+
+
+                }
+
+
+                var s_DrawPassCount = p_Reader.ReadUInt32();
+                for (var j = 0; j < s_DrawPassCount; j++)
+                {
+                    // TerrainLayerCombinationDraw2dPass
+
+                    var s_DrawPassType = p_Reader.ReadUInt32();
+
+                    var s_MaskedLayerIndexCount = p_Reader.ReadUInt32();
+                    var s_MaskedLayerIndicies = p_Reader.ReadBytes((int)s_MaskedLayerIndexCount);
+
+                    var s_ShaderName = p_Reader.ReadNullTerminatedString();
+                    var s_DestructionMaskEnable = p_Reader.ReadBool();
+                }
+
+                var s_Surface3DMethodCount = p_Reader.ReadUInt32();
+                for (var j = 0; j < s_Surface3DMethodCount; j++)
+                {
+                    // Surface3dDrawMethod
+
+                    var s_MaskedLayerIndexCount = p_Reader.ReadUInt32();
+                    var s_MaskedLayerIndicies = p_Reader.ReadBytes((int)s_MaskedLayerIndexCount);
+
+
+                    var s_ShaderName = p_Reader.ReadNullTerminatedString();
+                    var s_DestructionMaskEnable = p_Reader.ReadBool();
+                    var s_Level = p_Reader.ReadSByte();
+                    var s_DrawDirectLayerCount = p_Reader.ReadSByte();
+                }
+            }
         }
 
 

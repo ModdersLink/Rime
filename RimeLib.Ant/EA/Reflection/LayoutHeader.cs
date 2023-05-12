@@ -67,7 +67,57 @@ namespace RimeLib.Ant.EA.Reflection
 
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            using var s_StringTableStream = new MemoryStream();
+            using var s_StringTableWriter = new RimeWriter(s_StringTableStream);
+
+            s_StringTableWriter.Write((byte)0x00);
+            s_StringTableWriter.WriteNullTerminatedString(Name);
+            foreach (var s_Field in Fields)
+            {
+                s_Field.NameOffset = (uint) s_StringTableWriter.Position;
+                p_Writer.WriteNullTerminatedString(s_Field.Name);
+            }
+
+            StringTableSize = (uint) s_StringTableStream.Length;
+
+
+            MinSlot = Fields.Min(x => x.Id);
+            MaxSlot = Fields.Max(x => x.Id);
+
+
+            using var s_FieldsStream = new MemoryStream();
+            using var s_FieldsWriter = new RimeWriter(s_StringTableStream);
+
+            foreach (var s_Field in Fields)
+            {
+                s_Field.Serialize(s_FieldsWriter);
+            }
+
+
+            StringTableOffset = (uint)s_FieldsStream.Length + 0x20;
+
+            p_Writer.Write(MinSlot);
+            p_Writer.Write(MaxSlot);
+            p_Writer.Write(DataSize);
+            p_Writer.Write(Alignment);
+            p_Writer.Write(StringTableOffset);
+            p_Writer.Write(StringTableSize);
+            p_Writer.Write(Recorded);
+            p_Writer.Write(Native);
+
+            //0x001A
+            p_Writer.Write(new byte[2]);
+            p_Writer.Write(Hash);
+
+
+
+            p_Writer.Write(s_FieldsStream.ToArray());
+
+            p_Writer.Write(s_StringTableStream.ToArray());
+
+
+            return true;
+            //throw new NotImplementedException();
         }
 
         public void Deserialize(RimeReader p_Reader)
