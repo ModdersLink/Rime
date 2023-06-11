@@ -7,6 +7,57 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
-            
+        <DockPanel>
+            <StackPanel Orientation="Horizontal" DockPanel.Dock="Top">
+                <Image x:Name="imgTypeIcon" Width="32" Height="32"/>
+                <TextBlock x:Name="txtType" Text="M_TYPE"/>
+                <Button x:Name="btnAdd" Content="Add"/>
+                <Button x:Name="btnUnknown" Content="Unknown"/>
+                <Button x:Name="btnQuestion" Content="?"/>
+                <Button x:Name="btnLock" Content="Lock"/>
+            </StackPanel>
+            <TextBlock x:Name="txtInstanceName" Text="M_INSTANCE" DockPanel.Dock="Top"/>
+            <StackPanel Orientation="Vertical" DockPanel.Dock="Top">
+                <StackPanel Orientation="Horizontal">
+                    
+                </StackPanel>
+                <WrapPanel x:Name="wpFilterPanel">
+                    <Button Content="General"/>
+                    <Button Content="Actor"/>
+                    <Button Content="LOD"/>
+                    <Button Content="Misc"/>
+                    <Button Content="Physics"/>
+                    <Button Content="Rendering"/>
+                    <Button Content="Streaming"/>
+                    <Button Content="All"/>
+                </WrapPanel>
+            </StackPanel>
+            <TreeView x:Name="tvPropertyControls" DockPanel.Dock="Top">
+                <!-- Example -->
+                <TreeViewItem Header="Transform">
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox Text="Transform" Width="100"/>
+                        <TextBox Text="0.0"/>
+                        <TextBox Text="0.0"/>
+                        <TextBox Text="0.0"/>
+                        <Button Content="Revert"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox Text="Transform" Width="100"/>
+                        <TextBox Text="0.0"/>
+                        <TextBox Text="0.0"/>
+                        <TextBox Text="0.0"/>
+                        <Button Content="Revert"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox Text="Transform" Width="100"/>
+                        <TextBox Text="0.0"/>
+                        <TextBox Text="0.0"/>
+                        <TextBox Text="0.0"/>
+                        <Button Content="Revert"/>
+                    </StackPanel>
+                </TreeViewItem>
+            </TreeView>
+        </DockPanel>
     </Grid>
 </UserControl>
