@@ -44,7 +44,7 @@ namespace Rime
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            MountAndSetup().Wait();
+            // MountAndSetup().Wait();
         }
 
 
