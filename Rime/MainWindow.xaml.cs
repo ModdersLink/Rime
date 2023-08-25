@@ -1,22 +1,12 @@
 ﻿using System;
-using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
-using System.Windows.Threading;
-using fb;
 using Microsoft.Win32;
 using Rime.Utils;
 using RimeLib;
 using RimeLib.Content.Mounting;
-using RimeLib.Extensions;
 using RimeLib.Frostbite;
-using RimeLib.IO;
-using RimeLib.Mesh.Frostbite;
-using RimeLib.Mesh.Frostbite2_0;
-using RimeLib.Shader.Frostbite2_0.Frostbite;
-using RimeLib.Texture;
 using RimeLib.Utils;
 
 namespace Rime
