@@ -6,6 +6,8 @@ using System.Windows;
 using System.Windows.Media;
 using System.Windows.Threading;
 using fb;
+using Microsoft.Win32;
+using Rime.Utils;
 using RimeLib;
 using RimeLib.Content.Mounting;
 using RimeLib.Extensions;
@@ -24,9 +26,21 @@ namespace Rime
     /// </summary>
     public partial class MainWindow : Window
     {
+        public string BuildTitle => $"{GetType().Assembly.GetName().Name} - {GetType().Assembly.GetName().Version}";
+
+        private Logger m_Logger;
+
+        // Current active EngineMounter
+        private IEngineMounter m_Mounter;
+
         public MainWindow()
         {
+            m_Logger = new Logger(Logger.LogLevel.Debug);
+
+            m_Logger.WriteLog(Logger.LogLevel.Debug, $"Rime starting, build: {BuildTitle}");
+
             InitializeComponent();
+
             Renderer.RendererStarted += OnRendererStarted;
         }
 
@@ -97,6 +111,47 @@ namespace Rime
         private void Window_Loaded(object p_Sender, RoutedEventArgs p_Event)
         {
             
+        }
+
+        private void mmuNewProject_Click(object sender, RoutedEventArgs e)
+        {
+            var s_FileDialog = new OpenFileDialog
+            {
+                FileName = "*.dll",
+                Filter = "Dynamic Link Libraries (*.dll)|*.dll",
+                Title = "Select build information dll",
+                Multiselect = false
+            };
+
+            var s_Result = s_FileDialog.ShowDialog();
+            if (s_Result != true)
+                return;
+
+            var s_FileName = s_FileDialog.FileName;
+            
+        }
+
+        private bool Validate(string p_BuildInfoDllPath)
+        {
+            // Validate that our dll exists
+            if (!File.Exists(p_BuildInfoDllPath))
+            {
+                MessageBox.Show($"File ({p_BuildInfoDllPath}) does not exist.", "File not found", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            // Get the dll directory
+            var s_DllDirectory = Path.GetDirectoryName(p_BuildInfoDllPath);
+            if (s_DllDirectory == null)
+                return false;
+
+            // Check for data directory
+            if (!Directory.Exists(Path.Combine(s_DllDirectory, "Data")))
+            {
+                MessageBox.Show($"Data folder does not exist.", "Folder not found", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
         }
     }
 }
