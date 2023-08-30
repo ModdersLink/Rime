@@ -122,6 +122,22 @@ namespace RimeLib.Frostbite.Db
         /// Timespan marker
         /// </summary>
         Timespan = 0x15,
+        
+        /// <summary>
+        /// TODO
+        /// </summary>
+        StrongAtom = 0x16, 
+        
+        /// <summary>
+        /// TODO
+        /// </summary>
+        TypedBlob = 0x17, 
+        
+        /// <summary>
+        /// TODO
+        /// </summary>
+        Environment = 0x18, 
+        
 
         /// <summary>
         /// TODO

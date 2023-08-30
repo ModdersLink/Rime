@@ -15,7 +15,7 @@ namespace RimeLib.Ant.EA.Types
 
         public AntGuid InstanceId { get; set; } = new();
 
-        public string Name { get; set; } = string.Empty;
+        public string ObjectName { get; set; } = string.Empty;
 
 
         public bool ContainsHash(uint p_Hash)

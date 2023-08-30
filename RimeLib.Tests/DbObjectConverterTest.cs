@@ -16,10 +16,10 @@ namespace RimeLib.Tests
 
 
 
-            var s_Obfuscation = new FileObfuscation(s_Reader, out var s_FixedReader);
+            FileObfuscation.Deserialize(s_Reader, out var s_FixedReader, out _);
 
-            if (!s_Obfuscation.HasHeader)
-                throw new Exception("Could not find valid header magic for ToC file.");
+            //if (!s_Obfuscation.HasHeader)
+            //    throw new Exception("Could not find valid header magic for ToC file.");
             /*
             var s_Magic = s_Reader.ReadUInt32();
 
@@ -56,10 +56,10 @@ namespace RimeLib.Tests
                 "C:\\Program Files (x86)\\Origin Games\\Battlefield 2042 Technical Playtest\\Data\\initfs_Win32";
             using var s_Reader = new RimeReader(File.OpenRead(s_Path));
 
-            var s_Obfuscation = new FileObfuscation(s_Reader, out var s_FixedReader);
+            FileObfuscation.Deserialize(s_Reader, out var s_FixedReader, out _);
 
-            if (!s_Obfuscation.HasHeader)
-                throw new Exception("Could not find valid header magic for initfs file.");
+            //if (!s_Obfuscation.HasHeader)
+            //    throw new Exception("Could not find valid header magic for initfs file.");
             /*
             var s_Magic = s_Reader.ReadUInt32();
 

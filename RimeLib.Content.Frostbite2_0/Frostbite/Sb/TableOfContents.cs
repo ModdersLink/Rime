@@ -13,11 +13,11 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
         public TableOfContents(RimeReader p_Reader)
         {
 
-            var s_Obfuscation = new FileObfuscation(p_Reader, out var s_FixedReader);
+            FileObfuscation.Deserialize(p_Reader, out var s_FixedReader, out _);
 
             // this should not always throw, as old toc files doesnt have header (bf3 beta/alpha)
-            if (!s_Obfuscation.HasHeader)
-                throw new Exception("Could not find valid header magic for ToC file.");
+            //if (!s_Obfuscation.HasHeader)
+            //    throw new Exception("Could not find valid header magic for ToC file.");
             /*
                 var s_Magic = p_Reader.ReadUInt32();
 
@@ -50,12 +50,10 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
 
         public bool Serialize(RimeWriter p_Writer)
         {
-            var s_Obfuscation = new FileObfuscation();
-
             if (!DbObjectConverter.ToDbObjectBytes(Layout, out var s_Data))
                 return false;
 
-            s_Obfuscation.Serialize(p_Writer, s_Data);
+            FileObfuscation.Serialize(p_Writer, s_Data);
 
             return true;
 

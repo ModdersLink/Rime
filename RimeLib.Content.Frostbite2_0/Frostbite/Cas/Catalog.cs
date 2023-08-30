@@ -44,11 +44,9 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Cas
         /// <param name="p_Reader">Reader opened to the position of the catalog header</param>
         protected void ParseHeader(RimeReader p_Reader)
         {
-            var s_Reader = p_Reader;
-
             // read FileObfuscation, and use the output stream
-            new FileObfuscation(s_Reader, out var s_FixedReader);
-
+            FileObfuscation.Deserialize(p_Reader, out var s_FixedReader, out _, true);
+            
             /*
             var s_Magic = p_Reader.ReadUInt32();
 

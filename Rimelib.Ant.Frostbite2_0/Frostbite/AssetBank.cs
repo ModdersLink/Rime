@@ -65,7 +65,7 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
         }
 
 
-        private AntObject CreateObject(LayoutHeader p_Layout)
+        protected AntObject CreateObject(LayoutHeader p_Layout)
         {
             var s_ContainerType = Type.GetType($"ant.{p_Layout.Name.Replace(":", "_")}");
 
@@ -76,7 +76,7 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
         }
 
 
-        public AntObject ParseClass(RimeReader p_Reader, RimeLib.Ant.EA.GenericData.Data p_Data, long p_Offset = 0)
+        public  AntObject ParseClass(RimeReader p_Reader, RimeLib.Ant.EA.GenericData.Data p_Data, long p_Offset = 0)
         {
             var s_Layout = Archive.Reflection?.Layouts.Where(x => x.Hash == p_Data.LayoutHash).First();
 
@@ -96,7 +96,7 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
             return s_Instance;
         }
 
-        private AntObject ParseStruct(RimeReader p_Reader, LayoutHeader p_Layout, long p_Offset = 0)
+        protected AntObject ParseStruct(RimeReader p_Reader, LayoutHeader p_Layout, long p_Offset = 0)
         {
             var s_Instance = CreateObject(p_Layout);
 
@@ -106,7 +106,7 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
             return s_Instance;
         }
 
-        private void ParseInstance(RimeReader p_Reader, LayoutHeader p_Layout, AntObject p_Instance, Type p_InstanceType, long p_Offset = 0)
+        protected virtual void ParseInstance(RimeReader p_Reader, LayoutHeader p_Layout, AntObject p_Instance, Type p_InstanceType, long p_Offset = 0)
         {
             if (p_Layout.IsBasicField)
             {
@@ -167,7 +167,7 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
                 // strings should ne null terminated as game doesnt check length on strings
 
                 if (s_Offset != 0)
-                    p_Instance.Name = p_Reader.ReadNullTerminatedString();
+                    p_Instance.ObjectName = p_Reader.ReadNullTerminatedString();
             }
 
 
@@ -274,7 +274,7 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
         }
 
 
-        private void ParseConstArray(RimeReader p_Reader, EntryHeader p_Slot, PropertyInfo p_PropertyType, object p_Instance, long p_Offset )
+        protected virtual void ParseConstArray(RimeReader p_Reader, EntryHeader p_Slot, PropertyInfo p_PropertyType, object p_Instance, long p_Offset )
         {
             var s_Array = p_PropertyType.GetValue(p_Instance) as Array;
 
@@ -368,7 +368,7 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
 
         }
 
-        void ParseArray(RimeReader p_Reader, EntryHeader p_Slot, PropertyInfo p_PropertyType, object p_Instance)
+        protected virtual void ParseArray(RimeReader p_Reader, EntryHeader p_Slot, PropertyInfo p_PropertyType, object p_Instance)
         {
             var s_Layout = p_Slot.Layout;
 
@@ -465,7 +465,7 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
 
         }
 
-        private object ParseSimpleType(RimeReader p_Reader, LayoutType p_Type)
+        protected object ParseSimpleType(RimeReader p_Reader, LayoutType p_Type)
         {
             switch (p_Type)
             {

@@ -137,7 +137,7 @@ namespace RimeLib.Ant.Frostbite2_0.EA
                 // strings should ne null terminated as game doesnt check length on strings
 
                 if (s_Offset != 0)
-                    p_Instance.Name = p_Reader.ReadNullTerminatedString();
+                    p_Instance.ObjectName = p_Reader.ReadNullTerminatedString();
             }
 
 

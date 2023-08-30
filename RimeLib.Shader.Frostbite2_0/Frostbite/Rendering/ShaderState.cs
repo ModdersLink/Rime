@@ -14,23 +14,24 @@ namespace RimeLib.Shader.Frostbite2_0.Frostbite.Rendering
             //0x1FCFD862,
             StateFlags = 
                 ShaderStateType.ShaderStateType_Mode |
-                ShaderStateType.ShaderStateType_SkinningMethod |
-                ShaderStateType.ShaderStateType_WorldTransform |
-                ShaderStateType.ShaderStateType_View |
-                ShaderStateType.ShaderStateType_TileViews |
-                ShaderStateType.ShaderStateType_InvertCullMode |
-                ShaderStateType.ShaderStateType_Fog |
-                ShaderStateType.ShaderStateType_DynamicEnvmap |
-                ShaderStateType.ShaderStateType_Stencil |
-                ShaderStateType.ShaderStateType_WireframeEnable |
-                ShaderStateType.ShaderStateType_Viewport |
-                ShaderStateType.ShaderStateType_DepthBias |
-                ShaderStateType.ShaderStateType_DepthOnlyEnable |
-                ShaderStateType.ShaderStateType_ColorWriteMask |
-                ShaderStateType.ShaderStateType_HeightfieldTessellationEnable |
-                ShaderStateType.ShaderStateType_ColorScale |
-                ShaderStateType.ShaderStateType_Technique |
-                ShaderStateType.ShaderStateType_CullFrustum,
+                ShaderStateType.ShaderStateType_GeometrySpace |
+            ShaderStateType.ShaderStateType_SkinningMethod |
+            ShaderStateType.ShaderStateType_OutdoorLight |
+            ShaderStateType.ShaderStateType_View |
+            ShaderStateType.ShaderStateType_RightHanded |
+            ShaderStateType.ShaderStateType_InvertCullMode |
+            ShaderStateType.ShaderStateType_Fog |
+            ShaderStateType.ShaderStateType_DynamicEnvmap |
+            ShaderStateType.ShaderStateType_Stencil |
+            ShaderStateType.ShaderStateType_WireframeEnable |
+            ShaderStateType.ShaderStateType_DepthMode |
+            ShaderStateType.ShaderStateType_DepthBias |
+            ShaderStateType.ShaderStateType_DepthOnlyEnable |
+            ShaderStateType.ShaderStateType_ColorWriteMask |
+            ShaderStateType.ShaderStateType_HeightfieldTessellationEnable |
+            ShaderStateType.ShaderStateType_ColorScale |
+            ShaderStateType.ShaderStateType_Technique
+            ,
 
             InstanceCount = 1,
 

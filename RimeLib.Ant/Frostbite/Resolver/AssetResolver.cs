@@ -1,6 +1,7 @@
 ﻿using RimeLib.Ant.EA.Resolver;
 using RimeLib.Ant.EA.Types;
 using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,25 +16,19 @@ namespace RimeLib.Ant.Frostbite.Resolver
         public static AssetResolver Instance => _instance ??= new AssetResolver();
 
 
-#if DEBUG
-        public static SortedDictionary<uint, AntObject> StaticObjects { get; set; } = new();
-        public static SortedDictionary<uint, AntObject> BundleObjects { get; set; } = new();
-
-#else
-        public static Dictionary<uint, AntObject> StaticObjects { get; set; } = new();
-        public static Dictionary<uint, AntObject> BundleObjects { get; set; } = new();
-#endif
+        public static ConcurrentDictionary<uint, AntObject> StaticObjects { get; set; } = new();
+        public static ConcurrentDictionary<uint, AntObject> BundleObjects { get; set; } = new();
 
         public void RegisterObject(AntObject p_Object)
         {
             if (p_Object.InstanceId.IsStaticRefrence)
             {
-                StaticObjects.Add(p_Object.InstanceId.StaticRefrence, p_Object);
+                StaticObjects.TryAdd(p_Object.InstanceId.StaticRefrence, p_Object);
                 return;
             }
 
 
-            BundleObjects.Add(p_Object.InstanceId.RefrenceIndex, p_Object);
+            BundleObjects.TryAdd(p_Object.InstanceId.RefrenceIndex, p_Object);
         }
 
         public AntObject? ResolveObject(AntGuid p_Guid)

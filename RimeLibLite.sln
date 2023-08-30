@@ -103,6 +103,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GFxTool", "Utils\GFxTool\GF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AvalancheHttpBackend", "Utils\AvalancheHttpBackend\AvalancheHttpBackend.csproj", "{E90683C9-1664-4BE6-89B5-07B05E073629}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitFsTool", "Utils\InitFsTool\InitFsTool.csproj", "{882A760A-6272-427B-98CA-120A0F40444D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -458,6 +460,14 @@ Global
 		{E90683C9-1664-4BE6-89B5-07B05E073629}.Release|Any CPU.Build.0 = Release|Any CPU
 		{E90683C9-1664-4BE6-89B5-07B05E073629}.Release|x64.ActiveCfg = Release|Any CPU
 		{E90683C9-1664-4BE6-89B5-07B05E073629}.Release|x64.Build.0 = Release|Any CPU
+		{882A760A-6272-427B-98CA-120A0F40444D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{882A760A-6272-427B-98CA-120A0F40444D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{882A760A-6272-427B-98CA-120A0F40444D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{882A760A-6272-427B-98CA-120A0F40444D}.Debug|x64.Build.0 = Debug|Any CPU
+		{882A760A-6272-427B-98CA-120A0F40444D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{882A760A-6272-427B-98CA-120A0F40444D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{882A760A-6272-427B-98CA-120A0F40444D}.Release|x64.ActiveCfg = Release|Any CPU
+		{882A760A-6272-427B-98CA-120A0F40444D}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -482,6 +492,7 @@ Global
 		{2C13B391-69F9-4CD9-B8E9-C184AF50BBF1} = {42E38905-976C-4506-98AE-DC35CA1A9925}
 		{BE5B94B6-0C51-4F63-8241-2ACEBAFC2136} = {42E38905-976C-4506-98AE-DC35CA1A9925}
 		{E90683C9-1664-4BE6-89B5-07B05E073629} = {42E38905-976C-4506-98AE-DC35CA1A9925}
+		{882A760A-6272-427B-98CA-120A0F40444D} = {42E38905-976C-4506-98AE-DC35CA1A9925}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D2A4DE6-648D-4971-AC81-A89F21154CD0}

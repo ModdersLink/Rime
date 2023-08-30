@@ -59,26 +59,26 @@ namespace AvalancheHttpBackend.Avalanche
 		{
 			//TODO: Handle directories. filetree probably takes extra memory. not really needed.
 			
-			if (!Engine.GetMountedBundles().Contains(p_Path.ToLower()))
+			//if (!Engine.GetMountedBundles().Contains(p_Path.ToLower()))
 			{
 				p_Ctx.Response.StatusCode = (int) HttpStatusCode.NotFound;
 				p_Ctx.Response.Close();
 				return;
 			}
 
-			throw new NotImplementedException("Broken!");
-
-			//var s_Descriptor = new BundleDescriptor();
+			/*
+			var s_Descriptor = new BundleDescriptor(p_Path);
 			//s_Descriptor.Partitions.Add(Engine.GetPartitionsInBundle(p_Path.ToLower()));
 			
-			//var s_Builder = new BundleManifestBuilder(s_Descriptor);
-			//s_Builder.Serialize(p_SbWriter);
+			var s_Builder = new BundleManifestBuilder(s_Descriptor);
+			s_Builder.Serialize(p_SbWriter);
 			
 			p_Ctx.Response.StatusCode = (int) HttpStatusCode.OK;
 
-			//SetHeaderInfo(p_Ctx.Response, s_Partition.FirstVariant.GetSize());
+			SetHeaderInfo(p_Ctx.Response, s_Partition.FirstVariant.GetSize());
 
 			p_Ctx.Response.Close();
+			*/
 		}
 		
 		
