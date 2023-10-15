@@ -36,8 +36,9 @@ namespace Rime
 
         private void OnRendererStarted(object? p_Sender, EventArgs p_E)
         {
-            var s_Browser = new ObjectBrowser();
-            s_Browser.Show();
+            new Controls.Projects.ProjectCreationWindow().Show();
+            //var s_Browser = new ObjectBrowser();
+            //s_Browser.Show();
             //MountAndSetup().Wait();
         }
 

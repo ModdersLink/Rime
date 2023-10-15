@@ -1,0 +1,39 @@
+﻿<Window x:Class="Rime.Controls.Projects.ProjectCreationWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Rime.Controls.Projects"
+        xmlns:rllfb="clr-namespace:RimeLib.Frostbite;assembly=RimeLib"
+        xmlns:system="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"
+        Title="Create new project" Height="250" Width="400">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="EngineTypeEnumDataSource" ObjectType="{x:Type system:Enum}" MethodName="GetValues">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="rllfb:EngineType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+    </Window.Resources>
+    <Grid>
+        <GroupBox Header="Project Settings">
+            <StackPanel Orientation="Vertical">
+                <DockPanel>
+                    <TextBlock Text="Game Directory: "/>
+                    <Button x:Name="btnSelectGameDirectory" Content="..." Width="25"/>
+                    <TextBox x:Name="txtGameDirectory" ToolTip="Frostbite game directory, must contain build info .dll, game exe, and data folder" IsReadOnly="True" />
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock Text="Frostbite Engine Version: "/>
+                    <ComboBox ItemsSource="{Binding Source={StaticResource EngineTypeEnumDataSource}}"/>
+                </DockPanel>
+                <DockPanel>
+                    <TextBlock Text="Project Directory: "/>
+                    <Button x:Name="btnSelectProjectFile" Content="..." Width="25"/>
+                    <TextBox x:Name="txtProjectFile" IsReadOnly="True"/>
+                </DockPanel>
+                <Button x:Name="btnCreateProject" Content="Create Project" Click="btnCreateProject_Click"/>
+            </StackPanel>
+        </GroupBox>
+    </Grid>
+</Window>
