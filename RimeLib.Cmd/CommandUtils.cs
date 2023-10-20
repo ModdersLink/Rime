@@ -8,6 +8,9 @@ using RimeLib.Frostbite.Core;
 
 namespace RimeLib.Cmd
 {
+    /// <summary>
+    /// General use utilities for dealing with commands
+    /// </summary>
     public static class CommandUtils
     {
         public static IEnumerable<string> ParseArguments(string p_Input)
