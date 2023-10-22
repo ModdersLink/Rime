@@ -37,6 +37,7 @@ namespace RimeLib.Cmd.Contexts
 
             RegisterCommand<ListSbCommand>();
             RegisterCommand<MountSbCommand>();
+            RegisterCommand<MountStandaloneSbCommand>();
             RegisterCommand<ListMountedSbCommand>();
             RegisterCommand<ListBundlesCommand>();
             RegisterCommand<MountBundleCommand>();
@@ -79,6 +80,17 @@ namespace RimeLib.Cmd.Contexts
         internal void MountSuperbundle(string p_Name, bool p_AutoMount)
         {
             m_Mounter.MountSuperbundle(p_Name, p_AutoMount).Wait();
+        }
+
+        /// <summary>
+        /// Mount a superbundle by path
+        /// </summary>
+        /// <param name="p_Name">Name of superbundle to mount</param>
+        /// <param name="p_Path">Path to superbundle</param>
+        /// <param name="p_AutoMount">Automatically mount contained bundles</param>
+        internal void MountStandaloneSuperbundle(string p_Name, string p_Path, bool p_AutoMount)
+        {
+            m_Mounter.MountStandaloneSuperbundle(p_Name, p_Path, p_AutoMount).Wait();
         }
 
         /// <summary>

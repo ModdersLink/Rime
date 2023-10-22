@@ -16,7 +16,25 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\RimeLib.Animation.Frostbite2_0\RimeLib.Animation.Frostbite2_0.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Animation\RimeLib.Animation.csproj" />
+    <ProjectReference Include="..\..\Rimelib.Ant.Frostbite2_0\RimeLib.Ant.Frostbite2_0.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Ant\RimeLib.Ant.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Audio\RimeLib.Audio.csproj" />
     <ProjectReference Include="..\..\RimeLib.Cmd\RimeLib.Cmd.csproj" />
+    <ProjectReference Include="..\..\RimeLib.CodeGen\RimeLib.CodeGen.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Havok.Frostbite2_0\RimeLib.Havok.Frostbite2_0.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Havok\RimeLib.Havok.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Mesh.Frostbite2_0\RimeLib.Mesh.Frostbite2_0.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Mesh\RimeLib.Mesh.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Shader.Frostbite2_0\RimeLib.Shader.Frostbite2_0.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Shader\RimeLib.Shader.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Terrain.Frostbite2_0\RimeLib.Terrain.Frostbite2_0.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Terrain.Frostbite3\RimeLib.Terrain.Frostbite3.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Terrain\RimeLib.Terrain.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Texture.Frostbite2_0\RimeLib.Texture.Frostbite2_0.csproj" />
   </ItemGroup>
 
 </Project>
