@@ -237,35 +237,55 @@ namespace RimeLib.Cmd.Contexts
         }
 
         /// <summary>
-        /// Gets th
+        /// Gets the available bundle partitions
         /// </summary>
-        /// <param name="p_Bundle"></param>
+        /// <param name="p_Bundle">Enumerable of bundle partition names</param>
         /// <returns></returns>
         internal IEnumerable<string> GetBundlePartitions(string p_Bundle)
         {
             return m_Mounter.GetPartitionsInBundle(p_Bundle);
         }
 
+        /// <summary>
+        /// Gets the mounted chunks
+        /// </summary>
+        /// <returns>Enumerable of chunk GUIDs</returns>
         internal IEnumerable<GUID> GetMountedChunks()
         {
             return m_Mounter.GetChunks().Keys;
         }
 
+        /// <summary>
+        /// Get the mounted resources
+        /// </summary>
+        /// <returns>Enumerable of resource names</returns>
         internal IEnumerable<string> GetMountedResources()
         {
             return m_Mounter.GetResources().Keys;
         }
 
+        /// <summary>
+        /// Get the mounted partitions
+        /// </summary>
+        /// <returns>Enumerable of mounted partition names</returns>
         internal IEnumerable<string> GetMountedPartitions()
         {
             return m_Mounter.GetPartitions().Keys;
         }
 
+        /// <summary>
+        /// Gets a dictionary of GUID <-> Mounted chunk variations
+        /// </summary>
+        /// <returns>Dictionary<GUID, IMountedObject<IChunkVariant></returns>
         internal IReadOnlyDictionary<GUID, IMountedObject<IChunkVariant>> GetMountedChunkVariations()
         {
             return m_Mounter.GetChunks();
         }
 
+        /// <summary>
+        /// Gets a dictionary of resource name <-> Mounted resource variations
+        /// </summary>
+        /// <returns>Dictionary<string, IMountedObject<IResourceVariant>></returns>
         internal IReadOnlyDictionary<string, IMountedObject<IResourceVariant>> GetMountedResourceVariations()
         {
             return m_Mounter.GetResources();
