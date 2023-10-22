@@ -93,7 +93,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 p_Writer.Write(s_Meta);
             }
 
-            m_ChunkEntriesOffset = p_Writer.Position;
+            m_ChunkEntriesOffset = p_Writer.Position - s_StartOffset;
             
             // Write chunk entries.
             foreach (var s_Chunk in m_Descriptor.Chunks)
@@ -113,7 +113,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             // Write chunk meta.
             p_Writer.Align(4);
-            var s_ChunkMetaStart = p_Writer.Position;
+            var s_ChunkMetaStart = p_Writer.Position - s_StartOffset;
 
             var s_ChunkMeta = new DbObject();
             var s_ChunkMetaArray = new DbObject();
@@ -144,11 +144,10 @@ namespace RimeLib.Content.Frostbite2_0.Building
             s_ChunkMeta.Serialize(p_Writer);
 
             m_Header.ChunkMetaOffset = (int) (s_ChunkMetaStart - 4); // -4 because the manifest size is not accounted for.
-            m_Header.ChunkMetaSize = (int) (p_Writer.Position - s_ChunkMetaStart);
+            m_Header.ChunkMetaSize = (int) (p_Writer.Position - (s_StartOffset + s_ChunkMetaStart));
 
             // Write the text block.
-            p_Writer.Align(4);
-            m_Header.StringBlockOffset = (int) (p_Writer.Position - 4); // -4 because the manifest size is not accounted for.
+            m_Header.StringBlockOffset = (int) (p_Writer.Position - (s_StartOffset + 4)); // -4 because the manifest size is not accounted for.
 
             s_TextWriter.Flush();
             s_TextWriter.Seek(0, SeekOrigin.Begin);
