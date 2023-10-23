@@ -10,7 +10,7 @@ public class DataContainerJsonConverter : JsonConverter<DataContainer>
 {
     public override bool CanWrite => false;
 
-    public override void WriteJson(JsonWriter p_Writer, DataContainer p_Value, JsonSerializer p_Serializer)
+    public override void WriteJson(JsonWriter p_Writer, DataContainer? p_Value, JsonSerializer p_Serializer)
     {
         throw new Exception(
             "Tried serializing DataContainer with the custom converter. This isn't supported. The converter should only be used for reading."
@@ -20,7 +20,7 @@ public class DataContainerJsonConverter : JsonConverter<DataContainer>
     public override DataContainer ReadJson(
         JsonReader p_Reader,
         Type p_ObjectType,
-        DataContainer p_ExistingValue,
+        DataContainer? p_ExistingValue,
         bool p_HasExistingValue,
         JsonSerializer p_Serializer
     )
@@ -30,7 +30,7 @@ public class DataContainerJsonConverter : JsonConverter<DataContainer>
         if (!s_Object.ContainsKey("$type"))
             throw new Exception("DataContainer doesn't have a '$type' property.");
 
-        var s_Type = s_Object["$type"].Value<string>();
+        var s_Type = s_Object["$type"]?.Value<string>();
 
         var s_ContainerType = Type.GetType($"fb.{s_Type}");
 

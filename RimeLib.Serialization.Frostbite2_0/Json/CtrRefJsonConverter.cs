@@ -8,9 +8,9 @@ namespace RimeLib.Serialization.Frostbite2_0.Json;
 
 public class CtrRefJsonConverter : JsonConverter
 {
-    public override void WriteJson(JsonWriter p_Writer, object p_Value, JsonSerializer p_Serializer)
+    public override void WriteJson(JsonWriter p_Writer, object? p_Value, JsonSerializer p_Serializer)
     {
-        var s_Value = (CtrRefBase) p_Value;
+        var s_Value = (CtrRefBase) p_Value!;
 
         if (s_Value.IsNull())
         {
@@ -32,7 +32,7 @@ public class CtrRefJsonConverter : JsonConverter
     public override object? ReadJson(
         JsonReader p_Reader,
         Type p_ObjectType,
-        object p_ExistingValue,
+        object? p_ExistingValue,
         JsonSerializer p_Serializer
     )
     {
@@ -49,8 +49,10 @@ public class CtrRefJsonConverter : JsonConverter
             if (!s_Object.ContainsKey("InstanceGuid"))
                 throw new Exception("Container reference does not have 'InstanceGuid' key.");
 
+#pragma warning disable CS8604 // Possible null reference argument.
             s_PartitionGuid = new GUID(s_Object["PartitionGuid"].Value<string>());
             s_InstanceGuid = new GUID(s_Object["InstanceGuid"].Value<string>());
+#pragma warning restore CS8604 // Possible null reference argument.
         }
 
         return Activator.CreateInstance(p_ObjectType, s_PartitionGuid, s_InstanceGuid);
