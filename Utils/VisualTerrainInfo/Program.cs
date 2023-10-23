@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using RimeLib;
 using RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain;
 
-namespace TextureExtractor
+namespace VisualTerrainInfo
 {
     class Program
     {

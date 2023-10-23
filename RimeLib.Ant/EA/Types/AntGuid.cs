@@ -53,7 +53,7 @@ namespace RimeLib.Ant.EA.Types
             if (p_G1 is null || p_G2 is null)
                 return false;
 
-            return p_G1.Value == p_G2.Value;
+            return p_G1.Value.SequenceEqual(p_G2.Value);
         }
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace RimeLib.Ant.EA.Types
         /// <returns>True if not equal, false otherwise</returns>
         public static bool operator !=(AntGuid p_G1, AntGuid p_G2)
         {
-            return p_G1.Value != p_G2.Value;
+            return !p_G1.Value.SequenceEqual(p_G2.Value);
         }
 
 
@@ -83,7 +83,7 @@ namespace RimeLib.Ant.EA.Types
             if (s_Obj == null)
                 return false;
 
-            return s_Obj.Value == this.Value;
+            return s_Obj.Value.SequenceEqual(this.Value);
         }
         public override int GetHashCode()
         {
@@ -92,7 +92,6 @@ namespace RimeLib.Ant.EA.Types
         public bool Serialize(RimeWriter p_Writer)
         {
             p_Writer.Write(Value);
-
             return true;
         }
 

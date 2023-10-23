@@ -28,16 +28,11 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
 
         public List<AntObject> Objects { get; set; } = new();
 
-
-
-        private IAssetResolver Resolver => (LocalResolver != null) ? LocalResolver : AssetResolver.Instance;
+        public IAssetResolver Resolver => (LocalResolver != null) ? LocalResolver : AssetResolver.Instance;
 
         public AssetBank()
         {
         }
-
-
-
 
         public void Load(RimeReader p_Reader)
         {
@@ -51,6 +46,8 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
             else
                 Meta = new PackageMeta(p_Reader);
 
+
+            //TODO: this should be better structured
             Archive = new Archive(this);
             Archive.Deserialize(p_Reader);
 
@@ -118,12 +115,6 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
                 //ParseField(p_Reader, p_Layout, p_Offset);
             }
 
-
-      
-
-            //var s_NameField = p_Layout.FieldById(-2);
-
-
             // read base first, so guid will be proper
             var s_BaseField = p_Layout.FieldById(-1);
             if (s_BaseField != null)
@@ -131,7 +122,7 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
                 p_Reader.Seek(p_Offset + s_BaseField.AlignedOffset, SeekOrigin.Begin);
 
                 // 64 bits in size, but can be broken, use 32 for now!
-                var s_BaseOffset = p_Reader.ReadInt32();
+                var s_BaseOffset = p_Reader.ReadInt64();
 
                 if (s_BaseOffset != 0)
                 {
@@ -161,6 +152,22 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
 
                 // there should be only 1 guid per instance. base class guids would be null
                 p_Instance.InstanceId = new AntGuid(p_Reader);
+            }
+
+            var s_NameField = p_Layout.FieldById(-2);
+            if (s_NameField != null)
+            {
+                p_Reader.Seek(p_Offset + s_NameField.AlignedOffset, SeekOrigin.Begin);
+
+                var s_Capacity = p_Reader.ReadUInt32();
+                var s_Count = p_Reader.ReadUInt32();
+                var s_Offset = p_Reader.ReadUInt32();
+                p_Reader.Seek(s_Offset, SeekOrigin.Begin);
+
+                // strings should ne null terminated as game doesnt check length on strings
+
+                if (s_Offset != 0)
+                    p_Instance.Name = p_Reader.ReadNullTerminatedString();
             }
 
 
@@ -205,7 +212,7 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
 
                     p_Reader.Seek(p_Offset + s_Slot.AlignedOffset, SeekOrigin.Begin);
 
-                    if ((s_Slot.LayoutHash >= (uint)LayoutType.LayoutTypeCount))
+                    if ((s_Slot.LayoutHash >= (uint)LayoutType.LayoutTypeCount_FB2))
                     {
                         s_PropertyType.SetValue(p_Instance, ParseStruct(p_Reader, s_Slot.Layout!, p_Offset + s_Slot.AlignedOffset));
                         continue;
@@ -269,12 +276,11 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
 
         private void ParseConstArray(RimeReader p_Reader, EntryHeader p_Slot, PropertyInfo p_PropertyType, object p_Instance, long p_Offset )
         {
-
             var s_Array = p_PropertyType.GetValue(p_Instance) as Array;
-
 
             if (s_Array == null)
                 throw new Exception("Array is null!");
+
 
             var s_Layout = p_Slot.Layout;
 
@@ -284,7 +290,7 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
             
 
             // valuetype
-            if (p_Slot.LayoutHash >= (uint)LayoutType.LayoutTypeCount)
+            if (p_Slot.LayoutHash >= (uint)LayoutType.LayoutTypeCount_FB2)
             {
                 for (var i = 0; i < p_Slot.Count; i++)
                 {
@@ -380,7 +386,7 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
 
 
             // valuetype
-            if( p_Slot.LayoutHash >= (uint)LayoutType.LayoutTypeCount)
+            if( p_Slot.LayoutHash >= (uint)LayoutType.LayoutTypeCount_FB2)
             {
                 var s_List = p_PropertyType.GetValue(p_Instance) as System.Collections.IList;
 
@@ -465,11 +471,10 @@ namespace Rimelib.Ant.Frostbite2_0.Frostbite
             {
                 case LayoutType.Bool:
                     return p_Reader.ReadBool();
-
                 case LayoutType.Int8:
                     return p_Reader.ReadSByte();
                 case LayoutType.UInt8:
-                    return (byte) p_Reader.ReadByte();
+                    return p_Reader.ReadUByte();
                 case LayoutType.Int16:
                     return p_Reader.ReadInt16();
                 case LayoutType.UInt16:

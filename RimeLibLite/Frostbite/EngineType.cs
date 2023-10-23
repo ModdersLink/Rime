@@ -21,6 +21,8 @@
         /// Battlefield 3
         /// Medal of Honor: Warfighter
         /// Need for Speed: The Run
+        /// Army of two: the devils cartel
+        /// Command & conquer: generals 2
         /// </summary>
         Frostbite2_0,
 
@@ -51,6 +53,27 @@
         /// <summary>
         /// Star Wars Battlefront II
         /// </summary>
-        Frostbite2016_4
+        Frostbite2016_4,
+
+        /// <summary>
+        /// Anthem
+        /// </summary>
+        Frostbite2017_7,
+
+        /// <summary>
+        /// Need for speed heat
+        /// PVZ3 (picnic/neighbourville)
+        /// </summary>
+        Frostbite2018_2,
+
+        /// <summary>
+        /// BF2042
+        /// </summary>
+        Frostbite2021_1,
+
+        /// <summary>
+        /// Skate
+        /// </summary>
+        Frostbite2022_2,
     }
 }

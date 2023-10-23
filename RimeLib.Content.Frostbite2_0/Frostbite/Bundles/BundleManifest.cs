@@ -385,6 +385,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         }
 
         public const uint c_ManifestEbx = 0xED1CEDB8;
+        public const uint c_ManifestDbx = 0xFE1FBEEF;
 
         private readonly Header m_Header;
         private readonly uint m_ManifestSize;
@@ -420,6 +421,10 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             // Parse the header.
             m_Header = new Header(p_Reader);
 
+            
+            if ((m_Header.Magic ^ 0x7A11F1AB) == c_ManifestDbx)
+                throw new Exception($"Tried to load a dbx BundleManifest ({m_Header.Magic:X8}).");
+            
             if ((m_Header.Magic ^ 0x7A11F1AB) != c_ManifestEbx)
                 throw new Exception($"Tried to load an unsupported BundleManifest ({m_Header.Magic:X8}).");
 

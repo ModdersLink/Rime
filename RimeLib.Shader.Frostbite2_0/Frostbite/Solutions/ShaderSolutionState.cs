@@ -64,11 +64,11 @@ public class ShaderSolutionState : IFbSerializable
 
         ShaderRenderMode p_Mode,
         byte p_OutdoorLightMultisampleCount,
-        string? p_VertexShaderFragmentName = null 
-    
+        string? p_VertexShaderFragmentName = null
     )
     {
-        // To get this working properly a partial implimentation of the fb render stack seems useful. Specifically fb::ShaderRenderContext
+        // To get this working properly a partial implimentation of the fb render stack seems useful.
+        // Specifically fb::ShaderRenderContext
 
 
         // Theres 2 fb::ShaderState in StateStack. 

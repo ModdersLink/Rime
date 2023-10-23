@@ -16,6 +16,9 @@ namespace RimeLib.Ant.EA.Types
         // TODO: add assetbank refrence??
 
         public bool IsNullRef => RefrenceId == AntGuid.c_NullGuid;
+
+#if DEBUG
         protected AntObject? ResolvedObject => Resolver?.ResolveObject(RefrenceId);
+#endif
     }
 }

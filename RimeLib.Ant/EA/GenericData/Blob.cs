@@ -85,6 +85,16 @@ namespace RimeLib.Ant.EA.GenericData
                 case "REFPACK":
                     Type = GenericDataBlobType.RefPack;
                     break;
+
+                case "DAT2":
+                    Type = GenericDataBlobType.Data2;
+                    break;
+                case "REF2":
+                    Type = GenericDataBlobType.Ref2;
+                    break;
+                case "INFO":
+                    Type = GenericDataBlobType.Info;
+                    break;
                 default:
                     throw new Exception($"Invaid GenericData format! newer ANT or something else is wrong. [{s_Id}]");
             }

@@ -25,20 +25,35 @@ namespace RimeLib.Ant.EA.Compression.DCT
             public ushort BitsZ => (ushort)((Value >> (4 * 1)) & 0xF);
             public ushort BitsY => (ushort)((Value >> (4 * 2)) & 0xF);
             public ushort BitsX => (ushort)((Value >> (4 * 3)) & 0xF);
+
+            public ushort SafeBitsW(ushort p_CatchAllBitCount) => (BitsW == 0xF) ? p_CatchAllBitCount : BitsW;
+            public ushort SafeBitsZ(ushort p_CatchAllBitCount) => (BitsZ == 0xF) ? p_CatchAllBitCount : BitsZ;
+            public ushort SafeBitsY(ushort p_CatchAllBitCount) => (BitsY == 0xF) ? p_CatchAllBitCount : BitsY;
+            public ushort SafeBitsX(ushort p_CatchAllBitCount) => (BitsX == 0xF) ? p_CatchAllBitCount : BitsX;
+
+
+            public int BitSum => BitsX + BitsY + BitsZ + BitsW;
+
+            public int SafeSum(ushort p_CatchAllBitCount) => SafeBitsX(p_CatchAllBitCount) + SafeBitsY(p_CatchAllBitCount) + SafeBitsZ(p_CatchAllBitCount) + SafeBitsW(p_CatchAllBitCount);
         }
 
 
 
         public ushort SubBlockCount { get; set; } = 0;
 
-        public ushort[] DeltaBase = new ushort[4];
+        public short[] DeltaBase = new short[4];
 
         public BitsPerComponent[] BitsPerSubBlock = new BitsPerComponent[0];
 
 
-        public DofTable(RimeReader p_Reader, ushort p_SubBlockCount)
+        public DofTable( ushort p_SubBlockCount)
         {
             SubBlockCount = p_SubBlockCount;
+        }
+
+        public DofTable(RimeReader p_Reader, ushort p_SubBlockCount)
+            : this(p_SubBlockCount)
+        {
             Deserialize(p_Reader);
         }
 
@@ -52,12 +67,12 @@ namespace RimeLib.Ant.EA.Compression.DCT
 
         public void Deserialize(RimeReader p_Reader)
         {
-            DeltaBase = new ushort[4]
+            DeltaBase = new short[4]
             {
-                p_Reader.ReadUInt16(),
-                p_Reader.ReadUInt16(),
-                p_Reader.ReadUInt16(),
-                p_Reader.ReadUInt16(),
+                p_Reader.ReadInt16(),
+                p_Reader.ReadInt16(),
+                p_Reader.ReadInt16(),
+                p_Reader.ReadInt16(),
             };
 
             BitsPerSubBlock = new BitsPerComponent[SubBlockCount];

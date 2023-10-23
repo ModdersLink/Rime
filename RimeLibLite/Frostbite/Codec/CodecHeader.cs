@@ -44,7 +44,9 @@ namespace RimeLib.Frostbite.Codec
 
 
         public uint UnpackedSize { get; set; } = 0;
-        private uint PackedSizeMethod { get; set; } = 0;
+
+
+        public uint PackedSizeMethod { get; set; } = 0;
 
 
         public uint PackedSize
@@ -69,7 +71,7 @@ namespace RimeLib.Frostbite.Codec
 
         public uint GuardBits => (PackedSizeMethod >> 20) & 0xF;
 
-        public bool HasGuardBits => GuardBits != 0; // should be == 0x7, game does != 0
+        //public bool HasGuardBits => GuardBits != 0; // should be == 0x7, game does != 0
 
         public bool ValidGuardBits => GuardBits == c_GuardValue;
 
@@ -79,15 +81,27 @@ namespace RimeLib.Frostbite.Codec
 
         public void Deserialize(RimeReader p_Reader)
         {
+            var s_LastEndianess = p_Reader.Endianness;
+            p_Reader.Endianness = IO.Conversion.Endianness.BigEndian;
+
+            // read data
             UnpackedSize = p_Reader.ReadUInt32();
             PackedSizeMethod = p_Reader.ReadUInt32();
+
+            p_Reader.Endianness = s_LastEndianess;
         }
 
 
         public bool Serialize(RimeWriter p_Writer)
         {
+            var s_LastEndianess = p_Writer.Endianness;
+            p_Writer.Endianness = IO.Conversion.Endianness.BigEndian;
+
+            // write data
             p_Writer.Write(UnpackedSize);
             p_Writer.Write(PackedSizeMethod);
+
+            p_Writer.Endianness = s_LastEndianess;
 
             return true;
         }

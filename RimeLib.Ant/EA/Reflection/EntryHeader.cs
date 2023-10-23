@@ -40,7 +40,7 @@ namespace RimeLib.Ant.EA.Reflection
 
        
         public bool IsArray => Flags.HasFlag(FieldFlags.Array);
-        public LayoutType Type => (LayoutHash < (uint)LayoutType.LayoutTypeCount) ? (LayoutType)LayoutHash : LayoutType.Invalid;
+        public LayoutType Type => (LayoutHash < (uint)LayoutType.LayoutTypeCount_FB2) ? (LayoutType)LayoutHash : LayoutType.Invalid;
 
 
         public uint AlignOffset(uint p_Align) => AlignIndexOffset(0, p_Align);
@@ -64,6 +64,18 @@ namespace RimeLib.Ant.EA.Reflection
 
         public bool Serialize(RimeWriter p_Writer)
         {
+            p_Writer.Write(LayoutHash);
+            p_Writer.Write(ElementSize);
+            p_Writer.Write(Offset);
+            p_Writer.Write(NameOffset);
+
+            p_Writer.Write(Count);
+            p_Writer.Write((short)Flags);
+            p_Writer.Write(ElementAlign);
+            p_Writer.Write(RLE);
+
+            p_Writer.Write(LayoutOffset);;
+
             throw new NotImplementedException();
         }
 

@@ -62,10 +62,13 @@ namespace RimeLib.Ant.EA.GenericData
 
             var s_ReflHeader = new RelocatableBlob(s_RootStream);
 
-            if (s_ReflHeader.Type != GenericDataBlobType.Reflection)
+            if (s_ReflHeader.Type == GenericDataBlobType.Reflection)
+                Reflection = new Reflection(s_ReflHeader.GetReader());
+            else if (s_ReflHeader.Type == GenericDataBlobType.Ref2)
+                throw new NotImplementedException("Ref2 not implimented");
+            else 
                 throw new InvalidDataException($"Expected Reflection block as first block. Got [{s_ReflHeader.Type}]");
 
-            Reflection = new Reflection(s_ReflHeader.GetReader());
 
 
             //var s_SymbolResolver = new RefrenceDataReader(Reflection);
@@ -82,19 +85,6 @@ namespace RimeLib.Ant.EA.GenericData
                 var s_Data = new Data(s_Reader);
 
                 m_LoaderCallback?.ParseData(s_Reader, s_Data);
-
-                //DataBlobs.Add(s_DataHeader);
-
-                /*
-                var s_Reader = s_DataHeader.GetReader();
-
-                var s_Data = new Data(s_Reader);
-
-                //Console.WriteLine();
-
-                s_SymbolResolver.Parse(s_Reader, s_Data);
-                */
-
             }
         }
 

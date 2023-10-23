@@ -47,7 +47,7 @@ namespace RimeLib.Ant.EA.Compression.DCT
             var s_LastEndianess = p_Reader.Endianness;
             p_Reader.Endianness = IO.Conversion.Endianness.LittleEndian;
 
-            NumFrames = p_Reader.ReadUInt16() ;
+            NumFrames = p_Reader.ReadUInt16();
             NumQuats = p_Reader.ReadUInt16();
             NumVec3s = p_Reader.ReadUInt16();
             NumFloatVecs = p_Reader.ReadUInt16();

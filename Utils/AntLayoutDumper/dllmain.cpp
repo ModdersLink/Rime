@@ -320,7 +320,7 @@ void DumpType(std::filesystem::path p_OutPath, Sdk::GD::Layout* p_Layout)
     ClassString += "}\n";
 
 
-    auto OutPath = std::filesystem::path(p_OutPath) += std::filesystem::path(std::string(p_Layout->GetLayoutName()) + ".cs");
+    auto OutPath = std::filesystem::path(p_OutPath) += std::filesystem::path(p_Layout->GetLayoutName() + ".cs");
     
     printf("%ls\n", OutPath.c_str());
 

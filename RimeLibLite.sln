@@ -99,13 +99,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualTerrainInfo", "Utils\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Ant", "RimeLib.Ant\RimeLib.Ant.csproj", "{512A8E82-910E-432D-8377-4C80E7EAC024}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Ant.Frostbite2_0", "Rimelib.Ant.Frostbite2_0\RimeLib.Ant.Frostbite2_0.csproj", "{AE249989-F01B-4C75-A9F9-C740B6AE4221}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Ant.Frostbite2_0", "RimeLib.Ant.Frostbite2_0\RimeLib.Ant.Frostbite2_0.csproj", "{AE249989-F01B-4C75-A9F9-C740B6AE4221}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "AntLayoutDumper", "Utils\AntLayoutDumper\AntLayoutDumper.vcxproj", "{85A3C857-CA06-4316-BFC5-2C0BCB9BF0D7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AntGenericDataInfo", "Utils\AntGenericDataInfo\AntGenericDataInfo.csproj", "{2C13B391-69F9-4CD9-B8E9-C184AF50BBF1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BuildInfoProxy", "BuildInfoProxy\BuildInfoProxy.vcxproj", "{6F96CFF9-582B-4D68-AD3B-AF7F567840FB}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GFxTool", "Utils\GFxTool\GFxTool.csproj", "{BE5B94B6-0C51-4F63-8241-2ACEBAFC2136}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvalancheHttpBackend", "Utils\AvalancheHttpBackend\AvalancheHttpBackend.csproj", "{E90683C9-1664-4BE6-89B5-07B05E073629}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -289,6 +293,12 @@ Global
 		{6F96CFF9-582B-4D68-AD3B-AF7F567840FB}.Debug|x64.Build.0 = Debug|x64
 		{6F96CFF9-582B-4D68-AD3B-AF7F567840FB}.Release|x64.ActiveCfg = Release|x64
 		{6F96CFF9-582B-4D68-AD3B-AF7F567840FB}.Release|x64.Build.0 = Release|x64
+		{BE5B94B6-0C51-4F63-8241-2ACEBAFC2136}.Debug|x64.ActiveCfg = Debug|x64
+		{BE5B94B6-0C51-4F63-8241-2ACEBAFC2136}.Debug|x64.Build.0 = Debug|x64
+		{BE5B94B6-0C51-4F63-8241-2ACEBAFC2136}.Release|x64.ActiveCfg = Release|x64
+		{E90683C9-1664-4BE6-89B5-07B05E073629}.Debug|x64.ActiveCfg = Debug|x64
+		{E90683C9-1664-4BE6-89B5-07B05E073629}.Debug|x64.Build.0 = Debug|x64
+		{E90683C9-1664-4BE6-89B5-07B05E073629}.Release|x64.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -313,6 +323,8 @@ Global
 		{85A3C857-CA06-4316-BFC5-2C0BCB9BF0D7} = {42E38905-976C-4506-98AE-DC35CA1A9925}
 		{2C13B391-69F9-4CD9-B8E9-C184AF50BBF1} = {42E38905-976C-4506-98AE-DC35CA1A9925}
 		{6F96CFF9-582B-4D68-AD3B-AF7F567840FB} = {42E38905-976C-4506-98AE-DC35CA1A9925}
+		{BE5B94B6-0C51-4F63-8241-2ACEBAFC2136} = {42E38905-976C-4506-98AE-DC35CA1A9925}
+		{E90683C9-1664-4BE6-89B5-07B05E073629} = {42E38905-976C-4506-98AE-DC35CA1A9925}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D2A4DE6-648D-4971-AC81-A89F21154CD0}

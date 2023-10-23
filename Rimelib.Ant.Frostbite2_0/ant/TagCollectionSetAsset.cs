@@ -18,7 +18,7 @@ namespace ant
 		: AntObject
 	{
 		[AntField(0)]
-		public IdRefArray<DefaultTagCollectionAsset> TagCollectionKeys { get; set; } = new();
+		public IdRefArray<AntObject> TagCollectionKeys { get; set; } = new();
 
 	}
 }

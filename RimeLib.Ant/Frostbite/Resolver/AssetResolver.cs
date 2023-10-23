@@ -15,8 +15,14 @@ namespace RimeLib.Ant.Frostbite.Resolver
         public static AssetResolver Instance => _instance ??= new AssetResolver();
 
 
-        public static Dictionary<uint, AntObject> StaticObjects = new();
-        public static Dictionary<uint, AntObject> BundleObjects = new();
+#if DEBUG
+        public static SortedDictionary<uint, AntObject> StaticObjects { get; set; } = new();
+        public static SortedDictionary<uint, AntObject> BundleObjects { get; set; } = new();
+
+#else
+        public static Dictionary<uint, AntObject> StaticObjects { get; set; } = new();
+        public static Dictionary<uint, AntObject> BundleObjects { get; set; } = new();
+#endif
 
         public void RegisterObject(AntObject p_Object)
         {

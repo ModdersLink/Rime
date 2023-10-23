@@ -15,6 +15,9 @@ using RimeLib.Ant.EA.Readers;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using RimeLib.Serialization;
 using fb;
+using RimeLib.Ant.EA.Compression.DCT;
+using ant;
+using RimeLib.Ant.Frostbite2_0.EA.Compression.DCT;
 
 namespace TextureExtractor
 {
@@ -50,7 +53,7 @@ namespace TextureExtractor
             Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
             {
                 LoadEngineAssemblies(p_Options);
-                ExportTextures(p_Options);
+                LoadGame(p_Options);
 
                 Console.WriteLine("Textures successfully extracted. Press any key to exit...");
                 Console.ReadKey();
@@ -82,7 +85,7 @@ namespace TextureExtractor
             Load("RimeLib.Ant." + p_Options.EngineType);
         }
 
-        private static async void ExportTextures(Options p_Options)
+        private static async void LoadGame(Options p_Options)
         {
             var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(p_Options.EngineType);
 
@@ -122,7 +125,10 @@ namespace TextureExtractor
 
             LoadAntPackageAsset(s_Mounter, "animations/antanimations/s_basicassets");
 
-            //return;
+            LoadAntPackageAsset(s_Mounter, "animations/antanimations/ak74", true);
+            //LoadAntPackageAsset(s_Mounter, "animations/antanimations/m4a1", true);
+
+            return;
 
             object s_LockObject = new();
 
@@ -141,13 +147,13 @@ namespace TextureExtractor
                     DumpAssetBankResource(s_Mounter, s_Name);
                 }
             });
-            
 
 
+            return;
             
             Parallel.ForEach(s_Mounter.GetPartitions(), p_PartitionPair =>
             {
-                if (!p_PartitionPair.Key.ToLower().StartsWith("Animations/AntAnimations/".ToLower()))
+                if (!p_PartitionPair.Key.ToLower().StartsWith("animations/antanimations/"))
                     return;
 
 
@@ -189,6 +195,11 @@ namespace TextureExtractor
         }
 
 
+        private static void DumpAssetBankReflections()
+        {
+
+        }
+        
         public static void DumpAssetBankResource(IEngineMounter p_Mounter, string p_Path) // "animations/characters/sp/sp_paris/tradingfloor/tradingfloorwires_animset"
         {
             if (!p_Mounter.TryGetResource(p_Path, out var s_Resource))
@@ -211,15 +222,28 @@ namespace TextureExtractor
                 File.WriteAllBytes(s_SavePath, s_Data);
             }
 
+            Console.WriteLine(p_Path);
+
             using var s_Reader = new RimeReader(new MemoryStream(s_Data));
 
             var s_Bank = new AssetBank();
            s_Bank.Load(s_Reader);
 
+
+            var s_DctAnims = s_Bank.Objects.Where(x => x is DctAnimationAsset).Select(x => x as DctAnimationAsset).ToList();
+
+
+            foreach( var s_Dct in s_DctAnims)
+            {
+                var s_Decompressor = new Decompressor();
+
+                s_Decompressor.Parse(s_Dct);
+            }
+
             //Console.WriteLine(s_Reader.Position);
         }
 
-        public static void LoadAntPackageAsset(IEngineMounter p_Mounter, string p_Path)
+        public static void LoadAntPackageAsset(IEngineMounter p_Mounter, string p_Path, bool p_Process = false)
         {
             if (!p_Mounter.TryGetPartition(p_Path, out var s_PartitionObject))
                 return;
@@ -240,7 +264,9 @@ namespace TextureExtractor
                 return;
 
 
-            if(p_Mounter.TryGetResource(s_AntPackage.Name.ToLower(), out var s_BundleObject))
+            AssetBank? s_BundleBank = null;
+
+            if (p_Mounter.TryGetResource(s_AntPackage.Name.ToLower(), out var s_BundleObject))
             {
 
                 var s_BundleRawReader = s_BundleObject.FirstVariant.GetReader();
@@ -248,10 +274,15 @@ namespace TextureExtractor
 
                 using var s_BundleDataReader = new RimeReader(new MemoryStream(s_BundleData));
 
-                var s_BundleBank = new AssetBank();
+                s_BundleBank = new AssetBank();
                 s_BundleBank.Load(s_BundleDataReader);
 
+
+                
             }
+
+            var s_BundleClips = s_BundleBank?.Objects.Where(x => x is ClipControllerAsset).Select(x => x as ClipControllerAsset).ToList();
+
 
 
             if (p_Mounter.TryGetChunk(s_AntPackage.StreamingGuid, out var s_Chunk))
@@ -263,6 +294,28 @@ namespace TextureExtractor
 
                 var s_ResourceBank = new AssetBank();
                 s_ResourceBank.Load(s_ResourceDataReader);
+
+
+                if (p_Process)
+                {
+                    var s_Clips = s_ResourceBank.Objects.Where(x => x is ClipControllerAsset).Select(x => x as ClipControllerAsset).ToList();
+
+
+                    var s_DctAnims = s_ResourceBank.Objects.Where(x => x is DctAnimationAsset).Select(x => x as DctAnimationAsset).ToList();
+
+                    foreach (var s_Dct in s_DctAnims)
+                    {
+                        if (s_Dct.Name != "ReloadClipEmpty Anim")
+                        //if (s_Dct.Name != "ReloadClipFull Anim")
+                            continue;
+
+                        Console.WriteLine(s_Dct.Name);
+
+                        var s_Decompressor = new Decompressor();
+
+                        s_Decompressor.Parse(s_Dct);
+                    }
+                }
             }
 
         }

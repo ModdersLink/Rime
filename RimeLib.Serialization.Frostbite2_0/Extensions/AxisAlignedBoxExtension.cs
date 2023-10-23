@@ -10,6 +10,10 @@ namespace RimeLib.Serialization.Frostbite2_0.Extensions
 {
     public static class AxisAlignedBoxExtension
     {
+        public static System.Numerics.Vector3 Min(this AxisAlignedBox p_Value) => p_Value.min.ToVec();
+        public static System.Numerics.Vector3 Max(this AxisAlignedBox p_Value) => p_Value.max.ToVec();
+
+
         public static void Deserialize(this AxisAlignedBox p_Value, RimeReader p_Reader)
         {
             p_Value.min.Deserialize(p_Reader);

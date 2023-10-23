@@ -18,13 +18,13 @@ namespace ant
 		: AntObject
 	{
 		[AntField(0)]
-		public IdRef<AntObject> Asset { get; set; } = new();
+		public IdRef<ClipControllerAsset> Asset { get; set; } = new(); // ClipControllerAsset
 
 		[AntField(1)]
-		public IdRef<AntObject> BlendAsset { get; set; } = new();
+		public IdRef<BlendCurveAsset> BlendAsset { get; set; } = new();
 
 		[AntField(2)]
-		public IdRef<AntObject> InitParams { get; set; } = new();
+		public IdRef<ClipInitParam> InitParams { get; set; } = new();
 
 		[AntField(3)]
 		public IdRef<AntObject> AnimParams { get; set; } = new();
