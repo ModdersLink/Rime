@@ -7,7 +7,7 @@
         xmlns:local="clr-namespace:Rime"
         xmlns:core="clr-namespace:Rime.Controls.Core"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1300"
+        Title="{Binding BuildTitle}" Height="800" Width="1300"
         Loaded="Window_Loaded">
     <Grid>
         <Grid.RowDefinitions>
@@ -15,6 +15,13 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
+            <MenuItem Header="File">
+                <MenuItem Header="New">
+                    <MenuItem Header="Project" x:Name="mmuNewProject" Click="mmuNewProject_Click" />
+                    <Separator/>
+                    <MenuItem Header="Texture"/>
+                </MenuItem>
+            </MenuItem>
             <MenuItem Header="Edit">
                 <MenuItem Command="Undo" />
                 <MenuItem Command="Redo" />

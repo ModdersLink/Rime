@@ -8,19 +8,47 @@ using RimeLib.Cmd.Commands.Common;
 
 namespace RimeLib.Cmd
 {
+    /// <summary>
+    /// REPL execution context
+    /// 
+    /// An execution context is the current "stage" within the REPL we are in, each of the contexts will have their own commands
+    /// and functionality that can be used until switching to a different context
+    /// </summary>
     public abstract class ExecutionContext
     {
+        /// <summary>
+        /// Gets the short description of this context
+        /// 
+        /// ex: can return the current state in short-form of this current context
+        /// </summary>
+        /// <returns>string - Short Description</returns>
         public abstract string GetShortDescription();
+
+        /// <summary>
+        /// Gets the long description of this context
+        /// 
+        /// ex: can return the current state in long-form of this current context
+        /// </summary>
+        /// <returns>string - Long Description</returns>
         public abstract string GetLongDescription();
 
+        /// <summary>
+        /// Parent execution context if there is one
+        /// </summary>
         public ExecutionContext? Parent { get; protected set; }
         
+        // Commands dictionary, specifying command, typeof(Command Action)
         protected readonly Dictionary<string, Type> m_RegisteredCommands = new Dictionary<string, Type>
         {
             { "help", typeof(HelpCommand) },
             { "exit", typeof(ExitCommand) },
         };
 
+        /// <summary>
+        /// Provides suggessions for auto-completion
+        /// </summary>
+        /// <param name="p_Input">Current string input</param>
+        /// <returns>List of suggested commands</returns>
         public List<string> GetSuggestions(string p_Input)
         {
             var s_Suggestions = new List<string>();
@@ -96,6 +124,13 @@ namespace RimeLib.Cmd
             return s_Suggestions;
         }
 
+        /// <summary>
+        /// Process the current input or command
+        /// </summary>
+        /// <param name="p_Input">Input string containing command and arguments</param>
+        /// <param name="p_Writer">Text output of this command</param>
+        /// <param name="p_Context">Output execution context</param>
+        /// <returns>True on success, false otherwise</returns>
         public bool ProcessCommand(string p_Input, TextWriter p_Writer, out ExecutionContext? p_Context)
         {
             p_Context = this;
@@ -135,6 +170,10 @@ namespace RimeLib.Cmd
             return s_Command.Execute(ref p_Context, p_Writer);
         }
 
+        /// <summary>
+        /// Returns the help commands for this execution context
+        /// </summary>
+        /// <returns>Formatted help output string</returns>
         public string GetHelp()
         {
             var s_HelpText = GetLongDescription();
@@ -171,6 +210,12 @@ namespace RimeLib.Cmd
             return s_HelpText;
         }
 
+        /// <summary>
+        /// Gets the help string for a specific command
+        /// </summary>
+        /// <param name="p_Command">Input command</param>
+        /// <param name="p_HelpText">Output help text</param>
+        /// <returns>True on success, false otherwise</returns>
         public bool GetCommandHelp(string p_Command, out string p_HelpText)
         {
             p_HelpText = "";
@@ -184,6 +229,11 @@ namespace RimeLib.Cmd
             return true;
         }
 
+        /// <summary>
+        /// Gets the help string based on type
+        /// </summary>
+        /// <param name="p_CommandType">Input command type</param>
+        /// <returns>Help text</returns>
         protected string GetCommandHelp(Type p_CommandType)
         {
             var s_HelpText = "Usage: " + CommandUtils.GetCommandName(p_CommandType);
@@ -235,6 +285,11 @@ namespace RimeLib.Cmd
             return s_HelpText + "\n\nArguments:\n" + s_ArgumentText;
         }
 
+        /// <summary>
+        /// Registers a new command with this execution context
+        /// </summary>
+        /// <typeparam name="T">Command type</typeparam>
+        /// <exception cref="Exception">TODO: Exception details</exception>
         protected void RegisterCommand<T>() where T : Command
         {
             var s_Type = typeof(T);

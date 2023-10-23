@@ -277,7 +277,7 @@ public class EbxWriter : IEbxWriter
 
         uint? s_BaseTypeIndex = null;
 
-        if (p_Type.BaseType != null && p_Type.BaseType != typeof(EbxSerializable))
+        if (p_Type.BaseType != null && (p_Type.BaseType != typeof(EbxSerializable) && p_Type.BaseType != typeof(DataContainerBase)))
             s_BaseTypeIndex = WriteTypeDescriptor(p_Type.BaseType);
 
         var s_Properties = p_Type.GetProperties(BindingFlags.Public | BindingFlags.DeclaredOnly | BindingFlags.Instance);

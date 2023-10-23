@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Rime.Rendering;
+using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;

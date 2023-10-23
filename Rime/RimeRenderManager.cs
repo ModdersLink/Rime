@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Numerics;
 using System.Runtime.InteropServices;
 using fb;
 using GameToolsDotNet.Rendering.DirectX;
@@ -15,7 +14,6 @@ using RimeLib.IO.Conversion;
 using RimeLib.Mesh.Frostbite;
 using RimeLib.Shader.Frostbite2_0.Frostbite;
 using RimeLib.Texture;
-using RimeLib.Texture.DDS;
 using SharpDX;
 using SharpDX.D3DCompiler;
 using SharpDX.Direct3D;
@@ -25,56 +23,69 @@ using SharpDX.Mathematics.Interop;
 using Buffer = SharpDX.Direct3D11.Buffer;
 using Resource = SharpDX.Direct3D11.Resource;
 using StencilOperation = SharpDX.Direct3D11.StencilOperation;
-using Vector2 = System.Numerics.Vector2;
+using Vector2 = SharpDX.Vector2;
 using Vector3 = SharpDX.Vector3;
 using Vector4 = SharpDX.Vector4;
 
-namespace Rime;
+namespace Rime.Rendering;
 
 public class RimeRenderManager : RenderManager
 {
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct VertexGlobals
-    {
-        public Matrix WorldMatrix;
-    }
-    
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct ViewConstants
-    {
-        public float Time;
-        private readonly uint _pad0;
-        private readonly ulong _pad1;
-        public Vector4 ScreenSize;
-        public Vector3 DebugNonFiniteColor;
-        private readonly uint _pad2;
-        public Matrix ViewMatrix;
-        public Matrix ProjMatrix;
-        public Matrix ViewProjMatrix;
-        public Matrix CrViewProjMatrix;
-        public Vector4 ViewportZMinMaxKzKw;
-        public Vector3 CameraPos;
-        private readonly uint _pad3;
-        public Vector3 TransparentStartAndEndAndClamp;
-        private readonly uint _pad4;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct ExternalConstants
-    {
-        public Vector4 Color;
-    }
-
-    [StructLayout(LayoutKind.Sequential, Pack = 1)]
-    public struct DeferredGlobals
-    {
-        public Vector3 LightDirection;
-        private readonly float _pad;
-    }
-    
     private Resource? m_TextureResource = null;
     private ShaderResourceView? m_ResourceView = null;
-    private Vector2 m_ResourceSize = Vector2.Zero;
+    private System.Numerics.Vector2 m_ResourceSize = System.Numerics.Vector2.Zero;
+
+    private MeshSetLayout? m_MeshSet;
+    private SurfaceShaderInfo? m_Shader;
+    private Buffer? m_IndexBuffer;
+    //private Buffer? m_VertexBuffer;
+    private Buffer[] m_VertexBuffers = Array.Empty<Buffer>();
+    private VertexBufferBinding[] m_VertexBufferBindings = Array.Empty<VertexBufferBinding>();
+
+    private Buffer? m_VertexGlobalsBuffer;
+    private Buffer? m_ViewConstantsBuffer;
+    private Buffer? m_ExternalConstantsBuffer;
+    private Buffer? m_DeferredGlobalsBuffer;
+
+    private VertexShader[] m_VertexShaders;
+    private InputLayout[] m_InputLayouts;
+    private SamplerState[][] m_VertexSamplers;
+    private PixelShader[] m_PixelShaders;
+    private SamplerState[][] m_PixelSamplers;
+    private GeometryShader[] m_GeometryShaders;
+
+    private Tuple<byte, ShaderResourceView>[][] m_Textures;
+
+    private DepthStencilState? m_DepthStencilState;
+
+    private VertexGlobals m_VertexGlobals;
+    private ViewConstants m_ViewConstants;
+    private ExternalConstants m_ExternalConstants;
+    private DeferredGlobals m_DeferredGlobals;
+
+    private Texture2D m_RTTex0;
+    private RenderTargetView m_RT0;
+    private ShaderResourceView m_GBufferResourceView0;
+    private Texture2D m_RTTex1;
+    private RenderTargetView m_RT1;
+    private ShaderResourceView m_GBufferResourceView1;
+    private Texture2D m_RTTex2;
+    private RenderTargetView m_RT2;
+    private ShaderResourceView m_GBufferResourceView2;
+    private Texture2D m_RTTex3;
+    private RenderTargetView m_RT3;
+    private ShaderResourceView m_GBufferResourceView3;
+
+    private SamplerState m_DeferredSamplerState;
+
+    private VertexShader m_DeferredVertexShader;
+    private PixelShader m_DeferredPixelShader;
+    private InputLayout m_DeferredInputLayout;
+    private Buffer m_DeferredVertexBuffer;
+
+    private RasterizerState m_RasterizerState;
+
+
 
     public RimeRenderManager() : base(GetRenderConfig())
     {
@@ -104,7 +115,7 @@ public class RimeRenderManager : RenderManager
 
     public void SetTexture(ShaderResourceView p_Resource)
     {
-        m_ResourceSize = new Vector2(256, 256);
+        m_ResourceSize = new System.Numerics.Vector2(256, 256);
         m_ResourceView = p_Resource;
     }
 
@@ -121,34 +132,6 @@ public class RimeRenderManager : RenderManager
             ImGui.End();
         }
     }
-
-    private MeshSetLayout? m_MeshSet;
-    private SurfaceShaderInfo? m_Shader;
-    private Buffer? m_IndexBuffer;
-    //private Buffer? m_VertexBuffer;
-    private Buffer[] m_VertexBuffers = Array.Empty<Buffer>();
-    private VertexBufferBinding[] m_VertexBufferBindings = Array.Empty<VertexBufferBinding>();
-
-    private Buffer? m_VertexGlobalsBuffer;
-    private Buffer? m_ViewConstantsBuffer;
-    private Buffer? m_ExternalConstantsBuffer;
-    private Buffer? m_DeferredGlobalsBuffer;
-
-    private VertexShader[] m_VertexShaders;
-    private InputLayout[] m_InputLayouts;
-    private SamplerState[][] m_VertexSamplers;
-    private PixelShader[] m_PixelShaders;
-    private SamplerState[][] m_PixelSamplers;
-    private GeometryShader[] m_GeometryShaders;
-
-    private Tuple<byte, ShaderResourceView>[][] m_Textures;
-    
-    private DepthStencilState? m_DepthStencilState;
-
-    private VertexGlobals m_VertexGlobals;
-    private ViewConstants m_ViewConstants;
-    private ExternalConstants m_ExternalConstants;
-    private DeferredGlobals m_DeferredGlobals;
 
     public void DrawMesh(MeshSetLayout p_MeshSet, SurfaceShaderInfo p_Shader, IEngineMounter p_Mounter, ShaderProgramDatabase p_ShaderProgramDb)
     {
@@ -548,61 +531,7 @@ public class RimeRenderManager : RenderManager
         // VignetteColor = float4
         // chromostereopsisParams = float4
 
-        var s_DeferredShaderCode = @"
-// Resources.
-Texture2D g_Buffer0 : register(t0); // Normal
-Texture2D g_Buffer1 : register(t1); // Diffuse
-Texture2D g_Buffer2 : register(t2); // ??
-Texture2D g_Buffer3 : register(t3); // ??
-
-// Samplers.
-SamplerState Sampler0 : register(s0);
-
-// Globals.
-float3 lightDirection;
-
-struct VertexOutput
-{
-	float4 position : SV_POSITION;
-	float2 texcoord0 : TEXCOORD0;
-};
-
-VertexOutput VS(float4 position : POSITION, float2 texcoord : TEXCOORD0)
-{
-	VertexOutput output;
-
-	// Pass the position and texcoord through to the pixel shader.
-	output.position = position;
-	output.texcoord0 = texcoord;
-
-	return output;
-}
-
-float4 PS(VertexOutput I) : SV_Target
-{
-	float4 colors;
-    float4 normals;
-    float3 lightDir;
-    float lightIntensity;
-    float4 outputColor;
-
-    // Sample the colors from the color render texture using the point sampler at this texture coordinate location.
-    colors = g_Buffer1.Sample(Sampler0, I.texcoord0);
-    colors.w = 1.0f;
-
-    // Sample the normals from the normal render texture using the point sampler at this texture coordinate location.
-    normals = g_Buffer0.Sample(Sampler0, I.texcoord0);
-    normals.w = 1.0f;
-
-    // Calculate the amount of light on this pixel.
-    lightIntensity = saturate(dot(normals.xyz, lightDirection));
-
-    // Determine the final amount of diffuse color based on the color of the pixel combined with the light intensity.
-    outputColor = saturate(colors * lightIntensity);
-
-    return outputColor;
-}
-        ";
+        var s_DeferredShaderCode = File.ReadAllText("Rendering\\Shaders\\Deferred.hlsl");
         
         var s_DeferredVertexBytecode = ShaderBytecode.Compile(s_DeferredShaderCode, "VS", "vs_4_0", ShaderFlags.Debug);
         var s_DeferredPixelBytecode = ShaderBytecode.Compile(s_DeferredShaderCode, "PS", "ps_4_0", ShaderFlags.Debug);
@@ -650,42 +579,6 @@ float4 PS(VertexOutput I) : SV_Target
         });
     }
 
-    private Texture2D m_RTTex0;
-    private RenderTargetView m_RT0;
-    private ShaderResourceView m_GBufferResourceView0;
-    private Texture2D m_RTTex1;
-    private RenderTargetView m_RT1;
-    private ShaderResourceView m_GBufferResourceView1;
-    private Texture2D m_RTTex2;
-    private RenderTargetView m_RT2;
-    private ShaderResourceView m_GBufferResourceView2;
-    private Texture2D m_RTTex3;
-    private RenderTargetView m_RT3;
-    private ShaderResourceView m_GBufferResourceView3;
-    
-    private SamplerState m_DeferredSamplerState;
-
-    private VertexShader m_DeferredVertexShader;
-    private PixelShader m_DeferredPixelShader;
-    private InputLayout m_DeferredInputLayout;
-    private Buffer m_DeferredVertexBuffer;
-
-    private RasterizerState m_RasterizerState;
-    
-    [StructLayout(LayoutKind.Sequential, Size = kSizeOf)]
-    public struct ScreenToTextureVertex
-    {
-        public const int kSizeOf = 16 + 8;
-
-        public Vector4 Postion;
-        public Vector2 Texcoord;
-
-        public ScreenToTextureVertex(Vector4 position, Vector2 texcoord)
-        {
-            this.Postion = position;
-            this.Texcoord = texcoord;
-        }
-    }
 
     private void ResetShaderInputs()
     {
