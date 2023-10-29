@@ -12,12 +12,15 @@ namespace RimeLib.Content.Building
 
         public Dictionary<string, BundleDescriptor> Bundles { get; }
 
-        internal SuperbundleDescriptor(string p_SbName)
+        public bool Cas { get; }
+
+        internal SuperbundleDescriptor(string p_SbName, bool p_Cas = false)
         {
             SuperbundleName = p_SbName;
 
             Chunks = new Dictionary<GUID, IChunkObject>();
             Bundles = new Dictionary<string, BundleDescriptor>();
+            Cas = p_Cas;
         }
     }
 }

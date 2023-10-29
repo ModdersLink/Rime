@@ -32,6 +32,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             m_Toc.Layout.Name = p_Descriptor.SuperbundleName;
             m_Toc.Layout.Tag = Guid.NewGuid();
             m_Toc.Layout.AlwaysEmitSuperbundle = true;
+            m_Toc.Layout.Cas = p_Descriptor.Cas;
 
             // Serialize bundles.
             foreach (var s_Pair in p_Descriptor.Bundles)
