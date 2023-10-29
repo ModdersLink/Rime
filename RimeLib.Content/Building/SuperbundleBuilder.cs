@@ -8,20 +8,20 @@ namespace RimeLib.Content.Building
 {
     public class SuperbundleBuilder
     {
-        public static SuperbundleBuilder Create(EngineType p_Type, string p_SbName)
+        public static SuperbundleBuilder Create(EngineType p_Type, string p_SbName, bool p_Cas = false)
         {
-            return new SuperbundleBuilder(p_Type, EngineInterfaceRegistry.Create<ISuperbundleSerializer>(p_Type), p_SbName);
+            return new SuperbundleBuilder(p_Type, EngineInterfaceRegistry.Create<ISuperbundleSerializer>(p_Type), p_SbName, p_Cas);
         }
 
         private readonly ISuperbundleSerializer m_Serializer;
         private readonly SuperbundleDescriptor m_Descriptor;
         private readonly EngineType m_EngineType;
 
-        private SuperbundleBuilder(EngineType p_EngineType, ISuperbundleSerializer p_Serializer, string p_SbName)
+        private SuperbundleBuilder(EngineType p_EngineType, ISuperbundleSerializer p_Serializer, string p_SbName, bool p_Cas = false)
         {
             m_EngineType = p_EngineType;
             m_Serializer = p_Serializer;
-            m_Descriptor = new SuperbundleDescriptor(p_SbName);
+            m_Descriptor = new SuperbundleDescriptor(p_SbName, p_Cas);
         }
 
         public SuperbundleBuilder WithChunk(GUID p_Id, IChunkObject p_Chunk)

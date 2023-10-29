@@ -18,6 +18,9 @@ namespace RimeLib.Cmd.Commands.Base
         [CommandArgument(Description = "The folder to put the built superbundle in. Will be created if it doesn't exist.")]
         public DirectoryInfo? OutputPath { get; set; }
 
+        [CommandArgument(Description = "Build this as a content addressable storage superbundle.", Optional = true)]
+        public bool Cas { get; set; }
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             try

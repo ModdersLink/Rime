@@ -96,7 +96,7 @@ namespace RimeLib.Cmd.Contexts
 
         protected SuperbundleBuilder m_Builder;
 
-        public SbBuildingContext(BaseContext p_Parent, EngineType p_EngineType, string p_OutPath, string p_SbName)
+        public SbBuildingContext(BaseContext p_Parent, EngineType p_EngineType, string p_OutPath, string p_SbName, bool p_Cas = false)
         {
             Parent = p_Parent;
             EngineType = p_EngineType;
