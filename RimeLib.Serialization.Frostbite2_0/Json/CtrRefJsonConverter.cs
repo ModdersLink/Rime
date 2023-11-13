@@ -24,7 +24,10 @@ public class CtrRefJsonConverter : JsonConverter
         p_Writer.WriteValue(s_Value.PartitionGuid.ToString());
 
         p_Writer.WritePropertyName("InstanceGuid");
-        p_Writer.WriteValue(s_Value.InstanceId.ToString());
+        if (s_Value.InstanceId is DataContainerId.Guid guid)
+            p_Writer.WriteValue(guid.Id.ToString());
+        else if (s_Value.InstanceId is DataContainerId.Index index)
+            p_Writer.WriteValue(index.Id);
 
         p_Writer.WriteEndObject();
     }

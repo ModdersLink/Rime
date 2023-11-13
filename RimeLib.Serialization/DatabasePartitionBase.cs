@@ -18,6 +18,7 @@ public abstract class DatabasePartitionBase
     [JsonIgnore]
     public abstract DataContainerBase PrimaryInstance { get; }
 
+    [JsonIgnore]
     public IObjectVariant? AssociatedVariant { get; set; } = null;
 
     public abstract string ToJsonString(Formatting p_Formatting = Formatting.None);
