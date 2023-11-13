@@ -149,6 +149,10 @@ namespace RimeLib.Cmd.Contexts
             if (!m_Mounter.TryGetChunk(p_Guid, out var s_Chunk))
                 throw new Exception($"Could not find chunk with id '{p_Guid.ToString("D")}'.");
 
+            // Ensure that the directory of the destination file exists
+            if (p_Destination.Directory != null && !Directory.Exists(p_Destination.Directory.FullName))
+                Directory.CreateDirectory(p_Destination.Directory.FullName);
+
             // Here we look for the first chunk variant with logical offset 0.
             // That's because variants with non-0 offsets can be partial mips, etc.
             using var s_Reader = s_Chunk.Variants.First(p_Variant => p_Variant.GetLogicalOffset() == 0).GetReader();
@@ -168,6 +172,10 @@ namespace RimeLib.Cmd.Contexts
             if (!m_Mounter.TryGetResource(p_Name, out var s_Resource))
                 throw new Exception($"Could not find resource with name '{p_Name}'.");
 
+            // Ensure that the directory of the destination file exists
+            if (p_Destination.Directory != null && !Directory.Exists(p_Destination.Directory.FullName))
+                Directory.CreateDirectory(p_Destination.Directory.FullName);
+
             using var s_Reader = s_Resource.FirstVariant.GetReader();
             using var s_FileStream = File.Create(p_Destination.FullName);
 
@@ -184,6 +192,10 @@ namespace RimeLib.Cmd.Contexts
         {
             if (!m_Mounter.TryGetPartition(p_Name, out var s_Partition))
                 throw new Exception($"Could not find partition with name '{p_Name}'.");
+
+            // Ensure that the directory of the destination file exists
+            if (p_Destination.Directory != null && !Directory.Exists(p_Destination.Directory.FullName))
+                Directory.CreateDirectory(p_Destination.Directory.FullName);
 
             using var s_Reader = s_Partition.FirstVariant.GetReader();
             using var s_FileStream = File.Create(p_Destination.FullName);
@@ -203,6 +215,10 @@ namespace RimeLib.Cmd.Contexts
             if (!m_Mounter.TryGetPartition(p_Name, out var s_PartitionObject))
                 throw new Exception($"Could not find partition with name '{p_Name}'.");
 
+            // Ensure that the directory of the destination file exists
+            if (p_Destination.Directory != null && !Directory.Exists(p_Destination.Directory.FullName))
+                Directory.CreateDirectory(p_Destination.Directory.FullName);
+
             var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(m_Mounter.GetEngineType());
 
             var s_Partition = s_Converter.FromPartitionObject(p_Name, s_PartitionObject.FirstVariant);
@@ -219,6 +235,10 @@ namespace RimeLib.Cmd.Contexts
         {
             if (!m_Mounter.TryGetResource(p_Name, out var s_Resource))
                 throw new Exception($"Could not find resource with name '{p_Name}'.");
+
+            // Ensure that the directory of the destination file exists
+            if (p_Destination.Directory != null && !Directory.Exists(p_Destination.Directory.FullName))
+                Directory.CreateDirectory(p_Destination.Directory.FullName);
 
             var s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(m_Mounter.GetEngineType());
       
