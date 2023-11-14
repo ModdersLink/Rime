@@ -58,11 +58,18 @@ namespace RimeLib.Cmd.Contexts
         internal class ChunkFileReader : FileReader, IChunkObject
         {
             private readonly string? m_AssetName;
-            
+            private readonly int? m_AssetHash;
+
             public ChunkFileReader(string p_Path, string? p_AssetName) :
                 base(p_Path)
             {
                 m_AssetName = p_AssetName;
+            }
+
+            public ChunkFileReader(string p_Path, int? p_AssetHash) :
+                base(p_Path)
+            {
+                m_AssetHash = p_AssetHash;
             }
 
             public bool TryGetMeta([NotNullWhen(true)] out DbObject? p_Meta)
@@ -83,6 +90,9 @@ namespace RimeLib.Cmd.Contexts
 
             public int? GetAssetNameHash()
             {
+                if (m_AssetHash != null)
+                    return m_AssetHash;
+
                 if (m_AssetName == null)
                     return null;
                 

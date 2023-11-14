@@ -25,7 +25,7 @@ namespace RimeLib.Cmd.Commands.Game
             p_Writer.WriteLine();
 
             foreach (var s_Resource in s_Resources)
-                p_Writer.WriteLine("- " + s_Resource);
+                p_Writer.WriteLine("- " + s_Resource.Name + " (" + s_Resource.ResourceType + ")");
 
             return true;
         }
