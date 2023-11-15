@@ -167,6 +167,26 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             }
         }
 
+        public IEnumerable<GUID> GetChunksInSuperbundle(string p_Superbundle)
+        {
+            foreach (var s_Superbundle in m_Superbundles)
+            {
+                if (s_Superbundle.Name == p_Superbundle.ToLowerInvariant())
+                {
+                    if (s_Superbundle.PatchToc != null)
+                    {
+                        foreach (var s_ChunkInfo in s_Superbundle.PatchToc.Layout.Chunks)
+                            yield return s_ChunkInfo.Id;
+                    }
+                    if (s_Superbundle.Toc != null)
+                    {
+                        foreach (var s_ChunkInfo in s_Superbundle.Toc.Layout.Chunks)
+                            yield return s_ChunkInfo.Id;
+                    }
+                }
+            }
+        }
+
         public IEnumerable<GUID> GetChunksInBundle(string p_Bundle)
         {
             if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
