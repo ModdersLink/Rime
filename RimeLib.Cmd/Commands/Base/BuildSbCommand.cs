@@ -55,7 +55,7 @@ namespace RimeLib.Cmd.Commands.Base
             }
 
             // Create a new sb building context and replace our current one with it.
-            p_Context = new SbBuildingContext((BaseContext) p_Context, Engine, OutputPath!.FullName, Name!);
+            p_Context = new SbBuildingContext((BaseContext) p_Context, Engine, OutputPath!.FullName, Name!, Cas);
             return true;
         }
     }

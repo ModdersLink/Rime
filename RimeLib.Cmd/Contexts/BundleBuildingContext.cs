@@ -201,6 +201,7 @@ namespace RimeLib.Cmd.Contexts
             return m_Builder.GetPartitions();
         }
 
+        // TODO: This should probably be moved somewhere else
         internal void AddDDSTexture(FileInfo p_File, TextureAttributes p_Attributes)
         {
             var s_TextureGenerator = EngineInterfaceRegistry.Create<ITextureGenerator>(((SbBuildingContext) Parent!).EngineType);

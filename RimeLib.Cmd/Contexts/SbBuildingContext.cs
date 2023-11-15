@@ -103,7 +103,7 @@ namespace RimeLib.Cmd.Contexts
             m_OutPath = p_OutPath;
             m_SbName = p_SbName;
 
-            m_Builder = SuperbundleBuilder.Create(p_EngineType, p_SbName);
+            m_Builder = SuperbundleBuilder.Create(p_EngineType, p_SbName, p_Cas);
 
             RegisterCommand<AddChunkCommand>();
             RegisterCommand<RemoveChunkCommand>();
