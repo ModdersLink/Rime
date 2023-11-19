@@ -1,5 +1,5 @@
 ﻿using System;
-using RimeLib.Content.Frostbite2_0.Mounting;
+using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;

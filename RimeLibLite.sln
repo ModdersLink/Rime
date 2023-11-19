@@ -111,6 +111,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GFxTool", "Utils\GFxTool\GF
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AvalancheHttpBackend", "Utils\AvalancheHttpBackend\AvalancheHttpBackend.csproj", "{E90683C9-1664-4BE6-89B5-07B05E073629}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RimeScripts", "RimeScripts", "{F540066C-3856-471C-8F4A-32E6A6580C59}"
+	ProjectSection(SolutionItems) = preProject
+		External\RimeScripts\auto_mount_bf3.txt = External\RimeScripts\auto_mount_bf3.txt
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -325,6 +330,7 @@ Global
 		{6F96CFF9-582B-4D68-AD3B-AF7F567840FB} = {42E38905-976C-4506-98AE-DC35CA1A9925}
 		{BE5B94B6-0C51-4F63-8241-2ACEBAFC2136} = {42E38905-976C-4506-98AE-DC35CA1A9925}
 		{E90683C9-1664-4BE6-89B5-07B05E073629} = {42E38905-976C-4506-98AE-DC35CA1A9925}
+		{F540066C-3856-471C-8F4A-32E6A6580C59} = {3F11DB22-14A7-40F2-9570-72D540C671C7}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D2A4DE6-648D-4971-AC81-A89F21154CD0}

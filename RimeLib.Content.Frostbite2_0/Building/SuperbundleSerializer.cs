@@ -36,12 +36,18 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             // Serialize bundles.
             foreach (var s_Pair in p_Descriptor.Bundles)
-                SerializeBundle(s_Pair.Key, s_Pair.Value, s_SbWriter);
+            {
+                if (p_Descriptor.Cas)
+                    SerializeCasBundle(s_Pair.Key, s_Pair.Value, s_SbWriter);
+                else
+                    SerializeBundle(s_Pair.Key, s_Pair.Value, s_SbWriter);
+            }
 
+            // TODO: Validate that this code produces in the toc not sb for cas bundles?
             // Serialize chunks.
             foreach (var s_Pair in p_Descriptor.Chunks)
                 SerializeChunk(s_Pair.Key, s_Pair.Value, s_SbWriter);
-
+            
             // Assign final chunk and bundle info.
             m_Toc.Layout.Chunks = m_Chunks.ToArray();
             m_Toc.Layout.Bundles = m_Bundles.ToArray();
@@ -89,6 +95,26 @@ namespace RimeLib.Content.Frostbite2_0.Building
             s_BundleInfo.Checksum = s_Builder.Checksum;
 
             // Add bundle to layout.
+            m_Bundles.Add(s_BundleInfo);
+        }
+
+        private void SerializeCasBundle(string p_Path, BundleDescriptor p_Descriptor, RimeWriter p_SbWriter)
+        {
+            var s_BundleInfo = new BundleInfo
+            {
+                Id = p_Path,
+                Offset = p_SbWriter.Position,
+                Size = 0,               // This will get updated later
+                Checksum = new Sha1(),  // This will get updated later
+            };
+
+            var s_Builder = new CasBundleManifestBuilder(p_Descriptor);
+            s_Builder.Serialize(p_SbWriter);
+
+            // Calculate Size
+            s_BundleInfo.Size = p_SbWriter.Position - s_BundleInfo.Offset;
+            s_BundleInfo.Checksum = s_Builder.Checksum;
+
             m_Bundles.Add(s_BundleInfo);
         }
 

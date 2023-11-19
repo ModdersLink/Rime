@@ -22,7 +22,12 @@ namespace RimeLib.Content.Mounting
         int? GetAssetNameHash();
     }
 
-    public interface IObjectVariant : IReadableObject, IObjectWithHash
+    public interface IReadableObjectWithHash : IReadableObject, IObjectWithHash 
+    { 
+
+    }
+
+    public interface IObjectVariant : IReadableObjectWithHash
     {
         string GetContainedSuperbundle();
         string? GetContainedBundle();

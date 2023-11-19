@@ -5,7 +5,7 @@ using RimeLib.IO;
 
 namespace RimeLib.Content.Frostbite2_0.Mounting
 {
-    internal interface IReadableObjectWithHash : IReadableObject, IObjectWithHash {}
+    // internal interface IReadableObjectWithHash : IReadableObject, IObjectWithHash {}
 
     internal class ObjectVariant : IObjectVariant
     {
