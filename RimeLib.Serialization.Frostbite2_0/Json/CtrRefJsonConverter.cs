@@ -24,7 +24,10 @@ public class CtrRefJsonConverter : JsonConverter
         p_Writer.WriteValue(s_Value.PartitionGuid.ToString());
 
         p_Writer.WritePropertyName("InstanceGuid");
-        p_Writer.WriteValue(s_Value.InstanceId.ToString());
+        if (s_Value.InstanceId is DataContainerId.Guid guid)
+            p_Writer.WriteValue(guid.Id.ToString());
+        else if (s_Value.InstanceId is DataContainerId.Index index)
+            p_Writer.WriteValue(index.Id);
 
         p_Writer.WriteEndObject();
     }
@@ -36,9 +39,6 @@ public class CtrRefJsonConverter : JsonConverter
         JsonSerializer p_Serializer
     )
     {
-        var s_PartitionGuid = GUID.Empty;
-        var s_InstanceGuid = GUID.Empty;
-
         if (p_Reader.TokenType != JsonToken.Null)
         {
             var s_Object = JObject.Load(p_Reader);
@@ -50,12 +50,24 @@ public class CtrRefJsonConverter : JsonConverter
                 throw new Exception("Container reference does not have 'InstanceGuid' key.");
 
 #pragma warning disable CS8604 // Possible null reference argument.
-            s_PartitionGuid = new GUID(s_Object["PartitionGuid"].Value<string>());
-            s_InstanceGuid = new GUID(s_Object["InstanceGuid"].Value<string>());
+            var s_PartitionGuid = new GUID(s_Object["PartitionGuid"].Value<string>());
+
+            if (s_Object["InstanceGuid"]?.Type == JTokenType.String)
+            {
+                var s_InstanceGuid = new GUID(s_Object["InstanceGuid"].Value<string>());
+                return Activator.CreateInstance(p_ObjectType, s_PartitionGuid, s_InstanceGuid);
+            }
+            else if (s_Object["InstanceGuid"]?.Type == JTokenType.Integer)
+            {
+                long s_InstanceId = s_Object["InstanceGuid"].Value<long>();
+                return Activator.CreateInstance(p_ObjectType, s_PartitionGuid, s_InstanceId);
+            }
+
+            throw new Exception("Container reference does have an invalid 'InstanceGuid' key.");
 #pragma warning restore CS8604 // Possible null reference argument.
         }
 
-        return Activator.CreateInstance(p_ObjectType, s_PartitionGuid, s_InstanceGuid);
+        return Activator.CreateInstance(p_ObjectType, GUID.Empty, GUID.Empty);
     }
 
     public override bool CanConvert(Type p_ObjectType)

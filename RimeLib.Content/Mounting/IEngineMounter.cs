@@ -117,6 +117,14 @@ namespace RimeLib.Content.Mounting
         /// <returns>A list of resource names.</returns>
         IEnumerable<string> GetResourcesInBundle(string p_Bundle);
 
+
+        /// <summary>
+        /// List all the chunks contained in a specific mounted superbundle.
+        /// </summary>
+        /// <param name="p_Superbundle">The name of the superbundle.</param>
+        /// <returns>A list of chunk ids.</returns>
+        IEnumerable<GUID> GetChunksInSuperbundle(string p_Superbundle);
+
         /// <summary>
         /// List all the chunks contained in a specific mounted bundle.
         /// </summary>
