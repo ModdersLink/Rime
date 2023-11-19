@@ -106,6 +106,7 @@ namespace RimeLib.Cmd.Contexts
             m_Builder = SuperbundleBuilder.Create(p_EngineType, p_SbName, p_Cas);
 
             RegisterCommand<AddChunkCommand>();
+            RegisterCommand<AddExistingChunkCommand>();
             RegisterCommand<RemoveChunkCommand>();
             RegisterCommand<ListChunksCommand>();
             RegisterCommand<BuildBundleCommand>();
@@ -146,6 +147,11 @@ namespace RimeLib.Cmd.Contexts
             m_Builder.WithChunk(p_Guid, new ChunkFileReader(p_File.FullName, p_AssetName));
         }
 
+        internal void AddChunk(GUID p_Guid, IChunkObject p_ChunkObject)
+        {
+            m_Builder.WithChunk(p_Guid, p_ChunkObject);
+        }
+
         internal void RemoveChunk(GUID p_Guid)
         {
             m_Builder.RemoveChunk(p_Guid);
@@ -180,6 +186,11 @@ namespace RimeLib.Cmd.Contexts
             using var s_SbStream = File.Open(s_OutPath + ".sb", FileMode.Create, FileAccess.ReadWrite);
 
             m_Builder.Build(s_SbStream, s_TocStream);
+        }
+
+        internal bool Cas()
+        {
+            return m_Builder.Cas();
         }
     }
 }

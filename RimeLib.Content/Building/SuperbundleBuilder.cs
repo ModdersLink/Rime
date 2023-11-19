@@ -78,5 +78,10 @@ namespace RimeLib.Content.Building
         {
             m_Descriptor.Bundles.Remove(p_Name);
         }
+
+        public bool Cas()
+        {
+            return m_Descriptor.Cas;
+        }
     }
 }
