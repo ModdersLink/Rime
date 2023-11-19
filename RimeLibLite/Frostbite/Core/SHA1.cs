@@ -151,5 +151,16 @@ namespace RimeLib.Frostbite.Core
         {
             throw new NotImplementedException();
         }
+
+        public static Sha1 FromData(byte[] p_Data)
+        {
+            using (System.Security.Cryptography.SHA1 s_Sha1Hash = System.Security.Cryptography.SHA1.Create())
+            {
+                return new Sha1
+                {
+                    Hash = s_Sha1Hash.ComputeHash(p_Data)
+                };
+            }
+        }
     }
 }

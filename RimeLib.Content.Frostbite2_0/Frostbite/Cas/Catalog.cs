@@ -27,6 +27,8 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Cas
         /// </summary>
         public string Path { get; set; }
 
+        public const ulong c_Nyan = 0x6E61794E6E61794E;
+
         /// <summary>
         /// Constructor that parses a catalog from an opened reader
         /// </summary>
@@ -39,6 +41,15 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Cas
         }
 
         /// <summary>
+        /// Constructor that creates a new catalog from scratch
+        /// </summary>
+        public Catalog()
+        {
+            Path = string.Empty;
+            AuthoritativeCatalog = null;
+        }
+
+        /// <summary>
         /// Parses the catalog header information
         /// </summary>
         /// <param name="p_Reader">Reader opened to the position of the catalog header</param>
@@ -48,23 +59,6 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Cas
 
             // read FileObfuscation, and use the output stream
             new FileObfuscation(s_Reader, out var s_FixedReader);
-
-            /*
-            var s_Magic = p_Reader.ReadUInt32();
-
-            switch (s_Magic)
-            {
-                case 0x01CED100:
-                case 0x00CED100:
-                    var s_Signature = p_Reader.ReadBytes(292);
-                    p_Reader.EnableDeobfuscation();
-                    break;
-
-                default:
-                    p_Reader.Seek(-4, SeekOrigin.Current);
-                    break;
-            }
-            */
 
             var s_NyanNyan01 = s_FixedReader.ReadUInt64();
             var s_NyanNyan02 = s_FixedReader.ReadUInt64();
