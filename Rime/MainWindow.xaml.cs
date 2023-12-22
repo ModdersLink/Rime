@@ -3,6 +3,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Win32;
+using Rime.Controls.Projects;
+using Rime.Projects;
 using Rime.Utils;
 using RimeLib;
 using RimeLib.Content.Mounting;
@@ -16,27 +18,33 @@ namespace Rime
     /// </summary>
     public partial class MainWindow : Window
     {
-        public string BuildTitle => $"{GetType().Assembly.GetName().Name} - {GetType().Assembly.GetName().Version}";
+        public string BuildTitle => $"{GetType().Assembly.GetName().Name} - {GetType().Assembly.GetName().Version} {(m_Project != null ? $" - ({m_Project?.Name})" : string.Empty)}";
 
-        private Logger m_Logger;
+        public Logger Logger { get; protected set; }
 
-        // Current active EngineMounter
-        private IEngineMounter m_Mounter;
+        // Current active Project
+        private RimeProject? m_Project = null;
+        private string m_ProjectPath = string.Empty;
 
         public MainWindow()
         {
-            m_Logger = new Logger(Logger.LogLevel.Debug);
+            Logger = new Logger(Logger.LogLevel.Debug);
+            Logger.OnLogEntryAppended += OnLogEntryAppended;
 
-            m_Logger.WriteLog(Logger.LogLevel.Debug, $"Rime starting, build: {BuildTitle}");
+            Logger.WriteLog(Logger.LogLevel.Debug, $"Rime starting, build: {BuildTitle}");
 
             InitializeComponent();
 
             Renderer.RendererStarted += OnRendererStarted;
         }
 
+        private void OnLogEntryAppended(object p_Sender, Logger.LogEntry p_Entry)
+        {
+            throw new NotImplementedException();
+        }
+
         private void OnRendererStarted(object? p_Sender, EventArgs p_E)
         {
-            new Controls.Projects.ProjectCreationWindow().Show();
             //var s_Browser = new ObjectBrowser();
             //s_Browser.Show();
             //MountAndSetup().Wait();
@@ -104,22 +112,31 @@ namespace Rime
             
         }
 
-        private void mmuNewProject_Click(object sender, RoutedEventArgs e)
+        private async void mmuNewProject_Click(object sender, RoutedEventArgs e)
         {
-            var s_FileDialog = new OpenFileDialog
-            {
-                FileName = "*.dll",
-                Filter = "Dynamic Link Libraries (*.dll)|*.dll",
-                Title = "Select build information dll",
-                Multiselect = false
-            };
-
-            var s_Result = s_FileDialog.ShowDialog();
-            if (s_Result != true)
+            // Show the project creation window
+            var s_ProjectCreationDialog = new ProjectCreationWindow();
+            if (s_ProjectCreationDialog.ShowDialog() != true)
                 return;
 
-            var s_FileName = s_FileDialog.FileName;
-            
+            // Get the created project
+            var s_Project = s_ProjectCreationDialog.CreatedProject;
+            if (s_Project is null)
+                return;
+
+            // Get the json file path
+            var s_ProjectPath = s_ProjectCreationDialog.CreatedProjectPath;
+
+            // Create a new mounter
+            s_Project.Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(s_Project.EngineVersion);
+
+            // Mount the game, without loading anything, should be faster
+            await s_Project.Mounter.Mount(s_Project.GameDirectory, false, s_Project.EngineVersion);
+
+            m_Project = s_Project;
+            m_ProjectPath = s_ProjectPath;
+
+            Logger.WriteLog(Logger.LogLevel.Info, $"Project created - {m_Project.EngineVersion} at {m_Project.GameDirectory}")
         }
 
         private bool Validate(string p_BuildInfoDllPath)

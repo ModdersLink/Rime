@@ -5,7 +5,7 @@ using System.IO;
 
 namespace Rime.Utils
 {
-    internal class Logger
+    public class Logger
     {
         public class FixedConcurrentQueue<T> : ConcurrentQueue<T>
         {
@@ -63,6 +63,10 @@ namespace Rime.Utils
         // The fixed queue of logs
         protected FixedConcurrentQueue<LogEntry> m_Entries;
 
+        public delegate void LogEntryAppendedDelegate(object p_Sender, LogEntry p_Entry);
+
+        public event LogEntryAppendedDelegate OnLogEntryAppended;
+
         public Logger(LogLevel p_LogLevel, string? p_File = null)
         {
             // Set the logging level
@@ -78,17 +82,21 @@ namespace Rime.Utils
             if (LoggingFile is not null)
                 File.AppendText(s_Text);
 
-            m_Entries.Enqueue(new LogEntry
-            { 
-                Level = p_Level, 
-                Message = p_Message 
-            });
+            var s_Entry = new LogEntry
+            {
+                Level = p_Level,
+                Message = p_Message
+            };
+
+            m_Entries.Enqueue(s_Entry);
 
 #if DEBUG
             Debug.WriteLine(s_Text);
 #else
             Console.WriteLine(s_Text);
 #endif
+            if (OnLogEntryAppended != null) 
+                OnLogEntryAppended(this, s_Entry);
         }
     }
 }

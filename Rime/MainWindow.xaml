@@ -13,6 +13,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <Menu Grid.Row="0">
             <MenuItem Header="File">
@@ -84,5 +85,18 @@
                 </LayoutPanel>
             </LayoutRoot>
         </DockingManager>
+        <StatusBar Grid.Row="2">
+            <StatusBarItem>
+                <Image MinHeight="16" MinWidth="16"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem>
+                <TextBlock Text="Content"/>
+            </StatusBarItem>
+            <Separator/>
+            <StatusBarItem HorizontalAlignment="Right">
+                <ProgressBar Minimum="0" Maximum="100" Value="75" MinWidth="100"/>
+            </StatusBarItem>
+        </StatusBar>
     </Grid>
 </Window>

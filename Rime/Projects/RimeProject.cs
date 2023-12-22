@@ -1,9 +1,7 @@
 ﻿using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text.Json.Serialization;
-using System.Windows.Documents;
 
 namespace Rime.Projects
 {
@@ -60,8 +58,11 @@ namespace Rime.Projects
             }
         }
 
-        // The internal engine mounter class
-        protected IEngineMounter? m_Mounter;
+        /// <summary>
+        /// Engine mounter class
+        /// </summary>
+        [JsonIgnore]
+        public IEngineMounter? Mounter { get; set; }
 
         // Last loaded superbundles
         protected List<string> m_MountedSuperbundles = new List<string>();

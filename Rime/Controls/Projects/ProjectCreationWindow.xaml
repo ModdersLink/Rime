@@ -7,7 +7,7 @@
         xmlns:rllfb="clr-namespace:RimeLib.Frostbite;assembly=RimeLib"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="Create new project" Height="250" Width="400">
+        Title="Create new project" Height="124" Width="400" ResizeMode="NoResize" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <ObjectDataProvider x:Key="EngineTypeEnumDataSource" ObjectType="{x:Type system:Enum}" MethodName="GetValues">
             <ObjectDataProvider.MethodParameters>
@@ -25,11 +25,11 @@
                 </DockPanel>
                 <DockPanel>
                     <TextBlock Text="Frostbite Engine Version: "/>
-                    <ComboBox ItemsSource="{Binding Source={StaticResource EngineTypeEnumDataSource}}"/>
+                    <ComboBox x:Name="cbEngineType" SelectedIndex="0" ItemsSource="{Binding Source={StaticResource EngineTypeEnumDataSource}}"/>
                 </DockPanel>
                 <DockPanel>
                     <TextBlock Text="Project Directory: "/>
-                    <Button x:Name="btnSelectProjectFile" Content="..." Width="25"/>
+                    <Button x:Name="btnSelectProjectFile" Content="..." Width="25" Click="btnSelectProjectFile_Clicked"/>
                     <TextBox x:Name="txtProjectFile" IsReadOnly="True"/>
                 </DockPanel>
                 <Button x:Name="btnCreateProject" Content="Create Project" Click="btnCreateProject_Click"/>

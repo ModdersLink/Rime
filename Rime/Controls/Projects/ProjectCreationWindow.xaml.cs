@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.Win32;
+using Rime.Projects;
+using RimeLib.Frostbite;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Text.Json;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 
 namespace Rime.Controls.Projects
@@ -20,13 +14,26 @@ namespace Rime.Controls.Projects
     /// </summary>
     public partial class ProjectCreationWindow : Window
     {
+        public RimeProject? CreatedProject { get; protected set; } = null;
+
+        public string CreatedProjectPath { get; protected set; } = string.Empty;
+
+        /// <summary>
+        /// Initial constructor
+        /// </summary>
         public ProjectCreationWindow()
         {
             InitializeComponent();
         }
 
+        /// <summary>
+        /// Callback for creation of a new project
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Arguments</param>
         private void btnCreateProject_Click(object sender, RoutedEventArgs e)
         {
+            // Validate the game directory
             if (!ValidateGameDirectory(txtGameDirectory.Text))
             {
                 txtGameDirectory.BorderBrush = Brushes.Red;
@@ -34,14 +41,37 @@ namespace Rime.Controls.Projects
             }
             txtGameDirectory.BorderBrush = Brushes.Transparent;
 
+            // Validate the output project directory
             if (string.IsNullOrWhiteSpace(txtProjectFile.Text))
             {
                 txtProjectFile.BorderBrush = Brushes.Red;
                 return;
             }
-            txtGameDirectory.BorderBrush = Brushes.Transparent;
+            txtProjectFile.BorderBrush = Brushes.Transparent;
+
+            CreatedProjectPath = txtProjectFile.Text;
+
+            CreatedProject = new RimeProject
+            {
+                GameDirectory = txtGameDirectory.Text,
+                EngineVersion = (EngineType)cbEngineType.SelectedItem,
+            };
+
+            File.WriteAllText(CreatedProjectPath, JsonSerializer.Serialize(CreatedProject, new JsonSerializerOptions
+            {
+                WriteIndented = true,
+            }));
+
+            DialogResult = true;
+            Close();
         }
 
+        /// <summary>
+        /// Validates the game directory, this currently just checks for the /Data folder
+        /// but in the future can do more
+        /// </summary>
+        /// <param name="p_DirectoryPath">Selected game directory path</param>
+        /// <returns>True on success, false otherwise</returns>
         private bool ValidateGameDirectory(string p_DirectoryPath)
         {
             // Validate the game directory text
@@ -57,6 +87,26 @@ namespace Rime.Controls.Projects
 
 
             return true;
+        }
+
+        /// <summary>
+        /// Callback for saving a project path
+        /// </summary>
+        /// <param name="sender">Sender</param>
+        /// <param name="e">Arguments</param>
+        private void btnSelectProjectFile_Clicked(object sender, RoutedEventArgs e)
+        {
+            // Create a new save file dialog
+            var s_FileSaveDialog = new SaveFileDialog
+            {
+                CheckFileExists = true,
+                Title = "Save Rime project...",
+                Filter = "Rime Project (*.json)|*.json",
+            };
+
+            // See if the dialog was successful
+            if (s_FileSaveDialog.ShowDialog() == true)
+                txtProjectFile.Text = s_FileSaveDialog.FileName;
         }
     }
 }
