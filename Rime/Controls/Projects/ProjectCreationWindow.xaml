@@ -20,7 +20,7 @@
             <StackPanel Orientation="Vertical">
                 <DockPanel>
                     <TextBlock Text="Game Directory: "/>
-                    <Button x:Name="btnSelectGameDirectory" Content="..." Width="25"/>
+                    <Button x:Name="btnSelectGameDirectory" Content="..." Width="25" Click="btnSelectGameDirectory_Click"/>
                     <TextBox x:Name="txtGameDirectory" ToolTip="Frostbite game directory, must contain build info .dll, game exe, and data folder" IsReadOnly="True" />
                 </DockPanel>
                 <DockPanel>

@@ -99,7 +99,7 @@ namespace Rime.Controls.Projects
             // Create a new save file dialog
             var s_FileSaveDialog = new SaveFileDialog
             {
-                CheckFileExists = true,
+                CheckFileExists = false,
                 Title = "Save Rime project...",
                 Filter = "Rime Project (*.json)|*.json",
             };
@@ -107,6 +107,24 @@ namespace Rime.Controls.Projects
             // See if the dialog was successful
             if (s_FileSaveDialog.ShowDialog() == true)
                 txtProjectFile.Text = s_FileSaveDialog.FileName;
+        }
+
+        private void btnSelectGameDirectory_Click(object sender, RoutedEventArgs e)
+        {
+            var s_FileSelectDialog = new OpenFileDialog
+            {
+                CheckFileExists = true,
+                Title = "Select game executable",
+                Filter = "Game Executable (*.exe)|*.exe",
+                Multiselect = false
+            };
+
+            if (s_FileSelectDialog.ShowDialog() != true)
+                return;
+
+            var s_SelectedFile = s_FileSelectDialog.FileName;
+
+            txtGameDirectory.Text = Path.GetDirectoryName(s_SelectedFile);
         }
     }
 }

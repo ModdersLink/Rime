@@ -13,6 +13,9 @@ public static class PartitionRegistry
     private static readonly ConcurrentDictionary<GUID, DatabasePartitionBase> m_PartitionMap = new();
     public static IEnumerable<DatabasePartitionBase> Partitions => m_PartitionMap.Values;
 
+    public delegate void PartitionRegisteredDelegate(DatabasePartitionBase p_Partition);
+    public static event PartitionRegisteredDelegate? OnPartitionRegistered;
+
     public static void ParseAndRegisterAllPartitions(IEngineMounter p_Mounter)
     {
         var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(p_Mounter.GetEngineType());
@@ -23,6 +26,8 @@ public static class PartitionRegistry
             var (s_Name, s_PartitionObj) = s_Kvp;
             var s_Partition = s_Converter.FromPartitionObject(s_Name, s_PartitionObj.FirstVariant);
             RegisterPartition(s_Partition);
+            if (OnPartitionRegistered != null)
+                OnPartitionRegistered(s_Partition);
         });
     }
 

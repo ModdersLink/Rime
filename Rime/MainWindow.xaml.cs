@@ -5,11 +5,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using Rime.Controls.Projects;
+using Rime.Editor;
 using Rime.Projects;
 using Rime.Utils;
 using RimeLib;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
+using RimeLib.Serialization;
 using RimeLib.Utils;
 
 namespace Rime
@@ -34,6 +36,8 @@ namespace Rime
         // Current active Project
         private RimeProject? m_Project = null;
         private string m_ProjectPath = string.Empty;
+        private ulong m_TotalPartitionsToLoad = 0;
+        private ulong m_TotalPartitionsLoaded = 0;
 
         public MainWindow()
         {
@@ -43,15 +47,38 @@ namespace Rime
             Logger = new Logger(Logger.LogLevel.Debug);
             Logger.OnLogEntryAppended += OnLogEntryAppended;
 
+            PartitionRegistry.OnPartitionRegistered += OnPartitionRegistered;
+
             Logger.WriteLog(Logger.LogLevel.Info, $"Rime starting, build: {BuildTitle}");
 
             Renderer.RendererStarted += OnRendererStarted;
         }
 
+        private void OnPartitionRegistered(DatabasePartitionBase p_Partition)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                m_TotalPartitionsLoaded++;
+
+                if (m_TotalPartitionsToLoad == 0)
+                    pbBar.Value = 0;
+                else
+                {
+                    var s_Percentage = (double)m_TotalPartitionsLoaded / (double)m_TotalPartitionsToLoad;
+                    pbBar.Value = s_Percentage * 100;
+                }
+
+                Logger.WriteLog(Logger.LogLevel.Info, $"Loaded partition {p_Partition.Name}");
+            });
+        }
+
         private void OnLogEntryAppended(object p_Sender, Logger.LogEntry p_Entry)
         {
-            vbIcon.Child = m_LogImageMap[p_Entry.Level];
-            tbStatus.Text = p_Entry.Message;
+            Dispatcher.Invoke(() =>
+            {
+                vbIcon.Child = m_LogImageMap[p_Entry.Level];
+                tbStatus.Text = p_Entry.Message;
+            });
         }
 
         private void OnRendererStarted(object? p_Sender, EventArgs p_E)
@@ -138,16 +165,24 @@ namespace Rime
             // Get the json file path
             var s_ProjectPath = s_ProjectCreationDialog.CreatedProjectPath;
 
+            Logger.WriteLog(Logger.LogLevel.Info, $"Project created - {s_Project.EngineVersion} at {s_Project.GameDirectory}");
+
             // Create a new mounter
+            AssemblyUtils.LoadSupportAssembly(AssemblyType.Content, s_Project.EngineVersion);
+            AssemblyUtils.LoadSupportAssembly(AssemblyType.Serialization, s_Project.EngineVersion);
+            AssemblyUtils.LoadSupportAssembly(AssemblyType.Texture, s_Project.EngineVersion);
+
             s_Project.Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(s_Project.EngineVersion);
 
             // Mount the game, without loading anything, should be faster
-            await s_Project.Mounter.Mount(s_Project.GameDirectory, false, s_Project.EngineVersion);
+            await s_Project.Mounter.Mount(s_Project.GameDirectory, true, s_Project.EngineVersion);
+
+            m_TotalPartitionsToLoad = (ulong)s_Project.Mounter.GetPartitions().Count;
+
+            new MapEditor(s_Project.Mounter, Logger);
 
             m_Project = s_Project;
             m_ProjectPath = s_ProjectPath;
-
-            Logger.WriteLog(Logger.LogLevel.Info, $"Project created - {m_Project.EngineVersion} at {m_Project.GameDirectory}");
         }
 
         private bool Validate(string p_BuildInfoDllPath)

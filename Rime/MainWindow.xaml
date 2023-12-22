@@ -95,7 +95,7 @@
             </StatusBarItem>
             <Separator/>
             <StatusBarItem HorizontalAlignment="Right">
-                <ProgressBar Minimum="0" Maximum="100" Value="75" MinWidth="100"/>
+                <ProgressBar x:Name="pbBar" Minimum="0" Maximum="100" Value="75" MinWidth="100"/>
             </StatusBarItem>
         </StatusBar>
     </Grid>
