@@ -1,8 +1,9 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using Microsoft.Win32;
+using System.Windows.Controls;
 using Rime.Controls.Projects;
 using Rime.Projects;
 using Rime.Utils;
@@ -22,25 +23,35 @@ namespace Rime
 
         public Logger Logger { get; protected set; }
 
+        private Dictionary<Logger.LogLevel, Viewbox> m_LogImageMap = new Dictionary<Logger.LogLevel, Viewbox>
+        {
+            { Logger.LogLevel.Info, (Viewbox)Application.Current.Resources["ImgStatusInformationRequired"] },
+            { Logger.LogLevel.Warn, (Viewbox)Application.Current.Resources["ImgStatusWarning"] },
+            { Logger.LogLevel.Error, (Viewbox)Application.Current.Resources["ImgStatusError"] },
+            { Logger.LogLevel.Debug, (Viewbox)Application.Current.Resources["ImgStatusRequiredOutline"] },
+        };
+
         // Current active Project
         private RimeProject? m_Project = null;
         private string m_ProjectPath = string.Empty;
 
         public MainWindow()
         {
+            InitializeComponent();
+
+            // Create the logger and register the event handler
             Logger = new Logger(Logger.LogLevel.Debug);
             Logger.OnLogEntryAppended += OnLogEntryAppended;
 
-            Logger.WriteLog(Logger.LogLevel.Debug, $"Rime starting, build: {BuildTitle}");
-
-            InitializeComponent();
+            Logger.WriteLog(Logger.LogLevel.Info, $"Rime starting, build: {BuildTitle}");
 
             Renderer.RendererStarted += OnRendererStarted;
         }
 
         private void OnLogEntryAppended(object p_Sender, Logger.LogEntry p_Entry)
         {
-            throw new NotImplementedException();
+            vbIcon.Child = m_LogImageMap[p_Entry.Level];
+            tbStatus.Text = p_Entry.Message;
         }
 
         private void OnRendererStarted(object? p_Sender, EventArgs p_E)
@@ -136,7 +147,7 @@ namespace Rime
             m_Project = s_Project;
             m_ProjectPath = s_ProjectPath;
 
-            Logger.WriteLog(Logger.LogLevel.Info, $"Project created - {m_Project.EngineVersion} at {m_Project.GameDirectory}")
+            Logger.WriteLog(Logger.LogLevel.Info, $"Project created - {m_Project.EngineVersion} at {m_Project.GameDirectory}");
         }
 
         private bool Validate(string p_BuildInfoDllPath)

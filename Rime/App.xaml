@@ -4,5 +4,6 @@
              xmlns:local="clr-namespace:Rime"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
+        <ResourceDictionary Source="/Images/Images.xaml"/>
     </Application.Resources>
 </Application>

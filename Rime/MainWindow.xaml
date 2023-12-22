@@ -87,11 +87,11 @@
         </DockingManager>
         <StatusBar Grid.Row="2">
             <StatusBarItem>
-                <Image MinHeight="16" MinWidth="16"/>
+                <Viewbox x:Name="vbIcon" Width="16" Height="16"/>
             </StatusBarItem>
             <Separator/>
             <StatusBarItem>
-                <TextBlock Text="Content"/>
+                <TextBlock x:Name="tbStatus"/>
             </StatusBarItem>
             <Separator/>
             <StatusBarItem HorizontalAlignment="Right">
