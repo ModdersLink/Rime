@@ -14,7 +14,6 @@ namespace RimeLib.Cmd.Commands.SbBuilding
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             // TODO: Validate bundle name.
-
             p_Context = new BundleBuildingContext((SbBuildingContext) p_Context, Bundle!);
             return true;
         }

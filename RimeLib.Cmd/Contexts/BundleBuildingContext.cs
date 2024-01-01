@@ -104,6 +104,7 @@ namespace RimeLib.Cmd.Contexts
             m_Builder = BundleBuilder.Create(m_BundleName);
 
             RegisterCommand<AddChunkCommand>();
+            RegisterCommand<AddExistingChunkCommand>();
             RegisterCommand<RemoveChunkCommand>();
             RegisterCommand<ListChunksCommand>();
             RegisterCommand<AddResourceCommand>();
@@ -115,6 +116,15 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListPartitionsCommand>();
             RegisterCommand<AddDdsTextureCommand>();
             RegisterCommand<BuildCommand>();
+        }
+
+        public bool Cas()
+        {
+            var s_SbBuildingContext = Parent as SbBuildingContext;
+            if (s_SbBuildingContext == null)
+                throw new System.Exception();
+
+            return s_SbBuildingContext.Cas();
         }
 
         public override string GetShortDescription()
@@ -144,6 +154,11 @@ namespace RimeLib.Cmd.Contexts
         internal void AddChunk(GUID p_Guid, FileInfo p_File, string p_AssetName)
         {
             m_Builder.WithChunk(p_Guid, new SbBuildingContext.ChunkFileReader(p_File.FullName, p_AssetName));
+        }
+
+        internal void AddChunk(GUID p_Guid, IChunkObject p_Object)
+        {
+            m_Builder.WithChunk(p_Guid, p_Object);
         }
 
         internal void RemoveChunk(GUID p_Guid)

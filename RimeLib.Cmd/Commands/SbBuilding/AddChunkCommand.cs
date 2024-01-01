@@ -19,13 +19,22 @@ namespace RimeLib.Cmd.Commands.SbBuilding
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
+            var s_Context = ((SbBuildingContext)p_Context);
+
+            // TODO: When we add support for cas generation remove this check
+            if (s_Context.Cas())
+            {
+                p_Writer.WriteLine("Cannot add new chunk in Cas mode (implementation TBD).");
+                return false;
+            }
+
             if (!FilePath!.Exists)
             {
                 p_Writer.WriteLine("The specified file could not be found.");
                 return false;
             }
 
-            ((SbBuildingContext) p_Context).AddChunk(Guid!, FilePath, AssetName);
+            s_Context.AddChunk(Guid!, FilePath, AssetName);
 
             return true;
         }

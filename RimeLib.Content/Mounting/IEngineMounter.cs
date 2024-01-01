@@ -35,7 +35,10 @@ namespace RimeLib.Content.Mounting
 
     public interface IResourceVariant : IResourceObject, IObjectVariant {}
 
-    public interface IChunkVariant : IChunkObject, IObjectVariant {}
+    public interface IChunkVariant : IChunkObject, IObjectVariant 
+    {
+        bool Cas { get; }
+    }
 
     /// <summary>
     /// Represents a mounted game object (eg. a resource or chunk) and holds

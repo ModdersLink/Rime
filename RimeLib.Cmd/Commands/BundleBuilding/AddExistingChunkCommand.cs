@@ -2,31 +2,35 @@
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
-using System;
 using System.IO;
 using System.Linq;
 
-namespace RimeLib.Cmd.Commands.SbBuilding
+namespace RimeLib.Cmd.Commands.BundleBuilding
 {
-    [CommandDescription("Adds an existing chunk to this superbundle.")]
-    public class AddExistingChunkCommand : Command
+    [CommandDescription("Adds an existing chunk to this bundle.")]
+    internal class AddExistingChunkCommand : Command
     {
         [CommandArgument(Description = "The GUID of the chunk.")]
         public GUID? Guid { get; set; }
 
+        // TODO: Make this portion a little less shit
         [CommandArgument(Description = "Id returned by mount_game.")]
         public int Id { get; set; }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
-            var s_BuildingContext = ((SbBuildingContext)p_Context);
-
-            var s_ContextEngineType = s_BuildingContext.EngineType;
-            // Get the base context
-            var s_BaseContext = p_Context.Parent as BaseContext;
-            if (s_BaseContext is null)
+            var s_BundleContext = ((BundleBuildingContext)p_Context);
+            var s_SbBuildingContext = (SbBuildingContext?)s_BundleContext.Parent;
+            if (s_SbBuildingContext == null)
             {
-                p_Writer.WriteLine("Parent is not base context, contact a dev.");
+                p_Writer.WriteLine("Parent context is invalid.");
+                return false;
+            }
+
+            var s_BaseContext = s_SbBuildingContext.Parent as BaseContext;
+            if ( s_BaseContext == null)
+            {
+                p_Writer.WriteLine("SbBuildingContext parent is invalid.");
                 return false;
             }
 
@@ -39,6 +43,7 @@ namespace RimeLib.Cmd.Commands.SbBuilding
             }
 
             // TODO: Once we have cross-engine support, remove this check
+            var s_ContextEngineType = s_SbBuildingContext.EngineType;
             if (s_EngineMounter.GetEngineType() != s_ContextEngineType)
             {
                 p_Writer.WriteLine($"Cross-engine support has not been added, ({s_EngineMounter.GetEngineType()} != {s_ContextEngineType})");
@@ -52,7 +57,7 @@ namespace RimeLib.Cmd.Commands.SbBuilding
             }
 
             IChunkVariant? s_Variant;
-            if (s_BuildingContext.Cas())
+            if (s_BundleContext.Cas())
             {
                 s_Variant = s_Chunk.Variants.FirstOrDefault(p_Chunk => p_Chunk.Cas);
                 if (s_Variant == null)
@@ -64,7 +69,7 @@ namespace RimeLib.Cmd.Commands.SbBuilding
             else
                 s_Variant = s_Chunk.FirstVariant;
 
-            s_BuildingContext.AddChunk(Guid!, s_Variant);
+            s_BundleContext.AddChunk(Guid!, s_Variant);
 
             return true;
         }
