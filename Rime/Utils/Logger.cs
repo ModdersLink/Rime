@@ -48,7 +48,7 @@ namespace Rime.Utils
         /// <summary>
         /// Maximum number of logs to keep in rotation
         /// </summary>
-        public const int c_MaxLogs = 2048;
+        public const int c_MaxLogs = 128;
 
         /// <summary>
         /// Current logging level
@@ -80,7 +80,8 @@ namespace Rime.Utils
             var s_Text = $"[{p_Level}] [{DateTime.Now}] - {p_Message}";
 
             if (LoggingFile is not null)
-                File.AppendText(s_Text);
+                lock(LoggingFile)
+                    File.AppendAllText(LoggingFile, s_Text);
 
             var s_Entry = new LogEntry
             {

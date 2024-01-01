@@ -1,17 +1,25 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using fb;
+using Microsoft.Win32;
 using Rime.Controls.Projects;
 using Rime.Editor;
 using Rime.Projects;
 using Rime.Utils;
 using RimeLib;
 using RimeLib.Content.Mounting;
+using RimeLib.Extensions;
 using RimeLib.Frostbite;
+using RimeLib.IO;
+using RimeLib.Mesh.Frostbite;
 using RimeLib.Serialization;
+using RimeLib.Shader.Frostbite2_0.Frostbite;
+using RimeLib.Texture;
 using RimeLib.Utils;
 
 namespace Rime
@@ -36,16 +44,14 @@ namespace Rime
         // Current active Project
         private RimeProject? m_Project = null;
         private string m_ProjectPath = string.Empty;
-        private ulong m_TotalPartitionsToLoad = 0;
-        private ulong m_TotalPartitionsLoaded = 0;
 
         public MainWindow()
         {
             InitializeComponent();
 
             // Create the logger and register the event handler
-            Logger = new Logger(Logger.LogLevel.Debug);
-            Logger.OnLogEntryAppended += OnLogEntryAppended;
+            Logger = new Logger(Logger.LogLevel.Debug, "rime.log");
+            Logger.OnLogEntryAppended += OnLogEntry;
 
             PartitionRegistry.OnPartitionRegistered += OnPartitionRegistered;
 
@@ -56,25 +62,12 @@ namespace Rime
 
         private void OnPartitionRegistered(DatabasePartitionBase p_Partition)
         {
-            Dispatcher.Invoke(() =>
-            {
-                m_TotalPartitionsLoaded++;
-
-                if (m_TotalPartitionsToLoad == 0)
-                    pbBar.Value = 0;
-                else
-                {
-                    var s_Percentage = (double)m_TotalPartitionsLoaded / (double)m_TotalPartitionsToLoad;
-                    pbBar.Value = s_Percentage * 100;
-                }
-
-                Logger.WriteLog(Logger.LogLevel.Info, $"Loaded partition {p_Partition.Name}");
-            });
+            Logger.WriteLog(Logger.LogLevel.Debug, $"Partition Mounted: {p_Partition.Name}");
         }
 
-        private void OnLogEntryAppended(object p_Sender, Logger.LogEntry p_Entry)
+        private void OnLogEntry(object p_Sender, Logger.LogEntry p_Entry)
         {
-            Dispatcher.Invoke(() =>
+            Dispatcher.BeginInvoke(() =>
             {
                 vbIcon.Child = m_LogImageMap[p_Entry.Level];
                 tbStatus.Text = p_Entry.Message;
@@ -83,8 +76,8 @@ namespace Rime
 
         private void OnRendererStarted(object? p_Sender, EventArgs p_E)
         {
-            //var s_Browser = new ObjectBrowser();
-            //s_Browser.Show();
+            var s_Browser = new ObjectBrowser();
+            s_Browser.Show();
             //MountAndSetup().Wait();
         }
 
@@ -105,7 +98,7 @@ namespace Rime
             await s_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
             await s_Mounter.MountSuperbundle("Win32/Levels/XP2_Skybar/XP2_Skybar", true);
 
-            /*if (!s_Mounter.TryGetResource("Systems/ShaderProgramDb", out var s_ShaderProgramDbRes))
+            if (!s_Mounter.TryGetResource("Systems/ShaderProgramDb", out var s_ShaderProgramDbRes))
                 return;
 
             using var s_ShaderProgramDbReader = s_ShaderProgramDbRes.FirstVariant.GetReader();
@@ -142,7 +135,7 @@ namespace Rime
             var s_Shader = s_ShaderDb.Databases[ShaderRenderPath.ShaderRenderPath_Dx11]
                 .Shaders["XP2/Objects/FlowerPot_01/FlowerPot_01_Shader"];
 
-            Renderer.RenderManager.DrawMesh(s_MeshSet, s_Shader, s_Mounter, s_ShaderProgramDb);*/
+            Renderer.RenderManager.DrawMesh(s_MeshSet, s_Shader, s_Mounter, s_ShaderProgramDb);
         }
 
         private void Window_Loaded(object p_Sender, RoutedEventArgs p_Event)
@@ -177,8 +170,6 @@ namespace Rime
             // Mount the game, without loading anything, should be faster
             await s_Project.Mounter.Mount(s_Project.GameDirectory, true, s_Project.EngineVersion);
 
-            m_TotalPartitionsToLoad = (ulong)s_Project.Mounter.GetPartitions().Count;
-
             new MapEditor(s_Project.Mounter, Logger);
 
             m_Project = s_Project;
@@ -206,6 +197,51 @@ namespace Rime
                 return false;
             }
             return true;
+        }
+
+        private async void mmuOpenProject_Click(object sender, RoutedEventArgs e)
+        {
+            var s_FileOpenDialog = new OpenFileDialog
+            {
+                Filter = "Rime Project Files (*.json)|*.json",
+                Multiselect = false,
+                Title = "Open Rime project..."
+            };
+
+            if (s_FileOpenDialog.ShowDialog() != true)
+                return;
+
+            var s_ProjectPath = s_FileOpenDialog.FileName;
+
+            var s_ProjectContents = File.ReadAllText(s_ProjectPath);
+
+            var s_Project = JsonSerializer.Deserialize<RimeProject>(s_ProjectContents);
+            if (s_Project is null)
+            {
+                Logger.WriteLog(Logger.LogLevel.Error, $"Could not deserialize RimeProject ({s_ProjectPath}).");
+                return;
+            }
+
+            // Create a new mounter
+            AssemblyUtils.LoadSupportAssembly(AssemblyType.Content, s_Project.EngineVersion);
+            AssemblyUtils.LoadSupportAssembly(AssemblyType.Serialization, s_Project.EngineVersion);
+            AssemblyUtils.LoadSupportAssembly(AssemblyType.Texture, s_Project.EngineVersion);
+
+            s_Project.Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(s_Project.EngineVersion);
+
+            Logger.WriteLog(Logger.LogLevel.Info, $"Mounting {s_Project.EngineVersion} game.");
+
+            // Mount the game, without loading anything, should be faster
+            await s_Project.Mounter.Mount(s_Project.GameDirectory, true, s_Project.EngineVersion);
+
+            await Task.Run(() =>
+            {
+                new MapEditor(s_Project.Mounter, Logger);
+            });
+            
+
+            m_Project = s_Project;
+            m_ProjectPath = s_ProjectPath;
         }
     }
 }

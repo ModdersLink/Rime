@@ -20,14 +20,18 @@ public static class PartitionRegistry
     {
         var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(p_Mounter.GetEngineType());
 
-        // TODO: Make async instead.
+        //// TODO: Make async instead.
         Parallel.ForEach(p_Mounter.GetPartitions(), (s_Kvp) =>
         {
-            var (s_Name, s_PartitionObj) = s_Kvp;
-            var s_Partition = s_Converter.FromPartitionObject(s_Name, s_PartitionObj.FirstVariant);
-            RegisterPartition(s_Partition);
-            if (OnPartitionRegistered != null)
-                OnPartitionRegistered(s_Partition);
+            Task.Run(() =>
+            {
+                var (s_Name, s_PartitionObj) = s_Kvp;
+                var s_Partition = s_Converter.FromPartitionObject(s_Name, s_PartitionObj.FirstVariant);
+                RegisterPartition(s_Partition);
+                if (OnPartitionRegistered != null)
+                    OnPartitionRegistered(s_Partition);
+            });
+
         });
     }
 

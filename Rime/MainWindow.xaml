@@ -22,6 +22,9 @@
                     <Separator/>
                     <MenuItem Header="Texture"/>
                 </MenuItem>
+                <MenuItem Header="Open">
+                    <MenuItem Header="Project" x:Name="mmuOpenProject" Click="mmuOpenProject_Click"/>
+                </MenuItem>
             </MenuItem>
             <MenuItem Header="Edit">
                 <MenuItem Command="Undo" />
