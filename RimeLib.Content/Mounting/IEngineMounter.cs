@@ -29,6 +29,8 @@ namespace RimeLib.Content.Mounting
 
     public interface IObjectVariant : IReadableObjectWithHash
     {
+        bool Cas { get; }
+
         string GetContainedSuperbundle();
         string? GetContainedBundle();
     }
@@ -37,7 +39,7 @@ namespace RimeLib.Content.Mounting
 
     public interface IChunkVariant : IChunkObject, IObjectVariant 
     {
-        bool Cas { get; }
+        
     }
 
     /// <summary>

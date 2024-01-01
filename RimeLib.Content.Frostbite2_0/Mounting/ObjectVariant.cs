@@ -1,4 +1,5 @@
-﻿using RimeLib.Content.Mounting;
+﻿using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
+using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
@@ -12,12 +13,17 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         protected IReadableObjectWithHash m_Readable;
         protected string m_ContainedSuperbundle;
         protected string? m_ContainedBundle;
+        protected bool m_Cas;
+
+        public bool Cas => m_Cas;
 
         public ObjectVariant(IReadableObjectWithHash p_Readable, string p_ContainedSuperbundle, string? p_ContainedBundle)
         {
             m_Readable = p_Readable;
             m_ContainedSuperbundle = p_ContainedSuperbundle;
             m_ContainedBundle = p_ContainedBundle;
+
+            m_Cas = (p_Readable is CatalogReadable || p_Readable is CasChunkEntry);
         }
 
         public RimeReader GetReader()
