@@ -31,6 +31,9 @@ public class DataContainerJsonConverter : JsonConverter<DataContainer>
             throw new Exception("DataContainer doesn't have a '$type' property.");
 
         var s_Type = s_Object["$type"]?.Value<string>();
+        
+        if (s_Type == null)
+            throw new Exception("DataContainer doesn't have a '$type' property.");
 
         var s_ContainerType = Type.GetType($"fb.{s_Type}");
 
