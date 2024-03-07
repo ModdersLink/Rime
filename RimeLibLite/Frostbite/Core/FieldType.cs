@@ -122,13 +122,27 @@
 
         /// <summary>
         /// Resource reference type
-        /// Added in Warsaw/fb2014
+        /// Added in Warsaw/fb2013
         /// </summary>
         ResourceRef,
 
+        
         /// <summary>
-        /// Count
+        /// Function/Delegate | Functiontypeinfo stuff
+        /// Added around fb2017
         /// </summary>
-        FieldTypeCount
+        Delegate,
+        
+        /// <summary>
+        /// Type reference type
+        /// Added around fb2017
+        /// </summary>
+        TypeRef,
+
+        /// <summary>
+        /// Boxed value refrerence
+        /// Added around fb2017
+        /// </summary>
+        BoxedValueRef,
     }
 }

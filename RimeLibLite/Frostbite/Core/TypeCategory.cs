@@ -5,6 +5,11 @@
         NotApplicable,
         Class,
         ValueType,
-        PrimitiveType
+        PrimitiveType,
+        
+        // fb2017 additions
+        ArrayType,
+        EnumType,
+        DelegateType,
     }
 }

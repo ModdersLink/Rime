@@ -3,20 +3,7 @@ using RimeLib.IO;
 
 namespace RimeLib.Frostbite.Core
 {
-    public enum MemberInfoFlagsEnum
-    {
-        MemberTypeMask = 0x3,
-        TypeCategoryShift = 0x2,
-        TypeCategoryMask = 0x3,
-        TypeCodeShift = 0x4,
-        TypeCodeMask = 0x1F,
-        Metadata = 0x800,
-        Homogeneous = 0x1000,
-        AlwaysPersist = 0x2000,
-        Exposed = 0x2000,
-        LayoutImmutable = 0x4000,
-        Blittable = 0x8000,
-    };
+   
 
     /// <summary>
     /// Implementation of fb::MemberInfoFlags
@@ -28,27 +15,19 @@ namespace RimeLib.Frostbite.Core
         /// </summary>
 	    public static int SizeOf => 2;
 
-        /// <summary>
-        /// Internal flag bits
-        /// </summary>
-        public ushort FlagBits { get; set; }
 
-        /// <summary>
-        /// Default Constructor
-        /// </summary>
-        public MemberInfoFlags(ushort p_Bits = 0)
-        {
-            FlagBits = p_Bits;
-        }
+        public MemberType Member { get; set; } = MemberType.Field;
+        public TypeCategory Category { get; set; } = TypeCategory.NotApplicable;
+        public FieldType Type { get; set; } = FieldType.Void;
 
-        /// <summary>
-        /// Constructor that reads flags from an opened reader
-        /// </summary>
-        /// <param name="p_Reader">Reader opened to the position of memberinfoflags</param>
-        public MemberInfoFlags(RimeReader p_Reader)
-        {
-            Deserialize(p_Reader);
-        }
+        public bool Metadata { get; set; } = false;
+        public bool Homogeneous { get; set; } = false;
+        public bool AlwaysPersist { get; set; } = false;
+        public bool Exposed { get; set; } = false;
+        public bool LayoutImmutable { get; set; } = false;
+        public bool Blittable { get; set; } = false;
+        
+     
 
         /// <summary>
         /// ToString
@@ -56,135 +35,110 @@ namespace RimeLib.Frostbite.Core
         /// <returns>Flag bits as a string</returns>
         public override string ToString()
         {
-            return FlagBits.ToString();
+            return $"({Member}, {Category}, {Type} | {Metadata}, {Homogeneous}, {AlwaysPersist}, {Exposed}, {LayoutImmutable}, {Blittable})";
         }
 
-        /// <summary>
-        /// Gets the Frostbite Field Type
-        /// </summary>
-        /// <returns>Field type</returns>
-        public FieldType GetFieldType()
-        {
-            return (FieldType)((FlagBits >> (ushort) MemberInfoFlagsEnum.TypeCodeShift) & (ushort) MemberInfoFlagsEnum.TypeCodeMask);
-        }
 
-        /// <summary>
-        /// Gets the Frostbite member type
-        /// </summary>
-        /// <returns>Member type</returns>
-        public MemberType GetMemberType()
-        {
-            return (MemberType)(FlagBits & (ushort) MemberInfoFlagsEnum.MemberTypeMask);
-        }
-
-        /// <summary>
-        /// Gets the Frostbite type category
-        /// </summary>
-        /// <returns>Type category</returns>
-        public TypeCategory GetTypeCategory()
-        {
-            return (TypeCategory)((FlagBits >> (ushort) MemberInfoFlagsEnum.TypeCategoryShift) & (ushort) MemberInfoFlagsEnum.TypeCategoryMask);
-        }
-
+        
         public void SetIsClass(bool p_IsField)
         {
             if (p_IsField)
-                FlagBits = (ushort)MemberType.Field;
+                Member = MemberType.Field;
             else
-                FlagBits = (ushort)MemberType.TypeInfo;
+                Member = MemberType.TypeInfo;
 
-            FlagBits |= (ushort)TypeCategory.Class << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
-            FlagBits |= (ushort)FieldType.Class << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            Category = TypeCategory.Class;
+            Type = FieldType.Class;
         }
 
         public void SetIsValueType(bool p_IsField)
         {
             if (p_IsField)
-                FlagBits = (ushort)MemberType.Field;
+                Member = MemberType.Field;
             else
-                FlagBits = (ushort)MemberType.TypeInfo;
+                Member = MemberType.TypeInfo;
 
-            FlagBits |= (ushort)TypeCategory.ValueType << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
-            FlagBits |= (ushort)FieldType.ValueType << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            Category = TypeCategory.ValueType;
+            Type = FieldType.ValueType;
         }
 
         public void SetIsPrimitive(bool p_IsField, Type p_PrimitiveType)
         {
             if (p_IsField)
-                FlagBits = (ushort)MemberType.Field;
+                Member = MemberType.Field;
             else
-                FlagBits = (ushort)MemberType.TypeInfo;
+                Member = MemberType.TypeInfo;
 
             if (p_PrimitiveType.IsEnum)
             {
-                FlagBits |= (ushort)TypeCategory.ValueType << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
-                FlagBits |= (ushort)FieldType.Enum << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                Category = TypeCategory.ValueType;
+                Type = FieldType.Enum;
                 return;
             }
 
-            FlagBits |= (ushort)TypeCategory.PrimitiveType << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
+            Category = TypeCategory.PrimitiveType;
 
             if (p_PrimitiveType == typeof(bool))
-                FlagBits |= (ushort)FieldType.Boolean << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                Type = FieldType.Boolean;
             else if (p_PrimitiveType == typeof(sbyte))
-                FlagBits |= (ushort)FieldType.Int8 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                Type = FieldType.Int8;
             else if (p_PrimitiveType == typeof(byte))
-                FlagBits |= (ushort)FieldType.UInt8 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                Type = FieldType.UInt8;
             else if (p_PrimitiveType == typeof(short))
-                FlagBits |= (ushort)FieldType.Int16 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                Type = FieldType.Int16;
             else if (p_PrimitiveType == typeof(ushort))
-                FlagBits |= (ushort)FieldType.UInt16 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                Type = FieldType.UInt16;
             else if (p_PrimitiveType == typeof(int))
-                FlagBits |= (ushort)FieldType.Int32 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                Type = FieldType.Int32;
             else if (p_PrimitiveType == typeof(uint))
-                FlagBits |= (ushort)FieldType.UInt32 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                Type = FieldType.UInt32;
             else if (p_PrimitiveType == typeof(long))
-                FlagBits |= (ushort)FieldType.Int64 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                Type = FieldType.Int64;
             else if (p_PrimitiveType == typeof(ulong))
-                FlagBits |= (ushort)FieldType.UInt64 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                Type = FieldType.UInt64;
             else if (p_PrimitiveType == typeof(float))
-                FlagBits |= (ushort)FieldType.Float32 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                Type = FieldType.Float32;
             else if (p_PrimitiveType == typeof(double))
-                FlagBits |= (ushort)FieldType.Float64 << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                Type = FieldType.Float64;
             else if (p_PrimitiveType == typeof(string))
-                FlagBits |= (ushort)FieldType.CString << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                Type = FieldType.CString;
             else if (p_PrimitiveType == typeof(GUID))
-                FlagBits |= (ushort)FieldType.Guid << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+                Type = FieldType.Guid;
             else
                 throw new Exception($"Unsupported primitive type '{p_PrimitiveType}'.");
         }
 
         public void SetIsVoid()
         {
-            FlagBits = (ushort)MemberType.Field;
-            FlagBits |= (ushort)TypeCategory.NotApplicable << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
-            FlagBits |= (ushort)FieldType.Void << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            Member = MemberType.Field;
+            Category = TypeCategory.NotApplicable;
+            Type = FieldType.Void;
         }
 
         public void SetIsArray(bool p_IsField)
         {
             if (p_IsField)
-                FlagBits = (ushort)MemberType.Field;
+                Member = MemberType.Field;
             else
-                FlagBits = (ushort)MemberType.TypeInfo;
+                Member = MemberType.TypeInfo;
 
-            FlagBits |= (ushort)TypeCategory.NotApplicable << (ushort)MemberInfoFlagsEnum.TypeCategoryShift;
-            FlagBits |= (ushort)FieldType.Array << (ushort)MemberInfoFlagsEnum.TypeCodeShift;
+            Category = TypeCategory.NotApplicable;
+            Type = FieldType.Array;
         }
 
         public void SetHomogenous()
         {
-            FlagBits |= (ushort)MemberInfoFlagsEnum.Homogeneous;
+            Homogeneous = true;
         }
 
         public void SetLayoutImmutable()
         {
-            FlagBits |= (ushort)MemberInfoFlagsEnum.LayoutImmutable;
+            LayoutImmutable = true;
         }
 
         public void SetBlittable()
         {
-            FlagBits |= (ushort)MemberInfoFlagsEnum.Blittable;
+            Blittable = true;
         }
 
         /// <summary>
@@ -194,7 +148,16 @@ namespace RimeLib.Frostbite.Core
         /// <returns>True if equal, false otherwise</returns>
         protected bool Equals(MemberInfoFlags other)
         {
-            return FlagBits == other.FlagBits;
+            return Member.Equals(other.Member) &&
+                   Category.Equals(other.Category) &&
+                   Type.Equals(other.Type) &&
+
+                   Metadata == other.Metadata &&
+                   Homogeneous == other.Homogeneous &&
+                   AlwaysPersist == other.Homogeneous &&
+                   Exposed == other.Homogeneous &&
+                   LayoutImmutable == other.Homogeneous &&
+                   Blittable == other.Homogeneous;
         }
 
         /// <summary>
@@ -216,7 +179,17 @@ namespace RimeLib.Frostbite.Core
         /// <returns>Hash code</returns>
         public override int GetHashCode()
         {
-            return FlagBits.GetHashCode();
+            return 11*Member.GetHashCode() +
+                   17*Category.GetHashCode() +
+                   23*Type.GetHashCode() +
+                   
+                   29*Metadata.GetHashCode() +
+                   37*Homogeneous.GetHashCode() +
+                   47*AlwaysPersist.GetHashCode() +
+                   59*Exposed.GetHashCode() +
+                   71*LayoutImmutable.GetHashCode() +
+                   89*Blittable.GetHashCode();
+            
         }
 
         /// <summary>
@@ -239,11 +212,6 @@ namespace RimeLib.Frostbite.Core
         public static bool operator !=(MemberInfoFlags left, MemberInfoFlags right)
         {
             return !Equals(left, right);
-        }
-
-        public void Deserialize(RimeReader p_Reader)
-        {
-            FlagBits = p_Reader.ReadUInt16();
         }
     }
 }

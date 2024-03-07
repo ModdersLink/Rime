@@ -190,7 +190,7 @@ public class EbxReader : IDisposable
                 
             p_Reader.Seek(s_FieldDescriptor.Offset, SeekOrigin.Begin);
 
-            if (s_FieldDescriptor.Flags.GetFieldType() == FieldType.Void)
+            if (s_FieldDescriptor.Flags.Type == FieldType.Void)
             {
                 ParseTypeInstance(p_Reader, m_TypeDescriptors[s_FieldDescriptor.FieldType], p_Instance, p_InstanceType);
                 continue;
@@ -214,7 +214,7 @@ public class EbxReader : IDisposable
                 continue;
             }
                 
-            switch (s_FieldDescriptor.Flags.GetFieldType())
+            switch (s_FieldDescriptor.Flags.Type)
             {
                 case FieldType.ValueType:
                     var s_StructDescriptor = m_TypeDescriptors[s_FieldDescriptor.FieldType];
@@ -244,7 +244,7 @@ public class EbxReader : IDisposable
                     s_PropertyType.SetValue(p_Instance, s_EnumValue);
                     break;
                 default:
-                    var s_Value = ParseSimpleType(p_Reader, s_FieldDescriptor.Flags.GetFieldType());
+                    var s_Value = ParseSimpleType(p_Reader, s_FieldDescriptor.Flags.Type);
                     s_PropertyType.SetValue(p_Instance, s_Value);
                     break;
             }
@@ -264,7 +264,7 @@ public class EbxReader : IDisposable
 
         m_Reader.Seek((int)(m_Header.MetaSize + m_Header.StringTableSize + m_Header.ArrayOffset + s_ArrayEntry.Offset), SeekOrigin.Begin);
 
-        switch (s_ArrayElementFieldDescriptor.Flags.GetFieldType())
+        switch (s_ArrayElementFieldDescriptor.Flags.Type)
         {
             case FieldType.Class:
             {
@@ -334,7 +334,7 @@ public class EbxReader : IDisposable
 
                 for (var j = 0; j < s_ArrayEntry.ElementCount; ++j)
                 {
-                    s_List!.Add(ParseSimpleType(m_Reader, s_ArrayElementFieldDescriptor.Flags.GetFieldType()));
+                    s_List!.Add(ParseSimpleType(m_Reader, s_ArrayElementFieldDescriptor.Flags.Type));
                 }
 
                 break;
