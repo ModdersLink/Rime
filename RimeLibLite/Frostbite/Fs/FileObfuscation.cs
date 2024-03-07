@@ -104,7 +104,13 @@ namespace RimeLib.Frostbite.Fs
                 //if (!s_XorKey.Skip(0x10).Take(0x10).SequenceEqual(c_CoreSeedPart))
                 //    p_OutReader = new XorRimeReader(p_Reader, s_XorKey.Select(x => (byte)(x ^ 0x7B)).ToArray());
                 if (!s_XorKey.Skip(0x10).Take(0x10).SequenceEqual(c_CoreSeedPart))
+                {
                     XorKey = s_XorKey.Select(x => (byte)(x ^ c_XorBaseKey)).ToArray();
+                    
+                    // if xorkey is a list if null bytes, then just set it to null.
+                    if (XorKey.SequenceEqual(new byte[0x101]))
+                        XorKey = null;
+                }
 
                 return true;
             }
@@ -179,9 +185,10 @@ namespace RimeLib.Frostbite.Fs
             p_OutInfo = new FileObfuscation();
 
             // how is the best way to handle if its headerless? (bf3 alpha. and cas(?))
+            // if we didnt read valid header, and we are allowed to bypass it
             if (!p_OutInfo.ReadData(p_Reader) && !p_AllowNoHeader)
                 throw new InvalidDataException(
-                    "Data passed to FileObfuscation does not have header Might be a DbObject file without obfuscation, and is not supported.");
+                    "Data passed to FileObfuscation does not have header. Might be a DbObject file without obfuscation, and is not handled.");
             
             // reader should be seeked right at this point.
             if (p_OutInfo.XorKey != null)
@@ -198,14 +205,12 @@ namespace RimeLib.Frostbite.Fs
             var s_Obfuscation = new FileObfuscation();
             
             // set xor key to 0, 0x7B will be applied later
-            // i beleive this will break reading of xored data next frame
             s_Obfuscation.XorKey = new byte[0x101];
 
             if (p_Key != null)
             {
                 try
                 {
-                    
                     s_Obfuscation.SignData(p_Data, (RSAParameters)p_Key);
                 }
                 catch (Exception e)
