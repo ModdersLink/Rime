@@ -21,7 +21,7 @@ public class DbObjectEnumerator : IEnumerator<DbObjectElement>
 	public bool MoveNext()
 	{
 		Index++;
-		return Index > 0 && Index < Object.Count;
+		return Index >= 0 && Index < Object.Count;
 	}
 	
 	public void Reset()
