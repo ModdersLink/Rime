@@ -1,0 +1,48 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// As type schemas dont contain full information, modifying  //
+// can be done to fix information thats wrong or missing.    //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System.Collections.Generic;
+using RimeLib.Ant.EA.Attributes;
+using RimeLib.Ant.EA.Types;
+
+namespace ant
+{
+
+	[AntBinding(0xe901eeab)]
+	public class StreetMoveGroupControllerAsset
+		: ControllerAsset
+	{
+		[AntField(0)]
+		public IdRef<BlendArrayAsset> BlendArrayControllerAsset { get; set; } = new();
+
+		[AntField(1)]
+		public IdRef<ActorControllerAsset> MasterControllerAsset { get; set; } = new();
+
+		[AntField(2)]
+		public float MasterLength { get; set; }
+
+		[AntField(3)]
+		public float MasterControllerPhaseOffset { get; set; }
+
+		[AntField(4)]
+		public bool Mirrored { get; set; }
+
+		[AntField(5)]
+		public bool OneToOneSpeed { get; set; }
+
+		[AntField(6)]
+		public IdRef<BoolAsset> Direction { get; set; } = new();
+
+		[AntField(7)]
+		public float DirectionTolerance { get; set; }
+
+		[AntField(8)]
+		public float MinSpeed { get; set; }
+
+	}
+}

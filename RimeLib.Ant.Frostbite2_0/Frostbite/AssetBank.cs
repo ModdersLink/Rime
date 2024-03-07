@@ -1,28 +1,58 @@
-﻿using RimeLib.Ant.Frostbite2_0.Frostbite;
+﻿using fb;
 using RimeLib.Ant.EA;
 using RimeLib.Ant.EA.GenericData;
 using RimeLib.Ant.EA.Reflection;
+using RimeLib.Ant.EA.Resolver;
 using RimeLib.Ant.EA.Types;
+using RimeLib.Ant.Frostbite.Resolver;
+using RimeLib.Frostbite;
 using RimeLib.IO;
 using System;
-using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace RimeLib.Ant.Frostbite2_0.EA
+namespace RimeLib.Ant.Frostbite2_0.Frostbite
 {
-    public class GeneralDataReader
+    public class AssetBank
         : IAssetBankLoader
     {
-        public GeneralDataReader(AssetBank p_Bank)
+        private IAssetResolver? LocalResolver { get; set; } = null;
+
+
+        public PackageMeta? Meta { get; set; } = null;
+        public RimeLib.Ant.EA.GenericData.Archive Archive { get; set; } = new();
+
+
+        public List<AntObject> Objects { get; set; } = new();
+
+        public IAssetResolver Resolver => (LocalResolver != null) ? LocalResolver : AssetResolver.Instance;
+
+        public AssetBank()
         {
-            Bank = p_Bank;
         }
 
-        private AssetBank Bank { get; set; }
+        public void Load(RimeReader p_Reader)
+        {
+            var s_LastEndianess = p_Reader.Endianness;
+            p_Reader.Endianness = RimeLib.IO.Conversion.Endianness.BigEndian;
 
+            var s_Type = (AntPackagingType)p_Reader.ReadUInt32();
+
+            if (s_Type == AntPackagingType.AntPackagingType_AnimationSet)
+                LocalResolver = new SimpleAssetResolver();
+            else
+                Meta = new PackageMeta(p_Reader);
+
+
+            //TODO: this should be better structured
+            Archive = new Archive(this);
+            Archive.Deserialize(p_Reader);
+
+            p_Reader.Endianness = s_LastEndianess;
+        }
 
 
         public void ParseData(RimeReader p_Reader, RimeLib.Ant.EA.GenericData.Data p_Data)
@@ -30,12 +60,12 @@ namespace RimeLib.Ant.Frostbite2_0.EA
             var s_Class = ParseClass(p_Reader, p_Data);
 
 
-            Bank.Resolver.RegisterObject(s_Class);
-            Bank.Objects.Add(s_Class);
+            Resolver.RegisterObject(s_Class);
+            Objects.Add(s_Class);
         }
 
 
-        private AntObject CreateObject(LayoutHeader p_Layout)
+        protected AntObject CreateObject(LayoutHeader p_Layout)
         {
             var s_ContainerType = Type.GetType($"ant.{p_Layout.Name.Replace(":", "_")}");
 
@@ -46,9 +76,9 @@ namespace RimeLib.Ant.Frostbite2_0.EA
         }
 
 
-        public AntObject ParseClass(RimeReader p_Reader, RimeLib.Ant.EA.GenericData.Data p_Data, long p_Offset = 0)
+        public  AntObject ParseClass(RimeReader p_Reader, RimeLib.Ant.EA.GenericData.Data p_Data, long p_Offset = 0)
         {
-            var s_Layout = Bank.Archive.Reflection?.Layouts.Where(x => x.Hash == p_Data.LayoutHash).First();
+            var s_Layout = Archive.Reflection?.Layouts.Where(x => x.Hash == p_Data.LayoutHash).First();
 
             if (s_Layout == null)
                 throw new InvalidDataException($"Couldnt not find layout for type hash {p_Data.LayoutHash:X08}.");
@@ -66,7 +96,7 @@ namespace RimeLib.Ant.Frostbite2_0.EA
             return s_Instance;
         }
 
-        private AntObject ParseStruct(RimeReader p_Reader, LayoutHeader p_Layout, long p_Offset = 0)
+        protected AntObject ParseStruct(RimeReader p_Reader, LayoutHeader p_Layout, long p_Offset = 0)
         {
             var s_Instance = CreateObject(p_Layout);
 
@@ -76,7 +106,7 @@ namespace RimeLib.Ant.Frostbite2_0.EA
             return s_Instance;
         }
 
-        private void ParseInstance(RimeReader p_Reader, LayoutHeader p_Layout, AntObject p_Instance, Type p_InstanceType, long p_Offset = 0)
+        protected virtual void ParseInstance(RimeReader p_Reader, LayoutHeader p_Layout, AntObject p_Instance, Type p_InstanceType, long p_Offset = 0)
         {
             if (p_Layout.IsBasicField)
             {
@@ -103,7 +133,7 @@ namespace RimeLib.Ant.Frostbite2_0.EA
                     if (!p_Instance.ContainsHash(s_Data.LayoutHash))
                         throw new Exception("Base class invalid!");
 
-                    var s_BaseLayout = Bank.Archive.Reflection?.Layouts.Where(x => x.Hash == s_Data.LayoutHash).First();
+                    var s_BaseLayout = Archive.Reflection?.Layouts.Where(x => x.Hash == s_Data.LayoutHash).First();
 
                     if (s_BaseLayout == null)
                         throw new InvalidDataException($"Couldnt not find layout for base class type hash {s_Data.LayoutHash:X08}.");
@@ -191,60 +221,60 @@ namespace RimeLib.Ant.Frostbite2_0.EA
                     switch (s_Slot.Type)
                     {
                         case LayoutType.Guid:
-                            {
+                        {
 
-                                var s_IdRef = s_PropertyType.GetValue(p_Instance) as IdRefBase;
-                                s_IdRef!.RefrenceId = new AntGuid(p_Reader);
-                                s_IdRef!.Resolver = Bank.Resolver;
-                            }
-                            break;
+                            var s_IdRef = s_PropertyType.GetValue(p_Instance) as IdRefBase;
+                            s_IdRef!.RefrenceId = new AntGuid(p_Reader);
+                            s_IdRef!.Resolver = Resolver;
+                        }
+                        break;
 
                         case LayoutType.String:
-                            {
-                                var s_Capacity = p_Reader.ReadUInt32();
-                                var s_Count = p_Reader.ReadUInt32();
-                                var s_Offset = p_Reader.ReadUInt32();
-                                p_Reader.Seek(s_Offset, SeekOrigin.Begin);
+                        {
+                            var s_Capacity = p_Reader.ReadUInt32();
+                            var s_Count = p_Reader.ReadUInt32();
+                            var s_Offset = p_Reader.ReadUInt32();
+                            p_Reader.Seek(s_Offset, SeekOrigin.Begin);
 
-                                // strings should ne null terminated as game doesnt check length on strings
-                                s_PropertyType.SetValue(p_Instance, p_Reader.ReadNullTerminatedString());
-                            }
-                            break;
+                            // strings should ne null terminated as game doesnt check length on strings
+                            s_PropertyType.SetValue(p_Instance, p_Reader.ReadNullTerminatedString());
+                        }
+                        break;
 
                         case LayoutType.DataRef:
+                        {
+                            var s_Offset = p_Reader.ReadInt64();
+
+                            if (s_Offset == 0)
                             {
-                                var s_Offset = p_Reader.ReadInt64();
-
-                                if (s_Offset == 0)
-                                {
-                                    s_PropertyType.SetValue(p_Instance, null);
-                                    break;
-                                }
-
-                                p_Reader.Seek(s_Offset, SeekOrigin.Begin);
-
-                                var s_Data = new Data(p_Reader);
-                                var s_Class = ParseClass(p_Reader, s_Data, s_Offset);
-
-                                s_PropertyType.SetValue(p_Instance, s_Class);
-                                //Parse(p_Reader, s_Data, s_Offset);
+                                s_PropertyType.SetValue(p_Instance, null);
+                                break;
                             }
-                            break;
+
+                            p_Reader.Seek(s_Offset, SeekOrigin.Begin);
+
+                            var s_Data = new Data(p_Reader);
+                            var s_Class = ParseClass(p_Reader, s_Data, s_Offset);
+
+                            s_PropertyType.SetValue(p_Instance, s_Class);
+                            //Parse(p_Reader, s_Data, s_Offset);
+                        }
+                        break;
 
 
                         default:
-                            {
-                                var s_Value = ParseSimpleType(p_Reader, s_Slot.Type);
-                                s_PropertyType.SetValue(p_Instance, s_Value);
-                            }
-                            break;
+                        {
+                            var s_Value = ParseSimpleType(p_Reader, s_Slot.Type);
+                            s_PropertyType.SetValue(p_Instance, s_Value);
+                        }
+                        break;
                     }
                 }
             }
         }
 
 
-        private void ParseConstArray(RimeReader p_Reader, EntryHeader p_Slot, PropertyInfo p_PropertyType, object p_Instance, long p_Offset)
+        protected virtual void ParseConstArray(RimeReader p_Reader, EntryHeader p_Slot, PropertyInfo p_PropertyType, object p_Instance, long p_Offset )
         {
             var s_Array = p_PropertyType.GetValue(p_Instance) as Array;
 
@@ -257,7 +287,7 @@ namespace RimeLib.Ant.Frostbite2_0.EA
             if (s_Layout == null)
                 throw new Exception("Array layout is null!");
 
-
+            
 
             // valuetype
             if (p_Slot.LayoutHash >= (uint)LayoutType.LayoutTypeCount_FB2)
@@ -278,67 +308,67 @@ namespace RimeLib.Ant.Frostbite2_0.EA
             switch (p_Slot.Type)
             {
                 case LayoutType.Guid:
+                {
+
+                    throw new Exception("This isnt working properly!");
+                    for (var i = 0; i < p_Slot.Count; i++)
                     {
+                        p_Reader.Seek(p_Offset + p_Slot.AlignIndexOffset(i), SeekOrigin.Begin);
 
-                        throw new Exception("This isnt working properly!");
-                        for (var i = 0; i < p_Slot.Count; i++)
-                        {
-                            p_Reader.Seek(p_Offset + p_Slot.AlignIndexOffset(i), SeekOrigin.Begin);
-
-                            var s_Guid = new AntGuid(p_Reader);
+                        var s_Guid = new AntGuid(p_Reader);
 
                             //TODO: fix..
-                            s_Array!.SetValue(new IdRef<AntObject>() { RefrenceId = s_Guid, Resolver = Bank.Resolver }, i);
+                        s_Array!.SetValue(new IdRef<AntObject>() { RefrenceId = s_Guid, Resolver = Resolver }, i);
 
                             //s_Array![i] = new IdRef<AntObject>() { RefrenceId = s_Guid };
-                        }
-                        break;
                     }
+                    break;
+                }
                 case LayoutType.DataRef:
+                {
+                    for (var i = 0; i < p_Slot.Count; i++)
                     {
-                        for (var i = 0; i < p_Slot.Count; i++)
+                        p_Reader.Seek(p_Offset + p_Slot.AlignIndexOffset(i), SeekOrigin.Begin);
+
+                        var s_DataRefOffset = p_Reader.ReadInt64();
+
+                        if (s_DataRefOffset == 0)
                         {
-                            p_Reader.Seek(p_Offset + p_Slot.AlignIndexOffset(i), SeekOrigin.Begin);
+                            s_Array!.SetValue(null, i);
 
-                            var s_DataRefOffset = p_Reader.ReadInt64();
-
-                            if (s_DataRefOffset == 0)
-                            {
-                                s_Array!.SetValue(null, i);
-
-                                //s_Array![i] = null;
-                                continue;
-                            }
-
-                            p_Reader.Seek(s_DataRefOffset, SeekOrigin.Begin);
-
-                            var s_Data = new Data(p_Reader);
-                            var s_Class = ParseClass(p_Reader, s_Data, s_DataRefOffset);
-
-                            s_Array!.SetValue(s_Class, i);
-                            //s_Array![i] = s_Class;
+                            //s_Array![i] = null;
+                            continue;
                         }
 
-                        break;
+                        p_Reader.Seek(s_DataRefOffset, SeekOrigin.Begin);
+
+                        var s_Data = new Data(p_Reader);
+                        var s_Class = ParseClass(p_Reader, s_Data, s_DataRefOffset);
+
+                        s_Array!.SetValue(s_Class, i);
+                        //s_Array![i] = s_Class;
                     }
+
+                    break;
+                }
                 default:
+                {
+
+                    for (var i = 0; i < p_Slot.Count; i++)
                     {
+                        p_Reader.Seek(p_Offset + p_Slot.AlignIndexOffset(i), SeekOrigin.Begin);
 
-                        for (var i = 0; i < p_Slot.Count; i++)
-                        {
-                            p_Reader.Seek(p_Offset + p_Slot.AlignIndexOffset(i), SeekOrigin.Begin);
-
-                            s_Array!.SetValue(ParseSimpleType(p_Reader, p_Slot.Type), i);
-                            //s_Array![i] = ParseSimpleType(p_Reader, p_Slot.Type);
-                        }
-
-                        break;
+                        s_Array!.SetValue(ParseSimpleType(p_Reader, p_Slot.Type), i);
+                        //s_Array![i] = ParseSimpleType(p_Reader, p_Slot.Type);
                     }
+
+                    break;
+                }
             }
 
         }
 
-        void ParseArray(RimeReader p_Reader, EntryHeader p_Slot, PropertyInfo p_PropertyType, object p_Instance)
+        protected virtual void ParseArray(RimeReader p_Reader, EntryHeader p_Slot, PropertyInfo p_PropertyType, object p_Instance)
         {
             var s_Layout = p_Slot.Layout;
 
@@ -356,7 +386,7 @@ namespace RimeLib.Ant.Frostbite2_0.EA
 
 
             // valuetype
-            if (p_Slot.LayoutHash >= (uint)LayoutType.LayoutTypeCount_FB2)
+            if( p_Slot.LayoutHash >= (uint)LayoutType.LayoutTypeCount_FB2)
             {
                 var s_List = p_PropertyType.GetValue(p_Instance) as System.Collections.IList;
 
@@ -375,67 +405,67 @@ namespace RimeLib.Ant.Frostbite2_0.EA
             switch (p_Slot.Type)
             {
                 case LayoutType.Guid:
+                {
+                    var s_List = p_PropertyType.GetValue(p_Instance);
+
+                    //var s_AddRef = s_List!.GetType().GetMethod("AddRef")!;
+
+                    var s_AddRef = s_List!.GetType().GetMethod("AddRef")!;
+
+                    for (var i = 0; i < s_Count; i++)
                     {
-                        var s_List = p_PropertyType.GetValue(p_Instance);
+                        p_Reader.Seek(s_Offset + s_AlignedSize * i, SeekOrigin.Begin);
 
-                        //var s_AddRef = s_List!.GetType().GetMethod("AddRef")!;
-
-                        var s_AddRef = s_List!.GetType().GetMethod("AddRef")!;
-
-                        for (var i = 0; i < s_Count; i++)
-                        {
-                            p_Reader.Seek(s_Offset + s_AlignedSize * i, SeekOrigin.Begin);
-
-                            var s_Guid = new AntGuid(p_Reader);
-                            s_AddRef.Invoke(s_List, new object[] { s_Guid, Bank.Resolver });
-                        }
-                        break;
+                        var s_Guid = new AntGuid(p_Reader);
+                        s_AddRef.Invoke(s_List, new object[] { s_Guid, Resolver });
                     }
+                    break;
+                }
                 case LayoutType.DataRef:
+                {
+                    var s_List = p_PropertyType.GetValue(p_Instance) as System.Collections.IList;
+
+
+                    for (var i = 0; i < s_Count; i++)
                     {
-                        var s_List = p_PropertyType.GetValue(p_Instance) as System.Collections.IList;
+                        p_Reader.Seek(s_Offset + s_AlignedSize * i, SeekOrigin.Begin);
 
+                        var s_DataRefOffset = p_Reader.ReadInt64();
 
-                        for (var i = 0; i < s_Count; i++)
+                        if (s_DataRefOffset == 0)
                         {
-                            p_Reader.Seek(s_Offset + s_AlignedSize * i, SeekOrigin.Begin);
-
-                            var s_DataRefOffset = p_Reader.ReadInt64();
-
-                            if (s_DataRefOffset == 0)
-                            {
-                                s_List!.Add(null);
-                                continue;
-                            }
-
-                            p_Reader.Seek(s_DataRefOffset, SeekOrigin.Begin);
-
-                            var s_Data = new Data(p_Reader);
-                            var s_Class = ParseClass(p_Reader, s_Data, s_DataRefOffset);
-
-                            s_List!.Add(s_Class);
+                            s_List!.Add(null);
+                            continue;
                         }
 
-                        break;
+                        p_Reader.Seek(s_DataRefOffset, SeekOrigin.Begin);
+
+                        var s_Data = new Data(p_Reader);
+                        var s_Class = ParseClass(p_Reader, s_Data, s_DataRefOffset);
+
+                        s_List!.Add(s_Class);
                     }
+
+                    break;
+                }
                 default:
+                {
+                    var s_List = p_PropertyType.GetValue(p_Instance) as System.Collections.IList;
+
+                    for (var i = 0; i < s_Count; i++)
                     {
-                        var s_List = p_PropertyType.GetValue(p_Instance) as System.Collections.IList;
+                        p_Reader.Seek(s_Offset + s_AlignedSize * i, SeekOrigin.Begin);
 
-                        for (var i = 0; i < s_Count; i++)
-                        {
-                            p_Reader.Seek(s_Offset + s_AlignedSize * i, SeekOrigin.Begin);
-
-                            s_List!.Add(ParseSimpleType(p_Reader, p_Slot.Type));
-                        }
-
-                        break;
+                        s_List!.Add(ParseSimpleType(p_Reader, p_Slot.Type));
                     }
+
+                    break;
+                }
             }
 
         }
 
-        private object ParseSimpleType(RimeReader p_Reader, LayoutType p_Type)
+        protected object ParseSimpleType(RimeReader p_Reader, LayoutType p_Type)
         {
             switch (p_Type)
             {
