@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
@@ -9,7 +9,7 @@ using RimeLib.IO.Conversion;
 
 namespace RimeLib.Texture.Frostbite2_0.Frostbite;
 
-public class DxTexture : IFbSerializable, ITexture
+public class Ps3Texture : IFbSerializable, ITexture
 {
     public uint Version { get; set; } = 10;
     public TextureType Type { get; set; }
@@ -28,7 +28,7 @@ public class DxTexture : IFbSerializable, ITexture
     public uint ResourceNameHash { get; set; }
     public string TextureGroup { get; set; } = "Default";
 
-    public DxTexture()
+    public Ps3Texture()
     {
 
     }
@@ -38,7 +38,7 @@ public class DxTexture : IFbSerializable, ITexture
     /// This will read out the ITexture structure at an opened stream where the position is at a ITexture structure in the data
     /// </summary>
     /// <param name="p_Reader">Reference to an IceReader class</param>
-    public DxTexture(RimeReader p_Reader)
+    public Ps3Texture(RimeReader p_Reader)
     {
         Deserialize(p_Reader);
     }
@@ -46,7 +46,7 @@ public class DxTexture : IFbSerializable, ITexture
     public bool Serialize(RimeWriter p_Writer)
     {
         var s_PrevEndianness = p_Writer.Endianness;
-        p_Writer.Endianness = Endianness.LittleEndian;
+        p_Writer.Endianness = Endianness.BigEndian;
         
         p_Writer.Write(Version);
         p_Writer.Write((uint)Type);
@@ -96,30 +96,27 @@ public class DxTexture : IFbSerializable, ITexture
     public void Deserialize(RimeReader p_Reader)
     {
         var s_PrevEndianness = p_Reader.Endianness;
-        p_Reader.Endianness = Endianness.LittleEndian;
+        p_Reader.Endianness = Endianness.BigEndian;
 
-        Version = p_Reader.ReadUInt32();
+        Version = p_Reader.ReadUInt32(); //0x0000
         
-        if (Version == 110)
-            throw new Exception($"MOHWF texture (version 110) has a shift in TextureFormat. Not compatible.");
-
         if (Version != 10)
             throw new Exception($"Unsupported texture version '{Version}'. Expected '10'.");
 
-        Type = (TextureType) p_Reader.ReadUInt32();
-        Format = (TextureFormat) p_Reader.ReadUInt32();
+        Type = (TextureType) p_Reader.ReadUInt32(); //0x0004
+        Format = (TextureFormat) p_Reader.ReadUInt32(); //0x0008
 
         if (Format >= TextureFormat.TextureFormat_Unknown)
             throw new Exception($"Unsupported texture format '{Format}.");
 
-        Flags = (TextureFlags) p_Reader.ReadUInt32();
-        Width = p_Reader.ReadInt16();
-        Height = p_Reader.ReadInt16();
-        Depth = p_Reader.ReadInt16();
-        SliceCount = p_Reader.ReadInt16();
-        Unused0 = p_Reader.ReadInt16();
-        MipmapCount = p_Reader.ReadUByte();
-        MipmapBaseIndex = p_Reader.ReadUByte();
+        Flags = (TextureFlags) p_Reader.ReadUInt32(); //0x000C
+        Width = p_Reader.ReadInt16(); //0x0010
+        Height = p_Reader.ReadInt16(); //0x0012
+        Depth = p_Reader.ReadInt16(); //0x0014
+        SliceCount = p_Reader.ReadInt16(); //0x0016
+        Unused0 = p_Reader.ReadInt16(); //0x0018
+        MipmapCount = p_Reader.ReadUByte(); //0x001A
+        MipmapBaseIndex = p_Reader.ReadUByte(); //0x001B
         StreamingChunkId = new GUID(p_Reader);
 
         MipmapSizes = new uint[15];

@@ -27,11 +27,26 @@ public class TextureConverter : ITextureConverter
 
     public void ConvertToDDS(IResourceObject p_Resource, IEngineMounter p_Mounter, RimeWriter p_OutputWriter)
     {
-        if (p_Resource.GetResourceType() != ResourceType.DxTexture)
-            throw new ArgumentException("This converter only supports DxTexture resources.", nameof(p_Resource));
+        if (p_Resource.GetResourceType() != ResourceType.DxTexture &&
+            p_Resource.GetResourceType() != ResourceType.Ps3Texture)
+            throw new ArgumentException("This converter only supports DxTexture and Ps3Texture resources.", nameof(p_Resource));
 
         using var s_ResourceReader = p_Resource.GetReader();
-        var s_Header = new DxTexture(s_ResourceReader);
+
+        ITexture? s_Header = null;
+        switch (p_Resource.GetResourceType())
+        {
+        case ResourceType.DxTexture:
+            s_Header = new DxTexture(s_ResourceReader);
+            break;
+        case ResourceType.Ps3Texture:
+            s_Header = new Ps3Texture(s_ResourceReader);
+            break;
+        }
+
+        if (s_Header == null)
+            throw new Exception("Header is null, this should never occur");
+        
         
         // Try to find the chunk for this texture.
         if (!p_Mounter.TryGetChunk(s_Header.StreamingChunkId, out var s_Chunk))
@@ -468,7 +483,7 @@ public class TextureConverter : ITextureConverter
         }
     }
 
-    private static DDSCaps CapsFromTexture(DxTexture p_Texture)
+    private static DDSCaps CapsFromTexture(ITexture p_Texture)
     {
         var s_Caps = DDSCaps.Texture;
         
@@ -491,7 +506,7 @@ public class TextureConverter : ITextureConverter
         return s_Caps;
     }
 
-    private static DDSCaps2 Caps2FromTexture(DxTexture p_Texture)
+    private static DDSCaps2 Caps2FromTexture(ITexture p_Texture)
     {
         DDSCaps2 s_Caps = 0;
         
@@ -510,7 +525,7 @@ public class TextureConverter : ITextureConverter
         return s_Caps;
     }
 
-    private static DDSResoruceDimension ResourceDimensionFromTexture(DxTexture p_Texture)
+    private static DDSResoruceDimension ResourceDimensionFromTexture(ITexture p_Texture)
     {
         switch (p_Texture.Type)
         {
@@ -533,7 +548,7 @@ public class TextureConverter : ITextureConverter
         return 0;
     }
 
-    private static DDSMiscFlag1 MiscFlag1FromTexture(DxTexture p_Texture)
+    private static DDSMiscFlag1 MiscFlag1FromTexture(ITexture p_Texture)
     {
         switch (p_Texture.Type)
         {
@@ -545,7 +560,7 @@ public class TextureConverter : ITextureConverter
         return 0;
     }
 
-    private static uint ArraySizeFromTexture(DxTexture p_Texture)
+    private static uint ArraySizeFromTexture(ITexture p_Texture)
     {
         switch (p_Texture.Type)
         {
@@ -557,7 +572,7 @@ public class TextureConverter : ITextureConverter
         return 0;
     }
 
-    private static DDSFlags DDSFlagsFromTexture(DxTexture p_Texture)
+    private static DDSFlags DDSFlagsFromTexture(ITexture p_Texture)
     {
         // Start with the required flags for all textures
         var s_Flags = DDSFlags.Caps | DDSFlags.Height | DDSFlags.Width | DDSFlags.PixelFormat;
@@ -582,7 +597,7 @@ public class TextureConverter : ITextureConverter
         return s_Flags;
     }
 
-    private static Format DXGIFormatFromTexture(DxTexture p_Texture, bool p_IgnoreSrgb = false)
+    private static Format DXGIFormatFromTexture(ITexture p_Texture, bool p_IgnoreSrgb = false)
     {
         var s_IsSrgb = !p_IgnoreSrgb && (p_Texture.Flags & TextureFlags.SrgbGamma) != 0;
 
@@ -622,7 +637,7 @@ public class TextureConverter : ITextureConverter
         };
     }
 
-    private static DDSPixelFormat PixelFormatFromTexture(DxTexture p_Texture)
+    private static DDSPixelFormat PixelFormatFromTexture(ITexture p_Texture)
     {
         if (TextureUtils.c_DDSFormatMap.TryGetValue(p_Texture.Format, out var s_Format))
             return s_Format;
@@ -640,7 +655,7 @@ public class TextureConverter : ITextureConverter
         };
     }
 
-    private static DDSHeader GenerateDDSHeader(DxTexture p_Texture)
+    private static DDSHeader GenerateDDSHeader(ITexture p_Texture)
     {
         var s_DXGIFormat = DXGIFormatFromTexture(p_Texture);
         var s_PixelFormat = PixelFormatFromTexture(p_Texture);
