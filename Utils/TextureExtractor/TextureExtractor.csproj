@@ -2,11 +2,12 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <Platforms>x64</Platforms>
+    <TargetFramework>net8.0</TargetFramework>
+    <Platforms>AnyCPU</Platforms>
 	<OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
 	<AllowUnsafeBlocks>False</AllowUnsafeBlocks>
 	<LangVersion>default</LangVersion>
+	<Configurations>Release;Debug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

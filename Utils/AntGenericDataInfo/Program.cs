@@ -10,7 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using RimeLib;
-using Rimelib.Ant.Frostbite2_0.Frostbite;
+using RimeLib.Ant.Frostbite2_0.Frostbite;
 using RimeLib.Ant.EA.Readers;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using RimeLib.Serialization;
