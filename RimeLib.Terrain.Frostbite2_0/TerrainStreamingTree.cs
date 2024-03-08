@@ -9,6 +9,10 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using RimeLib.Terrain.Frostbite;
+using RimeLib.Terrain.Frostbite.Destruction;
+using RimeLib.Terrain.Frostbite.Heightfield;
+using RimeLib.Terrain.Frostbite.TerrainMaterial;
 
 namespace RimeLib.Terrain.Frostbite2_0
 {
@@ -22,7 +26,7 @@ namespace RimeLib.Terrain.Frostbite2_0
             s_Node.ID = p_NodeId;
             s_Node.Lod0ChunkSize = p_Reader.ReadUInt32();
             s_Node.Lod0ChunkID = new GUID(p_Reader);
-            s_Node.TreeNode = (GetHeightfieldTree() as HeightfieldTree)!.FindNode(p_NodeId);
+            s_Node.TreeNode = (HeightfieldTree as HeightfieldTree)!.FindNode(p_NodeId);
 
             var s_Lod1Enabled = p_Reader.ReadBool();
 

@@ -6,6 +6,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using RimeLib.Terrain.Frostbite;
+using RimeLib.Terrain.Frostbite.Destruction;
+using RimeLib.Terrain.Frostbite.TerrainMaterial;
 
 namespace RimeLib.Terrain.Frostbite3
 {
