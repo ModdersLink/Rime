@@ -1,0 +1,29 @@
+using System.Diagnostics.CodeAnalysis;
+using RimeLib.Content.Frostbite;
+using RimeLib.Content.Mounting;
+
+namespace RimeLib.Content.Frostbite2013_2.Mounting;
+
+internal class ResourceVariant : ObjectVariant, IResourceVariant
+{
+	protected ResourceType m_Type;
+	protected byte[]? m_Meta;
+
+	public ResourceVariant(IReadableObjectWithHash p_Readable, ResourceType p_Type, byte[]? p_Meta, string p_ContainedSuperbundle, string? p_ContainedBundle) :
+		base(p_Readable, p_ContainedSuperbundle, p_ContainedBundle)
+	{
+		m_Type = p_Type;
+		m_Meta = p_Meta;
+	}
+
+	public ResourceType GetResourceType()
+	{
+		return m_Type;
+	}
+
+	public bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta)
+	{
+		p_Meta = m_Meta;
+		return m_Meta != null;
+	}
+}

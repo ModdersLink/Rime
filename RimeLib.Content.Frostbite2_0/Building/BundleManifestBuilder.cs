@@ -29,7 +29,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
             Checksum = new Sha1();
 
             // Populate the header.
-            m_Header.Magic = BundleManifest.c_ManifestEbx ^ 0x7A11F1AB;
+            // some way to check if descriptor entries are dbx?
+            m_Header = new BundleManifest.Header();
 
             m_Header.EbxCount = p_Descriptor.Partitions.Count;
             m_Header.ResourceCount = p_Descriptor.Resources.Count;

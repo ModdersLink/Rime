@@ -61,6 +61,9 @@ namespace RimeLib.Frostbite.Core
         {
             throw new NotImplementedException();
         }
+        //public static implicit operator ResourceRef(ulong p_Elem) => new(p_Elem);
+        public static implicit operator ResourceRef(long p_Elem) => new((ulong)p_Elem);
+        public static implicit operator ulong(ResourceRef p_Elem) => p_Elem.Id;
 
         /// <summary>
         /// Produces string representation of id in hex

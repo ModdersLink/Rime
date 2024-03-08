@@ -285,7 +285,10 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         // Size = 32
         public class Header
         {
-            public uint Magic { get; set; } // 0
+            public const uint c_ManifestEbx = 0xED1CEDB8;
+            public const uint c_ManifestDbx = 0xFE1FBEEF;
+
+            public uint Magic { get; set; } = c_ManifestEbx; // 0
             public int EntryCount { get; set; } // 4
             public int EbxCount { get; set; } // 8
             public int ResourceCount { get; set; } // 12
@@ -294,6 +297,11 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             public int ChunkMetaOffset { get; set; } // 24
             public int ChunkMetaSize { get; set; } // 28
 
+
+            public uint XorMagix => Magic ^ 0x7A11F1AB;
+            public bool IsDbx => XorMagix == c_ManifestDbx;
+            public bool IsEbx => XorMagix == c_ManifestEbx;
+            
             public Header(RimeReader p_Reader)
             {
                 Magic = p_Reader.ReadUInt32();
@@ -306,8 +314,12 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
                 ChunkMetaSize = p_Reader.ReadInt32();
             }
 
-            public Header()
+            public Header(bool p_IsDbx = false)
             {
+                if (p_IsDbx)
+                    this.Magic = c_ManifestDbx;
+                else
+                    this.Magic = c_ManifestEbx;
             }
 
             public void Serialize(RimeWriter p_Writer)
@@ -384,8 +396,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             }
         }
 
-        public const uint c_ManifestEbx = 0xED1CEDB8;
-        public const uint c_ManifestDbx = 0xFE1FBEEF;
+      
 
         private readonly Header m_Header;
         private readonly uint m_ManifestSize;
@@ -422,10 +433,10 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             m_Header = new Header(p_Reader);
 
             
-            if ((m_Header.Magic ^ 0x7A11F1AB) == c_ManifestDbx)
+            if (m_Header.IsDbx)
                 throw new Exception($"Tried to load a dbx BundleManifest ({m_Header.Magic:X8}).");
             
-            if ((m_Header.Magic ^ 0x7A11F1AB) != c_ManifestEbx)
+            if (!m_Header.IsEbx)
                 throw new Exception($"Tried to load an unsupported BundleManifest ({m_Header.Magic:X8}).");
 
             // Read the contained entry SHA1s

@@ -206,6 +206,12 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             p_Resource = null;
             return false;
         }
+        
+        public bool TryGetResource(ResourceRef p_Ref, [NotNullWhen(true)] out IMountedObject<IResourceVariant>? p_Resource)
+        {
+            throw new NotImplementedException("ResourceRef not supported on fb2");
+        }
+
 
         public bool TryGetResourceByHashLower(uint p_Hash, [NotNullWhen(true)] out IMountedObject<IResourceVariant>? p_Resource)
         {
@@ -263,6 +269,12 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         {
             return m_MountedPartitions.ToDictionary(p_Pair => p_Pair.Key, p_Pair => p_Pair.Value as IMountedObject);
         }
+        
+        public IReadOnlyDictionary<string, IMountedObject>  GetDbxPartitions()
+        {
+            return new Dictionary<string, IMountedObject>();
+        }
+
 
         public IEnumerable<string> GetBundlesInSuperbundle(string p_Superbundle)
         {
