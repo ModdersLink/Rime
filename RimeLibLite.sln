@@ -107,6 +107,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InitFsTool", "Utils\InitFsT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Content.Frostbite2013_2", "RimeLib.Content.Frostbite2013_2\RimeLib.Content.Frostbite2013_2.csproj", "{6A3D1518-3484-4CE6-8E10-EE099FDB3F94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Content.Frostbite2014_4", "RimeLib.Content.Frostbite2014_4\RimeLib.Content.Frostbite2014_4.csproj", "{BE55CD52-DF0D-4C0F-84A7-25C9F05CE1AE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -478,6 +480,14 @@ Global
 		{6A3D1518-3484-4CE6-8E10-EE099FDB3F94}.Release|Any CPU.Build.0 = Release|Any CPU
 		{6A3D1518-3484-4CE6-8E10-EE099FDB3F94}.Release|x64.ActiveCfg = Release|Any CPU
 		{6A3D1518-3484-4CE6-8E10-EE099FDB3F94}.Release|x64.Build.0 = Release|Any CPU
+		{BE55CD52-DF0D-4C0F-84A7-25C9F05CE1AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE55CD52-DF0D-4C0F-84A7-25C9F05CE1AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE55CD52-DF0D-4C0F-84A7-25C9F05CE1AE}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{BE55CD52-DF0D-4C0F-84A7-25C9F05CE1AE}.Debug|x64.Build.0 = Debug|Any CPU
+		{BE55CD52-DF0D-4C0F-84A7-25C9F05CE1AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE55CD52-DF0D-4C0F-84A7-25C9F05CE1AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE55CD52-DF0D-4C0F-84A7-25C9F05CE1AE}.Release|x64.ActiveCfg = Release|Any CPU
+		{BE55CD52-DF0D-4C0F-84A7-25C9F05CE1AE}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
