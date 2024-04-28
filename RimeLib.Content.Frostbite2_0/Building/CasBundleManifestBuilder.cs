@@ -6,6 +6,7 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace RimeLib.Content.Frostbite2_0.Building
@@ -61,12 +62,16 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     s_ResourceMetadata = s_MetaData;
                 }
 
-                m_Header.ResourceEntries[s_ResourceIndex].Name = s_ResourceName;
-                m_Header.ResourceEntries[s_ResourceIndex].ResourceType = (int)s_ResourceObject.GetResourceType();
-                m_Header.ResourceEntries[s_ResourceIndex].Hash = s_ResourceVariant.GetSha1() ?? new Sha1();
-                m_Header.ResourceEntries[s_ResourceIndex].Meta = s_ResourceMetadata;
-
+                m_Header.ResourceEntries[s_ResourceIndex] = new CasBundle.Resource
+                {
+                    Name = s_ResourceName,
+                    ResourceType = (int)s_ResourceObject.GetResourceType(),
+                    Hash = s_ResourceVariant.GetSha1() ?? new Sha1(),
+                    Meta = s_ResourceMetadata
+                };
             }
+
+            
 
             // Write all of the entries for chunks
             for (var s_ChunkIndex = 0; s_ChunkIndex < m_Descriptor.Chunks.Count; s_ChunkIndex++)
@@ -78,27 +83,41 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 using var s_ChunkReader = s_ChunkObject.GetReader();
 
-                var s_ChunkHash = new Sha1(s_ChunkReader);
+                var s_DecompressedData = s_ChunkReader.ReadBytes((int)s_ChunkReader.Length);
 
-                m_Header.ChunkEntries[s_ChunkIndex].Id = s_ChunkId;
-                m_Header.ChunkEntries[s_ChunkIndex].Hash = s_ChunkHash;
-                m_Header.ChunkEntries[s_ChunkIndex].Size = s_ChunkReader.Length;
+                var s_ChunkHash = Sha1.FromData(s_DecompressedData);
 
-                var s_Resource = m_Header.ResourceEntries.FirstOrDefault(p_Entry => p_Entry.Hash == s_ChunkHash);
-                if (s_Resource == null)
-                    throw new Exception("Could not find the resource for this chunk.");
+                m_Header.ChunkEntries[s_ChunkIndex] = new CasBundle.Chunk
+                {
+                    Id = s_ChunkId,
+                    Hash = s_ChunkHash,
+                    Size = s_ChunkReader.Length
+                };
 
                 // Copy the chunk meta if it exists
                 if (s_ChunkObject.TryGetMeta(out DbObject? s_MetaData))
                 {
-                    
+                    var s_DbObject = DbObjectConverter.FromDbObject<ChunkEntry.ChunkMetaEntry>(s_MetaData);
+                    m_Header.ChunkMeta[s_ChunkIndex] = s_DbObject;
                 }
+                else
+                    m_Header.ChunkMeta[s_ChunkIndex] = new ChunkEntry.ChunkMetaEntry(); // TODO: Fix this
 
-                m_Header.ChunkMeta[s_ChunkIndex].AssetNameHash = (int)RimeLib.Frostbite.Utils.HashQuick(s_Resource.Name); // TODO: Figure out the corelation
-                m_Header.ChunkMeta[s_ChunkIndex].Payload = new ChunkEntry.ChunkMetaPayload
-                {
-                    // TODO: Figure out what goes in here
-                };
+                /*
+                 * NOTE FOR FUTURE ME:
+                 * Currently the serialization works, and Rime can at least read the cas superbundle, with the cas bundles
+                 * with a chunk added to the bundle from existing CAS
+                 * 
+                 * This was mounted using the mount_standalone_sb
+                 * 
+                 * There are a few points that have to be investigated before this can be set as "working"
+                 * 
+                 * 1. Investigate why ChunkMeta != ChunkEntries for our built bundles, for whatever reason the above code in TryGetMeta returns null
+                 * for certain chunks, that when loading *should* exist from retail bf3 bundles
+                 * 
+                 * 2. For the ebx entries, check if the OriginalSize == Size always, or if they differ and under what circumstances they differ
+                 * and fix that in the serialization code
+                 */
             }
 
             for (var s_PartitionIndex = 0; s_PartitionIndex < m_Descriptor.Partitions.Count; ++s_PartitionIndex)
@@ -113,10 +132,13 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 var s_PartitionHash = new Sha1(s_PartitionReader);
 
-                m_Header.EbxEntries[s_PartitionIndex].Name = s_PartitionName;
-                m_Header.EbxEntries[s_PartitionIndex].Size = s_ParititionSize;
-                m_Header.EbxEntries[s_PartitionIndex].OriginalSize = s_ParititionSize; // TODO: What
-                m_Header.EbxEntries[s_PartitionIndex].Hash = s_PartitionHash;
+                m_Header.EbxEntries[s_PartitionIndex] = new CasBundle.Ebx
+                {
+                    Name = s_PartitionName,
+                    Size = s_ParititionSize,
+                    OriginalSize = s_ParititionSize, // TODO: Investigate are these the same
+                    Hash = s_PartitionHash
+                };
             }
 
             // Convert the CasBundle header to the DbObject data
@@ -124,7 +146,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 throw new Exception("could not convert the header data.");
 
             // Update the checksum
-            Checksum = new Sha1(s_Data);
+            Checksum = Sha1.FromData(s_Data);
 
             // Write out the data
             p_Writer.Write(s_Data);

@@ -51,10 +51,24 @@ namespace Rime.Utils.RimeREPL
                 s_Output = TextWriter.Null;
 
             ExecutionContext s_Context = new BaseContext();
-            
+            ExecutionContext s_StartingContext = s_Context;
+
+            bool s_DropToRepl = false;
             foreach (var s_Line in File.ReadLines(p_CommandsFile))
             {
+                if (s_Line == "DROP")
+                {
+                    s_DropToRepl = true;
+                    continue;
+                }
+                
                 s_Context.ProcessCommand(s_Line, s_Output, out s_Context);
+            }
+
+            if (s_DropToRepl)
+            {
+                var s_REPL = new REPL((BaseContext?)s_StartingContext);
+                s_REPL.Process();
             }
         }
     }

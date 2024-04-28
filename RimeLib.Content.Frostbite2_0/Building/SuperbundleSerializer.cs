@@ -72,6 +72,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             // Write chunk data to sb.
             using var s_ChunkReader = p_Chunk.GetReader();
 
+            // TODO: Eventually replace this with a more "proper" workaround
             if (p_Id.HasCompressionFlag())
                 ((s_ChunkReader.BaseStream as RimeReader)?.BaseStream as RimeReader)?.CopyTo(p_SbWriter);
             else

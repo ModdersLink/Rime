@@ -17,9 +17,15 @@ namespace Rime.Utils.RimeREPL
         private List<string> m_Suggestions = new List<string>();
         private int m_SuggestionIndex = -1;
 
-        public REPL()
+        public REPL(BaseContext? p_Context = null)
         {
-            m_Context = new BaseContext();
+            if (p_Context == null)
+            {
+                m_Context = new BaseContext();
+                return;
+            }
+
+            m_Context = p_Context;
         }
 
         public void Process()
