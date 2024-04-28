@@ -59,8 +59,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
         private void SerializeChunk(GUID p_Id, IChunkObject p_Chunk, RimeWriter p_SbWriter)
         {
-            if (p_Id.HasCompressionFlag())
-                throw new Exception("Packing compressed chunks is not currently supported.");
+            //if (p_Id.HasCompressionFlag())
+            //    throw new Exception("Packing compressed chunks is not currently supported.");
 
             var s_ChunkInfo = new ChunkInfo
             {
@@ -71,7 +71,11 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             // Write chunk data to sb.
             using var s_ChunkReader = p_Chunk.GetReader();
-            s_ChunkReader.CopyTo(p_SbWriter);
+
+            if (p_Id.HasCompressionFlag())
+                ((s_ChunkReader.BaseStream as RimeReader)?.BaseStream as RimeReader)?.CopyTo(p_SbWriter);
+            else
+                s_ChunkReader.CopyTo(p_SbWriter);
 
             // Add chunk info to layout.
             m_Chunks.Add(s_ChunkInfo);

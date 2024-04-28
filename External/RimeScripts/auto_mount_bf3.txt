@@ -1,1 +1,14 @@
 mount_game "D:\Program Files\EAGames\Battlefield 3" Frostbite2_0 true
+select_game 1
+mount_bundle win32/levels/sp_paris/sp_paris
+list_bundle_chunks win32/levels/sp_paris/sp_paris
+exit
+build_sb mysb Frostbite2_0 ./ true
+add_existing_chunk 9b2eee17-3fc9-31ba-f46b-39f3a0c34905 1
+add_existing_chunk 45f85ee4-e2e3-64e4-c828-6fd4c9000a5c 1
+add_existing_chunk c2b38395-4bf0-3b84-320c-fef8834ace02 1
+add_existing_chunk c6aa4180-4394-81bc-67c3-8b01f8cc21d0 1
+add_existing_chunk 3f5e0bc7-c0e6-a1e6-5c67-b943f1eb4a44 1
+add_existing_chunk 00dfa839-6df8-d496-535e-2828458450b4 1
+add_existing_chunk 695e2cb8-9170-77c8-da2b-b1e5263a3a54 1
+build
