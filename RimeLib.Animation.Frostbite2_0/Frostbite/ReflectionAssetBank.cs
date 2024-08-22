@@ -5,6 +5,7 @@ using RimeLib.Animation.EA.Types;
 using RimeLib.IO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -76,8 +77,8 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
             if (p_Layout.IsBasicField)
             {
                 throw new Exception($"cannot parse basicfield as instance!");
-                return;
-                //ParseField(p_Reader, p_Layout, p_Offset);
+                // return;
+                // ParseField(p_Reader, p_Layout, p_Offset);
             }
 
             // read base first, so guid will be proper

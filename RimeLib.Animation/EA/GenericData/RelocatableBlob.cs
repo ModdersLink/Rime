@@ -17,12 +17,12 @@ namespace RimeLib.Animation.EA.GenericData
             Deserialize(p_Reader);  
         }
 
-        public bool Serialize(RimeWriter p_Writer)
+        public new bool Serialize(RimeWriter p_Writer)
         {
             throw new NotImplementedException();
         }
 
-        public void Deserialize(RimeReader p_Reader)
+        public new void Deserialize(RimeReader p_Reader)
         {
             ParseId(p_Reader);
 

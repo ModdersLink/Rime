@@ -1,7 +1,10 @@
 ﻿using RimeLib.Frostbite;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
+using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Linq;
 
 namespace RimeLib.Animation.EA.Types
 {

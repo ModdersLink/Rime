@@ -18,7 +18,7 @@ namespace ant
 		: AntObject
 	{
 		[AntField(0)]
-		public string Name { get; set; } = string.Empty;
+		public new string Name { get; set; } = string.Empty;
 
 		[AntField(1)]
 		public float EntryValue { get; set; }

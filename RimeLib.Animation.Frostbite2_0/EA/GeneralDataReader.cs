@@ -6,6 +6,7 @@ using RimeLib.Animation.EA.Types;
 using RimeLib.IO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -81,8 +82,8 @@ namespace RimeLib.Animation.Frostbite2_0.EA
             if (p_Layout.IsBasicField)
             {
                 throw new Exception($"cannot parse basicfield as instance!");
-                return;
-                //ParseField(p_Reader, p_Layout, p_Offset);
+                // return;
+                // ParseField(p_Reader, p_Layout, p_Offset);
             }
 
             // read base first, so guid will be proper
@@ -281,7 +282,7 @@ namespace RimeLib.Animation.Frostbite2_0.EA
                     {
 
                         throw new Exception("This isnt working properly!");
-                        for (var i = 0; i < p_Slot.Count; i++)
+                        /*for (var i = 0; i < p_Slot.Count; i++)
                         {
                             p_Reader.Seek(p_Offset + p_Slot.AlignIndexOffset(i), SeekOrigin.Begin);
 
@@ -292,7 +293,7 @@ namespace RimeLib.Animation.Frostbite2_0.EA
 
                             //s_Array![i] = new IdRef<AntObject>() { RefrenceId = s_Guid };
                         }
-                        break;
+                        break;*/
                     }
                 case LayoutType.DataRef:
                     {

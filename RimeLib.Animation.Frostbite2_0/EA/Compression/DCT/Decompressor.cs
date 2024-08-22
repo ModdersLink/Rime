@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+using System.IO;
 
 namespace RimeLib.Animation.Frostbite2_0.EA.Compression.DCT
 {

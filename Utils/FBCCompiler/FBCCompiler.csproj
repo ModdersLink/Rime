@@ -6,6 +6,7 @@
     <AssemblyName>fbcc</AssemblyName>
     <Platforms>x64</Platforms>
     <LangVersion>default</LangVersion>
+    <Configurations>Debug;Release;LinuxDebug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

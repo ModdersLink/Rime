@@ -6,9 +6,14 @@
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <Platforms>x64</Platforms>
+        <Configurations>Debug;Release;LinuxDebug</Configurations>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <OutputPath>../../bin/Debug/</OutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)'=='LinuxDebug'">
       <OutputPath>../../bin/Debug/</OutputPath>
     </PropertyGroup>
 

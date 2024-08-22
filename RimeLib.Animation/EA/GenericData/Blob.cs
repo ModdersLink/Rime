@@ -1,11 +1,9 @@
 ﻿using RimeLib.Frostbite;
 using RimeLib.IO;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
-using System.Linq;
+using System.IO;
 using System.Text;
-using System.Threading.Tasks;
 
 namespace RimeLib.Animation.EA.GenericData
 {
@@ -26,7 +24,8 @@ namespace RimeLib.Animation.EA.GenericData
         public Blob()
         {
         }
-            public Blob(RimeReader p_Reader)
+
+        public Blob(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
         }
