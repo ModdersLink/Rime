@@ -8,21 +8,6 @@
     <Configurations>Debug;Release;LinuxDebug</Configurations>
   </PropertyGroup>
 
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x64' ">
-    <OutputPath>/home/txt/Documents/Code/rime/Rime//bin/Debug/</OutputPath>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LinuxDebug|x64'">
-    <OutputPath>/home/txt/Documents/Code/rime/Rime//bin/Debug/</OutputPath>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
-
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x64' ">
-    <OutputPath>/home/txt/Documents/Code/rime/Rime//bin/Release/</OutputPath>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-  </PropertyGroup>
-
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />
   </ItemGroup>
