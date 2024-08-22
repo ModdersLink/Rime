@@ -1,0 +1,33 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// As type schemas dont contain full information, modifying  //
+// can be done to fix information thats wrong or missing.    //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System.Collections.Generic;
+using RimeLib.Animation.EA.Attributes;
+using RimeLib.Animation.EA.Types;
+
+namespace ant
+{
+
+	[AntBinding(0x14013e53)]
+	public class CellAsset
+		: AntObject
+	{
+		[AntField(0)]
+		public int Int0 { get; set; }
+
+		[AntField(1)]
+		public float Float0 { get; set; }
+
+		[AntField(2)]
+		public float Float1 { get; set; }
+
+		[AntField(3)]
+		public float Float2 { get; set; }
+
+	}
+}

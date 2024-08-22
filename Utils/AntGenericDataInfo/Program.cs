@@ -10,14 +10,14 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using RimeLib;
-using Rimelib.Ant.Frostbite2_0.Frostbite;
-using RimeLib.Ant.EA.Readers;
+using Rimelib.Animation.Frostbite2_0.Frostbite;
+using RimeLib.Animation.EA.Readers;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using RimeLib.Serialization;
 using fb;
-using RimeLib.Ant.EA.Compression.DCT;
+using RimeLib.Animation.EA.Compression.DCT;
 using ant;
-using RimeLib.Ant.Frostbite2_0.EA.Compression.DCT;
+using RimeLib.Animation.Frostbite2_0.EA.Compression.DCT;
 
 namespace TextureExtractor
 {
@@ -82,7 +82,7 @@ namespace TextureExtractor
                 Console.WriteLine("Loading engine support assemblies.");
 
             Load("RimeLib.Content." + p_Options.EngineType);
-            Load("RimeLib.Ant." + p_Options.EngineType);
+            Load("RimeLib.Animation." + p_Options.EngineType);
         }
 
         private static async void LoadGame(Options p_Options)
