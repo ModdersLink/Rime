@@ -13,13 +13,13 @@ namespace RimeLib.Frostbite
         /// </summary>
         /// <param name="p_Writer">Writer opened to the position</param>
         /// <returns>True on success, false otherwise</returns>
-        bool Serialize(RimeWriter p_Writer);
+        abstract bool Serialize(RimeWriter p_Writer);
 
         /// <summary>
         /// Serialize to a byte array
         /// </summary>
         /// <returns>byte[]</returns>
-        bool Serialize([NotNullWhen(true)] out byte[]? p_Data);
+        abstract bool Serialize([NotNullWhen(true)] out byte[]? p_Data);
 
         /// <summary>
         /// Deserialize from an open reader
