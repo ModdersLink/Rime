@@ -11,10 +11,11 @@ using System.Text;
 using System.Threading.Tasks;
 using RimeLib.Ant.EA;
 using RimeLib.Ant.EA.Resolver;
+using RimeLib.Ant.Frostbite2_0.EA;
 
 namespace RimeLib.Ant.Frostbite2_0.Frostbite
 {
-    public class ReflectionAssetBank : AssetBank
+    public class ReflectionGeneralDataReader : GeneralDataReader 
     {
 
 
@@ -40,8 +41,8 @@ namespace RimeLib.Ant.Frostbite2_0.Frostbite
         public HashSet<DataRefPair> DataRefFields { get; } = new();
         public Dictionary<string, string> BaseClasses { get; } = new();
 
-        public ReflectionAssetBank()
-            : base()
+        public  ReflectionGeneralDataReader(AssetBank p_Bank)
+            : base(p_Bank)
         {
         }
         protected override void ParseInstance(RimeReader p_Reader, LayoutHeader p_Layout, AntObject p_Instance, Type p_InstanceType, long p_Offset = 0)
@@ -275,7 +276,7 @@ namespace RimeLib.Ant.Frostbite2_0.Frostbite
                             m_Instance = p_Instance, 
                             m_Field = p_PropertyType,
                             m_Guid =  s_Guid,
-                            m_Resolver = Resolver
+                            m_Resolver =  this
                         });
                     }
                     break;
