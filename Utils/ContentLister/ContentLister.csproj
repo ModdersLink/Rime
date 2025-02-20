@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <LangVersion>default</LangVersion>
     <Nullable>enable</Nullable>
     <AssemblyName>ContentLister</AssemblyName>
@@ -18,6 +18,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\RimeLib.Content.Frostbite2013_2\RimeLib.Content.Frostbite2013_2.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Content.Frostbite2014_4\RimeLib.Content.Frostbite2014_4.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Content.Frostbite2016_4\RimeLib.Content.Frostbite2016_4.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Content.Frostbite2017_7\RimeLib.Content.Frostbite2017_7.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content\RimeLib.Content.csproj" />
   </ItemGroup>
