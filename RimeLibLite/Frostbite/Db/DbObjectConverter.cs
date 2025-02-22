@@ -282,7 +282,7 @@ namespace RimeLib.Frostbite.Db
             if (s_FieldType == typeof(uint) || s_FieldType == typeof(uint?))
             {
                 EnsureElementType(p_Element, DbObjectType.Integer);
-                return (uint)p_Element.Value;
+                return (uint)(int)p_Element.Value;
             }
 
 
