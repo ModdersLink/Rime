@@ -13,6 +13,7 @@
   <ItemGroup>
     <Compile Remove="Frostbite\Bundles\**" />
     <Compile Remove="Frostbite\Storage\**" />
+    <Compile Include="Frostbite\Bundles\ManifestType.cs" />
     <EmbeddedResource Remove="Frostbite\Bundles\**" />
     <EmbeddedResource Remove="Frostbite\Storage\**" />
     <None Remove="Frostbite\Bundles\**" />

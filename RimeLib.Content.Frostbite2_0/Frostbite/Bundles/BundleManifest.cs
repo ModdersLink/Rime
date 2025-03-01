@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using RimeLib.Content.Frostbite.Bundles;
 using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
 using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
 using RimeLib.Content.Frostbite2_0.IO;
@@ -285,10 +286,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         // Size = 32
         public class Header
         {
-            public const uint c_ManifestEbx = 0xED1CEDB8;
-            public const uint c_ManifestDbx = 0xFE1FBEEF;
-
-            public uint Magic { get; set; } = c_ManifestEbx; // 0
+            public ManifestType Magic { get; set; } = ManifestType.PecmEbx; // 0
             public int EntryCount { get; set; } // 4
             public int EbxCount { get; set; } // 8
             public int ResourceCount { get; set; } // 12
@@ -297,14 +295,12 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             public int ChunkMetaOffset { get; set; } // 24
             public int ChunkMetaSize { get; set; } // 28
 
-
-            public uint XorMagix => Magic ^ 0x7A11F1AB;
-            public bool IsDbx => XorMagix == c_ManifestDbx;
-            public bool IsEbx => XorMagix == c_ManifestEbx;
+            public bool IsDbx => Magic == ManifestType.PecmDbx;
+            public bool IsEbx => Magic == ManifestType.PecmEbx;
             
             public Header(RimeReader p_Reader)
             {
-                Magic = p_Reader.ReadUInt32();
+                Magic = (ManifestType)p_Reader.ReadUInt32();
                 EntryCount = p_Reader.ReadInt32();
                 EbxCount = p_Reader.ReadInt32();
                 ResourceCount = p_Reader.ReadInt32();
@@ -316,15 +312,12 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
             public Header(bool p_IsDbx = false)
             {
-                if (p_IsDbx)
-                    this.Magic = c_ManifestDbx;
-                else
-                    this.Magic = c_ManifestEbx;
+                this.Magic = p_IsDbx ? ManifestType.PecmDbx : ManifestType.PecmEbx;
             }
 
             public void Serialize(RimeWriter p_Writer)
             {
-                p_Writer.Write(Magic);
+                p_Writer.Write((uint)Magic);
                 p_Writer.Write(EntryCount);
                 p_Writer.Write(EbxCount);
                 p_Writer.Write(ResourceCount);
@@ -434,10 +427,10 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
             
             if (m_Header.IsDbx)
-                throw new Exception($"Tried to load a dbx BundleManifest ({m_Header.Magic:X8}).");
+                throw new Exception($"Tried to load a dbx BundleManifest ({m_Header.Magic}).");
             
             if (!m_Header.IsEbx)
-                throw new Exception($"Tried to load an unsupported BundleManifest ({m_Header.Magic:X8}).");
+                throw new Exception($"Tried to load an unsupported BundleManifest ({m_Header.Magic}).");
 
             // Read the contained entry SHA1s
             for (var i = 0; i < m_Header.EntryCount; ++i)
