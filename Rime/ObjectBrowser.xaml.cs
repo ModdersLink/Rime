@@ -1,23 +1,23 @@
-﻿using RimeLib.Content.Mounting;
+﻿using System;
+using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Utils;
 using RimeLib;
-using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using fb;
 using RimeLib.Content.Frostbite;
 using RimeLib.Serialization;
+using RimeLib.Shader.Frostbite2_0.Frostbite;
 using MeshVariationDatabase = fb.MeshVariationDatabase;
+using SharpGLTF.Schema2;
+using RimeLib.IO;
+using System.IO;
+using RimeLib.Extensions;
+using RimeLib.Mesh.Frostbite;
 
 namespace Rime
 {
@@ -27,6 +27,9 @@ namespace Rime
         public string? Bundle { get; set; }
         public string? Superbundle { get; set; }
         public uint Variation { get; set; }
+        public string Materials { get; set; }
+
+        public MeshVariationDatabaseEntry m_Variation;
     }
 
     /// <summary>
@@ -41,7 +44,7 @@ namespace Rime
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            MountAndSetup().Wait();
+            // MountAndSetup().Wait();
         }
 
 
@@ -61,6 +64,24 @@ namespace Rime
             await s_Mounter.MountSuperbundle("Win32/MpChunks", true);
             await s_Mounter.MountSuperbundle("Win32/Xp2Chunks", true);
             await s_Mounter.MountSuperbundle("Win32/Levels/XP2_Skybar/XP2_Skybar", true);
+
+            foreach (var (s_Name, s_ResourceObj) in s_Mounter.GetResources())
+            {
+                if (s_ResourceObj.FirstVariant.GetResourceType() != ResourceType.IShaderDatabase)
+                    continue;
+
+                using var s_ShaderReader = s_ResourceObj.FirstVariant.GetReader();
+                var s_ShaderData = s_ShaderReader.ToArray();
+                using var s_TempShaderReader = new RimeReader(new MemoryStream(s_ShaderData));
+                var s_ShaderDb = new ShaderDatabaseContainer(s_TempShaderReader, s_Mounter);
+
+                var s_Path = s_ShaderDb.Databases[ShaderRenderPath.ShaderRenderPath_Dx11];
+
+                foreach (var (s_ShaderName, s_Info) in s_Path.Shaders)
+                {
+                    Debug.WriteLine($"Found shader '{s_ShaderName}' in '{s_Name}' with '{s_Info.Solutions.Length}' solutions.");
+                }
+            }
 
             var s_Resources = new List<ObjectItem>();
 
@@ -83,17 +104,47 @@ namespace Rime
                     if (s_MeshAsset == null)
                         continue;
 
+                    if (!s_Mounter.TryGetResource(s_MeshAsset.Name, out var s_MeshResource))
+                        continue;
+
+                    using var s_MeshReader = s_MeshResource.FirstVariant.GetReader();
+                    var s_MeshData = s_MeshReader.ToArray();
+                    using var s_TempMeshReader = new RimeReader(new MemoryStream(s_MeshData));
+                    var s_MeshSet = new MeshSetLayout(s_TempMeshReader);
+
+                    var s_Lod0 = s_MeshSet.Lods[0].Object;
+
+                   
+
                     s_Resources.Add(new ObjectItem()
                     {
                         Name = s_MeshAsset.Name,
                         Bundle = s_MeshVariationDb.Partition?.AssociatedVariant?.GetContainedBundle(),
                         Superbundle = s_MeshVariationDb.Partition?.AssociatedVariant?.GetContainedSuperbundle(),
                         Variation = s_MeshVariation.VariationAssetNameHash,
+                        m_Variation = s_MeshVariation,
+                        Materials = String.Join(" | ", s_Lod0.Subsets.Get.Select(x => x.MaterialName.Object)),
                     });
+
+                    if (!s_MeshVariation.Materials.Any())
+                        throw new Exception("COCK");
                 }
             }
             
             objectList.ItemsSource = s_Resources;
+        }
+
+        private void MenuItem_OnClick(object p_Sender, RoutedEventArgs p_E)
+        {
+            foreach (var s_Item in objectList.SelectedItems)
+            {
+                var s_ObjectItem = s_Item as ObjectItem;
+
+                if (s_ObjectItem == null)
+                    continue;
+
+
+            }
         }
     }
 }

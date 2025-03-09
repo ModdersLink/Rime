@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -14,11 +14,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\RimeLib.Ant.Frostbite2_0\RimeLib.Ant.Frostbite2_0.csproj" />
-    <ProjectReference Include="..\..\RimeLib.Ant\RimeLib.Ant.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Animation.Frostbite2_0\RimeLib.Animation.Frostbite2_0.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Animation\RimeLib.Animation.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content\RimeLib.Content.csproj" />
-    <ProjectReference Include="..\..\RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj" />
   </ItemGroup>
 
 </Project>

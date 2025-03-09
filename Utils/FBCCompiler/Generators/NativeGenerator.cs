@@ -197,6 +197,23 @@ namespace FBCC.Generators
                 m_Indent = m_Indent.Substring(0, m_Indent.Length - 1);
                 m_Writer.WriteLine(m_Indent + "}");
             }
+            
+            // Write custom typeinfo registrar.
+            foreach (var s_Definition in m_Container.Definitions)
+            {
+                switch (s_Definition)
+                {
+                    case ContainerClass s_Class:
+                        m_Writer.WriteLine();
+                        m_Writer.WriteLine(m_Indent + "FB_CTR({0});", s_Class.Name);
+                        break;
+                    
+                    case ContainerStruct s_Struct:
+                        m_Writer.WriteLine();
+                        m_Writer.WriteLine(m_Indent + "FB_VAL({0});", s_Struct.Name);
+                        break;
+                }
+            }
         }
 
         private void WriteClass(ContainerClass p_Class)
@@ -278,7 +295,7 @@ namespace FBCC.Generators
                 // Write the member name and offset.
                 m_Writer.WriteLine("m_{0}; // 0x{1:X} ({1})", s_Member.Name, s_Member.Offset);
             }
-
+            
             // Write class body end.
             m_Indent = m_Indent.Substring(0, m_Indent.Length - 1);
             m_Writer.WriteLine(m_Indent + "};");
@@ -287,10 +304,6 @@ namespace FBCC.Generators
         
         private void WriteStruct(ContainerStruct p_Struct)
         {
-            m_SourceWriter.WriteLine("#include \"{0}.h\"", p_Struct.Name);
-            m_SourceWriter.WriteLine();
-            m_SourceWriter.WriteLine("FB_CUSTOM_TYPE_IMPL({0});", p_Struct.Name);
-            
             m_Writer.WriteLine(m_Indent + "struct alignas({0}) {1}", p_Struct.Alignment, p_Struct.Name);
 
             // Write struct body start.
@@ -329,10 +342,6 @@ namespace FBCC.Generators
             m_Writer.WriteLine();
             m_Writer.WriteLine(m_Indent + "bool operator==(const {0}& p_Other) const = default;", p_Struct.Name);
             
-            // Write custom typeinfo registrar.
-            m_Writer.WriteLine();
-            m_Writer.WriteLine(m_Indent + "FB_CUSTOM_TYPE({0});", p_Struct.Name);
-
             // Write struct body end.
             m_Indent = m_Indent.Substring(0, m_Indent.Length - 1);
             m_Writer.WriteLine(m_Indent + "};");

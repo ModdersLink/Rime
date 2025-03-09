@@ -2,6 +2,11 @@
 
 namespace RimeLib.Cmd
 {
+    /// <summary>
+    /// Execution context command class
+    /// 
+    /// All commands must inherit from this class in order to be used with an execution context for the REPL
+    /// </summary>
     public abstract class Command
     {
         /// <summary>

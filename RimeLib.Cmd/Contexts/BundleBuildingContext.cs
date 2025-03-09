@@ -115,6 +115,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListPartitionsCommand>();
             RegisterCommand<AddDdsTextureCommand>();
             RegisterCommand<BuildCommand>();
+            RegisterCommand<CloneBundleCommand>();
         }
 
         public override string GetShortDescription()
@@ -144,6 +145,11 @@ namespace RimeLib.Cmd.Contexts
         internal void AddChunk(GUID p_Guid, FileInfo p_File, string p_AssetName)
         {
             m_Builder.WithChunk(p_Guid, new SbBuildingContext.ChunkFileReader(p_File.FullName, p_AssetName));
+        }
+
+        internal void AddChunk(GUID p_Guid, FileInfo p_File, int p_AssetHash)
+        {
+            m_Builder.WithChunk(p_Guid, new SbBuildingContext.ChunkFileReader(p_File.FullName, p_AssetHash));
         }
 
         internal void RemoveChunk(GUID p_Guid)

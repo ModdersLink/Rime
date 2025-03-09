@@ -16,10 +16,4 @@
     <ProjectReference Include="..\..\RimeLib.Content\RimeLib.Content.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="ICSharpCode.SharpZipLib">
-      <HintPath>..\..\..\..\..\..\.nuget\packages\sharpziplib\1.2.0\lib\netstandard2.0\ICSharpCode.SharpZipLib.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>

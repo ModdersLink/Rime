@@ -28,11 +28,8 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
             throw new NotImplementedException();
         }
 
-
-
         public void Deserialize(RimeReader p_Reader)
         {
-
             VirtualTextureEnable = p_Reader.ReadBool();
 
             var s_MeshScatteringTypeCount = p_Reader.ReadUInt32();
@@ -40,7 +37,6 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
             for (var i=0; i < s_MeshScatteringTypeCount; i++)
                 ScatteringTypes[i] = new MeshScatteringType(p_Reader);
         }
-
 
         public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {

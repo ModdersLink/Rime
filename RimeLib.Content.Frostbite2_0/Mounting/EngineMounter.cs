@@ -153,17 +153,37 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return m_MountedBundles;
         }
 
-        public IEnumerable<string> GetResourcesInBundle(string p_Bundle)
+        public IEnumerable<(string Name, ResourceType ResourceType)> GetResourcesInBundle(string p_Bundle)
         {
             if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
             {
                 foreach (var s_Resource in s_CasBundle.Bundle.ResourceEntries)
-                    yield return s_Resource.Name;
+                    yield return (s_Resource.Name, (ResourceType)s_Resource.ResourceType);
             }
             else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
             {
                 foreach (var s_Resource in s_Bundle.Resources)
-                    yield return s_Resource.Name;
+                    yield return (s_Resource.Name, (ResourceType)s_Resource.ResourceType);
+            }
+        }
+
+        public IEnumerable<GUID> GetChunksInSuperbundle(string p_Superbundle)
+        {
+            foreach (var s_Superbundle in m_Superbundles)
+            {
+                if (s_Superbundle.Name == p_Superbundle.ToLowerInvariant())
+                {
+                    if (s_Superbundle.PatchToc != null)
+                    {
+                        foreach (var s_ChunkInfo in s_Superbundle.PatchToc.Layout.Chunks)
+                            yield return s_ChunkInfo.Id;
+                    }
+                    if (s_Superbundle.Toc != null)
+                    {
+                        foreach (var s_ChunkInfo in s_Superbundle.Toc.Layout.Chunks)
+                            yield return s_ChunkInfo.Id;
+                    }
+                }
             }
         }
 
@@ -178,6 +198,15 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             {
                 foreach (var s_Chunk in s_Bundle.Chunks)
                     yield return s_Chunk.Id;
+            }
+        }
+
+        public IEnumerable<(GUID Guid, int AssetNameHash)> GetChunksWithHashInBundle(string p_Bundle)
+        {
+            if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
+            {
+                foreach (var s_Chunk in s_Bundle.Chunks)
+                    yield return (s_Chunk.Id, s_Chunk.Meta.AssetNameHash);
             }
         }
 

@@ -12,13 +12,7 @@
 
 	<ItemGroup>
 		<ProjectReference Include="..\RimeLib.Animation\RimeLib.Animation.csproj" />
-	</ItemGroup>
-
-	<ItemGroup>
-	  <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.5.0">
-	    <PrivateAssets>all</PrivateAssets>
-	    <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-	  </PackageReference>
+		<ProjectReference Include="..\RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj" />
 	</ItemGroup>
 
 </Project>

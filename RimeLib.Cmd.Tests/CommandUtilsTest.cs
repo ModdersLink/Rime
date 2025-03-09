@@ -133,7 +133,9 @@ namespace RimeLib.Cmd.Tests
         public void TestThing2()
         {
             var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(EngineType.Frostbite2_0);
+#pragma warning disable xUnit1031 // Do not use blocking task operations in test method
             s_Mounter.Mount("B:\\Games\\Battlefield 3", true, EngineType.Frostbite2_0).Wait();
+#pragma warning restore xUnit1031 // Do not use blocking task operations in test method
 
             Parallel.ForEach(s_Mounter.GetPartitions(), (p_Partition) =>
             {

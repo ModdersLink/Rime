@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace FBCC
 {
@@ -10,6 +11,11 @@ namespace FBCC
             for (var i = 0; i < p_Source.Count; i += p_ChunkSize)
                 yield return p_Source.GetRange(i, Math.Min(p_ChunkSize, p_Source.Count - i));
 
+        }
+        
+        public static IEnumerable<(T item, int index)> WithIndex<T>(this IEnumerable<T> p_Source)
+        {
+            return p_Source.Select((p_Item, p_Index) => (item: p_Item, index: p_Index));
         }
 
         public static List<T> TSort<T>(this IEnumerable<T> p_Source, Func<T, IEnumerable<T>> p_Dependencies)
@@ -37,7 +43,7 @@ namespace FBCC
             else
             {
                 if (!p_Sorted.Contains(p_Item))
-                    throw new Exception($"Circular dependencies are not supported. Please check '${p_Item.ToString()}'.");
+                    throw new Exception($"Circular dependencies are not supported. Please check '{p_Item.ToString()}'.");
             }
         }
 

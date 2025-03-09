@@ -21,13 +21,13 @@ namespace FBCC
             var s_Args = new List<string>()
             {
                 //"--arch-x64",
-                @"--in=B:\Games\Battlefield 3\__fbc__\gen2",
+                @"--in=C:\Games\Battlefield 3\__fbc__\gen2",
                 //"--gen-rime",
                 //@"--out=C:\Code\OrfeasZ\RimeLibLite\RimeLib.Serialization.Frostbite2_0",
                 //"--gen-bindings",
                 //@"--out=C:\Code\EmulatorNexus\VeniceUnleashed\Components\VeniceEXT\Src",
                 "--gen-native",
-                @"--out=S:\Code\VU\venice-unleashed\Components\FrostbiteSDK\Src",
+                @"--out=C:\Users\Orfeas\home\projects\pointlimit\venice-unleashed\Components\FrostbiteSDK\Src",
                 //"--gen-vext-docs",
                 //@"--out=B:\Games\Battlefield 3\__fbc__\doc",
             };
@@ -181,38 +181,35 @@ namespace FBCC
                     Console.WriteLine("Resolving FBC dependencies...");
                     //DependencyManager.ResolveDependencies();
 
-					if (s_GenerateBindings)
-					{
 #if DEBUG
-						foreach (var s_Container in ContainerManager.GetContainers())
-						{
-							foreach (var s_Definition in s_Container.Definitions)
-							{
-								if (s_Definition.DefinitionType == ContainerDefinitionType.Enum)
-								{
-									s_EnumRegistrations.Add(((ContainerEnum)s_Definition).Name);
-									continue;
-								}
+                    foreach (var s_Container in ContainerManager.GetContainers())
+                    {
+                        foreach (var s_Definition in s_Container.Definitions)
+                        {
+	                        if (s_Definition.DefinitionType == ContainerDefinitionType.Enum)
+	                        {
+		                        s_EnumRegistrations.Add(((ContainerEnum)s_Definition).Name);
+		                        continue;
+	                        }
 
-							    if (s_Definition is ContainerClass)
-							    {
-							        var s_Class = s_Definition as ContainerClass;
+	                        if (s_Definition is ContainerClass)
+	                        {
+		                        var s_Class = s_Definition as ContainerClass;
 
-                                    if (!s_Registrations.ContainsKey(s_Class.Name))
-                                        s_Registrations.Add(s_Class.Name, s_Class);
-                                }
-							    else if (s_Definition is ContainerStruct)
-							    {
-                                    var s_Struct = s_Definition as ContainerStruct;
+                                if (!s_Registrations.ContainsKey(s_Class.Name))
+                                    s_Registrations.Add(s_Class.Name, s_Class);
+                            }
+	                        else if (s_Definition is ContainerStruct)
+	                        {
+                                var s_Struct = s_Definition as ContainerStruct;
 
-                                    if (!s_Registrations.ContainsKey(s_Struct.Name))
-                                        s_Registrations.Add(s_Struct.Name, s_Struct);
-                                }
+                                if (!s_Registrations.ContainsKey(s_Struct.Name))
+                                    s_Registrations.Add(s_Struct.Name, s_Struct);
+                            }
 
-							}
-						}
+                        }
+                    }
 #endif
-					}
 				}
                 catch (Exception s_Exception)
                 {
@@ -235,7 +232,7 @@ namespace FBCC
                         continue;
                     
                     if (s_File.Key is "fb/LinearTransform.cpp"
-                        or "fb/BFServerSettings.cpp"
+                        or "fb/BFServerSettings.cpp" or "fb/DataContainer.cpp"
                         or "fb/SyncedGameSettings.cpp" or "fb/LevelSetup.cpp")
                         continue;
                         
@@ -264,6 +261,68 @@ namespace FBCC
                         "An error occurred while writing generated file '{0}'. Please verify you have permissions to write this file and try again.",
                         s_File.Key);
                     return 5; // ERROR_ACCESS_DENIED
+                }
+            }
+
+            if (s_GenerateNative)
+            {
+                Console.WriteLine("Writing final binding code...");
+                
+                // Split container binding registrations into 10 chunks.
+                var s_SplitContainers = ContainerManager.GetContainers()
+                    .SplitChunks(ContainerManager.GetContainers().Count / 10);
+
+                foreach (var (s_Containers, i) in s_SplitContainers.WithIndex())
+                {
+                    var s_Writer = new StreamWriter(Path.Combine(s_BasePath, $"Vext/BindingCtr{i}.cpp"));
+
+                    s_Writer.WriteLine("#include <Vext/Ctr.h>");
+                    s_Writer.WriteLine("#include <fb/CustomTypesImpl.h>");
+                    s_Writer.WriteLine();
+
+                    foreach (var s_Container in s_Containers)
+                        foreach (var s_Definition in s_Container.Definitions)
+                            if (s_Definition is ContainerClass s_Class)
+                                    s_Writer.WriteLine("#include <fb/{0}.h>", s_Class.Name);
+
+                    s_Writer.WriteLine();
+
+                    foreach (var s_Container in s_Containers)
+                        foreach (var s_Definition in s_Container.Definitions)
+                            if (s_Definition is ContainerClass s_Class)
+                                s_Writer.WriteLine("FB_CTR_IMPL({0});", s_Class.Name);
+                    
+                    s_Writer.Flush();
+                    s_Writer.Dispose();
+                }
+                
+                foreach (var (s_Containers, i) in s_SplitContainers.WithIndex())
+                {
+                    var s_Writer = new StreamWriter(Path.Combine(s_BasePath, $"Vext/BindingVal{i}.cpp"));
+
+                    s_Writer.WriteLine("#include <Vext/Val.h>");
+                    s_Writer.WriteLine("#include <fb/CustomTypesImpl.h>");
+                    s_Writer.WriteLine();
+
+                    foreach (var s_Container in s_Containers)
+                        foreach (var s_Definition in s_Container.Definitions)
+                            if (s_Definition is ContainerStruct s_Struct)
+                                    s_Writer.WriteLine("#include <fb/{0}.h>", s_Struct.Name);
+
+                    s_Writer.WriteLine();
+
+
+                    foreach (var s_Container in s_Containers)
+                        foreach (var s_Definition in s_Container.Definitions)
+                            if (s_Definition is ContainerStruct s_Struct)
+                                s_Writer.WriteLine("FB_VAL_IMPL({0});", s_Struct.Name);
+                    
+                    // Add Guid since we skip it before for being a "built-in" type.
+                    if (i == 0)
+                        s_Writer.WriteLine("FB_VAL_IMPL(Guid);");
+
+                    s_Writer.Flush();
+                    s_Writer.Dispose();
                 }
             }
 

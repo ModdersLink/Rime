@@ -5,14 +5,8 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-      <OutputPath>../../bin/Debug/</OutputPath>
-    </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
-      <OutputPath>/home/txt/Documents/Code/rime/Rime//bin/Release/</OutputPath>
+        <Platforms>Any CPU</Platforms>
+        <Configurations>Debug;Release;LinuxDebug</Configurations>
     </PropertyGroup>
 
     <ItemGroup>

@@ -3,22 +3,13 @@ using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.IO;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using RimeLib;
-using RimeLib.Ant.Frostbite2_0.Frostbite;
-using RimeLib.Ant.EA.Readers;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using RimeLib.Serialization;
-using fb;
-using RimeLib.Ant.EA.Compression.DCT;
-using ant;
-using RimeLib.Ant.EA.Types;
-using RimeLib.Ant.Frostbite2_0.EA.Compression.DCT;
+using Rimelib.Animation.Frostbite2_0.Frostbite;
+using RimeLib.Animation.Frostbite2_0.EA.Compression.DCT;
+using RimeLib.Animation.EA.Types;
 
 namespace TextureExtractor
 {

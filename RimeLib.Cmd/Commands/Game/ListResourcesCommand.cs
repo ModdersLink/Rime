@@ -10,7 +10,7 @@ namespace RimeLib.Cmd.Commands.Game
     {
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
-            var s_Resources = ((GameContext) p_Context).GetMountedResources().ToList();
+            var s_Resources = ((GameContext) p_Context).GetMountedResourceVariations();
 
             if (s_Resources.Count == 0)
             {
@@ -22,7 +22,7 @@ namespace RimeLib.Cmd.Commands.Game
             p_Writer.WriteLine();
 
             foreach (var s_Resource in s_Resources)
-                p_Writer.WriteLine("- " + s_Resource);
+                p_Writer.WriteLine("- " + s_Resource.Key + " (" + s_Resource.Value.FirstVariant.GetResourceType() + ")");
 
             return true;
         }

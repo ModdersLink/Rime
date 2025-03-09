@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using fb;
 using Newtonsoft.Json;
@@ -63,7 +64,12 @@ public class DatabasePartition : DatabasePartitionBase
         s_Serializer.NullValueHandling = NullValueHandling.Include;
         s_Serializer.MissingMemberHandling = MissingMemberHandling.Error;
         s_Serializer.TypeNameHandling = TypeNameHandling.None;
-
-        return (DatabasePartition) s_Serializer.Deserialize(p_Reader, typeof(DatabasePartition));
+        
+        var s_Partition = s_Serializer.Deserialize(p_Reader, typeof(DatabasePartition));
+        
+        if (s_Partition == null)
+            throw new Exception("Failed to deserialize partition.");
+        
+        return (DatabasePartition) s_Partition;
     }
 }

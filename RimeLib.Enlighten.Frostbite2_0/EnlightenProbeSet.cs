@@ -9,11 +9,11 @@ namespace RimeLib.Enlighten.Frostbite2_0;
 
 public class EnlightenProbeSet : IFbSerializable
 {
-    public LinearTransform? Transform { get; set; }
-    public LinearTransform? InverseTransform { get; set; }
-    public AxisAlignedBox? BoundingBox { get; set; }
+    public LinearTransform Transform { get; set; } = new LinearTransform();
+    public LinearTransform InverseTransform { get; set; } = new LinearTransform();
+    public AxisAlignedBox BoundingBox { get; set; } = new AxisAlignedBox();
     public float BlendDistance { get; set; }
-    public uint[]? Dim { get; set; } // [3]
+    public uint[] Dim { get; set; } = new uint[3];
     public uint Priority { get; set; }
     public uint ProbeCount { get; set; }
     public uint GlobalOffset { get; set; }
