@@ -5,7 +5,7 @@
         <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>disable</ImplicitUsings>
         <Nullable>enable</Nullable>
-        <Platforms>Any CPU</Platforms>
+        <Platforms>AnyCPU</Platforms>
         <Configurations>Debug;Release;LinuxDebug</Configurations>
     </PropertyGroup>
 
