@@ -197,13 +197,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             {
                 p_Writer.Align(16);
                 
-                var s_ShouldCompress = false;
-
-                // TODO: Figure out what other resources need to be compressed.
-                if (s_Resource.Value.GetResourceType() == ResourceType.DxTexture)
-                {
-                    s_ShouldCompress = true;
-                }
+                var s_ShouldCompress = true;
 
                 using var s_ResourceReader = s_Resource.Value.GetReader();
                 using var s_HashWriter = new HashingRimeWriter(new MemoryStream());
