@@ -18,6 +18,10 @@ public class CtrRef<T> : CtrRefBase where T : DataContainerBase
         new DataContainerId.Index(p_InstanceIndex))
     {
     }
+    
+    public CtrRef(GUID p_PartitionGuid, DataContainerId p_InstanceId) : base(p_PartitionGuid, p_InstanceId)
+    {
+    }
 
     public new T? Get()
     {

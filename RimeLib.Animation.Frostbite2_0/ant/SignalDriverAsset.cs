@@ -1,0 +1,30 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// As type schemas dont contain full information, modifying  //
+// can be done to fix information thats wrong or missing.    //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System.Collections.Generic;
+using RimeLib.Animation.EA.Attributes;
+using RimeLib.Animation.EA.Types;
+
+namespace ant
+{
+
+	[AntBinding(0xe14ebf12)]
+	public class SignalDriverAsset
+		: AntObject
+	{
+		[AntField(0)]
+		public bool DrivesBoolOfSignal { get; set; }
+
+		[AntField(1)]
+		public bool DrivesFloatOfSignal { get; set; }
+
+		[AntField(2)]
+		public bool IsAdditive { get; set; }
+
+	}
+}

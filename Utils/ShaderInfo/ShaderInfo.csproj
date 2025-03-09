@@ -1,12 +1,13 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
 <PropertyGroup>
-	<TargetFramework>net6.0</TargetFramework>
+	<TargetFramework>net8.0</TargetFramework>
 	<LangVersion>default</LangVersion>
 	<Nullable>enable</Nullable>
 	<OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
 	<OutputType>Exe</OutputType>
 	<Platforms>x64</Platforms>
+	<Configurations>Debug;Release;LinuxDebug</Configurations>
 </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.9.1" />

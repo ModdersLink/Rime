@@ -49,6 +49,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<ListResourcesOfTypeCommand>();
             RegisterCommand<ListPartitionsCommand>();
+            RegisterCommand<ListSbChunksCommand>();
             RegisterCommand<ListBundleChunksCommand>();
             RegisterCommand<ListBundleResourcesCommand>();
             RegisterCommand<ListBundlePartitionsCommand>();
@@ -248,6 +249,16 @@ namespace RimeLib.Cmd.Contexts
             using var s_Writer = new RimeWriter(s_FileStream);
 
             s_Converter.ConvertToDDS(s_Resource.FirstVariant!, m_Mounter, s_Writer);
+        }
+
+        /// <summary>
+        /// Get the chunks of a specified superbundle
+        /// </summary>
+        /// <param name="p_Superbundle">Superbundle name</param>
+        /// <returns>Enumerable of GUIDs for each of the superbundle chunks</returns>
+        internal IEnumerable<GUID> GetSuperbundleChunks(string p_Superbundle)
+        {
+            return m_Mounter.GetChunksInSuperbundle(p_Superbundle);
         }
 
         /// <summary>

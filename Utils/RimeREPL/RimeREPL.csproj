@@ -2,13 +2,14 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>default</LangVersion>
     <Nullable>enable</Nullable>
     <RootNamespace>Rime.Utils.RimeREPL</RootNamespace>
     <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <Platforms>x64</Platforms>
+    <Configurations>Debug;Release;LinuxDebug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,12 +19,12 @@
   <ItemGroup>
     <ProjectReference Include="..\..\RimeLib.Animation.Frostbite2_0\RimeLib.Animation.Frostbite2_0.csproj" />
     <ProjectReference Include="..\..\RimeLib.Animation\RimeLib.Animation.csproj" />
-    <ProjectReference Include="..\..\Rimelib.Ant.Frostbite2_0\RimeLib.Ant.Frostbite2_0.csproj" />
-    <ProjectReference Include="..\..\RimeLib.Ant\RimeLib.Ant.csproj" />
     <ProjectReference Include="..\..\RimeLib.Audio\RimeLib.Audio.csproj" />
     <ProjectReference Include="..\..\RimeLib.Cmd\RimeLib.Cmd.csproj" />
     <ProjectReference Include="..\..\RimeLib.CodeGen\RimeLib.CodeGen.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Enlighten.Frostbite2_0\RimeLib.Enlighten.Frostbite2_0.csproj" />
+    <ProjectReference Include="..\..\RimeLib.Enlighten\RimeLib.Enlighten.csproj" />
     <ProjectReference Include="..\..\RimeLib.Havok.Frostbite2_0\RimeLib.Havok.Frostbite2_0.csproj" />
     <ProjectReference Include="..\..\RimeLib.Havok\RimeLib.Havok.csproj" />
     <ProjectReference Include="..\..\RimeLib.Mesh.Frostbite2_0\RimeLib.Mesh.Frostbite2_0.csproj" />
