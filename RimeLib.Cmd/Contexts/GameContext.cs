@@ -158,7 +158,7 @@ namespace RimeLib.Cmd.Contexts
             // TODO: this is causing issues when cloning (noncas) bundles.
             // Here we look for the first chunk variant with logical offset 0.
             // That's because variants with non-0 offsets can be partial mips, etc.
-            using var s_Reader = s_Chunk.Variants.First(p_Variant => p_Variant.GetLogicalOffset() == 0).GetReader();
+            using var s_Reader = s_Chunk.Variants.First(p_Variant => true).GetReader();
             using var s_FileStream = File.Create(p_Destination.FullName);
 
             s_Reader.CopyTo(s_FileStream);
