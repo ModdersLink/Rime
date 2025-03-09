@@ -93,7 +93,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 p_Writer.Write(s_Meta);
             }
 
-            m_ChunkEntriesOffset = p_Writer.Position - s_StartOffset;
+            m_ChunkEntriesOffset = p_Writer.Position;
             
             // Write chunk entries.
             foreach (var s_Chunk in m_Descriptor.Chunks)
