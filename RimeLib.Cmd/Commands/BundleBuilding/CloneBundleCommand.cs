@@ -6,6 +6,8 @@ using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Frostbite;
 using Newtonsoft.Json;
+using RimeLib.Content.Mounting;
+using System.Collections.Generic;
 
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
@@ -18,7 +20,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             // TODO: don't hardcode path
-            string s_Path = @"D:\\RimeCache\\";
+            // string s_Path = @"D:\\RimeCache\\";
             // Expects to have a mounted game already.
             // Mount the game with the Id 1.
             var s_BaseContext = (BaseContext)p_Context.Parent!.Parent!;
@@ -36,27 +38,40 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_Chunks = s_GameContext.GetBundleChunksWithHash(Bundle!).ToList();
             foreach (var s_Chunk in s_Chunks)
             {
-                FileInfo s_FileInfo = new FileInfo(s_Path + s_Chunk.Guid.ToString() + ".chunk");
-                s_GameContext.DumpChunk(s_Chunk.Guid, s_FileInfo);
-                s_BundleBuildingContext.AddChunk(s_Chunk.Guid, s_FileInfo, s_Chunk.AssetNameHash);
+                if (!s_Mounter!.TryGetChunk(s_Chunk.Guid, out var s_ChunkObject))
+                {
+                    p_Writer.WriteLine($"Could not find chunk with ({s_Chunk.Guid.ToString("D")}).");
+                    return false;
+                }
+
+                s_BundleBuildingContext.AddChunk(s_Chunk.Guid, s_ChunkObject.FirstVariant);
             }
 
             // Resources
             var s_Resources = s_GameContext.GetBundleResources(Bundle!).ToList();
             foreach (var s_Resource in s_Resources)
             {
-                FileInfo s_FileInfo = new FileInfo(s_Path + s_Resource.Name + "." + s_Resource.ResourceType.ToString());
-                s_GameContext.DumpResource(s_Resource.Name, s_FileInfo);
-                s_BundleBuildingContext.AddResource(s_Resource.Name, s_Resource.ResourceType, s_FileInfo);
+                if (!s_Mounter!.TryGetResource(s_Resource.Name, out var s_ResourceObject))
+                {
+                    p_Writer.WriteLine($"Could not get the resource of ({s_Resource.Name}).");
+                    return false;
+                }
+
+                s_BundleBuildingContext.AddResource(s_Resource.Name, s_ResourceObject.FirstVariant);
             }
 
             // Partitions
+            var s_PartitionList = new List<IMountedObject>();
             var s_Partitions = s_GameContext.GetBundlePartitions(Bundle!).ToList();
             foreach (var s_Partition in s_Partitions)
             {
-                FileInfo s_FileInfo = new FileInfo(s_Path + s_Partition + ".json");
-                s_GameContext.DumpPartitionJson(s_Partition, s_FileInfo, Formatting.Indented);
-                s_BundleBuildingContext.AddJsonPartition(s_Partition, s_FileInfo);
+                if (!s_Mounter!.TryGetPartition(s_Partition, out IMountedObject? p_MountedPartition))
+                {
+                    p_Writer.WriteLine($"Could not get partition of ({s_Partition}).");
+                    return false;
+                }
+
+                s_BundleBuildingContext.AddPartition(p_MountedPartition.OriginalName, p_MountedPartition.FirstVariant);
             }
 
             return true;
