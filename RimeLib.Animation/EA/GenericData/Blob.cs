@@ -1,9 +1,11 @@
 ﻿using RimeLib.Frostbite;
 using RimeLib.IO;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace RimeLib.Animation.EA.GenericData
 {
@@ -24,8 +26,7 @@ namespace RimeLib.Animation.EA.GenericData
         public Blob()
         {
         }
-
-        public Blob(RimeReader p_Reader)
+            public Blob(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
         }
@@ -45,7 +46,17 @@ namespace RimeLib.Animation.EA.GenericData
 
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            p_Writer.Write(SerializeId());
+            
+            var s_LastEndianess = p_Writer.Endianness;
+            p_Writer.Endianness = BigEndian ? IO.Conversion.Endianness.BigEndian : IO.Conversion.Endianness.LittleEndian;
+
+            p_Writer.Write((uint)(Data.Length + 0xC));
+            p_Writer.Write(Data);
+
+            p_Writer.Endianness = s_LastEndianess;
+
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)
@@ -104,6 +115,45 @@ namespace RimeLib.Animation.EA.GenericData
            
         }
 
+        protected byte[] SerializeId()
+        {
+            string? s_String = null;  
+    
+            switch (Type)
+            {
+                case GenericDataBlobType.Data:
+                    s_String = "GD.DATA";
+                    break;
+                case GenericDataBlobType.Stream:
+                    s_String = "GD.STRM";
+                    break;
+                case GenericDataBlobType.Reflection:
+                    s_String = "GD.REFL";
+                    break;
+                case GenericDataBlobType.RefPack:
+                    s_String = "REFPACK";
+                    break;
+
+                case GenericDataBlobType.Data2:
+                    s_String = "DAT2";
+                    break;
+                case GenericDataBlobType.Ref2:
+                    s_String = "REF2";
+                    break;
+                case GenericDataBlobType.Info:
+                    s_String = "INFO";
+                    break;
+                default:
+                    throw new Exception($"Invaid GenericData format! newer ANT or something else is wrong. [{Type}]");
+            }
+
+            if (BigEndian)
+                s_String += "b";
+            else
+                s_String += " "; //TODO: i dont remember what this was 
+
+            return Encoding.ASCII.GetBytes(s_String);
+        }
 
         public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {

@@ -101,8 +101,8 @@ namespace RimeLib.Frostbite.Fs
                 p_Reader.Seek(0x3, SeekOrigin.Current);
 
                 // fix for newer forstbite versions!
-                //if (!s_XorKey.Skip(0x10).Take(0x10).SequenceEqual(c_CoreSeedPart))
-                //    p_OutReader = new XorRimeReader(p_Reader, s_XorKey.Select(x => (byte)(x ^ 0x7B)).ToArray());
+                // newer versions dont use xor key, but theres a constant value here that can be checked.
+                // the value is never used, and can be changed
                 if (!s_XorKey.Skip(0x10).Take(0x10).SequenceEqual(c_CoreSeedPart))
                 {
                     XorKey = s_XorKey.Select(x => (byte)(x ^ c_XorBaseKey)).ToArray();
@@ -192,9 +192,11 @@ namespace RimeLib.Frostbite.Fs
             
             // reader should be seeked right at this point.
             if (p_OutInfo.XorKey != null)
+                // p_OutReader = new LimitedRimeReader(new XorRimeRecder(p_Reader, p_OutInfo.XorKey), p_Reader.Position - p_Reader.BaseStream.Length);
                 p_OutReader = new XorRimeReader(p_Reader, p_OutInfo.XorKey);
             else
                 p_OutReader = p_Reader; //new LimitedRimeReader(p_Reader, p_Reader.Position - p_Reader.BaseStream.Length);
+                // p_OutReader = new LimitedRimeReader(p_Reader, p_Reader.Position - p_Reader.BaseStream.Length);
             
             return true;
         }

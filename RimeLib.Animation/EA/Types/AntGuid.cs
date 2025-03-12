@@ -36,12 +36,8 @@ namespace RimeLib.Animation.EA.Types
 
         public AntGuid(byte p_Value)
         {
-            var s_Data = BitConverter.GetBytes((uint)0x1010101 * p_Value);
-
-            Array.Copy(s_Data, 0, Value, 0x0, 4);
-            Array.Copy(s_Data, 0, Value, 0x4, 4);
-            Array.Copy(s_Data, 0, Value, 0x8, 4);
-            Array.Copy(s_Data, 0, Value, 0xC, 4);
+            for (var i = 0; i < Value.Length; i++)
+                Value[i] = p_Value;
         }
 
 

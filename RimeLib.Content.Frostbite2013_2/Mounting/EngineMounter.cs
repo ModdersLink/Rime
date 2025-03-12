@@ -866,6 +866,9 @@ public class EngineMounter : IEngineMounter
         // Mount all partitions.
         foreach (var s_Partition in p_Bundle.Bundle.DbxEntries)
         {
+            // Mount only available dbx
+            if (!m_Catalog.ContainsEntry(s_Partition.Hash))
+                continue;
             // Create variant.
             var s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
             var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
@@ -967,6 +970,9 @@ public class EngineMounter : IEngineMounter
             // Mount all partitions.
             foreach (var s_Partition in s_DeltaBundle.DbxEntries)
             {
+                // Mount only available dbx
+                if (!m_Catalog.ContainsEntry(s_Partition.Hash))
+                    continue;
                 // Create variant.
                 var s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
                 var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, s_DeltaBundle.Path);

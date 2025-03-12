@@ -407,7 +407,6 @@ namespace RimeLib.Frostbite.Db
                 return new DbObjectElement(p_FieldName, (long) p_Object, p_VariableLength);
             if (s_Type == typeof(ulong) || s_Type == typeof(ulong?))
                 return new DbObjectElement(p_FieldName, (long) p_Object, p_VariableLength);
-
             if (s_Type == typeof(float) || s_Type == typeof(float?))
                 return new DbObjectElement(p_FieldName, (float) p_Object);
 

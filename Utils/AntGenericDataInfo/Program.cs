@@ -194,7 +194,7 @@ namespace TextureExtractor
 
         private static void DumpAssetBankReflections(IEngineMounter p_Mounter)
         {
-            List<ReflectionAssetBank> s_Banks = new();
+            List<ReflectionGeneralDataReader> s_Banks = new();
             
             object s_LockObject = new();
             
@@ -263,7 +263,7 @@ namespace TextureExtractor
 
                         using var s_BundleDataReader = new RimeReader(new MemoryStream(s_BundleData));
 
-                        var s_BundleBank = new ReflectionAssetBank();
+                        var s_BundleBank = new ReflectionGeneralDataReader();
                         s_BundleBank.Load(s_BundleDataReader);
             
                         
@@ -278,7 +278,7 @@ namespace TextureExtractor
 
                         using var s_ResourceDataReader = new RimeReader(new MemoryStream(s_ResourceData));
 
-                        var s_ResourceBank = new ReflectionAssetBank();
+                        var s_ResourceBank = new ReflectionGeneralDataReader();
                         s_ResourceBank.Load(s_ResourceDataReader);
                         
                         

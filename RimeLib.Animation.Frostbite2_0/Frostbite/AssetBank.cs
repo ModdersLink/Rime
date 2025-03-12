@@ -36,7 +36,7 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
         {
         }
 
-        public void Load(RimeReader p_Reader)
+        public void Load(RimeReader p_Reader, IAssetBankLoader p_Loader)
         {
             var s_LastEndianess = p_Reader.Endianness;
             p_Reader.Endianness = RimeLib.IO.Conversion.Endianness.BigEndian;
@@ -50,7 +50,7 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
 
 
             //TODO: this should be better structured
-            Archive = new Archive(this);
+            Archive = new Archive(p_Loader);
             Archive.Deserialize(p_Reader);
 
             p_Reader.Endianness = s_LastEndianess;
@@ -67,7 +67,7 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
         }
 
 
-        private AntObject CreateObject(LayoutHeader p_Layout)
+        protected AntObject CreateObject(LayoutHeader p_Layout)
         {
             var s_ContainerType = Type.GetType($"ant.{p_Layout.Name.Replace(":", "_")}");
 
@@ -78,7 +78,7 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
         }
 
 
-        public AntObject ParseClass(RimeReader p_Reader, RimeLib.Animation.EA.GenericData.Data p_Data, long p_Offset = 0)
+        public  AntObject ParseClass(RimeReader p_Reader, RimeLib.Animation.EA.GenericData.Data p_Data, long p_Offset = 0)
         {
             var s_Layout = Archive.Reflection?.Layouts.Where(x => x.Hash == p_Data.LayoutHash).First();
 
@@ -98,7 +98,7 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
             return s_Instance;
         }
 
-        private AntObject ParseStruct(RimeReader p_Reader, LayoutHeader p_Layout, long p_Offset = 0)
+        protected AntObject ParseStruct(RimeReader p_Reader, LayoutHeader p_Layout, long p_Offset = 0)
         {
             var s_Instance = CreateObject(p_Layout);
 
@@ -108,12 +108,12 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
             return s_Instance;
         }
 
-        private void ParseInstance(RimeReader p_Reader, LayoutHeader p_Layout, AntObject p_Instance, Type p_InstanceType, long p_Offset = 0)
+        protected virtual void ParseInstance(RimeReader p_Reader, LayoutHeader p_Layout, AntObject p_Instance, Type p_InstanceType, long p_Offset = 0)
         {
             if (p_Layout.IsBasicField)
             {
                 throw new Exception($"cannot parse basicfield as instance!");
-                // return;
+                return;
                 //ParseField(p_Reader, p_Layout, p_Offset);
             }
 
@@ -169,7 +169,7 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
                 // strings should ne null terminated as game doesnt check length on strings
 
                 if (s_Offset != 0)
-                    p_Instance.Name = p_Reader.ReadNullTerminatedString();
+                    p_Instance.ObjectName = p_Reader.ReadNullTerminatedString();
             }
 
 
@@ -276,7 +276,7 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
         }
 
 
-        private void ParseConstArray(RimeReader p_Reader, EntryHeader p_Slot, PropertyInfo p_PropertyType, object p_Instance, long p_Offset )
+        protected virtual void ParseConstArray(RimeReader p_Reader, EntryHeader p_Slot, PropertyInfo p_PropertyType, object p_Instance, long p_Offset )
         {
             var s_Array = p_PropertyType.GetValue(p_Instance) as Array;
 
@@ -312,7 +312,7 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
                 case LayoutType.Guid:
                 {
 
-                    throw new Exception("This isnt working properly!");/*
+                    throw new Exception("This isnt working properly!");
                     for (var i = 0; i < p_Slot.Count; i++)
                     {
                         p_Reader.Seek(p_Offset + p_Slot.AlignIndexOffset(i), SeekOrigin.Begin);
@@ -324,7 +324,7 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
 
                             //s_Array![i] = new IdRef<AntObject>() { RefrenceId = s_Guid };
                     }
-                    break;*/
+                    break;
                 }
                 case LayoutType.DataRef:
                 {
@@ -370,7 +370,7 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
 
         }
 
-        void ParseArray(RimeReader p_Reader, EntryHeader p_Slot, PropertyInfo p_PropertyType, object p_Instance)
+        protected virtual void ParseArray(RimeReader p_Reader, EntryHeader p_Slot, PropertyInfo p_PropertyType, object p_Instance)
         {
             var s_Layout = p_Slot.Layout;
 
@@ -467,7 +467,7 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
 
         }
 
-        private object ParseSimpleType(RimeReader p_Reader, LayoutType p_Type)
+        protected object ParseSimpleType(RimeReader p_Reader, LayoutType p_Type)
         {
             switch (p_Type)
             {

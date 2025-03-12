@@ -1,17 +1,18 @@
-﻿using RimeLib.Ant.EA.GenericData;
-using RimeLib.Ant.EA.Readers;
-using RimeLib.Ant.EA.Reflection;
-using RimeLib.Ant.EA.Types;
+﻿using RimeLib.Animation.EA.GenericData;
+using RimeLib.Animation.EA.Readers;
+using RimeLib.Animation.EA.Reflection;
+using RimeLib.Animation.EA.Types;
 using RimeLib.IO;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
-using RimeLib.Ant.EA;
-using RimeLib.Ant.EA.Resolver;
-using RimeLib.Ant.Frostbite2_0.EA;
+using RimeLib.Animation.EA;
+using RimeLib.Animation.EA.Resolver;
+using RimeLib.Animation.Frostbite2_0.EA;
 
 namespace RimeLib.Ant.Frostbite2_0.Frostbite
 {

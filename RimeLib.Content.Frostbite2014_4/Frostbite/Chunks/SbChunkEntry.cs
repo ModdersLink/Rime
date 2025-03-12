@@ -5,7 +5,7 @@ using RimeLib.IO.Conversion;
 
 namespace RimeLib.Content.Frostbite2014_4.Frostbite.Chunks;
 
-class SbChunkEntry : ChunkEntry
+public class SbChunkEntry : ChunkEntry
 {
     public long Offset { get; }
     public long Size { get; }

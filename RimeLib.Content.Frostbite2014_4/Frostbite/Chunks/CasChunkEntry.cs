@@ -4,7 +4,7 @@ using RimeLib.IO;
 
 namespace RimeLib.Content.Frostbite2014_4.Frostbite.Chunks;
 
-class CasChunkEntry : ChunkEntry
+public class CasChunkEntry : ChunkEntry
 {
 	public Sha1 Hash { get; set; }
 
@@ -40,7 +40,7 @@ class CasChunkEntry : ChunkEntry
 	public override long GetSize()
 	{
 		if (!Compressed)
-			return ContainedCatalogs[0][Hash].FileSize;
+			return ContainedCatalogs.FirstOrDefault()[Hash].FileSize;
 
 		using var s_Reader = GetReader();
 		return s_Reader.Length;
