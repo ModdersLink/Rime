@@ -6,17 +6,21 @@ public enum ManifestType : uint
 	Dbx = 0xFE1FBEEF,
 	Ebx = 0xED1CEDB8,
 	
-	// this bundlemanifest seems completly dbobject based. probably what they use on backend
+	// this bundlemanifest seems completly dbobject based. probably what they use on backend/avalanche
 	Spec = 0x73706563,
 	SpecDbx = (Dbx ^ Spec),
 	SpecEbx = (Ebx ^ Spec),
 	
-	// standard bundle maniesft used from bf3 to 2016?
+	Fb2 = 0x7A11F1AB,
+	Fb2Dbx = (Dbx ^ Fb2),
+	Fb2Ebx = (Ebx ^ Fb2),
+	
+	// standard bundle manifest used in fb2013+?
 	Pecm = 0x7065636D,
 	PecmDbx = (Dbx ^ Pecm),
 	PecmEbx = (Ebx ^ Pecm),
 	
-	// either fb2013 type or fb2016 type. same format as pecm(fb2013)
+	// either fb2013 type or fb2016 type. same format as pecm
 	Pecn = 0x7065636E,
 	PecnDbx = (Dbx ^ Pecn),
 	PecnEbx = (Ebx ^ Pecn),

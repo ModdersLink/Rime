@@ -295,8 +295,8 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             public int ChunkMetaOffset { get; set; } // 24
             public int ChunkMetaSize { get; set; } // 28
 
-            public bool IsDbx => Magic == ManifestType.PecmDbx;
-            public bool IsEbx => Magic == ManifestType.PecmEbx;
+            public bool IsDbx => Magic == ManifestType.Fb2Dbx;
+            public bool IsEbx => Magic == ManifestType.Fb2Ebx;
             
             public Header(RimeReader p_Reader)
             {
