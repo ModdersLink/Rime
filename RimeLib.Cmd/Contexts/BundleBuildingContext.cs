@@ -108,9 +108,11 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<RemoveChunkCommand>();
             RegisterCommand<ListChunksCommand>();
             RegisterCommand<AddResourceCommand>();
+            RegisterCommand<AddExistingResourceCommand>();
             RegisterCommand<RemoveResourceCommand>();
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<AddPartitionCommand>();
+            RegisterCommand<AddExistingPartitionCommand>();
             RegisterCommand<AddJsonPartitionCommand>();
             RegisterCommand<RemovePartitionCommand>();
             RegisterCommand<ListPartitionsCommand>();
@@ -176,6 +178,11 @@ namespace RimeLib.Cmd.Contexts
             m_Builder.WithResource(p_Name, new ResourceFileReader(p_File.FullName, p_Type));
         }
 
+        internal void AddResource(string p_Name, IResourceObject p_Object)
+        {
+            m_Builder.WithResource(p_Name, p_Object);
+        }
+
         internal void RemoveResource(string p_Name)
         {
             m_Builder.RemoveResource(p_Name);
@@ -189,6 +196,11 @@ namespace RimeLib.Cmd.Contexts
         internal void AddPartition(string p_Name, FileInfo p_File)
         {
             m_Builder.WithPartition(p_Name, new SbBuildingContext.FileReader(p_File.FullName));
+        }
+
+        internal void AddPartition(string p_Name, IObjectVariant p_Partition)
+        {
+            m_Builder.WithPartition(p_Name, p_Partition);
         }
 
         internal void AddJsonPartition(string p_Name, FileInfo p_File)
