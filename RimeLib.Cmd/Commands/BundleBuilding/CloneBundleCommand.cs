@@ -18,7 +18,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             // TODO: don't hardcode path
-            string s_Path = @"D:\\RimeCache\\";
+            string s_Path = @"/home/txt/Documents/Code/rime/build_test/tempdir";
             // Expects to have a mounted game already.
             // Mount the game with the Id 1.
             var s_BaseContext = (BaseContext)p_Context.Parent!.Parent!;
@@ -36,7 +36,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_Chunks = s_GameContext.GetBundleChunksWithHash(Bundle!).ToList();
             foreach (var s_Chunk in s_Chunks)
             {
-                FileInfo s_FileInfo = new FileInfo(s_Path + s_Chunk.Guid.ToString() + ".chunk");
+                FileInfo s_FileInfo = new FileInfo(Path.Join(s_Path, s_Chunk.Guid.ToString() + ".chunk"));
                 s_GameContext.DumpChunk(s_Chunk.Guid, s_FileInfo);
                 s_BundleBuildingContext.AddChunk(s_Chunk.Guid, s_FileInfo, s_Chunk.AssetNameHash);
             }
@@ -45,7 +45,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_Resources = s_GameContext.GetBundleResources(Bundle!).ToList();
             foreach (var s_Resource in s_Resources)
             {
-                FileInfo s_FileInfo = new FileInfo(s_Path + s_Resource.Name + "." + s_Resource.ResourceType.ToString());
+                FileInfo s_FileInfo = new FileInfo(Path.Join(s_Path, s_Resource.Name + "." + s_Resource.ResourceType.ToString()));
                 s_GameContext.DumpResource(s_Resource.Name, s_FileInfo);
                 s_BundleBuildingContext.AddResource(s_Resource.Name, s_Resource.ResourceType, s_FileInfo);
             }
@@ -54,7 +54,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_Partitions = s_GameContext.GetBundlePartitions(Bundle!).ToList();
             foreach (var s_Partition in s_Partitions)
             {
-                FileInfo s_FileInfo = new FileInfo(s_Path + s_Partition + ".json");
+                FileInfo s_FileInfo = new FileInfo(Path.Join(s_Path, s_Partition + ".json"));
                 s_GameContext.DumpPartitionJson(s_Partition, s_FileInfo, Formatting.Indented);
                 s_BundleBuildingContext.AddJsonPartition(s_Partition, s_FileInfo);
             }
