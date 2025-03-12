@@ -9,6 +9,7 @@
     <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <Platforms>x64</Platforms>
+    <Configurations>Debug;Release;LinuxDebug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,8 +19,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\RimeLib.Animation.Frostbite2_0\RimeLib.Animation.Frostbite2_0.csproj" />
     <ProjectReference Include="..\..\RimeLib.Animation\RimeLib.Animation.csproj" />
-    <ProjectReference Include="..\..\Rimelib.Ant.Frostbite2_0\RimeLib.Ant.Frostbite2_0.csproj" />
-    <ProjectReference Include="..\..\RimeLib.Ant\RimeLib.Ant.csproj" />
     <ProjectReference Include="..\..\RimeLib.Audio\RimeLib.Audio.csproj" />
     <ProjectReference Include="..\..\RimeLib.Cmd\RimeLib.Cmd.csproj" />
     <ProjectReference Include="..\..\RimeLib.CodeGen\RimeLib.CodeGen.csproj" />

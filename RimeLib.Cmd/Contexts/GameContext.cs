@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using RimeLib.Cmd.Commands.Game;
+using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
@@ -154,9 +155,10 @@ namespace RimeLib.Cmd.Contexts
             if (p_Destination.Directory != null && !Directory.Exists(p_Destination.Directory.FullName))
                 Directory.CreateDirectory(p_Destination.Directory.FullName);
 
+            // TODO: this is causing issues when cloning (noncas) bundles.
             // Here we look for the first chunk variant with logical offset 0.
             // That's because variants with non-0 offsets can be partial mips, etc.
-            using var s_Reader = s_Chunk.Variants.First(p_Variant => p_Variant.GetLogicalOffset() == 0).GetReader();
+            using var s_Reader = s_Chunk.Variants.First(p_Variant => true).GetReader();
             using var s_FileStream = File.Create(p_Destination.FullName);
 
             s_Reader.CopyTo(s_FileStream);
@@ -270,11 +272,21 @@ namespace RimeLib.Cmd.Contexts
         }
 
         /// <summary>
+        /// Get the chunks (with asset name hash) of a specified bundle. (Only non cas bundles.)
+        /// </summary>
+        /// <param name="p_Bundle">Bundle name</param>
+        /// <returns>Enumerable of GUIDs for each of the bundle chunks</returns>
+        internal IEnumerable<(GUID Guid, int AssetNameHash)> GetBundleChunksWithHash(string p_Bundle)
+        {
+            return m_Mounter.GetChunksWithHashInBundle(p_Bundle);
+        }
+
+        /// <summary>
         /// Gets the resources of a specified bundle
         /// </summary>
         /// <param name="p_Bundle">Bundle name</param>
         /// <returns>Enumerable of resource names for each of the bundle resources</returns>
-        internal IEnumerable<string> GetBundleResources(string p_Bundle)
+        internal IEnumerable<(string Name, ResourceType ResourceType)> GetBundleResources(string p_Bundle)
         {
             return m_Mounter.GetResourcesInBundle(p_Bundle);
         }
