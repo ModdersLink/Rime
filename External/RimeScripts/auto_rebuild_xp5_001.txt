@@ -1,0 +1,82 @@
+mount_game "D:\Program Files\EAGames\Battlefield 3" Frostbite2_0
+select_game 1
+mount_sb Win32/levels/xp5_001/xp5_001
+mount_bundle Win32/levels/xp5_001/tdm
+mount_bundle Win32/levels/xp5_001/cqs
+mount_bundle Win32/levels/xp5_001/dm
+mount_bundle Win32/levels/xp5_001/xp5_001_loading_music
+mount_bundle Win32/levels/xp5_001/xp5_001_gameconfiglight_win32
+mount_bundle Win32/levels/xp5_001/xp5_001_settings_win32
+mount_bundle Win32/levels/xp5_001/squadrush
+mount_bundle Win32/levels/xp5_001/ctf
+mount_bundle Win32/levels/xp5_001/xp5_001_uipreendofround
+mount_bundle Win32/levels/xp5_001/sqdm
+mount_bundle Win32/levels/xp5_001/xp5_001
+mount_bundle Win32/levels/xp5_001/cql
+mount_bundle Win32/levels/xp5_001/xp5_001_uiplaying
+mount_bundle Win32/levels/xp5_001/air_superiority
+mount_bundle Win32/levels/xp5_001/xp5_001_uiendofround
+mount_bundle Win32/levels/xp5_001/xp5_001_uiloadingmp
+mount_bundle Win32/levels/xp5_001/conquest
+mount_bundle Win32/levels/xp5_001/xp5_001_uiloadingsp
+mount_bundle Win32/levels/xp5_001/rush
+exit
+build_sb Win32/levels/xp5_001/xp5_001 Frostbite2_0 "C:\Users\gamedev\Downloads\CustomBundleZiba\sb"
+build_bundle Win32/levels/xp5_001/tdm
+clone_bundle Win32/levels/xp5_001/tdm
+build
+build_bundle Win32/levels/xp5_001/cqs
+clone_bundle Win32/levels/xp5_001/cqs
+build
+build_bundle Win32/levels/xp5_001/dm
+clone_bundle Win32/levels/xp5_001/dm
+build
+build_bundle Win32/levels/xp5_001/xp5_001_loading_music
+clone_bundle Win32/levels/xp5_001/xp5_001_loading_music
+build
+build_bundle Win32/levels/xp5_001/xp5_001_gameconfiglight_win32
+clone_bundle Win32/levels/xp5_001/xp5_001_gameconfiglight_win32
+build
+build_bundle Win32/levels/xp5_001/xp5_001_settings_win32
+clone_bundle Win32/levels/xp5_001/xp5_001_settings_win32
+build
+build_bundle Win32/levels/xp5_001/squadrush
+clone_bundle Win32/levels/xp5_001/squadrush
+build
+build_bundle Win32/levels/xp5_001/ctf
+clone_bundle Win32/levels/xp5_001/ctf
+build
+build_bundle Win32/levels/xp5_001/xp5_001_uipreendofround
+clone_bundle Win32/levels/xp5_001/xp5_001_uipreendofround
+build
+build_bundle Win32/levels/xp5_001/sqdm
+clone_bundle Win32/levels/xp5_001/sqdm
+build
+build_bundle Win32/levels/xp5_001/xp5_001
+clone_bundle Win32/levels/xp5_001/xp5_001
+build
+build_bundle Win32/levels/xp5_001/cql
+clone_bundle Win32/levels/xp5_001/cql
+build
+build_bundle Win32/levels/xp5_001/xp5_001_uiplaying
+clone_bundle Win32/levels/xp5_001/xp5_001_uiplaying
+build
+build_bundle Win32/levels/xp5_001/air_superiority
+clone_bundle Win32/levels/xp5_001/air_superiority
+build
+build_bundle Win32/levels/xp5_001/xp5_001_uiendofround
+clone_bundle Win32/levels/xp5_001/xp5_001_uiendofround
+build
+build_bundle Win32/levels/xp5_001/xp5_001_uiloadingmp
+clone_bundle Win32/levels/xp5_001/xp5_001_uiloadingmp
+build
+build_bundle Win32/levels/xp5_001/conquest
+clone_bundle Win32/levels/xp5_001/conquest
+build
+build_bundle Win32/levels/xp5_001/xp5_001_uiloadingsp
+clone_bundle Win32/levels/xp5_001/xp5_001_uiloadingsp
+build
+build_bundle Win32/levels/xp5_001/rush
+clone_bundle Win32/levels/xp5_001/rush
+build
+build

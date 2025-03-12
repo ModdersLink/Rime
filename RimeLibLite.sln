@@ -124,6 +124,11 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Content.Frostbite2021_1", "RimeLib.Content.Frostbite2021_1\RimeLib.Content.Frostbite2021_1.csproj", "{66E63FBD-024F-4096-9064-019D8B39AB13}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EbxRefrences", "Utils\EbxRefrences\EbxRefrences.csproj", "{CF6C0DF6-4868-4481-99E2-AE26D9E30C07}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RimeScripts", "RimeScripts", "{F540066C-3856-471C-8F4A-32E6A6580C59}"
+	ProjectSection(SolutionItems) = preProject
+		External\RimeScripts\auto_mount_bf3.txt = External\RimeScripts\auto_mount_bf3.txt
+		External\RimeScripts\auto_rebuild_xp5_001.txt = External\RimeScripts\auto_rebuild_xp5_001.txt
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
