@@ -27,6 +27,8 @@ public class CtrRef<T> : CtrRefBase where T : DataContainerBase
     {
         return base.Get() as T;
     }
+    
+    public T? Instance => Get() as T
 }
 
 public class CtrRefBase
@@ -98,5 +100,11 @@ public class CtrRefBase
     public static bool operator !=(CtrRefBase? p_Left, CtrRefBase? p_Right)
     {
         return !Equals(p_Left, p_Right);
+    }
+
+
+    public override string ToString()
+    {
+        return $"({PartitionGuid}, {InstanceId})";
     }
 }
