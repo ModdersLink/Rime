@@ -8,6 +8,7 @@ using RimeLib.Content.Frostbite;
 using Newtonsoft.Json;
 using RimeLib.Content.Mounting;
 using System.Collections.Generic;
+using SharpDX.Win32;
 
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
@@ -44,7 +45,15 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     return false;
                 }
 
-                s_BundleBuildingContext.AddChunk(s_Chunk.Guid, s_ChunkObject.FirstVariant);
+
+                var s_Variant = s_ChunkObject.Variants.FirstOrDefault(p_Variant => p_Variant.GetAssetNameHash() == s_Chunk.AssetNameHash);
+                if (s_Variant == null)
+                {
+                    p_Writer.Write($"Could not find chunk variant of ({s_Chunk.Guid.ToString("D")}) with h32 ({s_Chunk.AssetNameHash}).\n");
+                    s_Variant = s_ChunkObject.FirstVariant;
+                }
+
+                s_BundleBuildingContext.AddChunk(s_Chunk.Guid, s_Variant);
             }
 
             // Resources
