@@ -328,7 +328,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 s_LeftBytes -= s_BytesToCompress;
 
                 var s_CompressionMemoryStream = new MemoryStream();
-                using (var s_CompressionStream = new DeflaterOutputStream(s_CompressionMemoryStream, new Deflater(Deflater.DEFAULT_COMPRESSION), 4096))
+                using (var s_CompressionStream = new DeflaterOutputStream(s_CompressionMemoryStream, new Deflater(Deflater.BEST_COMPRESSION), 4096))
                 {
                     var s_ByteBuffer = new byte[s_BytesToCompress];
                     var s_BytesRead = p_InputStream.Read(s_ByteBuffer);
