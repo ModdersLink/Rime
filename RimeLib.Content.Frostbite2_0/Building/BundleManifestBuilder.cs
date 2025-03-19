@@ -119,22 +119,22 @@ namespace RimeLib.Content.Frostbite2_0.Building
             var s_ChunkMetaArray = new DbObject();
             
             foreach (var (s_GUID, s_ChunkObject) in m_Descriptor.Chunks)
-            {
-                var s_AssetNameHash = s_ChunkObject.GetAssetNameHash();
-                
-                if (s_AssetNameHash == null)
-                    throw new Exception($"Tried serializing chunk with ID '{s_GUID}' with no asset name hash.");
-                
-                var s_MetaObject = new DbObject();
-                s_MetaObject.AddElement(new DbObjectElement("h32", s_AssetNameHash.Value));
-                
+            {                
                 // Set metadata data.
-                var s_Meta = new DbObject();
+                var s_MetaObject = new DbObject();
 
                 if (s_ChunkObject.TryGetMeta(out var s_ChunkMetaEntry))
-                    s_Meta = s_ChunkMetaEntry;
+                    s_MetaObject = s_ChunkMetaEntry;
+                else {
+                    var s_AssetNameHash = s_ChunkObject.GetAssetNameHash();
 
-                s_MetaObject.AddElement(new DbObjectElement("meta", s_Meta, false));
+                    if (s_AssetNameHash == null)
+                        throw new Exception($"Tried serializing chunk with ID '{s_GUID}' with no asset name hash.");
+
+                    var s_Meta = new DbObject();
+                    s_MetaObject.AddElement(new DbObjectElement("h32", s_AssetNameHash.Value));
+                    s_MetaObject.AddElement(new DbObjectElement("meta", s_Meta, false));
+                }
 
                 s_ChunkMetaArray.AddElement(new DbObjectElement("", s_MetaObject, false));
             }
