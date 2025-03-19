@@ -24,6 +24,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
         private long m_ResourceEntriesOffset = 0;
         private long m_ChunkEntriesOffset = 0;
 
+        private Dictionary<string, uint> m_StringTable = new Dictionary<string, uint>();
+
         public BundleManifestBuilder(BundleDescriptor p_Descriptor)
         {
             Checksum = new Sha1();
@@ -303,14 +305,19 @@ namespace RimeLib.Content.Frostbite2_0.Building
         {
             var s_Size = p_Object.GetSize();
 
+            if (!m_StringTable.TryGetValue(p_Name, out uint s_NameOffset))
+            {
+                s_NameOffset = (uint)p_TextWriter.Position;
+                m_StringTable[p_Name] = s_NameOffset;
+                p_TextWriter.WriteNullTerminatedString(p_Name);
+            }
+
             var s_EntryRecord = new BundleManifest.EntryRecord
             {
-                NameOffset = (uint) p_TextWriter.Position,
+                NameOffset = s_NameOffset,
                 PayloadSize = (uint) s_Size,
                 OriginalSize = (uint) s_Size,
             };
-
-            p_TextWriter.WriteNullTerminatedString(p_Name);
 
             s_EntryRecord.Serialize(p_ManifestWriter);
         }
