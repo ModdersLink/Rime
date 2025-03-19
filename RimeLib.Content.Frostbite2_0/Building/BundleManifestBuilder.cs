@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
+using System.Linq;
 using ICSharpCode.SharpZipLib.Zip.Compression;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using RimeLib.Content.Building;
@@ -10,6 +12,7 @@ using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
+using RimeLib.IO.Conversion;
 
 namespace RimeLib.Content.Frostbite2_0.Building
 {
@@ -94,7 +97,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 p_Writer.Write(s_Meta);
             }
 
-            m_ChunkEntriesOffset = p_Writer.Position - s_StartOffset;
+            m_ChunkEntriesOffset = p_Writer.Position;
             
             // Write chunk entries.
             foreach (var s_Chunk in m_Descriptor.Chunks)
@@ -198,17 +201,20 @@ namespace RimeLib.Content.Frostbite2_0.Building
             {
                 p_Writer.Align(16);
                 
-                var s_ShouldCompress = false;
+                var s_ShouldCompress = true;
 
                 // TODO: Figure out what other resources need to be compressed.
-                if (s_Resource.Value.GetResourceType() == ResourceType.DxTexture)
-                {
-                    s_ShouldCompress = true;
-                }
+                // if (s_Resource.Value.GetResourceType() == ResourceType.DxTexture)
+                // {
+                //     s_ShouldCompress = true;
+                // }
 
-                using var s_ResourceReader = s_Resource.Value.GetReader();
                 using var s_HashWriter = new HashingRimeWriter(new MemoryStream());
-                s_ResourceReader.CopyTo(s_HashWriter);
+                {
+                    using var s_HashReader = s_Resource.Value.GetReader();
+                    s_HashReader.CopyTo(s_HashWriter);
+                }
+                using var s_ResourceReader = s_Resource.Value.GetReader();
 
                 var s_Hash = s_HashWriter.GetHash();
                 s_Hashes.Add(s_Hash);
@@ -217,7 +223,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 if (s_ShouldCompress)
                 {
-                    s_ResourceReader.Seek(0, SeekOrigin.Begin);
+                    // s_ResourceReader.Seek(0, SeekOrigin.Begin);
                     var s_CompressedSize = WriteCompressed(p_Writer, s_ResourceReader);
 
                     // Go back and patch the entry sizes.
@@ -230,7 +236,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 }
                 else
                 {
-                    s_ResourceReader.Seek(0, SeekOrigin.Begin);
+                    // s_ResourceReader.Seek(0, SeekOrigin.Begin);
                     p_Writer.Write(s_ResourceReader);
                 }
                 
@@ -306,17 +312,15 @@ namespace RimeLib.Content.Frostbite2_0.Building
         private uint WriteCompressed(RimeWriter p_Writer, Stream p_InputStream)
         {
             var s_CompressedSegments = new List<Tuple<byte[], uint>>();
-            
             var s_LeftBytes = p_InputStream.Length;
-                
             while (s_LeftBytes > 0)
             {
                 // Compressed segments are at most 0x10000 (65536) bytes in size.
                 var s_BytesToCompress = (uint) System.Math.Min(0x10000, s_LeftBytes);
                 s_LeftBytes -= s_BytesToCompress;
 
-                var s_CompressionMemoryStream = new MemoryStream();
-                using (var s_CompressionStream = new DeflaterOutputStream(s_CompressionMemoryStream, new Deflater(Deflater.DEFAULT_COMPRESSION), 4096))
+                using var s_CompressionMemoryStream = new MemoryStream();
+                using var s_CompressionStream = new DeflaterOutputStream(s_CompressionMemoryStream, new Deflater(Deflater.DEFAULT_COMPRESSION), 0x10000); // TODO: add option to enable BEST_COMPRESSION (slow)
                 {
                     var s_ByteBuffer = new byte[s_BytesToCompress];
                     var s_BytesRead = p_InputStream.Read(s_ByteBuffer);
@@ -329,24 +333,30 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     }
 
                     s_CompressionStream.Write(s_ByteBuffer);
-                    s_CompressionStream.Flush();
-
-                    s_CompressedSegments.Add(Tuple.Create(s_CompressionMemoryStream.ToArray(), s_BytesToCompress));
+                    s_CompressionStream.Finish();
+                    s_CompressionStream.Dispose();
+                    
                 }
+                s_CompressedSegments.Add(Tuple.Create(s_CompressionMemoryStream.ToArray(), s_BytesToCompress));
             }
             
             // Now write the final compressed data.
             uint s_TotalSize = 0;
+
+            var s_LastEndianess = p_Writer.Endianness;
+            p_Writer.Endianness = Endianness.BigEndian;
             
             foreach (var (s_CompressedSegment, s_OriginalSize) in s_CompressedSegments)
             {
-                p_Writer.Write(s_OriginalSize);
-                p_Writer.Write(s_CompressedSegment.Length);
+                p_Writer.Write((uint)s_OriginalSize);
+                p_Writer.Write((uint)s_CompressedSegment.Length);
                 p_Writer.Write(s_CompressedSegment);
 
                 s_TotalSize += 8;
                 s_TotalSize += (uint) s_CompressedSegment.Length;
             }
+
+            p_Writer.Endianness = s_LastEndianess;
 
             return s_TotalSize;
         }
