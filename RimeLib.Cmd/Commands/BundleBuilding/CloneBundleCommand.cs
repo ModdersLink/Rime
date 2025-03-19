@@ -8,7 +8,6 @@ using RimeLib.Content.Frostbite;
 using Newtonsoft.Json;
 using RimeLib.Content.Mounting;
 using System.Collections.Generic;
-using SharpDX.Win32;
 
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
@@ -20,8 +19,6 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
-            // TODO: don't hardcode path
-            // string s_Path = @"D:\\RimeCache\\";
             // Expects to have a mounted game already.
             // Mount the game with the Id 1.
             var s_BaseContext = (BaseContext)p_Context.Parent!.Parent!;
@@ -44,7 +41,6 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     p_Writer.WriteLine($"Could not find chunk with ({s_Chunk.Guid.ToString("D")}).");
                     return false;
                 }
-
 
                 var s_Variant = s_ChunkObject.Variants.FirstOrDefault(p_Variant => p_Variant.GetAssetNameHash() == s_Chunk.AssetNameHash);
                 if (s_Variant == null)
