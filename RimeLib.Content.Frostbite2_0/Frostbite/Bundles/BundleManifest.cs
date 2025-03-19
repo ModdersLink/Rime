@@ -286,7 +286,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         // Size = 32
         public class Header
         {
-            public ManifestType Magic { get; set; } = ManifestType.PecmEbx; // 0
+            public ManifestType Magic { get; set; } = ManifestType.Fb2Ebx; // 0
             public int EntryCount { get; set; } // 4
             public int EbxCount { get; set; } // 8
             public int ResourceCount { get; set; } // 12
@@ -312,7 +312,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
             public Header(bool p_IsDbx = false)
             {
-                this.Magic = p_IsDbx ? ManifestType.PecmDbx : ManifestType.PecmEbx;
+                this.Magic = p_IsDbx ? ManifestType.Fb2Dbx : ManifestType.Fb2Ebx;
             }
 
             public void Serialize(RimeWriter p_Writer)
