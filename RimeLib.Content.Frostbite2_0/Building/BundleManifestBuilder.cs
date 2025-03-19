@@ -210,8 +210,17 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 if (s_ShouldCompress)
                 {
-                    s_ResourceReader.Seek(0, SeekOrigin.Begin);
-                    var s_CompressedSize = WriteCompressed(p_Writer, s_ResourceReader);
+                    uint s_CompressedSize;
+                    if (s_ResourceReader.BaseStream is ZlibRimeReader s_ZlibReader)
+                    {
+                        var s_ByteBuffer = s_ZlibReader.GetRawBytes();
+                        p_Writer.Write(s_ByteBuffer);
+                        s_CompressedSize = (uint)s_ByteBuffer.Length;
+                    }
+                    else
+                    {
+                        s_CompressedSize = WriteCompressed(p_Writer, s_ResourceReader);
+                    }
 
                     // Go back and patch the entry sizes.
                     var s_CurrentOffset = p_Writer.Position;
@@ -241,12 +250,22 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 
                 if (s_Chunk.Key.HasCompressionFlag())
                 {
-                    var s_CompressedSize = WriteCompressed(s_HashWriter, s_ChunkReader);
-                    
+                    uint s_CompressedSize;
+                    if (s_ChunkReader.BaseStream is ZlibRimeReader s_ZlibReader)
+                    {
+                        var s_ByteBuffer = s_ZlibReader.GetRawBytes();
+                        p_Writer.Write(s_ByteBuffer);
+                        s_CompressedSize = (uint)s_ByteBuffer.Length;
+                    }
+                    else
+                    {
+                        s_CompressedSize = WriteCompressed(s_HashWriter, s_ChunkReader);
+                    }
+
                     // Go back and patch the entry sizes.
                     var s_CurrentOffset = p_Writer.Position;
                     var s_RangeStart = s_Chunk.Value.GetRangeStart();
-                    
+
                     // 28 = ChunkEntry size, 20 = Offset to RangeEnd.
                     p_Writer.Seek(m_ChunkEntriesOffset + (28 * s_ChunkIndex) + 20, SeekOrigin.Begin);
                     p_Writer.Write(s_RangeStart + s_CompressedSize);
