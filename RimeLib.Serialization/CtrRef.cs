@@ -27,8 +27,8 @@ public class CtrRef<T> : CtrRefBase where T : DataContainerBase
     {
         return base.Get() as T;
     }
-    
-    public T? Instance => Get() as T
+
+    public T? Instance => Get() as T;
 }
 
 public class CtrRefBase
