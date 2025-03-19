@@ -62,6 +62,14 @@ namespace RimeLib.IO
             return s_Stream;
         }
 
+        public byte[] GetRawBytes()
+        {
+            BaseStream.Seek(m_StartPosition, SeekOrigin.Begin);
+            var s_ByteBuffer = new byte[BaseStream.Length];
+            BaseStream.Read(s_ByteBuffer);
+            return s_ByteBuffer;
+        }
+
         protected void LoadSizes()
         {
             m_StartPosition = BaseStream.Position;
