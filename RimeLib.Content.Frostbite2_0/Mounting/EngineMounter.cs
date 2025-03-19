@@ -203,7 +203,12 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
 
         public IEnumerable<(GUID Guid, int AssetNameHash)> GetChunksWithHashInBundle(string p_Bundle)
         {
-            if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
+            if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
+            {
+                for (int i = 0; i < s_CasBundle.Bundle.ChunkEntries.Length; i++)
+                    yield return (s_CasBundle.Bundle.ChunkEntries[i].Id, s_CasBundle.Bundle.ChunkMeta[i].AssetNameHash);
+            }
+            else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
             {
                 foreach (var s_Chunk in s_Bundle.Chunks)
                     yield return (s_Chunk.Id, s_Chunk.Meta.AssetNameHash);
