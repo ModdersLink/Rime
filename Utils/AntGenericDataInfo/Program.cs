@@ -10,6 +10,15 @@ using RimeLib.Serialization;
 using Rimelib.Animation.Frostbite2_0.Frostbite;
 using RimeLib.Animation.Frostbite2_0.EA.Compression.DCT;
 using RimeLib.Animation.EA.Types;
+using System.Collections.Generic;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
+using fb;
+using System.IO;
+using RimeLib.Ant.Frostbite2_0.Frostbite;
+using RimeLib.Animation.EA.Readers;
+using ant;
 
 namespace TextureExtractor
 {

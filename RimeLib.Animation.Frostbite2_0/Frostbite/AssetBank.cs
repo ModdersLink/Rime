@@ -507,6 +507,11 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
 
         }
 
+        public void Load(RimeReader s_DataReader)
+        {
+            throw new NotImplementedException();
+        }
+
         // check EA::GD::LayoutConstValue functions for type readers
     }
 }

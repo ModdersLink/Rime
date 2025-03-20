@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using RimeLib.Animation.EA;
 using RimeLib.Animation.EA.Resolver;
 using RimeLib.Animation.Frostbite2_0.EA;
+using Rimelib.Animation.Frostbite2_0.Frostbite;
 
 namespace RimeLib.Ant.Frostbite2_0.Frostbite
 {
@@ -41,11 +42,17 @@ namespace RimeLib.Ant.Frostbite2_0.Frostbite
         public HashSet<GuidValuePair> IdRefFields { get; } = new();
         public HashSet<DataRefPair> DataRefFields { get; } = new();
         public Dictionary<string, string> BaseClasses { get; } = new();
+        public IAssetResolver? Resolver { get; private set; } // TODO
 
         public  ReflectionGeneralDataReader(AssetBank p_Bank)
             : base(p_Bank)
         {
         }
+
+        public ReflectionGeneralDataReader()
+        {
+        }
+
         protected override void ParseInstance(RimeReader p_Reader, LayoutHeader p_Layout, AntObject p_Instance, Type p_InstanceType, long p_Offset = 0)
         {
             if (p_Layout.IsBasicField)
@@ -72,8 +79,8 @@ namespace RimeLib.Ant.Frostbite2_0.Frostbite
 
                     if (!p_Instance.ContainsHash(s_Data.LayoutHash))
                         throw new Exception("Base class invalid!");
-
-                    var s_BaseLayout = Archive.Reflection?.Layouts.Where(x => x.Hash == s_Data.LayoutHash).First();
+                    // TODO: fix next line
+                    /*var s_BaseLayout = Archive.Reflection?.Layouts.Where(x => x.Hash == s_Data.LayoutHash).First();
 
                     if (s_BaseLayout == null)
                         throw new InvalidDataException($"Couldnt not find layout for base class type hash {s_Data.LayoutHash:X08}.");
@@ -81,7 +88,7 @@ namespace RimeLib.Ant.Frostbite2_0.Frostbite
                     BaseClasses.TryAdd(p_Layout.Name, s_BaseLayout.Name);
                     
                     p_Reader.Seek(s_BaseOffset + s_Data.DataOffset, SeekOrigin.Begin);
-                    ParseInstance(p_Reader, s_BaseLayout, p_Instance, p_InstanceType, s_BaseOffset + s_Data.DataOffset);
+                    ParseInstance(p_Reader, s_BaseLayout, p_Instance, p_InstanceType, s_BaseOffset + s_Data.DataOffset);*/
                 }
             }
 
@@ -277,7 +284,7 @@ namespace RimeLib.Ant.Frostbite2_0.Frostbite
                             m_Instance = p_Instance, 
                             m_Field = p_PropertyType,
                             m_Guid =  s_Guid,
-                            m_Resolver =  this
+                            //m_Resolver =  this // TODO: fix
                         });
                     }
                     break;
@@ -442,6 +449,11 @@ namespace RimeLib.Ant.Frostbite2_0.Frostbite
                 }
             }
 
+        }
+
+        public void Load(RimeReader s_BundleDataReader)
+        {
+            throw new NotImplementedException();
         }
     }
 }

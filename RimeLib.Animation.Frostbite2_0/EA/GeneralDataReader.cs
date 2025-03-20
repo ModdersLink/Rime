@@ -22,6 +22,8 @@ namespace RimeLib.Animation.Frostbite2_0.EA
             Bank = p_Bank;
         }
 
+        public GeneralDataReader() { }
+
         private AssetBank Bank { get; set; }
 
 
