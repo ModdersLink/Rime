@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.Serialization;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
+using RimeLib.Serialization.Frostbite2_0.Extensions;
 using RimeLib.Utils;
 
 namespace RimeLib.Serialization.Frostbite2_0.Ebx;
@@ -42,7 +43,8 @@ public class TypeDescriptor
         LayoutDescriptor = p_Reader.ReadUInt32();
         FieldCount = (byte)p_Reader.ReadByte();
         Alignment = (byte)p_Reader.ReadByte();
-        Flags = new MemberInfoFlags(p_Reader);
+        Flags = new MemberInfoFlags();
+        Flags.Deserialize(p_Reader);
         Size = p_Reader.ReadUInt16();
         SecondarySize = p_Reader.ReadUInt16();
         m_Name = string.Empty;
@@ -57,13 +59,13 @@ public class TypeDescriptor
         Flags = new MemberInfoFlags();
     }
 
-    public void Serialize(EndianBinaryWriter p_Writer)
+    public void Serialize(RimeWriter p_Writer)
     {
         p_Writer.Write(NameHash);
         p_Writer.Write(LayoutDescriptor);
         p_Writer.Write(FieldCount);
         p_Writer.Write(Alignment);
-        p_Writer.Write(Flags.FlagBits);
+        Flags.Serialize(p_Writer);
         p_Writer.Write(Size);
         p_Writer.Write(SecondarySize);
     }

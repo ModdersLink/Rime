@@ -8,8 +8,8 @@
         <UseWPF>true</UseWPF>
 	    <UseWindowsForms>true</UseWindowsForms>
         <LangVersion>default</LangVersion>
-        <Platforms>x64</Platforms>
-        <Configurations>Debug;Release;LinuxDebug</Configurations>
+        <Platforms>AnyCPU</Platforms>
+        <Configurations>Release;Debug</Configurations>
     </PropertyGroup>
 
     <ItemGroup>

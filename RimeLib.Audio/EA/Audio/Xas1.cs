@@ -241,7 +241,6 @@ public class Xas1
 					s_Sample2Byte |= 0xF0;
 
 				
-				// Game ahs a bug here, doesmt clamp value to 14 for array index
 				int s_Base1 = ((int)((sbyte)s_Sample1Byte) * (1 << (20 - s_FilterParams.Value)));
 				int s_Base2 = ((int)((sbyte)s_Sample2Byte) * (1 << (20 - s_FilterParams.Value)));
 				

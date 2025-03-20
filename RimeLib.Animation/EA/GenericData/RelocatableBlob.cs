@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace RimeLib.Animation.EA.GenericData
 {
-    public class RelocatableBlob : Blob
+    public class RelocatableBlob 
+        : Blob
     {
         public uint RelocationTableOffset { get; set; } = 0;
        
@@ -19,7 +20,19 @@ namespace RimeLib.Animation.EA.GenericData
 
         public new bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            
+            p_Writer.Write(SerializeId());
+            
+            var s_LastEndianess = p_Writer.Endianness;
+            p_Writer.Endianness = BigEndian ? IO.Conversion.Endianness.BigEndian : IO.Conversion.Endianness.LittleEndian;
+
+            p_Writer.Write((uint)(Data.Length + 0x10));
+            
+            p_Writer.Write(Data);
+
+            p_Writer.Endianness = s_LastEndianess;
+
+            return true;
         }
 
         public new void Deserialize(RimeReader p_Reader)

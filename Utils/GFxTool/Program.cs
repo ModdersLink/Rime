@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using RimeLib;
 using GFxTool.Scaleform;
+using GFxTool.Scaleform.TagTypes;
 
 namespace GFxTool
 {
@@ -64,8 +65,32 @@ namespace GFxTool
         {
 
             using var s_Stream = new RimeReader(new FileStream(p_Path, FileMode.Open, FileAccess.Read));
-
+        
+            
             var s_SwfFile = new SwfFile(s_Stream);
+            
+            
+            // damageindicator_i1 = UI/Assets/DamageIndicator/damageindicator_i1
+            // should subimages just be defined as a seperate image???
+            
+            foreach (var s_ExternalImageTag in s_SwfFile.Tags.Where(x => x.Tag == SwfTag.GFX_DefineExternalImage2))
+            {
+                var s_ExternalImage = new TagExternalImage2(s_ExternalImageTag.GetReader());
+                
+                
+            }
+        }
+
+
+        private static void BuildGfx(string p_SwfPath)
+        {
+            using var s_Stream = new RimeReader(new FileStream(p_SwfPath, FileMode.Open, FileAccess.Read));
+        
+            
+            var s_SwfFile = new SwfFile(s_Stream);
+            
+            
+            
         }
 
 

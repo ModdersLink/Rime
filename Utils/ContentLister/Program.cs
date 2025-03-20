@@ -7,6 +7,7 @@ using System.Reflection;
 using System.Threading.Tasks;
 using CommandLine;
 using RimeLib;
+using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using Environment = System.Environment;
@@ -44,7 +45,7 @@ namespace Rime.Utils.ContentLister
             Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
             {
                 LoadContentAssembly(p_Options);
-                DumpFiles(p_Options);
+                ListResources(p_Options);
             }).WithNotParsed(p_Err => { Environment.Exit(1); });
         }
 
@@ -133,6 +134,71 @@ namespace Rime.Utils.ContentLister
             }
         }
 
+        private static async void ListResources(Options p_Options)
+        {
+            var s_Mounter = EngineInterfaceRegistry.Create<IEngineMounter>(p_Options.EngineType);
+
+            var s_MountSuperbundles = p_Options.MountSuperbundles.ToList();
+            var s_MountBundles = p_Options.MountBundles.ToList();
+
+            // Only auto-mount when a user has not specified any specific superbundles or bundles.
+            if (p_Options.Verbose)
+                Console.WriteLine($"Mounting game with engine '{p_Options.EngineType}' at path '{p_Options.GamePath}'. Please wait, this could take a while.");
+
+            await s_Mounter.Mount(p_Options.GamePath, s_MountSuperbundles.Count == 0 && s_MountBundles.Count == 0, p_Options.EngineType);
+           
+            // Mount the requested superbundles.
+            if (s_MountSuperbundles.Count > 0)
+            {
+                if (p_Options.Verbose)
+                    Console.WriteLine($"Mounting requested superbundles. Please wait, this could take a while.");
+
+                var s_AutoMountBundles = s_MountBundles.Count == 0;
+                var s_SbTasks = s_MountSuperbundles.Select(p_Sb => s_Mounter.MountSuperbundle(p_Sb, s_AutoMountBundles));
+                await Task.WhenAll(s_SbTasks);
+            }
+
+
+            // Mount all the requested bundles.
+            if (s_MountBundles.Count > 0)
+            {
+                if (p_Options.Verbose)
+                    Console.WriteLine($"Mounting requested bundles. Please wait, this could take a while.");
+
+                var s_BundleTasks = s_MountBundles.Select(s_Mounter.MountBundle);
+                await Task.WhenAll(s_BundleTasks);
+            }
+
+            // Dump everything!
+            if (p_Options.Verbose)
+                Console.WriteLine($"Everything is now mounted! Starting content listing.");
+
+            var s_Resources = new ConcurrentBag<Tuple<string, uint, long>>();
+
+            Parallel.ForEach(s_Mounter.GetResources(), p_Pair =>
+            {
+                s_Resources.Add(new (p_Pair.Key, (uint)p_Pair.Value.FirstVariant.GetResourceType(), p_Pair.Value.FirstVariant.GetSize()));
+            });
+
+            // If we're sorting, now it's time to sort and print all the things.
+            //if (p_Options.Sort)
+            {
+                var s_SortedPaths = s_Resources.ToList();
+                s_SortedPaths = s_SortedPaths.OrderByDescending(x => x.Item3).ToList();
+
+
+                var s_Visited = new HashSet<uint>();
+
+                foreach (var s_Path in s_SortedPaths)
+                {
+                    if (s_Visited.Contains(s_Path.Item2))
+                        continue;
+
+                    s_Visited.Add(s_Path.Item2);
+                    Console.WriteLine($"{s_Path.Item2:x8} = {((ResourceType)s_Path.Item2).ToString()} = \"{s_Path.Item1}\" = {s_Path.Item3:x}");
+                }
+            }
+        }
         private static void Print<T>(Options p_Options, ConcurrentDictionary<string, bool> p_Files, string p_Type, string p_Path, IMountedObject<T> p_Object) where T : IObjectVariant
         {
             var s_Path = p_Path + "." + p_Type;

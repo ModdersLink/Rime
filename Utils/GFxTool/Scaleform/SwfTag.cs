@@ -32,7 +32,7 @@ namespace GFxTool.Scaleform
         DefineBitsLossless = 20,
         DefineBitsJpeg2 = 21,
         DefineShape2 = 22,
-
+        DefineButtonCxform = 23,
         Protect = 24,
 
         PlaceObject2 = 26,
@@ -41,38 +41,56 @@ namespace GFxTool.Scaleform
 
         DefineShape3 = 32,
         DefineText2 = 33,
-
         ButtonCharacter2 = 34,
         DefineBitsJpeg3 = 35,
         DefineBitsLossless2 = 36,
         DefineEditText = 37,
+        
         Sprite = 39,
-
+        
+        SerialNumber = 41,
+        
         FrameLabel = 43,
         
         SoundStreamHead2 = 45,
         DefineShapeMorph = 46,
+        
         DefineFont2 = 48,
 
         Export = 56,
         Import = 57,
         DoInitAction = 59,
         DefineVideoStream = 60,
+        VideoFrame = 61,
+        
         DefineFontInfo2 = 62,
         DebugID = 63,
+        EnableDebugger2 = 64,
+        ScriptLimits = 65,
         SetTabIndex = 66,
+        
         FileAttributes = 69,
         PlaceObject3 = 70,
         Import2 = 71,
-
+        
+        DefineFontAlignZones = 73,
         CSMTextSettings = 74,
         DefineFont3 = 75,
+        SymbolClass = 76,
         Metadata = 77,
         DefineScale9Grid = 78,
-
+        
+        DoABC = 82,
         DefineShape4 = 83,
         DefineShapeMorph2 = 84,
-        SWF_TagTableEnd = 85,
+        //SWF_TagTableEnd = 85,
+        
+        DefineSceneAndFrameLabelData = 86,
+        DefineBinaryData = 87,
+        DefineFontName = 88,
+        StartSound2 = 89,
+        DefineBitsJPEG4 = 90,
+        DefineFont4 = 91,
 
         //GFX_TagTableBegin = 1000,
         GFX_ExporterInfo = 1000,

@@ -20,34 +20,44 @@ namespace RimeLib.IO
         public override bool CanSeek => false;
 
         public override long Position => m_CurrentPosition;
-
         public override long Length => m_OriginalSize;
 
+        public long CompressedSize => m_CompressedSize;
+        
+        
         protected long m_OriginalSize;
         protected long m_CompressedSize;
-        protected Stream m_SegmentStream;
-        protected long m_StartPosition;
+        protected Stream? m_SegmentStream = null;
         protected long m_CurrentPosition;
         protected int m_CurrentSegment;
 
         protected readonly List<CodecSegment> m_Segments = new List<CodecSegment>();
 
-        public CodecRimeReader(RimeReader p_Reader, bool p_ShouldDispose = true) :
+        public CodecRimeReader(RimeReader p_Reader, long p_OriginalSize = -1, long p_SegmentCount = -1, bool p_ShouldDispose = true) :
             base(p_Reader, p_Reader.Endianness, p_ShouldDispose)
         {
             // If the user has specified there are sizes here, we should parse them.
-            LoadSizes();
+            LoadSizes(p_SegmentCount, p_OriginalSize);
 
-            // Create the zlib / deflate decompression stream.
-            m_SegmentStream = GetStreamForSegment(m_Segments[0]);
         }
 
         public override void Dispose()
         {
             base.Dispose();
-            m_SegmentStream.Dispose();
+            
+            if(m_SegmentStream != null)
+                m_SegmentStream.Dispose();
         }
 
+        private void InitialzeStream()
+        {
+            // set stream on demand.
+            if (m_SegmentStream != null)
+                return;
+            // Create the zlib / deflate decompression stream on demand.
+            m_SegmentStream = GetStreamForSegment(m_Segments[0]);
+        }
+        
         protected Stream GetStreamForSegment(CodecSegment p_Segment)
         {
             // Seek to where we need to be.
@@ -68,57 +78,127 @@ namespace RimeLib.IO
             }
 
 
-            Stream s_Stream = new LimitedRimeReader((RimeReader)BaseStream, p_Segment.Header.PackedSize, false);
+            var s_Stream = new LimitedRimeReader((RimeReader)BaseStream, p_Segment.Header.PackedSize, false);
 
             switch (p_Segment.Header.Method)
             {
                 case CodecMethod.None:
                     return s_Stream;
                 case CodecMethod.Zlib:
+                    //this might 
                     return new InflaterInputStream(s_Stream);
+                case CodecMethod.LZ4:
+                    //LZ4.LZ4Codec.Decode
+                    //return new LZ4.LZ4Stream(s_Stream, LZ4StreamMode.Decompress);
+                    return new MemoryStream(LZ4.LZ4Codec.Decode(s_Stream.ReadBytes((int)p_Segment.Header.PackedSize),0, (int) p_Segment.Header.PackedSize, (int) p_Segment.Header.UnpackedSize));
             }
 
             throw new Exception($"Method {p_Segment.Header.Method} not implimented!");
         }
 
-        protected void LoadSizes()
+        protected void LoadSizes(long p_ReadSegmentCount = -1, long p_OriginalSize = -1)
         {
-            m_StartPosition = BaseStream.Position;
             m_CompressedSize = m_OriginalSize = 0;
 
             // Keep parsing segments until we have filled up our length requirement.
-            while (m_CompressedSize != BaseStream.Length)
+            // if ReadSignle is set, read only 1 block
+            if (p_ReadSegmentCount != -1)
             {
-                // Zlib segment sizes are always encoded in big-endian.
-                var s_Segment = new CodecSegment
-                {
-                    Offset = BaseStream.Position,
-                    Header = new CodecHeader((RimeReader)BaseStream),
-                };
-
-                m_CompressedSize += s_Segment.Header.PackedSize + 8;
-                m_OriginalSize += s_Segment.Header.UnpackedSize;
-
-                m_Segments.Add(s_Segment);
-
-                // Seek to the beginning of the next segment.
-                BaseStream.Seek(s_Segment.Header.PackedSize, SeekOrigin.Current);
+                for (var i=0; i < p_ReadSegmentCount; i++)
+                    ReadEntry();
             }
+            else if (p_OriginalSize != -1)
+            {
+                while (m_OriginalSize != p_OriginalSize)
+                    ReadEntry();
+            }
+            else
+            {
+                while (m_CompressedSize != BaseStream.Length)
+                    ReadEntry();
+            }
+        }
+
+        private void ReadEntry()
+        {
+            var s_Segment = new CodecSegment
+            {
+                Offset = BaseStream.Position,
+                Header = new CodecHeader((RimeReader)BaseStream),
+            };
+
+            m_CompressedSize += s_Segment.Header.PackedSize + 8;
+            m_OriginalSize += s_Segment.Header.UnpackedSize;
+
+            m_Segments.Add(s_Segment);
+
+            // Seek to the beginning of the next segment.
+            BaseStream.Seek(s_Segment.Header.PackedSize, SeekOrigin.Current);
         }
 
         public override long Seek(long p_Offset, SeekOrigin p_Origin)
         {
+            InitialzeStream();
+
+            if (p_Origin == SeekOrigin.Current && p_Offset == 0)
+                return Position;
+            
             if (p_Origin == SeekOrigin.Current && p_Offset > 0)
             {
                 ReadBytes((int)p_Offset);
                 return Position;
             }
 
+            // just make relative absolute
+            if (p_Origin == SeekOrigin.Current)
+            {
+                p_Offset += m_CurrentPosition;
+                p_Origin = SeekOrigin.Begin;
+            }
+
+            if (p_Origin == SeekOrigin.Begin)
+            {
+                if (Position == p_Offset)
+                    return Position;
+                
+                // scan from begin to offset
+                long s_CurrentOffset = 0;
+                for (var i = 0; i < m_Segments.Count; i++)
+                {
+                    if (s_CurrentOffset < s_CurrentOffset)
+                        throw new Exception("Somehow Skipped data chunk. Should never happen");
+
+                    if (p_Offset >= (s_CurrentOffset + m_Segments[i].Header.UnpackedSize))
+                    {
+                        s_CurrentOffset += m_Segments[i].Header.UnpackedSize;
+                        continue;
+                    }
+                    
+                    if(m_SegmentStream != null)
+                        m_SegmentStream.Dispose();
+
+                    m_CurrentSegment = i;
+                    m_SegmentStream = GetStreamForSegment( m_Segments[m_CurrentSegment]);
+
+                    m_SegmentStream.Seek(p_Offset - s_CurrentOffset, SeekOrigin.Begin);
+                    
+                    m_CurrentPosition = p_Offset;
+                    break;
+                }
+
+                return Position;
+            }
+            
             throw new NotSupportedException();
         }
 
         protected override int ReadInternal(byte[] p_Data, int p_Index, int p_Count)
         {
+            InitialzeStream();
+
+            if (m_SegmentStream == null)
+                return 0;
+            
             var s_Remaining = p_Count;
 
             while (s_Remaining > 0)
@@ -135,15 +215,18 @@ namespace RimeLib.IO
                 if (s_Remaining < 0)
                     throw new Exception("Read more data than we should have. Something has definitely gone wrong.");
 
-                m_SegmentStream.Dispose();
-
                 // Seek to the next segment.
-                var s_NextSegment = m_Segments[++m_CurrentSegment];
+                if (++m_CurrentSegment >= m_Segments.Count)
+                    break;
+                
+                var s_NextSegment = m_Segments[m_CurrentSegment];
+                m_SegmentStream.Dispose();
+                    
 
                 m_SegmentStream = GetStreamForSegment(s_NextSegment);
             }
 
-            return p_Count;
+            return p_Count - s_Remaining;
         }
     }
 }

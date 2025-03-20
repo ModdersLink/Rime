@@ -9,7 +9,7 @@ using RimeLib.IO.Conversion;
 
 namespace RimeLib.Texture.Frostbite2_0.Frostbite;
 
-public class DxTexture : IFbSerializable
+public class DxTexture : IFbSerializable, ITexture
 {
     public uint Version { get; set; } = 10;
     public TextureType Type { get; set; }
@@ -99,6 +99,9 @@ public class DxTexture : IFbSerializable
         p_Reader.Endianness = Endianness.LittleEndian;
 
         Version = p_Reader.ReadUInt32();
+        
+        if (Version == 110)
+            throw new Exception($"MOHWF texture (version 110) has a shift in TextureFormat. Not compatible.");
 
         if (Version != 10)
             throw new Exception($"Unsupported texture version '{Version}'. Expected '10'.");

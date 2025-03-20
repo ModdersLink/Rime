@@ -160,6 +160,14 @@ namespace RimeLib.Content.Mounting
         bool TryGetResource(string p_Path, [NotNullWhen(true)] out IMountedObject<IResourceVariant>? p_Resource);
 
         /// <summary>
+        /// Try to get a mounted resource. The resource will be provided in an output parameter. This is only used on fb2013+
+        /// </summary>
+        /// <param name="p_Ref">ResourceRef/resource id of the resource.</param>
+        /// <param name="p_Resource">The output resource object.</param>
+        /// <returns>When the return value is `true` then the output will **not** be `null`. When it's `false` it **will** be `null`.</returns>
+        bool TryGetResource(ResourceRef p_Ref, [NotNullWhen(true)] out IMountedObject<IResourceVariant>? p_Resource);
+        
+        /// <summary>
         /// Try to get a mounted resource. The resource will be provided in an output parameter.
         /// </summary>
         /// <param name="p_Hash">The fnv hash.</param>
@@ -208,6 +216,12 @@ namespace RimeLib.Content.Mounting
         /// </summary>
         /// <returns>A dictionary of partition name keys and mounted object values.</returns>
         IReadOnlyDictionary<string, IMountedObject> GetPartitions();
+        
+        /// <summary>
+        /// Get all mounted dbx partitions and their different variants.
+        /// </summary>
+        /// <returns>A dictionary of partition name keys and mounted object values.</returns>
+        IReadOnlyDictionary<string, IMountedObject> GetDbxPartitions();
 
         /// <summary>
         /// Gets a list of bundles that are contained within a specific superbundle.

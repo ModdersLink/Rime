@@ -1,36 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <LangVersion>default</LangVersion>
     <Nullable>enable</Nullable>
     <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <Platforms>x64</Platforms>
-    <Configurations>Debug;Release;LinuxDebug</Configurations>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <NoWarn />
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <NoWarn />
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LinuxDebug|x64'">
-    <NoWarn />
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
+    <Platforms>AnyCPU</Platforms>
+    <Configurations>Release;Debug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
     <Compile Remove="Frostbite\Bundles\**" />
     <Compile Remove="Frostbite\Storage\**" />
+    <Compile Include="Frostbite\Bundles\ManifestType.cs" />
     <EmbeddedResource Remove="Frostbite\Bundles\**" />
     <EmbeddedResource Remove="Frostbite\Storage\**" />
     <None Remove="Frostbite\Bundles\**" />
@@ -39,6 +22,13 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Net.Compilers.Toolset" Version="4.5.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
   </ItemGroup>
 
 </Project>

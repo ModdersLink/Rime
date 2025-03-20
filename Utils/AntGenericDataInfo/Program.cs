@@ -6,10 +6,10 @@ using RimeLib.IO;
 using System.Reflection;
 using RimeLib;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
-using fb;
+using RimeLib.Serialization;
 using Rimelib.Animation.Frostbite2_0.Frostbite;
 using RimeLib.Animation.Frostbite2_0.EA.Compression.DCT;
-using ant;
+using RimeLib.Animation.EA.Types;
 
 namespace TextureExtractor
 {
@@ -74,7 +74,7 @@ namespace TextureExtractor
                 Console.WriteLine("Loading engine support assemblies.");
 
             Load("RimeLib.Content." + p_Options.EngineType);
-            Load("RimeLib.Animation." + p_Options.EngineType);
+            Load("RimeLib.Ant." + p_Options.EngineType);
         }
 
         private static async void LoadGame(Options p_Options)
@@ -115,6 +115,11 @@ namespace TextureExtractor
             if (!p_Options.Quiet)
                 Console.WriteLine($"Everything is now mounted! Starting content extraction.");
 
+            DumpAssetBankReflections(s_Mounter);
+
+
+            return;
+            
             LoadAntPackageAsset(s_Mounter, "animations/antanimations/s_basicassets");
 
             LoadAntPackageAsset(s_Mounter, "animations/antanimations/ak74", true);
@@ -187,9 +192,151 @@ namespace TextureExtractor
         }
 
 
-        private static void DumpAssetBankReflections()
+        private static void DumpAssetBankReflections(IEngineMounter p_Mounter)
         {
+            List<ReflectionGeneralDataReader> s_Banks = new();
+            
+            object s_LockObject = new();
+            
+            /*
+            var s_Resources = p_Mounter.GetResources();
+            Parallel.ForEach(s_Resources, (p_Pair) =>
+            {
+                var s_Name = p_Pair.Key;
+                var s_Resource = p_Pair.Value;
 
+                if (s_Resource.FirstVariant.GetResourceType() != ResourceType.AssetBank)
+                    return;
+
+                lock (s_LockObject)
+                {
+                    var s_RawReader = s_Resource.FirstVariant.GetReader();
+
+                    var s_Data = s_RawReader.ReadBytes((int)s_RawReader.Length);
+
+
+                    Console.WriteLine(s_Name);
+
+                    using var s_Reader = new RimeReader(new MemoryStream(s_Data));
+
+                    var s_Bank = new ReflectionAssetBank();
+                    s_Bank.Load(s_Reader);
+
+                    s_Banks.Add(s_Bank);
+                }
+            });
+            */
+
+
+            Parallel.ForEach(p_Mounter.GetPartitions(), p_PartitionPair =>
+            {
+                if (!p_PartitionPair.Key.ToLower().StartsWith("animations/antanimations/"))
+                    return;
+
+
+                lock (s_LockObject)
+                {
+
+                    var s_Reader = new EbxReader();
+
+                    var s_Partition = s_Reader.ParsePartition(p_PartitionPair.Key, p_PartitionPair.Value.FirstVariant);
+                    if (s_Partition == null)
+                        return;
+
+                    //PartitionRegistry.RegisterPartition(s_Partition);
+
+                    if (s_Partition.PrimaryInstanceCtr.TypeName != "AntPackageAsset")
+                        return;
+
+                    var s_AntPackage = s_Partition.PrimaryInstance as AntPackageAsset;
+
+                    if (s_AntPackage == null)
+                        return;
+
+
+
+                    if (p_Mounter.TryGetResource(s_AntPackage.Name.ToLower(), out var s_BundleObject))
+                    {
+
+                        var s_BundleRawReader = s_BundleObject.FirstVariant.GetReader();
+                        var s_BundleData = s_BundleRawReader.ReadBytes((int)s_BundleRawReader.Length);
+
+                        using var s_BundleDataReader = new RimeReader(new MemoryStream(s_BundleData));
+
+                        var s_BundleBank = new ReflectionGeneralDataReader();
+                        s_BundleBank.Load(s_BundleDataReader);
+            
+                        
+                        s_Banks.Add(s_BundleBank);
+                    }
+
+
+                    if (p_Mounter.TryGetChunk(s_AntPackage.StreamingGuid, out var s_Chunk))
+                    {
+                        var s_ResourceRawReader = s_Chunk.FirstVariant.GetReader();
+                        var s_ResourceData = s_ResourceRawReader.ReadBytes((int)s_ResourceRawReader.Length);
+
+                        using var s_ResourceDataReader = new RimeReader(new MemoryStream(s_ResourceData));
+
+                        var s_ResourceBank = new ReflectionGeneralDataReader();
+                        s_ResourceBank.Load(s_ResourceDataReader);
+                        
+                        
+                        s_Banks.Add(s_ResourceBank);
+                    }
+
+                }
+            });
+
+
+            foreach (var s_Bank in s_Banks)
+            {
+                foreach (var s_GuidRefProp in s_Bank.IdRefFields)
+                {
+                    if (s_GuidRefProp.m_Instance == null)
+                        continue; 
+                    if (s_GuidRefProp.m_Field == null)
+                        continue; 
+                    if (s_GuidRefProp.m_Guid == null)
+                        continue; 
+                    
+                    var s_SolvedRef = s_GuidRefProp.m_Resolver?.ResolveObject(s_GuidRefProp.m_Guid);
+
+                    if (s_SolvedRef == null)
+                        continue;
+                    
+                    var s_Key = $"{s_GuidRefProp.m_Field.DeclaringType.Name}.{s_GuidRefProp.m_Field.Name}";
+                    
+                    //Console.WriteLine($"{s_Key} = {s_SolvedRef.GetType().Name}");
+                    RefrenceTypeRegistry.Instance.AddGuidRef(s_Key, s_SolvedRef.GetType().Name);
+                    //s_GuidRefs.Add(s_Key, s_SolvedRef.GetType().Name);
+                    
+                }
+                
+                foreach (var s_DataRefProp in s_Bank.DataRefFields)
+                {
+                    if (s_DataRefProp.m_Field == null)
+                        continue; 
+                    if (s_DataRefProp.m_Target == null)
+                        continue; 
+                    
+                    var s_Key = $"{s_DataRefProp.m_Field .DeclaringType.Name}.{s_DataRefProp.m_Field .Name}";
+                    
+                    //Console.WriteLine($"{s_Key} = {s_DataRef.GetType().Name}");
+                    RefrenceTypeRegistry.Instance.AddDataRef(s_Key, s_DataRefProp.m_Target.GetType().Name);
+                    //s_GuidRefs.Add(s_Key, s_SolvedRef.GetType().Name);
+                    
+                }
+                
+                foreach (var s_BasePair in s_Bank.BaseClasses)
+                {
+                    RefrenceTypeRegistry.Instance.AddBase(s_BasePair.Key, s_BasePair.Value);
+                }
+            }
+            
+            
+            
+            RefrenceTypeRegistry.Instance.Save(@"/home/txt/Documents/RE/frostbite/bf3/ant");
         }
         
         public static void DumpAssetBankResource(IEngineMounter p_Mounter, string p_Path) // "animations/characters/sp/sp_paris/tradingfloor/tradingfloorwires_animset"
@@ -297,11 +444,11 @@ namespace TextureExtractor
 
                     foreach (var s_Dct in s_DctAnims)
                     {
-                        if (s_Dct.Name != "ReloadClipEmpty Anim")
+                        if (s_Dct.ObjectName != "ReloadClipEmpty Anim")
                         //if (s_Dct.Name != "ReloadClipFull Anim")
                             continue;
 
-                        Console.WriteLine(s_Dct.Name);
+                        Console.WriteLine(s_Dct.ObjectName);
 
                         var s_Decompressor = new Decompressor();
 

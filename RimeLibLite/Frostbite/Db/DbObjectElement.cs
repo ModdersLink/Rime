@@ -42,12 +42,12 @@ namespace RimeLib.Frostbite.Db
         /// <summary>
         /// Field name
         /// </summary>
-        public string FieldName { get; set; }
+        public string FieldName { get; set; } = string.Empty;
 
         /// <summary>
         /// Object type
         /// </summary>
-        public DbObjectType Type { get; set; }
+        public DbObjectType Type { get; set; } = DbObjectType.Eoo;
 
         public bool IsNull => Type == DbObjectType.Null;
 
@@ -111,17 +111,15 @@ namespace RimeLib.Frostbite.Db
         /// </summary>
         public DbObjectElement()
         {
-            Type = DbObjectType.Eoo;
-            FieldName = "";
         }
 
         public DbObjectElement(string p_FieldName)
         {
             Type = DbObjectType.Null;
-            FieldName = "";
+            FieldName = p_FieldName;
         }
 
-        public DbObjectElement(string p_FieldName, DbObject p_Object, bool p_Array)
+        public DbObjectElement(string p_FieldName, DbObject p_Object, bool p_Array = false)
         {
             m_ObjectValue = p_Object;
             Type = p_Array ? DbObjectType.Array : DbObjectType.Object;

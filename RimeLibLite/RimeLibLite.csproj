@@ -1,37 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net9.0</TargetFramework>
     <AssemblyName>RimeLib</AssemblyName>
     <RootNamespace>RimeLib</RootNamespace>
     <LangVersion>default</LangVersion>
     <Nullable>annotations</Nullable>
     <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <Platforms>x64</Platforms>
+    <Platforms>AnyCPU</Platforms>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-	  <Configurations>Debug;Release;LinuxDebug</Configurations>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-	  <NoWarn />
-	  <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-	  <WarningsAsErrors />
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <NoWarn />
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='LinuxDebug|x64'">
-    <NoWarn />
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <WarningsAsErrors />
+	  <Configurations>Debug;Release</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="lz4net" Version="1.0.15.93" />
     <PackageReference Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="SharpZipLib" Version="1.4.2" />

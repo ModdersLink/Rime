@@ -1,11 +1,11 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
-    <Platforms>x64</Platforms>
+    <TargetFramework>net9.0</TargetFramework>
+    <Platforms>AnyCPU</Platforms>
     <LangVersion>default</LangVersion>
     <Nullable>enable</Nullable>
-    <Configurations>Debug;Release;LinuxDebug</Configurations>
+    <Configurations>Release;Debug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>

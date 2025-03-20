@@ -279,6 +279,12 @@ namespace RimeLib.Frostbite.Db
                 EnsureElementType(p_Element, DbObjectType.Integer);
                 return p_Element.Value;
             }
+            if (s_FieldType == typeof(uint) || s_FieldType == typeof(uint?))
+            {
+                EnsureElementType(p_Element, DbObjectType.Integer);
+                return (uint)(int)p_Element.Value;
+            }
+
 
             if (s_FieldType == typeof(long) || s_FieldType == typeof(long?))
             {
@@ -288,6 +294,15 @@ namespace RimeLib.Frostbite.Db
                     return null;
 
                 return Convert.ToInt64(p_Element.Value);
+            }
+            if (s_FieldType == typeof(ulong) || s_FieldType == typeof(ulong?))
+            {
+                EnsureElementType(p_Element, DbObjectType.Integer, DbObjectType.Long, DbObjectType.VarInt);
+
+                if (p_Element.Value == null)
+                    return null;
+
+                return Convert.ToUInt64(p_Element.Value);
             }
 
             if (s_FieldType == typeof(float) || s_FieldType == typeof(float?))
@@ -390,7 +405,8 @@ namespace RimeLib.Frostbite.Db
 
             if (s_Type == typeof(long) || s_Type == typeof(long?))
                 return new DbObjectElement(p_FieldName, (long) p_Object, p_VariableLength);
-
+            if (s_Type == typeof(ulong) || s_Type == typeof(ulong?))
+                return new DbObjectElement(p_FieldName, (long) p_Object, p_VariableLength);
             if (s_Type == typeof(float) || s_Type == typeof(float?))
                 return new DbObjectElement(p_FieldName, (float) p_Object);
 

@@ -2,6 +2,8 @@
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using RimeLib.Terrain.Frostbite;
+using RimeLib.Terrain.Frostbite.Heightfield;
 
 namespace RimeLib.Terrain.Frostbite3
 {

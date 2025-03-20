@@ -57,22 +57,19 @@ public class TextureGenerator : ITextureGenerator
         return TextureType.TextureType_2D;
     }
 
-    private static TextureFormat TextureFormatFromDDSHeader(DDSHeader p_Header)
+    private static TextureFormat TextureFormatFromDDSHeader(DDSHeader p_Header, bool p_IsNormalMap = false)
     {
-        // TODO: What's this?
-        var s_IsNormal = false;
-
         if (!p_Header.PixelFormat.Flags.HasFlag(DDSFormatFlags.FourCC))
             throw new Exception("The provided DDS had no FourCC code.");
         
         if (p_Header.PixelFormat.FourCC == DDSUtils.MakeFourCC("DXT1"))
-            return s_IsNormal ? TextureFormat.TextureFormat_NormalDXT1 : TextureFormat.TextureFormat_DXT1;
+            return p_IsNormalMap ? TextureFormat.TextureFormat_NormalDXT1 : TextureFormat.TextureFormat_DXT1;
 
         if (p_Header.PixelFormat.FourCC == DDSUtils.MakeFourCC("DXT3"))
             return TextureFormat.TextureFormat_DXT3;
 
         if (p_Header.PixelFormat.FourCC == DDSUtils.MakeFourCC("DXT5"))
-            return s_IsNormal ? TextureFormat.TextureFormat_NormalDXT5 : TextureFormat.TextureFormat_DXT5;
+            return p_IsNormalMap ? TextureFormat.TextureFormat_NormalDXT5 : TextureFormat.TextureFormat_DXT5;
         
         if (p_Header.PixelFormat.FourCC == 111)
             return TextureFormat.TextureFormat_R16F;

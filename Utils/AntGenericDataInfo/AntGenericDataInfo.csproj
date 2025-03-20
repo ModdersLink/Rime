@@ -2,11 +2,11 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net8.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <TargetFramework>net9.0</TargetFramework>
+    <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Platforms>x64</Platforms>
-    <Configurations>Debug;Release;LinuxDebug</Configurations>
+    <Platforms>AnyCPU</Platforms>
+    <Configurations>Release;Debug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
@@ -18,7 +18,6 @@
     <ProjectReference Include="..\..\RimeLib.Animation\RimeLib.Animation.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content\RimeLib.Content.csproj" />
-    <ProjectReference Include="..\..\RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj" />
   </ItemGroup>
 
 </Project>

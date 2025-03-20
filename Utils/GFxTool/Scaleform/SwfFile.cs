@@ -1,18 +1,17 @@
-﻿using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
-using RimeLib.IO;
+﻿using RimeLib.IO;
 using RimeLib.IO.Conversion;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace GFxTool.Scaleform
 {
     public class SwfFile
     {
-
-        public string Magic { get; set; } = "SWF";
         public byte Version { get; set; } = 8;
 
         public double Fps { get; set; } = 0;
@@ -21,7 +20,9 @@ namespace GFxTool.Scaleform
         public bool IsStripped { get; set; } = false;
         public bool IsCompressed { get; set; } = false;
 
+        public Vector4 Rect { get; set; }
 
+        
         public List<SwfTagSection> Tags { get; set; } = new();
 
         public SwfFile(RimeReader p_Reader)
@@ -33,16 +34,16 @@ namespace GFxTool.Scaleform
         {
 
             var s_TempHeader = Encoding.ASCII.GetString(p_Reader.ReadBytes(3));
-            Magic = new string(s_TempHeader.Reverse().ToArray());
+            var s_Magic = new string(s_TempHeader.Reverse().ToArray());
 
-            if (Magic != "SWF" &&
-               Magic != "SWC" && //SWC - compressed
-               Magic != "XFG" && //GFX
-               Magic != "XFC") //CFX - compressed
+            if (s_Magic != "SWF" &&
+                s_Magic != "SWC" && //SWC - compressed
+                s_Magic != "XFG" && //GFX
+                s_Magic != "XFC") //CFX - compressed
                 throw new InvalidDataException("Swf file contains invalid header!");
 
-            IsStripped = Magic[0] == 'X';
-            IsCompressed = Magic[2] == 'C';
+            IsStripped = s_Magic[0] == 'X';
+            IsCompressed = s_Magic[2] == 'C';
 
             Version = p_Reader.ReadUByte();
 
@@ -85,6 +86,40 @@ namespace GFxTool.Scaleform
             var s_Top = s_BitReader.ReadIntHigh((int)s_IntBitCount);
             var s_Bottom = s_BitReader.ReadIntHigh((int)s_IntBitCount);
 
+            Rect = new Vector4(s_Left, s_Top, s_Right, s_Bottom);
+        }
+
+
+        void Serialize(RimeWriter p_Writer)
+        {
+            // we dont support compressed fileformats, just set it to false
+            IsCompressed = false;
+            
+            using var s_DataStream = new MemoryStream();
+            using var s_DataWriter = new RimeWriter(s_DataStream);
+
+            //WriteRect(s_DataWriter);
+            s_DataWriter.Write((ushort)(Fps * 256.0));
+            s_DataWriter.Write(FrameCount);
+
+            foreach (var s_Tag in Tags)
+            {
+                //s_Tag.Serialize(s_DataWriter);
+            }
+            
+            
+            
+            // Header data added at end to get filesize
+            if (IsStripped)
+                p_Writer.Write(Encoding.ASCII.GetBytes(new string("XFG".Reverse().ToArray())));
+            else
+                p_Writer.Write(Encoding.ASCII.GetBytes(new string("SWF".Reverse().ToArray())));
+            p_Writer.Write(Version);
+            
+            // 8 = sizeof header
+            p_Writer.Write((uint)(s_DataStream.Position + 8));
+            
+            p_Writer.Write(s_DataStream.ToArray());
         }
     }
 }

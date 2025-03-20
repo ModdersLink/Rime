@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
+using RimeLib.Serialization.Frostbite2_0.Extensions;
 using RimeLib.Utils;
 
 namespace RimeLib.Serialization.Frostbite2_0.Ebx;
@@ -67,7 +68,10 @@ public class FieldDescriptor
     public FieldDescriptor(RimeReader p_Reader, IReadOnlyDictionary<uint, string> p_HashedTypeNames)
     {
         NameHash = p_Reader.ReadUInt32();
-        Flags = new MemberInfoFlags(p_Reader);
+        
+        Flags = new MemberInfoFlags();
+        Flags.Deserialize(p_Reader);
+        
         FieldType = p_Reader.ReadUInt16();
         Offset = p_Reader.ReadInt32();
         SecondaryOffset = p_Reader.ReadInt32();
@@ -85,10 +89,10 @@ public class FieldDescriptor
         m_Name = string.Empty;
     }
 
-    public void Serialize(EndianBinaryWriter p_Writer)
+    public void Serialize(RimeWriter p_Writer)
     {
         p_Writer.Write(NameHash);
-        p_Writer.Write(Flags.FlagBits);
+        Flags.Serialize(p_Writer);
         p_Writer.Write(FieldType);
         p_Writer.Write(Offset);
         p_Writer.Write(SecondaryOffset);

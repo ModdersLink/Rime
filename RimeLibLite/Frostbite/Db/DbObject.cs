@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
@@ -12,8 +13,12 @@ namespace RimeLib.Frostbite.Db
     /// Implementation of fb::DbObject
     /// </summary>
     [JsonConverter(typeof(DbObjectJsonConverter))]
-    public class DbObject : IFbSerializable
+    public class DbObject : IFbSerializable, IEnumerable<DbObjectElement>
     {
+        IEnumerator IEnumerable.GetEnumerator() => new DbObjectEnumerator(this);
+        public IEnumerator<DbObjectElement> GetEnumerator() => new DbObjectEnumerator(this);
+
+        
         private readonly List<DbObjectElement> m_Elements = new List<DbObjectElement>();
         //private Dictionary<string, DbObjectElement> m_elements = new Dictionary<string,DbObjectElement>(StringComparer.InvariantCultureIgnoreCase);
 

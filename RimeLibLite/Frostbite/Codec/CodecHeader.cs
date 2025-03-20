@@ -88,6 +88,19 @@ namespace RimeLib.Frostbite.Codec
             UnpackedSize = p_Reader.ReadUInt32();
             PackedSizeMethod = p_Reader.ReadUInt32();
 
+            if (Method >= CodecMethod.Count)
+                throw new Exception($"Invalid codec method [{Method}]! Is this a new fb?");
+            
+            if (UnpackedSize > 0x10000)
+                throw new InvalidDataException($"CodecHeader uncompressed size too large | 0x{UnpackedSize:x8}");
+
+            if (PackedSize > 0x10000)
+                throw new InvalidDataException($"CodecHeader compressed size too | 0x{PackedSize:x8}");
+
+            if (PackedSize > UnpackedSize)
+                throw new InvalidDataException($"CodecHeader compressed size larger than uncompressed size | 0x{PackedSize:x8} > 0x{PackedSize:x8}");
+            
+
             p_Reader.Endianness = s_LastEndianess;
         }
 

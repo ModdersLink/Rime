@@ -31,7 +31,18 @@ namespace RimeLib.Animation.EA.GenericData
 
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            
+            
+            
+            
+            var s_RootHeader = new Blob()
+            {
+                Type = GenericDataBlobType.Stream,
+                BigEndian = true, //TOOD: figure out this
+                Data = new byte[0],
+            };
+            s_RootHeader.Serialize(p_Writer);
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)

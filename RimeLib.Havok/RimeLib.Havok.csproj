@@ -1,11 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
-    <Platforms>x64</Platforms>
-    <Configurations>Debug;Release;LinuxDebug</Configurations>
+    <Platforms>AnyCPU</Platforms>
+    <Configurations>Release;Debug</Configurations>
+    <TargetFramework>net9.0</TargetFramework>
+    <LangVersion>default</LangVersion>
   </PropertyGroup>
 
 </Project>
