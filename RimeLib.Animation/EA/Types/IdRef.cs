@@ -11,6 +11,6 @@ namespace RimeLib.Animation.EA.Types
         where T : AntObject
     {
 
-        public T? Object => Resolver?.ResolveObject(RefrenceId) as T;
+        public T? Object => Resolver?.ResolveObject(ReferenceId) as T;
     }
 }

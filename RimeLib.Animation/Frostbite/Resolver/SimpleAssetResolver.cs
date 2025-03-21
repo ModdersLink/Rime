@@ -16,12 +16,12 @@ namespace RimeLib.Animation.Frostbite.Resolver
 
         public void RegisterObject(AntObject p_Object)
         {
-            ObjectMap.Add(p_Object.InstanceId.SimpleRefrenceIndex, p_Object);
+            ObjectMap.Add(p_Object.InstanceId.SimpleReferenceIndex, p_Object);
         }
 
         public AntObject? ResolveObject(AntGuid p_Guid)
         {
-            if (ObjectMap.TryGetValue(p_Guid.SimpleRefrenceIndex, out var s_Object))
+            if (ObjectMap.TryGetValue(p_Guid.SimpleReferenceIndex, out var s_Object))
                 return s_Object;
 
             return null;

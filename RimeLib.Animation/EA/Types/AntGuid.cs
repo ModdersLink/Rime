@@ -18,12 +18,12 @@ namespace RimeLib.Animation.EA.Types
 
 
         // used for simpleassetresolver
-        public uint SimpleRefrenceIndex => EndianBitConverter.Little.ToUInt32(Value, 0);
+        public uint SimpleReferenceIndex => EndianBitConverter.Little.ToUInt32(Value, 0);
 
         // only used for AssetResolver and not simpleassetresolver
-        public uint RefrenceIndex => EndianBitConverter.Big.ToUInt32(Value, 0);
-        public bool IsStaticRefrence => (RefrenceIndex & 0x80000) != 0;
-        public uint StaticRefrence => RefrenceIndex & ~(uint)0x80000;
+        public uint ReferenceIndex => EndianBitConverter.Big.ToUInt32(Value, 0);
+        public bool IsStaticReference => (ReferenceIndex & 0x80000) != 0;
+        public uint StaticReference => ReferenceIndex & ~(uint)0x80000;
 
         public AntGuid()
         {

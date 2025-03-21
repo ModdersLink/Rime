@@ -79,7 +79,7 @@ namespace RimeLib.Animation.EA.GenericData
 
 
 
-            //var s_SymbolResolver = new RefrenceDataReader(Reflection);
+            //var s_SymbolResolver = new ReferenceDataReader(Reflection);
 
             while (s_RootStream.Position < s_RootStream.Length)
             {

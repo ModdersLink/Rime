@@ -172,14 +172,14 @@ namespace RimeLib.Ant.Frostbite2_0.Frostbite
                         case LayoutType.Guid:
                         {
                             var s_IdRef = s_PropertyType.GetValue(p_Instance) as IdRefBase;
-                            s_IdRef!.RefrenceId = new AntGuid(p_Reader);
+                            s_IdRef!.ReferenceId = new AntGuid(p_Reader);
                             s_IdRef!.Resolver = Resolver;
                             
                             IdRefFields.Add(new ()
                             {
                                 m_Instance = p_Instance, 
                                 m_Field = s_PropertyType,
-                                m_Guid =  s_IdRef!.RefrenceId,
+                                m_Guid =  s_IdRef!.ReferenceId,
                                 m_Resolver = Resolver
                             });
                         }

@@ -5,7 +5,7 @@ using RimeLib.Frostbite;
 using RimeLib.Serialization;
 using RimeLib.Utils;
 
-namespace EbxRefrences;
+namespace EbxReferences;
 
 class Program
 {

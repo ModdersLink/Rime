@@ -6,7 +6,7 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Attributes;
 
-namespace EbxRefrences;
+namespace EbxReferences;
 
 public class InstanceTreeBuilder
 {
@@ -81,9 +81,9 @@ public class InstanceTreeBuilder
 		{
 			m_InstanceTree.TryAdd(s_CtrRefBase, s_FilteredCtrs.ToList());
 
-			foreach (var s_RefrenceField in s_FilteredCtrs)
+			foreach (var s_ReferenceField in s_FilteredCtrs)
 			{
-				var s_Object = s_RefrenceField.Get();
+				var s_Object = s_ReferenceField.Get();
 				if (s_Object == null)
 					continue;
 
@@ -106,10 +106,10 @@ public class InstanceTreeBuilder
 			.Where(p_Property => p_Property.GetCustomAttribute<ContainerFieldAttribute>() != null);
 		
 		
-		var s_Refrences = s_InstanceProperties
+		var s_References = s_InstanceProperties
 			.Where(x => typeof(CtrRefBase).IsAssignableFrom(x.PropertyType))
 			.Select(x => x.GetValue(p_Object) as CtrRefBase);
-		p_SubCtrs.AddRange(s_Refrences);
+		p_SubCtrs.AddRange(s_References);
 		
 		// process sub types later
 		var s_SubType = s_InstanceProperties

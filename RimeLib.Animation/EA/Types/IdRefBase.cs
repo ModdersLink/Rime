@@ -11,14 +11,14 @@ namespace RimeLib.Animation.EA.Types
     {
         public IAssetResolver? Resolver { get; set; } = null;
 
-        public AntGuid RefrenceId { get; set; } = new();
+        public AntGuid ReferenceId { get; set; } = new();
 
-        // TODO: add assetbank refrence??
+        // TODO: add assetbank reference??
 
-        public bool IsNullRef => RefrenceId == AntGuid.c_NullGuid;
+        public bool IsNullRef => ReferenceId == AntGuid.c_NullGuid;
 
 #if DEBUG
-        protected AntObject? ResolvedObject => Resolver?.ResolveObject(RefrenceId);
+        protected AntObject? ResolvedObject => Resolver?.ResolveObject(ReferenceId);
 #endif
     }
 }

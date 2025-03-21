@@ -607,7 +607,7 @@ public class EngineMounter : IEngineMounter
                 m_InstallCatalogs.Add(s_Chunk.Id, s_Catalog);
                 m_CatalogRegistry.AddCatalog(s_Chunk.Id, s_Catalog);
                 
-                // TODO: move superbundle parsing in here, and add as a refrence in SuperbundleEntry
+                // TODO: move superbundle parsing in here, and add as a reference in SuperbundleEntry
                 // lookup table will do for now
 
                 foreach (var s_Superbundle in s_Chunk.Superbundles)

@@ -197,7 +197,7 @@ namespace RimeLib.Animation.Frostbite2_0.EA
                             {
 
                                 var s_IdRef = s_PropertyType.GetValue(p_Instance) as IdRefBase;
-                                s_IdRef!.RefrenceId = new AntGuid(p_Reader);
+                                s_IdRef!.ReferenceId = new AntGuid(p_Reader);
                                 s_IdRef!.Resolver = Bank.Resolver;
                             }
                             break;
@@ -291,9 +291,9 @@ namespace RimeLib.Animation.Frostbite2_0.EA
                             var s_Guid = new AntGuid(p_Reader);
 
                             //TODO: fix..
-                            s_Array!.SetValue(new IdRef<AntObject>() { RefrenceId = s_Guid, Resolver = Bank.Resolver }, i);
+                            s_Array!.SetValue(new IdRef<AntObject>() { ReferenceId = s_Guid, Resolver = Bank.Resolver }, i);
 
-                            //s_Array![i] = new IdRef<AntObject>() { RefrenceId = s_Guid };
+                            //s_Array![i] = new IdRef<AntObject>() { ReferenceId = s_Guid };
                         }
                         break;
                     }

@@ -113,7 +113,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Content.Frostbite20
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Content.Frostbite2014_4", "RimeLib.Content.Frostbite2014_4\RimeLib.Content.Frostbite2014_4.csproj", "{BE55CD52-DF0D-4C0F-84A7-25C9F05CE1AE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EbxRefrences", "Utils\EbxRefrences\EbxRefrences.csproj", "{CF6C0DF6-4868-4481-99E2-AE26D9E30C07}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EbxReferences", "Utils\EbxReferences\EbxReferences.csproj", "{CF6C0DF6-4868-4481-99E2-AE26D9E30C07}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RimeScripts", "RimeScripts", "{F540066C-3856-471C-8F4A-32E6A6580C59}"
 	ProjectSection(SolutionItems) = preProject

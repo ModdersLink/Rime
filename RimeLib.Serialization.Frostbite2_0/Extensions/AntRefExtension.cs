@@ -13,8 +13,8 @@ namespace RimeLib.Serialization.Frostbite2_0.Extensions
 
         public static uint PackageId(this AntRef p_Val) => ((uint)p_Val.AssetId >> 20) & 0x3FF;
 
-        // this uses a refrence used like a guid in ant
-        public static uint RefrenceId(this AntRef p_Val) => (uint)p_Val.AssetId & 0xFFFFF;
+        // this uses a reference used like a guid in ant
+        public static uint ReferenceId(this AntRef p_Val) => (uint)p_Val.AssetId & 0xFFFFF;
 
     }
 }

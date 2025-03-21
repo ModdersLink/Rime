@@ -13,7 +13,7 @@ namespace RimeLib.Animation.EA.Types
         public void AddRef(AntGuid p_Ref, IAssetResolver? p_Resolver)
         {
             var s_Ref = new IdRef<T>();
-            s_Ref.RefrenceId = p_Ref;
+            s_Ref.ReferenceId = p_Ref;
             s_Ref.Resolver = p_Resolver;
 
             Add(s_Ref);

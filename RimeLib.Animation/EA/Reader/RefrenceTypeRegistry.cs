@@ -4,10 +4,10 @@ using System.IO;
 
 namespace RimeLib.Animation.EA.Readers
 {
-    public class RefrenceTypeRegistry
+    public class ReferenceTypeRegistry
     {
-        protected static RefrenceTypeRegistry? _instance = null;
-        public static RefrenceTypeRegistry Instance => _instance ??= new RefrenceTypeRegistry();
+        protected static ReferenceTypeRegistry? _instance = null;
+        public static ReferenceTypeRegistry Instance => _instance ??= new ReferenceTypeRegistry();
 
 
         private Dictionary<string, string> m_BaseClassDictionary = new();

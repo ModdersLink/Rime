@@ -197,7 +197,7 @@ namespace TextureExtractor
                 }
             });
             
-            //RefrenceTypeRegistry.Instance.Save(@"F:\bf3\");
+            //ReferenceTypeRegistry.Instance.Save(@"F:\bf3\");
         }
 
 
@@ -317,7 +317,7 @@ namespace TextureExtractor
                     var s_Key = $"{s_GuidRefProp.m_Field.DeclaringType.Name}.{s_GuidRefProp.m_Field.Name}";
                     
                     //Console.WriteLine($"{s_Key} = {s_SolvedRef.GetType().Name}");
-                    RefrenceTypeRegistry.Instance.AddGuidRef(s_Key, s_SolvedRef.GetType().Name);
+                    ReferenceTypeRegistry.Instance.AddGuidRef(s_Key, s_SolvedRef.GetType().Name);
                     //s_GuidRefs.Add(s_Key, s_SolvedRef.GetType().Name);
                     
                 }
@@ -332,20 +332,20 @@ namespace TextureExtractor
                     var s_Key = $"{s_DataRefProp.m_Field .DeclaringType.Name}.{s_DataRefProp.m_Field .Name}";
                     
                     //Console.WriteLine($"{s_Key} = {s_DataRef.GetType().Name}");
-                    RefrenceTypeRegistry.Instance.AddDataRef(s_Key, s_DataRefProp.m_Target.GetType().Name);
+                    ReferenceTypeRegistry.Instance.AddDataRef(s_Key, s_DataRefProp.m_Target.GetType().Name);
                     //s_GuidRefs.Add(s_Key, s_SolvedRef.GetType().Name);
                     
                 }
                 
                 foreach (var s_BasePair in s_Bank.BaseClasses)
                 {
-                    RefrenceTypeRegistry.Instance.AddBase(s_BasePair.Key, s_BasePair.Value);
+                    ReferenceTypeRegistry.Instance.AddBase(s_BasePair.Key, s_BasePair.Value);
                 }
             }
             
             
             
-            RefrenceTypeRegistry.Instance.Save(@"/home/txt/Documents/RE/frostbite/bf3/ant");
+            ReferenceTypeRegistry.Instance.Save(@"/home/txt/Documents/RE/frostbite/bf3/ant");
         }
         
         public static void DumpAssetBankResource(IEngineMounter p_Mounter, string p_Path) // "animations/characters/sp/sp_paris/tradingfloor/tradingfloorwires_animset"

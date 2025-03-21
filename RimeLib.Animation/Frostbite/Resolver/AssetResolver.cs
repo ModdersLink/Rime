@@ -21,27 +21,27 @@ namespace RimeLib.Animation.Frostbite.Resolver
 
         public void RegisterObject(AntObject p_Object)
         {
-            if (p_Object.InstanceId.IsStaticRefrence)
+            if (p_Object.InstanceId.IsStaticReference)
             {
-                StaticObjects.TryAdd(p_Object.InstanceId.StaticRefrence, p_Object);
+                StaticObjects.TryAdd(p_Object.InstanceId.StaticReference, p_Object);
                 return;
             }
 
 
-            BundleObjects.TryAdd(p_Object.InstanceId.RefrenceIndex, p_Object);
+            BundleObjects.TryAdd(p_Object.InstanceId.ReferenceIndex, p_Object);
         }
 
         public AntObject? ResolveObject(AntGuid p_Guid)
         {
-            if (p_Guid.IsStaticRefrence)
+            if (p_Guid.IsStaticReference)
             {
-                if (StaticObjects.TryGetValue(p_Guid.StaticRefrence, out var s_StaticObject))
+                if (StaticObjects.TryGetValue(p_Guid.StaticReference, out var s_StaticObject))
                     return s_StaticObject;
 
                 return null;
             }
 
-            if (BundleObjects.TryGetValue(p_Guid.RefrenceIndex, out var s_BundleObject))
+            if (BundleObjects.TryGetValue(p_Guid.ReferenceIndex, out var s_BundleObject))
                 return s_BundleObject;
 
             return null;
