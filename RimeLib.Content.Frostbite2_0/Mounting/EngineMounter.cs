@@ -724,8 +724,13 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             // Mount all resources.
             foreach (var s_Resource in p_Bundle.Bundle.ResourceEntries)
             {
-                // Create variant.
-                var s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size);
+                // Create variant. Prefer catalog instead of inline. ContainsEntry seems expensive
+                IReadableObjectWithHash? s_Readable = null;
+                if (s_Resource.InlineData != null && !m_Catalog.ContainsEntry(s_Resource.Hash))
+                    s_Readable = new InlineReadable(s_Resource.InlineData, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size);
+                else
+                    s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size);
+                
                 var s_Variant = new ResourceVariant(s_Readable, (ResourceType) s_Resource.ResourceType, s_Resource.Meta,
                     p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
 
@@ -756,8 +761,13 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                 if (p_Bundle.Bundle.ChunkMeta.Length > i)
                     s_Meta = DbObjectConverter.ToDbObject(p_Bundle.Bundle.ChunkMeta[i]);
 
-                // Create variant.
-                var s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
+                // Create variant. Prefer catalog instead of inline. ContainsEntry seems expensive
+                IReadableObjectWithHash? s_Readable = null;
+                if (s_Chunk.InlineData != null && !m_Catalog.ContainsEntry(s_Chunk.Hash))
+                    s_Readable = new InlineReadable(s_Chunk.InlineData, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
+                else 
+                    s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
+                
                 var s_Variant = new ChunkVariant(s_Readable, 0, 0, s_Meta, p_Bundle.ContainedSuperbundle.Name,
                     p_Bundle.Bundle.Path);
 
@@ -775,8 +785,13 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             // Mount all partitions.
             foreach (var s_Partition in p_Bundle.Bundle.EbxEntries)
             {
-                // Create variant.
-                var s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size);
+                // Create variant. Prefer catalog instead of inline. ContainsEntry seems expensive
+                IReadableObjectWithHash? s_Readable = null;
+                if (s_Partition.InlineData != null && !m_Catalog.ContainsEntry(s_Partition.Hash))
+                    s_Readable = new InlineReadable(s_Partition.InlineData, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size);
+                else 
+                    s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size);
+                
                 var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
 
                 // Mount.

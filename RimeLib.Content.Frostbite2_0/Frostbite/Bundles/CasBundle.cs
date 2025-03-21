@@ -12,7 +12,13 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         {
             [DbObjectField("name")]
             public string Name { get; set; } = "";
-
+            
+            [DbObjectField("resType")]
+            public int ResourceType { get; set; }
+            
+            [DbObjectField("resMeta")]
+            public byte[] Meta { get; set; } = Array.Empty<byte>();
+            
             [DbObjectField("sha1")]
             public Sha1 Hash { get; set; } = new Sha1();
 
@@ -21,12 +27,9 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
             [DbObjectField("originalSize")]
             public long? OriginalSize { get; set; }
-
-            [DbObjectField("resType")]
-            public int ResourceType { get; set; }
-
-            [DbObjectField("resMeta")]
-            public byte[] Meta { get; set; } = Array.Empty<byte>();
+            
+            [DbObjectField("idata")]
+            public byte[]? InlineData { get; set; } = null;
         }
 
         public class Dbx : DbObjectSerializable
@@ -37,8 +40,14 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             [DbObjectField("sha1")]
             public Sha1 Hash { get; set; } = new Sha1();
             
+            [DbObjectField("size")]
+            public long Size { get; set; }
+            
+            [DbObjectField("originalSize")]
+            public long? OriginalSize { get; set; }
+            
             [DbObjectField("idata")]
-            public byte[] InlineData { get; set; } = Array.Empty<byte>();
+            public byte[]? InlineData { get; set; } = null;
         }
 
         public class Ebx : DbObjectSerializable
@@ -54,6 +63,9 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             
             [DbObjectField("originalSize")]
             public long? OriginalSize { get; set; }
+            
+            [DbObjectField("idata")]
+            public byte[]? InlineData { get; set; } = null;
         }
 
         public class Chunk : DbObjectSerializable
@@ -66,6 +78,9 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             
             [DbObjectField("size")]
             public long Size { get; set; }
+            
+            [DbObjectField("idata")]
+            public byte[]? InlineData { get; set; } = null;
         }
 
         [DbObjectField("path")]
