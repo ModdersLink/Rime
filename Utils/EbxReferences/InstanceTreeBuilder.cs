@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Reflection;
+using fb;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Attributes;
@@ -14,15 +15,23 @@ public class InstanceTreeBuilder
 	ConcurrentDictionary<CtrRefBase, List<CtrRefBase>> m_InstanceTree = new ();
 	
 	ConcurrentDictionary<GUID, ConcurrentBag<GUID>> m_PartitionTree = new ();
+
+	ConcurrentDictionary<string, List<string>> m_Resources = new ();
 	
 	private ConcurrentBag<DataContainerBase> m_ToProcess = new();
 	
 	public IDictionary<CtrRefBase, List<CtrRefBase>> InstanceGraph => m_InstanceTree;
 	public IDictionary<GUID, ConcurrentBag<GUID>> PartitionGraph => m_PartitionTree;
+	public IDictionary<string, List<string>> Resources => m_Resources; 
 
 	public void ProcessPartition(DatabasePartitionBase p_Partition)
 	{
-		foreach(var s_Object in p_Partition.Instances)
+		if (!m_Resources.ContainsKey("DxTexture"))
+		{
+			m_Resources["DxTexture"] = new List<string>();
+		}
+
+		foreach (var s_Object in p_Partition.Instances)
 			m_ToProcess.Add(s_Object);
 		
 		Process();
@@ -90,6 +99,13 @@ public class InstanceTreeBuilder
 				m_ToProcess.Add(s_Object);
 			}
 
+		}
+
+		// TODO: Map more types to resources.
+		if (p_Instance is TextureAsset)
+		{
+			var s_Instance = p_Instance as TextureAsset;
+			m_Resources["DxTexture"].Add(s_Instance!.Name);
 		}
 	}
 
