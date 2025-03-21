@@ -613,8 +613,21 @@ public class BundleManifest
 
             // Skip the data, we don't need to read it right now.
             // TODO: What do do here?
-            
-            p_Reader.Seek(s_ChunkEntry.LogicalSize, SeekOrigin.Current);
+            if (PatchBundle != null && !InUpdate)
+            {
+                p_Reader.Seek(s_ChunkEntry.LogicalSize, SeekOrigin.Current);
+            }
+            else
+            {
+                long s_CurrentSize = 0;
+                while (s_CurrentSize < s_ChunkEntry.LogicalSize)
+                {
+                    var s_Codec = new CodecHeader(p_Reader);
+                    p_Reader.Seek(s_Codec.PackedSize, SeekOrigin.Current);
+
+                    s_CurrentSize += s_Codec.UnpackedSize;
+                }                   
+            }
         }
     }
 }
