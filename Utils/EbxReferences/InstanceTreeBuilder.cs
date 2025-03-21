@@ -102,9 +102,9 @@ public class InstanceTreeBuilder
 		}
 
 		// TODO: Map more types to resources.
-		if (p_Instance is TextureAsset)
+		if (p_Instance is TextureBaseAsset)
 		{
-			var s_Instance = p_Instance as TextureAsset;
+			var s_Instance = p_Instance as TextureBaseAsset;
 			m_Resources["DxTexture"].Add(s_Instance!.Name);
 		}
 	}
