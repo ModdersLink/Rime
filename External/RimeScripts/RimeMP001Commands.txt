@@ -1,0 +1,77 @@
+mount_game "D:\Program Files\EAGames\Battlefield 3" Frostbite2_0
+select_game 1
+mount_sb Win32/levels/MP_001/MP_001
+mount_bundle Win32/levels/mp_001/lightcasters
+mount_bundle Win32/levels/mp_001/conquest
+mount_bundle Win32/levels/mp_001/mp_001_settings_win32
+mount_bundle Win32/levels/mp_001/mp_001_gameconfiglight_win32
+mount_bundle Win32/levels/mp_001/mp_001_uiplaying
+mount_bundle Win32/levels/mp_001/mp_001
+mount_bundle Win32/levels/mp_001/mp_001_uiloadingmp
+mount_bundle Win32/levels/mp_001/mp_001_loading_music
+mount_bundle Win32/levels/mp_001/conquest_large
+mount_bundle Win32/levels/mp_001/mp_001_uiloadingsp
+mount_bundle Win32/levels/mp_001/squad_rush
+mount_bundle Win32/levels/mp_001/mp_001_uiendofround
+mount_bundle Win32/levels/mp_001/rush
+mount_bundle Win32/levels/mp_001/mp_001_uipreendofround
+mount_bundle Win32/levels/mp_001/tdm1
+mount_bundle Win32/levels/mp_001/squad_deathmatch
+mount_bundle Win32/levels/mp_001/team_deathmatch
+exit
+build_sb Win32/levels/MP_001/MP_001 Frostbite2_0 "C:\Users\gamedev\Downloads\CustomBundleZiba\sb" true
+build_bundle Win32/levels/mp_001/lightcasters
+clone_bundle Win32/levels/mp_001/lightcasters
+build
+build_bundle Win32/levels/mp_001/conquest
+clone_bundle Win32/levels/mp_001/conquest
+build
+build_bundle Win32/levels/mp_001/mp_001_settings_win32
+clone_bundle Win32/levels/mp_001/mp_001_settings_win32
+build
+build_bundle Win32/levels/mp_001/mp_001_gameconfiglight_win32
+clone_bundle Win32/levels/mp_001/mp_001_gameconfiglight_win32
+build
+build_bundle Win32/levels/mp_001/mp_001_uiplaying
+clone_bundle Win32/levels/mp_001/mp_001_uiplaying
+build
+build_bundle Win32/levels/mp_001/mp_001
+clone_bundle Win32/levels/mp_001/mp_001
+build
+build_bundle Win32/levels/mp_001/mp_001_uiloadingmp
+clone_bundle Win32/levels/mp_001/mp_001_uiloadingmp
+build
+build_bundle Win32/levels/mp_001/mp_001_loading_music
+clone_bundle Win32/levels/mp_001/mp_001_loading_music
+build
+build_bundle Win32/levels/mp_001/conquest_large
+clone_bundle Win32/levels/mp_001/conquest_large
+build
+build_bundle Win32/levels/mp_001/mp_001_uiloadingsp
+clone_bundle Win32/levels/mp_001/mp_001_uiloadingsp
+build
+build_bundle Win32/levels/mp_001/squad_rush
+clone_bundle Win32/levels/mp_001/squad_rush
+build
+build_bundle Win32/levels/mp_001/mp_001_uiendofround
+clone_bundle Win32/levels/mp_001/mp_001_uiendofround
+build
+build_bundle Win32/levels/mp_001/rush
+clone_bundle Win32/levels/mp_001/rush
+build
+build_bundle Win32/levels/mp_001/mp_001_uipreendofround
+clone_bundle Win32/levels/mp_001/mp_001_uipreendofround
+build
+build_bundle Win32/levels/mp_001/tdm1
+clone_bundle Win32/levels/mp_001/tdm1
+build
+build_bundle Win32/levels/mp_001/squad_deathmatch
+clone_bundle Win32/levels/mp_001/squad_deathmatch
+build
+build_bundle Win32/levels/mp_001/team_deathmatch
+clone_bundle Win32/levels/mp_001/team_deathmatch
+build
+build
+
+
+

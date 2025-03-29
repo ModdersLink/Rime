@@ -1,11 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
+using System.Security.Cryptography;
 using RimeLib.Content.Building;
+using RimeLib.Content.Frostbite2_0.Frostbite.Bundles;
+using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
 using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
+using RimeLib.Content.Frostbite2_0.Mounting;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
+using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 
@@ -35,14 +41,193 @@ namespace RimeLib.Content.Frostbite2_0.Building
             if (p_Descriptor.Cas)
                 m_Toc.Layout.Cas = p_Descriptor.Cas;
 
-            // Serialize bundles.
-            foreach (var s_Pair in p_Descriptor.Bundles)
+
+            // TODO: UNFUCK THIS, THIS IS AWFUL.
+            if (p_Descriptor.Cas)
             {
-                if (p_Descriptor.Cas)
-                    SerializeCasBundle(s_Pair.Key, s_Pair.Value, s_SbWriter);
-                else
-                    SerializeBundle(s_Pair.Key, s_Pair.Value, s_SbWriter);
+                // Bundles
+                var s_BundlesListObject = new DbObject();
+
+                var lam = (BundleDescriptor p_Descriptor) =>
+                {
+                    // Create a new DbObject
+                    var s_CasBundle = new CasBundle
+                    {
+                        Path = p_Descriptor.BundleName,
+                        ResourceEntries = new CasBundle.Resource[p_Descriptor.Resources.Count],
+                        EbxEntries = new CasBundle.Ebx[p_Descriptor.Partitions.Count],
+                        ChunkEntries = new CasBundle.Chunk[p_Descriptor.Chunks.Count],
+                        ChunkMeta = new ChunkEntry.ChunkMetaEntry[p_Descriptor.Chunks.Count] // NOTE: This matches the amount of chunk entries
+                    };
+
+                    for (var s_ResourceIndex = 0; s_ResourceIndex < p_Descriptor.Resources.Count; s_ResourceIndex++)
+                    {
+                        var s_ResourcePair = p_Descriptor.Resources.ElementAt(s_ResourceIndex);
+
+                        var s_ResourceName = s_ResourcePair.Key;
+                        var s_ResourceObject = s_ResourcePair.Value;
+                        var s_ResourceVariant = s_ResourcePair.Value as ResourceVariant; // ????
+                        if (s_ResourceVariant is null)
+                            throw new Exception("broke");
+
+                        // Get the metadata (if it exists)
+                        var s_ResourceMetadata = new byte[0];
+                        if (s_ResourceObject.TryGetMeta(out var s_MetaData))
+                        {
+                            // This file has meta
+                            s_ResourceMetadata = s_MetaData;
+                        }
+
+                        s_CasBundle.ResourceEntries[s_ResourceIndex] = new CasBundle.Resource
+                        {
+                            Name = s_ResourceName,
+                            ResourceType = (int)s_ResourceObject.GetResourceType(),
+                            Hash = s_ResourceVariant.GetSha1() ?? new Sha1(),
+                            Meta = s_ResourceMetadata
+                        };
+                    }
+
+
+
+                    // Write all of the entries for chunks
+                    for (var s_ChunkIndex = 0; s_ChunkIndex < p_Descriptor.Chunks.Count; s_ChunkIndex++)
+                    {
+                        var s_ChunkPair = p_Descriptor.Chunks.ElementAt(s_ChunkIndex);
+
+                        var s_ChunkId = s_ChunkPair.Key;
+                        var s_ChunkObject = s_ChunkPair.Value;
+
+                        using var s_ChunkReader = s_ChunkObject.GetReader();
+
+                        var s_DecompressedData = s_ChunkReader.ReadBytes((int)s_ChunkReader.Length);
+
+                        var s_ChunkHash = Sha1.FromData(s_DecompressedData);
+
+                        s_CasBundle.ChunkEntries[s_ChunkIndex] = new CasBundle.Chunk
+                        {
+                            Id = s_ChunkId,
+                            Hash = s_ChunkHash,
+                            Size = s_ChunkReader.Length
+                        };
+
+                        // Copy the chunk meta if it exists
+                        if (s_ChunkObject.TryGetMeta(out DbObject? s_MetaData))
+                        {
+                            var s_DbObject = DbObjectConverter.FromDbObject<ChunkEntry.ChunkMetaEntry>(s_MetaData);
+                            s_CasBundle.ChunkMeta[s_ChunkIndex] = s_DbObject;
+                        }
+                        else
+                            s_CasBundle.ChunkMeta[s_ChunkIndex] = new ChunkEntry.ChunkMetaEntry(); // TODO: Fix this
+
+                        /*
+                         * NOTE FOR FUTURE ME:
+                         * Currently the serialization works, and Rime can at least read the cas superbundle, with the cas bundles
+                         * with a chunk added to the bundle from existing CAS
+                         * 
+                         * This was mounted using the mount_standalone_sb
+                         * 
+                         * There are a few points that have to be investigated before this can be set as "working"
+                         * 
+                         * 1. Investigate why ChunkMeta != ChunkEntries for our built bundles, for whatever reason the above code in TryGetMeta returns null
+                         * for certain chunks, that when loading *should* exist from retail bf3 bundles
+                         * 
+                         * 2. For the ebx entries, check if the OriginalSize == Size always, or if they differ and under what circumstances they differ
+                         * and fix that in the serialization code
+                         */
+                    }
+
+                    for (var s_PartitionIndex = 0; s_PartitionIndex < p_Descriptor.Partitions.Count; ++s_PartitionIndex)
+                    {
+                        var s_PartitionPair = p_Descriptor.Partitions.ElementAt(s_PartitionIndex);
+
+                        var s_PartitionName = s_PartitionPair.Key;
+                        var s_PartitionObject = s_PartitionPair.Value;
+
+                        var s_PartitionReader = s_PartitionObject.GetReader();
+                        var s_ParititionSize = s_PartitionObject.GetSize();
+
+                        var s_PartitionHash = new Sha1(s_PartitionReader);
+
+                        s_CasBundle.EbxEntries[s_PartitionIndex] = new CasBundle.Ebx
+                        {
+                            Name = s_PartitionName,
+                            Size = s_ParititionSize,
+                            OriginalSize = s_ParititionSize, // TODO: Investigate are these the same
+                            Hash = s_PartitionHash
+                        };
+                    }
+
+                    return DbObjectConverter.ToDbObject(s_CasBundle);
+                };
+
+                var s_GenPos = (long)18;
+
+                foreach (var s_Pair in p_Descriptor.Bundles)
+                {
+                    var s_Object = lam(s_Pair.Value);
+
+                    // Has the Object | Anon
+                    var s_AnonDbObjectElement = new DbObjectElement("", s_Object, false);
+                    s_AnonDbObjectElement.Type |= DbObjectType.Anonymous;                   
+
+                    s_BundlesListObject.AddElement(s_AnonDbObjectElement);
+
+                    var s_BundleInfo = new BundleInfo
+                    {
+                        Id = s_Pair.Key,
+                        Offset = s_GenPos,
+                        Size = 0,               // This will get updated later
+                        Checksum = new Sha1(),  // This will get updated later
+                    };
+
+                    var s_ObjectData = s_Object.Serialize();
+
+                    // Calculate Size
+                    s_BundleInfo.Size = s_ObjectData.Length;
+                    s_BundleInfo.Checksum = Sha1.FromData(s_ObjectData);
+
+                    m_Bundles.Add(s_BundleInfo);
+
+                    s_GenPos += s_BundleInfo.Size;
+                }
+
+                s_BundlesListObject.AddElement(new DbObjectElement
+                {
+                    FieldName = "",
+                    Type = DbObjectType.Eoo
+                });
+
+                
+                var s_CasBundleListObject = new DbObject();
+                
+
+                var s_Array = new DbObjectElement("bundles", s_BundlesListObject, true);
+
+                s_CasBundleListObject.AddElement(s_Array);
+                s_CasBundleListObject.AddElement(new DbObjectElement
+                {
+                    FieldName = "",
+                    Type = DbObjectType.Eoo
+                });
+
+                var s_Anon = new DbObjectElement("", s_CasBundleListObject, false);
+                s_Anon.Type |= DbObjectType.Anonymous;
+
+                // Create the parent object
+                var s_CasDbObject = new DbObject();
+                s_CasDbObject.AddElement(s_Anon);
+
+                s_SbWriter.Write(s_CasDbObject.Serialize());
             }
+            else
+            {
+                // Serialize non-cas bundles.
+                foreach (var s_Pair in p_Descriptor.Bundles)
+                {
+                    SerializeBundle(s_Pair.Key, s_Pair.Value, s_SbWriter);
+                }
+            }
+
 
             // TODO: Validate that this code produces in the toc not sb for cas bundles?
             // Serialize chunks.

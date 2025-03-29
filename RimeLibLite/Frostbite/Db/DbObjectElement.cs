@@ -87,6 +87,7 @@ namespace RimeLib.Frostbite.Db
                     case DbObjectType.Double:
                         return m_DoubleValue;
 
+                    case DbObjectType.Object | DbObjectType.Anonymous:
                     case DbObjectType.Array:
                     case DbObjectType.Object:
                     case DbObjectType.HomoArray:
@@ -397,6 +398,7 @@ namespace RimeLib.Frostbite.Db
 
                 case DbObjectType.Array:
                 case DbObjectType.Object:
+                case DbObjectType.Object | DbObjectType.Anonymous:
                     return SerializeObject(p_Writer);
 
                 case DbObjectType.HomoArray:
