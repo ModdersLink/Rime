@@ -10,12 +10,21 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         protected Catalog m_Catalog;
         protected Sha1 m_Hash;
         protected bool m_Compressed;
+        protected long m_CompressedSize;
+        protected Sha1? m_CompressedHash;
 
         public CatalogReadable(Catalog p_Catalog, Sha1 p_Hash, bool p_Compressed)
         {
             m_Catalog = p_Catalog;
             m_Hash = p_Hash;
             m_Compressed = p_Compressed;
+            
+            // TODO: Remove this hack once we have from scratch building working
+            if (m_Catalog.ContainsEntry(m_Hash))
+            {
+                m_CompressedSize = m_Catalog[m_Hash].FileSize;
+                m_CompressedHash = m_Hash;
+            }
         }
 
         public RimeReader GetReader()
@@ -32,6 +41,16 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             }
 
             return s_Reader;
+        }
+
+        public long GetCompressedSize()
+        {
+            return m_CompressedSize;
+        }
+
+        public Sha1? GetCompressedHash()
+        {
+            return m_CompressedHash;
         }
 
         public long GetSize()

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
+using ICSharpCode.SharpZipLib.Zip.Compression;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using RimeLib.Content.Building;
 using RimeLib.Content.Frostbite2_0.Frostbite.Bundles;
 using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
@@ -70,6 +72,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         if (s_ResourceVariant is null)
                             throw new Exception("broke");
 
+                        var s_Readable = (CatalogReadable)s_ResourceVariant.GetReadable();
                         // Get the metadata (if it exists)
                         var s_ResourceMetadata = new byte[0];
                         if (s_ResourceObject.TryGetMeta(out var s_MetaData))
@@ -82,9 +85,14 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         {
                             Name = s_ResourceName,
                             ResourceType = (int)s_ResourceObject.GetResourceType(),
-                            Hash = s_ResourceVariant.GetSha1() ?? new Sha1(),
-                            Meta = s_ResourceMetadata
+                            Hash = s_Readable.GetCompressedHash(),
+                            Meta = s_ResourceMetadata,
+                            Size = s_Readable.GetCompressedSize(),
+                            OriginalSize = s_Readable.GetSize()
                         };
+
+                        // Update the total size
+                        s_CasBundle.TotalSize += s_ResourceObject.GetSize();
                     }
 
 
@@ -97,18 +105,23 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         var s_ChunkId = s_ChunkPair.Key;
                         var s_ChunkObject = s_ChunkPair.Value;
 
-                        using var s_ChunkReader = s_ChunkObject.GetReader();
+                        var s_Readable = (CatalogReadable)((ObjectVariant)s_ChunkObject).GetReadable();
 
-                        var s_DecompressedData = s_ChunkReader.ReadBytes((int)s_ChunkReader.Length);
+                        //using var s_ChunkReader = s_ChunkObject.GetReader();
 
-                        var s_ChunkHash = Sha1.FromData(s_DecompressedData);
+                        //var s_DecompressedData = s_ChunkReader.ReadBytes((int)s_ChunkReader.Length);
+
+                        //var s_ChunkHash = Sha1.FromData(s_DecompressedData);
 
                         s_CasBundle.ChunkEntries[s_ChunkIndex] = new CasBundle.Chunk
                         {
                             Id = s_ChunkId,
-                            Hash = s_ChunkHash,
-                            Size = s_ChunkReader.Length
+                            Hash = s_Readable.GetCompressedHash(),
+                            Size = s_Readable.GetCompressedSize()
                         };
+
+                        // Update totalSize
+                        s_CasBundle.TotalSize += s_Readable.GetCompressedSize();
 
                         // Copy the chunk meta if it exists
                         if (s_ChunkObject.TryGetMeta(out DbObject? s_MetaData))
@@ -144,9 +157,11 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         var s_PartitionObject = s_PartitionPair.Value;
 
                         var s_PartitionReader = s_PartitionObject.GetReader();
+                        var s_PartitionData = s_PartitionReader.ReadBytes((int)s_PartitionReader.Length);
+
                         var s_ParititionSize = s_PartitionObject.GetSize();
 
-                        var s_PartitionHash = new Sha1(s_PartitionReader);
+                        var s_PartitionHash = Sha1.FromData(s_PartitionData);
 
                         s_CasBundle.EbxEntries[s_PartitionIndex] = new CasBundle.Ebx
                         {
@@ -155,6 +170,9 @@ namespace RimeLib.Content.Frostbite2_0.Building
                             OriginalSize = s_ParititionSize, // TODO: Investigate are these the same
                             Hash = s_PartitionHash
                         };
+
+                        // Update totalSize
+                        s_CasBundle.TotalSize += s_ParititionSize;
                     }
 
                     return DbObjectConverter.ToDbObject(s_CasBundle);
@@ -164,6 +182,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 foreach (var s_Pair in p_Descriptor.Bundles)
                 {
+                    var s_Desc = s_Pair.Value;
+
                     var s_Object = lam(s_Pair.Value);
 
                     // Has the Object | Anon
@@ -227,7 +247,6 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     SerializeBundle(s_Pair.Key, s_Pair.Value, s_SbWriter);
                 }
             }
-
 
             // TODO: Validate that this code produces in the toc not sb for cas bundles?
             // Serialize chunks.

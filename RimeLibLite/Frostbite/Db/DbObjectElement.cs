@@ -391,14 +391,13 @@ namespace RimeLib.Frostbite.Db
             if (s_HasName)
                 p_Writer.WriteNullTerminatedString(FieldName);
 
-            switch (Type)
+            switch (s_Type)
             {
                 case DbObjectType.Null:
                     return true;
 
                 case DbObjectType.Array:
                 case DbObjectType.Object:
-                case DbObjectType.Object | DbObjectType.Anonymous:
                     return SerializeObject(p_Writer);
 
                 case DbObjectType.HomoArray:

@@ -128,15 +128,18 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 var s_PartitionObject = s_PartitionPair.Value;
 
                 var s_PartitionReader = s_PartitionObject.GetReader();
-                var s_ParititionSize = s_PartitionObject.GetSize();
+                var s_PartitionSize = s_PartitionObject.GetSize();
 
-                var s_PartitionHash = new Sha1(s_PartitionReader);
+                var s_PartitionData = s_PartitionReader.ReadBytes((int)s_PartitionSize);
+                s_PartitionReader = s_PartitionObject.GetReader();
+
+                var s_PartitionHash = Sha1.FromData(s_PartitionData);
 
                 m_Header.EbxEntries[s_PartitionIndex] = new CasBundle.Ebx
                 {
                     Name = s_PartitionName,
-                    Size = s_ParititionSize,
-                    OriginalSize = s_ParititionSize, // TODO: Investigate are these the same
+                    Size = s_PartitionSize,
+                    OriginalSize = s_PartitionSize, // TODO: Investigate are these the same
                     Hash = s_PartitionHash
                 };
             }

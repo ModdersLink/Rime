@@ -31,6 +31,11 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return m_Readable.GetReader();
         }
 
+        public IReadableObjectWithHash GetReadable()
+        {
+            return m_Readable;
+        }
+
         public long GetSize()
         {
             return m_Readable.GetSize();

@@ -2,6 +2,7 @@
 using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
+using System;
 
 namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 {
@@ -25,7 +26,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             public int ResourceType { get; set; }
 
             [DbObjectField("resMeta")]
-            public byte[] Meta { get; set; } = new byte[0];
+            public byte[] Meta { get; set; } = Array.Empty<byte>();
         }
 
         public class Dbx : DbObjectSerializable
@@ -37,7 +38,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             public Sha1 Hash { get; set; } = new Sha1();
             
             [DbObjectField("idata")]
-            public byte[] InlineData { get; set; } = new byte[0];
+            public byte[] InlineData { get; set; } = Array.Empty<byte>();
         }
 
         public class Ebx : DbObjectSerializable
@@ -74,22 +75,22 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         public int MagicSalt { get; set; }
 
         [DbObjectField("ebx")]
-        public Ebx[] EbxEntries { get; set; } = new Ebx[0];
+        public Ebx[] EbxEntries { get; set; } = Array.Empty<Ebx>();
 
         [DbObjectField("dbx")]
-        public Dbx[] DbxEntries { get; set; } = new Dbx[0];
+        public Dbx[] DbxEntries { get; set; } = Array.Empty<Dbx>();
 
         [DbObjectField("res")]
-        public Resource[] ResourceEntries { get; set; } = new Resource[0];
+        public Resource[] ResourceEntries { get; set; } = Array.Empty<Resource>();
 
         [DbObjectField("chunks")]
-        public Chunk[] ChunkEntries { get; set; } = new Chunk[0];
+        public Chunk[] ChunkEntries { get; set; } = Array.Empty<Chunk>();
 
         [DbObjectField("chunkMeta")]
-        public ChunkEntry.ChunkMetaEntry[] ChunkMeta { get; set; } = new ChunkEntry.ChunkMetaEntry[0];
+        public ChunkEntry.ChunkMetaEntry[] ChunkMeta { get; set; } = Array.Empty<ChunkEntry.ChunkMetaEntry>();
 
-        [DbObjectField("alignMembers")]
-        public bool AlignMembers { get; set; }
+        [DbObjectField("alignMembers", DefaultValue = true)]
+        public bool AlignMembers { get; set; } = true;
         
         [DbObjectField("totalSize")]
         public long TotalSize { get; set; }
