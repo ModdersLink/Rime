@@ -12,11 +12,18 @@ internal class InlineReadable : IReadableObjectWithHash
 	protected Sha1 m_Hash;
 	protected bool m_Compressed;
 
+    protected long m_CompressedSize;
+    protected Sha1? m_CompressedHash;
+
 	public InlineReadable(byte[] p_Data, Sha1 p_Hash, bool p_Compressed)
 	{
-	   m_Data = p_Data;
-	   m_Hash = p_Hash;
-	   m_Compressed = p_Compressed;
+		m_Data = p_Data;
+		m_Hash = p_Hash;
+		m_Compressed = p_Compressed;
+
+		// TODO: Remove this hack once we have from scratch building working
+		m_CompressedSize = p_Data.Length;
+		m_CompressedHash = m_Hash;
 	}
 
 	public RimeReader GetReader()
@@ -35,7 +42,22 @@ internal class InlineReadable : IReadableObjectWithHash
 	   return s_Reader;
 	}
 
-	public long GetSize()
+    public long GetCompressedSize()
+    {
+        return m_CompressedSize;
+    }
+
+    public Sha1? GetCompressedHash()
+    {
+        return m_CompressedHash;
+    }
+
+	public byte[] GetCompressedData()
+	{
+		return m_Data;
+	}
+
+    public long GetSize()
 	{
 	   using var s_Reader = GetReader();
 	   return s_Reader.Length;

@@ -72,7 +72,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         if (s_ResourceVariant is null)
                             throw new Exception("broke");
 
-                        var s_Readable = (CatalogReadable)s_ResourceVariant.GetReadable();
+                        var s_Readable = s_ResourceVariant.GetReadable();
                         // Get the metadata (if it exists)
                         var s_ResourceMetadata = new byte[0];
                         if (s_ResourceObject.TryGetMeta(out var s_MetaData))
@@ -85,10 +85,11 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         {
                             Name = s_ResourceName,
                             ResourceType = (int)s_ResourceObject.GetResourceType(),
-                            Hash = s_Readable.GetCompressedHash(),
+                            Hash = (s_Readable is CatalogReadable ? ((CatalogReadable)s_Readable).GetCompressedHash() : ((InlineReadable)s_Readable).GetCompressedHash()),
                             Meta = s_ResourceMetadata,
-                            Size = s_Readable.GetCompressedSize(),
-                            OriginalSize = s_Readable.GetSize()
+                            Size = (s_Readable is CatalogReadable ? ((CatalogReadable)s_Readable).GetCompressedSize() : ((InlineReadable)s_Readable).GetCompressedSize()),
+                            OriginalSize = s_Readable.GetSize(),
+                            InlineData = (s_Readable is InlineReadable ? ((InlineReadable)s_Readable).GetCompressedData() : null)
                         };
 
                         // Update the total size
@@ -105,7 +106,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         var s_ChunkId = s_ChunkPair.Key;
                         var s_ChunkObject = s_ChunkPair.Value;
 
-                        var s_Readable = (CatalogReadable)((ObjectVariant)s_ChunkObject).GetReadable();
+                        var s_Readable = ((ObjectVariant)s_ChunkObject).GetReadable();
 
                         //using var s_ChunkReader = s_ChunkObject.GetReader();
 
@@ -113,15 +114,18 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                         //var s_ChunkHash = Sha1.FromData(s_DecompressedData);
 
+                        var s_ReadableSize = (s_Readable is CatalogReadable ? ((CatalogReadable)s_Readable).GetCompressedSize() : ((InlineReadable)s_Readable).GetCompressedSize());
+
                         s_CasBundle.ChunkEntries[s_ChunkIndex] = new CasBundle.Chunk
                         {
                             Id = s_ChunkId,
-                            Hash = s_Readable.GetCompressedHash(),
-                            Size = s_Readable.GetCompressedSize()
+                            Hash = (s_Readable is CatalogReadable ? ((CatalogReadable)s_Readable).GetCompressedHash() : ((InlineReadable)s_Readable).GetCompressedHash()),
+                            Size = s_ReadableSize,
+                            InlineData = (s_Readable is InlineReadable ? ((InlineReadable)s_Readable).GetCompressedData() : null)
                         };
 
                         // Update totalSize
-                        s_CasBundle.TotalSize += s_Readable.GetCompressedSize();
+                        s_CasBundle.TotalSize += s_ReadableSize;
 
                         // Copy the chunk meta if it exists
                         if (s_ChunkObject.TryGetMeta(out DbObject? s_MetaData))
@@ -156,6 +160,9 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         var s_PartitionName = s_PartitionPair.Key;
                         var s_PartitionObject = s_PartitionPair.Value;
 
+
+                        var s_Readable = ((ObjectVariant)s_PartitionObject).GetReadable();
+
                         var s_PartitionReader = s_PartitionObject.GetReader();
                         var s_PartitionData = s_PartitionReader.ReadBytes((int)s_PartitionReader.Length);
 
@@ -168,7 +175,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
                             Name = s_PartitionName,
                             Size = s_ParititionSize,
                             OriginalSize = s_ParititionSize, // TODO: Investigate are these the same
-                            Hash = s_PartitionHash
+                            Hash = s_PartitionHash,
+                            InlineData = (s_Readable is InlineReadable ? ((InlineReadable)s_Readable).GetCompressedData() : null)
                         };
 
                         // Update totalSize
