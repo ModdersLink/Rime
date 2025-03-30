@@ -38,10 +38,11 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             // Set basic layout properties.
             m_Toc.Layout.Name = p_Descriptor.SuperbundleName;
-            m_Toc.Layout.Tag = Guid.NewGuid();
-            m_Toc.Layout.AlwaysEmitSuperbundle = true;
+            m_Toc.Layout.AlwaysEmitSuperbundle = !p_Descriptor.Cas;
             if (p_Descriptor.Cas)
                 m_Toc.Layout.Cas = p_Descriptor.Cas;
+            else
+                m_Toc.Layout.Tag = Guid.NewGuid();
 
 
             // TODO: UNFUCK THIS, THIS IS AWFUL.
