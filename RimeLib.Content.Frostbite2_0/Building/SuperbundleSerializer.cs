@@ -82,19 +82,21 @@ namespace RimeLib.Content.Frostbite2_0.Building
                             s_ResourceMetadata = s_MetaData;
                         }
 
+                        var s_CompressedSize = (s_Readable is CatalogReadable ? ((CatalogReadable)s_Readable).GetCompressedSize() : ((InlineReadable)s_Readable).GetCompressedSize());
+
                         s_CasBundle.ResourceEntries[s_ResourceIndex] = new CasBundle.Resource
                         {
                             Name = s_ResourceName,
                             ResourceType = (int)s_ResourceObject.GetResourceType(),
                             Hash = (s_Readable is CatalogReadable ? ((CatalogReadable)s_Readable).GetCompressedHash() : ((InlineReadable)s_Readable).GetCompressedHash()),
                             Meta = s_ResourceMetadata,
-                            Size = (s_Readable is CatalogReadable ? ((CatalogReadable)s_Readable).GetCompressedSize() : ((InlineReadable)s_Readable).GetCompressedSize()),
+                            Size = s_CompressedSize,
                             OriginalSize = s_Readable.GetSize(),
                             InlineData = (s_Readable is InlineReadable ? ((InlineReadable)s_Readable).GetCompressedData() : null)
                         };
 
                         // Update the total size
-                        s_CasBundle.TotalSize += s_ResourceObject.GetSize();
+                        s_CasBundle.TotalSize += s_CompressedSize;
                     }
 
 
