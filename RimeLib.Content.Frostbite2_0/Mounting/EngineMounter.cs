@@ -773,8 +773,10 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                         s_Readable = new InlineReadable(s_Chunk.InlineData, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
                     else 
                         s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
-                
-                    var s_Variant = new ChunkVariant(s_Readable, 0, 0, s_Meta, p_Bundle.ContainedSuperbundle.Name,
+
+                    var s_RangeStart = s_Chunk.RangeStart is not null ? (uint)s_Chunk.RangeStart : 0;
+                    var s_LogicalOffset = s_Chunk.LogicalOffset is not null ? (uint)s_Chunk.LogicalOffset : 0;
+                    var s_Variant = new ChunkVariant(s_Readable, s_RangeStart, s_LogicalOffset, s_Meta, p_Bundle.ContainedSuperbundle.Name,
                         p_Bundle.Bundle.Path);
 
                     // Mount.
