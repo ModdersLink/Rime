@@ -99,10 +99,10 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         public Resource[] ResourceEntries { get; set; } = Array.Empty<Resource>();
 
         [DbObjectField("chunks")]
-        public Chunk[] ChunkEntries { get; set; } = Array.Empty<Chunk>();
+        public Chunk[]? ChunkEntries { get; set; } = null;
 
         [DbObjectField("chunkMeta")]
-        public ChunkEntry.ChunkMetaEntry[] ChunkMeta { get; set; } = Array.Empty<ChunkEntry.ChunkMetaEntry>();
+        public ChunkEntry.ChunkMetaEntry[]? ChunkMeta { get; set; } = null;
 
         [DbObjectField("alignMembers", DefaultValue = true)]
         public bool AlignMembers { get; set; } = true;
