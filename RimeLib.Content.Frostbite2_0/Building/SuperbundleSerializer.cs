@@ -169,21 +169,21 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         var s_PartitionReader = s_PartitionObject.GetReader();
                         var s_PartitionData = s_PartitionReader.ReadBytes((int)s_PartitionReader.Length);
 
-                        var s_ParititionSize = s_PartitionObject.GetSize();
+                        var s_PartitionSize = s_PartitionObject.GetSize();
 
                         var s_PartitionHash = Sha1.FromData(s_PartitionData);
 
                         s_CasBundle.EbxEntries[s_PartitionIndex] = new CasBundle.Ebx
                         {
                             Name = s_PartitionName,
-                            Size = s_ParititionSize,
-                            OriginalSize = s_ParititionSize, // TODO: Investigate are these the same
+                            Size = s_PartitionSize,
+                            OriginalSize = s_PartitionSize, // TODO: Investigate are these the same
                             Hash = s_PartitionHash,
                             InlineData = (s_Readable is InlineReadable ? ((InlineReadable)s_Readable).GetCompressedData() : null)
                         };
 
                         // Update totalSize
-                        s_CasBundle.TotalSize += s_ParititionSize;
+                        s_CasBundle.TotalSize += s_PartitionSize;
                     }
 
                     return DbObjectConverter.ToDbObject(s_CasBundle);
