@@ -80,13 +80,13 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             public long Size { get; set; }
 
             [DbObjectField("rangeStart")]
-            public long? RangeStart { get; set; }
+            public int? RangeStart { get; set; }
 
             [DbObjectField("rangeEnd")]
-            public long? RangeEnd { get; set; }
+            public int? RangeEnd { get; set; }
 
             [DbObjectField("logicalOffset")]
-            public long? LogicalOffset { get; set; }
+            public int? LogicalOffset { get; set; }
 
             [DbObjectField("idata")]
             public byte[]? InlineData { get; set; } = null;

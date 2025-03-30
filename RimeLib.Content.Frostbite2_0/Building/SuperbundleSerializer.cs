@@ -119,9 +119,9 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                         var s_ReadableSize = (s_Readable is CatalogReadable ? ((CatalogReadable)s_Readable).GetCompressedSize() : ((InlineReadable)s_Readable).GetCompressedSize());
 
-                        var s_RangeStart = s_ChunkObject.GetRangeStart();
-                        var s_RangeEnd = s_RangeStart + (uint)s_ReadableSize;
-                        var s_LogicalOffset = s_ChunkObject.GetLogicalOffset();
+                        var s_RangeStart = (int)s_ChunkObject.GetRangeStart();
+                        var s_RangeEnd = s_RangeStart + (int)s_ReadableSize;
+                        var s_LogicalOffset = (int)s_ChunkObject.GetLogicalOffset();
                         var s_ShouldWriteEntry = s_RangeStart != 0 || s_Readable is InlineReadable;
 
                         s_CasBundle.ChunkEntries[s_ChunkIndex] = new CasBundle.Chunk
