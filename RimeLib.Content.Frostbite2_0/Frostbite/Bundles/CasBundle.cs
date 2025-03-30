@@ -75,10 +75,19 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             
             [DbObjectField("sha1")]
             public Sha1 Hash { get; set; } = new Sha1();
-            
+
             [DbObjectField("size")]
             public long Size { get; set; }
-            
+
+            [DbObjectField("rangeStart")]
+            public long? RangeStart { get; set; }
+
+            [DbObjectField("rangeEnd")]
+            public long? RangeEnd { get; set; }
+
+            [DbObjectField("logicalOffset")]
+            public long? LogicalOffset { get; set; }
+
             [DbObjectField("idata")]
             public byte[]? InlineData { get; set; } = null;
         }

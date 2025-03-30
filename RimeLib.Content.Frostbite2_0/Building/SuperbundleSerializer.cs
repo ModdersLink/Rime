@@ -116,6 +116,10 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         //var s_DecompressedData = s_ChunkReader.ReadBytes((int)s_ChunkReader.Length);
 
                         //var s_ChunkHash = Sha1.FromData(s_DecompressedData);
+                        var s_RangeStart = s_ChunkObject.GetRangeStart();
+                        var s_RangeEnd = s_RangeStart + (uint)s_ChunkObject.GetSize();
+                        var s_LogicalOffset = s_ChunkObject.GetLogicalOffset();
+                        var s_ShouldWriteEntry = s_RangeStart != 0 || s_Readable is InlineReadable;
 
                         var s_ReadableSize = (s_Readable is CatalogReadable ? ((CatalogReadable)s_Readable).GetCompressedSize() : ((InlineReadable)s_Readable).GetCompressedSize());
 
@@ -124,6 +128,9 @@ namespace RimeLib.Content.Frostbite2_0.Building
                             Id = s_ChunkId,
                             Hash = (s_Readable is CatalogReadable ? ((CatalogReadable)s_Readable).GetCompressedHash() : ((InlineReadable)s_Readable).GetCompressedHash()),
                             Size = s_ReadableSize,
+                            RangeStart = s_ShouldWriteEntry ? s_RangeStart : null,
+                            RangeEnd = s_ShouldWriteEntry ? s_RangeEnd : null,
+                            LogicalOffset = s_ShouldWriteEntry ? s_LogicalOffset : null,
                             InlineData = (s_Readable is InlineReadable ? ((InlineReadable)s_Readable).GetCompressedData() : null)
                         };
 
