@@ -56,7 +56,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     // Create a new DbObject
                     var s_CasBundle = new CasBundle
                     {
-                        Path = p_Descriptor.BundleName,
+                        Path = p_Descriptor.BundleName.ToLowerInvariant(),
                         ResourceEntries = new CasBundle.Resource[p_Descriptor.Resources.Count],
                         EbxEntries = new CasBundle.Ebx[p_Descriptor.Partitions.Count],
                         ChunkEntries = p_Descriptor.Chunks.Count != 0 ? new CasBundle.Chunk[p_Descriptor.Chunks.Count] : null,
