@@ -208,7 +208,9 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         Checksum = new Sha1(),  // This will get updated later
                     };
 
-                    var s_ObjectData = s_Object.Serialize();
+                    var s_FullObject = new DbObject();
+                    s_FullObject.AddElement(s_AnonDbObjectElement);
+                    var s_ObjectData = s_FullObject.Serialize();
 
                     // Calculate Size
                     s_BundleInfo.Size = s_ObjectData.Length;
