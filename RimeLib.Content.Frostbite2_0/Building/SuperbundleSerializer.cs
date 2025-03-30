@@ -213,7 +213,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                     var s_BundleInfo = new BundleInfo
                     {
-                        Id = s_Pair.Key,
+                        Id = s_Pair.Value.BundleName,
                         Offset = s_GenPos,
                         Size = 0,               // This will get updated later
                         Checksum = new Sha1(),  // This will get updated later
