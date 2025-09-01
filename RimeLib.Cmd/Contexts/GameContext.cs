@@ -58,6 +58,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<DumpPartitionJsonCommand>();
             RegisterCommand<DumpTextureCommand>();
+            RegisterCommand<DumpMeshCommand>();
+            RegisterCommand<DumpLevelMeshesCommand>();
         }
 
         public override string GetShortDescription()
@@ -344,6 +346,25 @@ namespace RimeLib.Cmd.Contexts
         internal IReadOnlyDictionary<string, IMountedObject<IResourceVariant>> GetMountedResourceVariations()
         {
             return m_Mounter.GetResources();
+        }
+
+        internal void DumpMesh(string p_Name, FileInfo p_Destination)
+        {
+            
+            var s_Resources = m_Mounter.GetResources();
+
+            var s_MeshResources = s_Resources.Where(p_Resource => p_Resource.Key == p_Name);
+            foreach (var s_MeshResource in s_MeshResources)
+            {
+                var s_Name = s_MeshResource.Key;
+                var s_Resource = s_MeshResource.Value;
+                
+                var s_Variant = s_Resource.FirstVariant;
+                if (s_Variant.GetResourceType() != ResourceType.MeshSet)
+                    continue;
+                
+                
+            }
         }
     }
 }
