@@ -17,20 +17,11 @@ public class DumpMeshCommand : Command
     
     [CommandArgument(Description = "The destination file name where the mesh will be exported")]
     public FileInfo? Destination { get; set; }
-    
+
     public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
     {
-        try
-        {
-            ((GameContext)p_Context).DumpMesh(ExportType, Path, Destination!);
-            p_Writer.WriteLine($"Extracted {ExportType} {Path} to {Destination?.FullName}");
-            return true;
-        }
-        catch (Exception s_Exception)
-        {
-            p_Writer.WriteLine("There was a problem extracting mesh, error:");
-            p_Writer.WriteLine(s_Exception.Message);
-            return false;
-        }
+        ((GameContext)p_Context).DumpMesh(ExportType, Path, Destination!);
+        p_Writer.WriteLine($"Extracted {ExportType} {Path} to {Destination?.FullName}");
+        return true;
     }
 }

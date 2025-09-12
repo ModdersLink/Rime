@@ -1,0 +1,250 @@
+//------------------------------------------------
+//--- 010 Editor v16.0.1 Binary Template
+//
+//      File: FB2_MeshSet
+//   Authors: kiwidog
+//   Version: 0.0.1
+//   Purpose: I don't even know
+//  Category: 3D Models
+// File Mask:
+//  ID Bytes:
+//   History: 9/12/25 - Created
+//------------------------------------------------
+
+struct MeshLayout;
+struct MeshSubset;
+
+byte VALID_POS(uint64 pos)
+{
+    return ((pos) > 0 && (pos) < FileSize());
+}
+
+enum <int> VertexElementClassification
+{
+    VertexElementClassification_PerVertex = 0,
+	VertexElementClassification_PerInstance = 1,
+	VertexElementClassification_Index = 2
+};
+
+enum <int> VertexElementUsage
+{
+};
+
+enum <int> VertexElementFormat
+{
+};
+
+enum <int> PrimitiveType
+{
+    /// <summary>
+    /// Point List
+    /// </summary>
+    PrimitiveType_PointList = 0x0,
+
+    /// <summary>
+    /// Line List
+    /// </summary>
+    PrimitiveType_LineList = 0x1,
+
+    /// <summary>
+    /// Line Strip
+    /// </summary>
+    PrimitiveType_LineStrip = 0x2,
+
+    /// <summary>
+    /// Triangle List
+    /// </summary>
+    PrimitiveType_TriangleList = 0x3,
+
+    /// <summary>
+    /// Triangle Strip
+    /// </summary>
+    PrimitiveType_TriangleStrip = 0x5,
+
+    /// <summary>
+    /// Quad List
+    /// </summary>
+    PrimitiveType_QuadList = 0x7,
+
+    /// <summary>
+    /// Xbox 360 Rectange List
+    /// </summary>
+    PrimitiveType_XenonRectList = 0x8,
+};
+
+struct GeometryDeclarationDesc
+{
+    struct Stream
+    {
+        byte stride;
+        enum VertexElementClassification classification;
+    };
+
+    struct Element
+    {
+        enum VertexElementUsage usage;
+        enum VertexElementFormat format;
+        byte offset;
+        byte streamIndex;
+    };
+
+    Element elements[16];
+    Stream streams[16];
+};
+
+struct RelocPtr_String
+{
+    uint64 baseAddress;
+    if (VALID_POS(baseAddress))
+    {
+        string str <pos=baseAddress>;
+    }
+};
+
+struct RelocPtr_Byte
+{
+    uint64 baseAddress;
+    if (VALID_POS(baseAddress))
+    {
+        byte data <pos=baseAddress>;
+    }
+};
+
+struct RelocPtr_UInt32
+{
+    uint64 baseAddress;
+    if (VALID_POS(baseAddress))
+    {
+        uint32 data <pos=baseAddress>;
+    }
+};
+
+struct RelocPtr_UInt16
+{
+    uint64 baseAddress;
+    if (VALID_POS(baseAddress))
+    {
+        uint16 data <pos=baseAddress>;
+    }
+};
+
+struct RelocArray
+{
+    uint32 count;
+    uint64 baseAddress;
+};
+
+struct RelocArray_MeshSubset
+{
+    uint32 count;
+    uint64 baseAddress;
+    if (VALID_POS(baseAddress))
+    {
+        MeshSubset set[count] <pos=baseAddress,optimize=false>;
+    }
+};
+
+struct RelocArray_Byte
+{
+    uint32 count;
+    uint64 baseAddress;
+    if (VALID_POS(baseAddress))
+    {
+        byte set[count] <pos=baseAddress>;
+    }
+};
+
+struct RelocPtr_MeshLayout
+{
+    uint64 baseAddress;
+    if (VALID_POS(baseAddress))
+    {
+        MeshLayout layout <pos=baseAddress>;
+    }
+};
+
+struct Vec3
+{
+    float x;
+    float y;
+    float z;
+    float _;
+};
+
+struct AxisAlignedBox
+{
+    Vec3 minVec;
+    Vec3 maxVec;
+};
+
+enum <int> MeshType
+{
+    MeshType_Rigid = 0,
+    MeshType_Skinned = 1,
+    MeshType_Composite = 2
+};
+
+enum <uint> MeshLayoutFlags
+{
+    IsBaseLod = 0x1,
+    StreamingEnable = 0x40,
+    StreamInstancingEnable = 0x10,
+    VertexAnimationEnable = 0x80,
+    IsDataAvailable = 0x20000000
+};
+
+struct MeshSet
+{
+    enum MeshType meshType;
+    enum MeshLayoutFlags flags;
+    uint32 lodCount;
+    uint32 totalSubsetCount;
+    AxisAlignedBox aabb;
+    RelocPtr_MeshLayout lods[5] <optimize=false>;
+    RelocPtr_String name;
+    RelocPtr_String shortName;
+    uint32 nameHash;
+    uint32 _;
+};
+
+struct MeshLayout
+{
+    enum MeshType meshType;
+    RelocArray_MeshSubset subsets;
+    RelocArray_Byte categorySubsetIndicies[4] <optimize=false>;
+    enum MeshLayoutFlags flags;
+    uint32 indexDataSize;
+    uint32 vertexDataSize;
+    uint32 edgePartitionBufferSize;
+    GUID dataChunkId;
+    uint32 auxVertexIndexDataOffset;
+    RelocPtr_Byte embeddedEdgeData;
+    RelocPtr_String shaderDebugName;
+    RelocPtr_String name;
+    RelocPtr_String shortName;
+    uint32 nameHash;
+    RelocPtr_Byte data;
+    uint32 partCount;
+    RelocPtr_UInt32 boneIndexArrayPartBoundingBoxes;
+    RelocPtr_UInt32 boneShortNameArrayPartTransforms;
+    RelocPtr_UInt32 subsetPartIndices;
+};
+
+struct MeshSubset
+{
+    uint64 geometryDeclarations;
+    RelocPtr_String materialName;
+    uint32 materialIndex;
+    uint32 primitiveCount;
+    uint32 startIndex;
+    uint32 vertexOffset;
+    uint32 vertexCount;
+    byte vertexStride;
+    enum PrimitiveType primitiveType;
+    byte bonesPerVertex;
+    RelocPtr_UInt16 boneIndices;
+    GeometryDeclarationDesc geometryDeclarationDesc;
+    float texCoordRatios[6];
+};
+
+MeshSet set;

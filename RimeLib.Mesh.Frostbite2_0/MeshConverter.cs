@@ -38,7 +38,11 @@ public class MeshConverter : IMeshConverter
             throw new InvalidDataException("Resource type is not MeshSet");
 
         // Get a reader to the object
-        using var s_ResourceReader = p_Resource.GetReader();
+        using var s_ResourceReader1 = p_Resource.GetReader();
+        var s_Data = s_ResourceReader1.ReadBytes((int)s_ResourceReader1.Length);
+        using var s_ResourceReader = new RimeReader(new MemoryStream(s_Data));
+        
+        //File.WriteAllBytes("dump.bin", s_ResourceReader.ReadBytes((int)s_ResourceReader.Length));
 
         // Read the mesh set layout
         var s_MeshSetLayout = new MeshSetLayout(s_ResourceReader);
@@ -99,7 +103,9 @@ public class MeshConverter : IMeshConverter
                 continue;
             }
 
-            using var s_ChunkReader = p_MeshChunk.FirstVariant.GetReader();
+            using var s_ChunkReader1 = p_MeshChunk.FirstVariant.GetReader();
+            var s_ChunkData = s_ChunkReader1.ReadBytes((int)s_ChunkReader1.Length);
+            using var s_ChunkReader = new RimeReader(new MemoryStream(s_ChunkData));
 
             var s_VertexChunkData = s_ChunkReader.ReadBytes((int)s_MeshLayout.VertexDataSize);
             var s_PrimitiveChunkData = s_ChunkReader.ReadBytes((int)s_MeshLayout.IndexDataSize);
@@ -329,7 +335,7 @@ public class MeshConverter : IMeshConverter
                     var s_RandomColor = new Vector4((float)s_Random.NextDouble(), (float)s_Random.NextDouble(),
                         (float)s_Random.NextDouble(), 1.0f);
                     var s_DebugMaterial = new MaterialBuilder(s_SubsetKey.MaterialName.Object ?? "")
-                        .WithMetallicRoughnessShader().WithChannelParam(KnownChannel.BaseColor, s_RandomColor);
+                        .WithMetallicRoughnessShader().WithChannelParam(KnownChannel.BaseColor, KnownProperty.RGBA, s_RandomColor);
 
                     // Create a new GLTF mesh
                     var s_Mesh =

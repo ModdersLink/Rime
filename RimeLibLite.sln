@@ -125,6 +125,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RimeScripts", "RimeScripts"
 	ProjectSection(SolutionItems) = preProject
 		External\RimeScripts\auto_mount_bf3.txt = External\RimeScripts\auto_mount_bf3.txt
 		External\RimeScripts\auto_rebuild_xp5_001.txt = External\RimeScripts\auto_rebuild_xp5_001.txt
+		External\RimeScripts\model_extract.txt = External\RimeScripts\model_extract.txt
 	EndProjectSection
 EndProject
 Global
