@@ -23,7 +23,7 @@ public class MeshConverter : IMeshConverter
 {
     public EngineType[] GetSupportedEngines()
     {
-        return [EngineType.Frostbite2_0];
+        return new[] { EngineType.Frostbite2_0 };
     }
 
     public void ConvertToObj(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath)

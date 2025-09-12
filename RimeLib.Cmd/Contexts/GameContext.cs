@@ -8,6 +8,7 @@ using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
+using RimeLib.Mesh;
 using RimeLib.Serialization;
 using RimeLib.Texture;
 
@@ -348,22 +349,43 @@ namespace RimeLib.Cmd.Contexts
             return m_Mounter.GetResources();
         }
 
-        internal void DumpMesh(string p_Name, FileInfo p_Destination)
+        internal void DumpMesh(MeshConverterType p_Type, string p_Name, FileInfo p_Destination)
         {
-            
+            // Get all resources
             var s_Resources = m_Mounter.GetResources();
-
+            
+            // Filter out by name
             var s_MeshResources = s_Resources.Where(p_Resource => p_Resource.Key == p_Name);
+            
+            // Iterate over all results
             foreach (var s_MeshResource in s_MeshResources)
             {
+                // Get the name of the mesh
                 var s_Name = s_MeshResource.Key;
+                
+                // Get the resource
                 var s_Resource = s_MeshResource.Value;
                 
+                // Get the variant
                 var s_Variant = s_Resource.FirstVariant;
+                
+                // Sanity check
                 if (s_Variant.GetResourceType() != ResourceType.MeshSet)
                     continue;
                 
-                
+                // Create a new mesh converter
+                var s_Converter = EngineInterfaceRegistry.Create<IMeshConverter>(m_Mounter.GetEngineType());
+
+                switch (p_Type)
+                {
+                    case MeshConverterType.Gltf:
+                        s_Converter.ConvertToGltf(s_Variant, m_Mounter, p_Destination.FullName);
+                        break;
+                    case MeshConverterType.Obj:
+                    case MeshConverterType.BlenderScript:
+                    default:
+                        throw new NotImplementedException($"Unknown mesh converter type '{p_Type}'.");
+                }
             }
         }
     }

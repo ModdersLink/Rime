@@ -8,6 +8,9 @@ namespace RimeLib.Cmd.Commands.Game
     [CommandDescription("Lists all the mounted resources.")]
     public class ListResourcesCommand : Command
     {
+        [CommandArgument(Description = "Name of Resource to filter by", Optional = true)]
+        public string ResourceSearch { get; set; } = string.Empty;
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             var s_Resources = ((GameContext) p_Context).GetMountedResourceVariations();
@@ -22,7 +25,21 @@ namespace RimeLib.Cmd.Commands.Game
             p_Writer.WriteLine();
 
             foreach (var s_Resource in s_Resources)
-                p_Writer.WriteLine("- " + s_Resource.Key + " (" + s_Resource.Value.FirstVariant.GetResourceType() + ")");
+            {
+                if (!string.IsNullOrWhiteSpace(ResourceSearch))
+                {
+                    if (s_Resource.Value.FirstVariant.GetResourceType().ToString() == ResourceSearch)
+                        p_Writer.WriteLine("- " + s_Resource.Key + " (" + s_Resource.Value.FirstVariant.GetResourceType() +
+                                           ")");
+                }
+                else
+                {
+                    if (s_Resource.Value.FirstVariant.GetResourceType().ToString() == ResourceSearch)
+                        p_Writer.WriteLine("- " + s_Resource.Key + " (" +
+                                           s_Resource.Value.FirstVariant.GetResourceType() +
+                                           ")");
+                }
+            }
 
             return true;
         }
