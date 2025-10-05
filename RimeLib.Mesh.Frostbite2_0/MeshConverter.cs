@@ -308,7 +308,7 @@ public class MeshConverter : IMeshConverter
             }
 
             // We only want to get the opaque meshes, TODO: Iterate through everything
-            var s_Ret = s_Categories[MeshSubsetCategory.Opaque];
+            var s_OpaqueSubsets = s_Categories[MeshSubsetCategory.Opaque];
 
             // TODO: Hold list of subset + parsed verts + primitives
 
@@ -316,7 +316,7 @@ public class MeshConverter : IMeshConverter
             using (var s_IndexReader = new RimeReader(new MemoryStream(s_PrimitiveChunkData)))
             {
                 // Iterate each subset pair
-                foreach (var s_SubsetPair in s_Ret)
+                foreach (var s_SubsetPair in s_OpaqueSubsets)
                 {
                     // Get the subset
                     var s_SubsetKey = s_SubsetPair.Key;
