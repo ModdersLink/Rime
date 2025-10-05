@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
+using fb;
 using Newtonsoft.Json;
 using RimeLib.Cmd.Commands.Game;
 using RimeLib.Content.Frostbite;
@@ -11,6 +13,12 @@ using RimeLib.IO;
 using RimeLib.Mesh;
 using RimeLib.Serialization;
 using RimeLib.Texture;
+using SharpGLTF.Geometry;
+using SharpGLTF.Geometry.VertexTypes;
+using SharpGLTF.Materials;
+using SharpGLTF.Scenes;
+using SharpGLTF.Schema2;
+using Vector4 = System.Numerics.Vector4;
 
 namespace RimeLib.Cmd.Contexts
 {
@@ -348,7 +356,14 @@ namespace RimeLib.Cmd.Contexts
         {
             return m_Mounter.GetResources();
         }
-
+        
+        /// <summary>
+        /// Dumps a specified mesh in a specific format
+        /// </summary>
+        /// <param name="p_Type">Output mesh type (gltf, obj, etc.)</param>
+        /// <param name="p_Name">Name of the MeshSet resource</param>
+        /// <param name="p_Destination">Output file destination</param>
+        /// <exception cref="NotImplementedException">If the format isn't supported</exception>
         internal void DumpMesh(MeshConverterType p_Type, string p_Name, FileInfo p_Destination)
         {
             // Get all resources
@@ -387,6 +402,483 @@ namespace RimeLib.Cmd.Contexts
                         throw new NotImplementedException($"Unknown mesh converter type '{p_Type}'.");
                 }
             }
+        }
+        
+        private Dictionary<string, List<LinearTransform>> m_MeshLocations = new();
+        private List<KeyValuePair<LightBuilder, LinearTransform>> m_Lights = [];
+        private void HandleVehicleBlueprint(VehicleBlueprint p_Blueprint, LinearTransform p_Transform, TextWriter p_Writer)
+        {
+            p_Writer.WriteLine($"{p_Blueprint.Name} located at ({p_Transform.trans})");
+        }
+
+        private void HandleSoldierBlueprint(SoldierBlueprint p_Blueprint, LinearTransform p_Transform,
+            TextWriter p_Writer)
+        {
+            p_Writer.WriteLine($"{p_Blueprint.Name} located at ({p_Transform.trans})");
+        }
+
+        private void HandleSpatialPrefabBlueprint(SpatialPrefabBlueprint p_Blueprint, LinearTransform p_TransformBase,
+            TextWriter p_Writer)
+        {
+            p_Writer.WriteLine($"{p_Blueprint.Name} located at ({p_TransformBase.trans})");
+            
+            HandlePrefabBlueprint(p_Blueprint, p_TransformBase, p_Writer);
+        }
+
+        private void HandlePrefabBlueprint(PrefabBlueprint p_Blueprint, LinearTransform p_TransformBase,
+            TextWriter p_Writer)
+        {
+            p_Writer.WriteLine($"PrefabBlueprint {p_Blueprint.Name} located at ({p_TransformBase.trans})");
+            
+            foreach (var s_ObjectRef in p_Blueprint.Objects)
+            {
+                var s_Object = s_ObjectRef.Get();
+                if (s_Object is null)
+                    continue;
+
+                switch (s_Object)
+                {
+                    case ReferenceObjectData s_ReferenceObjectData:
+                        var s_ObjectTransform = s_ReferenceObjectData.BlueprintTransform;
+                        // I have no idea if this is how this is calculated, yolo?
+                        var s_NewTransform = new LinearTransform
+                        {
+                            forward = new Vec3
+                            {
+                                x = s_ObjectTransform.forward.x + p_TransformBase.forward.x,
+                                y = s_ObjectTransform.forward.y + p_TransformBase.forward.y,
+                                z =  s_ObjectTransform.forward.z + p_TransformBase.forward.z,
+                            },
+                            right = new Vec3
+                            {
+                                x =  s_ObjectTransform.right.x + p_TransformBase.right.x,
+                                y =  s_ObjectTransform.right.y + p_TransformBase.right.y,
+                                z =  s_ObjectTransform.right.z + p_TransformBase.right.z,
+                            },
+                            up = new Vec3
+                            {
+                                x =  s_ObjectTransform.up.x + p_TransformBase.up.x,
+                                y = s_ObjectTransform.up.y + p_TransformBase.up.y,
+                                z =  s_ObjectTransform.up.z + p_TransformBase.up.z,
+                            },
+                            trans = new Vec3
+                            {
+                                x = s_ObjectTransform.trans.x + p_TransformBase.trans.x,
+                                y =  s_ObjectTransform.trans.y + p_TransformBase.trans.y,
+                                z =  s_ObjectTransform.trans.z + p_TransformBase.trans.z
+                            }
+                        };
+
+                        switch (s_ReferenceObjectData.Blueprint.Get())
+                        {
+                            case SpatialPrefabBlueprint s_SpatialPrefabBlueprint:
+                                HandleSpatialPrefabBlueprint(s_SpatialPrefabBlueprint, s_NewTransform, p_Writer);
+                                break;
+                            case ObjectBlueprint s_ObjectBlueprint:
+                                HandleObjectBlueprint(s_ObjectBlueprint, s_NewTransform, p_Writer);
+                                break;
+                            default:
+                                p_Writer.WriteLine($"UNHANDLED OBJECT: {s_Object.TypeName}");
+                                break;
+                        }
+                        break;
+                    case PointLightEntityData s_PointLightEntityData:
+                        break;
+                    case SpotLightEntityData s_SpotLightEntityData:
+                        break;
+                    case RandomEventEntityData:
+                    case ObjectVariationSwitchEntityData:
+                    case AreaProximityEntityData:
+                    case SyncedBoolEntityData:
+                    case DelayEntityData:
+                    case CameraEntityData:
+                    case MixerEntityData:
+                    case IrReverbEntityData:
+                    case SoundAreaEntityData:
+                    case MathOpEntityData:
+                    case FloatEntityData:
+                    case VolumeVectorShapeData:
+                    case BoolEntityData:
+                    case OBBData:
+                    case SequenceEntityData:
+                    case GeometryTriggerEntityData:
+                    case LocatorEntityData:
+                    case SoundEntityData:
+                    case RandomDelayEntityData:
+                    case ModelAnimationEntityData:
+                        break;
+                    default:
+                        p_Writer.WriteLine($"UNKNOWN HANDLED OBJECT {s_Object.TypeName}.");
+                        break;
+                }
+            }
+        }
+
+        private void HandleObjectBlueprint(ObjectBlueprint p_Blueprint, LinearTransform p_Transform,
+            TextWriter p_Writer)
+        {
+            var s_Object = p_Blueprint.Object.Get();
+            if (s_Object is null)
+            {
+                p_Writer.WriteLine($"No object found for {p_Blueprint.Name}.");
+                return;
+            }
+
+            var s_MeshName = p_Blueprint.Name;
+
+            switch (s_Object)
+            {
+                case StaticModelEntityData s_StaticModelEntityData:
+                    s_MeshName = s_StaticModelEntityData.Mesh.Get()?.Name ?? s_MeshName;
+                    break;
+                case DynamicModelEntityData s_DynamicModelEntityData:
+                    s_MeshName = s_DynamicModelEntityData.Mesh.Get()?.Name ?? s_MeshName;
+                    break;
+                case MeshProxyEntityData s_MeshProxyEntityData:
+                    s_MeshName = s_MeshProxyEntityData.Mesh.Get()?.Name ?? s_MeshName;
+                    break;
+                case VegetationTreeEntityData s_VegetationTreeEntityData:
+                    s_MeshName =  s_VegetationTreeEntityData.Mesh.Get()?.Name ?? s_MeshName;
+                    break;
+                case BreakableModelEntityData s_BreakableModelEntityData:
+                    s_MeshName = s_BreakableModelEntityData.Mesh.Get()?.Name ?? s_MeshName;
+                    break;
+                case EffectEntityData:
+                    // Ignored
+                    break;
+                default:
+                    p_Writer.WriteLine($"ObjectBlueprintPoint: {s_Object.TypeName}");
+                    break;
+            }
+
+            
+            p_Writer.WriteLine($"ObjectBlueprint {p_Blueprint.Name} located at ({p_Transform.trans}) OBJECT: {s_Object.TypeName}.");
+
+            if (m_MeshLocations.TryGetValue(s_MeshName, out var s_MeshLocations))
+            {
+                s_MeshLocations.Add(p_Transform);
+            }
+            else
+            {
+                m_MeshLocations.Add(s_MeshName, new List<LinearTransform>
+                {
+                    p_Transform
+                });
+            }
+        }
+
+        private void HandleReferenceObjectData(ReferenceObjectData p_ReferenceObjectData, TextWriter p_Writer, bool p_IncludeExcluded = false)
+        {
+            // Exclusion check
+            if (p_ReferenceObjectData.Excluded && !p_IncludeExcluded)
+            {
+                p_Writer.WriteLine($"Skipping reference object data ({p_ReferenceObjectData.InstanceId}).");
+                return;
+            }
+            
+            // Check to see if we have any blueprint
+            if (p_ReferenceObjectData.Blueprint.Get() is null)
+            {
+                p_Writer.WriteLine($"Skipping blueprint data ({p_ReferenceObjectData.InstanceId}).");
+                return;
+            }
+
+            var s_BlueprintTransform = p_ReferenceObjectData.BlueprintTransform;
+            
+            // If we have a blueprint break out based on supported types
+            switch (p_ReferenceObjectData.Blueprint.Get())
+            {
+                case VehicleBlueprint s_VehicleBlueprint:
+                    HandleVehicleBlueprint(s_VehicleBlueprint, s_BlueprintTransform, p_Writer);
+                    break;
+                case SoldierBlueprint s_SoldierBlueprint:
+                    HandleSoldierBlueprint(s_SoldierBlueprint, s_BlueprintTransform, p_Writer);
+                    break;
+                case SpatialPrefabBlueprint s_SpatialPrefabBlueprint:
+                    // s_SpatialPrefabBlueprint.blueprintTransform.trans + objects.trans
+                    HandleSpatialPrefabBlueprint(s_SpatialPrefabBlueprint, s_BlueprintTransform, p_Writer);
+                    break;
+                case PrefabBlueprint s_PrefabBlueprint:
+                    HandlePrefabBlueprint(s_PrefabBlueprint, s_BlueprintTransform, p_Writer);
+                    break;
+                case ObjectBlueprint s_ObjectBlueprint:
+                    HandleObjectBlueprint(s_ObjectBlueprint, s_BlueprintTransform, p_Writer);
+                    break;
+                default:
+                    p_Writer.WriteLine($"UNKNOWN BLUEPRINT TYPE: {p_ReferenceObjectData.Blueprint.Instance?.TypeName}");
+                    break;
+            }
+        }
+
+        private void HandleRoadData(RoadData p_RoadData, TextWriter p_Writer)
+        {
+            p_Writer.WriteLine($"Parsing RoadData ({p_RoadData.InstanceId}), PointCount: ({p_RoadData.Points.Count}).");
+            
+            // TODO: Handle RoadData points in a GLTF spline
+        }
+
+        private void HandlePointLightEntity(PointLightEntityData p_PointLightEntityData, TextWriter p_Writer)
+        {
+            p_Writer.WriteLine($"PointLight: {p_PointLightEntityData.TypeName} located at {p_PointLightEntityData.Transform.trans}");
+            
+            var s_PointLight = new LightBuilder.Point
+            {
+                Color = new Vector3(p_PointLightEntityData.Color.x, p_PointLightEntityData.Color.y, p_PointLightEntityData.Color.z),
+                Intensity = p_PointLightEntityData.Intensity,
+                Name = $"Instance_{p_PointLightEntityData.InstanceId}",
+                Range = p_PointLightEntityData.Radius // Not sure if this matches 1:1
+            };
+            
+            m_Lights.Add(new KeyValuePair<LightBuilder, LinearTransform>(s_PointLight, p_PointLightEntityData.Transform));
+        }
+        
+        private void HandleSpotLightEntity(SpotLightEntityData p_SpotLightEntityData, TextWriter p_Writer)
+        {
+            p_Writer.WriteLine($"SpotLight: {p_SpotLightEntityData.TypeName} located at {p_SpotLightEntityData.Transform.trans}");
+            
+            var s_SpotLight = new LightBuilder.Spot
+            {
+                Color = new Vector3(p_SpotLightEntityData.Color.x, p_SpotLightEntityData.Color.y, p_SpotLightEntityData.Color.z),
+                Intensity = p_SpotLightEntityData.Intensity,
+                Name = $"Instance_{p_SpotLightEntityData.InstanceId}",
+                Range = p_SpotLightEntityData.Radius // Not sure if this matches 1:1
+            };
+            
+            m_Lights.Add(new KeyValuePair<LightBuilder, LinearTransform>(s_SpotLight, p_SpotLightEntityData.Transform));
+        }
+        
+        /// <summary>
+        /// Helper function for parsing through WorldPartReferenceObjectData
+        /// </summary>
+        /// <param name="p_Data">WorldPartReferenceObjectData (from LevelData.Objects)</param>
+        /// <param name="p_Writer">Output text writer</param>
+        /// <param name="p_IncludeExcluded">Do we want to include WorldPartReferenceObjectData.excluded anyway?</param>
+        /// <exception cref="InvalidDataException"></exception>
+        private void HandleWorldPart(WorldPartReferenceObjectData p_Data, TextWriter p_Writer, bool p_IncludeExcluded = false)
+        {
+            // Skip handling this WorldPartData if it's excluded
+            if (p_Data.Excluded && !p_IncludeExcluded)
+            {
+                p_Writer.WriteLine($"Skipping excluded WorldPartReferenceObjectData ({p_Data.InstanceId}).");
+                return;
+            }
+            
+            // Cast and check for WorldPartData
+            if (p_Data.Blueprint.Get() is not WorldPartData s_WorldPartData)
+            {
+                // If we did not get a WorldPartData skip it
+                p_Writer.WriteLine($"WorldPartReferenceObjectData.blueprint is not WorldPartData");
+                #if DEBUG
+                throw new InvalidDataException("WorldPartReferenceObjectData.blueprint is not WorldPartData");
+                #endif
+                return;
+            }
+            
+            // Debug logging
+            p_Writer.WriteLine($"Parsing ({s_WorldPartData.Name})...");
+            
+            // Iterate each object in this list
+            foreach (var s_ObjectRef in s_WorldPartData.Objects)
+            {
+                var s_Object = s_ObjectRef.Get();
+                if (s_Object is null)
+                    continue;
+                
+                switch (s_Object)
+                {
+                    // TODO
+                    // ReferenceObjectData
+                    // RoadData
+                    case ReferenceObjectData s_ReferenceObjectData:
+                        HandleReferenceObjectData(s_ReferenceObjectData, p_Writer);
+                        break;
+                    case RoadData s_RoadData:
+                        HandleRoadData(s_RoadData, p_Writer);
+                        break;
+                    case PointLightEntityData s_PointLightEntityData:
+                        HandlePointLightEntity(s_PointLightEntityData, p_Writer);
+                        break;
+                    case SpotLightEntityData s_SpotLightEntityData:
+                        HandleSpotLightEntity(s_SpotLightEntityData, p_Writer);
+                        break;
+                    case GeometryTriggerEntityData:
+                    case SequenceEntityData:
+                    case PlayerFilterEntityData:
+                    case DecalEntityData:
+                    case OccluderVolumeEntityData:
+                    case SoldierTestEntityData:
+                    case TestPointEntityData:
+                    case PredestructionEntityData:
+                    case TerrainQuadDecalData:
+                        break;
+                    default:
+                        p_Writer.WriteLine($"UNHANDLED WorldPartData.Object ({s_Object.TypeName}).");
+                        break;
+                    
+                    
+                    // Useless
+                    // AreaProximityEntityData
+                    // SequenceEntityData
+                    // EffectReferenceObjectData
+                    // VolumeVectorShapeData
+                    // OOBData
+                    // LocatorEntityData
+                    // MixerEntityData
+                    // MathOpEntityData
+                    // SoundAreaEntityData
+                    // IrReverbEntityData
+                    // FloatEntityData
+                    // LightProbeVolumeData
+                    // DelayEntityData
+                    // DecalEntityData (maybe want to include this in the future)
+                    // TestPointEntityData
+                    // SoldierTestEntityData
+                    // OccluderVolumeEntityData
+                    // GeometryTriggerEntityData
+                    // PlayerFilterEntityData
+                }
+            }
+        }
+
+        private void HandleSubWorld(SubWorldReferenceObjectData p_Data, TextWriter p_Writer)
+        {
+            // Debug logging
+            p_Writer.WriteLine($"Parsing SubWorld ({p_Data.BundleName}).");
+            
+            // I have not come across where this was actually used (yet)
+            if (p_Data.Blueprint is null)
+            {
+                // p_Writer.WriteLine($"{p_Data.BundleName} blueprint is null.");
+                return;
+            }
+            
+            
+        }
+        
+        internal void ExportLevelMesh(string p_LevelPartitionName, FileInfo p_Destination, TextWriter p_Writer)
+        {
+            PartitionRegistry.ParseAndRegisterAllPartitions(m_Mounter);
+            
+            // Try and get the requested partition
+            var s_LevelPartition = PartitionRegistry.Partitions.FirstOrDefault(p_Partition => p_Partition.Name.Equals(p_LevelPartitionName, StringComparison.InvariantCultureIgnoreCase));
+            
+            // Check that we got any partition
+            if (s_LevelPartition is null)
+            {
+                p_Writer.WriteLine($"Partition {p_LevelPartitionName} not found.");
+                return;
+            }
+            
+            // Check that the primary instance is LevelData
+            if (s_LevelPartition.PrimaryInstance is not LevelData s_LevelData)
+            {
+                p_Writer.WriteLine($"Partition {p_LevelPartitionName} LevelData not found.");
+                return;
+            }
+            
+            // Get the level description
+            var s_LevelDescription = s_LevelData.LevelDescription;
+            
+            // Write out some basic information
+            p_Writer.WriteLine($"Level {s_LevelDescription.Name} MP: {s_LevelDescription.IsMultiplayer}");
+            
+            // Iterate all the LevelData.objects
+            foreach (var s_LevelObjects in s_LevelData.Objects)
+            {
+                // Get the level object
+                var s_LevelObject = s_LevelObjects.Get();
+                
+                // Validate level object
+                if (s_LevelObject is null)
+                    continue;
+                
+                // Determine level object type
+                switch (s_LevelObject)
+                {
+                    case WorldPartReferenceObjectData s_WorldPartReference:
+                        HandleWorldPart(s_WorldPartReference, p_Writer);
+                        break;
+                    case SubWorldReferenceObjectData s_SubWorldReference:
+                        HandleSubWorld(s_SubWorldReference, p_Writer);
+                        break;
+                    case StaticModelGroupEntityData s_StaticModelGroup:
+                        break;
+                    default:
+                        p_Writer.WriteLine($"UNKNOWN LEVEL OBJECT: {s_LevelObject.TypeName}");
+                        break;
+                }
+            }
+            
+            // Create a new scene
+            var s_SceneBuilder = new SceneBuilder(p_LevelPartitionName);
+            
+            // Iterate and add all the lights
+            foreach (var s_LightBuilder in m_Lights)
+            {
+                // No fucking clue if this is correct
+                s_SceneBuilder.AddLight(s_LightBuilder.Key, BasisToMatrix(s_LightBuilder.Value));
+            }
+            
+            
+
+            // Go through all mesh transforms
+            foreach (var s_MeshPair in m_MeshLocations)
+            {
+                // Try and get the MeshSet resource
+                if (!m_Mounter.TryGetResource(s_MeshPair.Key, out var s_Resource))
+                {
+                    p_Writer.WriteLine($"Skipping {s_MeshPair.Key} could not find resource.");
+                    continue;
+                }
+
+                // Create a new mesh converter
+                var s_Converter = EngineInterfaceRegistry.Create<IMeshConverter>(m_Mounter.GetEngineType());
+
+                var s_MeshBuilders = s_Converter.ConvertToGltf(s_Resource.FirstVariant, m_Mounter);
+                if (s_MeshBuilders.Count == 0)
+                {
+                    p_Writer.WriteLine($"Skipping {s_MeshPair.Key} NO MESHES WERE BUILT");
+                    continue;
+                }
+
+                foreach (var s_Location in s_MeshPair.Value)
+                {
+                    // No fucking clue if this is correct
+                    s_SceneBuilder.AddRigidMesh(s_MeshBuilders[0], BasisToMatrix(s_Location));
+                }
+            }
+
+            var s_FinalModel = s_SceneBuilder.ToGltf2();
+            
+            //s_FinalModel.SaveAsWavefront(p_Destination.FullName + ".obj");
+            s_FinalModel.SaveGLTF(p_Destination.FullName);
+            //s_FinalModel.SaveGLB(p_Destination.FullName + ".glb");
+        }
+
+        private static Matrix4x4 BasisToMatrix(LinearTransform p_Transform)
+        {
+            return BasisToMatrix(new Vector3(p_Transform.forward.x, p_Transform.forward.y, p_Transform.forward.z), 
+                new Vector3(p_Transform.right.x, p_Transform.right.y, p_Transform.right.z),
+                new Vector3(p_Transform.up.x, p_Transform.up.y, p_Transform.up.z),
+                new Vector3(p_Transform.trans.x, p_Transform.trans.y, p_Transform.trans.z));
+        }
+        private static Matrix4x4 BasisToMatrix(
+            Vector3 forward, Vector3 right, Vector3 up, Vector3 translation,
+            bool forwardIsLookDir = true) // true = Forward points where you look (−Z in RH)
+        {
+            // Orthonormalize to be safe (Gram–Schmidt)
+            var z = Vector3.Normalize(forwardIsLookDir ? -forward : forward);
+            var x = Vector3.Normalize(right);
+            var y = Vector3.Normalize(Vector3.Cross(z, x));
+            x = Vector3.Normalize(Vector3.Cross(y, z));
+
+            // Row-major constructor: rows are Right, Up, Forward, Translation
+            return new Matrix4x4(
+                x.X, y.X, z.X, 0f,
+                x.Y, y.Y, z.Y, 0f,
+                x.Z, y.Z, z.Z, 0f,
+                translation.X, translation.Y, translation.Z, 1f
+            );
         }
     }
 }

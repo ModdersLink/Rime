@@ -38,5 +38,10 @@ namespace fb
 			p_Writer.Write(z);
 			p_Writer.WriteNullBytes(4);
 		}
+
+		public override string ToString()
+		{
+			return $"{x} {y} {z}";
+		}
 	}
 }

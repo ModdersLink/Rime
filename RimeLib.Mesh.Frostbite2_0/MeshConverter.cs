@@ -14,7 +14,9 @@ using RimeLib.Mesh.Frostbite;
 using SharpGLTF.Geometry;
 using SharpGLTF.Geometry.VertexTypes;
 using SharpGLTF.Materials;
+using SharpGLTF.Scenes;
 using SharpGLTF.Schema2;
+using SharpGLTF.Transforms;
 using MeshSubsetCategory = RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory;
 
 namespace RimeLib.Mesh.Frostbite2_0;
@@ -33,6 +35,28 @@ public class MeshConverter : IMeshConverter
 
     public void ConvertToGltf(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath)
     {
+        // We will convert the model to SharpGLTF
+        var s_MeshList = ConvertToGltf(p_Resource, p_Mounter);
+        
+        var s_SceneBuilder = new SceneBuilder();
+        
+        foreach (var s_MeshBuilder in s_MeshList)
+            s_SceneBuilder.AddRigidMesh(s_MeshBuilder, AffineTransform.Identity);
+
+        var s_Model = s_SceneBuilder.ToGltf2();
+        
+        // Get the output file path
+        var s_ModelPath = p_OutputFilePath;
+        
+        // Save to file
+        s_Model.SaveGLTF(s_ModelPath, new WriteSettings() { JsonIndented = true });
+    }
+
+    public List<MeshBuilder<VertexPosition, VertexTexture1>> ConvertToGltf(IResourceObject p_Resource, IEngineMounter p_Mounter)
+    {
+        // Create a list of mesh builders
+        var s_MeshList = new List<MeshBuilder<VertexPosition, VertexTexture1>>();
+        
         // Check the resource type
         if (p_Resource.GetResourceType() != ResourceType.MeshSet)
             throw new InvalidDataException("Resource type is not MeshSet");
@@ -41,8 +65,6 @@ public class MeshConverter : IMeshConverter
         using var s_ResourceReader1 = p_Resource.GetReader();
         var s_Data = s_ResourceReader1.ReadBytes((int)s_ResourceReader1.Length);
         using var s_ResourceReader = new RimeReader(new MemoryStream(s_Data));
-        
-        //File.WriteAllBytes("dump.bin", s_ResourceReader.ReadBytes((int)s_ResourceReader.Length));
 
         // Read the mesh set layout
         var s_MeshSetLayout = new MeshSetLayout(s_ResourceReader);
@@ -340,7 +362,7 @@ public class MeshConverter : IMeshConverter
                     // Create a new GLTF mesh
                     var s_Mesh =
                         new MeshBuilder<VertexPosition, VertexTexture1>(
-                            $"{MeshSubsetCategory.Opaque}_{s_MeshLayout.ShortName.Object}");
+                            $"{MeshSubsetCategory.Opaque}_{s_MeshLayout.ShortName.Object}_Lod{s_LodIndex}");
                     var s_Primitive = s_Mesh.UsePrimitive(s_DebugMaterial);
 
                     // Iterate through all primitives
@@ -415,20 +437,14 @@ public class MeshConverter : IMeshConverter
 
                     //var s_Transform = new RimeLib.Frostbite.Core.
                     //s_SceneBuilder.AddRigidMesh(s_Mesh, l_MatrixTransform.ToMatrix4x4());
-
-                    s_Model.CreateMesh(s_Mesh);
+                    
+                    // s_Model.CreateMesh(s_Mesh);
+                    s_MeshList.Add(s_Mesh);
                 }
             }
-
-            foreach (var s_Mesh in s_Model.LogicalMeshes)
-                s_Model.UseScene("default").CreateNode().WithMesh(s_Mesh);
-
-            var s_ModelPath = p_OutputFilePath;
-            var s_ModelDirectory = Path.GetDirectoryName(s_ModelPath);
-
-            s_Model.SaveGLTF(s_ModelPath, new WriteSettings() { JsonIndented = true });
-
         }
+
+        return s_MeshList;
     }
 
     public void ConvertToBlenderScript(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath)

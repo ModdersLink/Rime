@@ -20,8 +20,16 @@ public class DumpMeshCommand : Command
 
     public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
     {
-        ((GameContext)p_Context).DumpMesh(ExportType, Path, Destination!);
-        p_Writer.WriteLine($"Extracted {ExportType} {Path} to {Destination?.FullName}");
-        return true;
+        try
+        {
+            ((GameContext)p_Context).DumpMesh(ExportType, Path, Destination!);
+            p_Writer.WriteLine($"Extracted {ExportType} {Path} to {Destination?.FullName}");
+            return true;
+        }
+        catch (Exception s_Exception)
+        {
+            p_Writer.WriteLine($"Could not extract mesh. Error: {s_Exception.Message}");
+            return false;
+        }
     }
 }

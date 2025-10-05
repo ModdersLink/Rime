@@ -1,0 +1,4 @@
+mount_game "/home/godiwik/Documents/_bin/bf3/" Frostbite2_0 true
+select_game 1
+dump_level_meshes gltf Levels/XP2_Skybar/XP2_Skybar ./xp2_skybar.gltf
+DROP
