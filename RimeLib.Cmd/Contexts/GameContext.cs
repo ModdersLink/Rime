@@ -769,7 +769,13 @@ namespace RimeLib.Cmd.Contexts
 
         internal void ExportLevelMesh(string p_LevelPartitionName, FileInfo p_Destination, TextWriter p_Writer)
         {
-            PartitionRegistry.ParseAndRegisterAllPartitions(m_Mounter);
+            // If we do not have any partitions loaded, load them
+            if (!PartitionRegistry.Partitions.Any())
+                PartitionRegistry.ParseAndRegisterAllPartitions(m_Mounter);
+            
+            // Clear out any existing lights/meshes that may have been there before
+            m_Lights.Clear();
+            m_MeshLocations.Clear();
 
             // Try and get the requested partition
             var s_LevelPartition = PartitionRegistry.Partitions.FirstOrDefault(p_Partition =>
