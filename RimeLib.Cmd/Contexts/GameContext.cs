@@ -767,6 +767,60 @@ namespace RimeLib.Cmd.Contexts
 
         }
 
+        private void HandleStaticModelGroupEntity(StaticModelGroupEntityData p_Data, TextWriter p_Writer)
+        {
+            // Get the physics data
+            var s_PhysicsData = p_Data.PhysicsData.Get();
+            if (s_PhysicsData is null)
+            {
+                p_Writer.WriteLine($"ERR: COULD NOT GET PHYSICS DATA FOR ({p_Data.InstanceId}).");
+                return;
+            }
+            
+            // Get the physics asset
+            var s_PhysicsAsset = s_PhysicsData.Asset.Get();
+            if (s_PhysicsAsset is null)
+            {
+                p_Writer.WriteLine($"ERR: COULD NOT GET PHYSICS ASSET FOR ({s_PhysicsData.InstanceId}).");
+                return;
+            }
+            
+            // Logging purposes to feed into log processing later
+            p_Writer.WriteLine($"PhysicsAsset Type: {s_PhysicsAsset.TypeName}");
+
+            var s_ResourceName = s_PhysicsAsset.Name;
+            if (!m_Mounter.TryGetResource(s_ResourceName, out var s_Resource))
+            {
+                p_Writer.WriteLine($"Could not find asset ({s_ResourceName}).");
+                return;
+            }
+
+            using var s_ResourceReader = s_Resource.FirstVariant.GetReader();
+            File.WriteAllBytes("physics.bin", s_ResourceReader.ReadBytes((int)s_ResourceReader.Length));
+
+            throw new NotImplementedException();
+            
+            foreach (var s_MemberData in p_Data.MemberDatas)
+            {
+                var s_MeshEntityType = s_MemberData.MeshEntityType.Get();
+                var s_MemberType = s_MemberData.MemberType.Get();
+
+                switch (s_MemberType)
+                {
+                    case StaticModelEntityData s_MeshAsset:
+                        break;
+                }
+
+                switch (s_MeshEntityType)
+                {
+                    case CompositeMeshEntityData s_CompositeMeshEntityData:
+                        break;
+                    case RigidMeshEntityData s_RigidMeshEntityData:
+                        break;
+                }
+            }
+        }
+
         internal void ExportLevelMesh(string p_LevelPartitionName, FileInfo p_Destination, TextWriter p_Writer)
         {
             // If we do not have any partitions loaded, load them
@@ -821,6 +875,7 @@ namespace RimeLib.Cmd.Contexts
                         HandleSubWorld(s_SubWorldReference, p_Writer);
                         break;
                     case StaticModelGroupEntityData s_StaticModelGroup:
+                        HandleStaticModelGroupEntity(s_StaticModelGroup, p_Writer);
                         break;
                     default:
                         p_Writer.WriteLine($"UNKNOWN LEVEL OBJECT: {s_LevelObject.TypeName}");
