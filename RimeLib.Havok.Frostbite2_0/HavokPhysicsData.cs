@@ -131,6 +131,7 @@ public class HavokPhysicsData : IFbSerializable
             // or leave it to Bree_Arnold to fix huehuehuehuehue
             
             // So the data that we need is 0x57E0E057
+            Console.WriteLine($"hkxHeader: {p_Reader.Position}");
             HkPackfile = new hkPackfileHeader();
             HkPackfile.Deserialize(p_Reader);
             
@@ -148,16 +149,16 @@ public class HavokPhysicsData : IFbSerializable
                 var s_Section = new  hkPackfileSectionHeader();
                 s_Section.Deserialize(p_Reader);
 
-                if (new string(s_Section.SectionTag) == "__classnames__")
+                if (s_Section.SectionTag == "__classnames__")
                 {
                     s_ClassDataStart = s_Section.AbsoluteDataStart;
                     s_ClassFixupOffset = s_Section.GlobalFixupsOffset;
                 }
-                else if (new string(s_Section.SectionTag) == "__types__")
+                else if (s_Section.SectionTag == "__types__")
                 {
                     // Nothing to do here...
                 }
-                else if (new string(s_Section.SectionTag) == "__data__")
+                else if (s_Section.SectionTag == "__data__")
                 {
                     s_DataDataStart = s_Section.AbsoluteDataStart;
                     s_DataFixupOffset = s_Section.VirtualFixupsOffset;
@@ -188,25 +189,76 @@ public class HavokPhysicsData : IFbSerializable
             }
             
             p_Reader.Seek(s_HavokOffset + s_DataDataStart,  SeekOrigin.Begin);
-
+            
+            Console.WriteLine($"Root Start: {p_Reader.Position}");
             var s_HavokRoot = new hkxRoot(p_Reader);
             var s_HavokBlock = new hkxBlock(p_Reader);
 
-            p_Reader.Seek(s_HavokOffset + s_DataDataStart + s_DataFixupOffset,  SeekOrigin.Begin);
+            var s_DescriptorInfoOffsetStart = s_HavokOffset + s_DataDataStart + s_DataFixupOffset;
+            Console.WriteLine($"DescriptorInfoStart: {s_DescriptorInfoOffsetStart}");
+            
+            p_Reader.Seek(s_DescriptorInfoOffsetStart,  SeekOrigin.Begin);
 
-            var s_Num8 = s_HavokOffset + s_DataDataStart + s_DataExportsOffset;
+            var s_DescriptorInfoOffsetEnd = s_HavokOffset + s_DataDataStart + s_DataExportsOffset;
+            Console.WriteLine($"num8: {s_DescriptorInfoOffsetEnd}");
 
             var s_DescriptorInfos = new List<hkDescriptorInfo>();
 
             long s_Offset = 0;
+
+            var s_Vecs = new List<Vec4>();
             
-            while (p_Reader.Position < s_Num8)
+            var s_DescriptorInfoCount = (s_DescriptorInfoOffsetEnd - s_DescriptorInfoOffsetStart) / hkDescriptorInfo.c_SizeOfDescriptorInfo;
+            for (var s_DescriptorInfoIndex = 0; s_DescriptorInfoIndex < s_DescriptorInfoCount; s_DescriptorInfoIndex++)
+            {
+                Console.WriteLine($"DescriptorInfo Offset: {p_Reader.Position}");
+                var s_DescriptorInfo = new hkDescriptorInfo(p_Reader);
+                // bro wth is this
+                s_DescriptorInfo.FinalOffset = s_HavokOffset + s_DataDataStart + s_DescriptorInfo.Num10;
+                
+                s_DescriptorInfos.Add(s_DescriptorInfo);
+            }
+
+            foreach (var s_DescriptorInfo in s_DescriptorInfos)
+            {
+                if (s_DescriptorInfo.Num11 == -1)
+                    continue;
+                
+                var s_DescriptorDataOffset = s_HavokOffset + s_DataDataStart + s_DescriptorInfo.Num10;
+                
+                p_Reader.Seek(s_DescriptorDataOffset, SeekOrigin.Begin);
+
+                if (s_DescriptorInfo.Num11 == 169) // wth is 169
+                {
+                    var s_ExtendedMeshHeader = new hkExtendedMeshHeader(p_Reader);
+
+                    for (var s_EntryIndex = 0; s_EntryIndex < s_ExtendedMeshHeader.IndexCount; s_EntryIndex++)
+                    {
+                        var s_ExtendedMeshEntry = new  hkExtendedMeshEntry(p_Reader);
+                    }
+                }
+                else
+                {
+                    // What do we even do with this information????
+                    var s_Vec4 = new Vec4
+                    {
+                        x = p_Reader.ReadSingle(),
+                        y = p_Reader.ReadSingle(),
+                        z = p_Reader.ReadSingle(),
+                        w = p_Reader.ReadSingle()
+                    };
+
+                    s_Vecs.Add(s_Vec4);
+                }
+            }
+            
+            while (p_Reader.Position < s_DescriptorInfoOffsetEnd)
             {
                 var s_DescriptorInfo = new hkDescriptorInfo(p_Reader);
                 // bro wth is this
                 s_DescriptorInfo.FinalOffset = s_HavokOffset + s_DataDataStart + s_DescriptorInfo.Num10;
 
-                if (s_DescriptorInfo.Num11 != -1 && p_Reader.Position < s_Num8)
+                if (s_DescriptorInfo.Num11 != -1 && p_Reader.Position < s_DescriptorInfoOffsetEnd)
                 {
                     s_Offset = p_Reader.Position;
                     
@@ -231,6 +283,8 @@ public class HavokPhysicsData : IFbSerializable
                             z = p_Reader.ReadSingle(),
                             w = p_Reader.ReadSingle()
                         };
+
+                        s_Vecs.Add(s_Vec4);
                     }
                     
                     p_Reader.Seek(s_Offset, SeekOrigin.Begin);

@@ -14,6 +14,8 @@ public class hkDescriptorInfo
     // Don't serialize this
     public long FinalOffset { get; set; }
 
+    public const int c_SizeOfDescriptorInfo = sizeof(long) + sizeof(int);
+
     public hkDescriptorInfo()
     {
         

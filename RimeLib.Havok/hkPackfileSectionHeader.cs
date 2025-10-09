@@ -4,7 +4,9 @@ namespace RimeLib.Havok;
 
 public class hkPackfileSectionHeader
 {
-    public char[] SectionTag { get; set; } = new char[c_SectionTagLength];
+    public char[] SectionTagData { get; set; } = new char[c_SectionTagLength];
+    // Ignore in serialization
+    public string SectionTag { get; private set; }
     public byte NullByte { get; set; }
     public int AbsoluteDataStart { get; set; }
     public int LocalFixupsOffset { get; set; }
@@ -20,7 +22,9 @@ public class hkPackfileSectionHeader
     {
         // Ew, fix this by adding a p_Reader.ReadChars(int)
         for (var s_Index = 0; s_Index < c_SectionTagLength; s_Index++)
-            SectionTag[s_Index] = p_Reader.ReadChar();
+            SectionTagData[s_Index] = p_Reader.ReadChar();
+
+        SectionTag = new string(SectionTagData).TrimEnd('\0');
         
         NullByte = p_Reader.ReadUByte();
         AbsoluteDataStart = p_Reader.ReadInt32();

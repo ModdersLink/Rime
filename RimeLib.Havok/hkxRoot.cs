@@ -39,7 +39,7 @@ public class hkxRoot
         
         EntryName = p_Reader.ReadNullTerminatedString();
         
-        // Not sure where the above call lands, we may not need to do this
+        // Not sure where the above call lands, we may not need to do this (we do)
         p_Reader.Seek(-1,  SeekOrigin.Current);
         Pad = p_Reader.ReadUInt32();
         
