@@ -428,7 +428,31 @@ namespace RimeLib.Cmd.Contexts
 
             HandlePrefabBlueprint(p_Blueprint, p_TransformBase, p_Writer);
         }
+        
+        static LinearTransform LinearTransform_Mul(LinearTransform a, LinearTransform b)
+        {
+            LinearTransform r = new LinearTransform();
 
+            r.right.x = a.right.x * b.right.x + a.up.x * b.right.y + a.forward.x * b.right.z;
+            r.right.y = a.right.y * b.right.x + a.up.y * b.right.y + a.forward.y * b.right.z;
+            r.right.z = a.right.z * b.right.x + a.up.z * b.right.y + a.forward.z * b.right.z;
+
+            r.up.x = a.right.x * b.up.x + a.up.x * b.up.y + a.forward.x * b.up.z;
+            r.up.y = a.right.y * b.up.x + a.up.y * b.up.y + a.forward.y * b.up.z;
+            r.up.z = a.right.z * b.up.x + a.up.z * b.up.y + a.forward.z * b.up.z;
+
+            r.forward.x = a.right.x * b.forward.x + a.up.x * b.forward.y + a.forward.x * b.forward.z;
+            r.forward.y = a.right.y * b.forward.x + a.up.y * b.forward.y + a.forward.y * b.forward.z;
+            r.forward.z = a.right.z * b.forward.x + a.up.z * b.forward.y + a.forward.z * b.forward.z;
+
+            // Combine translations
+            r.trans.x = a.right.x * b.trans.x + a.up.x * b.trans.y + a.forward.x * b.trans.z + a.trans.x;
+            r.trans.y = a.right.y * b.trans.x + a.up.y * b.trans.y + a.forward.y * b.trans.z + a.trans.y;
+            r.trans.z = a.right.z * b.trans.x + a.up.z * b.trans.y + a.forward.z * b.trans.z + a.trans.z;
+
+            return r;
+        }
+        
         private void HandlePrefabBlueprint(PrefabBlueprint p_Blueprint, LinearTransform p_TransformBase,
             TextWriter p_Writer)
         {
@@ -445,7 +469,7 @@ namespace RimeLib.Cmd.Contexts
                     case ReferenceObjectData s_ReferenceObjectData:
                         var s_ObjectTransform = s_ReferenceObjectData.BlueprintTransform;
                         // I have no idea if this is how this is calculated, yolo?
-                        var s_NewTransform = new LinearTransform
+                        /*var s_NewTransform = new LinearTransform
                         {
                             forward = new Vec3
                             {
@@ -471,7 +495,8 @@ namespace RimeLib.Cmd.Contexts
                                 y = s_ObjectTransform.trans.y + p_TransformBase.trans.y,
                                 z = s_ObjectTransform.trans.z + p_TransformBase.trans.z
                             }
-                        };
+                        };*/
+                        var s_NewTransform = LinearTransform_Mul(p_TransformBase, s_ObjectTransform);
 
                         switch (s_ReferenceObjectData.Blueprint.Get())
                         {
@@ -770,6 +795,8 @@ namespace RimeLib.Cmd.Contexts
 
         private void HandleStaticModelGroupEntity(StaticModelGroupEntityData p_Data, TextWriter p_Writer)
         {
+            
+            /*
             // Get the physics data
             var s_PhysicsData = p_Data.PhysicsData.Get();
             if (s_PhysicsData is null)
@@ -823,10 +850,16 @@ namespace RimeLib.Cmd.Contexts
                     case RigidMeshEntityData s_RigidMeshEntityData:
                         break;
                 }
-            }
+            }*/
         }
 
-        internal void ExportLevelMesh(string p_LevelPartitionName, FileInfo p_Destination, TextWriter p_Writer)
+        public class HavokTransform
+        {
+            public Vector4 Rotation { get; set; }
+            public Vector3 Position { get; set; }
+        }
+
+        internal void ExportLevelMesh(string p_LevelPartitionName, FileInfo p_Destination, FileInfo? p_HavokTransforms, TextWriter p_Writer)
         {
             // If we do not have any partitions loaded, load them
             if (!PartitionRegistry.Partitions.Any())

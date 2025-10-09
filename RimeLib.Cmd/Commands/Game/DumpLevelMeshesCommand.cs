@@ -17,10 +17,13 @@ public class DumpLevelMeshesCommand : Command
     [CommandArgument(Description = "The output path name")]
     public FileInfo? Destination { get; set; }
 
+    [CommandArgument(Description = "Optional input file for havok transforms.", Optional = true)]
+    public FileInfo? HavokTransforms { get; set; }
+
     public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
     {
         // TODO: Implement try/catch
-        ((GameContext)p_Context).ExportLevelMesh(LevelPartition, Destination!, p_Writer);
+        ((GameContext)p_Context).ExportLevelMesh(LevelPartition, Destination!, HavokTransforms, p_Writer);
         p_Writer.WriteLine($"Extracted Level {LevelPartition} to {Destination?.FullName}");
         return true;
     }
