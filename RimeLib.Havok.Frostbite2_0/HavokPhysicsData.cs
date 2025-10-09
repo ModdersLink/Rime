@@ -214,21 +214,41 @@ public class HavokPhysicsData : IFbSerializable
                 Console.WriteLine($"DescriptorInfo Offset: {p_Reader.Position}");
                 var s_DescriptorInfo = new hkDescriptorInfo(p_Reader);
                 // bro wth is this
-                s_DescriptorInfo.FinalOffset = s_HavokOffset + s_DataDataStart + s_DescriptorInfo.Num10;
+                s_DescriptorInfo.FinalOffset = s_HavokOffset + s_DataDataStart + s_DescriptorInfo.Offset;
                 
                 s_DescriptorInfos.Add(s_DescriptorInfo);
             }
 
+            var s_ExtendedMeshShapes = new List<hkpExtendedMeshShape>();
+
             foreach (var s_DescriptorInfo in s_DescriptorInfos)
             {
-                if (s_DescriptorInfo.Num11 == -1)
+                // This code no workey
+                var s_Descriptor =
+                    s_Descriptors.FirstOrDefault(p_Descriptor => p_Descriptor.Key == s_DescriptorInfo.Key);
+                
+                if (s_Descriptor is null)
+                    continue;
+
+                switch (s_Descriptor.Name)
+                {
+                    case "hkpExtendedMeshShape":
+                        p_Reader.Seek(s_DescriptorInfo.Offset, SeekOrigin.Begin);
+                        s_ExtendedMeshShapes.Add(new hkpExtendedMeshShape(p_Reader));
+                        break;
+                    default:
+                        Console.WriteLine($"Unknown Descriptor {s_Descriptor.Name}.");
+                        break;
+                }
+                
+                if (s_DescriptorInfo.Key == -1)
                     continue;
                 
-                var s_DescriptorDataOffset = s_HavokOffset + s_DataDataStart + s_DescriptorInfo.Num10;
+                var s_DescriptorDataOffset = s_HavokOffset + s_DataDataStart + s_DescriptorInfo.Offset;
                 
                 p_Reader.Seek(s_DescriptorDataOffset, SeekOrigin.Begin);
 
-                if (s_DescriptorInfo.Num11 == 169) // wth is 169
+                if (s_DescriptorInfo.Key == 169) // wth is 169
                 {
                     var s_ExtendedMeshHeader = new hkExtendedMeshHeader(p_Reader);
 
@@ -256,15 +276,15 @@ public class HavokPhysicsData : IFbSerializable
             {
                 var s_DescriptorInfo = new hkDescriptorInfo(p_Reader);
                 // bro wth is this
-                s_DescriptorInfo.FinalOffset = s_HavokOffset + s_DataDataStart + s_DescriptorInfo.Num10;
+                s_DescriptorInfo.FinalOffset = s_HavokOffset + s_DataDataStart + s_DescriptorInfo.Offset;
 
-                if (s_DescriptorInfo.Num11 != -1 && p_Reader.Position < s_DescriptorInfoOffsetEnd)
+                if (s_DescriptorInfo.Key != -1 && p_Reader.Position < s_DescriptorInfoOffsetEnd)
                 {
                     s_Offset = p_Reader.Position;
                     
-                    p_Reader.Seek(s_HavokOffset + s_DataDataStart + s_DescriptorInfo.Num10,  SeekOrigin.Begin);
+                    p_Reader.Seek(s_HavokOffset + s_DataDataStart + s_DescriptorInfo.Offset,  SeekOrigin.Begin);
 
-                    if (s_DescriptorInfo.Num11 == 169) // wth is 169
+                    if (s_DescriptorInfo.Key == 169) // wth is 169
                     {
                         var s_ExtendedMeshHeader = new hkExtendedMeshHeader(p_Reader);
 

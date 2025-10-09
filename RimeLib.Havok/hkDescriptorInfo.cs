@@ -8,8 +8,8 @@ namespace RimeLib.Havok;
 /// </summary>
 public class hkDescriptorInfo
 {
-    public long Num10 { get; set; }
-    public int Num11 { get; set; }
+    public long Offset { get; set; }
+    public int Key { get; set; }
     
     // Don't serialize this
     public long FinalOffset { get; set; }
@@ -28,7 +28,7 @@ public class hkDescriptorInfo
 
     public void Deserialize(RimeReader p_Reader)
     {
-        Num10 = p_Reader.ReadInt64();
-        Num11 = p_Reader.ReadInt32();
+        Offset = p_Reader.ReadInt64();
+        Key = p_Reader.ReadInt32();
     }
 }
