@@ -9,6 +9,7 @@ using RimeLib.Cmd.Commands.Game;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
+using RimeLib.Havok.Frostbite2_0;
 using RimeLib.IO;
 using RimeLib.Mesh;
 using RimeLib.Serialization;
@@ -796,7 +797,11 @@ namespace RimeLib.Cmd.Contexts
             }
 
             using var s_ResourceReader = s_Resource.FirstVariant.GetReader();
-            File.WriteAllBytes("physics.bin", s_ResourceReader.ReadBytes((int)s_ResourceReader.Length));
+            var s_Data = s_ResourceReader.ReadBytes((int)s_ResourceReader.Length);
+
+            var s_HavokPhysicsData = new HavokPhysicsData(new RimeReader(new MemoryStream(s_Data)));
+            
+            //File.WriteAllBytes("physics.bin", s_ResourceReader.ReadBytes((int)s_ResourceReader.Length));
 
             throw new NotImplementedException();
             

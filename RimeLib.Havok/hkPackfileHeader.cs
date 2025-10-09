@@ -1,4 +1,6 @@
-﻿namespace RimeLib.Havok
+﻿using RimeLib.IO;
+
+namespace RimeLib.Havok
 {
     public class hkPackfileHeader
     {
@@ -27,7 +29,7 @@
         public const int c_LayoutRuleCount = 4;
         public const int c_ContentsVersionCount = 16;
 
-        public void Deserialize(BinaryReader p_Reader)
+        public void Deserialize(RimeReader p_Reader)
         {
             // Read both magic variables
             for (var s_MagicIndex = 0; s_MagicIndex < c_MagicCount; ++s_MagicIndex)
@@ -38,7 +40,7 @@
             
             // Read all the layout rules
             for (var s_LayoutRuleIndex = 0; s_LayoutRuleIndex < c_LayoutRuleCount; ++s_LayoutRuleIndex)
-                LayoutRules[s_LayoutRuleIndex] = p_Reader.ReadByte();
+                LayoutRules[s_LayoutRuleIndex] = p_Reader.ReadUByte();
             
             NumSections = p_Reader.ReadInt32();
             

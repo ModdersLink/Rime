@@ -1,3 +1,5 @@
+using RimeLib.IO;
+
 namespace RimeLib.Havok;
 
 public class hkPackfileSectionHeader
@@ -14,10 +16,13 @@ public class hkPackfileSectionHeader
 
     public const int c_SectionTagLength = 19;
 
-    public void Deserialize(BinaryReader p_Reader)
+    public void Deserialize(RimeReader p_Reader)
     {
-        SectionTag = p_Reader.ReadChars(c_SectionTagLength);
-        NullByte = p_Reader.ReadByte();
+        // Ew, fix this by adding a p_Reader.ReadChars(int)
+        for (var s_Index = 0; s_Index < c_SectionTagLength; s_Index++)
+            SectionTag[s_Index] = p_Reader.ReadChar();
+        
+        NullByte = p_Reader.ReadUByte();
         AbsoluteDataStart = p_Reader.ReadInt32();
         LocalFixupsOffset = p_Reader.ReadInt32();
         GlobalFixupsOffset = p_Reader.ReadInt32();
