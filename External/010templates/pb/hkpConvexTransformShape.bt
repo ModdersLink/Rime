@@ -1,0 +1,30 @@
+//------------------------------------------------
+//--- 010 Editor v8.0 Binary Template
+//
+//      File: hkpConvexTransformShape
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+typedef struct {
+    float X;
+    float Y;
+    float Z;
+    float W;
+} Vec4;
+typedef struct {
+     Vec4 vec;
+     Vec4 vec;
+     Vec4 vec;
+     Vec4 vec;
+     Vec4 vec;
+     Vec4 vec;
+} Transform;
+
+
+
+Transform trans;

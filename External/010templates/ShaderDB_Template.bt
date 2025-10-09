@@ -1,0 +1,375 @@
+// Powback
+// Arkanoid
+// .dx11shaderdatabase format
+
+// Colors
+// string, magic   LtGreen
+// length          LtBlue
+// index           LtYellow
+// count           Aqua
+
+//Defines
+typedef float   vec2[2];
+typedef float   vec3[3];
+typedef float   quat4[4];
+typedef string  asciiz;
+typedef char    magic4[4]       <bgcolor=cLtGreen>;
+typedef char    vec4[12];
+typedef int     bool;
+#define true    1
+#define false   0
+ 
+LittleEndian();
+SetBackColor(cLtGray);
+
+
+//---------------------------------------------
+// Header
+//
+
+struct {
+    CHAR    HEADER[5];
+} SHADER_DB_HEADER;
+
+
+//---------------------------------------------
+// Block 1
+//
+
+typedef struct {
+    LONG    Index               <bgcolor=cLtYellow>;
+    CHAR    TextureName[136]    <bgcolor=cLtGreen>;
+} TEXTURE_PARAMETER;
+
+typedef struct(int GUIDSize, int miscSize) {
+    CHAR    PropertyName[32]    <bgcolor=cLtGreen>;
+    SetBackColor(cLtGray);
+    BYTE    GUID[GUIDSize];
+    BYTE    Enabled;
+    BYTE    misc[miscSize];
+} PROPERTY_PARAMETER;
+
+typedef struct {
+    local int meta_start_pos = FTell();
+    SetBackColor(cLtPurple);
+    LONG    GroupSize           <bgcolor=cLtBlue>;
+    LONG    B;
+    LONG    C;
+    LONG    D;
+    LONG    E;
+    LONG    F;
+    BYTE    G;
+    BYTE    H;
+    BYTE    I;
+    BYTE    StringCount         <bgcolor=cDkAqua>;
+    BYTE    K                   <bgcolor=cAqua>;
+    BYTE    L                   <bgcolor=cLtAqua>;
+    SHORT   M;
+
+    local int i;
+    for(i = 0; i < StringCount; i++) {
+        TEXTURE_PARAMETER Texture;
+    }
+
+    for(i = 0; i < K; i++) {
+        PROPERTY_PARAMETER PropertyType1(6, 17);
+    }
+
+    for(i = 0; i < L; i++) {
+        PROPERTY_PARAMETER PropertyType2(4, 3);
+    }
+
+    typedef struct(int meta_start_pos) {
+        local int meta_end;
+        local int meta_current;
+        local int meta_remaining;
+        meta_current = FTell();
+        meta_end = meta_start_pos + GroupSize;
+        meta_remaining = meta_end - meta_current;
+        if(meta_remaining > 0) {
+            LONG a;
+            LONG b;
+            meta_current = FTell();
+            meta_end = meta_start_pos + GroupSize;
+            meta_remaining = meta_end - meta_current;
+        }
+        if (meta_remaining > 0) {
+            BYTE unknown[meta_remaining] <bgcolor=cLtRed>;
+        }
+    } PARAM_GROUP_META;
+
+    if (((meta_start_pos + GroupSize) - FTell()) > 0) {
+        PARAM_GROUP_META meta(meta_start_pos);
+    }
+} PARAM_GROUP;
+
+struct {
+    LONG     GroupCount         <bgcolor=cAqua>;
+    local int count;
+    for(count = 0; count < GroupCount; count++) {
+        PARAM_GROUP group;
+    }
+} PARAM_GROUPS;
+
+
+//---------------------------------------------
+// Block 2
+//
+
+// The hardest one to figure out. Barely thought about what it contains yet.
+
+struct {
+    typedef struct {
+        LONG    ItemCount      <bgcolor=cAqua>;
+
+        local int i;
+        for (i = 0; i < ItemCount; i++) {
+            struct {
+                SHORT   Count   <bgcolor=cLtAqua>;
+                SHORT   A;
+                local int j;
+                for (j = 0; j < Count; j++) {
+                    LONG Item;
+                }
+            } ITEMS;
+        }
+    } BLOCK_2_GROUP;
+
+    BLOCK_2_GROUP group1;
+    BLOCK_2_GROUP group2;
+
+} BLOCK_2;
+
+
+//---------------------------------------------
+// Block 3
+//
+
+// http://timjones.io/blog/archive/2015/09/02/parsing-direct3d-shader-bytecode
+
+typedef struct {
+    BYTE    GroupMeta[12]       <bgcolor=cLtPurple>;
+    LONG    ShaderSize          <bgcolor=cLtBlue>;
+    magic4  dxbc;
+    BYTE    Checksum[16];
+    LONG    Unknown;
+    LONG    ShaderSize2         <bgcolor=cLtBlue>;
+    LONG    ChunkCount          <bgcolor=cAqua>;
+    LONG    ISGNOffset;
+    magic4  ChunkName;
+    LONG    ChunkLength         <bgcolor=cLtBlue>;
+    BYTE    Content[ChunkLength];
+
+    LONG    PropertyCount       <bgcolor=cAqua>;
+    
+    struct {
+        local int i;
+        for (i = 0; i < PropertyCount; i++) {
+            struct {
+                BYTE value[28];
+            } VALUE;
+        }
+    } VALUES;
+    
+    LONG PropertyNameCount      <bgcolor=cAqua>;
+
+    struct {
+        local int i;
+        for (i = 0; i < PropertyNameCount; i++) {
+            struct {
+                string PropertyName <bgcolor=cLtGreen>;
+            } NAME;
+        }
+    } NAMES;
+} SHADER_DECLARATION;
+
+typedef struct(int metadata_size) {
+    LONG    Unknown;
+    BYTE    GroupMeta[metadata_size] <bgcolor=cLtPurple>;
+    LONG    ShaderSize          <bgcolor=cLtBlue>;
+    magic4  dxbc;
+    BYTE    Checksum[16];
+    LONG    Unknown2;
+    LONG    ShaderSize2         <bgcolor=cLtBlue>;
+    LONG    ChunkCount          <bgcolor=cAqua>;
+    
+    LONG    RDEFOffset;
+    LONG    ISGNOffset;
+    LONG    OSGNOffset;
+    LONG    SHEXOffset; // SM4 = SHDR, SM5 = SHEX
+    LONG    STATOffset;
+    
+    struct {
+        local int i;
+        for (i = 0; i < ChunkCount; i++) {
+            struct {
+                magic4 ChunkName;
+                LONG ChunkLength <bgcolor=cLtBlue>;
+                BYTE Content[ChunkLength];
+            } CHUNK;
+        }
+    } CHUNKS;
+} SHADER;
+
+struct {
+    struct {
+        LONG ShaderCount        <bgcolor=cAqua>;
+        local int i;
+        for (i = 0; i < ShaderCount; i++) {
+            SHADER shader(12);
+            SHADER_DECLARATION decl;
+        }
+    } SHADER_GROUP1;
+    
+    struct {
+        LONG ShaderCount       <bgcolor=cAqua>;
+        SHADER shader(12); // First shader from this group has a different meta
+        local int i;
+        for (i = 0; i < (ShaderCount - 1); i++) {
+            SHADER shader(24);
+        }
+    } SHADER_GROUP2;
+} SHADER_GROUPS;
+
+
+//---------------------------------------------
+// Block 4
+//
+
+// The first 16 bytes appears to be an identifier. Identifiers are serialized in order.
+// The 16 byte sequence only appears once in the file.
+
+struct {
+    struct {
+        LONG    A;
+        LONG    B;
+        LONG    C;
+        LONG    ItemCount          <bgcolor=cAqua>;
+    } HEADER;
+
+    struct {
+        local int i;
+        for (i = 0; i < HEADER.ItemCount; i++) {
+            struct {
+                BYTE Reference[16]  <bgcolor=cLtPurple>;
+                LONG A;
+                LONG B;
+                LONG C;
+                LONG D;
+                LONG ShaderIndex1 <bgcolor=cLtYellow>;
+                LONG ShaderIndex2 <bgcolor=cLtYellow>;
+                LONG E;
+                LONG ParamGroupIndex <bgcolor=cLtYellow>;
+            } ITEM;
+        }
+    } ITEMS;
+} BLOCK_4;
+
+
+//---------------------------------------------
+// Block 5
+//
+
+// Each 16 byte Reference shows up in Block 6. References can be null bytes.
+// The first Group of References contains references to both regular Shader 
+// and StreamInstancingFloats. The first group also contains 6 unknown fields.
+// The second Group might be only StreamInstancingFloats, not confirmed yet
+
+struct {
+    // appears to be 88 bytes long
+    struct {
+        LONG ItemCount          <bgcolor=cAqua>;
+    
+        struct {
+            local int i;
+            for (i = 0; i < ItemCount; i++) {
+                struct {
+                    BYTE Reference[16]  <bgcolor=cLtPurple>;
+                    BYTE Reference2[16] <bgcolor=cLtPurple>;
+                    BYTE Reference3[16] <bgcolor=cLtPurple>;
+                    BYTE Unknown[10];
+                    LONG FieldCount     <bgcolor=cLtAqua>;
+                    
+                    struct {
+                        local int j;
+                        for (j = 0; j < FieldCount; j++) {
+                            LONG Field;
+                        }
+                    } FIELDS;
+                    SHORT Unknown2;
+                } ITEM;
+            }
+        } ITEMS;
+    } GROUP_1;
+
+    // appears to be 89 bytes long
+    struct {
+        LONG ItemCount          <bgcolor=cAqua>;
+    
+        struct {
+            local int i;
+            for (i = 0; i < ItemCount; i++) {
+                struct {
+                    BYTE Reference[16] <bgcolor=cLtPurple>;
+                    BYTE Unknown[73];
+                } ITEM;
+            }
+        } ITEMS;
+    } GROUP_2;
+
+} BLOCK_5;
+
+
+//---------------------------------------------
+// Block 6
+//
+
+// Block 6 data is referenced by Block 5 & Block 7
+
+struct {
+    typedef struct {
+        LONG    ItemCount       <bgcolor=cAqua>;
+    
+        struct {
+            local int i;
+            for (i = 0; i < ItemCount; i++) {
+                struct {
+                    string Name        <bgcolor=cLtGreen>;
+                    BYTE Reference[16] <bgcolor=cLtPurple>;
+                } ITEM;    
+            }
+        } ITEMS;
+    } BLOCK_6_GROUP;
+
+    BLOCK_6_GROUP group1;
+    BLOCK_6_GROUP group2;
+    BLOCK_6_GROUP group3;
+} BLOCK_6;
+
+
+//---------------------------------------------
+// Block 7
+//
+
+// Block 7 data holds references that show up in Block 6 as well as a varying number
+// of shorts
+
+struct {
+    LONG    ItemCount           <bgcolor=cAqua>;
+
+    struct {
+        local int i;
+        for (i = 0; i < ItemCount; i++) {
+            struct {
+                BYTE Reference[16]  <bgcolor=cLtPurple>;
+                LONG ShortsCount    <bgcolor=cLtAqua>;
+                struct {
+                    local int j;
+                    for (j = 0; j < ShortsCount; j++) {
+                        SHORT Item;
+                    }
+                } SHORTS;
+            } ITEM;
+        }
+    } ITEMS;
+} BLOCK_7;

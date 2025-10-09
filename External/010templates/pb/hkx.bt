@@ -1,0 +1,152 @@
+//------------------------------------------------
+//--- 010 Editor v8.0 Binary Template
+//
+//      File: hkx
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: *.hkx, *.hknondestruction, *hkdestruction
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+LittleEndian();
+local int m_StartPos = 0;
+local int64 CurrentPos = FTell();
+
+typedef struct {
+    UINT CurrentBytes;
+    while(CurrentBytes != 0x57E0E057) {
+        FSeek(m_StartPos);
+        m_StartPos++;
+        UINT CurrentBytes;
+    }
+    m_StartPos -= 1;
+    FSeek(m_StartPos);
+} Junk;
+
+
+typedef struct 
+{
+    
+    LONG hash;
+    string class;
+    local int64 pos = FTell();
+    BYTE endByte;
+} Class;
+
+typedef struct {
+    BYTE SectionTag[19];
+    BYTE NullByte;
+    INT AbsoluteDataStart;
+    INT32 LocalFixupsOffset;
+    INT32 GlobalFixupsOffset;
+    INT32 VirtualFixupsOffset;
+    INT32 ExportsOffset;
+    INT32 ImportsOffset;
+    INT32 EndOffset;
+
+} Section;
+
+local int DataStart = 0;
+typedef struct {
+    BYTE Magic[8];
+    UINT Tags;
+    UINT File_Ver;
+    BYTE Pointer_size;
+    BYTE Endian_type; // 1= little, 0 = big
+    BYTE Platform; // 1= PS3  0=Xbox/PC
+    BYTE unkn2;
+    UINT Section_Count;
+    UINT Section_Index;
+    UINT Section_Offset;
+    UINT Classnames_Section;
+    UINT Classfiles_Offset;
+    BYTE ContentsVersion[16];
+    UINT Flags;
+    UINT Pad;
+    
+    local int i = 0;
+    for (i=0; i < Section_Count; i++) {
+        Section section;
+        DataStart = section.AbsoluteDataStart;
+    }
+    Class class;
+    while(class.endByte != -1) {
+        FSeek(class.pos);
+        Class class;
+    }
+} Header;
+
+
+typedef struct 
+{
+    UINT b1;
+    UINT EntryCount;
+    UINT b3;
+    UINT b4;
+    local int i = 0;
+    for(i= 0; i < root.EntryCount; i++) {
+        CurrentPos = FTell();
+        FSeek(CurrentPos + 12);
+    }
+    string EntryName;
+    CurrentPos = FTell();
+    FSeek(CurrentPos -1);
+    UINT Pad;
+    string ClassName;
+    
+} HKX_Root;
+
+
+typedef struct 
+{
+    BYTE null[2];
+    UINT b2;
+    UINT b3;
+    UINT b4;
+    UINT b5;
+    UINT b6;
+    UINT Count1;
+    UINT Count2;
+    UINT b9;
+    UINT b8;
+    UINT Count3;
+    UINT b12;
+    UINT b13;
+    UINT b14;
+    UINT b15;
+    UINT b14;
+    UINT b17;
+    UINT BlockEnd;
+} HKX_Block;
+
+typedef struct {
+    //Vec4
+    FLOAT TransX;
+    FLOAT TransY;
+    FLOAT TransZ;
+    FLOAT TransW;
+    //ROT
+    FLOAT RotX;
+    FLOAT RotY;
+    FLOAT RotZ;
+    //Scale
+    FLOAT ScaleX;
+    FLOAT ScaleY;
+    FLOAT ScaleZ;
+    FLOAT ScaleW;
+} Entry;
+
+Junk junk;
+
+
+
+Header header;
+FSeek(m_StartPos + DataStart);
+HKX_Root root;
+HKX_Block block;
+
+CurrentPos = FTell();
+FSeek(CurrentPos + 84);
+Entry entry;

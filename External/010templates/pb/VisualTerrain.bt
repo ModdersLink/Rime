@@ -1,0 +1,67 @@
+//------------------------------------------------
+//--- 010 Editor v7.0.2 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+// header
+typedef struct {
+    LONG header;
+    LONG type;
+} HEADER;
+
+// unknown 1
+typedef struct {
+    BYTE u1;
+    SHORT width;
+    SHORT u3;
+    SHORT height;
+    BYTE u4;
+    SHORT u5;
+    SHORT u6;
+    SHORT u7;
+    SHORT u8;
+    SHORT u9;
+    SHORT u10;
+    SHORT u11;
+    SHORT u12;
+    SHORT Height;
+    SHORT u14;
+    SHORT u15;
+    SHORT u16;
+    SHORT u17;
+    SHORT u18;
+    SHORT u19;
+    SHORT u20;
+    SHORT u21;
+    SHORT u22;
+    SHORT u23;
+    SHORT u24;
+    SHORT u25;
+    SHORT u26;
+    SetBackColor( cGreen );
+    string shader;
+} U1;
+
+typedef struct {
+    SHORT count;
+    BYTE u1;
+    SHORT width;
+    BYTE u3;
+    SHORT u4;
+    SHORT u5;
+    SHORT u6;
+    string shader;
+} U2;
+
+HEADER header;
+SetBackColor( cRed );
+U1 unknown1;
+U2 unknown2;

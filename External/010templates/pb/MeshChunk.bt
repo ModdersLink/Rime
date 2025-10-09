@@ -1,0 +1,65 @@
+//------------------------------------------------
+//--- 010 Editor v8.0 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+typedef struct {
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    hfloat uv1;
+    hfloat uv2;
+    
+} MeshShit;
+
+MeshShit m;
+MeshShit m;
+MeshShit m;
+MeshShit m;
+MeshShit m;

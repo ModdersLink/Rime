@@ -1,0 +1,39 @@
+//------------------------------------------------
+//--- 010 Editor v8.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    byte padding[3];
+    byte packageType;
+    byte streamline[8];
+    uint assetbytes; 
+    uint32 a;
+    byte refl[8];
+    uint b;
+    uint c;
+    uint d;
+} PackageMeta;
+ 
+typedef struct {
+    PackageMeta packageMeta;
+    byte unknownidentical[12324];
+    int a;
+    int b;
+    int c;
+} Header;
+
+typedef struct {
+    Header h;
+} AssetBank;
+
+
+AssetBank a;
