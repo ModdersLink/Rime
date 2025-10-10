@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\RimeLib.Cmd\RimeLib.Cmd.csproj" />
-    <ProjectReference Include="..\..\RimeLib.Mesh.Frostbite2_0\RimeLib.Mesh.Frostbite2_0.csproj" />
   </ItemGroup>
 
 </Project>

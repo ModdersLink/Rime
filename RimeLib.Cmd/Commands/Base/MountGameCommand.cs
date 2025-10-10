@@ -49,7 +49,19 @@ namespace RimeLib.Cmd.Commands.Base
 
             if (!AssemblyUtils.LoadSupportAssembly(AssemblyType.Mesh, Engine))
             {
-                p_Writer.WriteLine($"Failed to load supporting Mesh assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
+                p_Writer.WriteLine($"Failed to load supporting mesh assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
+                return false;
+            }
+
+            if (!AssemblyUtils.LoadSupportAssembly(AssemblyType.Havok, Engine))
+            {
+                p_Writer.WriteLine($"Failed to load supporting havok physics assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
+                return false;
+            }
+            
+            if (!AssemblyUtils.LoadSupportAssembly(AssemblyType.Toolkit, Engine))
+            {
+                p_Writer.WriteLine($"Failed to load supporting toolkit assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
                 return false;
             }
 

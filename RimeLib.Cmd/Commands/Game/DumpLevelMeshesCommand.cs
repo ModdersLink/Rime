@@ -23,7 +23,7 @@ public class DumpLevelMeshesCommand : Command
     public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
     {
         // TODO: Implement try/catch
-        ((GameContext)p_Context).ExportLevelMesh(LevelPartition, Destination!, HavokTransforms, p_Writer);
+        ((GameContext)p_Context).DumpLevelMesh(Format, LevelPartition, Destination!, HavokTransforms, p_Writer);
         p_Writer.WriteLine($"Extracted Level {LevelPartition} to {Destination?.FullName}");
         return true;
     }

@@ -3,11 +3,15 @@
     public enum AssemblyType
     {
         Audio,
+        Animation,
         Content,
         Mesh,
         Serialization,
         Shader,
         Terrain,
-        Texture
+        Texture,
+        Havok,
+        Enlighten,
+        Toolkit
     }
 }

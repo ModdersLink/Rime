@@ -11,6 +11,11 @@ public enum MeshConverterType
     Gltf,
     
     /// <summary>
+    /// Export to GLB
+    /// </summary>
+    Glb,
+    
+    /// <summary>
     /// Export to text OBJ
     /// </summary>
     Obj,

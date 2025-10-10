@@ -28,31 +28,44 @@ public class MeshConverter : IMeshConverter
         return new[] { EngineType.Frostbite2_0 };
     }
 
-    public void ConvertToObj(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void ConvertToGltf(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath)
+    private ModelRoot CreateModel(IResourceObject p_Resource, IEngineMounter p_Mounter)
     {
         // We will convert the model to SharpGLTF
-        var s_MeshList = ConvertToGltf(p_Resource, p_Mounter);
+        var s_MeshList = ConvertToMeshBuilders(p_Resource, p_Mounter);
         
         var s_SceneBuilder = new SceneBuilder();
         
         foreach (var s_MeshBuilder in s_MeshList)
             s_SceneBuilder.AddRigidMesh(s_MeshBuilder, AffineTransform.Identity);
 
-        var s_Model = s_SceneBuilder.ToGltf2();
-        
-        // Get the output file path
-        var s_ModelPath = p_OutputFilePath;
-        
-        // Save to file
-        s_Model.SaveGLTF(s_ModelPath, new WriteSettings() { JsonIndented = true });
+        return s_SceneBuilder.ToGltf2();
     }
 
-    public List<MeshBuilder<VertexPosition, VertexTexture1>> ConvertToGltf(IResourceObject p_Resource, IEngineMounter p_Mounter)
+    public void ConvertToObj(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath)
+    {
+        var s_Model = CreateModel(p_Resource, p_Mounter);
+        
+        // Save to file
+        s_Model.SaveAsWavefront(p_OutputFilePath);
+    }
+
+    public void ConvertToGltf(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath)
+    {
+        var s_Model = CreateModel(p_Resource, p_Mounter);
+        
+        // Save to file
+        s_Model.SaveGLTF(p_OutputFilePath, new WriteSettings() { JsonIndented = true });
+    }
+    
+    public void ConvertToGlb(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath)
+    {
+        var s_Model = CreateModel(p_Resource, p_Mounter);
+
+        // Save to file
+        s_Model.SaveGLB(p_OutputFilePath, new WriteSettings() { JsonIndented = true });
+    }
+
+    public List<MeshBuilder<VertexPosition, VertexTexture1>> ConvertToMeshBuilders(IResourceObject p_Resource, IEngineMounter p_Mounter)
     {
         // Create a list of mesh builders
         var s_MeshList = new List<MeshBuilder<VertexPosition, VertexTexture1>>();
@@ -273,11 +286,11 @@ public class MeshConverter : IMeshConverter
                     s_VerticiesNiceList.Add(s_Dict);
                 }
 
-                // Verify that we have parsed all of the verticies
+                // Verify that we have parsed all the vertices
                 if (s_VerticiesNiceList.Count != s_SubsetKey.VertexCount)
-                    throw new Exception("asdasdas");
+                    throw new Exception("Unable to convert all vertices");
 
-                // Add to the new map of subset + parsed vertitices
+                // Add to the new map of subset + parsed vertices
                 s_ParsedSubsets.Add(s_SubsetKey, s_VerticiesNiceList);
             }
 
@@ -430,20 +443,12 @@ public class MeshConverter : IMeshConverter
                             s_Primitive.AddTriangle(s_FirstPosition, s_SecondPosition, s_ThirdPosition);
                         }
                     }
-                    //var s_BaseAddress = s_Lod.BoneShortNameArrayPartTransforms.BaseAddress;
-                    // s_ChunkReader.Seek((long)s_BaseAddress, SeekOrigin.Begin);
-
-                    //var l_MatrixTransform = new Matrix44(s_ChunkReader);
-
-                    //var s_Transform = new RimeLib.Frostbite.Core.
-                    //s_SceneBuilder.AddRigidMesh(s_Mesh, l_MatrixTransform.ToMatrix4x4());
                     
-                    // s_Model.CreateMesh(s_Mesh);
                     s_MeshList.Add(s_Mesh);
                 }
             }
         }
-
+        
         return s_MeshList;
     }
 

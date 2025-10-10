@@ -1,0 +1,25 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
+    </PropertyGroup>
+    
+    <ItemGroup>
+      <ProjectReference Include="..\RimeLib.Mesh\RimeLib.Mesh.csproj" />
+      <ProjectReference Include="..\RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj" />
+      <ProjectReference Include="..\RimeLib.Toolkit\RimeLib.Toolkit.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Reference Include="SharpGLTF.Core">
+        <HintPath>..\..\..\.nuget\packages\sharpgltf.core\1.0.5\lib\net8.0\SharpGLTF.Core.dll</HintPath>
+      </Reference>
+      <Reference Include="SharpGLTF.Toolkit">
+        <HintPath>..\..\..\.nuget\packages\sharpgltf.toolkit\1.0.5\lib\net8.0\SharpGLTF.Toolkit.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
+</Project>

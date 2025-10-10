@@ -16,12 +16,20 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
-    <ProjectReference Include="..\RimeLib.Havok.Frostbite2_0\RimeLib.Havok.Frostbite2_0.csproj" />
-    <ProjectReference Include="..\RimeLib.Mesh.Frostbite2_0\RimeLib.Mesh.Frostbite2_0.csproj" />
     <ProjectReference Include="..\RimeLib.Mesh\RimeLib.Mesh.csproj" />
     <ProjectReference Include="..\RimeLib.Serialization\RimeLib.Serialization.csproj" />
     <ProjectReference Include="..\RimeLib.Texture\RimeLib.Texture.csproj" />
+    <ProjectReference Include="..\RimeLib.Toolkit\RimeLib.Toolkit.csproj" />
     <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SharpGLTF.Core">
+      <HintPath>..\..\..\.nuget\packages\sharpgltf.core\1.0.5\lib\net8.0\SharpGLTF.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGLTF.Toolkit">
+      <HintPath>..\..\..\.nuget\packages\sharpgltf.toolkit\1.0.5\lib\net8.0\SharpGLTF.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>
