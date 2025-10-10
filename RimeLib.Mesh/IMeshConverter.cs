@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using RimeLib.Content.Mounting;
 using SharpGLTF.Geometry;
 using SharpGLTF.Geometry.VertexTypes;
-using SharpGLTF.Schema2;
 
 namespace RimeLib.Mesh;
 

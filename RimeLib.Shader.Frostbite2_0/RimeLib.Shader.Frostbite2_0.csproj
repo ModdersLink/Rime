@@ -5,7 +5,8 @@
         <LangVersion>default</LangVersion>
         <Nullable>enable</Nullable>
         <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
         <Platforms>AnyCPU</Platforms>
         <Configurations>Release;Debug</Configurations>
     </PropertyGroup>

@@ -5,7 +5,13 @@
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     </PropertyGroup>
+
+    <ItemGroup>
+      <PackageReference Include="SharpGLTF.Toolkit" Version="1.0.5" />
+    </ItemGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />

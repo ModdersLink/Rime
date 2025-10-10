@@ -7,7 +7,8 @@
     <LangVersion>default</LangVersion>
     <Nullable>annotations</Nullable>
     <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <Platforms>AnyCPU</Platforms>
 	  <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	  <Configurations>Debug;Release</Configurations>

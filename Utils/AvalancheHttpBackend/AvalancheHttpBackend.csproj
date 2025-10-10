@@ -7,6 +7,8 @@
         <Nullable>enable</Nullable>
         <Platforms>AnyCPU</Platforms>
         <Configurations>Debug;Release;LinuxDebug</Configurations>
+		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     </PropertyGroup>
 
     <ItemGroup>

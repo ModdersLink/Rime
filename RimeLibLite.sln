@@ -125,8 +125,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "RimeScripts", "RimeScripts"
 	ProjectSection(SolutionItems) = preProject
 		External\RimeScripts\auto_mount_bf3.txt = External\RimeScripts\auto_mount_bf3.txt
 		External\RimeScripts\auto_rebuild_xp5_001.txt = External\RimeScripts\auto_rebuild_xp5_001.txt
-		External\RimeScripts\model_extract.txt = External\RimeScripts\model_extract.txt
 		External\RimeScripts\level_extract.txt = External\RimeScripts\level_extract.txt
+		External\RimeScripts\model_extract.txt = External\RimeScripts\model_extract.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Editor", "RimeLib.Editor\RimeLib.Editor.csproj", "{7663FCD8-BC9B-431E-A0D7-4E933282F1A6}"
@@ -134,6 +134,10 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Toolkit", "RimeLib.Toolkit\RimeLib.Toolkit.csproj", "{56920AB9-2947-4A01-A77A-C3BB45DDFB1B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Toolkit.Frostbite2_0", "RimeLib.Toolkit.Frostbite2_0\RimeLib.Toolkit.Frostbite2_0.csproj", "{D0AA280E-0B8D-4C78-B98D-7B9CCF0D4DCF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Mesh.Frostbite2013_2", "RimeLib.Mesh.Frostbite2013_2\RimeLib.Mesh.Frostbite2013_2.csproj", "{EC6F9C23-49CC-4D60-AF58-90E748A0DB35}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Serialization.Frostbite2013_2", "RimeLib.Serialization.Frostbite2013_2\RimeLib.Serialization.Frostbite2013_2.csproj", "{C8DA824A-80E2-450D-887A-CA38CD5D46C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -352,6 +356,14 @@ Global
 		{D0AA280E-0B8D-4C78-B98D-7B9CCF0D4DCF}.Debug|x64.Build.0 = Debug|Any CPU
 		{D0AA280E-0B8D-4C78-B98D-7B9CCF0D4DCF}.Release|x64.ActiveCfg = Release|Any CPU
 		{D0AA280E-0B8D-4C78-B98D-7B9CCF0D4DCF}.Release|x64.Build.0 = Release|Any CPU
+		{EC6F9C23-49CC-4D60-AF58-90E748A0DB35}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EC6F9C23-49CC-4D60-AF58-90E748A0DB35}.Debug|x64.Build.0 = Debug|Any CPU
+		{EC6F9C23-49CC-4D60-AF58-90E748A0DB35}.Release|x64.ActiveCfg = Release|Any CPU
+		{EC6F9C23-49CC-4D60-AF58-90E748A0DB35}.Release|x64.Build.0 = Release|Any CPU
+		{C8DA824A-80E2-450D-887A-CA38CD5D46C7}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{C8DA824A-80E2-450D-887A-CA38CD5D46C7}.Debug|x64.Build.0 = Debug|Any CPU
+		{C8DA824A-80E2-450D-887A-CA38CD5D46C7}.Release|x64.ActiveCfg = Release|Any CPU
+		{C8DA824A-80E2-450D-887A-CA38CD5D46C7}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

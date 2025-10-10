@@ -6,6 +6,7 @@
 		<Nullable>enable</Nullable>
 		<OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
 		<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+		<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
 		<Platforms>AnyCPU</Platforms>
 		<Configurations>Debug;Release</Configurations>
 	</PropertyGroup>

@@ -6,6 +6,8 @@
     <Platforms>AnyCPU</Platforms>
     <LangVersion>default</LangVersion>
     <Configurations>Release;Debug</Configurations>
+	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
 
   <ItemGroup>
