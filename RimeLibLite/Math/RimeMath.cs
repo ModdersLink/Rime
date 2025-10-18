@@ -122,7 +122,10 @@ namespace RimeLib.Math
                 );
             }
 
-            return Quaternion.CreateFromRotationMatrix(s_Matrix);
+            // TODO: fix this properly above somewhere.
+            var quat = Quaternion.CreateFromRotationMatrix(s_Matrix);
+            quat.Y *= -1;
+            return quat;
         }
         
         private static Vector3 SafeNormalize(Vector3 p_Vector)
