@@ -1,0 +1,286 @@
+//------------------------------------------------
+//--- 010 Editor v16.0.2 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+struct Vec3 {
+    float x;
+    float y;
+    float z;
+    float pad;
+};
+struct Vec4 {
+    float x;
+    float y;
+    float z;
+    float w;
+};
+
+struct AxisAlignedBox {
+    Vec3 min;
+    Vec3 max;
+};
+
+struct hkDescriptor
+{
+    int Signature;
+    ubyte Version;
+    string Name;
+};
+
+struct hkDescriptorInfo
+{
+    int64 Offset;
+    int Key;
+};
+
+struct hkExtendedMeshHeader
+{
+    byte UnknownNull[21];
+    ubyte U1;
+    byte UnknownNull2[11];
+    ubyte U2;
+    int64 UnknownNull3;
+    ubyte U3;
+    byte U4Padding[83];
+    int U4;
+    int U5;
+    int U6;
+    int U7;
+    short U8;
+    byte U9[16];
+    byte U10[16];
+    int Null1;
+    int U11;
+    byte Null2[11];
+    int U12;
+    ubyte Null3;
+    int IndexCount;
+    short IndexCount2;
+    ubyte Null4;
+    int U14;
+    int U15;
+    int U16;
+    int U17;
+    int U18;
+    ubyte U19;
+    int U20;
+    int U21;
+    int Null5;
+};
+
+struct hkExtendedMeshEntry {
+    Vec4 up;
+    Vec4 right;
+    Vec4 forward;
+    Vec4 trans;
+};
+
+struct hkxRoot
+{
+    uint B1;
+    uint EntryCount;
+    uint B3;
+    uint B4;
+};
+
+struct HavokPhysicsData {
+    uint PartCount;
+    int PartTranslationsCount;
+    int64 PartTranslationsOffset;
+    int LocalAabbsCount;
+    int64 LocalAabbsOffset;
+    int MaterialIndicesCount;
+    int64 MaterialIndicesOffset;
+    int MaterialFlagsAndIndicesCount;
+    int64 MaterialFlagsAndIndicesOffset;
+    float Scale;
+    ubyte MaterialCountUsed;
+    ubyte HighestMaterialIndex;
+    ushort Padding;
+} data;
+
+
+uint align(uint bytes)
+{
+    local uint alignment = FTell();
+    local uint i = 0;
+    while (alignment % bytes != 0)
+    {
+        FSkip(1);
+        i = i + 1;
+        alignment = FTell();
+    }
+    return i;
+}
+
+uint RoundUp(uint bytes, uint a)
+{
+    FSkip(bytes);
+    return bytes + align(a);
+}
+
+local uint s_PartTranslationsSize = RoundUp((data.PartTranslationsCount * /*sizeof(Vec3)*/ 16), 16);
+local uint s_LocalAabsSize = RoundUp((data.LocalAabbsCount * /*sizeof(AxisAlignedBox)*/ 32), 16);
+local uint s_MaterialIndicesSize = RoundUp((data.MaterialIndicesCount * /*sizeof(unsigned char)*/ 1), 16);
+local uint s_MaterialFlagsAndIndicesSize = RoundUp((data.MaterialFlagsAndIndicesCount * /*sizeof(uint32_t)*/ 4), 16);
+local uint s_HavokOffset = RoundUp(s_PartTranslationsSize + s_LocalAabsSize + s_MaterialIndicesSize + s_MaterialFlagsAndIndicesSize + 60, 16);
+
+if (data.PartTranslationsCount > 0)
+{
+    FSeek(data.PartTranslationOffset);
+    
+    struct
+    {
+        Vec3 vec3[data.PartTranslationsCount];
+    } PartTranslations;
+}
+if (data.LocalAabbsCount > 0)
+{
+    FSeek(data.LocalAabbsOffset);
+    
+    struct
+    {
+        AxisAlignedBox aabb[data.LocalAabbsCount];
+    } LocalAabbs;
+}
+if (data.MaterialIndicesCount > 0)
+{
+    FSeek(data.MaterialIndicesOffset);
+    
+    struct
+    {
+        ubyte indices[data.MaterialIndicesCount];
+    } MaterialIndices;
+}
+if (data.MaterialFlagsAndIndicesCount > 0)
+{
+    FSeek(data.MaterialFlagsAndIndicesOffset);
+    
+    struct
+    {
+        ushort flagsAndIndices[data.MaterialFlagsAndIndicesCount * 2];
+    } MaterialFlagsAndIndices;
+}
+
+FSeek(s_HavokOffset);
+
+struct hkPackfileHeader
+{
+    int Magic[2];
+    int UserTag;
+    int FileVersion;
+    ubyte LayoutRules[4];
+    int NumSections;
+    int ContentsSectionIndex;
+    int ContentsSectionOffset;
+    int ContentsClassNameSectionIndex;
+    int ContentsClassNameSectionOffset;
+    char ContentsVersion[16];
+    int Flags;
+    int Pad;
+} header;
+
+struct hkPackfileSectionHeader
+{
+    char SectionTagData[20];
+    int AbsoluteDataStart;
+    int LocalFixupsOffset;
+    int GlobalFixupsOffset;
+    int VirtualFixupsOffset;
+    int ExportsOffset;
+    int ImportsOffset;
+    int EndOffset;
+} sectionHeader[header.NumSections];
+
+// TODO: un-hardcode classnames from index 0.
+// __classnames__
+struct {
+    local uint ClassNamesStart = s_HavokOffset + sectionHeader[0].AbsoluteDataStart;
+    local uint ClassNamesEnd = ClassNamesStart + sectionHeader[0].EndOffset - 1;
+    FSeek(ClassNamesStart);
+    while (FTell() < ClassNamesEnd)
+    {
+        hkDescriptor descriptor;
+    }
+    
+    ubyte Pad;
+} __classnames__;
+
+// ignore __types__ as EndOffset is 0.
+
+// __data__
+
+struct {
+    local uint DataStart = s_HavokOffset + sectionHeader[2].AbsoluteDataStart;
+    local uint DataEnd = DataStart + sectionHeader[2].EndOffset - 1;
+    local uint DataFixupStart = DataStart + sectionHeader[2].VirtualFixupsOffset;
+    local uint DataFixupEnd = DataStart + sectionHeader[2].ExportsOffset;
+    local uint infoCount = 0;
+    FSeek(DataStart);
+    hkxRoot root;
+    
+    struct hkxRoot2
+    {
+        if (root.EntryCount > 0)
+        {
+            float Entries[root.EntryCount * 3];
+        }
+        string EntryName;
+        align(16);
+        string ClassName;
+    } root2;
+    
+    struct hkxBlock
+    {
+        ushort Pad;
+        uint B1;
+        uint B2;
+        uint B3;
+        uint SkeletonCount;
+        uint B5;
+        uint B6;
+        ushort AnimationCount;
+        ushort B7;
+        uint B8;
+        uint B9;
+        uint BindingsCount;
+        uint B11;
+        uint B12;
+        uint AttachmentsCount;
+        uint B14;
+        uint B15;
+        uint SkinsCount;
+        int B17;
+    } block;
+    
+    infoCount = (DataFixupEnd - DataFixupStart) / 12;
+    
+    FSeek(DataFixupStart);
+    hkDescriptorInfo descriptorInfo[infoCount];
+    
+    local uint64 pos = FTell();
+    
+    for (int i=0; i < infoCount; i++)
+    {
+        FSeek(DataStart + descriptorInfo[i].Offset);
+        if (descriptorInfo[i].Key == 169)
+        {
+            hkExtendedMeshHeader meshHeader <bgcolor=0xFF0000>;
+            hkExtendedMeshEntry meshTransform[meshHeader.IndexCount] <bgcolor=0xFF0000>;
+        }
+        else
+        {
+            hkxRoot root <bgcolor=0xFF0000>;
+        }
+    }
+    FSeek(pos);
+} __data__;
