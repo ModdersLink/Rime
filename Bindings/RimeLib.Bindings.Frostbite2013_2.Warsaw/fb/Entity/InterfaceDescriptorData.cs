@@ -1,0 +1,70 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+
+using fb.Core;
+
+namespace fb.Entity;
+
+[ContainerType(8, 56)]
+public class InterfaceDescriptorData
+	: fb.Core.DynamicDataContainer
+{
+	[ContainerField(0x18), JsonProperty(Order = 24)]
+	public List<DynamicEvent> InputEvents { get; set; } = new();
+	
+	[ContainerField(0x20), JsonProperty(Order = 32)]
+	public List<DynamicEvent> OutputEvents { get; set; } = new();
+	
+	[ContainerField(0x28), JsonProperty(Order = 40)]
+	public List<DynamicLink> InputLinks { get; set; } = new();
+	
+	[ContainerField(0x30), JsonProperty(Order = 48)]
+	public List<DynamicLink> OutputLinks { get; set; } = new();
+	
+	public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+	{
+		base.Serialize(p_Writer, p_EbxWriter);
+		(RimeWriter Writer, uint ArrayIndex) s_InputEvents = p_EbxWriter.GetArrayWriter(InputEvents.GetType(), InputEvents.Count);
+		p_Writer.Write(s_InputEvents.ArrayIndex);
+		foreach (var s_Entry in InputEvents)
+		{
+			s_Entry.Serialize(s_InputEvents.Writer, p_EbxWriter);
+		}
+		p_Writer.WriteNullBytes(4);
+		(RimeWriter Writer, uint ArrayIndex) s_OutputEvents = p_EbxWriter.GetArrayWriter(OutputEvents.GetType(), OutputEvents.Count);
+		p_Writer.Write(s_OutputEvents.ArrayIndex);
+		foreach (var s_Entry in OutputEvents)
+		{
+			s_Entry.Serialize(s_OutputEvents.Writer, p_EbxWriter);
+		}
+		p_Writer.WriteNullBytes(4);
+		(RimeWriter Writer, uint ArrayIndex) s_InputLinks = p_EbxWriter.GetArrayWriter(InputLinks.GetType(), InputLinks.Count);
+		p_Writer.Write(s_InputLinks.ArrayIndex);
+		foreach (var s_Entry in InputLinks)
+		{
+			s_Entry.Serialize(s_InputLinks.Writer, p_EbxWriter);
+		}
+		p_Writer.WriteNullBytes(4);
+		(RimeWriter Writer, uint ArrayIndex) s_OutputLinks = p_EbxWriter.GetArrayWriter(OutputLinks.GetType(), OutputLinks.Count);
+		p_Writer.Write(s_OutputLinks.ArrayIndex);
+		foreach (var s_Entry in OutputLinks)
+		{
+			s_Entry.Serialize(s_OutputLinks.Writer, p_EbxWriter);
+		}
+		p_Writer.WriteNullBytes(4);
+	}
+}
+

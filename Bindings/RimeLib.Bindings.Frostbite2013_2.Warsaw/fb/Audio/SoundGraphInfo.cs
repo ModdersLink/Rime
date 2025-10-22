@@ -1,0 +1,44 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+
+using fb.Core;
+
+namespace fb.Audio;
+
+[ContainerType(8, 40)]
+public class SoundGraphInfo
+	: EbxSerializable
+{
+	[ContainerField(0x0), JsonProperty(Order = 0)]
+	public List<SoundGraphVoiceInfo> Voices { get; set; } = new();
+	
+	[ContainerField(0x8), JsonProperty(Order = 8)]
+	public List<SoundGraphLinkedPluginAttribute> LinkedPluginAttributes { get; set; } = new();
+	
+	[ContainerField(0x10), JsonProperty(Order = 16)]
+	public List<SoundGraphPluginConnection> Connections { get; set; } = new();
+	
+	[ContainerField(0x18), JsonProperty(Order = 24)]
+	public List<SoundGraphPluginConstructParam> ConstructParams { get; set; } = new();
+	
+	[ContainerField(0x20), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+	public uint PluginsParamCount { get; set; } = 0;
+	
+	[ContainerField(0x24), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+	public uint PluginCount { get; set; } = 0;
+	
+}
+

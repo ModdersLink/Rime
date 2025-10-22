@@ -1,0 +1,62 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+
+using fb.Core;
+
+namespace fb.Emitter;
+
+[ContainerType(16, 64)]
+public class EmitterExclusionVolumeBoundingSphereSoA
+	: EbxSerializable
+{
+	[ContainerField(0x0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+	public Vec4 PosX { get; set; } = new()
+	{
+		w = 0.000f,
+		z = 0.000f,
+		y = 0.000f,
+		x = 0.000f,
+	};
+	
+	[ContainerField(0x10), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+	public Vec4 PosY { get; set; } = new()
+	{
+		w = 0.000f,
+		z = 0.000f,
+		y = 0.000f,
+		x = 0.000f,
+	};
+	
+	[ContainerField(0x20), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+	public Vec4 PosZ { get; set; } = new()
+	{
+		w = 0.000f,
+		z = 0.000f,
+		y = 0.000f,
+		x = 0.000f,
+	};
+	
+	[ContainerField(0x30), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+	public Vec4 RadiusSqr { get; set; } = new()
+	{
+		w = 0.000f,
+		z = 0.000f,
+		y = 0.000f,
+		x = 0.000f,
+	};
+	
+}
+

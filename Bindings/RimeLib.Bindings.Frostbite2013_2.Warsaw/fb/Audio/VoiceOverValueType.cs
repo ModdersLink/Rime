@@ -1,0 +1,30 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+
+
+namespace fb.Audio;
+
+[ContainerType(1, 4)]
+public enum VoiceOverValueType : int
+{
+	VoiceOverValueType_Boolean = 0,
+	VoiceOverValueType_Integer = 1,
+	VoiceOverValueType_Float = 2,
+	VoiceOverValueType_Vector = 3,
+	VoiceOverValueType_Object = 4,
+	VoiceOverValueTypeCount = 5,
+}
+

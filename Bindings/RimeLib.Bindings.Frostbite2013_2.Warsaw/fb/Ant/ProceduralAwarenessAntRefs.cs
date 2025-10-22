@@ -1,0 +1,43 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+
+using fb.Core;
+
+namespace fb.Ant;
+
+[ContainerType(8, 80)]
+public class ProceduralAwarenessAntRefs
+	: fb.Core.DataContainer
+{
+	[ContainerField(0x10), JsonProperty(Order = 16)]
+	public AntRef ProceduralAwarenessActive { get; set; } = new();
+	
+	[ContainerField(0x24), JsonProperty(Order = 36)]
+	public AntRef ProceduralAwarenessHumanIKActive { get; set; } = new();
+	
+	[ContainerField(0x38), JsonProperty(Order = 56)]
+	public AntRef ProceduralAwarenessData { get; set; } = new();
+	
+	public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+	{
+		base.Serialize(p_Writer, p_EbxWriter);
+		ProceduralAwarenessActive.Serialize(p_Writer, p_EbxWriter);
+		ProceduralAwarenessHumanIKActive.Serialize(p_Writer, p_EbxWriter);
+		ProceduralAwarenessData.Serialize(p_Writer, p_EbxWriter);
+		p_Writer.WriteNullBytes(4);
+	}
+}
+

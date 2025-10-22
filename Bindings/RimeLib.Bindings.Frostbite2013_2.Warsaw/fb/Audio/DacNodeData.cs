@@ -1,0 +1,55 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+
+using fb.Core;
+
+namespace fb.Audio;
+
+[ContainerType(8, 48)]
+public class DacNodeData
+	: fb.Audio.AudioGraphNodeData
+{
+	[ContainerField(0x10), JsonProperty(Order = 16)]
+	public AudioGraphNodePort In { get; set; } = new();
+	
+	[ContainerField(0x18), JsonProperty(Order = 24)]
+	public AudioGraphNodePort SpeakerCount { get; set; } = new();
+	
+	[ContainerField(0x20), JsonProperty(Order = 32)]
+	public SoundGraphPluginRef DelayPlugin { get; set; } = new();
+	
+	[ContainerField(0x23), JsonProperty(Order = 35)]
+	public SoundGraphPluginRef VuPlugin { get; set; } = new();
+	
+	[ContainerField(0x26), JsonProperty(Order = 38)]
+	public SoundGraphPluginRef GainPlugin { get; set; } = new();
+	
+	[ContainerField(0x29), JsonProperty(Order = 41)]
+	public SoundGraphPluginRef DacPlugin { get; set; } = new();
+	
+	public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+	{
+		base.Serialize(p_Writer, p_EbxWriter);
+		In.Serialize(p_Writer, p_EbxWriter);
+		SpeakerCount.Serialize(p_Writer, p_EbxWriter);
+		DelayPlugin.Serialize(p_Writer, p_EbxWriter);
+		VuPlugin.Serialize(p_Writer, p_EbxWriter);
+		GainPlugin.Serialize(p_Writer, p_EbxWriter);
+		DacPlugin.Serialize(p_Writer, p_EbxWriter);
+		p_Writer.WriteNullBytes(4);
+	}
+}
+

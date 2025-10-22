@@ -1,0 +1,27 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+
+
+namespace fb.Audio;
+
+[ContainerType(1, 4)]
+public enum VoiceOverConversationQueueGroupPolyphony : int
+{
+	VoiceOverConversationQueueGroupPolyphony_Sources = 0,
+	VoiceOverConversationQueueGroupPolyphony_GlobalSources = 1,
+	VoiceOverConversationQueueGroupPolyphony_Conversations = 2,
+}
+

@@ -1,0 +1,127 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+
+
+namespace fb.UI;
+
+[ContainerType(1, 4)]
+public enum UIInputAction : int
+{
+	UIInputAction_NavigateUp = 0,
+	UIInputAction_NavigateDown = 1,
+	UIInputAction_NavigateLeft = 2,
+	UIInputAction_NavigateRight = 3,
+	UIInputAction_TabLeft = 4,
+	UIInputAction_TabRight = 5,
+	UIInputAction_Activate = 6,
+	UIInputAction_Deactivate = 7,
+	UIInputAction_Menu = 8,
+	UIInputAction_Cancel = 9,
+	UIInputAction_OK = 10,
+	UIInputAction_Back = 11,
+	UIInputAction_Tab = 12,
+	UIInputAction_Edit = 13,
+	UIInputAction_View = 14,
+	UIInputAction_LThumb = 15,
+	UIInputAction_RThumb = 16,
+	UIInputAction_MapZoom = 17,
+	UIInputAction_MapSize = 18,
+	UIInputAction_SayAllChat = 19,
+	UIInputAction_TeamChat = 20,
+	UIInputAction_SquadChat = 21,
+	UIInputAction_CommoRose = 22,
+	UIInputAction_ToggleChat = 23,
+	UIInputAction_ToggleMinimapType = 24,
+	UIInputAction_DigitalUp = 25,
+	UIInputAction_DigitalDown = 26,
+	UIInputAction_DigitalLeft = 27,
+	UIInputAction_DigitalRight = 28,
+	UIInputAction_NavigateRUp = 29,
+	UIInputAction_NavigateRDown = 30,
+	UIInputAction_NavigateRLeft = 31,
+	UIInputAction_NavigateRRight = 32,
+	UIInputAction_MenuTriggerLeft = 33,
+	UIInputAction_MenuTriggerRight = 34,
+	UIInputAction_TacticalMenu = 35,
+	UIInputAction_ConversationSelect = 36,
+	UIInputAction_ConversationSkip = 37,
+	UIInputAction_ConversationChangeSelection = 38,
+	UIInputAction_BattledashToggle = 39,
+	UIInputAction_VoipPushToTalk = 40,
+	UIInputAction_MultipleSelect = 41,
+	UIInputAction_SpectatorViewPrev = 42,
+	UIInputAction_SpectatorViewNext = 43,
+	UIInputAction_SpectatorTargetPrev = 44,
+	UIInputAction_SpectatorTargetNext = 45,
+	UIInputAction_SpectatorViewTableTop = 46,
+	UIInputAction_SpectatorViewFirstPerson = 47,
+	UIInputAction_SpectatorViewThirdPerson = 48,
+	UIInputAction_SpectatorViewFreeCam = 49,
+	UIInputAction_SpectatorViewPlayer1 = 50,
+	UIInputAction_SpectatorViewPlayer2 = 51,
+	UIInputAction_SpectatorViewPlayer3 = 52,
+	UIInputAction_SpectatorViewPlayer4 = 53,
+	UIInputAction_SpectatorViewPlayer5 = 54,
+	UIInputAction_SpectatorViewPlayer6 = 55,
+	UIInputAction_SpectatorViewPlayer7 = 56,
+	UIInputAction_SpectatorViewPlayer8 = 57,
+	UIInputAction_SpectatorViewPlayer9 = 58,
+	UIInputAction_SpectatorViewPlayer10 = 59,
+	UIInputAction_SpectatorViewPlayer11 = 60,
+	UIInputAction_SpectatorViewPlayer12 = 61,
+	UIInputAction_SpectatorViewPlayer13 = 62,
+	UIInputAction_SpectatorViewPlayer14 = 63,
+	UIInputAction_SpectatorViewPlayer15 = 64,
+	UIInputAction_SpectatorViewPlayer16 = 65,
+	UIInputAction_SpectatorViewOptions = 66,
+	UIInputAction_SpectatorHudVisibility = 67,
+	UIInputAction_SpectatorTargetPrevInSquad = 68,
+	UIInputAction_SpectatorTargetNextInSquad = 69,
+	UIInputAction_SpectatorTargetPrevOnTeam = 70,
+	UIInputAction_SpectatorTargetNextOnTeam = 71,
+	UIInputAction_SpectatorSquadLeft = 72,
+	UIInputAction_SpectatorSquadRight = 73,
+	UIInputAction_SpectatorSquadUp = 74,
+	UIInputAction_SpectatorSquadDown = 75,
+	UIInputAction_SpectatorSquadActivate = 76,
+	UIInputAction_Start = 77,
+	UIInputAction_Minimize = 78,
+	UIInputAction_SelectAll = 79,
+	UIInputAction_TwinkleBegin = 80,
+	UIInputAction_ReloadTwinkle = 81,
+	UIInputAction_TwinkleAccept = 82,
+	UIInputAction_TwinkleDecline = 83,
+	UIInputAction_TwinkleOption1 = 84,
+	UIInputAction_TwinkleOption2 = 85,
+	UIInputAction_TwinkleOption3 = 86,
+	UIInputAction_TwinkleOption4 = 87,
+	UIInputAction_TwinklePrevious = 88,
+	UIInputAction_TwinkleNext = 89,
+	UIInputAction_TwinkleHome = 90,
+	UIInputAction_TwinkleEnd = 91,
+	UIInputAction_TwinkleUp = 92,
+	UIInputAction_TwinkleDown = 93,
+	UIInputAction_TwinkleLeft = 94,
+	UIInputAction_TwinkleRight = 95,
+	UIInputAction_TwinkleSelect = 96,
+	UIInputAction_TwinkleStart = 97,
+	UIInputAction_TwinkleScrollUp = 98,
+	UIInputAction_TwinkleScrollDown = 99,
+	UIInputAction_TwinkleFinish = 100,
+	UIInputAction_Size = 101,
+	UIInputAction_None = 102,
+}
+

@@ -1,0 +1,54 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+
+using fb.Core;
+
+namespace fb.Venice;
+
+[ContainerType(8, 48)]
+public class ServerPerformanceEvent
+	: fb.Venice.MetricEvent
+{
+	[ContainerField(0x18), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+	public float CPUAverage { get; set; } = 0.000f;
+	
+	[ContainerField(0x1c), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+	public float CPUMemory { get; set; } = 0.000f;
+	
+	[ContainerField(0x20), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+	public uint Received { get; set; } = 0;
+	
+	[ContainerField(0x24), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+	public uint Sent { get; set; } = 0;
+	
+	[ContainerField(0x28), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+	public float ReceivedAverage { get; set; } = 0.000f;
+	
+	[ContainerField(0x2c), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+	public float SentAverage { get; set; } = 0.000f;
+	
+	public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+	{
+		base.Serialize(p_Writer, p_EbxWriter);
+		p_Writer.Write(CPUAverage);
+		p_Writer.Write(CPUMemory);
+		p_Writer.Write(Received);
+		p_Writer.Write(Sent);
+		p_Writer.Write(ReceivedAverage);
+		p_Writer.Write(SentAverage);
+	}
+}
+

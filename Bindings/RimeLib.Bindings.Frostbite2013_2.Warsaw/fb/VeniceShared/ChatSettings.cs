@@ -1,0 +1,44 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+
+using fb.Core;
+
+namespace fb.VeniceShared;
+
+[ContainerType(8, 88)]
+public class ChatSettings
+	: fb.Core.SystemSettings
+{
+	[ContainerField(0x20), JsonProperty(Order = 32)]
+	public List<ChatChannelType> Channels { get; set; } = new();
+	
+	[ContainerField(0x28), JsonProperty(Order = 40)]
+	public AntiSpamConfig AntiSpam { get; set; } = new();
+	
+	public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+	{
+		base.Serialize(p_Writer, p_EbxWriter);
+		(RimeWriter Writer, uint ArrayIndex) s_Channels = p_EbxWriter.GetArrayWriter(Channels.GetType(), Channels.Count);
+		p_Writer.Write(s_Channels.ArrayIndex);
+		foreach (var s_Entry in Channels)
+		{
+			s_Channels.Writer.Write((int) s_Entry);
+		}
+		p_Writer.WriteNullBytes(4);
+		AntiSpam.Serialize(p_Writer, p_EbxWriter);
+	}
+}
+

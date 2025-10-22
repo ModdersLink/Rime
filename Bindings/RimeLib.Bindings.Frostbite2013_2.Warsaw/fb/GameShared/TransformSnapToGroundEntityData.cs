@@ -1,0 +1,87 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+
+using fb.Core;
+using fb.Entity;
+
+namespace fb.GameShared;
+
+[ContainerType(16, 112)]
+public class TransformSnapToGroundEntityData
+	: fb.Entity.EntityData
+{
+	[ContainerField(0x18), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+	public Realm Realm { get; set; } = fb.Core.Realm.Realm_Server;
+	
+	[ContainerField(0x20), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+	public LinearTransform In { get; set; } = new()
+	{
+		trans = new()
+		{
+			z = 0.000f,
+			y = 0.000f,
+			x = 0.000f,
+		},
+		up = new()
+		{
+			z = 0.000f,
+			y = 1.000f,
+			x = 0.000f,
+		},
+		forward = new()
+		{
+			z = 1.000f,
+			y = 0.000f,
+			x = 0.000f,
+		},
+		right = new()
+		{
+			z = 0.000f,
+			y = 0.000f,
+			x = 1.000f,
+		},
+	};
+	
+	[ContainerField(0x60), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+	public float DistanceToGround { get; set; } = 0.000f;
+	
+	[ContainerField(0x64), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+	public float RayCastLength { get; set; } = 3.000f;
+	
+	[ContainerField(0x68), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+	public float RayCastUpOffset { get; set; } = 0.100f;
+	
+	[ContainerField(0x6c), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+	public bool AlignWithGroundNormal { get; set; } = false;
+	
+	[ContainerField(0x6d), LayoutImmutable, Blittable, JsonProperty(Order = 109)]
+	public bool IgnoreWater { get; set; } = true;
+	
+	public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+	{
+		base.Serialize(p_Writer, p_EbxWriter);
+		p_Writer.Write((int) Realm);
+		p_Writer.WriteNullBytes(4);
+		In.Serialize(p_Writer, p_EbxWriter);
+		p_Writer.Write(DistanceToGround);
+		p_Writer.Write(RayCastLength);
+		p_Writer.Write(RayCastUpOffset);
+		p_Writer.Write(AlignWithGroundNormal);
+		p_Writer.Write(IgnoreWater);
+		p_Writer.WriteNullBytes(2);
+	}
+}
+

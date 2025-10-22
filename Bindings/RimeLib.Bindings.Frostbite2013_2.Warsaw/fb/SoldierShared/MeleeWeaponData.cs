@@ -1,0 +1,40 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+
+using fb.Core;
+using fb.GameShared;
+
+namespace fb.SoldierShared;
+
+[ContainerType(8, 40)]
+public class MeleeWeaponData
+	: fb.GameShared.WeaponData
+{
+	[ContainerField(0x20), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+	public bool UseCannedAnimation { get; set; } = false;
+	
+	[ContainerField(0x21), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
+	public bool UseSphereDamage { get; set; } = false;
+	
+	public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+	{
+		base.Serialize(p_Writer, p_EbxWriter);
+		p_Writer.Write(UseCannedAnimation);
+		p_Writer.Write(UseSphereDamage);
+		p_Writer.WriteNullBytes(6);
+	}
+}
+

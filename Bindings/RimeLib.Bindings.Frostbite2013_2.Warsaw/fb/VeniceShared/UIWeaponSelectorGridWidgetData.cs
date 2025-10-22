@@ -1,0 +1,69 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+
+using fb.Core;
+using fb.GameShared;
+using fb.Entity;
+
+namespace fb.VeniceShared;
+
+[ContainerType(8, 168)]
+public class UIWeaponSelectorGridWidgetData
+	: fb.VeniceShared.BFUIWidgetEntityData
+{
+	[ContainerField(0x68), JsonProperty(Order = 104)]
+	public CtrRef<UIWidgetBlueprint> RowTemplate { get; set; } = new();
+	
+	[ContainerField(0x70), JsonProperty(Order = 112)]
+	public CtrRef<UIWidgetBlueprint> ItemTemplate { get; set; } = new();
+	
+	[ContainerField(0x78), JsonProperty(Order = 120)]
+	public List<string> CategoryDisplayOrder { get; set; } = new();
+	
+	[ContainerField(0x80), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+	public uint SlotPrimary { get; set; } = 0;
+	
+	[ContainerField(0x84), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+	public uint SlotSecondary { get; set; } = 1;
+	
+	[ContainerField(0x88), JsonProperty(Order = 136)]
+	public UIGridStepperConfig GridStepperConfig { get; set; } = new();
+	
+	[ContainerField(0xa0), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+	public bool UnlockEverything { get; set; } = false;
+	
+	public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+	{
+		base.Serialize(p_Writer, p_EbxWriter);
+		p_Writer.Write(p_EbxWriter.WriteImport(RowTemplate));
+		p_Writer.WriteNullBytes(4);
+		p_Writer.Write(p_EbxWriter.WriteImport(ItemTemplate));
+		p_Writer.WriteNullBytes(4);
+		(RimeWriter Writer, uint ArrayIndex) s_CategoryDisplayOrder = p_EbxWriter.GetArrayWriter(CategoryDisplayOrder.GetType(), CategoryDisplayOrder.Count);
+		p_Writer.Write(s_CategoryDisplayOrder.ArrayIndex);
+		foreach (var s_Entry in CategoryDisplayOrder)
+		{
+			s_CategoryDisplayOrder.Writer.Write(p_EbxWriter.WriteString(s_Entry));
+		}
+		p_Writer.WriteNullBytes(4);
+		p_Writer.Write(SlotPrimary);
+		p_Writer.Write(SlotSecondary);
+		GridStepperConfig.Serialize(p_Writer, p_EbxWriter);
+		p_Writer.Write(UnlockEverything);
+		p_Writer.WriteNullBytes(7);
+	}
+}
+

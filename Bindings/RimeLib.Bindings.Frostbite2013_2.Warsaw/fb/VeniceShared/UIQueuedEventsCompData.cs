@@ -1,0 +1,40 @@
+///////////////////////////////////////////////////////////////
+//                                                           //
+// This is an automatically generated file.                  //
+// Do *NOT* modify unless you really know what you're doing. //
+//                                                           //
+///////////////////////////////////////////////////////////////
+
+using System;
+using System.IO;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using RimeLib.IO;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization.Attributes;
+using RimeLib.Serialization;
+
+using fb.Core;
+using fb.UI;
+
+namespace fb.VeniceShared;
+
+[ContainerType(8, 56)]
+public class UIQueuedEventsCompData
+	: fb.UI.UIComponentData
+{
+	[ContainerField(0x30), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+	public float InitialQueueDelay { get; set; } = 0.000f;
+	
+	[ContainerField(0x34), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+	public bool ShowUnlocksBecomingAvailable { get; set; } = false;
+	
+	public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
+	{
+		base.Serialize(p_Writer, p_EbxWriter);
+		p_Writer.Write(InitialQueueDelay);
+		p_Writer.Write(ShowUnlocksBecomingAvailable);
+		p_Writer.WriteNullBytes(3);
+	}
+}
+
