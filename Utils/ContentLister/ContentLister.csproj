@@ -21,7 +21,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\RimeLib.Content.Frostbite2013_2\RimeLib.Content.Frostbite2013_2.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content.Frostbite2014_4\RimeLib.Content.Frostbite2014_4.csproj" />
-    <ProjectReference Include="..\..\RimeLib.Content.Frostbite2021_1\RimeLib.Content.Frostbite2021_1.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj" />
     <ProjectReference Include="..\..\RimeLib.Content\RimeLib.Content.csproj" />
   </ItemGroup>
