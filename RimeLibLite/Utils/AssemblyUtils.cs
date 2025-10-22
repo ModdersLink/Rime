@@ -18,6 +18,12 @@ namespace RimeLib.Utils
 
             return LoadAssembly(s_SupportAssembly);
         }
+        
+        public static bool LoadBindingAssembly(EngineType p_Engine, string p_GameName)
+        {
+            var s_BindingsAssembly = $"RimeLib.Bindings.{p_Engine}.{p_GameName}";
+            return LoadAssembly(s_BindingsAssembly);
+        }
 
         public static string? GetAssemblyPath(string p_Name)
         {
