@@ -33,14 +33,12 @@ public class CtrRef<T> : CtrRefBase where T : DataContainerBase
 
 public class CtrRefBase
 {
-    public GUID PartitionGuid { get; private set; }
+    public GUID PartitionGuid { get; private set; } = Guid.Empty;
 
-    public DataContainerId InstanceId { get; private set; }
+    public DataContainerId InstanceId { get; private set; } = new DataContainerId.Guid(GUID.Empty);
 
     public CtrRefBase()
     {
-        PartitionGuid = GUID.Empty;
-        InstanceId = new DataContainerId.Guid(GUID.Empty);
     }
 
     public CtrRefBase(GUID p_PartitionGuid, DataContainerId p_InstanceId)

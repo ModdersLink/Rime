@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace RimeLib.Serialization.Frostbite2_0.Ebx;
+namespace RimeLib.Serialization;
 
 public class RefArray<T> : List<CtrRef<T>>
     where T : DataContainerBase
