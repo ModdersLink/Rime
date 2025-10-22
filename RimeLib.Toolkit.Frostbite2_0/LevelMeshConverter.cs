@@ -1,6 +1,8 @@
 using System.Numerics;
 using fb;
 using RimeLib.Content.Mounting;
+using RimeLib.Havok.Frostbite2_0;
+using RimeLib.IO;
 using RimeLib.Math;
 using RimeLib.Mesh;
 using RimeLib.Serialization;
@@ -360,14 +362,6 @@ public class LevelMeshConverter
 
     private void HandleStaticModelGroupEntity(StaticModelGroupEntityData p_Data, TextWriter p_Writer)
     {
-        /*(Vector4 rotation, Vector3 position)[] s_List = SubwayTransforms.mp_subway_transforms;
-
-        for (var s_Index = 0; s_Index < p_Data.MemberDatas.Count; s_Index++)
-        {
-            var s_MemberData = p_Data.MemberDatas[s_Index];
-        }*/
-
-        /*
         // Get the physics data
         var s_PhysicsData = p_Data.PhysicsData.Get();
         if (s_PhysicsData is null)
@@ -401,8 +395,6 @@ public class LevelMeshConverter
 
         //File.WriteAllBytes("physics.bin", s_ResourceReader.ReadBytes((int)s_ResourceReader.Length));
 
-        throw new NotImplementedException();
-
         foreach (var s_MemberData in p_Data.MemberDatas)
         {
             var s_MeshEntityType = s_MemberData.MeshEntityType.Get();
@@ -421,7 +413,7 @@ public class LevelMeshConverter
                 case RigidMeshEntityData s_RigidMeshEntityData:
                     break;
             }
-        }*/
+        }
     }
 
     internal bool ExportLevelMesh(string p_LevelPartitionName, out SceneBuilder? p_OutSceneBuilder, FileInfo? p_HavokTransforms = null)

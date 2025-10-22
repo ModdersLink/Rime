@@ -291,12 +291,18 @@ public class HavokPhysicsData : IFbSerializable
                         for (var s_EntryIndex = 0; s_EntryIndex < s_ExtendedMeshHeader.IndexCount; s_EntryIndex++)
                         {
                             var s_ExtendedMeshEntry = new  hkExtendedMeshEntry(p_Reader);
+
+                            Console.WriteLine(
+                                $"Transform: {s_ExtendedMeshEntry.Transform.X}, {s_ExtendedMeshEntry.Transform.Y}, {s_ExtendedMeshEntry.Transform.Z}");
+                            
                         }
                     }
                     else
                     {
+                        var s_Root = new hkxRoot(p_Reader);
+                        
                         // What do we even do with this information????
-                        var s_Vec4 = new Vec4
+                        /*var s_Vec4 = new Vec4
                         {
                             x = p_Reader.ReadSingle(),
                             y = p_Reader.ReadSingle(),
@@ -304,7 +310,7 @@ public class HavokPhysicsData : IFbSerializable
                             w = p_Reader.ReadSingle()
                         };
 
-                        s_Vecs.Add(s_Vec4);
+                        s_Vecs.Add(s_Vec4);*/
                     }
                     
                     p_Reader.Seek(s_Offset, SeekOrigin.Begin);
@@ -332,112 +338,6 @@ public class HavokPhysicsData : IFbSerializable
         LoadedDatas = new LoadedData();
     }
     
-    /*public HavokPhysicsData(
-        RimeReader p_Reader,
-        int p_ResourceHeaderSize,
-        int p_HavokDataSize32,
-        int p_HavokDataSize64,
-        int p_FixupTableSize
-    )
-    {
-        var s_StartPos = p_Reader.Position;
-        PartCount = p_Reader.ReadUInt32();
-
-        // Manually parse this out until we can fix the hack
-        var s_PartTranslationsCount = p_Reader.ReadUInt32();
-        var s_PartTranslationsOffset = p_Reader.ReadInt64();
-
-        var s_Position = p_Reader.Position;
-        p_Reader.Seek(s_PartTranslationsOffset, SeekOrigin.Begin);
-        for (var i = 0; i < s_PartTranslationsCount; i++)
-        {
-            PartTranslations.Add(new Vec3
-            {
-                x = p_Reader.ReadSingle(),
-                y = p_Reader.ReadSingle(),
-                z = p_Reader.ReadSingle(),
-            });
-            // Vec3 has padding
-            p_Reader.ReadSingle();
-        }
-        p_Reader.Seek(s_Position, SeekOrigin.Begin);
-
-        // PartTranslations = new RelocArray<Vec3>(p_Reader);
-
-        var s_LocalAabbsCount = p_Reader.ReadUInt32();
-        var s_LocalAabbsOffset = p_Reader.ReadInt64();
-
-        s_Position = p_Reader.Position;
-        p_Reader.Seek(s_LocalAabbsOffset, SeekOrigin.Begin);
-        for (var i = 0; i < s_LocalAabbsCount; i++)
-        {
-            var s_Min = new Vec3
-            {
-                x = p_Reader.ReadSingle(),
-                y = p_Reader.ReadSingle(),
-                z = p_Reader.ReadSingle()
-            };
-            p_Reader.ReadSingle();
-
-            var s_Max = new Vec3
-            {
-                x = p_Reader.ReadSingle(),
-                y = p_Reader.ReadSingle(),
-                z = p_Reader.ReadSingle()
-            };
-            p_Reader.ReadSingle();
-
-            LocalAabbs.Add(new AxisAlignedBox
-            {
-                min = s_Min,
-                max = s_Max,
-            });
-        }
-        p_Reader.Seek(s_Position,SeekOrigin.Begin);
-
-        // LocalAabbs = new RelocArray<AxisAlignedBox>(p_Reader);
-
-        var s_MaterialIndicesCount = p_Reader.ReadUInt32();
-        var s_MaterialIndicesOffset = p_Reader.ReadInt64();
-
-        s_Position = p_Reader.Position;
-        p_Reader.Seek(s_MaterialIndicesOffset, SeekOrigin.Begin);
-        for (var i = 0; i < s_MaterialIndicesCount; i++)
-            MaterialIndices.Add(p_Reader.ReadUByte());
-
-        p_Reader.Seek(s_Position, SeekOrigin.Begin);
-
-        // MaterialIndices = new RelocArray<byte>(p_Reader);
-
-        var s_MaterialFlagAndIndicesCount = p_Reader.ReadUInt32();
-        var s_MateiralFlagAndIndciesOffset = p_Reader.ReadInt64();
-        s_Position = p_Reader.Position;
-        p_Reader.Seek(s_MateiralFlagAndIndciesOffset, SeekOrigin.Begin);
-        for (var i = 0; i < s_MaterialFlagAndIndicesCount; ++i)
-            MaterialFlagsAndIndices.Add(p_Reader.ReadUInt32());
-
-        p_Reader.Seek(s_Position, SeekOrigin.Begin);
-
-        // MaterialFlagsAndIndices = new RelocArray<uint>(p_Reader);
-
-        Scale = p_Reader.ReadSingle();
-        MaterialCountUsed = p_Reader.ReadUByte();
-        HighestMaterialIndex = p_Reader.ReadUByte();
-        Padding = p_Reader.ReadUInt16();
-
-        p_Reader.Seek(
-            s_StartPos + p_ResourceHeaderSize + p_HavokDataSize32 + p_HavokDataSize64,
-            SeekOrigin.Begin
-        );
-
-        var s_FixupTable = p_Reader.ReadBytes(p_FixupTableSize);
-        using var s_FixupTableReader = new RimeReader(new MemoryStream(s_FixupTable));
-
-        p_Reader.Seek(s_StartPos + p_ResourceHeaderSize, SeekOrigin.Begin);
-        using var s_Havok32Reader = new LimitedRimeReader(p_Reader, p_HavokDataSize32, false);
-
-        HkPackfile = new HkPackfileHeader(s_Havok32Reader, s_FixupTableReader);
-    }*/
     public bool Serialize(RimeWriter p_Writer)
     {
         throw new NotImplementedException();
