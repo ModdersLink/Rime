@@ -5,8 +5,15 @@
     <Nullable>enable</Nullable>
     <Platforms>AnyCPU</Platforms>
     <Configurations>Release;Debug</Configurations>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>default</LangVersion>
+    <OutputPath>$(SolutionDir)/bin/$(Configuration)</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
   </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
+  </ItemGroup>
 
 </Project>

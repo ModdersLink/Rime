@@ -30,8 +30,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 Path = p_Descriptor.BundleName,
                 ResourceEntries = new CasBundle.Resource[p_Descriptor.Resources.Count],
                 EbxEntries = new CasBundle.Ebx[p_Descriptor.Partitions.Count],
-                ChunkEntries = new CasBundle.Chunk[p_Descriptor.Chunks.Count],
-                ChunkMeta = new ChunkEntry.ChunkMetaEntry[p_Descriptor.Chunks.Count] // NOTE: This matches the amount of chunk entries
+                ChunkEntries = p_Descriptor.Chunks.Count != 0 ? new CasBundle.Chunk[p_Descriptor.Chunks.Count] : null,
+                ChunkMeta = p_Descriptor.Chunks.Count != 0 ? new ChunkEntry.ChunkMetaEntry[p_Descriptor.Chunks.Count] : null, // NOTE: This matches the amount of chunk entries
             };
         }
 

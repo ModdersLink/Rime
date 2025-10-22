@@ -38,10 +38,11 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             // Set basic layout properties.
             m_Toc.Layout.Name = p_Descriptor.SuperbundleName;
-            m_Toc.Layout.Tag = Guid.NewGuid();
-            m_Toc.Layout.AlwaysEmitSuperbundle = true;
+            m_Toc.Layout.AlwaysEmitSuperbundle = !p_Descriptor.Cas;
             if (p_Descriptor.Cas)
                 m_Toc.Layout.Cas = p_Descriptor.Cas;
+            else
+                m_Toc.Layout.Tag = Guid.NewGuid();
 
 
             // TODO: UNFUCK THIS, THIS IS AWFUL.
@@ -55,11 +56,12 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     // Create a new DbObject
                     var s_CasBundle = new CasBundle
                     {
-                        Path = p_Descriptor.BundleName,
+                        MagicSalt = 2047996331, // TODO: figure out how to set this the proper way.
+                        Path = p_Descriptor.BundleName.ToLowerInvariant(),
                         ResourceEntries = new CasBundle.Resource[p_Descriptor.Resources.Count],
                         EbxEntries = new CasBundle.Ebx[p_Descriptor.Partitions.Count],
-                        ChunkEntries = new CasBundle.Chunk[p_Descriptor.Chunks.Count],
-                        ChunkMeta = new ChunkEntry.ChunkMetaEntry[p_Descriptor.Chunks.Count] // NOTE: This matches the amount of chunk entries
+                        ChunkEntries = p_Descriptor.Chunks.Count != 0 ? new CasBundle.Chunk[p_Descriptor.Chunks.Count] : null,
+                        ChunkMeta = p_Descriptor.Chunks.Count != 0 ? new ChunkEntry.ChunkMetaEntry[p_Descriptor.Chunks.Count] : null, // NOTE: This matches the amount of chunk entries
                     };
 
                     for (var s_ResourceIndex = 0; s_ResourceIndex < p_Descriptor.Resources.Count; s_ResourceIndex++)
@@ -72,7 +74,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         if (s_ResourceVariant is null)
                             throw new Exception("broke");
 
-                        var s_Readable = (CatalogReadable)s_ResourceVariant.GetReadable();
+                        var s_Readable = s_ResourceVariant.GetReadable();
                         // Get the metadata (if it exists)
                         var s_ResourceMetadata = new byte[0];
                         if (s_ResourceObject.TryGetMeta(out var s_MetaData))
@@ -81,18 +83,21 @@ namespace RimeLib.Content.Frostbite2_0.Building
                             s_ResourceMetadata = s_MetaData;
                         }
 
+                        var s_CompressedSize = (s_Readable is CatalogReadable ? ((CatalogReadable)s_Readable).GetCompressedSize() : ((InlineReadable)s_Readable).GetCompressedSize());
+
                         s_CasBundle.ResourceEntries[s_ResourceIndex] = new CasBundle.Resource
                         {
                             Name = s_ResourceName,
                             ResourceType = (int)s_ResourceObject.GetResourceType(),
-                            Hash = s_Readable.GetCompressedHash(),
+                            Hash = (s_Readable is CatalogReadable ? ((CatalogReadable)s_Readable).GetCompressedHash() : ((InlineReadable)s_Readable).GetCompressedHash()),
                             Meta = s_ResourceMetadata,
-                            Size = s_Readable.GetCompressedSize(),
-                            OriginalSize = s_Readable.GetSize()
+                            Size = s_CompressedSize,
+                            OriginalSize = s_Readable.GetSize(),
+                            InlineData = (s_Readable is InlineReadable ? ((InlineReadable)s_Readable).GetCompressedData() : null)
                         };
 
                         // Update the total size
-                        s_CasBundle.TotalSize += s_ResourceObject.GetSize();
+                        s_CasBundle.TotalSize += s_CompressedSize;
                     }
 
 
@@ -105,7 +110,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         var s_ChunkId = s_ChunkPair.Key;
                         var s_ChunkObject = s_ChunkPair.Value;
 
-                        var s_Readable = (CatalogReadable)((ObjectVariant)s_ChunkObject).GetReadable();
+                        var s_Readable = ((ObjectVariant)s_ChunkObject).GetReadable();
 
                         //using var s_ChunkReader = s_ChunkObject.GetReader();
 
@@ -113,15 +118,26 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                         //var s_ChunkHash = Sha1.FromData(s_DecompressedData);
 
+                        var s_ReadableSize = (s_Readable is CatalogReadable ? ((CatalogReadable)s_Readable).GetCompressedSize() : ((InlineReadable)s_Readable).GetCompressedSize());
+
+                        var s_RangeStart = (int)s_ChunkObject.GetRangeStart();
+                        var s_RangeEnd = s_RangeStart + (int)s_ReadableSize;
+                        var s_LogicalOffset = (int)s_ChunkObject.GetLogicalOffset();
+                        var s_ShouldWriteEntry = s_RangeStart != 0 || s_Readable is InlineReadable;
+
                         s_CasBundle.ChunkEntries[s_ChunkIndex] = new CasBundle.Chunk
                         {
                             Id = s_ChunkId,
-                            Hash = s_Readable.GetCompressedHash(),
-                            Size = s_Readable.GetCompressedSize()
+                            Hash = (s_Readable is CatalogReadable ? ((CatalogReadable)s_Readable).GetCompressedHash() : ((InlineReadable)s_Readable).GetCompressedHash()),
+                            Size = s_ReadableSize,
+                            RangeStart = s_ShouldWriteEntry ? s_RangeStart : null,
+                            RangeEnd = s_ShouldWriteEntry ? s_RangeEnd : null,
+                            LogicalOffset = s_ShouldWriteEntry ? s_LogicalOffset : null,
+                            InlineData = (s_Readable is InlineReadable ? ((InlineReadable)s_Readable).GetCompressedData() : null)
                         };
 
                         // Update totalSize
-                        s_CasBundle.TotalSize += s_Readable.GetCompressedSize();
+                        s_CasBundle.TotalSize += s_ReadableSize;
 
                         // Copy the chunk meta if it exists
                         if (s_ChunkObject.TryGetMeta(out DbObject? s_MetaData))
@@ -156,23 +172,27 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         var s_PartitionName = s_PartitionPair.Key;
                         var s_PartitionObject = s_PartitionPair.Value;
 
+
+                        var s_Readable = ((ObjectVariant)s_PartitionObject).GetReadable();
+
                         var s_PartitionReader = s_PartitionObject.GetReader();
                         var s_PartitionData = s_PartitionReader.ReadBytes((int)s_PartitionReader.Length);
 
-                        var s_ParititionSize = s_PartitionObject.GetSize();
+                        var s_PartitionSize = s_PartitionObject.GetSize();
 
                         var s_PartitionHash = Sha1.FromData(s_PartitionData);
 
                         s_CasBundle.EbxEntries[s_PartitionIndex] = new CasBundle.Ebx
                         {
                             Name = s_PartitionName,
-                            Size = s_ParititionSize,
-                            OriginalSize = s_ParititionSize, // TODO: Investigate are these the same
-                            Hash = s_PartitionHash
+                            Size = s_PartitionSize,
+                            OriginalSize = s_PartitionSize, // TODO: Investigate are these the same
+                            Hash = s_PartitionHash,
+                            InlineData = (s_Readable is InlineReadable ? ((InlineReadable)s_Readable).GetCompressedData() : null)
                         };
 
                         // Update totalSize
-                        s_CasBundle.TotalSize += s_ParititionSize;
+                        s_CasBundle.TotalSize += s_PartitionSize;
                     }
 
                     return DbObjectConverter.ToDbObject(s_CasBundle);
@@ -194,13 +214,15 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                     var s_BundleInfo = new BundleInfo
                     {
-                        Id = s_Pair.Key,
+                        Id = s_Pair.Value.BundleName,
                         Offset = s_GenPos,
                         Size = 0,               // This will get updated later
                         Checksum = new Sha1(),  // This will get updated later
                     };
 
-                    var s_ObjectData = s_Object.Serialize();
+                    var s_FullObject = new DbObject();
+                    s_FullObject.AddElement(s_AnonDbObjectElement);
+                    var s_ObjectData = s_FullObject.Serialize();
 
                     // Calculate Size
                     s_BundleInfo.Size = s_ObjectData.Length;

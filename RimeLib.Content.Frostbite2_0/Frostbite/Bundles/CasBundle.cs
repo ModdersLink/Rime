@@ -13,12 +13,6 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             [DbObjectField("name")]
             public string Name { get; set; } = "";
             
-            [DbObjectField("resType")]
-            public int ResourceType { get; set; }
-            
-            [DbObjectField("resMeta")]
-            public byte[] Meta { get; set; } = Array.Empty<byte>();
-            
             [DbObjectField("sha1")]
             public Sha1 Hash { get; set; } = new Sha1();
 
@@ -27,6 +21,12 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
             [DbObjectField("originalSize")]
             public long? OriginalSize { get; set; }
+            
+            [DbObjectField("resType")]
+            public int ResourceType { get; set; }
+            
+            [DbObjectField("resMeta")]
+            public byte[] Meta { get; set; } = Array.Empty<byte>();
             
             [DbObjectField("idata")]
             public byte[]? InlineData { get; set; } = null;
@@ -75,10 +75,19 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             
             [DbObjectField("sha1")]
             public Sha1 Hash { get; set; } = new Sha1();
-            
+
             [DbObjectField("size")]
             public long Size { get; set; }
-            
+
+            [DbObjectField("rangeStart")]
+            public int? RangeStart { get; set; }
+
+            [DbObjectField("rangeEnd")]
+            public int? RangeEnd { get; set; }
+
+            [DbObjectField("logicalOffset")]
+            public int? LogicalOffset { get; set; }
+
             [DbObjectField("idata")]
             public byte[]? InlineData { get; set; } = null;
         }
@@ -99,10 +108,10 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         public Resource[] ResourceEntries { get; set; } = Array.Empty<Resource>();
 
         [DbObjectField("chunks")]
-        public Chunk[] ChunkEntries { get; set; } = Array.Empty<Chunk>();
+        public Chunk[]? ChunkEntries { get; set; } = null;
 
         [DbObjectField("chunkMeta")]
-        public ChunkEntry.ChunkMetaEntry[] ChunkMeta { get; set; } = Array.Empty<ChunkEntry.ChunkMetaEntry>();
+        public ChunkEntry.ChunkMetaEntry[]? ChunkMeta { get; set; } = null;
 
         [DbObjectField("alignMembers", DefaultValue = true)]
         public bool AlignMembers { get; set; } = true;

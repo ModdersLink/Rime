@@ -1,18 +1,32 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <LangVersion>default</LangVersion>
     <Nullable>enable</Nullable>
     <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
-    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <Platforms>AnyCPU</Platforms>
     <Configurations>Release;Debug</Configurations>
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="SharpGLTF.Toolkit" Version="1.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj" />
     <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="SharpGLTF.Core">
+      <HintPath>..\..\..\.nuget\packages\sharpgltf.core\1.0.5\lib\net8.0\SharpGLTF.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpGLTF.Toolkit">
+      <HintPath>..\..\..\.nuget\packages\sharpgltf.toolkit\1.0.5\lib\net8.0\SharpGLTF.Toolkit.dll</HintPath>
+    </Reference>
   </ItemGroup>
 
 </Project>

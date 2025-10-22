@@ -64,11 +64,11 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Sb
         [DbObjectField("chunks")]
         public ChunkInfo[] Chunks { get; set; } = new ChunkInfo[0];
 
-        [DbObjectField("name")]
-        public string? Name { get; set; }
-
         [DbObjectField("cas")]
         public bool? Cas { get; set; }
+
+        [DbObjectField("name")]
+        public string? Name { get; set; }
 
         [DbObjectField("alwaysEmitSuperbundle")]
         public bool? AlwaysEmitSuperbundle { get; set; }

@@ -1,0 +1,36 @@
+//------------------------------------------------
+//--- 010 Editor v8.0 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    LONG Version;
+    LONG Type;
+    LONG Format;
+    LONG Flags;
+    SHORT Height;
+    SHORT Width;
+    SHORT Depth;
+    SHORT SliceCount;
+    SHORT Unused1;
+    BYTE MipMapCount;
+    BYTE MipmapBaseIndex;
+    BYTE StreamingChunkId[16];
+    local ULONG ulIndex=0;
+    for (ulIndex=0; ulIndex < 15; ulIndex++) {
+        UINT32 Size;
+    }
+    UINT32 MipMapChanSize;
+    UINT32 ResourceNameHash;
+    CHAR TextureGroup[16];
+} Header;
+
+Header header;

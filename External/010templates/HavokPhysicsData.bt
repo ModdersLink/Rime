@@ -1,0 +1,113 @@
+//------------------------------------------------
+//--- 010 Editor v16.0.2 Script File
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+//   History: 
+//------------------------------------------------
+
+// Switch to LE
+LittleEndian();
+
+int64 round_up(int64 pos, int64 align)
+{
+    return (pos + (align - 1)) & ~(align - 1);
+}
+
+typedef struct
+{
+    float x;
+    float y;
+    float z;
+    float _pad;
+} Vec3;
+
+typedef struct
+{
+    Vec3 min;
+    Vec3 max;
+} AxisAlignedBox;
+
+
+typedef struct
+{
+    uint count;
+    int64 offset;
+    Vec3 data[count] <pos=offset>;
+} RelocArray_Vec3;
+
+typedef struct 
+{
+    uint count;
+    int64 offset;
+    AxisAlignedBox data[count] <pos=offset>;
+} RelocArray_AxisAlignedBox;
+
+typedef struct 
+{
+    uint count;
+    int64 offset;
+    byte data[count] <pos=offset>;
+} RelocArray_Byte;
+
+typedef struct
+{
+    uint count;
+    int64 offset;
+    uint data[count] <pos=offset>;
+} RelocArray_UInt;
+
+typedef struct
+{
+    uint partCount;
+    RelocArray_Vec3 partTranslations;
+    RelocArray_AxisAlignedBox localAabbs;
+    RelocArray_Byte materialIndices;
+    RelocArray_UInt materalFlagsAndIndices;
+    float scale;
+    byte materialCountUsed;
+    byte highestMaterialIndex;
+    byte padding[2];
+} PhysicsEntityData;
+
+PhysicsEntityData data;
+
+// Keep a local variable for the calculated offset of the hk* structure
+local int64 offset = 0;
+
+// If we have any part translations, calculate the size and add to our offset
+if (data.partTranslations.count != 0)
+{
+    offset += sizeof(data.partTranslations.data);
+    offset = round_up(offset, 16);
+}
+
+// If we have any local aabbs, calculate the size and add to our offset
+if (data.localAabbs.count != 0)
+{
+    offset += sizeof(data.localAabbs.data);
+    offset = round_up(offset, 16);
+}
+
+// If we have any material indices, calculate the size and add to our offset
+if (data.materialIndices.count != 0)
+{
+    offset += sizeof(data.materialIndices.data);
+    offset = round_up(offset, 16);
+}
+
+// If we have any material flags and indicies, calculate the size and add to our offset
+if (data.materalFlagsAndIndices.count != 0)
+{
+    offset += sizeof(data.materalFlagsAndIndices.data);
+    offset = round_up(offset, 16);
+}
+
+// Add the size of our header to the offset, and round up to the nearest 16b
+offset += sizeof(data);
+offset = round_up(offset, 16);
+
+Printf("Havok Start Offset: %d\n", offset);

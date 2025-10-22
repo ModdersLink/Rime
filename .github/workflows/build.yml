@@ -2,7 +2,7 @@ name: build
 
 on:
   push:
-    branches: [ master ]
+    branches: [ master, development ]
 
 env:
   DOTNET_VERSION: '8.0' # The .NET SDK version to use
@@ -13,9 +13,9 @@ jobs:
     runs-on: windows-latest
 
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v5
     - name: Setup .NET Core
-      uses: actions/setup-dotnet@v1
+      uses: actions/setup-dotnet@v4
       with:
         dotnet-version: ${{ env.DOTNET_VERSION }}
 
@@ -27,7 +27,7 @@ jobs:
         dotnet publish .\RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj -c Release -o ./dist -r win-x64 --self-contained true /p:UseAppHost=true
 
     - name: Archive
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: Rime-win-x64
         path: |

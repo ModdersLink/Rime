@@ -8,8 +8,11 @@ using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
+using RimeLib.Mesh;
 using RimeLib.Serialization;
 using RimeLib.Texture;
+using RimeLib.Toolkit;
+using SharpGLTF.Schema2;
 
 namespace RimeLib.Cmd.Contexts
 {
@@ -58,6 +61,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<DumpPartitionJsonCommand>();
             RegisterCommand<DumpTextureCommand>();
+            RegisterCommand<DumpMeshCommand>();
+            RegisterCommand<DumpLevelMeshesCommand>();
         }
 
         public override string GetShortDescription()
@@ -244,7 +249,7 @@ namespace RimeLib.Cmd.Contexts
                 Directory.CreateDirectory(p_Destination.Directory.FullName);
 
             var s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(m_Mounter.GetEngineType());
-      
+
             var s_FileStream = File.Create(p_Destination.FullName);
             using var s_Writer = new RimeWriter(s_FileStream);
 
@@ -344,6 +349,104 @@ namespace RimeLib.Cmd.Contexts
         internal IReadOnlyDictionary<string, IMountedObject<IResourceVariant>> GetMountedResourceVariations()
         {
             return m_Mounter.GetResources();
+        }
+
+        /// <summary>
+        /// Dumps a specified mesh in a specific format
+        /// </summary>
+        /// <param name="p_Type">Output mesh type (gltf, obj, etc.)</param>
+        /// <param name="p_Name">Name of the MeshSet resource</param>
+        /// <param name="p_Destination">Output file destination</param>
+        /// <exception cref="NotImplementedException">If the format isn't supported</exception>
+        internal void DumpMesh(MeshConverterType p_Type, string p_Name, FileInfo p_Destination)
+        {
+            // Get all resources
+            var s_Resources = m_Mounter.GetResources();
+
+            // Filter out by name
+            var s_MeshResources = s_Resources.Where(p_Resource => p_Resource.Key == p_Name);
+
+            // Iterate over all results
+            foreach (var s_MeshResource in s_MeshResources)
+            {
+                // Get the name of the mesh
+                var s_Name = s_MeshResource.Key;
+
+                // Get the resource
+                var s_Resource = s_MeshResource.Value;
+
+                // Get the variant
+                var s_Variant = s_Resource.FirstVariant;
+
+                // Sanity check
+                if (s_Variant.GetResourceType() != ResourceType.MeshSet)
+                    continue;
+
+                // Create a new mesh converter
+                var s_Converter = EngineInterfaceRegistry.Create<IMeshConverter>(m_Mounter.GetEngineType());
+
+                switch (p_Type)
+                {
+                    case MeshConverterType.Gltf:
+                        s_Converter.ConvertToGltf(s_Variant, m_Mounter, p_Destination.FullName);
+                        break;
+                    case MeshConverterType.Glb:
+                        s_Converter.ConvertToGlb(s_Variant, m_Mounter, p_Destination.FullName);
+                        break;
+                    case MeshConverterType.Obj:
+                        s_Converter.ConvertToObj(s_Variant, m_Mounter, p_Destination.FullName);
+                        break;
+                    case MeshConverterType.BlenderScript:
+                    default:
+                        throw new NotImplementedException($"Unknown mesh converter type '{p_Type}'.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="p_Format"></param>
+        /// <param name="p_LevelPartition"></param>
+        /// <param name="p_OutputDestination"></param>
+        /// <param name="p_InputTransforms"></param>
+        /// <param name="p_Writer"></param>
+        /// <exception cref="NotImplementedException"></exception>
+        internal void DumpLevelMesh(MeshConverterType p_Format, string p_LevelPartition, FileInfo p_OutputDestination, FileInfo? p_InputTransforms, TextWriter p_Writer)
+        {
+            var s_Toolkit = EngineInterfaceRegistry.Create<IToolKit>(m_Mounter.GetEngineType());
+
+            if (!s_Toolkit.Initialize(m_Mounter, p_Writer))
+            {
+                p_Writer.WriteLine($"Failed to initialize toolkit.");
+                return;
+            }
+
+            if (!s_Toolkit.ConvertLevelMesh(p_LevelPartition, out var s_SceneBuilder))
+            {
+                p_Writer.WriteLine($"Failed to convert level mesh.");
+                return;
+            }
+
+            var s_Model = s_SceneBuilder!.ToGltf2();
+            
+            switch (p_Format)
+            {
+                case MeshConverterType.Gltf:
+                    s_Model.SaveGLTF(p_OutputDestination.FullName, new WriteSettings() { JsonIndented = true });
+                    break;
+                case MeshConverterType.Glb:
+                    s_Model.SaveGLB(p_OutputDestination.FullName, new WriteSettings {  JsonIndented = true });
+                    break;
+                case  MeshConverterType.Obj:
+                    s_Model.SaveAsWavefront(p_OutputDestination.FullName);
+                    break;
+                default:
+                    p_Writer.WriteLine($"Failed to convert level mesh, unsupported format '{p_Format}'.");
+                    return;
+            }
+
+            p_Writer.WriteLine($"Level converted to {p_Format} at {p_OutputDestination.FullName}.");
         }
     }
 }

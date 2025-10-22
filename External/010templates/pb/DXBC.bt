@@ -1,0 +1,22 @@
+//------------------------------------------------
+//--- 010 Editor v8.0 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    byte Magic[4];
+    byte Checksum[16];
+    int32 Sanity;
+    int32 size;
+    int ChunkCount;
+} Header;
+
+Header h;

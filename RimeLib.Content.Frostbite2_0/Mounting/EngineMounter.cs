@@ -191,8 +191,11 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         {
             if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
             {
-                foreach (var s_Chunk in s_CasBundle.Bundle.ChunkEntries)
-                    yield return s_Chunk.Id;
+                if (s_CasBundle.Bundle.ChunkEntries is not null)
+                {
+                    foreach (var s_Chunk in s_CasBundle.Bundle.ChunkEntries)
+                        yield return s_Chunk.Id;
+                }
             }
             else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
             {
@@ -205,8 +208,10 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         {
             if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
             {
-                for (int i = 0; i < s_CasBundle.Bundle.ChunkEntries.Length; i++)
-                    yield return (s_CasBundle.Bundle.ChunkEntries[i].Id, s_CasBundle.Bundle.ChunkMeta[i].AssetNameHash);
+                if (s_CasBundle.Bundle.ChunkEntries is not null) {
+                    for (int i = 0; i < s_CasBundle.Bundle.ChunkEntries.Length; i++)
+                        yield return (s_CasBundle.Bundle.ChunkEntries[i].Id, s_CasBundle.Bundle.ChunkMeta[i].AssetNameHash);
+                }
             }
             else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
             {
@@ -726,7 +731,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             {
                 // Create variant. Prefer catalog instead of inline. ContainsEntry seems expensive
                 IReadableObjectWithHash? s_Readable = null;
-                if (s_Resource.InlineData != null && !m_Catalog.ContainsEntry(s_Resource.Hash))
+                if (s_Resource.InlineData != null)
                     s_Readable = new InlineReadable(s_Resource.InlineData, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size);
                 else
                     s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size);
@@ -752,34 +757,38 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             }
 
             // Mount all chunks.
-            for (var i = 0; i < p_Bundle.Bundle.ChunkEntries.Length; i++)
-            {
-                var s_Chunk = p_Bundle.Bundle.ChunkEntries[i];
-                DbObject? s_Meta = null;
-
-                // If we have any meta, set it.
-                if (p_Bundle.Bundle.ChunkMeta.Length > i)
-                    s_Meta = DbObjectConverter.ToDbObject(p_Bundle.Bundle.ChunkMeta[i]);
-
-                // Create variant. Prefer catalog instead of inline. ContainsEntry seems expensive
-                IReadableObjectWithHash? s_Readable = null;
-                if (s_Chunk.InlineData != null && !m_Catalog.ContainsEntry(s_Chunk.Hash))
-                    s_Readable = new InlineReadable(s_Chunk.InlineData, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
-                else 
-                    s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
-                
-                var s_Variant = new ChunkVariant(s_Readable, 0, 0, s_Meta, p_Bundle.ContainedSuperbundle.Name,
-                    p_Bundle.Bundle.Path);
-
-                // Mount.
-                var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant, s_Chunk.Id.ToString());
-
-                m_MountedChunks.AddOrUpdate(s_Chunk.Id, s_MountedObject, (p_GUID, p_MountedObject) =>
+            if (p_Bundle.Bundle.ChunkEntries is not null) {
+                for (var i = 0; i < p_Bundle.Bundle.ChunkEntries.Length; i++)
                 {
-                    // If this was already mounted, just add the variant.
-                    p_MountedObject.AddVariant(s_Variant);
-                    return p_MountedObject;
-                });
+                    var s_Chunk = p_Bundle.Bundle.ChunkEntries[i];
+                    DbObject? s_Meta = null;
+
+                    // If we have any meta, set it.
+                    if (p_Bundle.Bundle.ChunkMeta.Length > i)
+                        s_Meta = DbObjectConverter.ToDbObject(p_Bundle.Bundle.ChunkMeta[i]);
+
+                    // Create variant. Prefer catalog instead of inline. ContainsEntry seems expensive
+                    IReadableObjectWithHash? s_Readable = null;
+                    if (s_Chunk.InlineData != null)
+                        s_Readable = new InlineReadable(s_Chunk.InlineData, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
+                    else 
+                        s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
+
+                    var s_RangeStart = s_Chunk.RangeStart is not null ? (uint)s_Chunk.RangeStart : 0;
+                    var s_LogicalOffset = s_Chunk.LogicalOffset is not null ? (uint)s_Chunk.LogicalOffset : 0;
+                    var s_Variant = new ChunkVariant(s_Readable, s_RangeStart, s_LogicalOffset, s_Meta, p_Bundle.ContainedSuperbundle.Name,
+                        p_Bundle.Bundle.Path);
+
+                    // Mount.
+                    var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant, s_Chunk.Id.ToString());
+
+                    m_MountedChunks.AddOrUpdate(s_Chunk.Id, s_MountedObject, (p_GUID, p_MountedObject) =>
+                    {
+                        // If this was already mounted, just add the variant.
+                        p_MountedObject.AddVariant(s_Variant);
+                        return p_MountedObject;
+                    });
+                }
             }
 
             // Mount all partitions.
@@ -787,7 +796,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             {
                 // Create variant. Prefer catalog instead of inline. ContainsEntry seems expensive
                 IReadableObjectWithHash? s_Readable = null;
-                if (s_Partition.InlineData != null && !m_Catalog.ContainsEntry(s_Partition.Hash))
+                if (s_Partition.InlineData != null)
                     s_Readable = new InlineReadable(s_Partition.InlineData, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size);
                 else 
                     s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size);

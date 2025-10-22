@@ -25,6 +25,11 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                 m_CompressedSize = m_Catalog[m_Hash].FileSize;
                 m_CompressedHash = m_Hash;
             }
+            else if (m_Catalog.AuthoritativeCatalog is not null && m_Catalog.AuthoritativeCatalog.ContainsEntry(m_Hash))
+            {
+                m_CompressedSize = m_Catalog.AuthoritativeCatalog[m_Hash].FileSize;
+                m_CompressedHash = m_Hash;
+            }
         }
 
         public RimeReader GetReader()

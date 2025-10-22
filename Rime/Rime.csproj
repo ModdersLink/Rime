@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <OutputType>WinExe</OutputType>
-        <TargetFramework>net9.0-windows</TargetFramework>
-        <EnableWindowsTargeting>true</EnableWindowsTargeting>
+        <TargetFramework>net8.0</TargetFramework>
+        <!-- <EnableWindowsTargeting>true</EnableWindowsTargeting> -->
         <Nullable>enable</Nullable>
         <UseWPF>true</UseWPF>
 	    <UseWindowsForms>true</UseWindowsForms>

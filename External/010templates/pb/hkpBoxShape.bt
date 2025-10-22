@@ -1,0 +1,40 @@
+//------------------------------------------------
+//--- 010 Editor v8.0 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+typedef struct {
+    float X :7;
+    float Y :7;
+    float Z:7;
+    float W:7;
+} Vec4;
+
+typedef struct {
+    Vec4 vec;
+    Vec4 vec;
+    Vec4 vec;
+    Vec4 vec;
+    Vec4 vec;
+    Vec4 vec;
+    Vec4 vec;
+    Vec4 vec;
+    Vec4 vec;
+    Vec4 vec;
+    Vec4 vec;
+    Vec4 vec;
+    Vec4 vec;
+    Vec4 vec;
+    Vec4 vec;
+
+} BoxShape;
+
+BoxShape bs;

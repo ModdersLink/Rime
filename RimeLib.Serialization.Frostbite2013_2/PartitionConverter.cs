@@ -1,4 +1,4 @@
-﻿using System.IO;
+using System.IO;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Serialization.Frostbite2013_2.Ebx;

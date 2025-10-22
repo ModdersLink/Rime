@@ -1,0 +1,62 @@
+//------------------------------------------------
+//--- 010 Editor v7.0.2 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+// header
+typedef struct {
+    LONG header;
+} HEADER;
+
+// unknown 1
+typedef struct {
+    LONG u1;
+    LONG u2;
+    LONG u3;
+    BYTE u4;
+    string asset;
+    LONG u5;
+    LONG u6;
+    SHORT u7;
+    SHORT u7a1;
+    LONG u8;
+    LONG u9;
+    LONG u10;
+    LONG u11;
+    LONG u12;
+    LONG u13;
+    LONG u14;
+    LONG u15;
+    LONG u16;
+    LONG u17;
+    LONG u18;
+} U1;
+
+HEADER header;
+SetBackColor( cRed );
+U1 unknown1;
+U1 unknown2;
+U1 unknown3;
+U1 unknown4;
+U1 unknown5;
+U1 unknown6;
+U1 unknown7;
+U1 unknown8;
+U1 unknown9;
+U1 unknown10;
+U1 unknown11;
+U1 unknown12;
+U1 unknown13;
+U1 unknown14;
+U1 unknown15;
+U1 unknown16;
+U1 unknown17;
+U1 unknown18;

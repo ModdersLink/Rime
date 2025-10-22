@@ -1,0 +1,4 @@
+mount_game "/home/godiwik/Documents/_bin/bf3/" Frostbite2_0 true
+select_game 1
+dump_level_meshes glb Levels/MP_Subway/MP_Subway ./MP_Subway.gltf
+DROP

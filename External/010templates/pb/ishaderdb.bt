@@ -1,0 +1,718 @@
+//------------------------------------------------
+//--- 010 Editor v8.0 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+typedef ubyte UINT8;
+typedef byte INT8;
+
+typedef enum 
+{
+    ShaderRenderPath_Dx10, //0x0000
+    ShaderRenderPath_Dx10Plus, //0x0001
+    ShaderRenderPath_Dx10_1, //0x0002
+    ShaderRenderPath_Dx11, //0x0003
+    ShaderRenderPath_Dx11_1, //0x0004
+    ShaderRenderPath_Xenon, //0x0005
+    ShaderRenderPath_Ps3, //0x0006
+    ShaderRenderPath_Gl, //0x0007
+    ShaderRenderPath_Gen4a, //0x0008
+    ShaderRenderPath_Gen4b, //0x0009
+    ShaderRenderPathCount //0x000A
+} ShaderRenderPath;
+
+typedef enum <byte>
+{
+    ShaderBlendMode_Lerp, //0x0000
+    ShaderBlendMode_Additive, //0x0001
+    ShaderBlendMode_Multiply, //0x0002
+    ShaderBlendMode_LerpPremultiplied, //0x0003
+    ShaderBlendMode_DecalLerpNoSpec, //0x0004
+    ShaderBlendMode_DecalLerpNormal, //0x0005
+    ShaderBlendMode_DecalLerpNormalMultiplyDiffuse, //0x0006
+    ShaderBlendMode_DecalLerpDiffuse, //0x0007
+    ShaderBlendMode_DecalLerpDiffuseNoSpec //0x0008
+} ShaderBlendMode;
+
+typedef enum
+{
+    SurfaceShaderType_Opaque, //0x0000
+    SurfaceShaderType_OpaqueAlphaTest, //0x0001
+    SurfaceShaderType_OpaqueAlphaTestSimple, //0x0002
+    SurfaceShaderType_Transparent, //0x0003
+    SurfaceShaderType_TransparentDecal, //0x0004
+    SurfaceShaderType_TransparentDepth //0x0005
+} SurfaceShaderType;
+
+typedef enum <byte>
+{
+    ShaderRenderMode_Default, //0x0000
+    ShaderRenderMode_DynamicEnvmap, //0x0001
+    ShaderRenderMode_ZOnly, //0x0002
+    ShaderRenderMode_DeferredShadingGBufferLayout0, //0x0003
+    ShaderRenderMode_DeferredShadingGBufferLayout1, //0x0004
+    ShaderRenderMode_DeferredShadingGBufferLayout2, //0x0005
+    ShaderRenderMode_DeferredShadingGBufferLayout3, //0x0006
+    ShaderRenderMode_DeferredShadingEmissive, //0x0007
+    ShaderRenderMode_DeferredShadingUnlit, //0x0008
+    ShaderRenderMode_VelocityVector, //0x0009
+    ShaderRenderMode_DistortionVector, //0x000A
+    ShaderRenderMode_AmbientOcclusionVolume, //0x000B
+    ShaderRenderMode_DebugMulti, //0x000C
+    ShaderRenderModeCount //0x000D
+} ShaderRenderMode;
+
+typedef enum <byte>
+{
+    ShaderGeometrySpace_Object, //0x0000
+    ShaderGeometrySpace_ObjectScaled, //0x0001
+    ShaderGeometrySpace_World, //0x0002
+    ShaderGeometrySpace_Screen, //0x0003
+    ShaderGeometrySpaceCount //0x0004
+} ShaderGeometrySpace;
+
+typedef enum <byte>
+{
+    ShaderSkinningMethod_None, //0x0000
+    ShaderSkinningMethod_Linear1Bone, //0x0001
+    ShaderSkinningMethod_Linear2Bone, //0x0002
+    ShaderSkinningMethod_Linear4Bone, //0x0003
+    ShaderSkinningMethod_Linear8Bone, //0x0004
+    ShaderSkinningMethod_Null, //0x0005
+    ShaderSkinningMethod_DualQuaternion4Bone, //0x0006
+    ShaderSkinningMethodCount //0x0007
+}ShaderSkinningMethod;
+
+typedef enum <byte>
+{
+    ShaderInstancingMethod_None, //0x0000
+    ShaderInstancingMethod_ObjectTransform4x3Half, //0x0001
+    ShaderInstancingMethod_ObjectTransform4x3InstanceData4x1Half, //0x0002
+    ShaderInstancingMethod_ObjectTransform4x3InstanceData4x2Half, //0x0003
+    ShaderInstancingMethod_WorldTransform4x3Float, //0x0004
+    ShaderInstancingMethod_WorldTransform4x3FloatInstanceData4x2Half, //0x0005
+    ShaderInstancingMethod_ObjectTranslationScaleHalf, //0x0006
+    ShaderInstancingMethod_ObjectTranslationScaleHalfInstanceData4x1Half, //0x0007
+    ShaderInstancingMethod_ObjectTranslationScaleHalfInstanceData4x2Half, //0x0008
+    ShaderInstancingMethod_PositionStream, //0x0009
+    ShaderInstancingMethod_DxBuffer, //0x000A
+    ShaderInstancingMethod_DxBufferInstanceData4x1Float, //0x000B
+    ShaderInstancingMethodCount //0x000C
+} ShaderInstancingMethod;
+
+typedef enum <byte>
+{
+    ShaderObjectLighting_None, //0x0000
+    ShaderObjectLighting_LightProbe, //0x0001
+    ShaderObjectLighting_LightMap, //0x0002
+    ShaderObjectLightingCount //0x0003
+} ShaderObjectLighting;
+
+typedef enum <byte>
+{
+    ShaderShadowmapMethod_None, //0x0000
+    ShaderShadowmapMethod_Single, //0x0001
+    ShaderShadowmapMethod_SingleDiscard, //0x0002
+    ShaderShadowmapMethod_CascadedBox3, //0x0003
+    ShaderShadowmapMethod_CascadedBox4 //0x0004
+} ShaderShadowmapMethod;
+
+typedef enum <byte>
+{
+    ShaderShadowmapQuality_Pcf2x2, //0x0000
+    ShaderShadowmapQuality_Pcf4x4, //0x0001
+    ShaderShadowmapQuality_Gaussian //0x0002
+} ShaderShadowmapQuality;
+
+typedef enum 
+{
+    VertexElementUsage_Unknown, //0x0000
+    VertexElementUsage_Pos, //0x0001
+    VertexElementUsage_BoneIndices, //0x0002
+    VertexElementUsage_BoneIndices2, //0x0003
+    VertexElementUsage_BoneWeights, //0x0004
+    VertexElementUsage_BoneWeights2, //0x0005
+    VertexElementUsage_Normal, //0x0006
+    VertexElementUsage_Tangent, //0x0007
+    VertexElementUsage_Binormal, //0x0008
+    VertexElementUsage_BinormalSign, //0x0009
+    VertexElementUsage_WorldTrans1, //0x000A
+    VertexElementUsage_WorldTrans2, //0x000B
+    VertexElementUsage_WorldTrans3, //0x000C
+    VertexElementUsage_InstanceId, //0x000D
+    VertexElementUsage_InstanceUserData0, //0x000E
+    VertexElementUsage_InstanceUserData1, //0x000F
+    VertexElementUsage_XenonIndex, //0x0010
+    VertexElementUsage_XenonBarycentric, //0x0011
+    VertexElementUsage_XenonQuadID, //0x0012
+    VertexElementUsage_Index, //0x0013
+    VertexElementUsage_ViewIndex, //0x0014
+    VertexElementUsage_Color0, //0x0015
+    VertexElementUsage_Color1, //0x0016
+    VertexElementUsage_TexCoord0, //0x0017
+    VertexElementUsage_TexCoord1, //0x0018
+    VertexElementUsage_TexCoord2, //0x0019
+    VertexElementUsage_TexCoord3, //0x001A
+    VertexElementUsage_TexCoord4, //0x001B
+    VertexElementUsage_TexCoord5, //0x001C
+    VertexElementUsage_TexCoord6, //0x001D
+    VertexElementUsage_TexCoord7, //0x001E
+    VertexElementUsage_DisplacementMapTexCoord, //0x001F
+    VertexElementUsage_RadiosityTexCoord, //0x0020
+    VertexElementUsage_VisInfo, //0x0021
+    VertexElementUsage_SpriteSize, //0x0022
+    VertexElementUsage_PackedTexCoord0, //0x0023
+    VertexElementUsage_PackedTexCoord1, //0x0024
+    VertexElementUsage_PackedTexCoord2, //0x0025
+    VertexElementUsage_PackedTexCoord3, //0x0026
+    VertexElementUsage_ClipDistance0, //0x0027
+    VertexElementUsage_ClipDistance1, //0x0028
+    VertexElementUsage_SubMaterialIndex, //0x0029
+    VertexElementUsage_BranchInfo, //0x002A
+    VertexElementUsage_PosAndScale, //0x002B
+    VertexElementUsage_Rotation, //0x002C
+    VertexElementUsage_SpriteSizeAndUv, //0x002D
+    VertexElementUsage_FadePos, //0x002E
+    VertexElementUsage_SpawnTime, //0x002F
+    VertexElementUsage_PosAndSoftMul, //0x0030
+    VertexElementUsage_Alpha, //0x0031
+    VertexElementUsage_Misc0, //0x0032
+    VertexElementUsage_Misc1, //0x0033
+    VertexElementUsage_LeftAndRotation, //0x0034
+    VertexElementUsage_UpAndNormalBlend, //0x0035
+    VertexElementUsage_SH_R, //0x0036
+    VertexElementUsage_SH_G, //0x0037
+    VertexElementUsage_SH_B, //0x0038
+    VertexElementUsage_PosAndRejectCulling, //0x0039
+    VertexElementUsage_Shadow, //0x003A
+    VertexElementUsage_CustomParams01to04, //0x003B
+    VertexElementUsage_CustomParams05to08, //0x003C
+    VertexElementUsage_CustomParams09to12, //0x003D
+    VertexElementUsage_PatchUv, //0x003E
+    VertexElementUsage_Height, //0x003F
+    VertexElementUsage_MaskUVs0, //0x0040
+    VertexElementUsage_MaskUVs1, //0x0041
+    VertexElementUsage_MaskUVs2, //0x0042
+    VertexElementUsage_MaskUVs3, //0x0043
+    VertexElementUsage_UserMasks, //0x0044
+    VertexElementUsage_HeightfieldUv, //0x0045
+    VertexElementUsage_MaskUv, //0x0046
+    VertexElementUsage_GlobalColorUv, //0x0047
+    VertexElementUsage_HeightfieldPixelSizeAndAspect, //0x0048
+    VertexElementUsage_WorldPositionXz, //0x0049
+    VertexElementUsage_TerrainTextureNodeUv, //0x004A
+    VertexElementUsage_ParentTerrainTextureNodeUv, //0x004B
+    VertexElementUsage_DeformationIndex, //0x004C
+    VertexElementUsage_DeformationWeight, //0x004D
+    VertexElementUsage_DeformationPosition, //0x004E
+    VertexElementUsage_Uv01, //0x004F
+    VertexElementUsage_WorldPos, //0x0050
+    VertexElementUsage_EyeVector, //0x0051
+    VertexElementUsage_LightParams1, //0x0052
+    VertexElementUsage_LightParams2, //0x0053
+    VertexElementUsage_LightSubParams, //0x0054
+    VertexElementUsage_LightSideVector, //0x0055
+    VertexElementUsage_LightInnerAndOuterAngle, //0x0056
+    VertexElementUsage_LightDir, //0x0057
+    VertexElementUsage_LightMatrix1, //0x0058
+    VertexElementUsage_LightMatrix2, //0x0059
+    VertexElementUsage_LightMatrix3, //0x005A
+    VertexElementUsage_LightMatrix4, //0x005B
+    VertexElementUsage_Custom, //0x005C
+    VertexElementUsage_DestructionMaskDistance, //0x005D
+    VertexElementUsage_DestructionMaskTexCoord //0x005E
+} VertexElementUsage;
+
+typedef enum 
+{
+    ShaderTextureCoordType_Unknown, //0x0000
+    ShaderTextureCoordType_VertexElement, //0x0001
+    ShaderTextureCoordType_WorldPos //0x0002
+}ShaderTextureCoordType;
+
+typedef enum 
+{
+    VertexElementFormat_None, //0x0000
+    VertexElementFormat_Float, //0x0001
+    VertexElementFormat_Float2, //0x0002
+    VertexElementFormat_Float3, //0x0003
+    VertexElementFormat_Float4, //0x0004
+    VertexElementFormat_Half, //0x0005
+    VertexElementFormat_Half2, //0x0006
+    VertexElementFormat_Half3, //0x0007
+    VertexElementFormat_Half4, //0x0008
+    VertexElementFormat_UByteN, //0x0009
+    VertexElementFormat_Byte4, //0x000A
+    VertexElementFormat_Byte4N, //0x000B
+    VertexElementFormat_UByte4, //0x000C
+    VertexElementFormat_UByte4N, //0x000D
+    VertexElementFormat_Short, //0x000E
+    VertexElementFormat_Short2, //0x000F
+    VertexElementFormat_Short3, //0x0010
+    VertexElementFormat_Short4, //0x0011
+    VertexElementFormat_ShortN, //0x0012
+    VertexElementFormat_Short2N, //0x0013
+    VertexElementFormat_Short3N, //0x0014
+    VertexElementFormat_Short4N, //0x0015
+    VertexElementFormat_UShort2, //0x0016
+    VertexElementFormat_UShort4, //0x0017
+    VertexElementFormat_UShort2N, //0x0018
+    VertexElementFormat_UShort4N, //0x0019
+    VertexElementFormat_Int, //0x001A
+    VertexElementFormat_Int2, //0x001B
+    VertexElementFormat_Int3, //0x001C
+    VertexElementFormat_Int4, //0x001D
+    VertexElementFormat_IntN, //0x001E
+    VertexElementFormat_Int2N, //0x001F
+    VertexElementFormat_Int4N, //0x0020
+    VertexElementFormat_UInt, //0x0021
+    VertexElementFormat_UInt2, //0x0022
+    VertexElementFormat_UInt3, //0x0023
+    VertexElementFormat_UInt4, //0x0024
+    VertexElementFormat_UIntN, //0x0025
+    VertexElementFormat_UInt2N, //0x0026
+    VertexElementFormat_UInt4N, //0x0027
+    VertexElementFormat_Comp3_10_10_10, //0x0028
+    VertexElementFormat_Comp3N_10_10_10, //0x0029
+    VertexElementFormat_UComp3_10_10_10, //0x002A
+    VertexElementFormat_UComp3N_10_10_10, //0x002B
+    VertexElementFormat_Comp3_11_11_10, //0x002C
+    VertexElementFormat_Comp3N_11_11_10, //0x002D
+    VertexElementFormat_UComp3_11_11_10, //0x002E
+    VertexElementFormat_UComp3N_11_11_10, //0x002F
+    VertexElementFormat_Comp4_10_10_10_2, //0x0030
+    VertexElementFormat_Comp4N_10_10_10_2, //0x0031
+    VertexElementFormat_UComp4_10_10_10_2, //0x0032
+    VertexElementFormat_UComp4N_10_10_10_2 //0x0033
+} VertexElementFormat;
+
+typedef enum 
+{
+    VertexElementClassification_PerVertex, //0x0000
+    VertexElementClassification_PerInstance, //0x0001
+    VertexElementClassification_Index //0x0002
+} VertexElementClassification;
+
+typedef enum <byte>
+{
+    TextureType_1d, //0x0000
+    TextureType_1dArray, //0x0001
+    TextureType_2d, //0x0002
+    TextureType_2dArray, //0x0003
+    TextureType_Cube, //0x0004
+    TextureType_3d, //0x0005
+    TextureTypeCount //0x0006
+} TextureType;
+
+typedef enum { 
+  D3D11_FILTER_MIN_MAG_MIP_POINT,
+  D3D11_FILTER_MIN_MAG_POINT_MIP_LINEAR,
+  D3D11_FILTER_MIN_POINT_MAG_LINEAR_MIP_POINT,
+  D3D11_FILTER_MIN_POINT_MAG_MIP_LINEAR,
+  D3D11_FILTER_MIN_LINEAR_MAG_MIP_POINT,
+  D3D11_FILTER_MIN_LINEAR_MAG_POINT_MIP_LINEAR,
+  D3D11_FILTER_MIN_MAG_LINEAR_MIP_POINT,
+  D3D11_FILTER_MIN_MAG_MIP_LINEAR,
+  D3D11_FILTER_ANISOTROPIC,
+  D3D11_FILTER_COMPARISON_MIN_MAG_MIP_POINT,
+  D3D11_FILTER_COMPARISON_MIN_MAG_POINT_MIP_LINEAR,
+  D3D11_FILTER_COMPARISON_MIN_POINT_MAG_LINEAR_MIP_POINT,
+  D3D11_FILTER_COMPARISON_MIN_POINT_MAG_MIP_LINEAR,
+  D3D11_FILTER_COMPARISON_MIN_LINEAR_MAG_MIP_POINT,
+  D3D11_FILTER_COMPARISON_MIN_LINEAR_MAG_POINT_MIP_LINEAR,
+  D3D11_FILTER_COMPARISON_MIN_MAG_LINEAR_MIP_POINT,
+  D3D11_FILTER_COMPARISON_MIN_MAG_MIP_LINEAR,
+  D3D11_FILTER_COMPARISON_ANISOTROPIC,
+  D3D11_FILTER_MINIMUM_MIN_MAG_MIP_POINT,
+  D3D11_FILTER_MINIMUM_MIN_MAG_POINT_MIP_LINEAR,
+  D3D11_FILTER_MINIMUM_MIN_POINT_MAG_LINEAR_MIP_POINT,
+  D3D11_FILTER_MINIMUM_MIN_POINT_MAG_MIP_LINEAR,
+  D3D11_FILTER_MINIMUM_MIN_LINEAR_MAG_MIP_POINT,
+  D3D11_FILTER_MINIMUM_MIN_LINEAR_MAG_POINT_MIP_LINEAR,
+  D3D11_FILTER_MINIMUM_MIN_MAG_LINEAR_MIP_POINT,
+  D3D11_FILTER_MINIMUM_MIN_MAG_MIP_LINEAR,
+  D3D11_FILTER_MINIMUM_ANISOTROPIC,
+  D3D11_FILTER_MAXIMUM_MIN_MAG_MIP_POINT,
+  D3D11_FILTER_MAXIMUM_MIN_MAG_POINT_MIP_LINEAR,
+  D3D11_FILTER_MAXIMUM_MIN_POINT_MAG_LINEAR_MIP_POINT,
+  D3D11_FILTER_MAXIMUM_MIN_POINT_MAG_MIP_LINEAR,
+  D3D11_FILTER_MAXIMUM_MIN_LINEAR_MAG_MIP_POINT,
+  D3D11_FILTER_MAXIMUM_MIN_LINEAR_MAG_POINT_MIP_LINEAR,
+  D3D11_FILTER_MAXIMUM_MIN_MAG_LINEAR_MIP_POINT,
+  D3D11_FILTER_MAXIMUM_MIN_MAG_MIP_LINEAR,
+  D3D11_FILTER_MAXIMUM_ANISOTROPIC
+} D3D11_FILTER;
+
+typedef enum { 
+  D3D11_TEXTURE_ADDRESS_WRAP,
+  D3D11_TEXTURE_ADDRESS_MIRROR,
+  D3D11_TEXTURE_ADDRESS_CLAMP,
+  D3D11_TEXTURE_ADDRESS_BORDER,
+  D3D11_TEXTURE_ADDRESS_MIRROR_ONCE
+} D3D11_TEXTURE_ADDRESS_MODE;
+
+typedef enum D3D11_COMPARISON_FUNC { 
+  D3D11_COMPARISON_NEVER,
+  D3D11_COMPARISON_LESS,
+  D3D11_COMPARISON_EQUAL,
+  D3D11_COMPARISON_LESS_EQUAL,
+  D3D11_COMPARISON_GREATER,
+  D3D11_COMPARISON_NOT_EQUAL,
+  D3D11_COMPARISON_GREATER_EQUAL,
+  D3D11_COMPARISON_ALWAYS
+} D3D11_COMPARISON_FUNC;
+
+typedef struct {
+    D3D11_FILTER Filter;
+    D3D11_TEXTURE_ADDRESS_MODE AddressU;
+    D3D11_TEXTURE_ADDRESS_MODE AddressV;
+    D3D11_TEXTURE_ADDRESS_MODE AddressW;
+    FLOAT MipLODBias;
+    UINT32 MaxAnisotropy;
+    D3D11_COMPARISON_FUNC ComparisonFunc;
+    FLOAT BorderColor [4];
+    FLOAT MinLOD;
+    FLOAT MaxLOD;
+} D3D11_SAMPLER_DESC;
+
+typedef struct
+{
+	uint32 parameterNameHash;
+	uint32 parameterId;
+	ShaderTextureCoordType coordType; // (uint32);
+	VertexElementUsage vertexUsage; // (uint32);
+	float factor;
+} ShaderStreamableExternalTexture;
+
+typedef struct
+{
+	VertexElementUsage usage;
+	VertexElementFormat format;
+	byte offset;
+	byte streamIndex;
+} VertexElement;
+
+typedef struct {
+	byte stride;
+	VertexElementClassification classification;
+} VertexStream;
+
+typedef struct 
+{
+	VertexElement elements;
+	VertexStream streams;
+	byte elementCount;
+	byte streamCount;
+	byte padding;
+
+} GeometryDeclarationDesc;
+
+typedef struct
+{
+	uint32 hash;
+	GeometryDeclarationDesc desc;
+} GeometryDeclaration;
+
+typedef struct
+{
+	uint32 nameHash;
+	ShaderTextureCoordType coordType; //(uint32);
+	VertexElementUsage vertexUsage; // (uint32);
+	float factor;
+} ShaderStreamableTexture;
+
+
+typedef struct
+{
+	uint64 stateHash; // Seems to be (Fletcher32(stateData) | Fletcher32(stateData, starting at offset 16) << 32);
+	UINT8 flags; //UINT8
+	SurfaceShaderType surfaceType; //(UINT8);
+	ShaderBlendMode blendMode; //(UINT8);
+	uint32 pad;
+	uint32 vertexShaderIndex;
+	uint32 pixelShaderIndex;
+	uint32 vertexConstantIndex;
+	uint32 pixelCOnstantIndex;
+} ShaderSolution;
+
+
+typedef struct
+{
+	byte guid[16];
+	uint32 size;
+	byte data[size];
+
+	if (shaderType == Pixel || Vertex || Hull || Domain);
+	{
+		uint32 constantsIndex;
+		uint32 constantFunctionIndex;
+		uint32 textureFunctionIndex;
+	}
+
+	uint32 signatureDataSize;
+	byte signatureData[signatureDataSize];
+	uint32 elementSize;
+	byte elements[elementSize];
+	string elementNames; //vector<string>
+	uint32 dxInstructionCount;
+} Shader;
+
+
+typedef struct
+{
+	byte enable;
+	ShaderShadowmapMethod shadowmapMethod; // (UINT8);
+	ShaderShadowmapQuality shadowmapQuality; // (UINT8);
+	byte transparencyShadowmapEnable;
+} OutdoorLightSolutionState;
+
+typedef struct
+{
+	uint32 surfaceShaderNameHash;
+	uint32 vertexShaderFragmentNameHash;
+	uint32 geometryDeclarationHash ;
+	ShaderRenderMode mode; //(UINT8);
+	ShaderGeometrySpace geometrySpace; //(UINT8);
+	ShaderSkinningMethod skinningMethod; //(UINT8);
+	ShaderInstancingMethod instancingMethod; //(UINT8);
+	ShaderObjectLighting objectLighting; //(UINT8);
+	UINT8 colorScale;
+	UINT8 technique;
+	UINT8 boolPermutation;
+	UINT8 ps3ClipPlaneCount;
+	UINT8 heightfieldTessellation;
+	OutdoorLightSolutionState outdoorLight;
+	uint16 pad;
+	uint32 pad;
+} ShaderSolutionState;
+
+typedef struct
+{
+	uint32 nameHash;
+
+	SurfaceShaderType shaderType;// (uint32);
+	UINT8 flags;
+	UINT8 boolParameterCount;
+	UINT8 boolParameterDefaultMask;
+	UINT8 boolParameterRequiredMask;
+	;
+	local int boolParameterCountInt = 0;
+	for(boolParameterCountInt = 0; boolParameterCountInt < boolParameterCount; boolParameterCountInt++);
+	{
+		uint32 boolParameterId;
+	}
+
+	uint32 streamableTextureCount;
+	ShaderStreamableTexture streamableTextures[streamableTextureCount];
+
+	uint32 streamableExternalTextureCount;
+	ShaderStreamableExternalTexture streamableExternalTextures[streamableExternalTextureCount];
+
+	uint32 solutionIndices;
+
+	local int solutionIndicesInt = 0;
+	for(solutionIndicesInt = 0; solutionIndicesInt < solutionIndices; solutionIndicesInt++);
+	{
+		uint16 index;
+	}
+} SurfaceShaderSolution;
+
+
+
+typedef struct
+{
+    float Value[4];
+} Float4;
+
+typedef struct
+{
+	uint32 size;
+	uint32 valueConstantOffset;
+	uint32 textureConstantOffset;
+	uint32 externalValueConstantOffset;
+	uint32 externalTextureConstantOffset;
+	uint16 constantCount;
+	uint16 valueConstantStart;
+	UINT8 valueConstants;
+	UINT8 textureConstants;
+	UINT8 externalValueConstants;
+	UINT8 externalTextureConstants;
+	UINT8 uniqueSamplerStates;
+	;
+	// Align 16;
+	;
+	local int valueConstantsInt = 0;
+	for(valueConstantsInt = 0; valueConstantsInt < valueConstants; valueConstantsInt++);
+	{
+		Float4 value;
+	}
+
+	local int textureConstantsInt = 0;
+	for(textureConstantsInt = 0; textureConstantsInt < textureConstants; textureConstantsInt++);
+	{
+		UINT8 index;
+		TextureType type;// (UINT8);
+		uint16 pad0;
+		char textureName[128];
+		uint64 pad1;
+	}
+
+	local int externalValueConstantsInt = 0;
+	for(externalValueConstantsInt = 0; externalValueConstantsInt < externalValueConstants; externalValueConstantsInt++);
+	{
+		char name[32];
+		uint32 nameHash; // Fletcher32;
+		uint16 index;
+		uint16 arraySize;
+		UINT8 size;
+		UINT8 required;
+		uint16 pad;
+		Float4 value;
+	}
+
+	local int externalTextureConstantsInt = 0;
+	for(externalTextureConstantsInt = 0; externalTextureConstantsInt < externalTextureConstants; externalTextureConstantsInt++);
+	{
+		char name[32];
+		uint32 nameHash; // Fletcher32;
+		uint16 index;
+		TextureType type; // (UINT8);
+		byte required;
+	}
+
+	local int uniqueSamplerStatesInt = 0;
+	for(uniqueSamplerStatesInt = 0; uniqueSamplerStatesInt < uniqueSamplerStates; uniqueSamplerStatesInt++);
+	{
+		uint32 index;
+		D3D11_SAMPLER_DESC desc;
+		uint64 padding;
+	}
+} ShaderConstants;
+
+typedef struct
+{
+	UINT8 stride;
+	VertexElementClassification classification;// (UINT8);
+} Element;
+
+
+//typedef struct
+//{
+//	Element elements[16];
+//	Stream streams[4];
+//	UINT8 elementCount;
+//	UINT8 streamCount;
+//	uint16 pad;
+//
+//	typedef struct
+//	{
+//		VertexElementUsage usage (UINT8);
+//		local int atInt = 0;
+//		local int atInt = 0;VertexElementFor(atInt = 0; atInt <mat; atInt++) ;
+//		for(atInt = 0; atInt <mat; atInt++) (UINT8);
+//		UINT8 offset;
+//		UINT8 streamIndex;
+//	} GeometryDeclarationDesc;
+//
+//
+//} Stream;
+
+typedef struct
+{
+	uint32 version;
+	ShaderRenderPath path;
+	uint32 shaderConstantCount;
+
+	local int shaderConstantCountInt = 0;
+	for(shaderConstantCountInt = 0; shaderConstantCountInt < shaderConstantCount; shaderConstantCountInt++) ;
+	{
+		//byte shaderConstants[size]; // ShaderConstants;
+		ShaderConstants shaderConstants; 
+	}
+
+	uint32 constantFunctionCount;
+
+	local int constantFunctionCountInt = 0;
+	for(constantFunctionCountInt = 0; constantFunctionCountInt < constantFunctionCount; constantFunctionCountInt++) ;
+	{
+		uint16 size;
+		uint16 registerCount;
+
+		local int sizeInt = 0;
+		for(sizeInt = 0; sizeInt < size; sizeInt++);
+		{
+			uint32 function;
+			UINT8 index; //UINT8
+			UINT8 parameter; //UINT8
+			UINT8 arraySize; //UINT8
+			UINT8 vectorCount; //UINT8
+		}
+	}
+
+	uint32 textureFunctionCount;
+
+	local int textureFunctionCountInt = 0;
+	for(textureFunctionCountInt = 0; textureFunctionCountInt < textureFunctionCount; textureFunctionCountInt++);
+	{
+		uint32 textures;
+
+		local int texturesInt = 0;
+		for(texturesInt = 0; texturesInt < textures; texturesInt++);
+		{
+			UINT8 function; //UINT8
+			UINT8 valueType; //UINT8
+			UINT8 index; //UINT8
+			UINT8 parameter; //UINT8
+		}
+	}
+
+	uint32 vertexShaderCount;
+	Shader vertexShaders[vertexShaderCount];
+
+	uint32 pixelShaderCount;
+	Shader pixelShaders[pixelShaderCount];
+
+	uint32 geometryShaderCount;
+	Shader geometryShaders[geometryShaderCount];
+
+	uint32 hullShaderCount;
+	Shader hullShaders[hullShaderCount];
+
+	uint32 domainShaderCount;
+	Shader domainShaders[domainShaderCount];
+
+	uint32 solutionCount;
+	ShaderSolution solutions[solutionCount];
+
+	uint32 solutionStateCount;
+	ShaderSolutionState solutionStates[solutionStateCount];
+
+	uint32 geometryDeclarationCount;
+	GeometryDeclaration geometryDeclarations;
+
+	uint32 surfaceShaderSolutionCount;
+	SurfaceShaderSolution surfaceShaderSolutions[surfaceShaderSolutionCount];
+} ShaderDatabase;
+
+
+typedef struct
+{
+	uint32 paths;
+	local int pathsInt = 0;
+	for(pathsInt = 0; pathsInt < paths; pathsInt++) ;
+	{
+		ShaderRenderPath path;
+		uint32 databaseSize;
+		//byte database[pathDatabaseBufferSize]; // ShaderDatabase;
+		ShaderDatabase sdb;
+	}
+} IShaderDatabase;
+
+IShaderDatabase isdb;
