@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Runtime.CompilerServices;
+using RimeLib.Frostbite.Core;
 
 namespace RimeLib.Serialization.Attributes
 {
     /// <summary>
     /// Attribute information for the container type
     /// </summary>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Delegate)]
     public class ContainerTypeAttribute : Attribute
     {
         /// <summary>
@@ -44,6 +45,35 @@ namespace RimeLib.Serialization.Attributes
         {
             DataAlignment = p_Alignment;
             Size = p_Size;
+        }
+    }
+    
+    
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Enum | AttributeTargets.Struct | AttributeTargets.Interface | AttributeTargets.Delegate)]
+    public class ContainerIdAttribute : Attribute
+    {
+        /// <summary>
+        /// Type guid.
+        /// md5(md5(moduleName.tolower()) + typeName.tolower())
+        /// hashcat -m 20
+        /// </summary>
+        public GUID Guid { get; set; }
+
+        /// <summary>
+        /// Signature
+        /// </summary>
+        public uint Signature { get; set; }
+
+
+        /// <summary>
+        /// Default constructor that takes an alignment
+        /// </summary>
+        /// <param name="p_Guid">type guid</param>
+        /// <param name="p_Signature">Type signature</param>
+        public ContainerIdAttribute(string p_Guid, uint p_Signature=0)
+        {
+            Guid = new GUID(p_Guid);
+            Signature = p_Signature;
         }
     }
 

@@ -78,8 +78,18 @@
 		Frostbite2021_1,
 
 		/// <summary>
-		/// Skate
+		/// Skate dev
 		/// </summary>
 		Frostbite2022_2,
+		
+		/// <summary>
+		/// Battlefield 6
+		/// </summary>
+		Frostbite2024_1,
+		
+		/// <summary>
+		/// Skate release 
+		/// </summary>
+		Frostbite2025_1,
 	}
 }

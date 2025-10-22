@@ -10,6 +10,6 @@
         // fb2017 additions
         ArrayType,
         EnumType,
-        DelegateType,
+        FunctionType,
     }
 }

@@ -131,7 +131,7 @@
         /// Function/Delegate | Functiontypeinfo stuff
         /// Added around fb2017
         /// </summary>
-        Delegate,
+        Function,
         
         /// <summary>
         /// Type reference type
@@ -144,5 +144,18 @@
         /// Added around fb2017
         /// </summary>
         BoxedValueRef,
+        
+
+        /// <summary>
+        /// interface
+        /// Added around fb2017 or fb2018
+        /// </summary>
+        Interface,
+        
+        /// <summary>
+        /// Delegate 
+        /// Added around fb2017 or fb2018
+        /// </summary>
+        Delegate,
     }
 }
