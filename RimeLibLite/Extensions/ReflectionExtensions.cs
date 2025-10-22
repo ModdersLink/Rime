@@ -9,6 +9,12 @@ namespace RimeLib.Extensions
     {
         public static bool IsNullable(this PropertyInfo p_Info)
         {
+            // https://old.reddit.com/r/dotnet/comments/18caun7/is_it_impossible_to_determine_if_a_string_is/
+            var s_NullabilityContext = new NullabilityInfoContext();
+            var s_Info = s_NullabilityContext.Create(p_Info);
+
+            return s_Info.WriteState == NullabilityState.Nullable || s_Info.ReadState == NullabilityState.Nullable;
+                
             // First of all, check if this is a nullable type.
             var s_UnderlyingType = Nullable.GetUnderlyingType(p_Info.PropertyType);
 
