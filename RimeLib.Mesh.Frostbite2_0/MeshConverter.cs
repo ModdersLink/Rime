@@ -32,9 +32,9 @@ public class MeshConverter : IMeshConverter
     {
         // We will convert the model to SharpGLTF
         var s_MeshList = ConvertToMeshBuilders(p_Resource, p_Mounter);
-        
+
         var s_SceneBuilder = new SceneBuilder();
-        
+
         foreach (var s_MeshBuilder in s_MeshList)
             s_SceneBuilder.AddRigidMesh(s_MeshBuilder, AffineTransform.Identity);
 
@@ -44,7 +44,7 @@ public class MeshConverter : IMeshConverter
     public void ConvertToObj(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath)
     {
         var s_Model = CreateModel(p_Resource, p_Mounter);
-        
+
         // Save to file
         s_Model.SaveAsWavefront(p_OutputFilePath);
     }
@@ -52,11 +52,11 @@ public class MeshConverter : IMeshConverter
     public void ConvertToGltf(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath)
     {
         var s_Model = CreateModel(p_Resource, p_Mounter);
-        
+
         // Save to file
         s_Model.SaveGLTF(p_OutputFilePath, new WriteSettings() { JsonIndented = true });
     }
-    
+
     public void ConvertToGlb(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath)
     {
         var s_Model = CreateModel(p_Resource, p_Mounter);
@@ -69,7 +69,7 @@ public class MeshConverter : IMeshConverter
     {
         // Create a list of mesh builders
         var s_MeshList = new List<MeshBuilder<VertexPosition, VertexTexture1>>();
-        
+
         // Check the resource type
         if (p_Resource.GetResourceType() != ResourceType.MeshSet)
             throw new InvalidDataException("Resource type is not MeshSet");
@@ -443,12 +443,12 @@ public class MeshConverter : IMeshConverter
                             s_Primitive.AddTriangle(s_FirstPosition, s_SecondPosition, s_ThirdPosition);
                         }
                     }
-                    
+
                     s_MeshList.Add(s_Mesh);
                 }
             }
         }
-        
+
         return s_MeshList;
     }
 
@@ -456,4 +456,58 @@ public class MeshConverter : IMeshConverter
     {
         throw new System.NotImplementedException();
     }
+
+    public void GetMeshChunks(IResourceObject p_Resource, IEngineMounter p_Mounter)
+    {
+        if (p_Resource.GetResourceType() != ResourceType.MeshSet)
+            throw new InvalidDataException("Resource type is not MeshSet");
+
+        // Get a reader to the object
+        using var s_ResourceReader1 = p_Resource.GetReader();
+        var s_Data = s_ResourceReader1.ReadBytes((int)s_ResourceReader1.Length);
+        using var s_ResourceReader = new RimeReader(new MemoryStream(s_Data));
+
+        // Read the mesh set layout
+        var s_MeshSetLayout = new MeshSetLayout(s_ResourceReader);
+
+        // Extra debug information
+        //Console.WriteLine($"Mesh Type: {s_MeshSetLayout.MeshType}");
+        //Console.WriteLine($"Mesh LODs: {s_MeshSetLayout.LodCount}");
+        //Console.WriteLine($"Mesh Name: {s_MeshSetLayout.Name.Object}");
+        //Console.WriteLine($"Mesh Subsets: {s_MeshSetLayout.TotalSubsetCount}");
+
+        // Iterate through all of the lods
+        for (var s_LodIndex = 0; s_LodIndex < s_MeshSetLayout.LodCount; s_LodIndex++)
+        {
+            // This is a hack to keep it at the highest LOD possible
+            // We can ignore this without issue
+            //if (s_LodIndex != 0)
+            //    continue;
+
+            // TODO: Need to verify that this still works as intended
+            var s_MeshLayout = s_MeshSetLayout.Lods[s_LodIndex].Object;
+            if (s_MeshLayout is null)
+                throw new NullReferenceException("MeshLayout is null");
+
+            // Get the LOD name
+            var s_LodName = s_MeshLayout.ShortName.Object;
+
+            //Console.WriteLine($"Dumping LOD {s_LodIndex} - {s_LodName}.");
+
+            // Check if the assumptions are correct
+            if (s_MeshLayout.CategorySubsetIndices.Length != (int)MeshSubsetCategory.Count)
+                throw new InvalidDataException("MeshSubsetCategory count is invalid.");
+
+            // Get the data chunk
+            var s_MeshChunkId = s_MeshLayout.DataChunkId;
+            Console.WriteLine(s_MeshChunkId);
+            //if (!p_Mounter.TryGetChunk(s_MeshChunkId, out IMountedObject<IChunkVariant> p_MeshChunk))
+            //{
+            //    Console.WriteLine($"Mesh chunk {s_MeshChunkId} does not exist.");
+            //    continue;
+            //}
+
+        }
+    }
+
 }

@@ -451,5 +451,10 @@ namespace RimeLib.Mesh.Frostbite2013_2
         {
             return [ EngineType.Frostbite2013_2 ];
         }
+
+        public void GetMeshChunks(IResourceObject p_Resource, IEngineMounter p_Mounter)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
