@@ -64,6 +64,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpMeshCommand>();
             RegisterCommand<DumpLevelMeshesCommand>();
             RegisterCommand<DumpMeshChunksCommand>();
+            RegisterCommand<DumpTextureChunkCommand>();
         }
 
         public override string GetShortDescription()
@@ -434,6 +435,19 @@ namespace RimeLib.Cmd.Contexts
 
                 s_Converter.GetMeshChunks(s_Variant, m_Mounter);
             }
+        }
+
+        internal void DumpTextureChunk(string p_Name)
+        {
+            // Get all resources
+            if (!m_Mounter.TryGetResource(p_Name, out var s_Resource))
+                throw new Exception($"Could not find resource with name '{p_Name}'.");
+
+
+            var s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(m_Mounter.GetEngineType());
+
+
+            s_Converter.GetTextureChunk(s_Resource.FirstVariant!, m_Mounter);
         }
 
 

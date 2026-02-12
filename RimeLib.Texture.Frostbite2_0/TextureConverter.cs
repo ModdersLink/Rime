@@ -222,6 +222,20 @@ public class TextureConverter : ITextureConverter
         throw new Exception($"Unsupported texture type {s_Header.Type}.");
     }
 
+    public void GetTextureChunk(IResourceObject p_Resource, IEngineMounter p_Mounter) {
+        if (p_Resource.GetResourceType() != ResourceType.DxTexture)
+            throw new ArgumentException("This converter only supports DxTexture resources.", nameof(p_Resource));
+
+        using var s_ResourceReader = p_Resource.GetReader();
+        var s_Header = new DxTexture(s_ResourceReader);
+
+        // Try to find the chunk for this texture.
+        if (!p_Mounter.TryGetChunk(s_Header.StreamingChunkId, out var s_Chunk))
+            throw new Exception($"Could not find chunk '{s_Header.StreamingChunkId}' bound to this texture resource.");
+
+        Console.WriteLine(s_Header.StreamingChunkId);
+    }
+
     static void GetSurfaceInfo(
         int p_Width,
         int p_Height,

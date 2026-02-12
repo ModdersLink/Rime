@@ -13,5 +13,7 @@ namespace RimeLib.Texture
             IEngineMounter p_Mounter,
             Device p_D3DDevice
         );
+
+        public void GetTextureChunk(IResourceObject p_Resource, IEngineMounter p_Mounter);
     }
 }
