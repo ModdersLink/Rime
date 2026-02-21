@@ -1,5 +1,6 @@
 ﻿using RimeLib.Content.Mounting;
 using RimeLib.IO;
+using RimeLib.Frostbite.Core;
 using SharpDX.Direct3D11;
 
 namespace RimeLib.Texture
@@ -14,6 +15,6 @@ namespace RimeLib.Texture
             Device p_D3DDevice
         );
 
-        public void GetTextureChunk(IResourceObject p_Resource, IEngineMounter p_Mounter);
+        public GUID GetTextureChunkId(IResourceObject p_Resource);
     }
 }

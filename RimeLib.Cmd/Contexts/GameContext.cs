@@ -445,7 +445,8 @@ namespace RimeLib.Cmd.Contexts
             var s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(m_Mounter.GetEngineType());
 
 
-            s_Converter.GetTextureChunk(s_Resource.FirstVariant!, m_Mounter);
+            var s_Guid = s_Converter.GetTextureChunkId(s_Resource.FirstVariant!);
+            Console.WriteLine(s_Guid);
         }
 
 

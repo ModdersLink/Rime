@@ -9,6 +9,7 @@ using RimeLib.Frostbite;
 using RimeLib.IO;
 using RimeLib.Texture.DDS;
 using RimeLib.Texture.Frostbite2_0.Frostbite;
+using RimeLib.Frostbite.Core;
 using SharpDX;
 using SharpDX.Direct3D;
 using SharpDX.Direct3D11;
@@ -36,29 +37,29 @@ public class TextureConverter : ITextureConverter
         ITexture? s_Header = null;
         switch (p_Resource.GetResourceType())
         {
-        case ResourceType.DxTexture:
-            s_Header = new DxTexture(s_ResourceReader);
-            break;
-        case ResourceType.Ps3Texture:
-            s_Header = new Ps3Texture(s_ResourceReader);
-            break;
+            case ResourceType.DxTexture:
+                s_Header = new DxTexture(s_ResourceReader);
+                break;
+            case ResourceType.Ps3Texture:
+                s_Header = new Ps3Texture(s_ResourceReader);
+                break;
         }
 
         if (s_Header == null)
             throw new Exception("Header is null, this should never occur");
-        
-        
+
+
         // Try to find the chunk for this texture.
         if (!p_Mounter.TryGetChunk(s_Header.StreamingChunkId, out var s_Chunk))
             throw new Exception($"Could not find chunk '{s_Header.StreamingChunkId}' bound to this texture resource.");
-        
+
         // Try to find a variant with a 0 logical offset.
         // That's because chunks with a non-0 offset only contain partial data.
         var s_FullVariant = s_Chunk.Variants.FirstOrDefault(p_Variant => p_Variant.GetLogicalOffset() == 0);
-        
+
         if (s_FullVariant == null)
             throw new Exception($"Could not find full chunk '{s_Header.StreamingChunkId}'. Maybe you haven't mounted a catalog or a chunk superbundle?");
-        
+
         var s_DDSHeader = GenerateDDSHeader(s_Header);
 
         s_DDSHeader.Serialize(p_OutputWriter);
@@ -89,12 +90,12 @@ public class TextureConverter : ITextureConverter
         var s_DataStream = DataStream.Create(s_TextureData, true, true);
 
         var s_Format = DXGIFormatFromTexture(s_Header, true);
-        
+
         if (s_Header.Type == TextureType.TextureType_1D)
         {
             var s_Desc = new Texture1DDescription()
             {
-                ArraySize = 1, 
+                ArraySize = 1,
                 BindFlags = BindFlags.ShaderResource,
                 Format = s_Format,
                 MipLevels = s_Header.MipmapCount,
@@ -116,7 +117,7 @@ public class TextureConverter : ITextureConverter
                     s_DataStream.Length
                 ).ToArray()
             );
-            
+
             return new ShaderResourceView(
                 p_D3DDevice,
                 s_Texture,
@@ -203,7 +204,7 @@ public class TextureConverter : ITextureConverter
                     s_DataStream.Length
                 ).ToArray()
             );
-            
+
             return new ShaderResourceView(
                 p_D3DDevice,
                 s_Texture,
@@ -222,18 +223,22 @@ public class TextureConverter : ITextureConverter
         throw new Exception($"Unsupported texture type {s_Header.Type}.");
     }
 
-    public void GetTextureChunk(IResourceObject p_Resource, IEngineMounter p_Mounter) {
-        if (p_Resource.GetResourceType() != ResourceType.DxTexture)
-            throw new ArgumentException("This converter only supports DxTexture resources.", nameof(p_Resource));
+    public GUID GetTextureChunkId(IResourceObject p_Resource)
+    {
+        if (p_Resource.GetResourceType() != ResourceType.DxTexture && p_Resource.GetResourceType() != ResourceType.Ps3Texture)
+            throw new ArgumentException("This converter only supports DxTexture and Ps3Texture resources.", nameof(p_Resource));
 
         using var s_ResourceReader = p_Resource.GetReader();
-        var s_Header = new DxTexture(s_ResourceReader);
+        ITexture? s_Header = null;
+        if (p_Resource.GetResourceType() == ResourceType.DxTexture)
+            s_Header = new DxTexture(s_ResourceReader);
+        else if (p_Resource.GetResourceType() == ResourceType.Ps3Texture)
+            s_Header = new Ps3Texture(s_ResourceReader);
 
-        // Try to find the chunk for this texture.
-        if (!p_Mounter.TryGetChunk(s_Header.StreamingChunkId, out var s_Chunk))
-            throw new Exception($"Could not find chunk '{s_Header.StreamingChunkId}' bound to this texture resource.");
+        if (s_Header != null)
+            return s_Header.StreamingChunkId;
 
-        Console.WriteLine(s_Header.StreamingChunkId);
+        return GUID.Empty;
     }
 
     static void GetSurfaceInfo(
@@ -295,12 +300,12 @@ public class TextureConverter : ITextureConverter
 
             if (p_Width > 0)
                 s_NumBlocksWide = System.Math.Max(1, (p_Width + 3) / 4);
-            
+
             var s_NumBlocksHigh = 0;
 
             if (p_Height > 0)
                 s_NumBlocksHigh = System.Math.Max(1, (p_Height + 3) / 4);
-            
+
             s_RowBytes = s_NumBlocksWide * s_BcNumBytesPerBlock;
             s_NumRows = s_NumBlocksHigh;
         }
@@ -500,7 +505,7 @@ public class TextureConverter : ITextureConverter
     private static DDSCaps CapsFromTexture(ITexture p_Texture)
     {
         var s_Caps = DDSCaps.Texture;
-        
+
         switch (p_Texture.Type)
         {
             case TextureType.TextureType_1D:
@@ -523,13 +528,13 @@ public class TextureConverter : ITextureConverter
     private static DDSCaps2 Caps2FromTexture(ITexture p_Texture)
     {
         DDSCaps2 s_Caps = 0;
-        
+
         switch (p_Texture.Type)
         {
             case TextureType.TextureType_3D:
                 s_Caps |= DDSCaps2.Volume;
                 break;
-            
+
             case TextureType.TextureType_Cube:
             case TextureType.TextureType_CubeArray:
                 s_Caps |= DDSCaps2.AllFaces;
@@ -546,7 +551,7 @@ public class TextureConverter : ITextureConverter
             case TextureType.TextureType_1D:
             case TextureType.TextureType_1DArray:
                 return DDSResoruceDimension.Texture1D;
-            
+
             case TextureType.TextureType_2D:
             case TextureType.TextureType_2DArray:
                 return DDSResoruceDimension.Texture2D;
