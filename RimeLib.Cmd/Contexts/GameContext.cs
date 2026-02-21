@@ -476,16 +476,16 @@ namespace RimeLib.Cmd.Contexts
             }
 
             var s_Model = s_SceneBuilder!.ToGltf2();
-            
+
             switch (p_Format)
             {
                 case MeshConverterType.Gltf:
                     s_Model.SaveGLTF(p_OutputDestination.FullName, new WriteSettings() { JsonIndented = true });
                     break;
                 case MeshConverterType.Glb:
-                    s_Model.SaveGLB(p_OutputDestination.FullName, new WriteSettings {  JsonIndented = true });
+                    s_Model.SaveGLB(p_OutputDestination.FullName, new WriteSettings { JsonIndented = true });
                     break;
-                case  MeshConverterType.Obj:
+                case MeshConverterType.Obj:
                     s_Model.SaveAsWavefront(p_OutputDestination.FullName);
                     break;
                 default:
