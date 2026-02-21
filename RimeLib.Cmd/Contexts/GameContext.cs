@@ -432,8 +432,6 @@ namespace RimeLib.Cmd.Contexts
 
                 // Create a new mesh converter
                 var s_Converter = EngineInterfaceRegistry.Create<IMeshConverter>(m_Mounter.GetEngineType());
-
-                s_Converter.GetMeshChunks(s_Variant, m_Mounter);
             }
         }
 
@@ -447,7 +445,8 @@ namespace RimeLib.Cmd.Contexts
             var s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(m_Mounter.GetEngineType());
 
 
-            s_Converter.GetTextureChunk(s_Resource.FirstVariant!, m_Mounter);
+            var s_Guid = s_Converter.GetTextureChunkId(s_Resource.FirstVariant!);
+            Console.WriteLine(s_Guid);
         }
 
 
@@ -477,16 +476,16 @@ namespace RimeLib.Cmd.Contexts
             }
 
             var s_Model = s_SceneBuilder!.ToGltf2();
-            
+
             switch (p_Format)
             {
                 case MeshConverterType.Gltf:
                     s_Model.SaveGLTF(p_OutputDestination.FullName, new WriteSettings() { JsonIndented = true });
                     break;
                 case MeshConverterType.Glb:
-                    s_Model.SaveGLB(p_OutputDestination.FullName, new WriteSettings {  JsonIndented = true });
+                    s_Model.SaveGLB(p_OutputDestination.FullName, new WriteSettings { JsonIndented = true });
                     break;
-                case  MeshConverterType.Obj:
+                case MeshConverterType.Obj:
                     s_Model.SaveAsWavefront(p_OutputDestination.FullName);
                     break;
                 default:

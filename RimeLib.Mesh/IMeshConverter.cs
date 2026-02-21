@@ -18,6 +18,4 @@ public interface IMeshConverter : IEngineInterface
     public void ConvertToGlb(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath);
     public List<MeshBuilder<VertexPosition, VertexTexture1>> ConvertToMeshBuilders(IResourceObject p_Resource, IEngineMounter p_Mounter);
     public void ConvertToBlenderScript(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath);
-
-    public void GetMeshChunks(IResourceObject p_Resource, IEngineMounter p_Mounter);
 }
