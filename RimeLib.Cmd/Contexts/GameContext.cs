@@ -432,8 +432,6 @@ namespace RimeLib.Cmd.Contexts
 
                 // Create a new mesh converter
                 var s_Converter = EngineInterfaceRegistry.Create<IMeshConverter>(m_Mounter.GetEngineType());
-
-                s_Converter.GetMeshChunks(s_Variant, m_Mounter);
             }
         }
 

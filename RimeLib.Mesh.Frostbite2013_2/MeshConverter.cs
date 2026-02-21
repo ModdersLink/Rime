@@ -69,11 +69,11 @@ namespace RimeLib.Mesh.Frostbite2013_2
             var s_MeshSetLayout = new MeshSetLayout(s_ResourceReader);
 
 #if DEBUG
-        // Extra debug information
-        Console.WriteLine($"Mesh Type: {s_MeshSetLayout.MeshType}");
-        Console.WriteLine($"Mesh LODs: {s_MeshSetLayout.LodCount}");
-        Console.WriteLine($"Mesh Name: {s_MeshSetLayout.Name.Object}");
-        Console.WriteLine($"Mesh Subsets: {s_MeshSetLayout.TotalSubsetCount}");
+            // Extra debug information
+            Console.WriteLine($"Mesh Type: {s_MeshSetLayout.MeshType}");
+            Console.WriteLine($"Mesh LODs: {s_MeshSetLayout.LodCount}");
+            Console.WriteLine($"Mesh Name: {s_MeshSetLayout.Name.Object}");
+            Console.WriteLine($"Mesh Subsets: {s_MeshSetLayout.TotalSubsetCount}");
 #endif
 
             // Create a new GLTF model
@@ -107,7 +107,7 @@ namespace RimeLib.Mesh.Frostbite2013_2
                 var s_LodName = s_MeshLayout.ShortName.Object;
 
 #if DEBUG
-            Console.WriteLine($"Dumping LOD {s_LodIndex} - {s_LodName}.");
+                Console.WriteLine($"Dumping LOD {s_LodIndex} - {s_LodName}.");
 #endif
 
                 // Check if the assumptions are correct
@@ -119,7 +119,7 @@ namespace RimeLib.Mesh.Frostbite2013_2
                 if (!p_Mounter.TryGetChunk(s_MeshChunkId, out IMountedObject<IChunkVariant> p_MeshChunk))
                 {
 #if DEBUG
-                Console.WriteLine($"Mesh chunk {s_MeshChunkId} does not exist.");
+                    Console.WriteLine($"Mesh chunk {s_MeshChunkId} does not exist.");
 #endif
                     continue;
                 }
@@ -449,12 +449,7 @@ namespace RimeLib.Mesh.Frostbite2013_2
 
         public EngineType[] GetSupportedEngines()
         {
-            return [ EngineType.Frostbite2013_2 ];
-        }
-
-        public void GetMeshChunks(IResourceObject p_Resource, IEngineMounter p_Mounter)
-        {
-            throw new NotImplementedException();
+            return [EngineType.Frostbite2013_2];
         }
     }
 }
