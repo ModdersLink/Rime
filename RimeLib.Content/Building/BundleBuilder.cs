@@ -12,7 +12,7 @@ namespace RimeLib.Content.Building
             return new BundleBuilder(p_BundleName);
         }
 
-        private readonly BundleDescriptor m_Descriptor; 
+        private readonly BundleDescriptor m_Descriptor;
 
         protected BundleBuilder(string p_BundleName)
         {
@@ -39,6 +39,18 @@ namespace RimeLib.Content.Building
         public BundleBuilder WithPartition(string p_Path, IReadableObject p_Partition)
         {
             m_Descriptor.Partitions[p_Path.ToLowerInvariant()] = p_Partition;
+            return this;
+        }
+
+        public BundleBuilder WithDependencyBundle(string p_BundleName)
+        {
+            m_Descriptor.DependencyBundles.Add(p_BundleName.ToLowerInvariant());
+            return this;
+        }
+
+        public BundleBuilder WithDependencySuperbundle(string p_SuperbundleName)
+        {
+            m_Descriptor.DependencySuperbundles.Add(p_SuperbundleName.ToLowerInvariant());
             return this;
         }
 

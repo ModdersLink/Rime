@@ -31,6 +31,16 @@ namespace RimeLib.Content.Building
         public Dictionary<string, IReadableObject> Partitions { get; }
 
         /// <summary>
+        /// Dependency Bundles
+        /// </summary>
+        public List<string> DependencyBundles { get; }
+
+        /// <summary>
+        /// Dependency Superbundles
+        /// </summary>
+        public List<string> DependencySuperbundles { get; }
+
+        /// <summary>
         /// Constructor for creating a new bundle
         /// </summary>
         /// <param name="p_BundleName">Bundle name</param>
@@ -41,6 +51,8 @@ namespace RimeLib.Content.Building
             Resources = new Dictionary<string, IResourceObject>();
             Chunks = new Dictionary<GUID, IChunkObject>();
             Partitions = new Dictionary<string, IReadableObject>();
+            DependencyBundles = new List<string>();
+            DependencySuperbundles = new List<string>();
         }
     }
 }

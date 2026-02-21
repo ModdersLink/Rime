@@ -39,7 +39,7 @@ namespace RimeLib.Cmd.Contexts
                 return false;
             }
         }
-        
+
         internal class ResourceMemoryReader : SbBuildingContext.MemoryReader, IResourceObject
         {
             private readonly ResourceType m_ResourceType;
@@ -60,7 +60,7 @@ namespace RimeLib.Cmd.Contexts
                 return false;
             }
         }
-        
+
         internal class ChunkMemoryReader : SbBuildingContext.MemoryReader, IChunkObject
         {
             private readonly string m_AssetName;
@@ -88,7 +88,7 @@ namespace RimeLib.Cmd.Contexts
 
             public int? GetAssetNameHash()
             {
-                return (int) Frostbite.Utils.HashQuick(m_AssetName);
+                return (int)Frostbite.Utils.HashQuick(m_AssetName);
             }
         }
 
@@ -119,6 +119,9 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<AddDdsTextureCommand>();
             RegisterCommand<BuildCommand>();
             RegisterCommand<CloneBundleCommand>();
+            RegisterCommand<AddDependencyBundleCommand>();
+            RegisterCommand<AddDependencySuperbundleCommand>();
+            RegisterCommand<RemoveDuplicateBundleItemsCommand>();
         }
 
         public bool Cas()
@@ -211,8 +214,8 @@ namespace RimeLib.Cmd.Contexts
 
         internal void AddJsonPartition(string p_Name, FileInfo p_File)
         {
-            var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(((SbBuildingContext) Parent!).EngineType);
-            var s_Generator = EngineInterfaceRegistry.Create<IPartitionGenerator>(((SbBuildingContext) Parent!).EngineType);
+            var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(((SbBuildingContext)Parent!).EngineType);
+            var s_Generator = EngineInterfaceRegistry.Create<IPartitionGenerator>(((SbBuildingContext)Parent!).EngineType);
 
             using var s_JsonReader = p_File.OpenText();
             var s_Partition = s_Converter.FromJsonStream(s_JsonReader);
@@ -220,7 +223,7 @@ namespace RimeLib.Cmd.Contexts
             var s_Stream = new MemoryStream();
             using var s_Writer = new RimeWriter(s_Stream);
             s_Generator.Generate(s_Partition, s_Writer);
-            
+
             m_Builder.WithPartition(p_Name, new SbBuildingContext.MemoryReader(s_Stream.ToArray()));
         }
 
@@ -234,14 +237,34 @@ namespace RimeLib.Cmd.Contexts
             return m_Builder.GetPartitions();
         }
 
+        internal void AddDependencyBundle(string p_BundleName)
+        {
+            m_Builder.WithDependencyBundle(p_BundleName);
+        }
+
+        internal IEnumerable<string> GetDependencyBundles()
+        {
+            return m_Builder.Build().DependencyBundles;
+        }
+
+        internal void AddDependencySuperbundle(string p_SuperbundleName)
+        {
+            m_Builder.WithDependencySuperbundle(p_SuperbundleName);
+        }
+
+        internal IEnumerable<string> GetDependencySuperbundles()
+        {
+            return m_Builder.Build().DependencySuperbundles;
+        }
+
         // TODO: This should probably be moved somewhere else
         internal void AddDDSTexture(FileInfo p_File, TextureAttributes p_Attributes)
         {
-            var s_TextureGenerator = EngineInterfaceRegistry.Create<ITextureGenerator>(((SbBuildingContext) Parent!).EngineType);
+            var s_TextureGenerator = EngineInterfaceRegistry.Create<ITextureGenerator>(((SbBuildingContext)Parent!).EngineType);
 
             var s_ResourceMemoryStream = new MemoryStream();
             using var s_ResourceWriter = new RimeWriter(s_ResourceMemoryStream);
-            
+
             using var s_DDSReader = new RimeReader(File.OpenRead(p_File.FullName));
             s_TextureGenerator.GenerateFromDDS(
                 s_DDSReader,
