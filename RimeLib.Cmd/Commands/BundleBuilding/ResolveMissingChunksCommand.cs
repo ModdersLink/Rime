@@ -64,7 +64,11 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                                 {
                                     if (s_Mounter.TryGetChunk(s_Lod.DataChunkId, out var s_ChunkObj))
                                     {
-                                        s_BundleContext.AddChunk(s_Lod.DataChunkId, s_ChunkObj.FirstVariant);
+                                        var s_ResNameHash = (int)RimeLib.Frostbite.Utils.HashQuick(s_Res.Key);
+                                        var s_Variant = s_ChunkObj.Variants.FirstOrDefault(v => v.GetAssetNameHash() == s_ResNameHash)
+                                                     ?? s_ChunkObj.FirstVariant;
+
+                                        s_BundleContext.AddChunk(s_Lod.DataChunkId, s_Variant);
                                         p_Writer.WriteLine($"Added missing mesh chunk: {s_Lod.DataChunkId} for resource {s_Res.Key}");
                                         s_AddedChunks++;
                                     }
@@ -81,7 +85,11 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     {
                         if (s_Mounter.TryGetChunk(s_ChunkId, out var s_ChunkObj))
                         {
-                            s_BundleContext.AddChunk(s_ChunkId, s_ChunkObj.FirstVariant);
+                            var s_ResNameHash = (int)RimeLib.Frostbite.Utils.HashQuick(s_Res.Key);
+                            var s_Variant = s_ChunkObj.Variants.FirstOrDefault(v => v.GetAssetNameHash() == s_ResNameHash)
+                                         ?? s_ChunkObj.FirstVariant;
+
+                            s_BundleContext.AddChunk(s_ChunkId, s_Variant);
                             p_Writer.WriteLine($"Added missing chunk: {s_ChunkId} for resource {s_Res.Key}");
                             s_AddedChunks++;
                         }

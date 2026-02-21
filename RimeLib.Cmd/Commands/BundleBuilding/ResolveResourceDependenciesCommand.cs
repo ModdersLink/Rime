@@ -98,7 +98,18 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 {
                     if (p_Mounter.TryGetChunk(s_Guid, out var s_Chunk))
                     {
-                        p_Context.AddChunk(s_Guid, s_Chunk.FirstVariant);
+                        var s_ResName = s_Type.GetProperty("Name")?.GetValue(p_Instance) as string;
+                        var s_Variant = s_Chunk.FirstVariant;
+
+                        if (!string.IsNullOrEmpty(s_ResName))
+                        {
+                            var s_ResNameHash = (int)RimeLib.Frostbite.Utils.HashQuick(s_ResName);
+                            var s_FoundVariant = s_Chunk.Variants.FirstOrDefault(v => v.GetAssetNameHash() == s_ResNameHash);
+                            if (s_FoundVariant != null)
+                                s_Variant = s_FoundVariant;
+                        }
+
+                        p_Context.AddChunk(s_Guid, s_Variant);
                         p_Writer.WriteLine($"Added AntPackage chunk: {s_Guid}");
                     }
                 }
