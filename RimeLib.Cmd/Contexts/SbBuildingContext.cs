@@ -25,7 +25,7 @@ namespace RimeLib.Cmd.Contexts
 
             public RimeReader GetReader()
             {
-                var s_FileStream = File.Open(m_Path, FileMode.Open, FileAccess.Read);
+                var s_FileStream = File.Open(m_Path, FileMode.Open, FileAccess.Read, FileShare.Read);
                 return new RimeReader(s_FileStream);
             }
 
@@ -34,7 +34,7 @@ namespace RimeLib.Cmd.Contexts
                 return new FileInfo(m_Path).Length;
             }
         }
-        
+
         internal class MemoryReader : IReadableObject
         {
             private readonly byte[] m_Data;
@@ -95,7 +95,7 @@ namespace RimeLib.Cmd.Contexts
 
                 if (m_AssetName == null)
                     return null;
-                
+
                 return (int)Frostbite.Utils.HashQuick(m_AssetName);
             }
         }

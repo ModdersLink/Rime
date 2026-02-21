@@ -10,7 +10,9 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Chunks
 
         public Catalog ContainedCatalog { get; set; }
 
-        public CasChunkEntry(GUID p_Id, Sha1 p_Hash, Catalog p_Catalog) : 
+        public long PayloadSize => ContainedCatalog[Hash].FileSize;
+
+        public CasChunkEntry(GUID p_Id, Sha1 p_Hash, Catalog p_Catalog) :
             base(p_Id)
         {
             Hash = p_Hash;
@@ -27,7 +29,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Chunks
                 s_Reader = new ZlibRimeReader(s_Reader);
 
                 // Wrap this inside a limited reader as well.
-                s_Reader = new LimitedRimeReader(s_Reader, s_Reader.Length);;
+                s_Reader = new LimitedRimeReader(s_Reader, s_Reader.Length);
             }
 
             return s_Reader;

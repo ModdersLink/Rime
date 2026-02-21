@@ -26,6 +26,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         private long m_SeekOffset;
 
         private long m_Size;
+        public long PayloadSize => m_Size;
         private long m_OriginalSize;
 
         internal EbxEntry(string p_Name, Sha1 p_Hash, BundleManifest.EntryRecord p_Record, long p_SeekOffset,
@@ -106,12 +107,13 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         public byte[] ResourceMeta { get; set; }
 
         public SuperbundleEntry ContainedSuperbundle { get; set; }
-        
+
         public BundleManifest ContainedBundle { get; set; }
 
         private long m_SeekOffset;
 
         private long m_Size;
+        public long PayloadSize => m_Size;
         private long m_OriginalSize;
 
         internal ResourceEntry(string p_Name, Sha1 p_Hash, uint p_Type, byte[] p_Meta, BundleManifest.EntryRecord p_Record,
@@ -133,7 +135,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         {
             // Figure out which endianness our readers should have.
             var s_Endianness = (ContainedSuperbundle.Toc.Layout.Cas.HasValue && ContainedSuperbundle.Toc.Layout.Cas.Value) ? Endianness.LittleEndian : Endianness.BigEndian;
-            
+
             var s_SbPath = ContainedSuperbundle.Path + ".sb";
 
             if (ContainedBundle.InUpdate && ContainedSuperbundle.PatchPath != null)
@@ -188,7 +190,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         public Sha1 Hash { get; set; }
 
         public SuperbundleEntry ContainedSuperbundle { get; set; }
-        
+
         public BundleManifest ContainedBundle { get; set; }
 
         public ChunkMetaEntry Meta { get; set; }
@@ -201,6 +203,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
         private long m_SeekOffset;
         private long m_Size;
+        public long PayloadSize => m_Size;
 
         internal BundleChunkEntry(Sha1 p_Hash, BundleManifest.ChunkEntry p_Entry, long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleManifest p_Bundle, ChunkMetaEntry p_Meta) :
             base(p_Entry.Id)
@@ -209,7 +212,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
             ContainedSuperbundle = p_Superbundle;
             ContainedBundle = p_Bundle;
-            
+
             Meta = p_Meta;
 
             m_SeekOffset = p_SeekOffset;
@@ -247,7 +250,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
             // Seek to this entry.
             s_Reader.Seek(m_SeekOffset, SeekOrigin.Current);
-            
+
             // Wrap inside a limited reader.
             s_Reader = new LimitedRimeReader(s_Reader, m_Size);
 
@@ -297,7 +300,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
             public bool IsDbx => Magic == ManifestType.Fb2Dbx;
             public bool IsEbx => Magic == ManifestType.Fb2Ebx;
-            
+
             public Header(RimeReader p_Reader)
             {
                 Magic = (ManifestType)p_Reader.ReadUInt32();
@@ -389,7 +392,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             }
         }
 
-      
+
 
         private readonly Header m_Header;
         private readonly uint m_ManifestSize;
@@ -425,10 +428,10 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             // Parse the header.
             m_Header = new Header(p_Reader);
 
-            
+
             if (m_Header.IsDbx)
                 throw new Exception($"Tried to load a dbx BundleManifest ({m_Header.Magic}).");
-            
+
             if (!m_Header.IsEbx)
                 throw new Exception($"Tried to load an unsupported BundleManifest ({m_Header.Magic}).");
 
@@ -460,12 +463,12 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
                 if (s_ChunkMeta.ChunkMeta.Length != m_Header.ChunkCount)
                     throw new Exception($"Bundle missing chunk meta. Expected {m_Header.ChunkCount}, found {s_ChunkMeta.ChunkMeta.Length}.");
-                
+
                 m_ChunkMeta = s_ChunkMeta.ChunkMeta;
             }
 
             // Read the text block (can be used later to associate EntryRecords).
-            m_TextBlock = p_Reader.ReadBytes((int) (m_ManifestSize - p_Reader.Position + (m_StartPosition + 4)));
+            m_TextBlock = p_Reader.ReadBytes((int)(m_ManifestSize - p_Reader.Position + (m_StartPosition + 4)));
 
             // Prepare entries for reading.
             ParseEntries(p_Reader);
@@ -529,7 +532,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
                 // Get the data offset for this entry.
                 var s_Offset = p_Reader.Position;
-                
+
                 // Create the entry.
                 var s_RealEntry = new ResourceEntry(s_Name, s_Hash, s_ResourceType, s_ResourceMeta, s_Entry,
                     s_Offset - m_StartPosition, ContainedSuperbundle, this);
@@ -550,14 +553,14 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
                 // Get the chunk info.
                 var s_ChunkEntry = m_Chunks[i];
-                
+
                 // Get the chunk meta. 
                 var s_ChunkMeta = m_ChunkMeta[i];
 
                 // Get the data offset for this entry.
                 var s_Offset = p_Reader.Position;
 
-                var s_RealEntry = new BundleChunkEntry(s_Hash, s_ChunkEntry, s_Offset - m_StartPosition, 
+                var s_RealEntry = new BundleChunkEntry(s_Hash, s_ChunkEntry, s_Offset - m_StartPosition,
                     ContainedSuperbundle, this, s_ChunkMeta);
                 Chunks.Add(s_RealEntry);
 
