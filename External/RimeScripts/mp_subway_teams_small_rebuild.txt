@@ -1,0 +1,143 @@
+mount_game "D:/Games/Battlefield 3" Frostbite2_0 true
+build_sb Win32/TestSB Frostbite2_0 "TestSB" true
+build_bundle Win32/testbundle
+
+add_existing_partition levels/mp_subway/teams_small 1
+add_existing_partition levels/mp_subway/teams_small/meshvariationdb_win32 1
+
+add_json_partition testbundle "D:/DUMPS/teams_small.json"
+add_json_partition testbundle/meshvariationdb_win32 "D:/DUMPS/meshvariationdb_win32.json"
+
+add_existing_partition characters/heads/shared/eyeball_04_nm 1
+add_existing_partition vehicles/common/glassscratches 1
+add_existing_partition weapons/gadgets/ammobag/ammocrate_d 1
+add_existing_partition weapons/gadgets/ammobag/ammocrate_n 1
+add_existing_partition weapons/gadgets/eodbot/eodbot_track_d 1
+add_existing_partition weapons/gadgets/medicbag/mediccrate_d 1
+add_existing_partition weapons/gadgets/medicbag/mediccrate_n 1
+add_existing_partition weapons/textures/neutral_n 1
+
+resolve_partition_dependencies
+resolve_resource_dependencies
+resolve_missing_chunks
+
+remove_partition levels/mp_subway/teams_small
+remove_partition levels/mp_subway/teams_small/meshvariationdb_win32
+
+add_dependency_bundle win32/levels/mp_subway/mp_subway_settings_win32
+add_dependency_bundle win32/gameconfigurations/game
+add_dependency_bundle win32/levels/mp_subway/mp_subway
+add_dependency_bundle win32/levels/mp_subway/conquest_small
+
+add_dependency_bundle win32/weapons/a91/a91_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/aek971/aek971_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/ak74m/ak74_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/aks74u/aks74u_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/an94/an94_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/asval/asval_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/dao-12/dao-12_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/f2000/f2000_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/fgm148/fgm148_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/fgm148/fgm148_sp_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/fim92a/fim92a_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/fim92a/fim92a_sp_valley_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/g36c/g36c_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/g3a3/g3a3_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/ammobag/ammobag_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/c4/c4_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/claymore/claymore_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/defibrillator/defibrillator_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/eodbot/eodbot_pda_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/m15/m15_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/m224/m224_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/m224/m224_sponly_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/m26mass/m26mass_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/m320/m320_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/mav/mav_pda_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/medicbag/medicbag_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/radiobeacon/radio_beacon_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/repairtool/repairtool_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/soflam/soflam_pda_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/gadgets/t-ugs/t-ugs_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/glock18/glock18_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/handcuffs/handcuff_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/kh2002/kh2002_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/knife/knife_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m1014/m1014_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m136/m136_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m16a4/m16a4_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m1911/m1911_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m240/m240_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m249/m249_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m27iar/m27iar_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m39ebr/m39ebr_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m40a5/m40a5_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m416/m416_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m4a1/m4a1_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m60/m60_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m67/m67_ai_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m67/m67_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m82a3/m82a3_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m9/m9_gm_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m9/m9_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m93r/m93r_gm_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/m93r/m93r_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/machete/machete_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/magpulpdr/magpulpdr_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/mk11/mk11_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/model98b/model_98b_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/mp412rex/mp412rex_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/mp443/mp443_gm_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/mp443/mp443_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/mp7/mp7_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/p90/p90_gm_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/p90/p90_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/pecheneg/pecheneg_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/pp2000/pp2000_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/remington870/remington870mcs_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/rpg7/rpg7_ai_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/rpg7/rpg7_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/rpk/rpk_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/sa18igla/sa18igla_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/saiga20k/saiga_20k_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/scar-h/scar-h_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/sg553lb/sg553lb_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/sks/sks_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/smaw/smaw_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/sv98/sv98_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/svd/svd_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/taurus44/taurus44_gm_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/taurus44/taurus44_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/type88/type88_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/ump45/ump45_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/usas-12/usas-12_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/weapon_dummy/weapon_dummy_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp1_famas/famas_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp1_hk53/hk53_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp1_jackhammer/jackhammer_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp1_l85a2/l85a2_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp1_l96/l96_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp1_mg36/mg36_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp1_pp-19/pp-19_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp1_qbb-95/qbb-95_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp1_qbu-88/qbu-88_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp1_qbz-95b/qbz-95b_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp2_acr/acr_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp2_hk417/hk417_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp2_jng90/jng90_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp2_knife_razorblade/knife_razorblade_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp2_l86/l86_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp2_lsat/lsat_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp2_mp5k/mp5k_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp2_mtar/mtar_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp2_scar-l/scar-l_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp2_spas12/spas12_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp2_steyraug/steyraug_soldierweaponbundle 	
+add_dependency_bundle win32/weapons/xp4_crossbow_prototype/xp4_crossbow_prototype_soldierweaponbundle
+
+remove_duplicate_bundle_items
+
+build
+build
+
+

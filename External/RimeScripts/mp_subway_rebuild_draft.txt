@@ -1,0 +1,19 @@
+mount_game "D:/Games/Battlefield 3" Frostbite2_0 true
+build_sb Win32/TestSB2 Frostbite2_0 "TestSB2" true
+build_bundle Win32/testbundle2
+
+add_existing_partition levels/mp_subway/mp_subway 1
+add_existing_partition levels/mp_subway/mp_subway/meshvariationdb_win32 1
+
+resolve_partition_dependencies
+resolve_resource_dependencies
+resolve_missing_chunks
+
+add_dependency_bundle win32/levels/mp_subway/mp_subway_settings_win32
+add_dependency_bundle win32/gameconfigurations/game
+
+remove_duplicate_bundle_items
+
+export_bundle_contents "D:/DUMPS/mp_subway_rebuild.json"
+
+
