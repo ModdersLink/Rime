@@ -237,6 +237,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             // Terrain
             else if (s_TypeName == "TerrainData")
             {
+                // TODO: should also include the .decals partition which has a TerrainDecalsData. same goes for .streamingtree with a TerrainStreamingTreeAsset.
+                // TODO: there are a lot of terrain partitions that need to be added somehow
                 AddResourceByNameFromProperty(p_Instance, "Name", ResourceType.Terrain, p_Context, p_Mounter, p_Writer);
                 AddResourceByNameFromProperty(p_Instance, "Name", ".streamingtree", ResourceType.TerrainStreamingTree, p_Context, p_Mounter, p_Writer);
                 AddResourceByNameFromProperty(p_Instance, "Name", ".visual", ResourceType.VisualTerrain, p_Context, p_Mounter, p_Writer);
