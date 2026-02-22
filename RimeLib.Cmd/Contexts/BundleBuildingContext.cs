@@ -125,6 +125,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ResolveResourceDependenciesCommand>();
             RegisterCommand<RemoveDuplicateBundleItemsCommand>();
             RegisterCommand<ResolveMissingChunksCommand>();
+            RegisterCommand<ExportBundleContentsCommand>();
         }
 
         public bool Cas()
