@@ -14,6 +14,7 @@ using RimeLib.Content.Frostbite;
 
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
+    // TODO: rename command to something like ResolveTypeDependenciesCommand
     [CommandDescription("Adds all referenced resources that are not in the current bundle.")]
     public class ResolveResourceDependenciesCommand : Command
     {
@@ -149,6 +150,89 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             else if (s_TypeName == "UIAsset")
             {
                 AddResourceByNameFromProperty(p_Instance, "Name", ResourceType.SwfMovie, p_Context, p_Mounter, p_Writer);
+            }
+            // Movie
+            else if (s_TypeName == "MovieTextureAsset")
+            {
+                var s_ChunkGuid = s_Type.GetProperty("ChunkGuid")?.GetValue(p_Instance) as GUID;
+                if (s_ChunkGuid is not null && s_ChunkGuid != GUID.Empty)
+                {
+                    if (p_Mounter.TryGetChunk(s_ChunkGuid, out var s_Chunk))
+                    {
+                        p_Context.AddChunk(s_ChunkGuid, s_Chunk.FirstVariant);
+                        p_Writer.WriteLine($"Added MovieTexture chunk: {s_ChunkGuid}");
+                    }
+                }
+
+                var s_SubtitleChunkGuid = s_Type.GetProperty("SubtitleChunkGuid")?.GetValue(p_Instance) as GUID;
+                if (s_SubtitleChunkGuid is not null && s_SubtitleChunkGuid != GUID.Empty)
+                {
+                    if (p_Mounter.TryGetChunk(s_SubtitleChunkGuid, out var s_SubtitleChunk))
+                    {
+                        p_Context.AddChunk(s_SubtitleChunkGuid, s_SubtitleChunk.FirstVariant);
+                        p_Writer.WriteLine($"Added MovieTexture subtitle chunk: {s_SubtitleChunkGuid}");
+                    }
+                }
+            }
+            // UI Text Database
+            else if (s_TypeName == "UITextDatabase")
+            {
+                var s_BinaryChunk = s_Type.GetProperty("BinaryChunk")?.GetValue(p_Instance) as GUID;
+                if (s_BinaryChunk is not null && s_BinaryChunk != GUID.Empty)
+                {
+                    if (p_Mounter.TryGetChunk(s_BinaryChunk, out var s_Chunk))
+                    {
+                        p_Context.AddChunk(s_BinaryChunk, s_Chunk.FirstVariant);
+                        p_Writer.WriteLine($"Added UITextDatabase binary chunk: {s_BinaryChunk}");
+                    }
+                }
+
+                var s_HistogramChunk = s_Type.GetProperty("HistogramChunk")?.GetValue(p_Instance) as GUID;
+                if (s_HistogramChunk is not null && s_HistogramChunk != GUID.Empty)
+                {
+                    if (p_Mounter.TryGetChunk(s_HistogramChunk, out var s_Chunk))
+                    {
+                        p_Context.AddChunk(s_HistogramChunk, s_Chunk.FirstVariant);
+                        p_Writer.WriteLine($"Added UITextDatabase histogram chunk: {s_HistogramChunk}");
+                    }
+                }
+            }
+            // Level
+            else if (s_TypeName == "LevelData")
+            {
+                var s_BlobInfo = s_Type.GetProperty("PathfindingBlobInfo")?.GetValue(p_Instance);
+                if (s_BlobInfo != null)
+                {
+                    var s_BlobId = s_BlobInfo.GetType().GetProperty("BlobId")?.GetValue(s_BlobInfo) as GUID;
+                    if (s_BlobId is not null && s_BlobId != GUID.Empty)
+                    {
+                        if (p_Mounter.TryGetChunk(s_BlobId, out var s_Chunk))
+                        {
+                            p_Context.AddChunk(s_BlobId, s_Chunk.FirstVariant);
+                            p_Writer.WriteLine($"Added LevelData pathfinding blob chunk: {s_BlobId}");
+                        }
+                    }
+                }
+                // TODO: probably need to automatically check for LevelData.Name + "/shaderdb" as there is no partition for that
+            }
+            // Sound
+            else if (s_TypeName == "SoundDataAsset")
+            {
+                var s_Chunks = s_Type.GetProperty("Chunks")?.GetValue(p_Instance) as System.Collections.IEnumerable;
+                if (s_Chunks != null)
+                {
+                    foreach (var s_ChunkEntry in s_Chunks)
+                    {
+                        var s_ChunkId = s_ChunkEntry.GetType().GetProperty("ChunkId")?.GetValue(s_ChunkEntry) as GUID;
+                        if (s_ChunkId is null || s_ChunkId == GUID.Empty) continue;
+
+                        if (p_Mounter.TryGetChunk(s_ChunkId, out var s_Chunk))
+                        {
+                            p_Context.AddChunk(s_ChunkId, s_Chunk.FirstVariant);
+                            p_Writer.WriteLine($"Added SoundData chunk: {s_ChunkId}");
+                        }
+                    }
+                }
             }
             // Terrain
             else if (s_TypeName == "TerrainData")
