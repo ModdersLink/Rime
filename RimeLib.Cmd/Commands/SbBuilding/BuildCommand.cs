@@ -10,11 +10,11 @@ namespace RimeLib.Cmd.Commands.SbBuilding
     {
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
-            try
+            //try
             {
                 p_Writer.WriteLine("Building superbundle. Please wait...");
 
-                ((SbBuildingContext) p_Context).Build();
+                ((SbBuildingContext)p_Context).Build();
 
                 p_Writer.WriteLine("Superbundle successfully built!");
 
@@ -22,13 +22,13 @@ namespace RimeLib.Cmd.Commands.SbBuilding
 
                 return true;
             }
-            catch (Exception s_Exception)
-            {
-                p_Writer.WriteLine("Failed to build superbundle with error:");
-                p_Writer.WriteLine(s_Exception.Message);
+            //catch (Exception s_Exception)
+            //{
+            //    p_Writer.WriteLine("Failed to build superbundle with error:");
+            //    p_Writer.WriteLine(s_Exception.Message);
 
-                return false;
-            }
+            //    return false;
+            //}
         }
     }
 }

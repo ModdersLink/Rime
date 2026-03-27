@@ -5,9 +5,6 @@ build_bundle Win32/testbundle
 add_existing_partition levels/mp_subway/teams_small 1
 add_existing_partition levels/mp_subway/teams_small/meshvariationdb_win32 1
 
-add_json_partition testbundle "D:/DUMPS/teams_small.json"
-add_json_partition testbundle/meshvariationdb_win32 "D:/DUMPS/meshvariationdb_win32.json"
-
 add_existing_partition characters/heads/shared/eyeball_04_nm 1
 add_existing_partition vehicles/common/glassscratches 1
 add_existing_partition weapons/gadgets/ammobag/ammocrate_d 1
@@ -20,14 +17,6 @@ add_existing_partition weapons/textures/neutral_n 1
 resolve_partition_dependencies
 resolve_resource_dependencies
 resolve_missing_chunks
-
-remove_partition levels/mp_subway/teams_small
-remove_partition levels/mp_subway/teams_small/meshvariationdb_win32
-
-add_dependency_bundle win32/levels/mp_subway/mp_subway_settings_win32
-add_dependency_bundle win32/gameconfigurations/game
-add_dependency_bundle win32/levels/mp_subway/mp_subway
-add_dependency_bundle win32/levels/mp_subway/conquest_small
 
 add_dependency_bundle win32/weapons/a91/a91_soldierweaponbundle 	
 add_dependency_bundle win32/weapons/aek971/aek971_soldierweaponbundle 	
@@ -134,6 +123,16 @@ add_dependency_bundle win32/weapons/xp2_scar-l/scar-l_soldierweaponbundle
 add_dependency_bundle win32/weapons/xp2_spas12/spas12_soldierweaponbundle 	
 add_dependency_bundle win32/weapons/xp2_steyraug/steyraug_soldierweaponbundle 	
 add_dependency_bundle win32/weapons/xp4_crossbow_prototype/xp4_crossbow_prototype_soldierweaponbundle
+
+remove_duplicate_bundle_items
+
+generate_registry_container
+compare_registry_containers levels/mp_subway/teams_small
+
+add_dependency_bundle win32/levels/mp_subway/mp_subway_settings_win32
+add_dependency_bundle win32/gameconfigurations/game
+add_dependency_bundle win32/levels/mp_subway/mp_subway
+add_dependency_bundle win32/levels/mp_subway/conquest_small
 
 remove_duplicate_bundle_items
 
