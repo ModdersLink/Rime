@@ -601,13 +601,18 @@ public class EngineMounter : IEngineMounter
         p_BaseReader.Seek(p_BaseBundle.Offset, SeekOrigin.Begin);
         p_PatchReader.Seek(p_PatchBundle.Offset, SeekOrigin.Begin);
 
-        // Use a multiplexed reader to parse this manifest.
-       // using var s_PatchedReader = new RimePatchReader(p_BaseReader, p_PatchReader, Endianness.BigEndian, false);
-        
-        var (s_BaseBundleDb, _) = DbObjectConverter.FromDbObjectReader<CasBundle>(p_BaseReader, p_BaseBundle.Size);
         var (s_PatchBundleDb, _) = DbObjectConverter.FromDbObjectReader<CasBundle>(p_PatchReader, p_PatchBundle.Size);
-        
-        var s_BundleEntry = new CasBundleEntry(s_BaseBundleDb, s_PatchBundleDb, p_Superbundle);
+
+        CasBundleEntry s_BundleEntry;
+        if (p_BaseBundle.Size > 0)
+        {
+            var (s_BaseBundleDb, _) = DbObjectConverter.FromDbObjectReader<CasBundle>(p_BaseReader, p_BaseBundle.Size);
+            s_BundleEntry = new CasBundleEntry(s_BaseBundleDb, s_PatchBundleDb, p_Superbundle);
+        }
+        else
+        {
+            s_BundleEntry = new CasBundleEntry(s_PatchBundleDb, p_Superbundle);
+        }
 
         m_CasBundles.AddOrUpdate(p_BaseBundle.Id.ToLowerInvariant(), s_BundleEntry, (p_Key, p_Prev) =>
         {
@@ -618,7 +623,7 @@ public class EngineMounter : IEngineMounter
 
         // Don't do if automount isn't on.
         if (p_AutoMount && !MountCasBundle(s_BundleEntry)) 
-            throw new Exception($"Failed to mount bundle '{s_BaseBundleDb.Path} | {s_PatchBundleDb.Path}'.");
+            throw new Exception($"Failed to mount bundle '{s_PatchBundleDb.Path}'.");
         
 
     }
@@ -653,46 +658,8 @@ public class EngineMounter : IEngineMounter
         using var s_BaseReaderLimited = new LimitedRimeReader(p_BaseReader, p_BaseBundle.Size);
         using var s_PatchReaderLimited = new LimitedRimeReader(p_PatchReader, p_PatchBundle.Size);
 
-
-        if (p_BaseBundle.Id == "Win32/weapons/gatorgun_bpb")
-        {
-            
-            Debugger.Break();
-            
-            using var s_BaseDataWriter = new FileStream("/home/txt/Documents/RE/frostbite/bfh/Gatorgun_basedata.bin",
-                FileMode.Create, FileAccess.Write);
-            s_BaseReaderLimited.CopyTo(s_BaseDataWriter);
-            s_BaseReaderLimited.Seek(0, SeekOrigin.Begin);
-            
-            
-            using var s_PatchDataWriter = new FileStream("/home/txt/Documents/RE/frostbite/bfh/Gatorgun_patchdata.bin",
-                FileMode.Create, FileAccess.Write);
-            s_PatchReaderLimited.CopyTo(s_PatchDataWriter);
-            s_PatchReaderLimited.Seek(0, SeekOrigin.Begin);
-            
-        }
-
         // Use a multiplexed reader to parse this manifest.
         using var s_PatchedReader = new RimePatchReader(s_BaseReaderLimited, s_PatchReaderLimited, Endianness.BigEndian, false);
-
-        if (p_BaseBundle.Id == "Win32/weapons/gatorgun_bpb")
-        {
-            using var s_OutFileWriter = new FileStream(
-                "/home/txt/Documents/RE/frostbite/bfh/GatorGun_Full.bin",
-                FileMode.Create, FileAccess.Write);
-            s_PatchedReader.CopyTo(s_OutFileWriter);
-
-            s_BaseReaderLimited.Seek(0, SeekOrigin.Begin);
-            s_PatchReaderLimited.Seek(0, SeekOrigin.Begin);
-            //var s_PatchedReader1 = new RimePatchReader1(s_BaseReaderLimited, s_PatchReaderLimited);
-            //using var s_OutFileWriter1 = new FileStream(
-            //    "/home/txt/Documents/RE/frostbite/bfh/GatorGun_Full_1.bin",
-            //    FileMode.Create, FileAccess.Write);
-            //s_PatchedReader1.CopyTo(s_OutFileWriter1);
-            //
-            s_PatchedReader.Seek(0, SeekOrigin.Begin);
-        }
-
         
         var s_Manifest = new BundleManifest(s_PatchedReader, p_Superbundle, p_BaseBundle, false, p_PatchBundle);
 
@@ -748,19 +715,17 @@ public class EngineMounter : IEngineMounter
                 ParseBundle(s_Reader, s_Bundle, p_Superbundle, false, p_AutoMount);
                 continue;
             }
-            
-            // If we do have a corresponding bundle entry, then figure out what to do with it.
-            // If it's a delta entry then we have special handling for it.
-            if (s_Cas && s_PatchBundle!.Delta.HasValue && s_PatchBundle!.Delta.Value)
-            {
-                ParseDeltaCasBundle(s_Reader, s_PatchReader!, s_Bundle, s_PatchBundle, p_Superbundle, p_AutoMount);
-                continue;
-            }
 
             // If we do have a corresponding bundle entry, then figure out what to do with it.
             // If it's a delta entry then we have special handling for it.
             if (s_PatchBundle!.Delta.HasValue && s_PatchBundle!.Delta.Value)
             {
+                if (s_Cas)
+                {
+                    ParseDeltaCasBundle(s_Reader, s_PatchReader!, s_Bundle, s_PatchBundle, p_Superbundle, p_AutoMount);
+                    continue;
+                }
+
                 ParseDeltaBundle(s_Reader, s_PatchReader!, s_Bundle, s_PatchBundle, p_Superbundle, p_AutoMount);
                 continue;
             }
@@ -779,22 +744,24 @@ public class EngineMounter : IEngineMounter
         if (p_PatchToc != null)
         {
             foreach (var s_Bundle in p_PatchToc.Bundles)
-            {
-                if(s_Bundle.Id == "Win32/weapons/gatorgun_bpb")
-                    Debugger.Break();
-                
+            {                
                 // We only care about bundles we haven't seen before.
                 if (s_ParsedBundles.Contains(s_Bundle.Id.ToLowerInvariant()))
                     continue;
 
-                // If this is a delta entry for a bundle we've never seen before
-                // there's something wrong (usually missing content).
-                // TODO: We might not want to throw an error here.
                 if (s_Bundle.Delta.HasValue && s_Bundle.Delta.Value)
                 {
-                    Debug.WriteLine($"Found a delta bundle ({s_Bundle.Id}) without a base bundle entry. This probably means you're missing some content.");
-                    //Debugger.Break();
-                    //throw new Exception( $"Found a delta bundle ({s_Bundle.Id}) without a base bundle entry. This probably means you're missing some content.");
+                    Debug.WriteLine($"Found a delta bundle ({s_Bundle.Id}) without a base bundle entry. Treating as delta-only.");
+                    // Use an empty stream as the base — valid when the delta uses only type-3/new-block instructions.
+                    using var s_EmptyBase = new RimeReader(new MemoryStream(), s_Endianness);
+                    var s_EmptyBundleInfo = new BundleInfo { Id = s_Bundle.Id, Offset = 0, Size = 0 };
+
+                    if (p_PatchToc.Cas.HasValue && p_PatchToc.Cas.Value)
+                        ParseDeltaCasBundle(s_EmptyBase, s_PatchReader!, s_EmptyBundleInfo, s_Bundle, p_Superbundle, p_AutoMount);
+                    else
+                        ParseDeltaBundle(s_EmptyBase, s_PatchReader!, s_EmptyBundleInfo, s_Bundle, p_Superbundle, p_AutoMount);
+
+                    continue;
                 }
 
                 if (p_PatchToc.Cas.HasValue && p_PatchToc.Cas.Value)

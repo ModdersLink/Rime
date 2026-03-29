@@ -526,7 +526,6 @@ public class BundleManifest
             // so with patched reader data is alraedy unpacked
             // while normal reader you have decompress.
             
-            System.Diagnostics.Debug.WriteLine($"Partition {s_RealEntry} - Off 0x{p_Reader.Position:x04} | OriginalSize 0x{s_Entry.OriginalSize}" );
             if (PatchBundle != null && !InUpdate)
             {
                 p_Reader.Seek(s_Entry.OriginalSize, SeekOrigin.Current);
@@ -573,7 +572,6 @@ public class BundleManifest
             // Skip the data, we don't need to read it right now.
             // CodecHeader skip
             
-            System.Diagnostics.Debug.WriteLine($"Resource {s_RealEntry} - Off 0x{p_Reader.Position:x04} | OriginalSize 0x{s_Entry.OriginalSize}" );
             if (PatchBundle != null && !InUpdate)
             {
                 p_Reader.Seek(s_Entry.OriginalSize, SeekOrigin.Current);

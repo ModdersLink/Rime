@@ -187,11 +187,9 @@ public class EbxReader : IDisposable
 
                 var s_ObfuscationShift = (s_Descriptor.Alignment == 4) ? 8 : 0;
                 m_InstanceOffsets.Add(m_Reader.Position - s_ObfuscationShift);
-                m_Reader.Seek(s_Descriptor.Size - s_ObfuscationShift, SeekOrigin.Current);
+                m_Reader.Seek(s_Descriptor.Size - s_ObfuscationShift, SeekOrigin.Current); // TODO: sth in here is broken
                 m_Partition.InstanceMap.Add(s_InstanceId, s_Instance);
             }
-            
-
         }
         
         // avoid having to resolve CtrRefs later, just do double loop
