@@ -554,8 +554,8 @@ public class EngineMounter : IEngineMounter
     protected void ParseSuperbundles()
     {
         // TODO: Re-enable parallel processing once we've made sure everything is working as intended.
-        //Parallel.ForEach(m_Superbundles, p_Superbundle => ParseSuperbundle(p_Superbundle, true));
-        m_Superbundles.ForEach(p_Superbundle => ParseSuperbundle(p_Superbundle, true));
+        Parallel.ForEach(m_Superbundles, p_Superbundle => ParseSuperbundle(p_Superbundle, true));
+        //m_Superbundles.ForEach(p_Superbundle => ParseSuperbundle(p_Superbundle, true));
     }
 
     protected void ParseSuperbundle(SuperbundleEntry p_Superbundle, bool p_AutoMount)
