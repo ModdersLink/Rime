@@ -29,15 +29,15 @@ public class CtrRefJsonConverter : JsonConverter
         p_Writer.WritePropertyName("PartitionGuid");
         p_Writer.WriteValue(s_Value.PartitionGuid.ToString());
 
-        p_Writer.WritePropertyName("InstanceGuid");
-
         switch (s_Value.InstanceId)
         {
             case DataContainerId.Guid s_Guid:
+                p_Writer.WritePropertyName("InstanceGuid");
                 p_Writer.WriteValue(s_Guid.Id.ToString());
                 break;
             
             case DataContainerId.Index s_Index:
+                p_Writer.WritePropertyName("InstanceIndex");
                 p_Writer.WriteValue(s_Index.Id);
                 break;
         }
@@ -60,8 +60,8 @@ public class CtrRefJsonConverter : JsonConverter
         if (!s_Object.ContainsKey("PartitionGuid"))
             throw new Exception("Partition JSON does not have 'PartitionGuid' key.");
 
-        if (!s_Object.ContainsKey("InstanceGuid"))
-            throw new Exception("Partition JSON does not have 'InstanceGuid' key.");
+        if (!s_Object.ContainsKey("InstanceGuid") && !s_Object.ContainsKey("InstanceIndex"))
+            throw new Exception("Partition JSON does not have 'InstanceGuid' or 'InstanceIndex' key.");
 
         var s_PartGuid = s_Object["PartitionGuid"]?.Value<string>();
 
@@ -69,13 +69,23 @@ public class CtrRefJsonConverter : JsonConverter
             throw new Exception("Partition JSON 'PartitionGuid' key is not a string.");
 
         var s_PartitionGuid = new GUID(s_PartGuid);
-        
-        DataContainerId s_DataContainerId = s_Object["InstanceGuid"]?.Type switch
+
+        DataContainerId s_DataContainerId;
+
+        if (s_Object.ContainsKey("InstanceGuid"))
         {
-            JTokenType.Integer => new DataContainerId.Index(s_Object["InstanceGuid"]!.Value<int>()),
-            JTokenType.String => new DataContainerId.Guid(new GUID(s_Object["InstanceGuid"]!.Value<string>()!)),
-            _ => throw new Exception("Partition JSON 'InstanceGuid' key is not a string or integer.")
-        };
+            var s_GuidStr = s_Object["InstanceGuid"]?.Value<string>();
+            if (s_GuidStr == null)
+                throw new Exception("Partition JSON 'InstanceGuid' key is not a string.");
+            s_DataContainerId = new DataContainerId.Guid(new GUID(s_GuidStr));
+        }
+        else
+        {
+            var s_IndexVal = s_Object["InstanceIndex"]?.Value<long>();
+            if (s_IndexVal == null)
+                throw new Exception("Partition JSON 'InstanceIndex' key is not an integer.");
+            s_DataContainerId = new DataContainerId.Index(s_IndexVal.Value);
+        }
 
         return Activator.CreateInstance(p_ObjectType, s_PartitionGuid, s_DataContainerId);
     }
