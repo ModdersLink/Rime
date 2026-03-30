@@ -149,6 +149,7 @@ public class EbxReader : IDisposable
         {
             var s_Entry = m_InstanceEntries[s_ContainerIdx];
             var s_Descriptor = m_TypeDescriptors[(int)s_Entry.TypeDescriptorIndex];
+            m_Reader.Align(s_Descriptor.Alignment);
 
             var s_ContainerType = DataContainerTypeRegistry.FindByName(s_Descriptor.Name);
             if (s_ContainerType == null)
