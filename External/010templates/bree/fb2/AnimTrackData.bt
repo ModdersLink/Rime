@@ -1,0 +1,15 @@
+struct AnimKey
+{
+    float time;
+    float value;
+    float inTanX;
+    float inTanY;
+    float outTanX;
+    float outTanY;    
+};
+
+local uint keyCount = FileSize() / 24;
+
+struct {
+    AnimKey animKeys[keyCount];
+} AnimTrackData;

@@ -1,0 +1,385 @@
+struct Vector3
+{
+    float X;
+    float Y;
+    float Z;
+    float pad;
+};
+
+struct AxisAlignedBox
+{
+    Vector3 Min;
+    Vector3 Max;
+};
+
+struct RelocPtr
+{
+    uint Pointer;
+    uint Pad;    
+};
+
+struct RelocArray
+{
+    uint Count;
+    uint Pointer;
+    uint Pad;    
+};
+
+enum MeshType
+{
+	MeshType_Rigid = 0,
+	MeshType_Skinned = 1,
+	MeshType_Composite = 2
+};
+
+enum MeshLayoutFlags
+{
+    IsBaseLod = 0x1,
+    StreamingEnable = 0x40,
+    StreamInstancingEnable = 0x10,
+    VertexAnimationEnable = 0x80,
+    IsDataAvailable = 0x20000000
+};
+
+enum IndexBufferFormat
+{
+	IndexBufferFormat_16Bit = 0,
+	IndexBufferFormat_32Bit = 1
+};
+
+enum <byte> PrimitiveType
+{
+    PrimitiveType_PointList = 0x0,
+    PrimitiveType_LineList = 0x1,
+    PrimitiveType_LineStrip = 0x2,
+    PrimitiveType_TriangleList = 0x3,
+    PrimitiveType_TriangleStrip = 0x5,
+    PrimitiveType_QuadList = 0x7,
+    PrimitiveType_XenonRectList = 0x8,
+};
+
+enum <byte> VertexElementClassification
+{
+	VertexElementClassification_PerVertex = 0,
+	VertexElementClassification_PerInstance = 1,
+	VertexElementClassification_Index = 2
+};
+
+enum <byte> VertexElementUsage
+{
+	VertexElementUsage_Unknown = 0,
+	VertexElementUsage_Pos = 1,
+	VertexElementUsage_BoneIndices = 2,
+	VertexElementUsage_BoneIndices2 = 3,
+	VertexElementUsage_BoneWeights = 4,
+	VertexElementUsage_BoneWeights2 = 5,
+	VertexElementUsage_Normal = 6,
+	VertexElementUsage_Tangent = 7,
+	VertexElementUsage_Binormal = 8,
+	VertexElementUsage_BinormalSign = 9,
+	VertexElementUsage_WorldTrans1 = 10,
+	VertexElementUsage_WorldTrans2 = 11,
+	VertexElementUsage_WorldTrans3 = 12,
+	VertexElementUsage_InstanceId = 13,
+	VertexElementUsage_InstanceUserData0 = 14,
+	VertexElementUsage_InstanceUserData1 = 15,
+	VertexElementUsage_XenonIndex = 16,
+	VertexElementUsage_XenonBarycentric = 17,
+	VertexElementUsage_XenonQuadID = 18,
+	VertexElementUsage_Index = 19,
+	VertexElementUsage_ViewIndex = 20,
+	VertexElementUsage_Color0 = 30,
+	VertexElementUsage_Color1 = 31,
+	VertexElementUsage_TexCoord0 = 33,
+	VertexElementUsage_TexCoord1 = 34,
+	VertexElementUsage_TexCoord2 = 35,
+	VertexElementUsage_TexCoord3 = 36,
+	VertexElementUsage_TexCoord4 = 37,
+	VertexElementUsage_TexCoord5 = 38,
+	VertexElementUsage_TexCoord6 = 39,
+	VertexElementUsage_TexCoord7 = 40,
+	VertexElementUsage_RadiosityTexCoord = 41,
+	VertexElementUsage_VisInfo = 42,
+	VertexElementUsage_SpriteSize = 43,
+	VertexElementUsage_PackedTexCoord0 = 44,
+	VertexElementUsage_PackedTexCoord1 = 45,
+	VertexElementUsage_PackedTexCoord2 = 46,
+	VertexElementUsage_PackedTexCoord3 = 47,
+	VertexElementUsage_ClipDistance0 = 48,
+	VertexElementUsage_ClipDistance1 = 49,
+	VertexElementUsage_SubMaterialIndex = 50,
+	VertexElementUsage_BranchInfo = 60,
+	VertexElementUsage_PosAndScale = 61,
+	VertexElementUsage_Rotation = 62,
+	VertexElementUsage_SpriteSizeAndUv = 63,
+	VertexElementUsage_FadePos = 90,
+	VertexElementUsage_SpawnTime = 91,
+	VertexElementUsage_PosAndSoftMul = 150,
+	VertexElementUsage_Alpha = 151,
+	VertexElementUsage_Misc0 = 152,
+	VertexElementUsage_Misc1 = 153,
+	VertexElementUsage_LeftAndRotation = 154,
+	VertexElementUsage_UpAndNormalBlend = 155,
+	VertexElementUsage_SH_R = 156,
+	VertexElementUsage_SH_G = 157,
+	VertexElementUsage_SH_B = 158,
+	VertexElementUsage_PosAndRejectCulling = 159,
+	VertexElementUsage_Shadow = 160,
+	VertexElementUsage_PatchUv = 180,
+	VertexElementUsage_Height = 181,
+	VertexElementUsage_MaskUVs0 = 182,
+	VertexElementUsage_MaskUVs1 = 183,
+	VertexElementUsage_MaskUVs2 = 184,
+	VertexElementUsage_MaskUVs3 = 185,
+	VertexElementUsage_UserMasks = 186,
+	VertexElementUsage_HeightfieldUv = 187,
+	VertexElementUsage_MaskUv = 188,
+	VertexElementUsage_GlobalColorUv = 189,
+	VertexElementUsage_HeightfieldPixelSizeAndAspect = 190,
+	VertexElementUsage_WorldPositionXz = 191,
+	VertexElementUsage_TerrainTextureNodeUv = 192,
+	VertexElementUsage_ParentTerrainTextureNodeUv = 193,
+	VertexElementUsage_Uv01 = 210,
+	VertexElementUsage_WorldPos = 211,
+	VertexElementUsage_EyeVector = 212,
+	VertexElementUsage_LightParams1 = 220,
+	VertexElementUsage_LightParams2 = 221,
+	VertexElementUsage_LightSubParams = 222,
+	VertexElementUsage_LightSideVector = 223,
+	VertexElementUsage_LightInnerAndOuterAngle = 224,
+	VertexElementUsage_LightDir = 225,
+	VertexElementUsage_LightMatrix1 = 226,
+	VertexElementUsage_LightMatrix2 = 227,
+	VertexElementUsage_LightMatrix3 = 228,
+	VertexElementUsage_LightMatrix4 = 229,
+	VertexElementUsage_Custom = 230
+};
+
+enum <byte> VertexElementFormat
+{
+	VertexElementFormat_None = 0,
+	VertexElementFormat_Float = 1,
+	VertexElementFormat_Float2 = 2,
+	VertexElementFormat_Float3 = 3,
+	VertexElementFormat_Float4 = 4,
+	VertexElementFormat_Half = 5,
+	VertexElementFormat_Half2 = 6,
+	VertexElementFormat_Half3 = 7,
+	VertexElementFormat_Half4 = 8,
+	VertexElementFormat_Byte4 = 10,
+	VertexElementFormat_Byte4N = 11,
+	VertexElementFormat_UByte4 = 12,
+	VertexElementFormat_UByte4N = 13,
+	VertexElementFormat_Short = 14,
+	VertexElementFormat_Short2 = 15,
+	VertexElementFormat_Short3 = 16,
+	VertexElementFormat_Short4 = 17,
+	VertexElementFormat_ShortN = 18,
+	VertexElementFormat_Short2N = 19,
+	VertexElementFormat_Short3N = 20,
+	VertexElementFormat_Short4N = 21,
+	VertexElementFormat_UShort2 = 22,
+	VertexElementFormat_UShort4 = 23,
+	VertexElementFormat_UShort2N = 24,
+	VertexElementFormat_UShort4N = 25,
+	VertexElementFormat_Int = 26,
+	VertexElementFormat_Int2 = 27,
+	VertexElementFormat_Int4 = 28,
+	VertexElementFormat_IntN = 29,
+	VertexElementFormat_Int2N = 30,
+	VertexElementFormat_Int4N = 31,
+	VertexElementFormat_UInt = 32,
+	VertexElementFormat_UInt2 = 33,
+	VertexElementFormat_UInt4 = 34,
+	VertexElementFormat_UIntN = 35,
+	VertexElementFormat_UInt2N = 36,
+	VertexElementFormat_UInt4N = 37,
+	VertexElementFormat_Comp3_10_10_10 = 38,
+	VertexElementFormat_Comp3N_10_10_10 = 39,
+	VertexElementFormat_UComp3_10_10_10 = 40,
+	VertexElementFormat_UComp3N_10_10_10 = 41,
+	VertexElementFormat_Comp3_11_11_10 = 42,
+	VertexElementFormat_Comp3N_11_11_10 = 43,
+	VertexElementFormat_UComp3_11_11_10 = 44,
+	VertexElementFormat_UComp3N_11_11_10 = 45,
+	VertexElementFormat_Comp4_10_10_10_2 = 46,
+	VertexElementFormat_Comp4N_10_10_10_2 = 47,
+	VertexElementFormat_UComp4_10_10_10_2 = 48,
+	VertexElementFormat_UComp4N_10_10_10_2 = 49,
+	VertexElementFormat_UByteN = 50,
+	VertexElementFormat_Int3 = 51,
+	VertexElementFormat_UInt3 = 52
+};
+
+struct GeometryDeclarationDesc
+{
+    struct Element
+    {
+        VertexElementUsage usage;
+        VertexElementFormat format;
+        char offset;
+        char streamIndex;
+    };
+    
+    struct Stream
+    {
+        char stride;
+        VertexElementClassification classification;    
+    };
+    
+    Element elements[16];
+    Stream streams[4];
+    char elementCount;
+    char streamCount;
+    ushort padding;  
+};
+
+struct MeshSubset
+{
+    uint64 geometryDeclarations;
+    RelocPtr materialNameOffset;
+    uint materialIndex;
+    uint primitiveCount;
+    uint startIndex;
+    uint vertexOffset;
+    uint vertexCount;
+    char vertexStride;
+    PrimitiveType primitiveType;
+    char bonesPerVertex;
+    char boneCount;
+    RelocPtr boneIndicesOffset;
+    GeometryDeclarationDesc geometryDeclarationDesc;
+    float texCoordRatios[6];
+    /*
+    local uint64 pos = FTell();
+
+    FSeek(materialNameOffset.Pointer);
+    string materialName;
+    
+    FSeek(boneIndicesOffset.Pointer);
+    ushort boneIndices[boneCount] <optimize=false>;
+    
+    FSeek(pos);*/
+};
+
+struct MeshLayout
+{
+    MeshType type;
+    RelocArray subsetsOffset;
+    RelocArray categorySubsetIndicesOffset[4];
+    MeshLayoutFlags flags;
+    IndexBufferFormat indexBufferFormat;
+    uint indexDataSize;
+    uint vertexDataSize;
+    uint edgePartitionBufferSize;
+    GUID dataChunkId;
+    uint auxVertexIndexDataOffset;
+    RelocPtr embeddedEdgeDataOffset;
+    RelocPtr shaderDebugNameOffset;
+    RelocPtr nameOffset;
+    RelocPtr shortNameOffset;
+    uint nameHash;
+    uint64 data;
+    uint partCount;
+    RelocPtr boneIndexArrayPartBoundingBoxesOffset;
+    RelocPtr boneShortNameArrayPartTransformsOffset;
+    uint64 subsetPartIndices;
+    
+    /*
+    FSeek(subsetsOffset.Pointer);
+    MeshSubset subsets[subsetsOffset.Count] <optimize=false>;
+
+    local int i = 0;
+    local int j = 0;
+    for (i = 0; i < 4; i++)
+    {
+        if (categorySubsetIndicesOffset[i].Count != 0)
+        {
+            FSeek(categorySubsetIndicesOffset[i].Pointer);
+            for (j = 0; j < categorySubsetIndicesOffset[i].Count; j++)
+            {
+                char categorySubsetIndices;
+            }
+        }
+    }
+    
+    FSeek(embeddedEdgeDataOffset.Pointer);
+    char embeddedEdgeData;
+    FSeek(shaderDebugNameOffset.Pointer);
+    string shaderDebugName;
+    FSeek(nameOffset.Pointer);
+    string name;
+    FSeek(shortNameOffset.Pointer);
+    string shortName;
+
+    FSeek(boneIndexArrayPartBoundingBoxesOffset.Pointer);
+    uint boneIndexArrayPartBoundingBoxes;
+    FSeek(boneShortNameArrayPartTransformsOffset.Pointer);
+    uint boneShortNameArrayPartTransforms;*/
+};
+
+struct
+{
+    struct String
+    {
+        string _;
+    };
+    MeshType meshType;
+    MeshLayoutFlags flags;
+    uint lodCount;
+    uint totalSubsetCount;
+    AxisAlignedBox boundingBox;
+    
+    RelocPtr lodsOffset[5];
+    RelocPtr nameOffset;
+    RelocPtr shortNameOffset;
+
+    uint nameHash;
+    uint padding;
+    
+    local int i = 0;
+    local int e = 0;
+    local int j = 0;
+    for (i = 0; i < lodCount; i++)
+    {
+        FSeek(lodsOffset[i].Pointer);
+        MeshLayout lods;
+        FSeek(lods.subsetsOffset.Pointer);
+        MeshSubset subsets[lods.subsetsOffset.Count] <optimize=false>;
+
+        for (e = 0; e < 4; e++)
+        {
+            if (lods.categorySubsetIndicesOffset[e].Count != 0)
+            {
+                FSeek(lods.categorySubsetIndicesOffset[e].Pointer);
+                for (j = 0; j < lods.categorySubsetIndicesOffset[e].Count; j++)
+                {
+                    char categorySubsetIndices;
+                }
+            }
+        }
+        
+        if (lods.embeddedEdgeDataOffset.Pointer != 0)
+        {
+            FSeek(lods.embeddedEdgeDataOffset.Pointer);
+            char embeddedEdgeData;
+        }
+        FSeek(lods.shaderDebugNameOffset.Pointer);
+        String shaderDebugName;
+        FSeek(lods.nameOffset.Pointer);
+        String name;
+        FSeek(lods.shortNameOffset.Pointer);
+        String shortName;
+    
+        FSeek(lods.boneIndexArrayPartBoundingBoxesOffset.Pointer);
+        uint boneIndexArrayPartBoundingBoxes;
+        FSeek(lods.boneShortNameArrayPartTransformsOffset.Pointer);
+        uint boneShortNameArrayPartTransforms;
+    }
+
+    FSeek(nameOffset.Pointer);
+    String name;
+    
+    FSeek(shortNameOffset.Pointer);
+    String shortName;
+} MeshSet <bgcolor=0xFF0000>;

@@ -1,0 +1,90 @@
+struct Vector2
+{
+    float X;
+    float Y;
+};
+
+struct Vector3
+{
+    float X;
+    float Y;
+    float Z;
+};
+
+struct Vector4
+{
+    float W;
+    float X;
+    float Y;
+    float Z;
+};
+
+struct AxisAlignedBox
+{
+    Vector3 Min;
+    Vector3 Max;
+};
+
+struct LinearTransform
+{
+    Vector3 Right;
+    Vector3 Up;
+    Vector3 Forward;
+    Vector3 Trans;
+};
+
+struct EnlightenTerrainLightmap
+{
+    AxisAlignedBox worldBoundingBox;
+    Vector4 uvTransform;
+    Vector2 uvTranslation;
+};
+
+struct LightMapInstance
+{
+    GUID m_guid;
+    LinearTransform m_transform;
+    Vector4 uvTransform;
+    Vector2 uvTranslation;
+};
+
+struct EnlightenDatabase
+{
+    struct Strings
+    {
+      string _;
+    };
+
+    char m_enable;
+    char m_dynamicDataEnable;
+
+    uint m_outputAtlasWidth;
+    uint m_outputAtlasHeight;
+
+    uint m_systemNameCount;
+    if (m_systemNameCount != 0)
+    {
+        Strings m_systemNames[m_systemNameCount] <optimize=false>;
+    }
+
+    uint m_terrainLightMapCount;
+    if (m_terrainLightMapCount != 0)
+    {
+        EnlightenTerrainLightmap m_terrainLightMaps[m_terrainLightMapCount] <optimize=false>;
+    }
+
+    uint m_lightMapInstanceCount;
+    if (m_lightMapInstanceCount != 0)
+    {
+        LightMapInstance m_instanceHashMap[m_lightMapInstanceCount] <optimize=false>;
+    }
+
+    uint m_probeSetNamesCount;
+    if (m_probeSetNamesCount != 0)
+    {
+        Strings m_probeSetNames[m_probeSetNamesCount] <optimize=false>;
+    }
+    uint m_probeCount;
+
+    char pad; // no clue
+} enlightenDatabase <bgcolor=0xFF0000>;

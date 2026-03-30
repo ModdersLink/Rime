@@ -1,0 +1,38 @@
+struct Vector4
+{
+    float W;
+    float X;
+    float Y;
+    float Z;
+};
+
+struct AxisAlignedBox
+{
+    Vector4 Min;
+    Vector4 Max;
+};
+
+struct Vertex2d
+{
+    float pos[2];
+    float texCoord[2];
+};
+
+struct OccluderMesh
+{
+    AxisAlignedBox boundingBox;
+    ushort vertexCount;
+    ushort indexCount;
+    uint vertexDataOffset;
+    uint indexDataOffset;
+    uint partMaskOffset;
+    uint doubleSided;
+    uint highPriority;
+    uint pad[2];
+    
+    uint64 partMaskData[indexCount];
+    Vertex2d vertexData[vertexCount];
+    ushort indexData[indexCount];
+    uint pad1[2];
+} occluderMesh <bgcolor=0xFF0000>;
+

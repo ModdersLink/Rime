@@ -1,0 +1,18 @@
+struct ShProbe
+{
+    float shR[4];
+    float shG[4];
+    float shB[4];
+    float shO[4];
+};
+
+struct StaticEnlightenDatabase
+{
+    char m_enable;
+
+    uint m_outputAtlasWidth;
+    uint m_outputAtlasHeight;
+
+    uint m_staticProbeCount;
+    ShProbe m_staticProbes[m_staticProbeCount] <optimize=false>;
+} staticEnlightenDatabase <bgcolor=0xFF0000>;

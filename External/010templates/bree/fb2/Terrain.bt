@@ -1,0 +1,4 @@
+struct
+{
+    string name;
+} Terrain;

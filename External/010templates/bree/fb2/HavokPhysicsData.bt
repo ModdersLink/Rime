@@ -29,6 +29,34 @@ struct AxisAlignedBox {
     Vec3 max;
 };
 
+struct hkPackfileHeader
+{
+    int Magic[2];
+    int UserTag;
+    int FileVersion;
+    ubyte LayoutRules[4];
+    int NumSections;
+    int ContentsSectionIndex;
+    int ContentsSectionOffset;
+    int ContentsClassNameSectionIndex;
+    int ContentsClassNameSectionOffset;
+    char ContentsVersion[16];
+    int Flags;
+    int Pad;
+};
+
+struct hkPackfileSectionHeader
+{
+    char SectionTagData[20];
+    int AbsoluteDataStart;
+    int LocalFixupsOffset;
+    int GlobalFixupsOffset;
+    int VirtualFixupsOffset;
+    int ExportsOffset;
+    int ImportsOffset;
+    int EndOffset;
+};
+
 struct hkDescriptor
 {
     int Signature;
@@ -173,114 +201,101 @@ if (data.MaterialFlagsAndIndicesCount > 0)
 
 FSeek(s_HavokOffset);
 
-struct hkPackfileHeader
+while(FTell() != FileSize())
 {
-    int Magic[2];
-    int UserTag;
-    int FileVersion;
-    ubyte LayoutRules[4];
-    int NumSections;
-    int ContentsSectionIndex;
-    int ContentsSectionOffset;
-    int ContentsClassNameSectionIndex;
-    int ContentsClassNameSectionOffset;
-    char ContentsVersion[16];
-    int Flags;
-    int Pad;
-} header;
-
-struct hkPackfileSectionHeader
-{
-    char SectionTagData[20];
-    int AbsoluteDataStart;
-    int LocalFixupsOffset;
-    int GlobalFixupsOffset;
-    int VirtualFixupsOffset;
-    int ExportsOffset;
-    int ImportsOffset;
-    int EndOffset;
-} sectionHeader[header.NumSections];
-
-// TODO: un-hardcode classnames from index 0.
-// __classnames__
 struct {
-    local uint ClassNamesStart = s_HavokOffset + sectionHeader[0].AbsoluteDataStart;
-    local uint ClassNamesEnd = ClassNamesStart + sectionHeader[0].EndOffset - 1;
-    FSeek(ClassNamesStart);
-    while (FTell() < ClassNamesEnd)
-    {
-        hkDescriptor descriptor;
-    }
+    hkPackfileHeader header;
+    hkPackfileSectionHeader sectionHeader[header.NumSections];
     
-    ubyte Pad;
-} __classnames__;
-
-// ignore __types__ as EndOffset is 0.
-
-// __data__
-
-struct {
-    local uint DataStart = s_HavokOffset + sectionHeader[2].AbsoluteDataStart;
-    local uint DataEnd = DataStart + sectionHeader[2].EndOffset - 1;
-    local uint DataFixupStart = DataStart + sectionHeader[2].VirtualFixupsOffset;
-    local uint DataFixupEnd = DataStart + sectionHeader[2].ExportsOffset;
-    local uint infoCount = 0;
-    FSeek(DataStart);
-    hkxRoot root;
-    
-    struct hkxRoot2
-    {
-        if (root.EntryCount > 0)
+    // TODO: un-hardcode classnames from index 0.
+    // __classnames__
+    struct {
+        local uint ClassNamesStart = s_HavokOffset + sectionHeader[0].AbsoluteDataStart;
+        local uint ClassNamesEnd = ClassNamesStart + sectionHeader[0].EndOffset - 1;
+        FSeek(ClassNamesStart);
+        while (FTell() < ClassNamesEnd)
         {
-            float Entries[root.EntryCount * 3];
+            hkDescriptor descriptor;
         }
-        string EntryName;
-        align(16);
-        string ClassName;
-    } root2;
+        
+        ubyte Pad;
+    } __classnames__;
     
-    struct hkxBlock
-    {
-        ushort Pad;
-        uint B1;
-        uint B2;
-        uint B3;
-        uint SkeletonCount;
-        uint B5;
-        uint B6;
-        ushort AnimationCount;
-        ushort B7;
-        uint B8;
-        uint B9;
-        uint BindingsCount;
-        uint B11;
-        uint B12;
-        uint AttachmentsCount;
-        uint B14;
-        uint B15;
-        uint SkinsCount;
-        int B17;
-    } block;
+    // ignore __types__ as EndOffset is 0.
     
-    infoCount = (DataFixupEnd - DataFixupStart) / 12;
+    // __data__
     
-    FSeek(DataFixupStart);
-    hkDescriptorInfo descriptorInfo[infoCount];
-    
-    local uint64 pos = FTell();
-    
-    for (int i=0; i < infoCount; i++)
-    {
-        FSeek(DataStart + descriptorInfo[i].Offset);
-        if (descriptorInfo[i].Key == 169)
+    struct {
+        local uint DataStart = s_HavokOffset + sectionHeader[2].AbsoluteDataStart;
+        local uint DataEnd = DataStart + sectionHeader[2].EndOffset - 1;
+        local uint DataFixupStart = DataStart + sectionHeader[2].VirtualFixupsOffset;
+        local uint DataFixupEnd = DataStart + sectionHeader[2].ExportsOffset;
+        local uint infoCount = 0;
+        FSeek(DataStart);
+        hkxRoot root;
+        
+        struct hkxRoot2
         {
-            hkExtendedMeshHeader meshHeader <bgcolor=0xFF0000>;
-            hkExtendedMeshEntry meshTransform[meshHeader.IndexCount] <bgcolor=0xFF0000>;
-        }
-        else
+            if (root.EntryCount > 0)
+            {
+                float Entries[root.EntryCount * 3];
+            }
+            else
+            {
+                float Entries[6]; // wrong for sure, just aligning.
+            }
+            string EntryName;
+            align(16);
+            string ClassName;
+        } root2;
+        
+        struct hkxBlock
         {
-            hkxRoot root <bgcolor=0xFF0000>;
+            ushort Pad;
+            uint B1;
+            uint B2;
+            uint B3;
+            uint SkeletonCount;
+            uint B5;
+            uint B6;
+            ushort AnimationCount;
+            ushort B7;
+            uint B8;
+            uint B9;
+            uint BindingsCount;
+            uint B11;
+            uint B12;
+            uint AttachmentsCount;
+            uint B14;
+            uint B15;
+            uint SkinsCount;
+            int B17;
+        } block;
+        
+        infoCount = (DataFixupEnd - DataFixupStart) / 12;
+        
+        FSeek(DataFixupStart);
+        hkDescriptorInfo descriptorInfo[infoCount];
+        
+        local uint64 pos = FTell();
+        
+        for (int i=0; i < infoCount; i++)
+        {
+            FSeek(DataStart + descriptorInfo[i].Offset);
+            if (descriptorInfo[i].Key == 169) //hkpExtendedMeshShape
+            {
+                hkExtendedMeshHeader meshHeader <bgcolor=0xFF0000>;
+                hkExtendedMeshEntry meshTransform[meshHeader.IndexCount] <bgcolor=0xFF0000>;
+            }
+            else
+            {
+                hkxRoot root <bgcolor=0xFF0000>;
+            }
         }
-    }
-    FSeek(pos);
-} __data__;
+        FSeek(pos);
+    } __data__;
+    
+} hk;
+    align(16);
+    s_HavokOffset = FTell();
+}

@@ -1,0 +1,30 @@
+//------------------------------------------------
+//--- 010 Editor v15.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+
+struct Sha1 {
+    byte hash[20];   
+};
+
+struct CatalogEntry {
+    Sha1 hash;
+    uint fileOffset;
+    uint fileSize;
+    uint fileNumber;
+};
+
+struct {
+    char nyan[16];
+    while (FTell() != FileSize()) {
+        CatalogEntry entry;
+    }
+} Catalog;

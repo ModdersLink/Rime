@@ -1,0 +1,317 @@
+//------------------------------------------------
+//--- 010 Editor v15.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+BigEndian();
+struct Sha1 {
+    byte hash[20];   
+};
+
+struct EntryRecord {
+    uint nameOffset;
+    uint payloadSize;
+    uint originalSize;
+};
+
+struct ResourceMeta {
+    byte m_ResourceMeta[16];
+};
+
+struct ChunkEntry {
+    GUID id;
+    uint rangeStart;
+    uint rangeEnd;
+    uint logicalOffset;
+};
+
+struct BundleManifestHeader {
+    uint magic; // c_ManifestEbx 0xED1CEDB8
+    uint entryCount;
+    uint ebxCount;
+    uint resourceCount;
+    uint chunkCount;
+    uint stringBlockOffset;
+    uint chunkMetaOffset;
+    uint chunkMetaSize;
+};
+
+enum ResourceType {
+    None = 0xFFFFFFFF,
+    // Venice Resource Types
+    AnimatedPointCloud = 0xC6DBEE07,
+    AnimTrackData = 0xD070EED1,
+    AssetBank = 0x51A3C853,
+    DxShaderDatabase = 0xE565EB15,
+    DxShaderProgramDatabase = 0x10F0E5A1,
+    DxTexture = 0x5C4954A6,
+    EnlightenDatabase = 0x70C5CB3E,
+    EnlightenProbeSet = 0xE156AF73,
+    EnlightenShaderDatabase = 0x59CEEB57,
+    EnlightenSystem = 0x5BDFDEFE,
+    HavokDestructionPhysicsData = 0x4864737B,
+    HavokPhysicsData = 0x91043F65,
+    ImpulseResponse = 0xC78B9D9D,
+    IShaderDatabase = 0x36F3F2C0,
+    ITexture = 0xC417BBD3,
+    MeshSet = 0x49B156D4,
+    OccluderMesh = 0x30B4A553,
+    RagdollResource = 0x319D8CD0,
+    RawFileData = 0x3568E2B7,
+    RenderTexture = 0x41D57E10,
+    StaticEnlightenDatabase = 0x7AEFC446,
+    SwfMovie = 0x2D47A5FF,
+    Terrain = 0x6BB6D7D2,
+    TerrainDecals = 0x15E1F32E,
+    TerrainStreamingTree = 0x22FE8AC8,
+    VisualTerrain = 0x1CA38E06
+};
+
+enum <ubyte> DbObjectType {
+	DbObjectType_Eoo = 0x00,
+    DbObjectType_InternalMin = 0x00,
+    DbObjectType_Array = 0x01,
+    DbObjectType_Object = 0x02,
+    DbObjectType_HomoArray = 0x03,
+    DbObjectType_Null = 0x04,
+    DbObjectType_ObjectId = 0x05,
+    DbObjectType_Bool = 0x06,
+    DbObjectType_String = 0x07,
+    DbObjectType_Integer = 0x08,
+    DbObjectType_Long = 0x09,
+    DbObjectType_VarInt = 0x0A,
+    DbObjectType_Float = 0x0B,
+    DbObjectType_Double = 0x0C,
+    DbObjectType_Timestamp = 0x0D,
+    DbObjectType_RecordId = 0x0E,
+    DbObjectType_Guid = 0x0F,
+    DbObjectType_Sha1 = 0x10,
+    DbObjectType_Matrix44 = 0x11,
+    DbObjectType_Vector4 = 0x12,
+    DbObjectType_Blob = 0x13,
+    DbObjectType_Attachment = 0x14,
+    DbObjectType_Timespan = 0x15,
+    DbObjectType_InternalMax = 0x1F,
+    DbObjectType_Mask = 0x1F,
+    DbObjectType_Anonymous = 0x80
+};
+
+struct Decode7BitPair {
+    uint first;
+    uint second;
+};
+
+void Decode7Bit(Decode7BitPair& pair) {
+    local uint slice = (uint)ReadUByte();
+    FSkip(1);
+    pair.first = slice & 0x7F;
+    pair.second = 1;
+    if ((slice & 0x80) == 0) {
+        return;
+    }
+    
+    slice = ReadUByte();
+    FSkip(1);
+    pair.first = pair.first | (slice & 0x7F) << 7;
+    pair.second = 2;
+
+    if ((slice & 0x80) == 0) {
+        return;
+    }
+    
+    slice = ReadUByte();
+    FSkip(1);
+    pair.first = pair.first | (slice & 0x7F) << 14;
+    local uint shift = 21;
+    while ((slice & 0x80) != 0) {
+        pair.second = pair.second + 1;
+        slice = ReadUByte();
+        FSkip(1);
+        pair.first = pair.first | (slice & 0x7F) << shift;
+        shift = shift + 7;
+    }
+    
+    return;
+}
+
+struct DbObjectElement {
+    DbObjectType Type;
+
+    local byte realType = Type & DbObjectType_Mask;
+
+    if (realType != DbObjectType_Eoo && ((Type & DbObjectType_Anonymous) == 0)) {
+        string FieldName;    
+    }
+    if (realType == DbObjectType_Array ||realType == DbObjectType_HomoArray || realType == DbObjectType_Object) {
+        local Decode7BitPair pair;
+        Decode7Bit(pair);
+        GetElements(pair.first);
+    }
+    else if (realType == DbObjectType_ObjectId){
+        GUID m_ObjectValue;
+    }
+    else if (realType == DbObjectType_Bool){
+        uchar m_Int8Value;
+    }
+    else if (realType == DbObjectType_String){
+        local Decode7BitPair pair;
+        Decode7Bit(pair);
+        char m_StringValue[pair.first];
+    }
+    else if (realType == DbObjectType_Integer){
+        
+        uint m_Int32Value;
+    }
+    else if (realType == DbObjectType_Long){
+        int64 m_Int64Value;
+    }
+    else if (realType == DbObjectType_VarInt){
+        uint DbObjectType_VarInt; // TODO
+    }
+    else if (realType == DbObjectType_Float){
+        float m_FloatValue;
+    }
+    else if (realType == DbObjectType_Double){
+        double m_DoubleValue;
+    }
+    else if (realType == DbObjectType_Timestamp){
+        uint DbObjectType_Timestamp;
+    }
+    else if (realType == DbObjectType_RecordId){
+        uint DbObjectType_RecordId;
+    }
+    else if (realType == DbObjectType_Guid){
+        GUID m_GuidValue;
+    }
+    else if (realType == DbObjectType_Sha1){
+        byte m_Sha1Value[20];
+    }
+    else if (realType == DbObjectType_Blob){
+        local Decode7BitPair pair;
+        Decode7Bit(pair);
+        byte m_ObjectValue[pair.first];
+    }
+    else if (realType == DbObjectType_Attachment){
+        uint DbObjectType_Attachment; // TODO
+    }
+    else if (realType == DbObjectType_Timespan){
+        uint DbObjectType_Timespan; // TODO
+    }
+    else if (realType == DbObjectType_Matrix44){
+        uint DbObjectType_Matrix44; // TODO
+    }
+    else if (realType == DbObjectType_Eoo){
+        // do nothing
+    }
+    else {
+        uint wellwellwell; // TODO
+    }
+};
+
+
+void GetElements(uint elementsSize) {
+    local uint endPosition = FTell() + elementsSize;
+    while (FTell() != endPosition) {
+        DbObjectElement Element;
+    }
+}
+
+struct BundleManifest {
+    local uint startPosition = FTell();
+    uint m_ManifestSize;
+    BundleManifestHeader m_Header;
+    Sha1 m_Entries[m_Header.entryCount];
+    if (m_Header.ebxCount > 0) {
+        EntryRecord m_EbxEntryRecords[m_Header.ebxCount];
+    }
+    if (m_Header.resourceCount > 0) {
+        EntryRecord m_ResourceEntryRecords[m_Header.resourceCount];
+        ResourceType m_ResourceTypeHashes[m_Header.resourceCount];
+        ResourceMeta m_ResourceMeta[m_Header.resourceCount];
+    }
+    
+    if (m_Header.chunkCount > 0) {
+        ChunkEntry m_ChunkEntries[m_Header.chunkCount];
+    }
+    
+    if (m_Header.chunkMetaSize > 0) {
+        LittleEndian();
+        DbObjectElement m_ChunkMeta;
+        BigEndian();
+    }
+    FSeek(startPosition + m_Header.stringBlockOffset + 4);
+    byte m_TextBlock[m_ManifestSize - FTell() + startPosition + 4];
+
+    struct EbxData {
+        local int i = 0;
+        local int j = 0;
+        for (i = 0; i < m_Header.ebxCount; i++) {
+            j = m_EbxEntryRecords[i].payloadSize;
+            struct wrap {
+                byte _[j];
+            };
+            wrap ebxData;
+        }
+    };
+    if (m_Header.ebxCount > 0) {
+        EbxData m_EbxData;
+    }
+    
+    struct ResourceData {
+        local int i = 0;
+        local int j = 0;
+        local int alignment = 0;
+        for (i = 0; i < m_Header.resourceCount; i++) {
+            j = m_ResourceEntryRecords[i].payloadSize;
+            struct wrapp {
+                byte _[j];
+            };
+            wrapp resourceData;
+            // align
+            alignment = FTell();
+            while (alignment % 16 != 0)
+            {
+                FSkip(1);
+                alignment = FTell();
+            }
+        }
+    };
+    if (m_Header.resourceCount > 0) {
+        ResourceData m_ResourceData;
+    }
+    
+    struct ChunkData {
+        local int i = 0;
+        local int j = 0;
+        local int alignment = 0;
+        for (i = 0; i < m_Header.chunkCount; i++) {
+            j = m_ChunkEntries[i].rangeEnd - m_ChunkEntries[i].rangeStart;
+            struct wrappp {
+                byte _[j];
+            };
+            wrappp chunkData;
+            // align
+            alignment = FTell();
+            while (alignment % 16 != 0)
+            {
+                FSkip(1);
+                alignment = FTell();
+            }
+        }
+    };
+    if (m_Header.chunkCount > 0) {
+        ChunkData m_ChunkData;
+    }
+    
+};
+
+while (FTell() != FileSize()) {
+    BundleManifest m_Manifest;   
+}
