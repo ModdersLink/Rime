@@ -1,0 +1,113 @@
+struct Vector3
+{
+    float X;
+    float Y;
+    float Z;
+};
+
+struct AxisAlignedBox
+{
+    Vector3 Min;
+    Vector3 Max;
+};
+
+struct TerrainDecalsGeometryBlock
+{
+    string surfaceShaderName <bgcolor=0xFFFF00>;
+    string zOnlySurfaceShaderName;
+    // startIndex + (primitiveCount * 3) = startIndex of next object
+    // for the last one its the whole count
+    uint startIndex;
+    uint primitiveCount;
+    AxisAlignedBox boundingBox;
+    AxisAlignedBox boundingBox2; // just guessed
+    float drawDistance;
+    uint vertexBegin; // from vertices[vertexBegin * x]
+    uint vertexEnd; // to vertices[vertexEnd * x]
+};
+
+/*struct TerrainDecalsGeometry // everything guessed in here
+{
+    uint blockCount;
+    TerrainDecalsGeometryBlock blocks[blockCount] <optimize=false>;
+    uint verticesByteCount;
+    uint indicesByteCount;
+    float vertices[verticesByteCount / 4] <optimize=false>;
+    uint indices[indicesByteCount / 4] <optimize=false>;
+};*/
+
+struct RenderVertex2d
+{
+    float pos[2];
+    float texCoord[2];
+    ushort userMasks[4];
+};
+
+struct RenderVertex3d
+{
+    float pos[3];
+    float texCoord[2];
+    ushort userMasks[4];
+};
+
+struct RenderVertexWater
+{
+    ushort pos[4];
+    ushort normal[4];
+    ushort tangent[4];
+    ushort texCoord[2];
+    ushort userMasks[4];
+};
+
+struct TerrainDecalsGeometry2d
+{
+    uint blockCount;
+    if (blockCount != 0)
+    {
+        TerrainDecalsGeometryBlock blocks[blockCount] <optimize=false>;
+        uint verticesByteCount;
+        uint indicesByteCount;
+        RenderVertex2d vertices[verticesByteCount / 4 / 6] <optimize=false>;
+        uint indices[indicesByteCount / 4] <optimize=false>;
+    }
+};
+
+struct TerrainDecalsGeometry3d
+{
+    uint blockCount;
+    if (blockCount != 0)
+    {
+        TerrainDecalsGeometryBlock blocks[blockCount] <optimize=false>;
+        uint verticesByteCount;
+        uint indicesByteCount;
+        RenderVertex3d vertices[verticesByteCount / 4 / 7] <optimize=false>;
+        uint indices[indicesByteCount / 4] <optimize=false>;
+    }
+};
+
+struct TerrainDecalsGeometryWater
+{
+    uint blockCount;
+    if (blockCount != 0)
+    {
+        TerrainDecalsGeometryBlock blocks[blockCount] <optimize=false>;
+        uint verticesByteCount;
+        uint indicesByteCount;
+        RenderVertexWater vertices[verticesByteCount / 4 / 9] <optimize=false>;
+        uint indices[indicesByteCount / 4] <optimize=false>;
+    }
+};
+
+struct TerrainDecals
+{
+    //float m_decal3dTessellationMetersPerVertex;
+    float m_decal3dFarDrawDistance;
+    float m_decal2dNearDrawDistance;
+    uint m_decalCellsPerHeightfieldTileSide;
+    char m_decalDestructionMaskEnable;
+    // 2d, 3d, water
+    //TerrainDecalsGeometry m_decalGeometries[3] <optimize=false>;
+    TerrainDecalsGeometry2d m_decalGeometry2d;
+    TerrainDecalsGeometry3d m_decalGeometry3d;
+    TerrainDecalsGeometryWater m_decalGeometryWater;
+} terrainDecals <bgcolor=0xFF0000>;

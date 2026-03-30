@@ -1,0 +1,145 @@
+struct MeshScatteringType
+{
+    string m_meshName;
+    uint m_variationAssetNameHash;
+    float m_density;
+    char m_lockDensity;
+
+    float m_randomPositionOffset;
+    float m_minMask;
+    float m_maxMask;
+
+    float m_minScaleX;
+    float m_minScaleY;
+    float m_maxScaleX;
+    float m_maxScaleY;
+
+    float m_minMaskScaleFactorX;
+    float m_minMaskScaleFactorY;
+          
+    float m_scaleRandomess;
+    float m_windScale;
+            
+    byte m_firstSpawnLevel;
+    byte m_spawnLevelCount;
+    byte m_rotationMode;
+    byte m_orientationMode;
+
+    float m_rotateTowardSlopeWeight;
+
+    char m_castShadowsEnable;
+    float m_shadowViewDistance;
+
+    char m_billboardingEnable;
+    char m_billboardingGpuAccelleration;
+
+    byte m_instanceType;
+
+    char m_groundClampBoundingBoxEnable;
+};
+
+struct VisualTerrainLayer
+{
+    char m_virtualTextureEnable;
+    uint m_meshScatteringTypeCount;
+    if (m_meshScatteringTypeCount != 0)
+    {
+        MeshScatteringType m_meshScatteringTypes[m_meshScatteringTypeCount] <optimize=false>;
+    }
+};
+
+struct MeshScatteringMaskScaleMethod
+{
+    uint maskedTerrainLayerIndexCount;
+    if (maskedTerrainLayerIndexCount != 0)
+    {
+        uchar maskedTerrainLayerIndices[maskedTerrainLayerIndexCount] <optimize=false>;
+    }
+    uint outputLayerOrderCount;
+    uchar outputLayerOrder[outputLayerOrderCount] <optimize=false>;
+    string shaderName;
+    uchar destructionMaskEnable;
+    uchar level;
+};
+
+struct TerrainLayerCombinationDraw2dPass // Surface2dDrawMethod
+{
+    uint drawPassType;
+    uint maskedTerrainLayerIndexCount;
+    if (maskedTerrainLayerIndexCount != 0)
+    {
+        uchar maskedTerrainLayerIndices[maskedTerrainLayerIndexCount] <optimize=false>;
+    }
+    string shaderName;
+    uchar destructionMaskEnable;
+};
+
+struct Surface3dDrawMethod
+{
+    uint maskedTerrainLayerIndexCount;
+    if (maskedTerrainLayerIndexCount != 0)
+    {
+        uchar maskedTerrainLayerIndices[maskedTerrainLayerIndexCount] <optimize=false>;
+    }
+    string shaderName;
+    uchar destructionMaskEnable;
+    uchar level;
+    uchar drawDirectLayerCount;
+};
+
+
+struct TerrainLayerCombinationDraw
+{
+    uint terrainLayerIndexCount;
+    uchar terrainLayerIndices[terrainLayerIndexCount] <optimize=false>;
+    uint meshScatteringMaskScaleDrawMethodCount;
+    uchar meshScatteringMaskScaleLevelEnd;
+    if (meshScatteringMaskScaleDrawMethodCount != 0)
+    {
+        MeshScatteringMaskScaleMethod meshScatteringMaskScaleDrawMethods[meshScatteringMaskScaleDrawMethodCount] <optimize=false>;
+    }
+    uint surface2dMethodCount;
+    if (surface2dMethodCount != 0)
+    {
+        TerrainLayerCombinationDraw2dPass surface2dMethods[surface2dMethodCount] <optimize=false>;
+    }
+    uint surface3dMethodCount;
+    if (surface3dMethodCount != 0)
+    {
+        Surface3dDrawMethod surface3dMethods[surface3dMethodCount] <optimize=false>;
+    }
+};
+
+struct VisualTerrain
+{
+    float m_meshScatteringCellFov;
+    uint m_meshScatteringCellMaskSamplesPerSide;
+    uint m_meshScatteringInstancePoolSize;
+    uint m_meshScatteringInstanceDrawBufferSize;
+
+    float m_resourcePatchFov;
+    float m_resouceLodScale;
+    float m_resourceTriangleSizeMin;
+
+    uint m_textureAtlasSampleCountX;
+    uint m_textureAtlasSampleCountY;
+    float m_textureSamplesPerMeterMax;
+
+    float m_textureDetailFalloffCurve;
+    float m_textureDetailFalloffDistance;
+    float m_textureDetailFalloffFactor;
+
+    float m_textureInvisibleDetailReductionFactor;
+    float m_textureOccludedDetailReductionFactor;
+
+    string m_surfaceShaderName;
+
+    uint m_terrainLayerCount;
+    VisualTerrainLayer m_terrainLayers[m_terrainLayerCount] <optimize=false>;
+
+    string m_streamingTreeResourceName;
+    string m_decalsResourceName;
+
+    uint m_terrainLayerCombinationDrawCount;
+    TerrainLayerCombinationDraw m_terrainLayerCombinationDraws[m_terrainLayerCombinationDrawCount] <optimize=false>;
+} visualTerrain;

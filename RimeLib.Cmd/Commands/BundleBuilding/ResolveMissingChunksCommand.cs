@@ -42,13 +42,11 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 {
                     if (s_Type == ResourceType.DxTexture || s_Type == ResourceType.Ps3Texture)
                     {
-                        p_Writer.WriteLine($"Searching texture chunk for resource {s_Res.Key}");
                         var s_TextureConverter = EngineInterfaceRegistry.Create<ITextureConverter>(s_SbBuildingContext.EngineType);
                         s_ChunkId = s_TextureConverter.GetTextureChunkId(s_Res.Value);
                     }
                     else if (s_Type == ResourceType.MeshSet)
                     {
-                        p_Writer.WriteLine($"Searching mesh chunks for resource {s_Res.Key}");
                         using var s_Reader1 = s_Res.Value.GetReader();
                         var s_Data = s_Reader1.ReadBytes((int)s_Reader1.Length);
                         using var s_Reader = new RimeReader(new MemoryStream(s_Data));
@@ -64,7 +62,11 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                                 {
                                     if (s_Mounter.TryGetChunk(s_Lod.DataChunkId, out var s_ChunkObj))
                                     {
-                                        s_BundleContext.AddChunk(s_Lod.DataChunkId, s_ChunkObj.FirstVariant);
+                                        var s_ResNameHash = (int)RimeLib.Frostbite.Utils.HashQuick(s_Res.Key);
+                                        var s_Variant = s_ChunkObj.Variants.FirstOrDefault(v => v.GetAssetNameHash() == s_ResNameHash)
+                                                     ?? s_ChunkObj.FirstVariant;
+
+                                        s_BundleContext.AddChunk(s_Lod.DataChunkId, s_Variant);
                                         p_Writer.WriteLine($"Added missing mesh chunk: {s_Lod.DataChunkId} for resource {s_Res.Key}");
                                         s_AddedChunks++;
                                     }
@@ -81,13 +83,17 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     {
                         if (s_Mounter.TryGetChunk(s_ChunkId, out var s_ChunkObj))
                         {
-                            s_BundleContext.AddChunk(s_ChunkId, s_ChunkObj.FirstVariant);
-                            p_Writer.WriteLine($"Added missing chunk: {s_ChunkId} for resource {s_Res.Key}");
+                            var s_ResNameHash = (int)RimeLib.Frostbite.Utils.HashQuick(s_Res.Key);
+                            var s_Variant = s_ChunkObj.Variants.FirstOrDefault(v => v.GetAssetNameHash() == s_ResNameHash)
+                                         ?? s_ChunkObj.FirstVariant;
+
+                            s_BundleContext.AddChunk(s_ChunkId, s_Variant);
+                            p_Writer.WriteLine($"Added missing texture chunk: {s_ChunkId} for resource {s_Res.Key}");
                             s_AddedChunks++;
                         }
                         else
                         {
-                            p_Writer.WriteLine($"Warning: Missing chunk {s_ChunkId} for resource {s_Res.Key} not found in mounter.");
+                            p_Writer.WriteLine($"Warning: Missing texture chunk {s_ChunkId} for resource {s_Res.Key} not found in mounter.");
                         }
                     }
                 }

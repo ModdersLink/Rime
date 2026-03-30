@@ -14,6 +14,7 @@ namespace RimeLib.IO
         protected struct CodecSegment
         {
             public long Offset { get; set; }
+            public long UnpackedOffset { get; set; }
             public CodecHeader Header { get; set; }
         }
 
@@ -124,6 +125,7 @@ namespace RimeLib.IO
             var s_Segment = new CodecSegment
             {
                 Offset = BaseStream.Position,
+                UnpackedOffset = m_OriginalSize,
                 Header = new CodecHeader((RimeReader)BaseStream),
             };
 
@@ -162,25 +164,27 @@ namespace RimeLib.IO
                     return Position;
                 
                 // scan from begin to offset
-                long s_CurrentOffset = 0;
                 for (var i = 0; i < m_Segments.Count; i++)
                 {
-                    if (s_CurrentOffset < s_CurrentOffset)
+                    var s_Segment = m_Segments[i];
+
+                    if (p_Offset < s_Segment.UnpackedOffset)
                         throw new Exception("Somehow Skipped data chunk. Should never happen");
 
-                    if (p_Offset >= (s_CurrentOffset + m_Segments[i].Header.UnpackedSize))
+                    if (p_Offset >= (s_Segment.UnpackedOffset + s_Segment.Header.UnpackedSize))
                     {
-                        s_CurrentOffset += m_Segments[i].Header.UnpackedSize;
                         continue;
                     }
                     
-                    if(m_SegmentStream != null)
-                        m_SegmentStream.Dispose();
+                    if (i != m_CurrentSegment || m_CurrentSegment == null)
+                    {
+                        m_SegmentStream?.Dispose();
 
-                    m_CurrentSegment = i;
-                    m_SegmentStream = GetStreamForSegment( m_Segments[m_CurrentSegment]);
+                        m_CurrentSegment = i;
+                        m_SegmentStream = GetStreamForSegment( m_Segments[m_CurrentSegment]);
+                    }
 
-                    m_SegmentStream.Seek(p_Offset - s_CurrentOffset, SeekOrigin.Begin);
+                    m_SegmentStream.Seek(p_Offset - s_Segment.UnpackedOffset, SeekOrigin.Begin);
                     
                     m_CurrentPosition = p_Offset;
                     break;

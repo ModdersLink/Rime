@@ -35,11 +35,11 @@ namespace RimeLib.Cmd.Commands.Base
                 return false;
             }
             
-            if (!AssemblyUtils.LoadSupportAssembly(AssemblyType.Texture, Engine))
-            {
-                p_Writer.WriteLine($"Failed to load supporting texture assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
-                return false;
-            }
+            //if (!AssemblyUtils.LoadSupportAssembly(AssemblyType.Texture, Engine))
+            //{
+            //    p_Writer.WriteLine($"Failed to load supporting texture assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
+            //    return false;
+            //}
             
             if (!AssemblyUtils.LoadSupportAssembly(AssemblyType.Serialization, Engine))
             {
@@ -53,17 +53,17 @@ namespace RimeLib.Cmd.Commands.Base
                 return false;
             }
 
-            if (!AssemblyUtils.LoadSupportAssembly(AssemblyType.Havok, Engine))
-            {
-                p_Writer.WriteLine($"Failed to load supporting havok physics assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
-                return false;
-            }
+            //if (!AssemblyUtils.LoadSupportAssembly(AssemblyType.Havok, Engine))
+            //{
+            //    p_Writer.WriteLine($"Failed to load supporting havok physics assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
+            //    return false;
+            //}
             
-            if (!AssemblyUtils.LoadSupportAssembly(AssemblyType.Toolkit, Engine))
-            {
-                p_Writer.WriteLine($"Failed to load supporting toolkit assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
-                return false;
-            }
+            //if (!AssemblyUtils.LoadSupportAssembly(AssemblyType.Toolkit, Engine))
+            //{
+            //    p_Writer.WriteLine($"Failed to load supporting toolkit assembly for engine '{Engine}'. This means that the engine is not supported or that you are missing required files.");
+            //    return false;
+            //}
 
             // Create the mounter and mount the game.
             p_Writer.WriteLine("Mounting game. Please wait...");

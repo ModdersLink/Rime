@@ -131,7 +131,9 @@ public class RimePatchEntryReader : RimeReader
                 case PatchEntryOpType.Remove:
                 {
                     // Skip a block
-                    var s_BaseCodecReader = new CodecRimeReader(BaseReader, p_SegmentCount: 1);
+                    for (var i = 0; i < s_Operation.OperationLength; i++)
+                        new CodecRimeReader(BaseReader, p_SegmentCount: 1);
+
                     break;
                 }
                 case PatchEntryOpType.New:

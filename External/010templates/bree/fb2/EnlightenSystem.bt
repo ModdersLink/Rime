@@ -1,0 +1,205 @@
+struct Vector3
+{
+    float X;
+    float Y;
+    float Z;
+};
+
+struct Vector4
+{
+    float W;
+    float X;
+    float Y;
+    float Z;
+};
+
+struct AxisAlignedBox
+{
+    Vector3 Min;
+    Vector3 Max;
+};
+
+enum <uint32> eRadDataType
+{
+    RDT_INVALID = 0x0,
+    RDT_PRECOMP_RADIOSITY_GENERIC = 0x1,
+    RDT_PRECOMP_DUSTER_GENERIC = 0x2,
+    RDT_PRECOMP_VOLUME_GENERIC = 0x3,
+    RDT_PRECOMP_RADIOSITY_PC = 0x4,
+    RDT_PRECOMP_VOLUME_PC = 0x5,
+    RDT_PRECOMP_RADIOSITY_PS3_SPU = 0x6,
+    RDT_PRECOMP_VOLUME_PS3_SPU = 0x7,
+    RDT_PRECOMP_RADIOSITY_XBOX360 = 0x8,
+    RDT_PRECOMP_VOLUME_XBOX360 = 0x9,
+    RDT_PRECOMP_INPUTWORKSPACE = 0xa,
+    RDT_PRECOMP_FAW_MATERIAL_DATA = 0xb,
+    RDT_RUNTIME_INPUTLIGHTINGBUFFER = 0xc,
+    NUM_RAD_DATA_TYPES = 0xd
+};
+
+struct RadDataBlock
+{
+    eRadDataType m_DataType;
+    uint m_Length;
+    byte m_Data[m_Length] <optimize=false>;
+};
+
+struct RadSystemMetaData
+{
+    GUID m_SystemId;
+    int m_OutputWidth;
+    int m_OutputHeight;
+    int m_MaxIrradianceBudget;
+    int m_MaxSphericalBudget;
+    int m_NumRadPixels;
+    char m_HadDirectionalIrradiance;
+    uchar pad01[3];
+    int m_EnvironmentResolution;
+    uint pad02;
+};
+
+struct RadSystemCore
+{
+    uint m_MagicNumber <bgcolor=0xFFF000>;
+    uint m_VersionNumber;
+    RadSystemMetaData m_MetaData;
+    RadDataBlock m_RadiosityPrecomp;
+};
+
+struct InputWorkspaceRadDataBlock
+{
+    eRadDataType m_DataType;
+    uint m_Length;
+    
+    struct InputWorkspace
+    {
+        float m_SystemBoundsMin[4];
+        float m_SystemBoundsMax[4];
+        GUID m_SystemId;
+        uint m_MagicNumber;
+        uint m_InputWorkspaceSize;
+        int m_NumSamples;
+        int m_NumClusters;
+        int m_NumClusersInTree;
+        int m_PacketDusterDataOffset;
+        int m_DusterBounceIndexOffset;
+        int m_DusterBoundsOffset;
+        int m_ClusterBoundsGroupOffset;
+        int m_ClusterGroupDusterIndicesOffset;
+        int m_NodeDusterIndicesOffset;
+        int m_InputTreeOffset;
+        int m_MaxDusterQuadsInClusterGroup;
+        int m_BounceCacheGroupCount;
+        int m_BounceCacheClusterIndexOffset;
+        int m_BounceCacheQuadIndexOffset;
+        int m_BounceCacheMaxClusterCount;
+        int m_BounceCacheMaxQuadCount;
+        int m_BounceCacheIndicesOffset;
+        int m_BounceCacheQuadIndicesOffset;
+        int m_ClusterTreeRangeCount;
+        int m_ClusterTreeRangeOffset;
+        int m_ClusterTreeMaxRangeSize;
+    } m_Data;
+    byte m_SkipData[m_Length - 140] <optimize=false>;
+};
+
+struct InputWorkspaceRadSystemCore
+{
+    uint m_MagicNumber <bgcolor=0xFFF000>;
+    uint m_VersionNumber;
+    RadSystemMetaData m_MetaData;
+    InputWorkspaceRadDataBlock m_RadiosityPrecomp;
+};
+
+struct InputWorkspaceContainer
+{
+    uint m_MagicNumber <bgcolor=0xFFF000>;
+    uint m_VersionNumber;
+    InputWorkspaceRadDataBlock m_Block;
+};
+
+struct PrecomputedVisibilityDataContainer
+{
+    uint m_Size;
+    uint m_Length;
+    
+    struct PrecomputedVisibilityData
+    {
+        uint m_MagicNumber;
+        uint m_VersionNumber;
+        GUID m_SystemId;
+        int m_VisibilityDataSlices;
+        int m_VisibilityValuesPerByte;
+        int m_DirectionInfoSize;
+        int m_DirectionInfoOffset;
+        int m_VisibilityDataSize;
+        int m_VisibilityDataOffset;
+        int m_DirectionInfoBlockCount;
+        int m_DirectionsPerInfoBlock;
+
+        struct PrecomputedVisibilityDataDirectionBucket
+        {
+            int m_SliceCount;
+            int m_Count;
+            ushort m_SliceIndices[64];
+            ushort m_SliceLength[64];
+        } m_DirectionBucket;
+    } m_Data;
+
+    byte m_SkipData[m_Length - 320] <optimize=false>;
+};
+
+
+struct CawRadDataBlock
+{
+    eRadDataType m_DataType;
+    uint m_Length;
+    
+    struct ClusterAlbedoWorkspaceMaterialData
+    {
+        uint m_ObjectSize;
+        int m_NumMaterials;
+        int m_NumClusters;
+        uint m_MaterialIdsOffset;
+        uint m_MaterialColoursOffset;
+        uint m_MaterialEmissiveOffset;
+        uint m_ClusterNumMaterialsOffset;
+        uint m_ClusterMaterialIndicesOffset;
+        GUID m_SystemId;
+        
+        // unknownType m_MaterialIds[m_NumMaterials] @offset: this + m_MaterialIdsOffset
+        // unknownType m_MaterialColours[m_NumMaterials] @offset: this + m_MaterialColoursOffset
+        // unknownType m_MaterialEmissive[m_NumMaterials] @offset: this + m_MaterialEmissiveOffset
+        // ushort m_ClusterNumMaterials[m_NumClusters] @offset: this + m_ClusterNumMaterialsOffset
+        // uint m_ClusterMaterialIndices[m_NumClusters] @offset: this + m_ClusterMaterialIndicesOffset
+    } m_Data;
+
+    byte m_SkipData[m_Length - 48] <optimize=false>;
+};
+
+struct CawMaterialDataContainer
+{
+    uint m_MagicNumber <bgcolor=0xFFF000>;
+    uint m_VersionNumber;
+    CawRadDataBlock m_Block;
+};
+
+struct EnlightenSystem
+{
+    RadSystemCore m_radCore;
+    InputWorkspaceContainer m_inputWorkspace;
+    PrecomputedVisibilityDataContainer m_precompVisibilityData;
+    CawMaterialDataContainer m_cawMaterialData;
+
+    uint m_shaderCount;
+    uint64 m_shaders[m_shaderCount] <optimize=false>;
+
+    AxisAlignedBox m_boundingBox;
+    uint m_atlasStartX;
+    uint m_atlasStartY;
+
+    uint m_inputSystemCount;
+    int m_inputSystems[m_inputSystemCount] <optimize=false>;
+
+    char m_terrainSystem;
+} enlightenSystem <bgcolor=0xFF0000>;

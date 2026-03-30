@@ -1,0 +1,20 @@
+struct Vec3
+{
+    float x;
+    float y;
+    float z;
+};
+
+struct EnlightenMaterial
+{
+    Vec3 color;
+    GUID guid;
+    uint64 shaderId;
+    char emissive;
+};
+
+struct EnlightenShaderDatabase
+{
+    uint m_materialCount;
+    EnlightenMaterial m_materials[m_materialCount] <optimize=false>;
+} enlightenShaderDatabase <bgcolor=0xFF0000>;

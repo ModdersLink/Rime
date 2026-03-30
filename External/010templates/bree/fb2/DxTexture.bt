@@ -1,0 +1,84 @@
+LittleEndian();
+
+enum <uint> TextureType
+{
+    TextureType_2D,
+    TextureType_Cube,
+    TextureType_3D,
+    TextureType_2DArray,
+    TextureType_1DArray,
+    TextureType_1D,
+    TextureType_CubeArray,
+};
+
+enum <uint> TextureFormat
+{
+    TextureFormat_DXT1,
+    TextureFormat_DXT3,
+    TextureFormat_DXT5,
+    TextureFormat_DXT5A,
+    TextureFormat_DXN,
+    TextureFormat_RGB565,
+    TextureFormat_RGB888,
+    TextureFormat_ARGB1555,
+    TextureFormat_ARGB4444,
+    TextureFormat_ARGB8888,
+    TextureFormat_L8,
+    TextureFormat_L16,
+    TextureFormat_ABGR16,
+    TextureFormat_ABGR16F,
+    TextureFormat_ABGR32F,
+    TextureFormat_R16F,
+    TextureFormat_R32F,
+    TextureFormat_NormalDXN,
+    TextureFormat_NormalDXT1,
+    TextureFormat_NormalDXT5,
+    TextureFormat_NormalDXT5RGA,
+    TextureFormat_RG8,
+    TextureFormat_GR16,
+    TextureFormat_GR16F,
+    TextureFormat_D16,
+    TextureFormat_D24S8,
+    TextureFormat_D24FS8,
+    TextureFormat_D32F,
+    TextureFormat_ABGR32,
+    TextureFormat_GR32F,
+    TextureFormat_A2R10G10B10,
+    TextureFormat_Unknown,
+};
+
+enum <uint> TextureFlags
+{
+    Streaming = 1 << 0,
+    SrgbGamma = 1 << 1,
+    CpuResource = 1 << 2,
+    OnDemandLoaded = 1 << 3,
+    Mutable = 1 << 4,
+    NoSkipmip = 1 << 5,
+    XenonPackedMipmaps = 1 << 8,
+    Ps3MemoryCell = 1 << 8,
+    Ps3MemoryRsx = 1 << 9,
+    StreamingAlways = 1 << 10,
+    SwizzledData = 1 << 11,
+    UnknownFlag = 1 << 12,
+};
+
+struct
+{
+    uint version;
+    TextureType type;
+    TextureFormat format;
+    TextureFlags flags;
+    short width;
+    short height;
+    short depth;
+    short sliceCount;
+    short unused0;
+    char mipmapCount;
+    char mipmapBaseIndex;
+    GUID streamingChunkId;
+    uint mipmapSizes[15];
+    uint mipmapChainSize;
+    uint resourceNameHash;
+    char textureGroup[16];
+} DxTexture <bgcolor=0xFF0000>;

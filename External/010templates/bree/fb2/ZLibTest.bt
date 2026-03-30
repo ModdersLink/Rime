@@ -1,0 +1,23 @@
+//------------------------------------------------
+//--- 010 Editor v15.0.1 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+struct ZLibData {
+    int originalSize;
+    int compressedSize;
+    byte source[originalSize]; 
+};
+
+struct {
+    while (FTell() != FileSize()) {
+        ZLibData data;   
+    };
+} data;

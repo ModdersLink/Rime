@@ -60,6 +60,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpResourceCommand>();
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<DumpPartitionJsonCommand>();
+            RegisterCommand<DumpMountedPartitionsJsonCommand>();
             RegisterCommand<DumpTextureCommand>();
             RegisterCommand<DumpMeshCommand>();
             RegisterCommand<DumpLevelMeshesCommand>();

@@ -1,0 +1,190 @@
+//typedef float Vector4[4] <read=Str("(%g, %g, %g)",this[0],this[1],this[2])>;
+
+struct Vector3
+{
+    float X;
+    float Y;
+    float Z;
+    float PAD;
+};
+
+struct AxisAlignedBox
+{
+    Vector3 Min;
+    Vector3 Max;
+};
+
+struct LinearTransform
+{
+    Vector3 Right;
+    Vector3 Up;
+    Vector3 Forward;
+    Vector3 Trans;
+};
+
+struct Geo
+{
+    struct GeoGuid
+    {
+        uint64 m_id[2];
+    };    
+};
+
+struct Enlighten
+{
+    enum eRadDataType
+    {
+        RDT_INVALID,
+        RDT_PRECOMP_RADIOSITY_GENERIC,
+        RDT_PRECOMP_DUSTER_GENERIC,
+        RDT_PRECOMP_VOLUME_GENERIC,
+        RDT_PRECOMP_RADIOSITY_PC,
+        RDT_PRECOMP_VOLUME_PC,
+        RDT_PRECOMP_RADIOSITY_PS3_SPU,
+        RDT_PRECOMP_VOLUME_PS3_SPU,
+        RDT_PRECOMP_RADIOSITY_XBOX360,
+        RDT_PRECOMP_VOLUME_XBOX360,
+        RDT_PRECOMP_INPUTWORKSPACE,
+        RDT_PRECOMP_FAW_MATERIAL_DATA,
+        RDT_RUNTIME_INPUTLIGHTINGBUFFER,
+        NUM_RAD_DATA_TYPES
+    };
+    
+    enum eSHOrder
+    {
+        SH_ORDER_DISABLED = 0x0,
+        SH_ORDER_L0 = 0x1,
+        SH_ORDER_L1 = 0x4,
+        SH_ORDER_L2 = 0x9
+    };
+    
+    struct RadProbeSetMetaData
+    {
+        GeoGuid m_probeSetId;
+        int m_numProbes;
+        eSHOrder m_shOrder;
+        eSHOrder m_shOrderEnvVis;
+        int m_maxBudget;
+        int m_maxProbeSize;
+        int m_environmentResolution;
+    };
+    
+    struct ProbeSet
+    {
+        uint m_MagicNumber;
+        int m_VersionNumber;
+        int m_NumProbePoints;
+        int m_NumSystemsToReadFrom;
+    };
+    
+    struct Probe
+    {
+        int m_Budget;
+        float m_Visibility;
+        uint m_IsProbeCulled;
+        uint m_Offset;
+    };
+    
+    struct RadProbeSetData // dunno
+    {
+        ProbeSet m_Header;
+        Probe m_Probe[radMetaData.m_numProbes] <optimize=false>;        
+    };
+};
+
+struct EnlightenRawData
+{
+    eRadDataType radDataType;
+    uint radDataLength;
+    uint64 radMetaDataOffset;
+    uint64 radDataOffset;
+    
+    if (radMetaDataOffset != 0)
+    {
+        FSeek(radMetaDataOffset);
+        RadProbeSetMetaData radMetaData;    
+    }
+
+    if (radDataOffset != 0)
+    {
+        FSeek(radDataOffset);
+        //byte radData[radDataLength] <optimize=false>; // Enlighten::ProbeSet    
+        RadProbeSetData radData;
+    }    
+};
+
+struct
+{
+    LinearTransform transform;
+    LinearTransform inverseTransform;
+    AxisAlignedBox boundingBox;
+
+    float blendDistance;
+
+    uint dim[3];
+    
+    uint priority;
+    uint probeCount;
+    uint globalOffset;
+    char staticProbeSet;
+    char dynamicDataEnable;
+    
+    ushort padding_;
+    //FSkip(2);
+    
+    uint64 indirectionOffset;
+    uint64 positionsOffset;
+    uint64 validIndicesOffset;
+    uint64 enlightenDataOffset;
+    local uint relocationsOffset = FTell();
+    
+    if (indirectionOffset != 0)
+    {
+        FSeek(indirectionOffset);
+
+        local uint dimSize = dim[0]*dim[1]*dim[2];
+        if (dimSize != 0)
+        {
+            uint indirection[dimSize] <optimize=false>;
+        }
+
+        // align for the relocations below
+        local uint alignment = FTell();
+        while (alignment % 16 != 0)
+        {
+            uint padding;
+            alignment = FTell();
+        }
+        if (alignment > relocationsOffset)
+        {
+            relocationsOffset = alignment;
+        }
+    }
+
+    if (positionsOffset != 0)
+    {
+        FSeek(positionsOffset);
+        Vector3 positions[probeCount] <optimize=false>;
+    }
+
+
+    if (validIndicesOffset != 0)
+    {
+        FSeek(validIndicesOffset);
+        int validIndices[probeCount] <optimize=false>;
+    }
+    
+    if (enlightenDataOffset != 0)
+    {
+        FSeek(enlightenDataOffset);
+        EnlightenRawData enlightenData;
+    }
+    
+    //FSeek(relocationsOffset);
+    local uint relocationsCount = 1 + (int)(positionsOffset != 0) + (int)(validIndicesOffset != 0) + (int)(enlightenDataOffset != 0);
+    if (enlightenDataOffset != 0)
+    {
+        relocationsCount = relocationsCount + (int)(enlightenData.radMetaDataOffset != 0) + (int)(enlightenData.radDataOffset != 0);
+    }
+    //uint relocations[relocationsCount]; 
+} EnlightenProbeSet <bgcolor=0xFF0000>;

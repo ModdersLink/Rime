@@ -96,6 +96,8 @@ namespace RimeLib.Cmd.Contexts
 
         protected BundleBuilder m_Builder;
 
+        protected fb.RegistryContainer? m_GeneratedRegistry;
+
         public BundleBuildingContext(SbBuildingContext p_Parent, string p_BundleName)
         {
             Parent = p_Parent;
@@ -125,6 +127,9 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ResolveResourceDependenciesCommand>();
             RegisterCommand<RemoveDuplicateBundleItemsCommand>();
             RegisterCommand<ResolveMissingChunksCommand>();
+            RegisterCommand<ExportBundleContentsCommand>();
+            RegisterCommand<GenerateRegistryContainerCommand>();
+            RegisterCommand<CompareRegistryContainersCommand>();
         }
 
         public bool Cas()
@@ -233,6 +238,16 @@ namespace RimeLib.Cmd.Contexts
         internal void RemovePartition(string p_Name)
         {
             m_Builder.RemovePartition(p_Name);
+        }
+
+        internal void SetGeneratedRegistry(fb.RegistryContainer p_Registry)
+        {
+            m_GeneratedRegistry = p_Registry;
+        }
+
+        internal fb.RegistryContainer? GetGeneratedRegistry()
+        {
+            return m_GeneratedRegistry;
         }
 
         internal IReadOnlyDictionary<string, IReadableObject> GetPartitions()
