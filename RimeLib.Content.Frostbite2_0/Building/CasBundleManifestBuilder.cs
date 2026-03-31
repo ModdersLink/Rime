@@ -1,13 +1,11 @@
 ﻿using RimeLib.Content.Building;
+using RimeLib.Content.Frostbite.Bundles;
 using RimeLib.Content.Frostbite2_0.Frostbite.Bundles;
 using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
 using RimeLib.Content.Frostbite2_0.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
-using RimeLib.IO;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace RimeLib.Content.Frostbite2_0.Building
@@ -23,7 +21,6 @@ namespace RimeLib.Content.Frostbite2_0.Building
             m_Descriptor = p_Descriptor;
             m_Header = new CasBundle
             {
-                MagicSalt = 2047996331, // TODO: figure out how to set this the proper way.
                 Path = p_Descriptor.BundleName,
                 ResourceEntries = new CasBundle.Resource[p_Descriptor.Resources.Count],
                 EbxEntries = new CasBundle.Ebx[p_Descriptor.Partitions.Count],

@@ -1,4 +1,5 @@
-﻿using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
+﻿using RimeLib.Content.Frostbite.Bundles;
+using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
 using RimeLib.Content.Frostbite2_0.Frostbite.Sb;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
@@ -94,9 +95,9 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
         [DbObjectField("path")]
         public string Path { get; set; } = "";
-        
+
         [DbObjectField("magicSalt")]
-        public int MagicSalt { get; set; }
+        public int MagicSalt { get; set; } = (int)ManifestType.Fb2;
 
         [DbObjectField("ebx")]
         public Ebx[] EbxEntries { get; set; } = Array.Empty<Ebx>();

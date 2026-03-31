@@ -1,3 +1,4 @@
+using RimeLib.Content.Frostbite.Bundles;
 using RimeLib.Content.Frostbite2013_2.Frostbite.Chunks;
 using RimeLib.Content.Frostbite2013_2.Frostbite.Sb;
 using RimeLib.Frostbite.Core;
@@ -163,9 +164,9 @@ public class CasBundle : DbObjectSerializable
 
     [DbObjectField("path")]
     public string Path { get; set; } = "";
-    
+
     [DbObjectField("magicSalt")]
-    public int MagicSalt { get; set; }
+    public int MagicSalt { get; set; } = (int)ManifestType.Pecm;
     
 
     
