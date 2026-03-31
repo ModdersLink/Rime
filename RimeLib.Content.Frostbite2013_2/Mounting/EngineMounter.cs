@@ -826,7 +826,7 @@ public class EngineMounter : IEngineMounter
 
             // Create variant.
             var s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag(), s_Chunk);
-            var s_Variant = new ChunkVariant(s_Readable,  0, s_Meta, p_Bundle.ContainedSuperbundle.Name,
+            var s_Variant = new ChunkVariant(s_Readable, s_Chunk.LogicalOffset, s_Meta, p_Bundle.ContainedSuperbundle.Name,
                 p_Bundle.Bundle.Path);
 
             // Mount.
@@ -932,7 +932,7 @@ public class EngineMounter : IEngineMounter
 
                 // Create variant.
                 var s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag(), s_Chunk);
-                var s_Variant = new ChunkVariant(s_Readable,  0, s_Meta, p_Bundle.ContainedSuperbundle.Name,
+                var s_Variant = new ChunkVariant(s_Readable, s_Chunk.LogicalOffset, s_Meta, p_Bundle.ContainedSuperbundle.Name,
                     s_DeltaBundle.Path);
 
                 // Mount.
