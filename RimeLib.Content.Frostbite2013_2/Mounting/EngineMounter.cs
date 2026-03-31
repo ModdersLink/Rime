@@ -788,7 +788,7 @@ public class EngineMounter : IEngineMounter
         {
             // Create variant.
             var s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size, s_Resource);
-            var s_Variant = new ResourceVariant(s_Readable, (ResourceType) s_Resource.ResourceType, s_Resource.Meta,
+            var s_Variant = new ResourceVariant(s_Readable, (ResourceType) s_Resource.ResourceType, s_Resource.Meta, (ulong) s_Resource.ResourceIdInt,
                 p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
 
             // Mount.
@@ -901,7 +901,7 @@ public class EngineMounter : IEngineMounter
             {
                 // Create variant.
                 var s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size, s_Resource);
-                var s_Variant = new ResourceVariant(s_Readable, (ResourceType) s_Resource.ResourceType, s_Resource.Meta,
+                var s_Variant = new ResourceVariant(s_Readable, (ResourceType) s_Resource.ResourceType, s_Resource.Meta, (ulong) s_Resource.ResourceIdInt,
                     p_Bundle.ContainedSuperbundle.Name, s_DeltaBundle.Path);
 
                 // Mount.
@@ -1004,7 +1004,7 @@ public class EngineMounter : IEngineMounter
         foreach (var s_Resource in p_Bundle.Resources)
         {
             // Create variant.
-            var s_Variant = new ResourceVariant(s_Resource, (ResourceType) s_Resource.ResourceType, s_Resource.ResourceMeta,
+            var s_Variant = new ResourceVariant(s_Resource, (ResourceType) s_Resource.ResourceType, s_Resource.ResourceMeta, s_Resource.ResourceId,
                 p_Bundle.ContainedSuperbundle.Name, p_Bundle.ContainedBundle.Id);
 
             // Mount.

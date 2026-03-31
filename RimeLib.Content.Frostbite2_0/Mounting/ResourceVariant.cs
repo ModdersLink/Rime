@@ -1,6 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using System;
+using System.Diagnostics.CodeAnalysis;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
+using RimeLib.Frostbite.Core;
 
 namespace RimeLib.Content.Frostbite2_0.Mounting
 {
@@ -8,6 +10,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
     {
         protected ResourceType m_Type;
         protected byte[]? m_Meta;
+	    protected ResourceRef? m_Id;
 
         public ResourceVariant(IReadableObjectWithHash p_Readable, ResourceType p_Type, byte[]? p_Meta, string p_ContainedSuperbundle, string? p_ContainedBundle) :
             base(p_Readable, p_ContainedSuperbundle, p_ContainedBundle)
@@ -25,6 +28,17 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         {
             p_Meta = m_Meta;
             return m_Meta != null;
+        }
+
+        public ResourceRef GetId(string? p_Name = null)
+        {
+            if (m_Id is null && p_Name != null)
+                m_Id = new ResourceRef(p_Name, this);
+
+            if (m_Id != null)
+                return m_Id;
+
+            throw new InvalidOperationException("Resource has no ID.");
         }
     }
 }

@@ -2,6 +2,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Security.Cryptography;
+using System.Text;
 using RimeLib.IO;
 
 namespace RimeLib.Frostbite.Core
@@ -52,6 +54,11 @@ namespace RimeLib.Frostbite.Core
             Id = p_Id;
         }
 
+        public ResourceRef(string p_Name, IReadableObject p_Data)
+        {
+            Id = GenerateId(p_Name, p_Data);
+        }
+
         /// <summary>
         /// TODO: Documentation
         /// </summary>
@@ -99,7 +106,7 @@ namespace RimeLib.Frostbite.Core
         /// <param name="p_First">First</param>
         /// <param name="p_Second">Second</param>
         /// <returns>True if equal, false otherwise</returns>
-        public static bool operator ==(ResourceRef p_First, ResourceRef p_Second)
+        public static bool operator ==(ResourceRef? p_First, ResourceRef? p_Second)
         {
             if (ReferenceEquals(p_First, p_Second))
                 return true;
@@ -116,8 +123,11 @@ namespace RimeLib.Frostbite.Core
         /// <param name="p_Left"></param>
         /// <param name="p_Right"></param>
         /// <returns></returns>
-        public static bool operator !=(ResourceRef p_Left, ResourceRef p_Right)
+        public static bool operator !=(ResourceRef? p_Left, ResourceRef? p_Right)
         {
+            if (ReferenceEquals(p_Left, p_Right))
+                return false;
+
             if (p_Left is null || p_Right is null)
                 return true;
 
@@ -201,6 +211,39 @@ namespace RimeLib.Frostbite.Core
         public void Deserialize(byte[] p_Data)
         {
             throw new NotImplementedException();
+        }
+
+        private static ResourceRef GenerateId(string p_Name, IReadableObject p_Data)
+        {
+            // HOW TO: lowercase path of the resource, 
+            // prepend it to the resource data, 
+            // get the md5 hash of that, 
+            // split it in two 64-bit little-endian integers, 
+            // and XOR them
+            // OR that result with 1.
+
+            // TODO: This is AI slop. Test if this works.
+            using var s_Md5 = MD5.Create();
+            var s_Path = p_Name.ToLower();
+            var s_PathBytes = Encoding.ASCII.GetBytes(s_Path);
+
+            using (var s_Reader = p_Data.GetReader())
+            {
+                var s_ResourceData = new byte[p_Data.GetSize()];
+                s_Reader.Read(s_ResourceData, 0, s_ResourceData.Length);
+
+                var s_CombinedData = new byte[s_PathBytes.Length + s_ResourceData.Length];
+                Buffer.BlockCopy(s_PathBytes, 0, s_CombinedData, 0, s_PathBytes.Length);
+                Buffer.BlockCopy(s_ResourceData, 0, s_CombinedData, s_PathBytes.Length, s_ResourceData.Length);
+
+                var s_Hash = s_Md5.ComputeHash(s_CombinedData);
+
+                var s_Low = BitConverter.ToUInt64(s_Hash, 0);
+                var s_High = BitConverter.ToUInt64(s_Hash, 8);
+
+                var s_Id = (s_Low ^ s_High) | 1;
+                return s_Id;
+            }
         }
     }
 }

@@ -12,6 +12,7 @@ namespace RimeLib.Content.Mounting
     {
         ResourceType GetResourceType();
         bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta);
+        ResourceRef GetId(string? p_Name = null);
     }
 
     public interface IChunkObject : IReadableObject

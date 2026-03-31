@@ -21,11 +21,12 @@ namespace RimeLib.Cmd.Contexts
         internal class ResourceFileReader : SbBuildingContext.FileReader, IResourceObject
         {
             private readonly ResourceType m_ResourceType;
+            private readonly ResourceRef m_ResourceId;
 
-            public ResourceFileReader(string p_Path, ResourceType p_ResourceType) :
-                base(p_Path)
+            public ResourceFileReader(string p_Path, ResourceType p_ResourceType, string p_Name) : base(p_Path)
             {
                 m_ResourceType = p_ResourceType;
+                m_ResourceId = new ResourceRef(p_Name, this);
             }
 
             public ResourceType GetResourceType()
@@ -37,16 +38,23 @@ namespace RimeLib.Cmd.Contexts
             {
                 p_Meta = null;
                 return false;
+            }
+
+            public ResourceRef GetId(string? p_Name = null)
+            {
+                return m_ResourceId;
             }
         }
 
         internal class ResourceMemoryReader : SbBuildingContext.MemoryReader, IResourceObject
         {
             private readonly ResourceType m_ResourceType;
+            private readonly ResourceRef m_ResourceId;
 
-            public ResourceMemoryReader(byte[] p_Data, ResourceType p_ResourceType) : base(p_Data)
+            public ResourceMemoryReader(byte[] p_Data, ResourceType p_ResourceType, string p_Name) : base(p_Data)
             {
                 m_ResourceType = p_ResourceType;
+                m_ResourceId = new ResourceRef(p_Name, this);
             }
 
             public ResourceType GetResourceType()
@@ -58,6 +66,11 @@ namespace RimeLib.Cmd.Contexts
             {
                 p_Meta = null;
                 return false;
+            }
+            
+            public ResourceRef GetId(string? p_Name = null)
+            {
+                return m_ResourceId;
             }
         }
 
@@ -192,7 +205,7 @@ namespace RimeLib.Cmd.Contexts
 
         internal void AddResource(string p_Name, ResourceType p_Type, FileInfo p_File)
         {
-            m_Builder.WithResource(p_Name, new ResourceFileReader(p_File.FullName, p_Type));
+            m_Builder.WithResource(p_Name, new ResourceFileReader(p_File.FullName, p_Type, p_Name));
         }
 
         internal void AddResource(string p_Name, IResourceObject p_Object)
@@ -293,7 +306,7 @@ namespace RimeLib.Cmd.Contexts
 
             m_Builder.WithResource(
                 p_Attributes.Name,
-                new ResourceMemoryReader(s_ResourceMemoryStream.ToArray(), s_TextureGenerator.GetTargetResourceType())
+                new ResourceMemoryReader(s_ResourceMemoryStream.ToArray(), s_TextureGenerator.GetTargetResourceType(), p_Attributes.Name)
             );
 
             foreach (var (s_Id, s_ChunkStream) in s_Chunks)

@@ -122,6 +122,14 @@ namespace EbxExtractor
             {
                 return m_Stream.Length;
             }
+
+            public ResourceRef GetId(string? p_Name = null)
+            {
+                if (p_Name == null)
+                    throw new InvalidOperationException("Resource name must be provided to get ID for stream reader.");
+
+                return new ResourceRef(p_Name, this);
+            }
         }
 
         private static async Task DumpFiles(Options p_Options)
