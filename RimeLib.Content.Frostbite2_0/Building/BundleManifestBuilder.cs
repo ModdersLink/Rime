@@ -35,11 +35,12 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             // Populate the header.
             // some way to check if descriptor entries are dbx?
-            m_Header = new BundleManifest.Header();
-
-            m_Header.EbxCount = p_Descriptor.Partitions.Count;
-            m_Header.ResourceCount = p_Descriptor.Resources.Count;
-            m_Header.ChunkCount = p_Descriptor.Chunks.Count;
+            m_Header = new BundleManifest.Header
+            {
+                EbxCount = p_Descriptor.Partitions.Count,
+                ResourceCount = p_Descriptor.Resources.Count,
+                ChunkCount = p_Descriptor.Chunks.Count
+            };
             m_Header.EntryCount = m_Header.EbxCount + m_Header.ResourceCount + m_Header.ChunkCount;
 
             m_Descriptor = p_Descriptor;
@@ -117,40 +118,44 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 s_ChunkEntry.Serialize(p_Writer);
             }
 
-            // Write chunk meta.
-            p_Writer.Align(4); // TODO: is this necessary?
-            var s_ChunkMetaStart = p_Writer.Position - s_StartOffset;
+            if (m_Descriptor.Chunks.Count > 0)
+            {
+                // Write chunk meta.
+                p_Writer.Align(4); // TODO: is this necessary?
+                var s_ChunkMetaStart = p_Writer.Position - s_StartOffset;
 
-            var s_ChunkMeta = new DbObject();
-            var s_ChunkMetaArray = new DbObject();
-            
-            foreach (var (s_GUID, s_ChunkObject) in m_Descriptor.Chunks)
-            {                
-                // Set metadata data.
-                var s_MetaObject = new DbObject();
+                var s_ChunkMeta = new DbObject();
+                var s_ChunkMetaArray = new DbObject();
 
-                if (s_ChunkObject.TryGetMeta(out var s_ChunkMetaEntry))
-                    s_MetaObject = s_ChunkMetaEntry;
-                else {
-                    var s_AssetNameHash = s_ChunkObject.GetAssetNameHash();
+                foreach (var (s_GUID, s_ChunkObject) in m_Descriptor.Chunks)
+                {
+                    // Set metadata data.
+                    var s_MetaObject = new DbObject();
 
-                    if (s_AssetNameHash == null)
-                        throw new Exception($"Tried serializing chunk with ID '{s_GUID}' with no asset name hash.");
+                    if (s_ChunkObject.TryGetMeta(out var s_ChunkMetaEntry))
+                        s_MetaObject = s_ChunkMetaEntry;
+                    else
+                    {
+                        var s_AssetNameHash = s_ChunkObject.GetAssetNameHash();
 
-                    var s_Meta = new DbObject(); // TODO: what about firstMip?
-                    s_MetaObject.AddElement(new DbObjectElement("h32", s_AssetNameHash.Value));
-                    s_MetaObject.AddElement(new DbObjectElement("meta", s_Meta, false));
+                        if (s_AssetNameHash == null)
+                            throw new Exception($"Tried serializing chunk with ID '{s_GUID}' with no asset name hash.");
+
+                        var s_Meta = new DbObject(); // TODO: what about firstMip?
+                        s_MetaObject.AddElement(new DbObjectElement("h32", s_AssetNameHash.Value));
+                        s_MetaObject.AddElement(new DbObjectElement("meta", s_Meta, false));
+                    }
+
+                    s_ChunkMetaArray.AddElement(new DbObjectElement("", s_MetaObject, false));
                 }
 
-                s_ChunkMetaArray.AddElement(new DbObjectElement("", s_MetaObject, false));
+                s_ChunkMeta.AddElement(new DbObjectElement("chunkMeta", s_ChunkMetaArray, true));
+
+                s_ChunkMeta.Serialize(p_Writer);
+
+                m_Header.ChunkMetaOffset = (int)(s_ChunkMetaStart - 4); // -4 because the manifest size is not accounted for.
+                m_Header.ChunkMetaSize = (int)(p_Writer.Position - (s_StartOffset + s_ChunkMetaStart));
             }
-
-            s_ChunkMeta.AddElement(new DbObjectElement("chunkMeta", s_ChunkMetaArray, true));
-
-            s_ChunkMeta.Serialize(p_Writer);
-
-            m_Header.ChunkMetaOffset = (int) (s_ChunkMetaStart - 4); // -4 because the manifest size is not accounted for.
-            m_Header.ChunkMetaSize = (int) (p_Writer.Position - (s_StartOffset + s_ChunkMetaStart));
 
             // Write the text block.
             m_Header.StringBlockOffset = (int) (p_Writer.Position - (s_StartOffset + 4)); // -4 because the manifest size is not accounted for.
