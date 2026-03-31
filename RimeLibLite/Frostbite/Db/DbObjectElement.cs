@@ -127,6 +127,16 @@ namespace RimeLib.Frostbite.Db
             FieldName = p_FieldName;
         }
 
+        /// <summary>
+        /// Create an Anonymous Object or Array.
+        /// </summary>
+        public DbObjectElement(DbObject p_Object, bool p_Array = false)
+        {
+            m_ObjectValue = p_Object;
+            Type = p_Array ? DbObjectType.Array : DbObjectType.Object;
+            Type |= DbObjectType.Anonymous;
+        }
+
         public DbObjectElement(string p_FieldName, byte[] p_Data)
         {
             m_ObjectValue = p_Data;
