@@ -1,45 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using ICSharpCode.SharpZipLib.Zip.Compression;
-using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using LZ4;
 using RimeLib.Content.Building;
-using RimeLib.Content.Frostbite;
-using RimeLib.Content.Frostbite2_0.Frostbite.Bundles;
+using RimeLib.Content.Frostbite2013_2.Frostbite.Bundles;
 using RimeLib.Frostbite;
+using RimeLib.Frostbite.Codec;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
-using RimeLib.IO.Conversion;
 
-namespace RimeLib.Content.Frostbite2_0.Building
+namespace RimeLib.Content.Frostbite2013_2.Building
 {
     class BundleManifestBuilder
     {
         private readonly BundleManifest.Header m_Header = new();
-
         private readonly BundleDescriptor m_Descriptor;
-
         public Sha1 Checksum { get; private set; }
 
-        private long m_ResourceEntriesOffset = 0;
-        private long m_ChunkEntriesOffset = 0;
-
-        private Dictionary<string, uint> m_StringTable = new Dictionary<string, uint>();
+        private Dictionary<string, uint> m_StringTable = new();
 
         public BundleManifestBuilder(BundleDescriptor p_Descriptor)
         {
             Checksum = new Sha1();
 
-            // Populate the header.
-            // some way to check if descriptor entries are dbx?
-            m_Header = new BundleManifest.Header();
-
-            m_Header.EbxCount = p_Descriptor.Partitions.Count;
-            m_Header.ResourceCount = p_Descriptor.Resources.Count;
-            m_Header.ChunkCount = p_Descriptor.Chunks.Count;
+            m_Header = new BundleManifest.Header
+            {
+                EbxCount = p_Descriptor.Partitions.Count,
+                ResourceCount = p_Descriptor.Resources.Count,
+                ChunkCount = p_Descriptor.Chunks.Count
+            };
             m_Header.EntryCount = m_Header.EbxCount + m_Header.ResourceCount + m_Header.ChunkCount;
 
             m_Descriptor = p_Descriptor;
@@ -47,18 +34,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
         public void Serialize(RimeWriter p_Writer)
         {
-            // Structure:
-            // Header
-            // Sha1[]
-            // Entries[]
-            // ResourceTypes[]
-            // ResourceMeta[] 
-            // ChunkEntries[]
-            // ChunkMeta at ChunkMetaOffset, 4-aligned
-            // StringBlock at StringBlockOffset, 4-aligned
-            
             var s_StartOffset = p_Writer.Position;
-
+            
             // Write temp position. Will update after.
             p_Writer.Write((uint) 0);
 
@@ -69,14 +46,12 @@ namespace RimeLib.Content.Frostbite2_0.Building
             var s_HashOffset = p_Writer.Position;
             for (var i = 0; i < m_Header.EntryCount; ++i)
                 new Sha1().Serialize(p_Writer);
-
+                
             using var s_TextWriter = new RimeWriter(new MemoryStream());
-
+            
             // Write records.
             foreach (var s_Partition in m_Descriptor.Partitions)
                 SerializeEntry(s_Partition.Key, s_Partition.Value, s_TextWriter, p_Writer);
-
-            m_ResourceEntriesOffset = p_Writer.Position;
 
             foreach (var s_Resource in m_Descriptor.Resources)
                 SerializeEntry(s_Resource.Key, s_Resource.Value, s_TextWriter, p_Writer);
@@ -99,7 +74,12 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 p_Writer.Write(s_Meta);
             }
 
-            m_ChunkEntriesOffset = p_Writer.Position;
+            // new addition in fb2013_2: Write resource ref id.
+            foreach (var s_Resource in m_Descriptor.Resources)
+            {
+                var s_ResourceRef = s_Resource.Value.GetId(s_Resource.Key);
+                s_ResourceRef.Serialize(p_Writer);
+            }
             
             // Write chunk entries.
             foreach (var s_Chunk in m_Descriptor.Chunks)
@@ -109,21 +89,17 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 var s_ChunkEntry = new BundleManifest.ChunkEntry(s_Chunk.Key)
                 {
-                    RangeStart = s_RangeStart,
-                    RangeEnd = s_RangeStart + s_Size, // TODO: Is this correct?
                     LogicalOffset = s_Chunk.Value.GetLogicalOffset(),
+                    // TODO: LogicalSize = s_Chunk.Value.GetLogicalSize(),
                 };
 
                 s_ChunkEntry.Serialize(p_Writer);
             }
 
-            // Write chunk meta.
-            p_Writer.Align(4); // TODO: is this necessary?
             var s_ChunkMetaStart = p_Writer.Position - s_StartOffset;
-
             var s_ChunkMeta = new DbObject();
             var s_ChunkMetaArray = new DbObject();
-            
+
             foreach (var (s_GUID, s_ChunkObject) in m_Descriptor.Chunks)
             {                
                 // Set metadata data.
@@ -144,11 +120,12 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 s_ChunkMetaArray.AddElement(new DbObjectElement("", s_MetaObject, false));
             }
-
+            
             s_ChunkMeta.AddElement(new DbObjectElement("chunkMeta", s_ChunkMetaArray, true));
 
             s_ChunkMeta.Serialize(p_Writer);
 
+            
             m_Header.ChunkMetaOffset = (int) (s_ChunkMetaStart - 4); // -4 because the manifest size is not accounted for.
             m_Header.ChunkMetaSize = (int) (p_Writer.Position - (s_StartOffset + s_ChunkMetaStart));
 
@@ -158,9 +135,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             s_TextWriter.Flush();
             s_TextWriter.Seek(0, SeekOrigin.Begin);
             s_TextWriter.CopyTo(p_Writer);
-
-            p_Writer.Align(16);
-
+            
             // Record the manifest size.
             var s_ManifestSize = p_Writer.Position - s_StartOffset - 4; // -4 because the manifest size is not accounted for.
 
@@ -184,115 +159,42 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             foreach (var s_Partition in m_Descriptor.Partitions)
             {
-                p_Writer.Align(16);
-                
                 using var s_PartitionReader = s_Partition.Value.GetReader();
                 using var s_HashWriter = new HashingRimeWriter(p_Writer, false);
 
-                s_PartitionReader.CopyTo(s_HashWriter);
+                var s_CompressedSize = WriteLZ4Compressed(s_HashWriter, s_PartitionReader.BaseStream);
 
                 var s_Hash = s_HashWriter.GetHash();
                 s_Hashes.Add(s_Hash);
 
                 s_Hash.Serialize(s_ChecksumWriter);
             }
-
-            var s_ResourceIndex = 0;
 
             foreach (var s_Resource in m_Descriptor.Resources)
             {
-                p_Writer.Align(16);
-                
-                var s_ShouldCompress = true;
-
-                using var s_HashWriter = new HashingRimeWriter(new MemoryStream());
-                {
-                    using var s_HashReader = s_Resource.Value.GetReader();
-                    s_HashReader.CopyTo(s_HashWriter);
-                }
                 using var s_ResourceReader = s_Resource.Value.GetReader();
+                using var s_HashWriter = new HashingRimeWriter(p_Writer, false);
+
+                var s_CompressedSize = WriteLZ4Compressed(s_HashWriter, s_ResourceReader.BaseStream);
 
                 var s_Hash = s_HashWriter.GetHash();
                 s_Hashes.Add(s_Hash);
 
                 s_Hash.Serialize(s_ChecksumWriter);
-
-                if (s_ShouldCompress)
-                {
-                    uint s_CompressedSize;
-                    if (s_ResourceReader.BaseStream is ZlibRimeReader s_ZlibReader)
-                    {
-                        var s_ByteBuffer = s_ZlibReader.GetRawBytes();
-                        p_Writer.Write(s_ByteBuffer);
-                        s_CompressedSize = (uint)s_ByteBuffer.Length;
-                    }
-                    else
-                    {
-                        s_CompressedSize = WriteCompressed(p_Writer, s_ResourceReader);
-                    }
-
-                    // Go back and patch the entry sizes.
-                    var s_CurrentOffset = p_Writer.Position;
-
-                    // 12 = EntryRecord size, 4 = offset to PayloadSize.
-                    p_Writer.Seek(m_ResourceEntriesOffset + (12 * s_ResourceIndex) + 4, SeekOrigin.Begin);
-                    p_Writer.Write(s_CompressedSize);
-                    p_Writer.Seek(s_CurrentOffset, SeekOrigin.Begin);
-                }
-                else
-                {
-                    // s_ResourceReader.Seek(0, SeekOrigin.Begin);
-                    p_Writer.Write(s_ResourceReader);
-                }
-                
-                ++s_ResourceIndex;
             }
-            
-            var s_ChunkIndex = 0;
 
             foreach (var s_Chunk in m_Descriptor.Chunks)
             {
-                p_Writer.Align(16);
-                
                 using var s_ChunkReader = s_Chunk.Value.GetReader();
                 using var s_HashWriter = new HashingRimeWriter(p_Writer, false);
-                
-                if (s_Chunk.Key.HasCompressionFlag())
-                {
-                    uint s_CompressedSize;
-                    if (s_ChunkReader.BaseStream is ZlibRimeReader s_ZlibReader)
-                    {
-                        var s_ByteBuffer = s_ZlibReader.GetRawBytes();
-                        p_Writer.Write(s_ByteBuffer);
-                        s_CompressedSize = (uint)s_ByteBuffer.Length;
-                    }
-                    else
-                    {
-                        s_CompressedSize = WriteCompressed(s_HashWriter, s_ChunkReader);
-                    }
 
-                    // Go back and patch the entry sizes.
-                    var s_CurrentOffset = p_Writer.Position;
-                    var s_RangeStart = s_Chunk.Value.GetRangeStart();
+                var s_CompressedSize = WriteLZ4Compressed(s_HashWriter, s_ChunkReader.BaseStream);
 
-                    // 28 = ChunkEntry size, 20 = Offset to RangeEnd.
-                    p_Writer.Seek(m_ChunkEntriesOffset + (28 * s_ChunkIndex) + 20, SeekOrigin.Begin);
-                    p_Writer.Write(s_RangeStart + s_CompressedSize);
-                    p_Writer.Seek(s_CurrentOffset, SeekOrigin.Begin);
-                }
-                else
-                {
-                    s_ChunkReader.CopyTo(s_HashWriter);
-                }
-                
                 var s_Hash = s_HashWriter.GetHash();
                 s_Hashes.Add(s_Hash);
-                s_Hash.Serialize(s_ChecksumWriter);
 
-                ++s_ChunkIndex;
+                s_Hash.Serialize(s_ChecksumWriter);
             }
-            
-            p_Writer.Align(16);
 
             // Store final checksum, which is a sha1 of all the sha1s.
             Checksum = s_ChecksumWriter.GetHash();
@@ -306,6 +208,31 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             // Return back to the end of the stream.
             p_Writer.Seek(s_FinalOffset, SeekOrigin.Begin);
+        }
+
+        private uint WriteLZ4Compressed(RimeWriter p_Writer, Stream p_InputStream)
+        {
+            var s_LeftBytes = p_InputStream.Length;
+            uint s_TotalSize = 0;
+
+            while (s_LeftBytes > 0)
+            {
+                var s_BytesToCompress = (int)System.Math.Min(0x10000, s_LeftBytes);
+                var s_Buffer = new byte[s_BytesToCompress];
+                p_InputStream.Read(s_Buffer, 0, s_BytesToCompress);
+
+                var s_CompressedBuffer = LZ4Codec.Encode(s_Buffer, 0, s_BytesToCompress);
+
+                var s_Header = new CodecHeader((uint)s_CompressedBuffer.Length, (uint)s_BytesToCompress, CodecMethod.LZ4);
+                s_Header.Serialize(p_Writer);
+
+                p_Writer.Write(s_CompressedBuffer);
+
+                s_TotalSize += (uint)(8 + s_CompressedBuffer.Length);
+                s_LeftBytes -= s_BytesToCompress;
+            }
+
+            return s_TotalSize;
         }
 
         private void SerializeEntry(string p_Name, IReadableObject p_Object, RimeWriter p_TextWriter, RimeWriter p_ManifestWriter)
@@ -322,63 +249,10 @@ namespace RimeLib.Content.Frostbite2_0.Building
             var s_EntryRecord = new BundleManifest.EntryRecord
             {
                 NameOffset = s_NameOffset,
-                PayloadSize = (uint) s_Size,
                 OriginalSize = (uint) s_Size,
             };
 
             s_EntryRecord.Serialize(p_ManifestWriter);
-        }
-
-        private uint WriteCompressed(RimeWriter p_Writer, Stream p_InputStream)
-        {
-            var s_CompressedSegments = new List<Tuple<byte[], uint>>();
-            var s_LeftBytes = p_InputStream.Length;
-            while (s_LeftBytes > 0)
-            {
-                // Compressed segments are at most 0x10000 (65536) bytes in size.
-                var s_BytesToCompress = (uint) System.Math.Min(0x10000, s_LeftBytes);
-                s_LeftBytes -= s_BytesToCompress;
-
-                var s_CompressionMemoryStream = new MemoryStream();
-                using (var s_CompressionStream = new DeflaterOutputStream(s_CompressionMemoryStream, new Deflater(Deflater.BEST_COMPRESSION), 4096))
-                {
-                    var s_ByteBuffer = new byte[s_BytesToCompress];
-                    var s_BytesRead = p_InputStream.Read(s_ByteBuffer);
-
-                    if (s_BytesRead != s_BytesToCompress)
-                    {
-                        throw new Exception(
-                            $"An error occurred while reading the data of a texture chunk. Tried reading {s_BytesToCompress} bytes but read {s_BytesRead}."
-                        );
-                    }
-
-                    s_CompressionStream.Write(s_ByteBuffer);
-                    s_CompressionStream.Finish();
-                    s_CompressionStream.Dispose();
-                    
-                }
-                s_CompressedSegments.Add(Tuple.Create(s_CompressionMemoryStream.ToArray(), s_BytesToCompress));
-            }
-            
-            // Now write the final compressed data.
-            uint s_TotalSize = 0;
-
-            var s_LastEndianess = p_Writer.Endianness;
-            p_Writer.Endianness = Endianness.BigEndian;
-            
-            foreach (var (s_CompressedSegment, s_OriginalSize) in s_CompressedSegments)
-            {
-                p_Writer.Write((uint)s_OriginalSize);
-                p_Writer.Write((uint)s_CompressedSegment.Length);
-                p_Writer.Write(s_CompressedSegment);
-
-                s_TotalSize += 8;
-                s_TotalSize += (uint) s_CompressedSegment.Length;
-            }
-
-            p_Writer.Endianness = s_LastEndianess;
-
-            return s_TotalSize;
         }
     }
 }
