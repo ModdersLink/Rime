@@ -63,14 +63,14 @@ public class SuperbundleLayout : DbObjectSerializable
     [DbObjectField("chunks")]
     public ChunkInfo[] Chunks { get; set; } = new ChunkInfo[0];
 
+    [DbObjectField("totalSize")]
+    public long? TotalSize { get; set; }
+
     [DbObjectField("name")]
     public string? Name { get; set; }
 
     [DbObjectField("cas", DefaultValue = false)]
     public bool? Cas { get; set; }
-    
-    [DbObjectField("totalSize")]
-    public long? TotalSize { get; set; }
 
     [DbObjectField("alwaysEmitSuperbundle")]
     public bool? AlwaysEmitSuperbundle { get; set; }

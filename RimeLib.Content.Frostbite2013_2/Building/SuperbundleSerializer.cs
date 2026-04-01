@@ -55,6 +55,7 @@ namespace RimeLib.Content.Frostbite2013_2.Building
             // Assign final chunk and bundle info.
             m_Toc.Layout.Chunks = m_Chunks.ToArray();
             m_Toc.Layout.Bundles = m_Bundles.ToArray();
+            m_Toc.Layout.TotalSize = s_SbWriter.Length;
 
             // Serialize the toc into the toc stream.
             using var s_TocWriter = new RimeWriter(p_OutputTocStream, Endianness.LittleEndian, false);
