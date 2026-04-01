@@ -165,7 +165,7 @@ namespace RimeLib.Content.Frostbite2013_2.Building
                 using var s_PartitionReader = s_Partition.Value.GetReader();
                 using var s_HashWriter = new HashingRimeWriter(p_Writer, false);
 
-                var s_CompressedSize = WriteLZ4Compressed(s_HashWriter, s_PartitionReader.BaseStream);
+                var s_CompressedSize = WriteLZ4Compressed(s_HashWriter, s_PartitionReader);
 
                 var s_Hash = s_HashWriter.GetHash();
                 s_Hashes.Add(s_Hash);
@@ -178,7 +178,7 @@ namespace RimeLib.Content.Frostbite2013_2.Building
                 using var s_ResourceReader = s_Resource.Value.GetReader();
                 using var s_HashWriter = new HashingRimeWriter(p_Writer, false);
 
-                var s_CompressedSize = WriteLZ4Compressed(s_HashWriter, s_ResourceReader.BaseStream);
+                var s_CompressedSize = WriteLZ4Compressed(s_HashWriter, s_ResourceReader);
 
                 var s_Hash = s_HashWriter.GetHash();
                 s_Hashes.Add(s_Hash);
@@ -191,7 +191,7 @@ namespace RimeLib.Content.Frostbite2013_2.Building
                 using var s_ChunkReader = s_Chunk.Value.GetReader();
                 using var s_HashWriter = new HashingRimeWriter(p_Writer, false);
 
-                var s_CompressedSize = WriteLZ4Compressed(s_HashWriter, s_ChunkReader.BaseStream);
+                var s_CompressedSize = WriteLZ4Compressed(s_HashWriter, s_ChunkReader);
 
                 var s_Hash = s_HashWriter.GetHash();
                 s_Hashes.Add(s_Hash);
