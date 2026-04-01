@@ -83,9 +83,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     {
                         if (s_Mounter.TryGetChunk(s_ChunkId, out var s_ChunkObj))
                         {
-                            var s_ResNameHash = (int)RimeLib.Frostbite.Utils.HashQuick(s_Res.Key);
-                            var s_Variant = s_ChunkObj.Variants.FirstOrDefault(v => v.GetAssetNameHash() == s_ResNameHash)
-                                         ?? s_ChunkObj.FirstVariant;
+                            var s_Variant = s_ChunkObj.Variants.FirstOrDefault(v => v.GetContainedBundle() != null) ?? s_ChunkObj.FirstVariant;
 
                             s_BundleContext.AddChunk(s_ChunkId, s_Variant);
                             p_Writer.WriteLine($"Added missing texture chunk: {s_ChunkId} for resource {s_Res.Key}");
