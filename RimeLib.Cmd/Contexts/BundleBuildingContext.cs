@@ -94,9 +94,19 @@ namespace RimeLib.Cmd.Contexts
                 return 0;
             }
 
+            public uint GetRangeEnd()
+            {
+                return (uint)GetSize();
+            }
+
             public uint GetLogicalOffset()
             {
                 return 0;
+            }
+
+            public uint GetLogicalSize()
+            {
+                return (uint)GetSize();
             }
 
             public int? GetAssetNameHash()

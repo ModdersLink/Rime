@@ -193,7 +193,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
         public BundleManifest ContainedBundle { get; set; }
 
-        public ChunkMetaEntry Meta { get; set; }
+        public ChunkMetaEntry? Meta { get; set; }
 
         public uint RangeStart { get; set; }
 
@@ -205,7 +205,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
         private long m_Size;
         public long PayloadSize => m_Size;
 
-        internal BundleChunkEntry(Sha1 p_Hash, BundleManifest.ChunkEntry p_Entry, long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleManifest p_Bundle, ChunkMetaEntry p_Meta) :
+        internal BundleChunkEntry(Sha1 p_Hash, BundleManifest.ChunkEntry p_Entry, long p_SeekOffset, SuperbundleEntry p_Superbundle, BundleManifest p_Bundle, ChunkMetaEntry? p_Meta) :
             base(p_Entry.Id)
         {
             Hash = p_Hash;
@@ -554,14 +554,15 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
                 // Get the chunk info.
                 var s_ChunkEntry = m_Chunks[i];
 
+                // TODO: This is not the right chunkMeta.
                 // Get the chunk meta. 
-                var s_ChunkMeta = m_ChunkMeta[i];
+                //var s_ChunkMeta = m_ChunkMeta[i];
 
                 // Get the data offset for this entry.
                 var s_Offset = p_Reader.Position;
 
                 var s_RealEntry = new BundleChunkEntry(s_Hash, s_ChunkEntry, s_Offset - m_StartPosition,
-                    ContainedSuperbundle, this, s_ChunkMeta);
+                    ContainedSuperbundle, this, null);
                 Chunks.Add(s_RealEntry);
 
                 // Skip the data, we don't need to read it right now.

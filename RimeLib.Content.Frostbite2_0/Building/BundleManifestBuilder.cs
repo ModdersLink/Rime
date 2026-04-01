@@ -106,12 +106,12 @@ namespace RimeLib.Content.Frostbite2_0.Building
             foreach (var s_Chunk in m_Descriptor.Chunks)
             {
                 var s_RangeStart = s_Chunk.Value.GetRangeStart();
-                var s_Size = (uint) s_Chunk.Value.GetSize();
+                var s_RangeEnd = s_Chunk.Value.GetRangeEnd();
 
                 var s_ChunkEntry = new BundleManifest.ChunkEntry(s_Chunk.Key)
                 {
                     RangeStart = s_RangeStart,
-                    RangeEnd = s_RangeStart + s_Size, // TODO: Is this correct?
+                    RangeEnd = s_RangeEnd,
                     LogicalOffset = s_Chunk.Value.GetLogicalOffset(),
                 };
 
@@ -273,6 +273,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     }
                     else
                     {
+                        // TODO: should we pass the size (range end - range start) instead of relying on the reader's length?
                         s_CompressedSize = WriteCompressed(s_HashWriter, s_ChunkReader);
                     }
 

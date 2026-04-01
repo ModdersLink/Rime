@@ -10,13 +10,15 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
     {
         protected DbObject? m_Meta;
         protected uint m_RangeStart;
+        protected uint m_RangeEnd;
         protected uint m_LogicalOffset;
 
-        public ChunkVariant(IReadableObjectWithHash p_Readable, uint p_RangeStart, uint p_LogicalOffset, DbObject? p_Meta, string p_ContainedSuperbundle, string? p_ContainedBundle) :
+        public ChunkVariant(IReadableObjectWithHash p_Readable, uint p_RangeStart, uint p_RangeEnd, uint p_LogicalOffset, DbObject? p_Meta, string p_ContainedSuperbundle, string? p_ContainedBundle) :
             base(p_Readable, p_ContainedSuperbundle, p_ContainedBundle)
         {
             m_Meta = p_Meta;
             m_RangeStart = p_RangeStart;
+            m_RangeEnd = p_RangeEnd;
             m_LogicalOffset = p_LogicalOffset;
         }
 
@@ -31,9 +33,20 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return m_RangeStart;
         }
 
+        public uint GetRangeEnd()
+        {
+            return m_RangeEnd;
+        }
+
         public uint GetLogicalOffset()
         {
             return m_LogicalOffset;
+        }
+
+        public uint GetLogicalSize()
+        {
+            throw new NotImplementedException();
+            return 0;
         }
 
         public int? GetAssetNameHash()

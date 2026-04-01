@@ -195,6 +195,7 @@ public class BundleChunkEntry : ChunkEntry
     public ChunkMetaEntry Meta { get; set; }
 
     public uint LogicalOffset { get; set; }
+    public uint LogicalSize { get; set; }
 
     private long m_SeekOffset;
     private long m_Size;
@@ -216,6 +217,7 @@ public class BundleChunkEntry : ChunkEntry
         // I still have no idea what, need to investigate. We also need to pull firstMip
         // info from meta as that's somehow relevant.
         LogicalOffset = p_Entry.LogicalOffset;
+        LogicalSize = p_Entry.LogicalSize;
     }
 
     public override RimeReader GetReader()

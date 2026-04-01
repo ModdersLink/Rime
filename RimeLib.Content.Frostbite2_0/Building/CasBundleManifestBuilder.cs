@@ -126,7 +126,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 var s_ReadableSize = GetCompressedSize(s_Readable);
 
                 var s_RangeStart = (int)s_ChunkObject.GetRangeStart();
-                var s_RangeEnd = s_RangeStart + (int)s_ReadableSize;
+                var s_RangeEnd = (int)s_ChunkObject.GetRangeEnd();
                 var s_LogicalOffset = (int)s_ChunkObject.GetLogicalOffset();
                 var s_ShouldWriteEntry = s_RangeStart != 0 || s_Readable is InlineReadable || GetInlineData(s_Readable) != null;
 

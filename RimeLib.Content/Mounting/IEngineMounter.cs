@@ -19,7 +19,9 @@ namespace RimeLib.Content.Mounting
     {
         bool TryGetMeta([NotNullWhen(true)] out DbObject? p_Meta);
         uint GetRangeStart();
+        uint GetRangeEnd();
         uint GetLogicalOffset();
+        uint GetLogicalSize();
         int? GetAssetNameHash();
     }
 

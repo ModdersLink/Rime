@@ -135,14 +135,14 @@ public class CasBundle : DbObjectSerializable
         public long Size { get; set; }
         
         [DbObjectField("rangeStart")]
-        public long? RangeStart { get; set; }
+        public uint? RangeStart { get; set; }
         [DbObjectField("rangeEnd")]
-        public long? RangeEnd { get; set; }
+        public uint? RangeEnd { get; set; }
             
         [DbObjectField("logicalOffset")]
-        public long LogicalOffset { get; set; }
+        public uint LogicalOffset { get; set; }
         [DbObjectField("logicalSize")]
-        public long LogicalSize { get; set; }
+        public uint LogicalSize { get; set; }
         
         // For cas deltas
         [DbObjectField("casPatchType")]

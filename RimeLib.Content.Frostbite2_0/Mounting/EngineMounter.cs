@@ -545,7 +545,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             m_Chunks.AddOrUpdate(s_ChunkEntry.Id, s_ChunkEntry, (p_Key, p_Old) => s_ChunkEntry);
 
             // Mount.
-            var s_Variant = new ChunkVariant(s_ChunkEntry, 0, 0, null, p_SbEntry.Name, null);
+            var s_Variant = new ChunkVariant(s_ChunkEntry, 0, (uint)s_ChunkEntry.GetSize(), 0, null, p_SbEntry.Name, null);
             var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant, s_ChunkEntry.Id.ToString());
 
             // Here we always replace because patched chunks get registered after and they override old ones.
@@ -775,8 +775,9 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                         s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
 
                     var s_RangeStart = s_Chunk.RangeStart is not null ? (uint)s_Chunk.RangeStart : 0;
+                    var s_RangeEnd = s_Chunk.RangeEnd is not null ? (uint)s_Chunk.RangeEnd : (uint)s_Chunk.Size;
                     var s_LogicalOffset = s_Chunk.LogicalOffset is not null ? (uint)s_Chunk.LogicalOffset : 0;
-                    var s_Variant = new ChunkVariant(s_Readable, s_RangeStart, s_LogicalOffset, s_Meta, p_Bundle.ContainedSuperbundle.Name,
+                    var s_Variant = new ChunkVariant(s_Readable, s_RangeStart, s_RangeEnd, s_LogicalOffset, s_Meta, p_Bundle.ContainedSuperbundle.Name,
                         p_Bundle.Bundle.Path);
 
                     // Mount.
@@ -854,7 +855,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             foreach (var s_Chunk in p_Bundle.Chunks)
             {
                 // Create variant.
-                var s_Variant = new ChunkVariant(s_Chunk, s_Chunk.RangeStart, s_Chunk.LogicalOffset, DbObjectConverter.ToDbObject(s_Chunk.Meta),
+                var s_Variant = new ChunkVariant(s_Chunk, s_Chunk.RangeStart, s_Chunk.RangeEnd, s_Chunk.LogicalOffset, s_Chunk.Meta != null ? DbObjectConverter.ToDbObject(s_Chunk.Meta) : null,
                     p_Bundle.ContainedSuperbundle.Name, p_Bundle.ContainedBundle.Id);
 
                 // Mount.

@@ -544,7 +544,7 @@ public class EngineMounter : IEngineMounter
         m_Chunks.AddOrUpdate(s_ChunkEntry.Id, s_ChunkEntry, (p_Key, p_Old) => s_ChunkEntry);
 
         // Mount.
-        var s_Variant = new ChunkVariant(s_ChunkEntry, 0, null, p_SbEntry.Name, null);
+        var s_Variant = new ChunkVariant(s_ChunkEntry, 0, (uint)s_ChunkEntry.GetSize(), null, p_SbEntry.Name, null);
         var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant, s_ChunkEntry.Id.ToString());
 
         // Here we always replace because patched chunks get registered after and they override old ones.
@@ -826,7 +826,7 @@ public class EngineMounter : IEngineMounter
 
             // Create variant.
             var s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag(), s_Chunk);
-            var s_Variant = new ChunkVariant(s_Readable, s_Chunk.LogicalOffset, s_Meta, p_Bundle.ContainedSuperbundle.Name,
+            var s_Variant = new ChunkVariant(s_Readable, s_Chunk.LogicalOffset, s_Chunk.LogicalSize, s_Meta, p_Bundle.ContainedSuperbundle.Name,
                 p_Bundle.Bundle.Path);
 
             // Mount.
@@ -932,7 +932,7 @@ public class EngineMounter : IEngineMounter
 
                 // Create variant.
                 var s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag(), s_Chunk);
-                var s_Variant = new ChunkVariant(s_Readable, s_Chunk.LogicalOffset, s_Meta, p_Bundle.ContainedSuperbundle.Name,
+                var s_Variant = new ChunkVariant(s_Readable, s_Chunk.LogicalOffset, s_Chunk.LogicalSize, s_Meta, p_Bundle.ContainedSuperbundle.Name,
                     s_DeltaBundle.Path);
 
                 // Mount.
@@ -1028,7 +1028,7 @@ public class EngineMounter : IEngineMounter
         foreach (var s_Chunk in p_Bundle.Chunks)
         {
             // Create variant.
-            var s_Variant = new ChunkVariant(s_Chunk, s_Chunk.LogicalOffset, DbObjectConverter.ToDbObject(s_Chunk.Meta),
+            var s_Variant = new ChunkVariant(s_Chunk, s_Chunk.LogicalOffset, s_Chunk.LogicalSize, DbObjectConverter.ToDbObject(s_Chunk.Meta),
                 p_Bundle.ContainedSuperbundle.Name, p_Bundle.ContainedBundle.Id);
 
             // Mount.
