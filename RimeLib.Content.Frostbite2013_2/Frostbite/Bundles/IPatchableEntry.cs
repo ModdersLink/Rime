@@ -16,7 +16,7 @@ public interface IPatchableEntry
 	// == 2, then it has sha1 or idelta, looks up in base   | 
 	//      Look up patch in delta file
         
-	public long? CasPatchType { get; }
+	public int? CasPatchType { get; }
         
 	public Sha1? BaseHash { get; }
         

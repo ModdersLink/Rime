@@ -34,11 +34,11 @@ public class CasBundle : DbObjectSerializable
         public long ResourceIdInt { get; set; }
         
         [DbObjectField("idata")]
-        public byte[] InlineData { get; set; } = new byte[0];
+        public byte[]? InlineData { get; set; } = null;
         
         // For cas deltas
         [DbObjectField("casPatchType")]
-        public long? CasPatchType { get; set; }
+        public int? CasPatchType { get; set; }
         
         [DbObjectField("baseSha1")]
         public Sha1? BaseHash { get; set; }
@@ -62,7 +62,7 @@ public class CasBundle : DbObjectSerializable
         public Sha1 Hash { get; set; } = new();
         
         [DbObjectField("idata")]
-        public byte[] InlineData { get; set; } = new byte[0];
+        public byte[]? InlineData { get; set; } = null;
         
         [DbObjectField("size")]
         public long Size { get; set; }
@@ -72,7 +72,7 @@ public class CasBundle : DbObjectSerializable
 
        
         [DbObjectField("casPatchType")]
-        public long? CasPatchType { get; set; }
+        public int? CasPatchType { get; set; }
         
         [DbObjectField("baseSha1")]
         public Sha1? BaseHash { get; set; }
@@ -97,22 +97,24 @@ public class CasBundle : DbObjectSerializable
         
         [DbObjectField("originalSize")]
         public long? OriginalSize { get; set; }
-        
-        
+
+        [DbObjectField("idata")]
+        public byte[]? InlineData { get; set; } = null;
+
         // For cas deltas
         // used in fb::BundleHelper::generateCasPatchBundleData
         // == 0, increases size by Align1000(OriginalSize)      | unchanged
-        
+
         // == 1, sets bit 0x30000000 some id, and increases     | external patch
         //      possibly related to PatchEntryOpType.New?
         //      chunk   = 0x30000000 | Align1000(LogicalSize + (LogicalOffset & 0xFFFF)
         //      ebx,dbx = 0x30000000 | Align1000(OriginalSize) 
-        
+
         // == 2, then it has sha1 or idelta, looks up in base   | 
         //      Look up patch in delta file
-        
+
         [DbObjectField("casPatchType")]
-        public long? CasPatchType { get; set; }
+        public int? CasPatchType { get; set; }
         
         [DbObjectField("baseSha1")]
         public Sha1? BaseHash { get; set; }
@@ -144,12 +146,13 @@ public class CasBundle : DbObjectSerializable
         public uint LogicalOffset { get; set; }
         [DbObjectField("logicalSize")]
         public uint LogicalSize { get; set; }
-        
+
+        [DbObjectField("idata")]
+        public byte[]? InlineData { get; set; } = null;
+
         // For cas deltas
         [DbObjectField("casPatchType")]
-        public long? CasPatchType { get; set; } // TODO: verify type
-        
-        
+        public int? CasPatchType { get; set; }
         
         // not used in chunks
         [DbObjectField("baseSha1")]
@@ -167,36 +170,34 @@ public class CasBundle : DbObjectSerializable
 
     [DbObjectField("magicSalt")]
     public int MagicSalt { get; set; } = (int)ManifestType.Pecm;
-    
 
-    
-    
-    [DbObjectField("dbx")]
-    public Dbx[] DbxEntries { get; set; } = new Dbx[0];
-    
     [DbObjectField("ebx")]
     public Ebx[] EbxEntries { get; set; } = new Ebx[0];
+
+    [DbObjectField("dbx")]
+    public Dbx[]? DbxEntries { get; set; } = null;
     
     [DbObjectField("res")]
     public Resource[] ResourceEntries { get; set; } = new Resource[0];
     
     [DbObjectField("chunks")]
-    public Chunk[] ChunkEntries { get; set; } = new Chunk[0];
+    public Chunk[]? ChunkEntries { get; set; } = null;
 
     [DbObjectField("chunkMeta")]
-    public ChunkEntry.ChunkMetaEntry[] ChunkMeta { get; set; } = new ChunkEntry.ChunkMetaEntry[0];
+    public ChunkEntry.ChunkMetaEntry[]? ChunkMeta { get; set; } = null;
 
-    [DbObjectField("alignMembers")]
-    public bool AlignMembers { get; set; }
-    
-    [DbObjectField("ridSupport", DefaultValue = false)]
-    public bool RidSupport { get; set; }
+    [DbObjectField("alignMembers", DefaultValue = false)]
+    public bool AlignMembers { get; set; } = false;
+
+    [DbObjectField("ridSupport", DefaultValue = true)]
+    public bool RidSupport { get; set; } = true;
     
     [DbObjectField("storeCompressedSizes", DefaultValue = false)]
     public bool StoreCompressedSizes { get; set; }
     
     [DbObjectField("totalSize")]
     public long TotalSize { get; set; }
+
     [DbObjectField("dbxTotalSize")]
     public long? DbxTotalSize { get; set; }
 }
