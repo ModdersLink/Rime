@@ -63,16 +63,13 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             var s_Variant = s_Partition.FirstVariant;
             if (s_BundleContext.Cas())
+                s_Variant = s_Partition.Variants.FirstOrDefault(p_Partition => p_Partition.Cas && p_Partition.GetContainedBundle() != null);
+            
+            if (s_Variant == null)
             {
-                s_Variant = s_Partition.Variants.FirstOrDefault(p_Chunk => p_Chunk.Cas);
-                if (s_Variant == null)
-                {
-                    p_Writer.Write($"Could not find a Cas variant of ({Name}).");
-                    return false;
-                }
+                p_Writer.Write($"Could not find a valid variant of ({Name}).");
+                return false;
             }
-            else
-                s_Variant = s_Partition.FirstVariant;
 
             s_BundleContext.AddPartition(Name!, s_Variant);
 

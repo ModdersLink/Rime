@@ -57,22 +57,21 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             if (!s_EngineMounter.TryGetResource(Name!, out var s_Resource))
             {
-                p_Writer.WriteLine($"Could not find chunk ({Name}).");
+                p_Writer.WriteLine($"Could not find resource ({Name}).");
                 return false;
             }
 
             IResourceVariant? s_Variant;
             if (s_BundleContext.Cas())
-            {
-                s_Variant = s_Resource.Variants.FirstOrDefault(p_Chunk => p_Chunk.Cas);
-                if (s_Variant == null)
-                {
-                    p_Writer.Write($"Could not find a Cas variant of ({Name}).");
-                    return false;
-                }
-            }
+                s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.Cas && p_Resource.GetContainedBundle() != null);
             else
-                s_Variant = s_Resource.FirstVariant;
+                s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.GetContainedBundle() != null);
+
+            if (s_Variant == null)
+            {
+                p_Writer.Write($"Could not find a valid variant of ({Name}).");
+                return false;
+            }
 
             s_BundleContext.AddResource(Name!, s_Variant);
 

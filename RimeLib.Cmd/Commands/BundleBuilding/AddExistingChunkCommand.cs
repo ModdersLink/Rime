@@ -4,6 +4,8 @@ using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using System.IO;
 using System.Linq;
+using System.Xml.Linq;
+using static RimeLib.Utils.RiffFile;
 
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
@@ -58,16 +60,15 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             IChunkVariant? s_Variant;
             if (s_BundleContext.Cas())
-            {
-                s_Variant = s_Chunk.Variants.FirstOrDefault(p_Chunk => p_Chunk.Cas);
-                if (s_Variant == null)
-                {
-                    p_Writer.Write($"Could not find a Cas variant of ({Guid}).");
-                    return false;
-                }
-            }
+                s_Variant = s_Chunk.Variants.FirstOrDefault(p_Chunk => p_Chunk.Cas && p_Chunk.GetContainedBundle() != null);
             else
-                s_Variant = s_Chunk.FirstVariant;
+                s_Variant = s_Chunk.Variants.FirstOrDefault(p_Chunk => p_Chunk.GetContainedBundle() != null);
+
+            if (s_Variant == null)
+            {
+                p_Writer.Write($"Could not find a valid variant of ({Guid}).");
+                return false;
+            }
 
             s_BundleContext.AddChunk(Guid!, s_Variant);
 
