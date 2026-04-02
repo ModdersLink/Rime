@@ -787,7 +787,12 @@ public class EngineMounter : IEngineMounter
         foreach (var s_Resource in p_Bundle.Bundle.ResourceEntries)
         {
             // Create variant.
-            var s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size, s_Resource);
+            IReadableObjectWithHash? s_Readable = null;
+            if (s_Resource.InlineData != null)
+                s_Readable = new InlineReadable(s_Resource.InlineData, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size);
+            else
+                s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size, s_Resource);
+
             var s_Variant = new ResourceVariant(s_Readable, (ResourceType) s_Resource.ResourceType, s_Resource.Meta, (ulong) s_Resource.ResourceIdInt,
                 p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
 
@@ -815,17 +820,25 @@ public class EngineMounter : IEngineMounter
         }
 
         // Mount all chunks.
-        for (var i = 0; i < p_Bundle.Bundle.ChunkEntries.Length; i++)
+        for (var i = 0; i < p_Bundle.Bundle.ChunkEntries?.Length; i++)
         {
             var s_Chunk = p_Bundle.Bundle.ChunkEntries[i];
             DbObject? s_Meta = null;
 
             // If we have any meta, set it.
-            if (p_Bundle.Bundle.ChunkMeta.Length > i)
+            if (p_Bundle.Bundle.ChunkMeta?.Length > i)
                 s_Meta = DbObjectConverter.ToDbObject(p_Bundle.Bundle.ChunkMeta[i]);
 
             // Create variant.
-            var s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag(), s_Chunk);
+            IReadableObjectWithHash? s_Readable = null;
+            if (s_Chunk.InlineData != null)
+                s_Readable = new InlineReadable(s_Chunk.InlineData, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
+            else
+                s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag(), s_Chunk);
+
+            // TODO: Pass RangeStart and RangeEnd to ChunkVariant constructor
+            var s_RangeStart = s_Chunk.RangeStart is not null ? (uint)s_Chunk.RangeStart : 0;
+            var s_RangeEnd = s_Chunk.RangeEnd is not null ? (uint)s_Chunk.RangeEnd : (uint)s_Chunk.Size;
             var s_Variant = new ChunkVariant(s_Readable, s_Chunk.LogicalOffset, s_Chunk.LogicalSize, s_Meta, p_Bundle.ContainedSuperbundle.Name,
                 p_Bundle.Bundle.Path);
 
@@ -844,7 +857,12 @@ public class EngineMounter : IEngineMounter
         foreach (var s_Partition in p_Bundle.Bundle.EbxEntries)
         {
             // Create variant.
-            var s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
+            IReadableObjectWithHash? s_Readable = null;
+            if (s_Partition.InlineData != null)
+                s_Readable = new InlineReadable(s_Partition.InlineData, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size);
+            else
+                s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
+            
             var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
 
             // Mount.
@@ -863,15 +881,23 @@ public class EngineMounter : IEngineMounter
                 (_, _) => s_Partition.Name.ToLowerInvariant()
             );
         }
-        
+
         // Mount all partitions.
-        foreach (var s_Partition in p_Bundle.Bundle.DbxEntries)
+        for (int i = 0; i < p_Bundle.Bundle.DbxEntries?.Length; i++)
         {
+            CasBundle.Dbx? s_Partition = p_Bundle.Bundle.DbxEntries[i];
+
             // Mount only available dbx
             if (!m_Catalog.ContainsEntry(s_Partition.Hash))
                 continue;
+
             // Create variant.
-            var s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
+            IReadableObjectWithHash? s_Readable = null;
+            if (s_Partition.InlineData != null)
+                s_Readable = new InlineReadable(s_Partition.InlineData, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size);
+            else
+                s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
+            
             var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
 
             // Mount.
@@ -900,7 +926,12 @@ public class EngineMounter : IEngineMounter
             foreach (var s_Resource in s_DeltaBundle.ResourceEntries)
             {
                 // Create variant.
-                var s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size, s_Resource);
+                IReadableObjectWithHash? s_Readable = null;
+                if (s_Resource.InlineData != null)
+                    s_Readable = new InlineReadable(s_Resource.InlineData, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size);
+                else
+                    s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size, s_Resource);
+                
                 var s_Variant = new ResourceVariant(s_Readable, (ResourceType) s_Resource.ResourceType, s_Resource.Meta, (ulong) s_Resource.ResourceIdInt,
                     p_Bundle.ContainedSuperbundle.Name, s_DeltaBundle.Path);
 
@@ -921,17 +952,25 @@ public class EngineMounter : IEngineMounter
             }
 
             // Mount all chunks.
-            for (var i = 0; i < s_DeltaBundle.ChunkEntries.Length; i++)
+            for (var i = 0; i < s_DeltaBundle.ChunkEntries?.Length; i++)
             {
                 var s_Chunk = s_DeltaBundle.ChunkEntries[i];
                 DbObject? s_Meta = null;
 
                 // If we have any meta, set it.
-                if (s_DeltaBundle.ChunkMeta.Length > i)
+                if (s_DeltaBundle.ChunkMeta?.Length > i)
                     s_Meta = DbObjectConverter.ToDbObject(s_DeltaBundle.ChunkMeta[i]);
 
                 // Create variant.
-                var s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag(), s_Chunk);
+                IReadableObjectWithHash? s_Readable = null;
+                if (s_Chunk.InlineData != null)
+                    s_Readable = new InlineReadable(s_Chunk.InlineData, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
+                else
+                    s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag(), s_Chunk);
+
+                // TODO: Pass RangeStart and RangeEnd to ChunkVariant constructor
+                var s_RangeStart = s_Chunk.RangeStart is not null ? (uint)s_Chunk.RangeStart : 0;
+                var s_RangeEnd = s_Chunk.RangeEnd is not null ? (uint)s_Chunk.RangeEnd : (uint)s_Chunk.Size;
                 var s_Variant = new ChunkVariant(s_Readable, s_Chunk.LogicalOffset, s_Chunk.LogicalSize, s_Meta, p_Bundle.ContainedSuperbundle.Name,
                     s_DeltaBundle.Path);
 
@@ -949,7 +988,12 @@ public class EngineMounter : IEngineMounter
             foreach (var s_Partition in s_DeltaBundle.EbxEntries)
             {
                 // Create variant.
-                var s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
+                IReadableObjectWithHash? s_Readable = null;
+                if (s_Partition.InlineData != null)
+                    s_Readable = new InlineReadable(s_Partition.InlineData, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size);
+                else
+                    s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
+                
                 var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, s_DeltaBundle.Path);
 
                 // Mount.
@@ -967,15 +1011,23 @@ public class EngineMounter : IEngineMounter
                     (_, _) => s_Partition.Name.ToLowerInvariant()
                 );
             }
-            
+
             // Mount all partitions.
-            foreach (var s_Partition in s_DeltaBundle.DbxEntries)
+            for (int i = 0; i < s_DeltaBundle.DbxEntries?.Length; i++)
             {
+                CasBundle.Dbx? s_Partition = s_DeltaBundle.DbxEntries[i];
+
                 // Mount only available dbx
                 if (!m_Catalog.ContainsEntry(s_Partition.Hash))
                     continue;
+                
                 // Create variant.
-                var s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
+                IReadableObjectWithHash? s_Readable = null;
+                if (s_Partition.InlineData != null)
+                    s_Readable = new InlineReadable(s_Partition.InlineData, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size);
+                else
+                    s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
+                
                 var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, s_DeltaBundle.Path);
 
                 // Mount.
