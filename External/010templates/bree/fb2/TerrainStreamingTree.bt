@@ -1,0 +1,342 @@
+enum <byte> RasterTreeTypes
+{
+    HeightfieldTreeType = 0x0,
+    TerrainMaskTreeType = 0x1,
+    TerrainColorTreeType = 0x2,
+    TerrainMaterialTreeType = 0x3,
+    DestructionDepthTreeType = 0x4,
+    //StreamableRasterTreeTypeCount = 0x3,
+    RasterTreeTypeCount = 0x5,
+    RasterTreeTypeInvalid = 0xFF
+};
+
+enum <uint> RasterTreeFlags
+{
+    LockedForUnload = 0x1,
+    LockedForLoad = 0x2,
+    LockedForPersistent = 0x4,
+    Disabled = 0x8,
+    CanBeStreamedIn = 0x10,
+    StreamedIn = 0x20,
+    SecondLodCanBeStreamedIn = 0x40,
+    SecondLodStreamedIn = 0x80,
+    Pruned = 0x100
+};
+
+enum <uint> TextureFormat
+{
+    TextureFormat_DXT1 = 0x0,
+    TextureFormat_DXT3 = 0x1,
+    TextureFormat_DXT5 = 0x2,
+    TextureFormat_DXT5A = 0x3,
+    TextureFormat_DXN = 0x4,
+    TextureFormat_RGB565 = 0x5,
+    TextureFormat_RGB888 = 0x6,
+    TextureFormat_ARGB1555 = 0x7,
+    TextureFormat_ARGB4444 = 0x8,
+    TextureFormat_ARGB8888 = 0x9,
+    TextureFormat_L8 = 0xa,
+    TextureFormat_L16 = 0xb,
+    TextureFormat_ABGR16 = 0xc,
+    TextureFormat_ABGR16F = 0xd,
+    TextureFormat_ABGR32F = 0xe,
+    TextureFormat_R16F = 0xf,
+    TextureFormat_R32F = 0x10,
+    TextureFormat_NormalDXN = 0x11,
+    TextureFormat_NormalDXT1 = 0x12,
+    TextureFormat_NormalDXT5 = 0x13,
+    TextureFormat_NormalDXT5RGA = 0x14,
+    TextureFormat_RG8 = 0x15,
+    TextureFormat_GR16 = 0x16,
+    TextureFormat_GR16F = 0x17,
+    TextureFormat_D16 = 0x18,
+    TextureFormat_D24S8 = 0x19,
+    TextureFormat_D24FS8 = 0x1a,
+    TextureFormat_D32F = 0x1b,
+    TextureFormat_ABGR32 = 0x1c,
+    TextureFormat_GR32F = 0x1d
+};
+
+struct RasterTree
+{
+    RasterTreeTypes rasterTreeType;
+    uint rasterTreeLoadSize;
+    byte rasterTreeLoad[rasterTreeLoadSize] <optimize=false>;
+};
+
+struct Vector2
+{
+    float X;
+    float Y;
+};
+
+struct Vector3
+{
+    float X;
+    float Y;
+    float Z;
+};
+
+struct AxisAlignedBox
+{
+    Vector3 Min;
+    Vector3 Max;
+};
+
+struct AxisAlignedBox2
+{
+    Vector2 Min;
+    Vector2 Max;
+};
+
+struct TerrainMaskTree
+{
+    RasterTreeTypes rasterTreeType;
+    uint rasterTreeLoadSize;
+
+    uint m_tileSamplesPerSide;
+    uint m_tilesPerNodeSide;
+    uint m_resourceAtlasSampleCountX;
+    uint m_resourceAtlasSampleCountY;
+    uint m_resourceBlurrinessFactor;
+    AxisAlignedBox2 m_worldCoverage;
+    uint m_nodeCount;
+    uint m_nodeIndex; // unsure
+    uint m_persistentNonTrivialSubtileCount;
+
+    // load nodes
+    struct TerrainMaskTreeNode
+    {
+        char m_canBeStreamedIn;
+        ushort m_maxNonTrivialSubtileCount; // maybe?
+        ushort m_nonTrivialSubtileCount;
+        ushort m_nonTrivialPersistentSubtileCountRecursive;
+        
+        struct Subtile
+        {
+            uchar terrainLayerIndex;
+            AxisAlignedBox2 m_worldCoverage;
+            char someBool1;
+            char someBool2;
+            ushort someShort1;
+            uchar highResolutionCoverageGridStack[someShort1] <optimize=false>;
+        };
+
+        char m_hasInlineData;
+        // handle inlineData
+        // uint unknown; // used to skip?
+        // uchar m_scratchPad; // maybe
+        // idk check fb::TerrainMaskTree::updateAtlasSubresource
+
+        char m_hasChildren;
+        // loadNodes x4
+        // if hasChildren true
+        //TerrainMaskTreeNode m_childNodes[4];
+    } m_nodes[m_nodeCount] <optimize=false>; // & m_subtiles
+
+    byte rasterTreeLoad[rasterTreeLoadSize - 48 - (m_nodeCount * 9)] <optimize=false>;
+};
+
+struct TerrainColorTree
+{
+    RasterTreeTypes rasterTreeType;
+    uint rasterTreeLoadSize;
+
+    uint m_nodeSamplesPerSide;
+    uint m_tileBorderWidth;
+    uint m_resourceAtlasSampleCountX;
+    uint m_resourceAtlasSampleCountY;
+    // its one of both
+    TextureFormat m_atlasTextureFormat;
+    // uint m_resourceBlurrinessFactor;
+
+    AxisAlignedBox2 m_worldCoverage;
+    uint unknown;
+    uint m_sourceTexturesChannelCount;
+    uint m_nodeCount;
+    uint m_persistentNodeCount;
+
+    struct TerrainColorTreeNode
+    {
+        char m_pruned;
+        // if both booleans are true it will add these 2 flags: CanBeStreamedIn & LockedForPersistent  
+        char m_canBeStreamedIn;
+        char m_isPersistent;
+
+        // handle reading if both are true
+        // uchar m_scratchPad; // maybe
+        // idk check fb::TerrainColorTree::updateAtlasSubresource
+
+        char m_hasChildren;
+
+        // loadNodes x4
+        // if hasChildren true
+        //TerrainColorTreeNode m_childNodes[4];
+    } m_nodes[m_nodeCount] <optimize=false>;
+
+    byte rasterTreeLoad[rasterTreeLoadSize - 52 - (m_nodeCount * 4)] <optimize=false>;
+};
+
+struct TerrainMaterialTree
+{
+    RasterTreeTypes rasterTreeType;
+    uint rasterTreeLoadSize;
+
+    uint m_nodeSamplesPerSide;
+    uint m_blurrinessFactor;
+    AxisAlignedBox2 m_worldCoverage;
+    uint m_nodeCount;
+    uint m_persistentNodeCount;
+    uint m_levelMax;
+
+    // load nodes
+    struct TerrainMaterialTreeNode
+    {
+        // if both booleans are true it will add these 2 flags: CanBeStreamedIn & LockedForPersistent
+        char m_canBeStreamedIn;
+        char m_isPersistent; // maybe
+
+        // handle reading if both are true
+        // if m_canBeStreamedIn && m_lockedForPersistent
+        //if( m_canBeStreamedIn == 1 && m_isPersistent == 1 )
+        //{
+        //    uint m_r1eDataSize;
+        //    byte m_r1eData[m_r1eDataSize] <optimize=false>;
+        //    uint m_lineSize[m_nodeSamplesPerSide] <optimize=false>;
+        //};
+        
+
+        char m_hasChildren;
+
+        // loadNodes x4
+        // if hasChildren true
+        //TerrainMaterialTreeNode m_childNodes[4];
+    } m_nodes[m_nodeCount] <optimize=false>;
+
+    uint m_materialPairCount;
+    //uint m_materialPairIndices[m_materialPairCount] <optimize=false>;
+
+    uint m_backgroundMaterialIndex;
+
+    byte rasterTreeLoad[rasterTreeLoadSize - 44 - (m_nodeCount * 3)] <optimize=false>;
+};
+
+struct HeightfieldTree
+{
+    RasterTreeTypes rasterTreeType;
+    uint rasterTreeLoadSize;
+
+    uint m_nodeSamplesPerSide;
+    uint m_resourceAtlasSampleCountX;
+    uint m_resourceAtlasSampleCountY;
+    uint m_resourceBlurrinessFactor;
+    float m_worldSizeY;
+    float m_physicsMetersPerSample;
+    int m_physicsCropWidth;
+    char m_ps3RsxHeightfieldEnable;
+    float m_ps3RsxHeightfieldCacheFraction;
+    uint m_minMaxStackDepth;
+    uint m_occluderGridStackDepth;
+    uint m_nodeCount;
+    uint m_persistentNodeCount;
+    uint m_persistentDedicatedServerNodeCount;
+    uint m_nodeBorderWidth;
+
+    // HeightfieldTreeNode
+    // load nodes
+    struct HeightfieldTreeNode
+    {
+        AxisAlignedBox m_boundingBox;
+    
+        char m_nodeDisabled;
+        char m_pruned;
+
+        // if both booleans are true it will add these 2 flags: CanBeStreamedIn & LockedForPersistent
+        byte m_canBeStreamedIn;
+        byte m_isPersistent;
+
+        // handle reading if both are true
+        // if m_canBeStreamedIn && m_isPersistent
+        //if( m_canBeStreamedIn == 1 && m_isPersistent == 1 )
+        //{
+        //    uint m_r1eDataSize;
+        //    byte m_r1eData[m_r1eDataSize] <optimize=false>;
+        //    uint m_lineSize[m_nodeSamplesPerSide] <optimize=false>;
+        //};
+    
+        char m_hasChildren;
+        // loadNodes x4
+        // if hasChildren true
+        //TerrainMaterialTreeNode m_childNodes[4];
+    } m_nodes[m_nodeCount] <optimize=false>;
+
+    ushort m_minHeightData[m_nodeSamplesPerSide * 2] <optimize=false>;
+
+    byte rasterTreeLoad[rasterTreeLoadSize - 57 - (m_nodeSamplesPerSide * 4) - (m_nodeCount * 29)] <optimize=false>;
+};
+
+struct DestructionDepthTree
+{
+    RasterTreeTypes rasterTreeType;
+    uint rasterTreeLoadSize;
+
+    uint m_nodeSamplesPerSide;
+    uint m_blurrinessFactor;
+    AxisAlignedBox2 m_worldCoverage;
+    uint m_nodeCount;
+    uint m_persistentNodeCount;
+    uint m_levelMax;
+    uint m_nodeBorderWidth;
+
+    struct DestructionDepthTreeNode
+    {
+        char m_canBeStreamedIn;
+        char m_isPersistent; // or m_isDisabled unsure
+
+        // handle reading if both are true
+        // if m_canBeStreamedIn && m_isPersistent
+        
+
+        char m_hasChildren; // not sure here
+        // loadNodes x4
+        // if hasChildren true
+        //DestructionDepthTreeNode m_childNodes[4];
+    } m_nodes[m_nodeCount] <optimize=false>;
+
+    byte rasterTreeLoad[rasterTreeLoadSize - 40 - (m_nodeCount * 3)] <optimize=false>;
+};
+
+struct TerrainStreamingTree
+{
+    uint m_unblurredSamplesPerNodeSidePot;
+    char m_trackTextureDetailFalloff;
+    float m_invisibleDetailReductionFactor;
+    float m_occludedDetailReductionFactor;
+    uint m_resourceBlurriness;
+    uint m_nodeCount;
+    char m_freeStreamingEnabled;
+    HeightfieldTree m_heightfieldTree;
+    TerrainMaskTree m_terrainMaskTree;
+    TerrainColorTree m_terrainColorTree;
+    TerrainMaterialTree m_terrainMaterialTree;
+    DestructionDepthTree m_destructionDepthTree;
+
+    byte pad; // no clue
+
+    // loadNodes stuff
+    struct TerrainStreamingTreeNode
+    {
+        uint m_lod0ChunkSize;
+        GUID m_lod0ChunkID;
+        byte m_lod1Enabled;
+
+        if( m_lod1Enabled == 1 )
+        {
+            uint m_lod1ChunkSize;
+            GUID m_lod1ChunkID;
+        };
+
+        char m_persistentDedicatedServer;
+        char m_hasChildren;
+    } m_nodes[m_nodeCount] <optimize=false>;
+} m_terrainStreamingTree <bgcolor=0xFF0000>;
