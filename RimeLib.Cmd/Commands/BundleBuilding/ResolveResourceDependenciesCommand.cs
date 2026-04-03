@@ -80,7 +80,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 var s_OccluderEnable = s_Type.GetProperty("OccluderMeshEnable")?.GetValue(p_Instance) as bool? ?? false;
                 if (s_OccluderEnable)
                 {
-                    AddResourceByNameFromProperty(p_Instance, "Name", "_occluder", ResourceType.OccluderMesh, p_Context, p_Mounter, p_Writer);
+                    AddResourceByNameFromProperty(p_Instance, "Name", "_occludermesh", ResourceType.OccluderMesh, p_Context, p_Mounter, p_Writer);
                 }
             }
             // Animation
@@ -115,6 +115,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     }
                 }
             }
+            else if (s_TypeName == "AntAnimationSetAsset")
+            {
+                AddResourceByNameFromProperty(p_Instance, "Name", ResourceType.AssetBank, p_Context, p_Mounter, p_Writer);
+            }
             // Enlighten
             else if (s_TypeName == "EnlightenDataAsset")
             {
@@ -129,18 +133,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 AddResourceByNameFromProperty(p_Instance, "Name", ResourceType.StaticEnlightenDatabase, p_Context, p_Mounter, p_Writer);
             }
             // Havok
-            else if (s_TypeName == "HavokAsset")
+            else if (s_TypeName == "HavokAsset" || s_TypeName == "GroupHavokAsset" || s_TypeName == "WaterAsset")
             {
-                var s_ExtAssets = s_Type.GetProperty("ExternalAssets")?.GetValue(p_Instance);
-
-                if (s_ExtAssets != null && s_ExtAssets is System.Collections.IEnumerable s_Enum && s_Enum.OfType<object>().Count() > 0)
-                {
-                    AddResourceByNameFromProperty(p_Instance, "Name", ResourceType.HavokPhysicsData, p_Context, p_Mounter, p_Writer);
-                }
-                else
-                {
-                    AddResourceByNameFromProperty(p_Instance, "Name", ResourceType.HavokDestructionPhysicsData, p_Context, p_Mounter, p_Writer);
-                }
+                AddResourceByNameFromProperty(p_Instance, "Name", ResourceType.HavokPhysicsData, p_Context, p_Mounter, p_Writer);
             }
             else if (s_TypeName == "RagdollAsset")
             {
@@ -213,7 +208,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                         }
                     }
                 }
-                // TODO: probably need to automatically check for LevelData.Name + "/shaderdb" as there is no partition for that
+
+                AddResourceByNameFromProperty(p_Instance, "Name", "/shaderdb", ResourceType.IShaderDatabase, p_Context, p_Mounter, p_Writer);
             }
             // Sound
             else if (s_TypeName == "SoundDataAsset")
@@ -271,12 +267,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             if (p_Mounter.TryGetResource(p_Name, out var s_Resource))
             {
-                if (s_Resource.FirstVariant.GetResourceType() == p_Type)
-                {
+                //if (s_Resource.FirstVariant.GetResourceType() == p_Type)
+                //{
                     p_Context.AddResource(p_Name, s_Resource.FirstVariant);
-                    p_Writer.WriteLine($"Added resource: {p_Name} (Type: {p_Type})");
+                    p_Writer.WriteLine($"Added resource: {p_Name} (Type: {s_Resource.FirstVariant.GetResourceType()})");
                     m_ResolvedKeys.Add(s_Key);
-                }
+                //}
             }
         }
     }
