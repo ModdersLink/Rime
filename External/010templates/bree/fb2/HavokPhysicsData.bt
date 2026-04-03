@@ -11,6 +11,19 @@
 //   History: 
 //------------------------------------------------
 
+uint align(uint bytes)
+{
+    local uint alignment = FTell();
+    local uint i = 0;
+    while (alignment % bytes != 0)
+    {
+        FSkip(1);
+        i = i + 1;
+        alignment = FTell();
+    }
+    return i;
+}
+
 struct Vec3 {
     float x;
     float y;
@@ -22,6 +35,12 @@ struct Vec4 {
     float y;
     float z;
     float w;
+};
+
+struct QSTransform {
+    Vec3 left;
+    Vec3 up;
+    Vec3 forward;
 };
 
 struct AxisAlignedBox {
@@ -70,6 +89,149 @@ struct hkDescriptorInfo
     int Key;
 };
 
+enum <ubyte> ShapeDispatchTypeEnum
+{
+    CONVEX_IMPLICIT = 0,
+    CONVEX = 1,
+    HEIGHT_FIELD = 2,
+    COMPOSITE = 3,
+    USER = 4,
+    NUM_DISPATCH_TYPES = 5
+};
+
+enum <ubyte> ShapeInfoCodecTypeEnum
+{
+    NULL_CODEC = 0,
+    UFM358 = 1,
+    MAX_NUM_CODECS = 16
+};
+
+enum <ubyte> CollectionType
+{
+    COLLECTION_LIST = 0,
+    COLLECTION_EXTENDED_MESH = 1,
+    COLLECTION_TRISAMPLED_HEIGHTFIELD = 2,
+    COLLECTION_USER = 3,
+    COLLECTION_SIMPLE_MESH = 4,
+    COLLECTION_MESH_SHAPE = 5,
+    COLLECTION_COMPRESSED_MESH = 6,
+    COLLECTION_MAX = 7
+};
+
+
+struct hkBaseObject
+{
+    uint base; // might be 8 (maybe on 64bits?)
+};
+
+struct hkReferenceObject
+{
+    hkBaseObject super;
+    uint memSizeAndRefCount;
+};
+
+struct hkcdShape
+{
+    hkReferenceObject super;
+    byte type;
+    ShapeDispatchTypeEnum dispatchType;
+    ubyte bitsPerKey;
+    ShapeInfoCodecTypeEnum shapeInfoCodecType;
+};
+
+struct hkpShapeBase
+{
+    hkcdShape super;
+};
+
+struct hkpShape
+{
+    hkpShapeBase super;
+    uint userData; // might be 8 (maybe on 64bits?)
+};
+
+struct hkpShapeCollection
+{
+    hkpShape super;
+    uint pad0; // might be 8 (maybe on 64bits?) 
+    byte disableWelding;
+    CollectionType collectionType;
+    ushort pad1; // might be 4 (maybe on 64bits?) 
+};
+
+struct hkpSphereRepShape
+{
+    hkpShape super;
+};
+
+struct hkpConvexShape
+{
+   hkpSphereRepShape super;
+   float radius;
+   // skip 4 on 64 bits
+};
+
+struct hkpBoxShape
+{
+    hkpConvexShape super;
+    align(16);
+    Vec4 halfExtents;
+};
+
+struct hkpShapeContainer
+{
+    uint base; // might be 8 (maybe on 64bits?)
+};
+
+struct hkpSingleShapeContainer
+{
+    hkpShapeContainer super;
+    hkpShape childShape;
+};
+
+struct hkpConvexTransformShapeBase
+{
+    hkpConvexShape super;
+    //hkpSingleShapeContainer childShape; // this should be a pointer
+    uint childShapeSizeForSpu; // might be 8 (maybe on 64bits?)
+};
+
+struct hkpConvexTransformShape
+{
+    hkpConvexTransformShapeBase super;
+    align(16);
+    QSTransform transform;
+    Vec4 extraScale;
+};
+
+struct hkpConvexTranslateShape
+{
+    hkpConvexTransformShapeBase super;
+    align(16);
+    Vec4 translation;
+};
+
+struct hkpCylinderShape
+{
+    hkpConvexShape super;
+    float cylRadius;
+    float cylBaseRadiusFactorForHeightFieldCollisions;
+    align(16);
+    Vec4 vertexA;
+    Vec4 vertexB;
+    Vec4 perpendicular1;
+    Vec4 perpendiculat2;
+};
+
+struct hkpConvexVerticesShape
+{
+    hkpConvexShape super;
+    align(16);
+    Vec4 aabbHalfExtents;
+    Vec4 aabbHalfCenter;
+    uint relocPointer; //? TODO: finish
+};
+
 struct hkExtendedMeshHeader
 {
     byte UnknownNull[21];
@@ -84,10 +246,10 @@ struct hkExtendedMeshHeader
     int U6;
     int U7;
     short U8;
-    byte U9[16];
-    byte U10[16];
-    int Null1;
-    int U11;
+    Vec4 aabbHalfExtents;
+    Vec4 aabbCenter;
+    int materialClass;
+    int numBitsForSubpartIndex;
     byte Null2[11];
     int U12;
     ubyte Null3;
@@ -130,25 +292,11 @@ struct HavokPhysicsData {
     int64 MaterialIndicesOffset;
     int MaterialFlagsAndIndicesCount;
     int64 MaterialFlagsAndIndicesOffset;
-    float Scale;
+    int Scale;
     ubyte MaterialCountUsed;
     ubyte HighestMaterialIndex;
     ushort Padding;
 } data;
-
-
-uint align(uint bytes)
-{
-    local uint alignment = FTell();
-    local uint i = 0;
-    while (alignment % bytes != 0)
-    {
-        FSkip(1);
-        i = i + 1;
-        alignment = FTell();
-    }
-    return i;
-}
 
 uint RoundUp(uint bytes, uint a)
 {
@@ -201,24 +349,24 @@ if (data.MaterialFlagsAndIndicesCount > 0)
 
 FSeek(s_HavokOffset);
 
-while(FTell() != FileSize())
-{
 struct {
+    s_HavokOffset = FTell();
     hkPackfileHeader header;
-    hkPackfileSectionHeader sectionHeader[header.NumSections];
     
-    // TODO: un-hardcode classnames from index 0.
+    //hkPackfileSectionHeader sectionHeader[header.NumSections];
+    hkPackfileSectionHeader classNamesSectionHeader;
+    hkPackfileSectionHeader typesSectionHeader;
+    hkPackfileSectionHeader dataSectionHeader;
+
     // __classnames__
     struct {
-        local uint ClassNamesStart = s_HavokOffset + sectionHeader[0].AbsoluteDataStart;
-        local uint ClassNamesEnd = ClassNamesStart + sectionHeader[0].EndOffset - 1;
+        local uint ClassNamesStart = s_HavokOffset + classNamesSectionHeader.AbsoluteDataStart;
+        local uint ClassNamesEnd = ClassNamesStart + classNamesSectionHeader.EndOffset - 1;
         FSeek(ClassNamesStart);
         while (FTell() < ClassNamesEnd)
         {
             hkDescriptor descriptor;
         }
-        
-        ubyte Pad;
     } __classnames__;
     
     // ignore __types__ as EndOffset is 0.
@@ -226,10 +374,10 @@ struct {
     // __data__
     
     struct {
-        local uint DataStart = s_HavokOffset + sectionHeader[2].AbsoluteDataStart;
-        local uint DataEnd = DataStart + sectionHeader[2].EndOffset - 1;
-        local uint DataFixupStart = DataStart + sectionHeader[2].VirtualFixupsOffset;
-        local uint DataFixupEnd = DataStart + sectionHeader[2].ExportsOffset;
+        local uint DataStart = s_HavokOffset + dataSectionHeader.AbsoluteDataStart;
+        local uint DataEnd = DataStart + dataSectionHeader.EndOffset - 1;
+        local uint DataFixupStart = DataStart + dataSectionHeader.VirtualFixupsOffset;
+        local uint DataFixupEnd = DataStart + dataSectionHeader.ExportsOffset;
         local uint infoCount = 0;
         FSeek(DataStart);
         hkxRoot root;
@@ -281,21 +429,98 @@ struct {
         
         for (int i=0; i < infoCount; i++)
         {
-            FSeek(DataStart + descriptorInfo[i].Offset);
-            if (descriptorInfo[i].Key == 169) //hkpExtendedMeshShape
+            if (descriptorInfo[i].Key != -1)
             {
-                hkExtendedMeshHeader meshHeader <bgcolor=0xFF0000>;
-                hkExtendedMeshEntry meshTransform[meshHeader.IndexCount] <bgcolor=0xFF0000>;
-            }
-            else
-            {
-                hkxRoot root <bgcolor=0xFF0000>;
+                FSeek(s_HavokOffset + classNamesSectionHeader.AbsoluteDataStart + descriptorInfo[i].Key);
+                struct String {
+                    string _;    
+                };
+                String keyName;
+                FSeek(DataStart + descriptorInfo[i].Offset);
+                if (keyName._ == "hkpExtendedMeshShape")
+                {
+                    struct hkkk {
+                        // hkReferenceObject
+                        int memSizeAndRefCount;
+                        // hkcdShape
+                        byte type;
+                        byte dispatchType;
+                        byte bitsPerKey;
+                        byte shapeInfoCodecType;
+                        // hkpShapeBase
+                        // hkpShape
+                        uint64 userData;
+                        // hkpShapeCollection
+                        byte disableWelding;
+                        uint64 collectionType;
+                        
+                        // hkpExtendedMeshShapeTrianglesSubpart
+                        uint numTriangleShapes;
+                        uint vertexBase;
+                        int numVertices;
+                        uint indexBase;
+                        ushort vertexStriding;
+                        int triangleOffset;
+                        ushort indexStriding;
+                        byte stridingType;
+                        byte flipAlternateTriangles;
+                        Vec4 extrusion;
+                        Vec4 left;
+                        Vec4 up;
+                        Vec4 forward;
+                        Vec4 trans;
+                        
+                        // hkpExtendedMeshShape
+                        hfloat aabbHalfExtents_min_x; 
+                        hfloat aabbHalfExtents_min_y; 
+                        hfloat aabbHalfExtents_min_z; 
+                        hfloat aabbHalfExtents_max_x; 
+                        hfloat aabbHalfExtents_max_y; 
+                        hfloat aabbHalfExtents_max_z; 
+                    } ;
+                    
+                    hkExtendedMeshHeader meshHeader <bgcolor=0xFF0000>;
+                    hkExtendedMeshEntry meshTransform[meshHeader.IndexCount] <bgcolor=0xFF0000>;
+                }
+                else if (keyName._ == "hkpBoxShape")
+                {
+                    hkpBoxShape boxShape;
+                }
+                else if (keyName._ == "hkpConvexTransformShape")
+                {
+                    hkpConvexTransformShape convexTransformShape;
+                }
+                else if (keyName._ == "hkpConvexTranslateShape")
+                {
+                    hkpConvexTranslateShape convexTranslateShape;
+                }
+                else if (keyName._ == "hkpCylinderShape")
+                {
+                    hkpCylinderShape cylinderShape;
+                }
+                else if (keyName._ == "hkpConvexVerticesShape")
+                {
+                    hkpConvexVerticesShape convexVerticesShape;
+                }
+                else if (keyName._ == "hkpCompressedMeshShape")
+                {
+                    hkpShapeCollection _compressedMeshShape; // TODO: finish
+                }
+                else if (keyName._ == "HavokPhysicsContainer")
+                {
+                    hkxRoot root <bgcolor=0xFF0000>;
+                }
+                else
+                {
+                    hkxRoot root <bgcolor=0xFF0000>;
+                }
             }
         }
         FSeek(pos);
     } __data__;
     
-} hk;
     align(16);
-    s_HavokOffset = FTell();
-}
+} hk[2] <optimize=false>;
+
+uint fixupSize32;
+uint fixupSize64;
