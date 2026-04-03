@@ -11,19 +11,13 @@ public class hkDescriptor
     public int Signature { get; set; }
     public byte Version { get; set; }
     public string Name { get; set; } = string.Empty;
-    public byte EndByte { get; set; }
-
-    // This is not serialized
-    // FTell() - StartOffset - classDataStart + 5;
     public long Key { get; set; }
-    public long Pos { get; set; }
 
     public hkDescriptor()
     {
         Signature = 0;
         Version = 0;
         Name = string.Empty;
-        EndByte = 0xFF;
     }
 
     public hkDescriptor(RimeReader p_Reader)
@@ -35,11 +29,7 @@ public class hkDescriptor
     {
         Signature = p_Reader.ReadInt32();
         Version = p_Reader.ReadUByte();
+        Key = p_Reader.Position;
         Name = p_Reader.ReadNullTerminatedString();
-        
-        // ????
-        Pos = p_Reader.Position;
-        
-        EndByte = p_Reader.ReadUByte();
     }
 }

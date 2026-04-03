@@ -10,9 +10,6 @@ public class hkDescriptorInfo
 {
     public long Offset { get; set; }
     public int Key { get; set; }
-    
-    // Don't serialize this
-    public long FinalOffset { get; set; }
 
     public const int c_SizeOfDescriptorInfo = sizeof(long) + sizeof(int);
 

@@ -6,7 +6,7 @@ public class hkPackfileSectionHeader
 {
     public char[] SectionTagData { get; set; } = new char[c_SectionTagLength];
     // Ignore in serialization
-    public string SectionTag { get; private set; }
+    public string SectionTag { get; private set; } = string.Empty;
     public byte NullByte { get; set; }
     public int AbsoluteDataStart { get; set; }
     public int LocalFixupsOffset { get; set; }
