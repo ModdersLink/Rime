@@ -1,21 +1,19 @@
 ﻿using RimeLib.Content.Building;
-using RimeLib.Content.Frostbite2_0.Frostbite.Bundles;
-using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
-using RimeLib.Content.Frostbite2_0.Mounting;
+using RimeLib.Content.Frostbite2013_2.Frostbite.Bundles;
+using RimeLib.Content.Frostbite2013_2.Frostbite.Chunks;
+using RimeLib.Content.Frostbite2013_2.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
-using System.Linq;
 
-namespace RimeLib.Content.Frostbite2_0.Building
+namespace RimeLib.Content.Frostbite2013_2.Building
 {
     public class CasBundleManifestBuilder
     {
         protected CasBundle m_Header;
-
         protected BundleDescriptor m_Descriptor;
 
-        public CasBundleManifestBuilder(BundleDescriptor p_Descriptor) 
+        public CasBundleManifestBuilder(BundleDescriptor p_Descriptor)
         {
             m_Descriptor = p_Descriptor;
             m_Header = new CasBundle
@@ -24,18 +22,19 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 ResourceEntries = new CasBundle.Resource[p_Descriptor.Resources.Count],
                 EbxEntries = new CasBundle.Ebx[p_Descriptor.Partitions.Count],
                 ChunkEntries = p_Descriptor.Chunks.Count != 0 ? new CasBundle.Chunk[p_Descriptor.Chunks.Count] : null,
-                ChunkMeta = p_Descriptor.Chunks.Count != 0 ? new ChunkEntry.ChunkMetaEntry[p_Descriptor.Chunks.Count] : null, // NOTE: This matches the amount of chunk entries
+                ChunkMeta = p_Descriptor.Chunks.Count != 0 ? new ChunkEntry.ChunkMetaEntry[p_Descriptor.Chunks.Count] : null
             };
         }
-
         long GetCompressedSize(IReadableObject p_Object)
         {
             if (p_Object is CatalogReadable s_Catalog) return s_Catalog.GetCompressedSize();
             if (p_Object is InlineReadable s_Inline) return s_Inline.GetCompressedSize();
-            if (p_Object is ResourceEntry s_Resource) return s_Resource.PayloadSize;
-            if (p_Object is EbxEntry s_Ebx) return s_Ebx.PayloadSize;
-            if (p_Object is BundleChunkEntry s_Chunk) return s_Chunk.PayloadSize;
-            if (p_Object is CasChunkEntry s_CasChunk) return s_CasChunk.PayloadSize;
+            // These are not supported right now. The add commands also don't allow adding any of these.
+            // TODO: make sure the same rules apply to the resolving commands.
+            if (p_Object is ResourceEntry s_Resource) throw new InvalidDataException();
+            if (p_Object is EbxEntry s_Ebx) throw new InvalidDataException();
+            if (p_Object is BundleChunkEntry s_Chunk) throw new InvalidDataException();
+            if (p_Object is CasChunkEntry s_CasChunk) throw new InvalidDataException();
             // File/memory-backed: size is the raw file size (stored as inline data)
             return p_Object.GetSize();
         }
@@ -100,11 +99,12 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 m_Header.ResourceEntries[s_ResourceIndex] = new CasBundle.Resource
                 {
                     Name = s_ResourceName,
-                    ResourceType = (int)s_ResourceObject.GetResourceType(),
                     Hash = GetCompressedHash(s_Readable),
-                    Meta = s_ResourceMetadata,
                     Size = s_CompressedSize,
                     OriginalSize = s_Readable.GetSize(),
+                    ResourceType = (int)s_ResourceObject.GetResourceType(),
+                    Meta = s_ResourceMetadata,
+                    ResourceIdInt = (long)s_ResourceObject.GetId().Id,
                     InlineData = GetInlineData(s_Readable)
                 };
 
@@ -124,11 +124,11 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 var s_ReadableSize = GetCompressedSize(s_Readable);
 
-                var s_RangeStart = (int)s_ChunkObject.GetRangeStart();
-                var s_RangeEnd = (int)s_ChunkObject.GetRangeEnd();
-                var s_LogicalOffset = (int)s_ChunkObject.GetLogicalOffset();
+                var s_RangeStart = s_ChunkObject.GetRangeStart();
+                var s_RangeEnd = s_ChunkObject.GetRangeEnd();
+                var s_LogicalOffset = s_ChunkObject.GetLogicalOffset();
+                var s_LogicalSize = s_ChunkObject.GetLogicalSize();
                 var s_ShouldWriteEntry = s_RangeStart != 0 || s_Readable is InlineReadable || GetInlineData(s_Readable) != null;
-
 
                 m_Header.ChunkEntries![s_ChunkIndex] = new CasBundle.Chunk
                 {
@@ -137,7 +137,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     Size = s_ReadableSize,
                     RangeStart = s_ShouldWriteEntry ? s_RangeStart : null,
                     RangeEnd = s_ShouldWriteEntry ? s_RangeEnd : null,
-                    LogicalOffset = s_ShouldWriteEntry ? s_LogicalOffset : null,
+                    LogicalOffset = s_LogicalOffset,
+                    LogicalSize = s_LogicalSize,
                     InlineData = GetInlineData(s_Readable)
                 };
 
@@ -187,9 +188,9 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 m_Header.EbxEntries[s_PartitionIndex] = new CasBundle.Ebx
                 {
                     Name = s_PartitionName,
+                    Hash = s_PartitionHash,
                     Size = s_PartitionSize,
                     OriginalSize = s_Readable.GetSize(),
-                    Hash = s_PartitionHash,
                     InlineData = GetInlineData(s_Readable)
                 };
 

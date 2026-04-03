@@ -10,11 +10,19 @@ namespace RimeLib.Content.Frostbite2013_2.Mounting
         protected Sha1 m_Hash;
         protected bool m_Compressed;
 
+        protected long m_CompressedSize;
+        protected Sha1? m_CompressedHash;
+
         public InlineReadable(byte[] p_Data, Sha1 p_Hash, bool p_Compressed)
         {
             m_Data = p_Data;
             m_Hash = p_Hash;
             m_Compressed = p_Compressed;
+
+            // TODO: Remove this hack once we have from scratch building working
+            m_CompressedSize = p_Data.Length;
+            m_CompressedHash = m_Hash;
+        }
 
         public RimeReader GetReader()
         {
@@ -30,6 +38,16 @@ namespace RimeLib.Content.Frostbite2013_2.Mounting
             }
 
             return s_Reader;
+        }
+
+        public long GetCompressedSize()
+        {
+            return m_CompressedSize;
+        }
+
+        public Sha1? GetCompressedHash()
+        {
+            return m_CompressedHash;
         }
 
         public byte[] GetCompressedData()

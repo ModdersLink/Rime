@@ -13,13 +13,28 @@ internal class CatalogReadable : IReadableObjectWithHash
 	protected Sha1 m_Hash;
 	protected bool m_Compressed;
 
-	public CatalogReadable(Catalog p_Catalog, Sha1 p_Hash, bool p_Compressed, IPatchableEntry? p_PatchedEntry = null)
+    protected long m_CompressedSize;
+    protected Sha1? m_CompressedHash;
+
+    public CatalogReadable(Catalog p_Catalog, Sha1 p_Hash, bool p_Compressed, IPatchableEntry? p_PatchedEntry = null)
 	{
 		m_Catalog = p_Catalog;
 		m_Hash = p_Hash;
 		m_Compressed = p_Compressed;
 		m_PatchEntry = p_PatchedEntry;
-	}
+
+        // TODO: Remove this hack once we have from scratch building working
+        if (m_Catalog.ContainsEntry(m_Hash))
+        {
+            m_CompressedSize = m_Catalog[m_Hash].FileSize;
+            m_CompressedHash = m_Hash;
+        }
+        else if (m_Catalog.AuthoritativeCatalog is not null && m_Catalog.AuthoritativeCatalog.ContainsEntry(m_Hash))
+        {
+            m_CompressedSize = m_Catalog.AuthoritativeCatalog[m_Hash].FileSize;
+            m_CompressedHash = m_Hash;
+        }
+    }
 
 	public RimeReader GetReader()
 	{
@@ -70,9 +85,19 @@ internal class CatalogReadable : IReadableObjectWithHash
 		}
 
 		return s_Reader;
-	}
+    }
 
-	public long GetSize()
+    public long GetCompressedSize()
+    {
+        return m_CompressedSize;
+    }
+
+    public Sha1? GetCompressedHash()
+    {
+        return m_CompressedHash;
+    }
+
+    public long GetSize()
 	{
 		if (!m_Compressed)
 			return m_Catalog[m_Hash].FileSize;
