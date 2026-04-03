@@ -76,7 +76,7 @@ public class HavokPhysicsData : IFbSerializable
         {
             // Go to the start of the Havok descriptor start
             p_Reader.Seek(ClassNamesSection.AbsoluteDataStart,  SeekOrigin.Begin);
-            var s_DescriptorReader = new LimitedRimeReader(p_Reader, ClassNamesSection.EndOffset - ClassNamesSection.AbsoluteDataStart);
+            var s_DescriptorReader = new LimitedRimeReader(p_Reader, ClassNamesSection.EndOffset);
 
             Descriptors = new List<hkDescriptor>();
 
@@ -203,12 +203,19 @@ public class HavokPhysicsData : IFbSerializable
         HavokInstance32 = new HavokInstance(p_Reader);
         p_Reader.Align(16);
         HavokInstance64 = new HavokInstance(p_Reader);
+        p_Reader.Align(16);
 
         var fixupSize32 = p_Reader.ReadInt32();
         var fixupSize64 = p_Reader.ReadInt32();
 
         SetOffsets(p_Reader, HavokInstance32, fixupSize32);
         SetOffsets(p_Reader, HavokInstance64, fixupSize64);
+
+        // 0x10 bytes remaining. Relocations for the HavokPhysicsData.
+        p_Reader.ReadInt32(); // 0x08. Offset of PartTranslationsOffset.
+        p_Reader.ReadInt32(); // 0x14. Offset of LocalAabbsOffset.
+        p_Reader.ReadInt32(); // 0x20. Offset of MaterialIndiciesOffset.
+        p_Reader.ReadInt32(); // 0x2C. Offset of MaterialFlagsAndIndicesSize.
     }
 
     private void SetOffsets(RimeReader p_Reader, HavokInstance p_Instance, int p_FixupSize)
@@ -219,10 +226,17 @@ public class HavokPhysicsData : IFbSerializable
         while (p_Reader.Position < endPos)
         {
             int offset = p_Reader.ReadInt32();
-            int objOffset = p_Reader.ReadInt32();
 
             if (offset != -1)
+            {
+                int objOffset = p_Reader.ReadInt32();
                 p_Instance.ArrayOffsets.Add(offset, objOffset);
+            }
+            else
+            {
+                p_Reader.Seek(-4, SeekOrigin.Current);
+                break;
+            }
         }
         
         endPos = p_Reader.Position + p_Instance.DataSection.LocalFixupsOffset - p_Instance.DataSection.GlobalFixupsOffset;
@@ -230,23 +244,24 @@ public class HavokPhysicsData : IFbSerializable
         while (p_Reader.Position < endPos)
         {
             int offset = p_Reader.ReadInt32();
-            p_Reader.ReadInt32();
-            int objOffset = p_Reader.ReadInt32();
 
             if (offset != -1)
+            {
+                p_Reader.ReadInt32();
+                int objOffset = p_Reader.ReadInt32();
                 p_Instance.ObjectOffsets.Add(offset, objOffset);
+            }
+            else
+            {
+                p_Reader.Seek(-4, SeekOrigin.Current);
+                break;
+            }
         }
 
-        if (p_Reader.Position < s_ExpectedEndPos)
+        if (p_Reader.Position != s_ExpectedEndPos)
         {
-            p_Reader.ReadBytes((int)(s_ExpectedEndPos - p_Reader.Position));
+            p_Reader.Seek((int)(s_ExpectedEndPos - p_Reader.Position), SeekOrigin.Current);
         }
-
-        // 0x10 bytes remaining. Relocations for the HavokPhysicsData.
-        p_Reader.ReadInt32(); // 0x08. Offset of PartTranslationsOffset.
-        p_Reader.ReadInt32(); // 0x14. Offset of LocalAabbsOffset.
-        p_Reader.ReadInt32(); // 0x20. Offset of MaterialIndiciesOffset.
-        p_Reader.ReadInt32(); // 0x2C. Offset of MaterialFlagsAndIndicesSize.
     }
 
 
