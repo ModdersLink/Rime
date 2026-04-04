@@ -107,11 +107,6 @@ public class HavokPhysicsData : IFbSerializable
             }
         }
 
-        internal void DeserializeOffsets(RimeReader p_Reader)
-        {
-        }
-
-
         public void Deserialize(byte[] p_Data)
         {
             using var s_Reader = new RimeReader(new MemoryStream(p_Data));
@@ -264,6 +259,28 @@ public class HavokPhysicsData : IFbSerializable
         }
     }
 
+    public List<hkpTransform> GetTransforms()
+    {
+        var s_Transforms = new List<hkpTransform>();
+
+        for (var i = 0; i < HavokInstance32.DescriptorInfos.Count; i++)
+        {
+            var s_DescriptorInfo = HavokInstance32.DescriptorInfos[i];
+            var s_Descriptor = HavokInstance32.Descriptors.FirstOrDefault(d => d.Key == s_DescriptorInfo.Key);
+
+            if (s_Descriptor == null)
+                continue;
+
+            if (s_Descriptor.Name == "hkpExtendedMeshShape")
+            {
+                HavokInstance32.Reader.Seek(HavokInstance32.DataSection.AbsoluteDataStart + s_DescriptorInfo.Offset, SeekOrigin.Begin);
+                var s_ExtendedMeshShape = new hkpExtendedMeshShape(HavokInstance32.Reader);
+                s_Transforms = s_ExtendedMeshShape.Transforms;
+            }
+        }
+
+        return s_Transforms;
+    }
 
     public bool Serialize(RimeWriter p_Writer)
     {
