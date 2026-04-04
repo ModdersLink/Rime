@@ -41,6 +41,18 @@ public class LevelMeshConverter
         HandlePrefabBlueprint(p_Blueprint, p_TransformBase);
     }
 
+    private static LinearTransform ToLinearTransform(Vector4 p_Rotation, Vector3 p_Translation)
+    {
+        var s_Matrix = Matrix4x4.CreateFromQuaternion(new Quaternion(p_Rotation.X, p_Rotation.Y, p_Rotation.Z, p_Rotation.W));
+        return new LinearTransform
+        {
+            right = new Vec3 { x = s_Matrix.M11, y = s_Matrix.M12, z = s_Matrix.M13 },
+            up = new Vec3 { x = s_Matrix.M21, y = s_Matrix.M22, z = s_Matrix.M23 },
+            forward = new Vec3 { x = s_Matrix.M31, y = s_Matrix.M32, z = s_Matrix.M33 },
+            trans = new Vec3 { x = p_Translation.X, y = p_Translation.Y, z = p_Translation.Z }
+        };
+    }
+
     private static LinearTransform LinearTransform_Mul(LinearTransform a, LinearTransform b)
     {
         return new LinearTransform
@@ -392,26 +404,54 @@ public class LevelMeshConverter
         var s_Data = s_ResourceReader.ReadBytes((int)s_ResourceReader.Length);
 
         var s_HavokPhysicsData = new HavokPhysicsData(new RimeReader(new MemoryStream(s_Data)));
-
-        //File.WriteAllBytes("physics.bin", s_ResourceReader.ReadBytes((int)s_ResourceReader.Length));
+        var s_Transforms = s_HavokPhysicsData.GetTransforms();
+        var s_TransformIndex = 0;
 
         foreach (var s_MemberData in p_Data.MemberDatas)
         {
+            if (s_MemberData.InstanceCount == 0)
+                continue;
+
             var s_MeshEntityType = s_MemberData.MeshEntityType.Get();
             var s_MemberType = s_MemberData.MemberType.Get();
+            string s_MeshName = string.Empty;
 
             switch (s_MemberType)
             {
-                case StaticModelEntityData s_MeshAsset:
+                case StaticModelEntityData s_StaticModelEntityData:
+                    s_MeshName = s_StaticModelEntityData.Mesh.Get()?.Name ?? s_MeshName;
                     break;
             }
 
             switch (s_MeshEntityType)
             {
                 case CompositeMeshEntityData s_CompositeMeshEntityData:
+                    s_MeshName = s_CompositeMeshEntityData.Mesh.Get()?.Name ?? s_MeshName;
                     break;
                 case RigidMeshEntityData s_RigidMeshEntityData:
+                    s_MeshName = s_RigidMeshEntityData.Mesh.Get()?.Name ?? s_MeshName;
                     break;
+            }
+            
+            m_MeshLocations.TryGetValue(s_MeshName, out var s_Locations);
+            if (s_Locations == null) {
+                s_Locations = new List<LinearTransform>();
+                m_MeshLocations.Add(s_MeshName, s_Locations);
+            }
+
+            for (var s_Index = 0; s_Index < s_MemberData.InstanceCount; s_Index++)
+            {
+                if (s_MemberData.InstanceTransforms.Count > s_Index)
+                {
+                    s_Locations.Add(s_MemberData.InstanceTransforms[s_Index]);
+                }
+                else
+                {
+                    var s_hkpTransform = s_Transforms[s_TransformIndex];
+                    var s_Transform = ToLinearTransform(s_hkpTransform.Rotation, s_hkpTransform.Position);
+                    s_Locations.Add(s_Transform);
+                    s_TransformIndex++;
+                }
             }
         }
     }
