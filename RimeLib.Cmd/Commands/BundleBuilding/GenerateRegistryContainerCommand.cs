@@ -5,8 +5,6 @@ using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization;
 using System;
-using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 
@@ -49,60 +47,153 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                             var s_BlueprintRef = new CtrRef<DataContainer>(s_Partition.PartitionGuid, ((DataContainerId.Guid)s_Blueprint.InstanceId).Id);
                             if (!s_Registry.BlueprintRegistry.Any(x => x.InstanceId == s_BlueprintRef.InstanceId))
                                 s_Registry.BlueprintRegistry.Add(s_BlueprintRef);
-
-                            // EntityRegistry
-                            if (s_DataContainer is ObjectBlueprint s_ObjectBlueprint)
-                            {
-                                var s_EntityRef = new CtrRef<DataContainer>(s_ObjectBlueprint.Object.PartitionGuid, ((DataContainerId.Guid)s_ObjectBlueprint.Object.InstanceId).Id);
-                                if (!s_Registry.EntityRegistry.Any(x => x.InstanceId == s_EntityRef.InstanceId))
-                                    s_Registry.EntityRegistry.Add(s_EntityRef);
-                            }
                         }
 
-                        // EntityRegistry special
-                        if (s_DataContainer is PickupEntityAsset s_PickupEntityAsset)
+                        // EntityRegistry
+                        if (s_DataContainer is BangerEntityData ||
+                            s_DataContainer is CapturePointEntityData ||
+                            s_DataContainer is CombatAreaTriggerEntityData ||
+                            s_DataContainer is ControllableEntityData ||
+                            (s_DataContainer is DebrisClusterData s_DebrisClusterData && s_DebrisClusterData.ClientSideOnly == false) ||
+                            s_DataContainer is GameInteractionEntityData ||
+                            s_DataContainer is MapMarkerEntityData ||
+                            s_DataContainer is PickupEntityData ||
+                            s_DataContainer is PreRoundEntityData ||
+                            (s_DataContainer is ProjectileEntityData && s_DataContainer is not BulletEntityData) ||
+                            s_DataContainer is RoundOverEntityData ||
+                            s_DataContainer is SyncedBoolEntityData ||
+                            s_DataContainer is SyncedSequenceEntityData ||
+                            s_DataContainer is TicketCounterEntityData ||
+                            s_DataContainer is VegetationBaseEntityData ||
+                            s_DataContainer is VehicleProjectileEntityData ||
+                            s_DataContainer is WeaponEntityData)
                         {
-                            var s_PickupEntityRef = new CtrRef<DataContainer>(s_PickupEntityAsset.Data.PartitionGuid, ((DataContainerId.Guid)s_PickupEntityAsset.Data.InstanceId).Id);
-                            if (!s_Registry.EntityRegistry.Any(x => x.InstanceId == s_PickupEntityRef.InstanceId))
-                                s_Registry.EntityRegistry.Add(s_PickupEntityRef);
-                        }
-
-                        // EntityRegistry special
-                        if (s_DataContainer is VehicleProjectileEntityData)
-                        {
-                            var s_Ref = new CtrRef<DataContainer>(s_Partition.PartitionGuid, ((DataContainerId.Guid)s_DataContainer.InstanceId).Id);
-                            if (!s_Registry.EntityRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
-                                s_Registry.EntityRegistry.Add(s_Ref);
+                            var s_CtrRef = new CtrRef<DataContainer>(s_Partition.PartitionGuid, ((DataContainerId.Guid)s_DataContainer.InstanceId).Id);
+                            if (!s_Registry.EntityRegistry.Any(x => x.InstanceId == s_CtrRef.InstanceId))
+                                s_Registry.EntityRegistry.Add(s_CtrRef);
                         }
 
                         // AssetRegistry
-                        if (s_DataContainer is UnlockAssetBase || s_DataContainer is CharacterCustomizationAsset || s_DataContainer is ObjectVariation)
+                        if (s_DataContainer is UnlockAssetBase || s_DataContainer is CharacterCustomizationAsset)
                         {
                             var s_Ref = new CtrRef<DataContainer>(s_Partition.PartitionGuid, ((DataContainerId.Guid)s_DataContainer.InstanceId).Id);
                             if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
                                 s_Registry.AssetRegistry.Add(s_Ref);
                         }
 
-                        // TODO: figure out how to exclude 1p meshes
-                        //if (s_DataContainer is SkinnedMeshAsset s_SkinnedMeshAsset)
-                        //{
-                        //    if (s_BundleContext.GetResources().ContainsKey(s_SkinnedMeshAsset.Name.ToLowerInvariant()))
-                        //    {
-                        //        var s_Ref = new CtrRef<DataContainer>(s_Partition.PartitionGuid, ((DataContainerId.Guid)s_DataContainer.InstanceId).Id);
-                        //        if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
-                        //            s_Registry.AssetRegistry.Add(s_Ref);
-                        //    }
-                        //}
+                        // AssetRegistry
+                        if (s_DataContainer is UnlockAsset s_Unlock)
+                        {
+                            foreach (var s_AssetRef in s_Unlock.LinkedTo)
+                            {
+                                var s_Asset = s_AssetRef.Get();
+                                if (s_Asset == null)
+                                    continue;
 
-                        // ReferenceObjectRegistry
+                                if (s_Asset is ObjectVariation || s_Asset is SkinnedMeshAsset)
+                                {
+                                    var s_Ref = new CtrRef<DataContainer>(s_AssetRef.PartitionGuid, ((DataContainerId.Guid)s_AssetRef.InstanceId).Id);
+                                    if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
+                                        s_Registry.AssetRegistry.Add(s_Ref);
+                                }
+
+                                if (s_Asset is BlueprintAndVariationPair s_Pair)
+                                {
+                                    if (s_Pair.Variation.Get() != null)
+                                    {
+                                        var s_Ref = new CtrRef<DataContainer>(s_Pair.Variation.PartitionGuid, ((DataContainerId.Guid)s_Pair.Variation.InstanceId).Id);
+                                        if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
+                                            s_Registry.AssetRegistry.Add(s_Ref);
+                                    }
+                                    if (s_Pair.BaseAsset.Get() != null && s_Pair.BaseAsset.Get() is SkinnedMeshAsset)
+                                    {
+                                        var s_Ref = new CtrRef<DataContainer>(s_Pair.BaseAsset.PartitionGuid, ((DataContainerId.Guid)s_Pair.BaseAsset.InstanceId).Id);
+                                        if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
+                                            s_Registry.AssetRegistry.Add(s_Ref);
+                                    }
+                                }
+                            }
+                        }
+
+                        // AssetRegistry
+                        if (s_DataContainer is CustomizeSoldierData s_CustomizeSoldierData)
+                        {
+                            foreach (var s_Visual in s_CustomizeSoldierData.VisualGroups)
+                            {
+                                foreach (var s_UnlockRef in s_Visual.Visual)
+                                {
+                                    var s_VisualUnlock = s_UnlockRef.Get();
+
+                                    if (s_VisualUnlock == null)
+                                        continue;
+
+                                    foreach (var s_AssetRef in s_VisualUnlock.LinkedTo)
+                                    {
+                                        var s_Asset = s_AssetRef.Get();
+                                        if (s_Asset == null)
+                                            continue;
+
+                                        if (s_Asset is ObjectVariation || s_Asset is SkinnedMeshAsset)
+                                        {
+                                            var s_Ref = new CtrRef<DataContainer>(s_AssetRef.PartitionGuid, ((DataContainerId.Guid)s_AssetRef.InstanceId).Id);
+                                            if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
+                                                s_Registry.AssetRegistry.Add(s_Ref);
+                                        }
+
+                                        if (s_Asset is BlueprintAndVariationPair s_Pair)
+                                        {
+                                            if (s_Pair.Variation.Get() != null)
+                                            {
+                                                var s_Ref = new CtrRef<DataContainer>(s_Pair.Variation.PartitionGuid, ((DataContainerId.Guid)s_Pair.Variation.InstanceId).Id);
+                                                if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
+                                                    s_Registry.AssetRegistry.Add(s_Ref);
+                                            }
+                                            if (s_Pair.BaseAsset.Get() != null && s_Pair.BaseAsset.Get() is SkinnedMeshAsset)
+                                            {
+                                                var s_Ref = new CtrRef<DataContainer>(s_Pair.BaseAsset.PartitionGuid, ((DataContainerId.Guid)s_Pair.BaseAsset.InstanceId).Id);
+                                                if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
+                                                    s_Registry.AssetRegistry.Add(s_Ref);
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
                         if (s_DataContainer is ReferenceObjectData s_RefObject)
                         {
                             var s_BlueprintObj = s_RefObject.Blueprint.Get();
-                            if (s_BlueprintObj != null && s_BlueprintObj.NeedNetworkId)
+                            if ((s_BlueprintObj == null && s_RefObject.TypeName != "ReferenceObjectData") || (s_BlueprintObj != null && s_BlueprintObj.NeedNetworkId && s_BlueprintObj is not LevelData))
                             {
+                                // ReferenceObjectRegistry
                                 var s_Ref = new CtrRef<DataContainer>(s_Partition.PartitionGuid, ((DataContainerId.Guid)s_RefObject.InstanceId).Id);
                                 if (!s_Registry.ReferenceObjectRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
                                     s_Registry.ReferenceObjectRegistry.Add(s_Ref);
+                            }
+
+                            if (s_RefObject.ObjectVariation.Get() != null)
+                            {
+                                // AssetRegistry
+                                var s_Ref = new CtrRef<DataContainer>(s_RefObject.ObjectVariation.PartitionGuid, ((DataContainerId.Guid)s_RefObject.ObjectVariation.InstanceId).Id);
+                                if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
+                                    s_Registry.AssetRegistry.Add(s_Ref);
+                            }
+                        }
+
+                        // AssetRegistry
+                        if (s_DataContainer is ObjectVariationSwitchEntityData s_ObjectVariationSwitchEntityData)
+                        {
+                            if (s_ObjectVariationSwitchEntityData.Variation1.Get() != null)
+                            {
+                                var s_Ref = new CtrRef<DataContainer>(s_ObjectVariationSwitchEntityData.Variation1.PartitionGuid, ((DataContainerId.Guid)s_ObjectVariationSwitchEntityData.Variation1.InstanceId).Id);
+                                if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
+                                    s_Registry.AssetRegistry.Add(s_Ref);
+                            }
+                            if (s_ObjectVariationSwitchEntityData.Variation2.Get() != null)
+                            {
+                                var s_Ref = new CtrRef<DataContainer>(s_ObjectVariationSwitchEntityData.Variation2.PartitionGuid, ((DataContainerId.Guid)s_ObjectVariationSwitchEntityData.Variation2.InstanceId).Id);
+                                if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
+                                    s_Registry.AssetRegistry.Add(s_Ref);
                             }
                         }
                     }
@@ -114,6 +205,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             }
 
             s_BundleContext.SetGeneratedRegistry(s_Registry);
+
+            // NOTE: AssetRegistry and EntityRegistry seem to be perfect now.
+            // The BlueprintRegistry and ReferenceObjectRegistry are not always matching the original ones, but they probably don't have to.
+            // It is very close if you ignore all the WorldPartReferenceObjectDatas and WorldPartDatas.
 
             p_Writer.WriteLine($"RegistryContainer successfully generated and stored in context.");
             p_Writer.WriteLine($"- Entities: {s_Registry.EntityRegistry.Count}");

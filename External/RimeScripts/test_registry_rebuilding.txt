@@ -1,0 +1,48 @@
+mount_game "D:/Games/Battlefield 3" Frostbite2_0 true
+build_sb Win32/TestSB Frostbite2_0 "TestSB" true
+build_bundle Win32/testbundle
+add_existing_partition levels/mp_subway/conquest_small 1
+add_existing_partition levels/mp_subway/conquest_small/meshvariationdb_win32 1
+resolve_partition_dependencies
+generate_registry_container
+compare_registry_containers levels/mp_subway/conquest_small
+
+exit
+exit
+build_sb Win32/TestSB Frostbite2_0 "TestSB" true
+build_bundle Win32/testbundle
+add_existing_partition levels/mp_subway/teams_small 1
+add_existing_partition levels/mp_subway/teams_small/meshvariationdb_win32 1
+resolve_partition_dependencies
+generate_registry_container
+compare_registry_containers levels/mp_subway/teams_small
+
+exit
+exit
+build_sb Win32/TestSB Frostbite2_0 "TestSB" true
+build_bundle Win32/testbundle
+add_existing_partition levels/mp_subway/mp_subway 1
+add_existing_partition levels/mp_subway/mp_subway/meshvariationdb_win32 1
+resolve_partition_dependencies
+generate_registry_container
+compare_registry_containers levels/mp_subway/mp_subway
+
+exit
+exit
+build_sb Win32/TestSB Frostbite2_0 "TestSB" true
+build_bundle Win32/testbundle
+add_existing_partition levels/mp_001/mp_001 1
+add_existing_partition levels/mp_001/mp_001/meshvariationdb_win32 1
+resolve_partition_dependencies
+generate_registry_container
+compare_registry_containers levels/mp_001/mp_001
+
+exit
+exit
+build_sb Win32/TestSB Frostbite2_0 "TestSB" false
+build_bundle Win32/testbundle
+add_existing_partition levels/xp1_001/xp1_001 1
+add_existing_partition levels/xp1_001/xp1_001/meshvariationdb_win32 1
+resolve_partition_dependencies
+generate_registry_container
+compare_registry_containers levels/xp1_001/xp1_001
