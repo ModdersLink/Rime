@@ -57,7 +57,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             if (!s_EngineMounter.TryGetPartition(Name!, out var s_Partition))
             {
-                p_Writer.WriteLine($"Could not find chunk ({Name}).");
+                p_Writer.WriteLine($"Could not find partition ({Name}).");
                 return false;
             }
 
