@@ -1,0 +1,104 @@
+//------------------------------------------------
+//--- 010 Editor v16.0.4 Binary Template
+//
+//      File: 
+//   Authors: 
+//   Version: 
+//   Purpose: 
+//  Category: 
+// File Mask: 
+//  ID Bytes: 
+//   History: 
+//------------------------------------------------
+uint align(uint bytes)
+{
+    local uint alignment = FTell();
+    local uint i = 0;
+    while (alignment % bytes != 0)
+    {
+        FSkip(1);
+        i = i + 1;
+        alignment = FTell();
+    }
+    return i;
+}
+
+typedef struct { 
+    string _; 
+} String <read=(this._)>;
+
+struct StreamingPartitionHeader
+{
+    uint Magic;
+    uint MetaSize;
+    uint PayloadSize;
+    uint ImportCount;
+    ushort RangeCount;
+    ushort ExportedRangeCount;
+    ushort TypeCount;
+    ushort TypeDescriptorCount;
+    ushort FieldDescriptorCount;
+    ushort TypeStringTableSize;
+    uint StringTableSize;
+    uint ArrayCount;
+    uint ArrayOffset;
+    GUID PartitionGuid;
+};
+
+struct ImportEntry
+{
+    GUID PartitionGuid;
+    GUID InstanceGuid;    
+};
+
+struct TypeStringTable
+{
+    local uint64 endPos = FTell() + Header.TypeStringTableSize;
+    while (FTell() != endPos)
+        String _;
+};
+
+struct FieldDescriptor
+{
+    uint NameHash;
+    ushort Flags; // MemberInfoFlags
+    ushort FieldType;
+    int Offset;
+    int SecondaryOffset;
+};
+
+struct TypeDescriptor
+{
+    uint NameHash;
+    uint LayoutDescriptor;
+    byte FieldCount;
+    byte Alignment;
+    ushort Flags; // MemberInfoFlags
+    ushort Size;
+    ushort SecondarySize;
+};
+
+struct InstanceEntry
+{
+    ushort TypeDescriptorIndex;
+    ushort ExportCount;
+};
+
+struct ArrayEntry
+{
+    uint Offset;
+    uint ElementCount;
+    uint TypeDescriptorIndex;
+};
+
+StreamingPartitionHeader Header;
+align(16);
+ImportEntry ImportEntries[Header.ImportCount];
+TypeStringTable TypeString;
+FieldDescriptor FieldDescriptors[Header.FieldDescriptorCount];
+TypeDescriptor TypeDescriptors[Header.TypeDescriptorCount];
+InstanceEntry InstanceEntries[Header.RangeCount];
+align(16);
+ArrayEntry ArrayEntries[Header.ArrayCount];
+
+// TODO: add reading payload
