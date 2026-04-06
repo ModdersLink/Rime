@@ -339,5 +339,227 @@ namespace RimeLib.Texture.DDS
                 return (byte)Color;
             }
         }
+
+        /// <summary>
+        /// Decodes BC5 (DXN/ATI2) compressed texture data to BGRA8888 format.
+        /// BC5 is a 2-channel format commonly used for normal maps.
+        /// </summary>
+        public static byte[] DecodeBC5Texture(int width, int height, byte[] sourceData, bool bigEndian)
+        {
+            byte[] destData = new byte[width * height * 4];
+            int blockWidth = (width + 3) / 4;
+            int blockHeight = (height + 3) / 4;
+
+            for (int blockY = 0; blockY < blockHeight; blockY++)
+            {
+                for (int blockX = 0; blockX < blockWidth; blockX++)
+                {
+                    int blockIndex = (blockY * blockWidth + blockX) * 16;
+                    if (blockIndex + 16 <= sourceData.Length)
+                    {
+                        DecodeBC5Block(sourceData, blockIndex, destData, blockX * 4, blockY * 4, width, height);
+                    }
+                }
+            }
+
+            return destData;
+        }
+
+        private static void DecodeBC5Block(byte[] sourceData, int blockOffset, byte[] destData, int blockX, int blockY, int width, int height)
+        {
+            // Red channel: bytes 0-7
+            byte[] redPalette = new byte[8];
+            byte red0 = sourceData[blockOffset];
+            byte red1 = sourceData[blockOffset + 1];
+            GenerateBC5Palette(red0, red1, redPalette);
+
+            // Green channel: bytes 8-15
+            byte[] greenPalette = new byte[8];
+            byte green0 = sourceData[blockOffset + 8];
+            byte green1 = sourceData[blockOffset + 9];
+            GenerateBC5Palette(green0, green1, greenPalette);
+
+            // Decode 3-bit indices for red channel (6 bytes = 48 bits for 16 3-bit indices)
+            byte[] redIndices = DecodeBC5Indices(sourceData, blockOffset + 2);
+            // Decode 3-bit indices for green channel
+            byte[] greenIndices = DecodeBC5Indices(sourceData, blockOffset + 10);
+
+            // Map indices to pixels
+            for (int i = 0; i < 16; i++)
+            {
+                int pixelX = blockX + (i % 4);
+                int pixelY = blockY + (i / 4);
+
+                if (pixelX >= width || pixelY >= height)
+                    continue;
+
+                int destOffset = (pixelY * width + pixelX) * 4;
+                
+                // BC5 format stores Red in the first channel and Green in the second
+                // For normal maps, this represents X (red) and Y (green) components
+                byte redValue = redPalette[redIndices[i]];
+                byte greenValue = greenPalette[greenIndices[i]];
+
+                destData[destOffset] = redValue;      // B
+                destData[destOffset + 1] = greenValue; // G
+                destData[destOffset + 2] = redValue;  // R
+                destData[destOffset + 3] = 255;       // A
+            }
+        }
+
+        private static void GenerateBC5Palette(byte endpoint0, byte endpoint1, byte[] palette)
+        {
+            palette[0] = endpoint0;
+            palette[1] = endpoint1;
+
+            if (endpoint0 > endpoint1)
+            {
+                palette[2] = (byte)((6 * endpoint0 + 1 * endpoint1 + 3) / 7);
+                palette[3] = (byte)((5 * endpoint0 + 2 * endpoint1 + 3) / 7);
+                palette[4] = (byte)((4 * endpoint0 + 3 * endpoint1 + 3) / 7);
+                palette[5] = (byte)((3 * endpoint0 + 4 * endpoint1 + 3) / 7);
+                palette[6] = (byte)((2 * endpoint0 + 5 * endpoint1 + 3) / 7);
+                palette[7] = (byte)((1 * endpoint0 + 6 * endpoint1 + 3) / 7);
+            }
+            else
+            {
+                palette[2] = (byte)((4 * endpoint0 + 1 * endpoint1 + 2) / 5);
+                palette[3] = (byte)((3 * endpoint0 + 2 * endpoint1 + 2) / 5);
+                palette[4] = (byte)((2 * endpoint0 + 3 * endpoint1 + 2) / 5);
+                palette[5] = (byte)((1 * endpoint0 + 4 * endpoint1 + 2) / 5);
+                palette[6] = 0;
+                palette[7] = 255;
+            }
+        }
+
+        private static byte[] DecodeBC5Indices(byte[] sourceData, int offset)
+        {
+            byte[] indices = new byte[16];
+            
+            // BC5 uses 3-bit indices for each pixel (16 pixels = 48 bits = 6 bytes)
+            // The bits are stored in little-endian order
+            ulong indexBlock = 0;
+            for (int i = 0; i < 6; i++)
+            {
+                indexBlock |= ((ulong)sourceData[offset + i]) << (i * 8);
+            }
+
+            // Extract 3-bit index for each of 16 pixels
+            for (int i = 0; i < 16; i++)
+            {
+                indices[i] = (byte)((indexBlock >> (i * 3)) & 0x7);
+            }
+
+            return indices;
+        }
+
+        public static byte[] DecodeARGB8888(int width, int height, byte[] sourceData)
+        {
+            byte[] dest = new byte[width * height * 4];
+            for (int i = 0; i < sourceData.Length && i + 3 < dest.Length; i += 4)
+            {
+                dest[i] = sourceData[i + 3];     // B
+                dest[i + 1] = sourceData[i + 2]; // G
+                dest[i + 2] = sourceData[i + 1]; // R
+                dest[i + 3] = sourceData[i];     // A
+            }
+            return dest;
+        }
+
+        public static byte[] DecodeL8(int width, int height, byte[] sourceData)
+        {
+            byte[] dest = new byte[width * height * 4];
+            for (int i = 0; i < sourceData.Length; i++)
+            {
+                int destIdx = i * 4;
+                if (destIdx + 3 < dest.Length)
+                {
+                    dest[destIdx] = sourceData[i];     // B (grayscale value)
+                    dest[destIdx + 1] = sourceData[i]; // G (grayscale value)
+                    dest[destIdx + 2] = sourceData[i]; // R (grayscale value)
+                    dest[destIdx + 3] = 255;           // A (fully opaque)
+                }
+            }
+            return dest;
+        }
+
+        public static byte[] DecodeBC4(int width, int height, byte[] sourceData)
+        {
+            byte[] dest = new byte[width * height * 4];
+            int destIdx = 0;
+
+            for (int y = 0; y < height; y += 4)
+            {
+                for (int x = 0; x < width; x += 4)
+                {
+                    if (destIdx >= sourceData.Length - 7)
+                        break;
+
+                    // BC4 block is 8 bytes
+                    byte red0 = sourceData[destIdx];
+                    byte red1 = sourceData[destIdx + 1];
+                    ulong indices = System.BitConverter.ToUInt64(sourceData, destIdx + 2);
+
+                    // Decode the 4x4 block
+                    for (int by = 0; by < 4; by++)
+                    {
+                        for (int bx = 0; bx < 4; bx++)
+                        {
+                            int px = x + bx;
+                            int py = y + by;
+
+                            if (px >= width || py >= height)
+                                continue;
+
+                            int idx = by * 4 + bx;
+                            int bitIdx = idx * 3;
+                            byte palette = (byte)((indices >> bitIdx) & 0x7);
+
+                            byte red = palette == 0 ? red0 : (palette == 1 ? red1 : InterpolateBC4(red0, red1, palette));
+
+                            int pixelOffset = (py * width + px) * 4;
+                            dest[pixelOffset] = red;       // B
+                            dest[pixelOffset + 1] = red;   // G
+                            dest[pixelOffset + 2] = red;   // R
+                            dest[pixelOffset + 3] = 255;   // A (fully opaque)
+                        }
+                    }
+
+                    destIdx += 8;
+                }
+            }
+
+            return dest;
+        }
+
+        private static byte InterpolateBC4(byte red0, byte red1, byte palette)
+        {
+            if (red0 > red1)
+            {
+                return palette switch
+                {
+                    2 => (byte)((6 * red0 + 1 * red1) / 7),
+                    3 => (byte)((5 * red0 + 2 * red1) / 7),
+                    4 => (byte)((4 * red0 + 3 * red1) / 7),
+                    5 => (byte)((3 * red0 + 4 * red1) / 7),
+                    6 => (byte)((2 * red0 + 5 * red1) / 7),
+                    7 => (byte)((1 * red0 + 6 * red1) / 7),
+                    _ => 0
+                };
+            }
+            else
+            {
+                return palette switch
+                {
+                    2 => (byte)((4 * red0 + 1 * red1) / 5),
+                    3 => (byte)((3 * red0 + 2 * red1) / 5),
+                    4 => (byte)((2 * red0 + 3 * red1) / 5),
+                    5 => (byte)((1 * red0 + 4 * red1) / 5),
+                    6 => (byte)0,
+                    7 => (byte)255,
+                    _ => 0
+                };
+            }
+        }
     }
 }
