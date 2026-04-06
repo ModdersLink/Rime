@@ -8,7 +8,7 @@ using RimeLib.Extensions;
 using RimeLib.Frostbite;
 using RimeLib.IO;
 using RimeLib.Texture.DDS;
-using RimeLib.Texture.Frostbite2_0.Frostbite;
+using RimeLib.Texture.Frostbite2013_2.Frostbite;
 using RimeLib.Frostbite.Core;
 using SharpDX;
 using SharpDX.Direct3D;
@@ -17,13 +17,13 @@ using SharpDX.DXGI;
 using Device = SharpDX.Direct3D11.Device;
 using Resource = SharpDX.Direct3D11.Resource;
 
-namespace RimeLib.Texture.Frostbite2_0;
+namespace RimeLib.Texture.Frostbite2013_2;
 
 public class TextureConverter : ITextureConverter
 {
     public EngineType[] GetSupportedEngines()
     {
-        return new[] { EngineType.Frostbite2_0 };
+        return new[] { EngineType.Frostbite2013_2 };
     }
 
     public void ConvertToDDS(IResourceObject p_Resource, IEngineMounter p_Mounter, RimeWriter p_OutputWriter)
