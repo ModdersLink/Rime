@@ -14,11 +14,8 @@ public class HavokConverter : IHavokConverter
 
     public IEnumerable<hkpTransform> GetTransforms(IResourceObject p_Resource, IEngineMounter p_Mounter)
     {
-        // TODO: fix this ghetto workaround to read correctly. Seems to be ZlibRimeReader related. Errored when dumping levels/xp5_002/xp5_002 (BF3).
-        using var s_ResourceReader = p_Resource.GetReader();
-        var s_Data = s_ResourceReader.ReadBytes((int)s_ResourceReader.Length);
-
-        var s_HavokPhysicsData = new HavokPhysicsData(new RimeReader(new MemoryStream(s_Data)));
-        return s_HavokPhysicsData.GetTransforms();
+        using var s_Reader = p_Resource.GetReader();
+        var s_PhysicsData = new HavokPhysicsData(s_Reader);
+        return s_PhysicsData.GetTransforms();
     }
 }

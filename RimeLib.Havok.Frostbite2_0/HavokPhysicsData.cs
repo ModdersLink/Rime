@@ -2,6 +2,7 @@
 using fb;
 using RimeLib.Frostbite;
 using RimeLib.IO;
+using RimeLib.IO.Conversion;
 using RimeLib.Serialization.Frostbite2_0.Extensions;
 
 namespace RimeLib.Havok.Frostbite2_0;
@@ -139,6 +140,9 @@ public class HavokPhysicsData : IFbSerializable
 
     public void Deserialize(RimeReader p_Reader)
     {
+        var s_PrevEndianness = p_Reader.Endianness;
+        p_Reader.Endianness = Endianness.LittleEndian;
+
         PartCount = p_Reader.ReadUInt32();
 
         var s_PartTranslationsCount = p_Reader.ReadInt32();
@@ -211,6 +215,8 @@ public class HavokPhysicsData : IFbSerializable
         p_Reader.ReadInt32(); // 0x14. Offset of LocalAabbsOffset.
         p_Reader.ReadInt32(); // 0x20. Offset of MaterialIndiciesOffset.
         p_Reader.ReadInt32(); // 0x2C. Offset of MaterialFlagsAndIndicesSize.
+
+        p_Reader.Endianness = s_PrevEndianness;
     }
 
     private void SetOffsets(RimeReader p_Reader, HavokInstance p_Instance, int p_FixupSize)
