@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
+    <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
   </ItemGroup>
 
 </Project>

@@ -148,6 +148,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<AddDependencySuperbundleCommand>();
             RegisterCommand<ResolvePartitionDependenciesCommand>();
             RegisterCommand<ResolveResourceDependenciesCommand>();
+                RegisterCommand<ResolveShaderTexturesCommand>();
             RegisterCommand<RemoveDuplicateBundleItemsCommand>();
             RegisterCommand<ResolveMissingChunksCommand>();
             RegisterCommand<ExportBundleContentsCommand>();

@@ -17,6 +17,7 @@ public class ShaderDatabase
 {
     public ShaderRenderPath RenderPath { get; set; }
     public Dictionary<string, SurfaceShaderInfo> Shaders { get; set; } = new();
+    public ShaderConstant[] Constants { get; private set; } = [];
 
     public ShaderDatabase()
     {
@@ -34,7 +35,7 @@ public class ShaderDatabase
         //
 
         var s_ConstantsCount = p_Reader.ReadUInt32();
-        var s_Constants = new ShaderConstant[s_ConstantsCount];
+        Constants = new ShaderConstant[s_ConstantsCount];
 
         for (var i = 0; i < s_ConstantsCount; i++)
         {
@@ -44,7 +45,7 @@ public class ShaderDatabase
             var s_CurrentPosition = p_Reader.Position;
 
             using (var s_ConstantsReader = new LimitedRimeReader(p_Reader, s_Size))
-                s_Constants[i] = new ShaderConstant(s_ConstantsReader);
+                Constants[i] = new ShaderConstant(s_ConstantsReader);
 
             p_Reader.Seek(s_CurrentPosition + s_Size, SeekOrigin.Begin);
         }
@@ -74,7 +75,7 @@ public class ShaderDatabase
         {
             s_VertexShaderPermutations[i] = new VertexShaderPermutation(
                 p_Reader,
-                s_Constants,
+                Constants,
                 s_ConstantFunctions,
                 s_TextureFunctions
             );
@@ -89,7 +90,7 @@ public class ShaderDatabase
         {
             s_PixelShaderPermutations[i] = new PixelShaderPermutation(
                 p_Reader,
-                s_Constants,
+                Constants,
                 s_ConstantFunctions,
                 s_TextureFunctions
             );
@@ -116,7 +117,7 @@ public class ShaderDatabase
                 s_VertexShaderPermutations,
                 s_PixelShaderPermutations,
                 s_GeometryShaderPermutations,
-                s_Constants
+                Constants
             );
         }
 
