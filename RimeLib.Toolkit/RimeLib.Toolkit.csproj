@@ -15,6 +15,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
+      <ProjectReference Include="..\RimeLib.Havok\RimeLib.Havok.csproj" />
       <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
     </ItemGroup>
 

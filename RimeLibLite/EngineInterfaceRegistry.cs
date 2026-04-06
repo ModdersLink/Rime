@@ -31,6 +31,22 @@ public static class EngineInterfaceRegistry
         return (T) Activator.CreateInstance(s_InterfaceType);
     }
 
+    public static bool IsSupported<T>(EngineType p_Type) where T : IEngineInterface
+    {
+        if (!Registry.TryGetValue(typeof(T), out var s_Interfaces))
+        {
+            s_Interfaces = new Dictionary<EngineType, Type>();
+            Registry.Add(typeof(T), s_Interfaces);
+        }
+
+        if (!s_Interfaces.TryGetValue(p_Type, out _))
+        {
+            RefreshInterfaces<T>(p_Type);
+        }
+
+        return Registry[typeof(T)].ContainsKey(p_Type);
+    }
+
     private static Type? RefreshInterfaces<T>(EngineType p_Type) where T : IEngineInterface
     {
         var s_InterfaceTypes = AppDomain.CurrentDomain.GetAssemblies()

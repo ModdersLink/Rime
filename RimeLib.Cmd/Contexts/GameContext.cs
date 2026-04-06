@@ -59,13 +59,31 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpChunkCommand>();
             RegisterCommand<DumpResourceCommand>();
             RegisterCommand<DumpPartitionCommand>();
-            RegisterCommand<DumpPartitionJsonCommand>();
-            RegisterCommand<DumpMountedPartitionsJsonCommand>();
-            RegisterCommand<DumpTextureCommand>();
-            RegisterCommand<DumpMeshCommand>();
-            RegisterCommand<DumpLevelMeshesCommand>();
-            RegisterCommand<DumpMeshChunksCommand>();
-            RegisterCommand<DumpTextureChunkCommand>();
+            
+            var s_EngineType = m_Mounter.GetEngineType();
+
+            if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))
+            {
+                RegisterCommand<DumpPartitionJsonCommand>();
+                RegisterCommand<DumpMountedPartitionsJsonCommand>();
+            }
+
+            if (EngineInterfaceRegistry.IsSupported<ITextureConverter>(s_EngineType))
+            {
+                RegisterCommand<DumpTextureCommand>();
+                RegisterCommand<DumpTextureChunkCommand>();
+            }
+
+            if (EngineInterfaceRegistry.IsSupported<IMeshConverter>(s_EngineType))
+            {
+                RegisterCommand<DumpMeshCommand>();
+                RegisterCommand<DumpMeshChunksCommand>();
+
+                if (EngineInterfaceRegistry.IsSupported<IToolKit>(s_EngineType) && EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))
+                {
+                    RegisterCommand<DumpLevelMeshesCommand>();
+                }
+            }
         }
 
         public override string GetShortDescription()

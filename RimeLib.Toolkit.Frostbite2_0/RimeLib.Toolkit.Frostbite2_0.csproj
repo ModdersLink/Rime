@@ -10,7 +10,7 @@
     </PropertyGroup>
     
     <ItemGroup>
-      <ProjectReference Include="..\RimeLib.Havok.Frostbite2_0\RimeLib.Havok.Frostbite2_0.csproj" />
+      <ProjectReference Include="..\RimeLib.Havok\RimeLib.Havok.csproj" />
       <ProjectReference Include="..\RimeLib.Mesh\RimeLib.Mesh.csproj" />
       <ProjectReference Include="..\RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj" />
       <ProjectReference Include="..\RimeLib.Toolkit\RimeLib.Toolkit.csproj" />

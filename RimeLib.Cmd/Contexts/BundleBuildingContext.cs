@@ -11,6 +11,7 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using RimeLib.Serialization;
+using RimeLib.Shader;
 using RimeLib.Texture.Generation;
 using RimeLib.Utils;
 
@@ -138,17 +139,40 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<AddPartitionCommand>();
             RegisterCommand<AddExistingPartitionCommand>();
-            RegisterCommand<AddJsonPartitionCommand>();
+            
+            var s_EngineType = ((SbBuildingContext)p_Parent).EngineType;
+
+            if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType) && 
+                EngineInterfaceRegistry.IsSupported<IPartitionGenerator>(s_EngineType))
+            {
+                RegisterCommand<AddJsonPartitionCommand>();
+            }
+
             RegisterCommand<RemovePartitionCommand>();
             RegisterCommand<ListPartitionsCommand>();
-            RegisterCommand<AddDdsTextureCommand>();
+
+            if (EngineInterfaceRegistry.IsSupported<ITextureGenerator>(s_EngineType))
+            {
+                RegisterCommand<AddDdsTextureCommand>();
+            }
+
             RegisterCommand<BuildCommand>();
             RegisterCommand<CloneBundleCommand>();
             RegisterCommand<AddDependencyBundleCommand>();
             RegisterCommand<AddDependencySuperbundleCommand>();
-            RegisterCommand<ResolvePartitionDependenciesCommand>();
+
+            if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))
+            {
+                RegisterCommand<ResolvePartitionDependenciesCommand>();
+            }
+
             RegisterCommand<ResolveResourceDependenciesCommand>();
+
+            if (EngineInterfaceRegistry.IsSupported<IShaderResolver>(s_EngineType))
+            {
                 RegisterCommand<ResolveShaderTexturesCommand>();
+            }
+
             RegisterCommand<RemoveDuplicateBundleItemsCommand>();
             RegisterCommand<ResolveMissingChunksCommand>();
             RegisterCommand<ExportBundleContentsCommand>();

@@ -1,8 +1,7 @@
 using System.Numerics;
 using fb;
 using RimeLib.Content.Mounting;
-using RimeLib.Havok.Frostbite2_0;
-using RimeLib.IO;
+using RimeLib.Havok;
 using RimeLib.Math;
 using RimeLib.Mesh;
 using RimeLib.Serialization;
@@ -400,11 +399,8 @@ public class LevelMeshConverter
             return;
         }
 
-        using var s_ResourceReader = s_Resource.FirstVariant.GetReader();
-        var s_Data = s_ResourceReader.ReadBytes((int)s_ResourceReader.Length);
-
-        var s_HavokPhysicsData = new HavokPhysicsData(new RimeReader(new MemoryStream(s_Data)));
-        var s_Transforms = s_HavokPhysicsData.GetTransforms();
+        var s_HavokConverter = EngineInterfaceRegistry.Create<IHavokConverter>(m_Mounter.GetEngineType());
+        var s_Transforms = s_HavokConverter.GetTransforms(s_Resource.FirstVariant, m_Mounter).ToList();
         var s_TransformIndex = 0;
 
         foreach (var s_MemberData in p_Data.MemberDatas)
