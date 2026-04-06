@@ -100,8 +100,8 @@ public class EbxReader : IDisposable
             m_TypeDescriptors.Add(new TypeDescriptor(m_Reader, m_HashedTypeStrings));
 
         // Parse instances.
-        m_InstanceEntries = new List<InstanceEntry>((int)m_Header.TypeCount);
-        for (var i = 0; i < m_Header.TypeCount; ++i)
+        m_InstanceEntries = new List<InstanceEntry>((int)m_Header.RangeCount);
+        for (var i = 0; i < m_Header.RangeCount; ++i)
             m_InstanceEntries.Add(new InstanceEntry(m_Reader));
 
         ProcessPadding();
