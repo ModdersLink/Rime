@@ -1,6 +1,8 @@
 ﻿using fb;
+using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
+using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.Math;
 using RimeLib.Mesh.Frostbite;
@@ -10,13 +12,34 @@ using SharpGLTF.Materials;
 using SharpGLTF.Scenes;
 using SharpGLTF.Schema2;
 using SharpGLTF.Transforms;
-using System.Numerics;
 using System.Runtime.InteropServices;
 
 namespace RimeLib.Mesh.Frostbite2013_2
 {
     public class MeshConverter : IMeshConverter
     {
+        public Dictionary<string, GUID> GetChunkGuids(IResourceObject p_Resource)
+        {
+            if (p_Resource.GetResourceType() != ResourceType.MeshSet)
+                throw new ArgumentException($"This converter only supports MeshSet resources but got a {p_Resource.GetResourceType()} resource.");
+
+            Dictionary<string, GUID> keyValues = [];
+
+            using var s_ResourceReader = p_Resource.GetReader();
+            var s_Layout = new MeshSetLayout(s_ResourceReader);
+
+            for (var i = 0; i < s_Layout.Lods.Length; i++)
+            {
+                var s_Lod = s_Layout.Lods[i].Object;
+                if (s_Lod is null)
+                    continue;
+
+                keyValues.Add(s_Lod.Name.Object ?? $"{s_Lod.DataChunkId.ToString("D")}", s_Lod.DataChunkId);
+            }
+
+            return keyValues;
+        }
+
         private ModelRoot CreateModel(IResourceObject p_Resource, IEngineMounter p_Mounter)
         {
             // We will convert the model to SharpGLTF
@@ -353,7 +376,7 @@ namespace RimeLib.Mesh.Frostbite2013_2
                         }
 
                         // Continue with creating the gltf format
-                        var s_RandomColor = new Vector4((float)s_Random.NextDouble(), (float)s_Random.NextDouble(),
+                        var s_RandomColor = new System.Numerics.Vector4((float)s_Random.NextDouble(), (float)s_Random.NextDouble(),
                             (float)s_Random.NextDouble(), 1.0f);
                         var s_DebugMaterial = new MaterialBuilder(s_SubsetKey.MaterialName.Object ?? "")
                             .WithMetallicRoughnessShader().WithChannelParam(KnownChannel.BaseColor, KnownProperty.RGBA, s_RandomColor);

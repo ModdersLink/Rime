@@ -58,6 +58,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListBundlePartitionsCommand>();
             RegisterCommand<DumpChunkCommand>();
             RegisterCommand<DumpResourceCommand>();
+            RegisterCommand<DumpResourceWithChunksCommand>();
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<DumpPartitionByGuidCommand>();
 
@@ -73,13 +74,11 @@ namespace RimeLib.Cmd.Contexts
             if (EngineInterfaceRegistry.IsSupported<ITextureConverter>(s_EngineType))
             {
                 RegisterCommand<DumpTextureCommand>();
-                RegisterCommand<DumpTextureChunkCommand>();
             }
 
             if (EngineInterfaceRegistry.IsSupported<IMeshConverter>(s_EngineType))
             {
                 RegisterCommand<DumpMeshCommand>();
-                RegisterCommand<DumpMeshChunksCommand>();
 
                 if (EngineInterfaceRegistry.IsSupported<IToolKit>(s_EngineType) && EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))
                 {
@@ -469,48 +468,65 @@ namespace RimeLib.Cmd.Contexts
             }
         }
 
-
-        internal void DumpMeshChunks(string p_Name)
-        {
-            // Get all resources
-            var s_Resources = m_Mounter.GetResources();
-
-            // Filter out by name
-            var s_MeshResources = s_Resources.Where(p_Resource => p_Resource.Key == p_Name);
-
-            // Iterate over all results
-            foreach (var s_MeshResource in s_MeshResources)
-            {
-                // Get the name of the mesh
-                var s_Name = s_MeshResource.Key;
-
-                // Get the resource
-                var s_Resource = s_MeshResource.Value;
-
-                // Get the variant
-                var s_Variant = s_Resource.FirstVariant;
-
-                // Sanity check
-                if (s_Variant.GetResourceType() != ResourceType.MeshSet)
-                    continue;
-
-                // Create a new mesh converter
-                var s_Converter = EngineInterfaceRegistry.Create<IMeshConverter>(m_Mounter.GetEngineType());
-            }
-        }
-
-        internal void DumpTextureChunk(string p_Name)
+        internal void DumpResourceWithChunks(string p_Name, DirectoryInfo p_Destination)
         {
             // Get all resources
             if (!m_Mounter.TryGetResource(p_Name, out var s_Resource))
                 throw new Exception($"Could not find resource with name '{p_Name}'.");
 
+            var s_Variant = s_Resource.FirstVariant;
 
-            var s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(m_Mounter.GetEngineType());
+            // Ensure that the directory of the destination file exists
+            if (!Directory.Exists(p_Destination.FullName))
+                Directory.CreateDirectory(p_Destination.FullName);
 
+            var s_ResourceName = new FileInfo(Path.Combine(p_Destination.FullName, $"{s_Resource.OriginalName}.{s_Variant.GetResourceType()}"));
+            if (s_ResourceName.Directory != null && !Directory.Exists(s_ResourceName.Directory.FullName))
+                Directory.CreateDirectory(s_ResourceName.Directory.FullName);
 
-            var s_Guid = s_Converter.GetTextureChunkId(s_Resource.FirstVariant!);
-            Console.WriteLine(s_Guid);
+            switch (s_Variant.GetResourceType())
+            {
+                 case ResourceType.MeshSet:
+                    if (!EngineInterfaceRegistry.IsSupported<IMeshConverter>(m_Mounter.GetEngineType()))
+                    {
+                        throw new NotImplementedException($"Dumping mesh resources with chunks is not yet implemented for engine type '{m_Mounter.GetEngineType()}'.");
+                    }
+
+                    var s_MeshConverter = EngineInterfaceRegistry.Create<IMeshConverter>(m_Mounter.GetEngineType());
+                    Dictionary<string, GUID> s_MeshChunks = s_MeshConverter.GetChunkGuids(s_Variant);
+
+                    foreach (var s_MeshChunk in s_MeshChunks)
+                        DumpChunk(s_MeshChunk.Value, new FileInfo(Path.Combine(p_Destination.FullName, s_MeshChunk.Key + ".chunk")));
+
+                    Console.WriteLine("Mesh Resource Name: " + s_Resource.OriginalName);
+                    Console.WriteLine("Chunks:");
+                    foreach (var s_MeshChunk in s_MeshChunks)
+                        Console.WriteLine($" - {s_MeshChunk.Key}: {s_MeshChunk.Value}");
+
+                    break;
+                case ResourceType.DxTexture:
+                case ResourceType.Ps3Texture:
+                case ResourceType.ITexture:
+                    if (!EngineInterfaceRegistry.IsSupported<ITextureConverter>(m_Mounter.GetEngineType()))
+                    {
+                        throw new NotImplementedException($"Dumping texture resources with chunks is not yet implemented for engine type '{m_Mounter.GetEngineType()}'.");
+                    }
+
+                    var s_TextureConverter = EngineInterfaceRegistry.Create<ITextureConverter>(m_Mounter.GetEngineType());
+                    var s_TextureChunk = s_TextureConverter.GetTextureChunkId(s_Variant);
+                    DumpChunk(s_TextureChunk, new FileInfo(Path.Combine(p_Destination.FullName, s_Resource.OriginalName + ".chunk")));
+
+                    Console.WriteLine("Texture Resource Name: " + s_Resource.OriginalName);
+                    Console.WriteLine("Chunk: " + s_TextureChunk);
+
+                    break;
+                default:
+                    throw new NotImplementedException($"Dumping resources with chunks is not yet implemented for resource type '{s_Variant.GetResourceType()}'.");
+            }
+
+            using var s_Reader = s_Variant.GetReader();
+            using var s_FileStream = File.Create(s_ResourceName.FullName);
+            s_Reader.CopyTo(s_FileStream);
         }
 
 

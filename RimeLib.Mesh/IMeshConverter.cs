@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimeLib.Content.Mounting;
+using RimeLib.Frostbite.Core;
 using SharpGLTF.Geometry;
 using SharpGLTF.Geometry.VertexTypes;
 
@@ -18,4 +19,9 @@ public interface IMeshConverter : IEngineInterface
     public void ConvertToGlb(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath);
     public List<MeshBuilder<VertexPosition, VertexTexture1>> ConvertToMeshBuilders(IResourceObject p_Resource, IEngineMounter p_Mounter);
     public void ConvertToBlenderScript(IResourceObject p_Resource, IEngineMounter p_Mounter, string p_OutputFilePath);
+    /// <summary>
+    /// Retrieves a dictionary mapping chunk lod names to their corresponding GUIDs for the specified resource.
+    /// </summary>
+    /// <param name="p_Resource">MeshAsset resource to read.</returns>
+    public Dictionary<string, GUID> GetChunkGuids(IResourceObject p_Resource);
 }
