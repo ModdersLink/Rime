@@ -572,10 +572,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
 
         protected void ParseSuperbundles()
         {
-            // TODO: Re-enable parallel processing once we've made sure everything is working as intended.
-            // it seems like there is an issue with the EngineMounter MountCasBundle function. Seems like it doesnt add every chunkvariation to the mountedChunks.
-            //Parallel.ForEach(m_Superbundles, p_Superbundle => ParseSuperbundle(p_Superbundle, true));
-            m_Superbundles.ForEach(p_Superbundle => ParseSuperbundle(p_Superbundle, true));
+            Parallel.ForEach(m_Superbundles, p_Superbundle => ParseSuperbundle(p_Superbundle, true));
         }
 
         protected void ParseSuperbundle(SuperbundleEntry p_Superbundle, bool p_AutoMount)
