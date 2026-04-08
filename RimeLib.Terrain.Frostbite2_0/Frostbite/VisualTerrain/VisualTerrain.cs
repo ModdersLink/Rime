@@ -33,8 +33,8 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
         public float TextureOccludedDetailReductionFactor;
 
         public string SurfaceShaderName = string.Empty;
-        public string StreamingTreeResoruceName = string.Empty;
-        public string DecalsResoruceName = string.Empty;
+        public string StreamingTreeResourceName = string.Empty;
+        public string DecalsResourceName = string.Empty;
 
         VisualTerrainLayer[] Layers = new VisualTerrainLayer[0];
 
@@ -79,8 +79,8 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
             for (var i = 0; i < s_LayerCount; i++)
                 Layers[i] = new VisualTerrainLayer(p_Reader);
 
-            StreamingTreeResoruceName = p_Reader.ReadNullTerminatedString();
-            DecalsResoruceName = p_Reader.ReadNullTerminatedString();
+            StreamingTreeResourceName = p_Reader.ReadNullTerminatedString();
+            DecalsResourceName = p_Reader.ReadNullTerminatedString();
 
             var s_LayerCombinationDrawCount = p_Reader.ReadUInt32();
             TerrainLayerCombinationDraws = new TerrainLayerCombinationDraw[s_LayerCombinationDrawCount];
