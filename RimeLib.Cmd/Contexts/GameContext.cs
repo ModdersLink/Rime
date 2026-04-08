@@ -59,12 +59,14 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpChunkCommand>();
             RegisterCommand<DumpResourceCommand>();
             RegisterCommand<DumpPartitionCommand>();
-            
+            RegisterCommand<DumpPartitionByGuidCommand>();
+
             var s_EngineType = m_Mounter.GetEngineType();
 
             if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))
             {
                 RegisterCommand<DumpPartitionJsonCommand>();
+                RegisterCommand<DumpPartitionJsonByGuidCommand>();
                 RegisterCommand<DumpMountedPartitionsJsonCommand>();
             }
 
@@ -233,6 +235,27 @@ namespace RimeLib.Cmd.Contexts
         }
 
         /// <summary>
+        /// Dumps a partition
+        /// </summary>
+        /// <param name="p_GUID">Guid of the partition to dump</param>
+        /// <param name="p_Destination">Destination file to write</param>
+        /// <exception cref="Exception">If the partition does not exist, exception will be thrown</exception>
+        internal void DumpPartitionByGuid(GUID p_GUID, FileInfo p_Destination)
+        {
+            if (!m_Mounter.TryGetPartitionByGuid(p_GUID, out var Name, out var s_Partition))
+                throw new Exception($"Could not find partition with GUID '{p_GUID.ToString("D")}'.");
+
+            // Ensure that the directory of the destination file exists
+            if (p_Destination.Directory != null && !Directory.Exists(p_Destination.Directory.FullName))
+                Directory.CreateDirectory(p_Destination.Directory.FullName);
+
+            using var s_Reader = s_Partition.FirstVariant.GetReader();
+            using var s_FileStream = File.Create(p_Destination.FullName);
+
+            s_Reader.CopyTo(s_FileStream);
+        }
+
+        /// <summary>
         /// Dumps a partition as json
         /// </summary>
         /// <param name="p_Name">Name of partition to dump</param>
@@ -251,6 +274,28 @@ namespace RimeLib.Cmd.Contexts
             var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(m_Mounter.GetEngineType());
 
             var s_Partition = s_Converter.FromPartitionObject(p_Name, s_PartitionObject.FirstVariant);
+            s_Partition.ToJsonFile(p_Destination.FullName, p_Formatting);
+        }
+
+        /// <summary>
+        /// Dumps a partition as json
+        /// </summary>
+        /// <param name="p_GUID">Guid of partition to dump</param>
+        /// <param name="p_Destination">Destination file to write</param>
+        /// <param name="p_Formatting">Formatting type, indented or not</param>
+        /// <exception cref="Exception">If the partition does not exist, exception will be thrown</exception>
+        internal void DumpPartitionJsonByGuid(GUID p_GUID, FileInfo p_Destination, Formatting p_Formatting)
+        {
+            if (!m_Mounter.TryGetPartitionByGuid(p_GUID, out var s_Name, out var s_PartitionObject))
+                throw new Exception($"Could not find partition with GUID '{p_GUID.ToString("D")}'.");
+
+            // Ensure that the directory of the destination file exists
+            if (p_Destination.Directory != null && !Directory.Exists(p_Destination.Directory.FullName))
+                Directory.CreateDirectory(p_Destination.Directory.FullName);
+
+            var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(m_Mounter.GetEngineType());
+
+            var s_Partition = s_Converter.FromPartitionObject(s_Name, s_PartitionObject.FirstVariant);
             s_Partition.ToJsonFile(p_Destination.FullName, p_Formatting);
         }
 
