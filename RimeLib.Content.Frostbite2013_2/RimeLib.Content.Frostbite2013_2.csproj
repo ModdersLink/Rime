@@ -9,7 +9,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
+        <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
+		<ProjectReference Include="..\RimeLib.Serialization.Frostbite2013_2\RimeLib.Serialization.Frostbite2013_2.csproj" />
     </ItemGroup>
 
 </Project>

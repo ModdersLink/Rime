@@ -13,7 +13,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
-    <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
+	<ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
+	<ProjectReference Include="..\RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj" />
   </ItemGroup>
 
 </Project>

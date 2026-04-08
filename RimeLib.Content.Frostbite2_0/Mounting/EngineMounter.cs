@@ -18,6 +18,7 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 using PackageManifest = RimeLib.Content.Frostbite2_0.Frostbite.PackageManifest;
 
 namespace RimeLib.Content.Frostbite2_0.Mounting
@@ -41,7 +42,8 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         
         private readonly ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new();
         private readonly ConcurrentDictionary<uint, string> m_MountedPartitionsLowerNameHashes = new();
-        
+        private readonly ConcurrentDictionary<GUID, string> m_MountedPartitionsGuids = new();
+
         private readonly ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new();
 
         private readonly HashSet<string> m_MountedSuperbundles = new HashSet<string>();
@@ -49,9 +51,6 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
 
         public async Task Mount(string p_GamePath, bool p_AutoMount, EngineType p_Type)
         {
-            // TODO: Remove this. It's just here to get rid of compiler errors.
-            await Task.Delay(0);
-
             m_GamePath = p_GamePath;
 
             // Discover game packages.
@@ -208,15 +207,22 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         {
             if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
             {
-                if (s_CasBundle.Bundle.ChunkEntries is not null) {
-                    for (int i = 0; i < s_CasBundle.Bundle.ChunkEntries.Length; i++)
-                        yield return (s_CasBundle.Bundle.ChunkEntries[i].Id, s_CasBundle.Bundle.ChunkMeta[i].AssetNameHash);
+                if (s_CasBundle.Bundle.ChunkEntries is not null)
+                {
+                    if (s_CasBundle.Bundle.ChunkMeta is not null)
+                    {
+                        for (int i = 0; i < s_CasBundle.Bundle.ChunkEntries.Length; i++)
+                            yield return (s_CasBundle.Bundle.ChunkEntries[i].Id, s_CasBundle.Bundle.ChunkMeta[i].AssetNameHash);
+                    }
                 }
             }
             else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
             {
                 foreach (var s_Chunk in s_Bundle.Chunks)
-                    yield return (s_Chunk.Id, s_Chunk.Meta.AssetNameHash);
+                { 
+                    if (s_Chunk.Meta != null)
+                        yield return (s_Chunk.Id, s_Chunk.Meta.AssetNameHash);
+                }
             }
         }
 
@@ -289,6 +295,15 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         {
             if (m_MountedPartitionsLowerNameHashes.TryGetValue(p_Hash, out var s_Name))
                 return TryGetPartition(s_Name, out p_Partition);
+
+            p_Partition = null;
+            return false;
+        }
+
+        public bool TryGetPartitionByGuid(GUID p_GUID, [NotNullWhen(true)] out string? p_Name, [NotNullWhen(true)] out IMountedObject? p_Partition)
+        {
+            if (m_MountedPartitionsGuids.TryGetValue(p_GUID, out p_Name))
+                return TryGetPartition(p_Name, out p_Partition);
 
             p_Partition = null;
             return false;
@@ -765,7 +780,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     DbObject? s_Meta = null;
 
                     // If we have any meta, set it.
-                    if (p_Bundle.Bundle.ChunkMeta.Length > i)
+                    if (p_Bundle.Bundle.ChunkMeta is not null && p_Bundle.Bundle.ChunkMeta.Length > i)
                         s_Meta = DbObjectConverter.ToDbObject(p_Bundle.Bundle.ChunkMeta[i]);
 
                     // Create variant. Prefer catalog instead of inline. ContainsEntry seems expensive
@@ -817,6 +832,12 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
 
                 m_MountedPartitionsLowerNameHashes.AddOrUpdate(
                     RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Partition.Name),
+                    s_Partition.Name.ToLowerInvariant(),
+                    (_, _) => s_Partition.Name.ToLowerInvariant()
+                );
+
+                m_MountedPartitionsGuids.AddOrUpdate(
+                    EbxReader.GetPartitionGuid(s_Variant),
                     s_Partition.Name.ToLowerInvariant(),
                     (_, _) => s_Partition.Name.ToLowerInvariant()
                 );
@@ -888,6 +909,12 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
 
                 m_MountedPartitionsLowerNameHashes.AddOrUpdate(
                     RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Partition.Name),
+                    s_Partition.Name.ToLowerInvariant(),
+                    (_, _) => s_Partition.Name.ToLowerInvariant()
+                );
+
+                m_MountedPartitionsGuids.AddOrUpdate(
+                    EbxReader.GetPartitionGuid(s_Variant),
                     s_Partition.Name.ToLowerInvariant(),
                     (_, _) => s_Partition.Name.ToLowerInvariant()
                 );

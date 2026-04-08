@@ -10,7 +10,6 @@ using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
-using RimeLib.Frostbite.Fs;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 using PackageManifest = RimeLib.Content.Frostbite2014_4.Frostbite.PackageManifest;
@@ -775,7 +774,6 @@ public class EngineMounter : IEngineMounter
         using var s_PatchReaderLimited = new LimitedRimeReader(p_PatchReader, p_PatchBundle.Size);
 
         throw new NotImplementedException();
-        return;
         /*
         // Use a multiplexed reader to parse this manifest.
         using var s_PatchedReader = new RimePatchReader(s_BaseReaderLimited, s_PatchReaderLimited, Endianness.BigEndian, false);
@@ -1245,5 +1243,11 @@ public class EngineMounter : IEngineMounter
     public EngineType[] GetSupportedEngines()
     {
         return new[] { EngineType.Frostbite2014_4 };
+    }
+
+    // TODO: Implement once we have Serialization for this engine working.
+    public bool TryGetPartitionByGuid(GUID p_GUID, [NotNullWhen(true)] out string? p_Name, [NotNullWhen(true)] out IMountedObject? p_Partition)
+    {
+        throw new NotImplementedException();
     }
 }

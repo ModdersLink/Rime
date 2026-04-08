@@ -197,10 +197,19 @@ namespace RimeLib.Content.Mounting
         /// <summary>
         /// Try to get a mounted partition. The partition will be provided in an output parameter.
         /// </summary>
-        /// <param name="p_Path">The path to the partition.</param>
+        /// <param name="p_Hash">The partition name hashed.</param>
         /// <param name="p_Partition">The output partition object.</param>
         /// <returns>When the return value is `true` then the output will **not** be `null`. When it's `false` it **will** be `null`.</returns>
         bool TryGetPartitionByHashLower(uint p_Hash, [NotNullWhen(true)] out IMountedObject? p_Partition);
+
+        /// <summary>
+        /// Try to get a mounted partition. The partition will be provided in an output parameter.
+        /// </summary>
+        /// <param name="p_GUID">The Guid of the partition.</param>
+        /// <param name="p_Name">The output partition name.</param>
+        /// <param name="p_Partition">The output partition object.</param>
+        /// <returns>When the return value is `true` then the output will **not** be `null`. When it's `false` it **will** be `null`.</returns>
+        bool TryGetPartitionByGuid(GUID p_GUID, [NotNullWhen(true)] out string? p_Name, [NotNullWhen(true)] out IMountedObject? p_Partition);
 
         /// <summary>
         /// Get all mounted resources and their different variants.

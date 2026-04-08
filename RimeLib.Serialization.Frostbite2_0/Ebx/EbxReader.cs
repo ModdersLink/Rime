@@ -52,7 +52,25 @@ public class EbxReader : IDisposable
 
         return m_Partition;
     }
-        
+
+    public static GUID GetPartitionGuid(IObjectVariant p_Variant)
+    {
+        var s_Reader = p_Variant.GetReader();
+
+        var s_Magic = s_Reader.ReadBytes(4);
+        s_Reader.Seek(-4, SeekOrigin.Current);
+
+        if (IsLittleEndian(s_Magic))
+            s_Reader = new RimeReader(s_Reader, Endianness.LittleEndian, false);
+        else if (IsBigEndian(s_Magic))
+            s_Reader = new RimeReader(s_Reader, Endianness.BigEndian, false);
+        else
+            throw new Exception("The supplied file has an invalid magic header.");
+
+        var s_Header = new StreamingPartitionHeader(s_Reader);
+        return s_Header.PartitionGuid;
+    }
+
     private void ProcessPadding()
     {
         while (m_Reader.Position % 16 != 0)

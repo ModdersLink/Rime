@@ -13,6 +13,7 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
+using RimeLib.Serialization.Frostbite2013_2.Ebx;
 using PackageManifest = RimeLib.Content.Frostbite2013_2.Frostbite.PackageManifest;
 
 namespace RimeLib.Content.Frostbite2013_2.Mounting;
@@ -37,6 +38,7 @@ public class EngineMounter : IEngineMounter
     
     private readonly ConcurrentDictionary<string, MountedObject> m_MountedEbxPartitions = new();
     private readonly ConcurrentDictionary<uint, string> m_MountedEbxPartitionsLowerNameHashes = new();
+    private readonly ConcurrentDictionary<GUID, string> m_MountedEbxPartitionsGuids = new();
 
     private readonly ConcurrentDictionary<string, MountedObject> m_MountedDbxPartitions = new();
     private readonly ConcurrentDictionary<uint, string> m_MountedDbxPartitionsLowerNameHashes = new();
@@ -190,6 +192,9 @@ public class EngineMounter : IEngineMounter
     {
         if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
         {
+            if (s_CasBundle.Bundle.ChunkEntries == null)
+                yield break;
+
             foreach (var s_Chunk in s_CasBundle.Bundle.ChunkEntries)
                 yield return s_Chunk.Id;
         }
@@ -204,6 +209,9 @@ public class EngineMounter : IEngineMounter
     {
         if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
         {
+            if (s_CasBundle.Bundle.ChunkEntries == null || s_CasBundle.Bundle.ChunkMeta == null)
+                yield break;
+
             for (int i = 0; i < s_CasBundle.Bundle.ChunkEntries.Length; i++)
                 yield return (s_CasBundle.Bundle.ChunkEntries[i].Id, s_CasBundle.Bundle.ChunkMeta[i].AssetNameHash);
         }
@@ -289,6 +297,15 @@ public class EngineMounter : IEngineMounter
     {
         if (m_MountedEbxPartitionsLowerNameHashes.TryGetValue(p_Hash, out var s_Name))
             return TryGetPartition(s_Name, out p_Partition);
+
+        p_Partition = null;
+        return false;
+    }
+
+    public bool TryGetPartitionByGuid(GUID p_GUID, [NotNullWhen(true)] out string? p_Name, [NotNullWhen(true)] out IMountedObject? p_Partition)
+    {
+        if (m_MountedEbxPartitionsGuids.TryGetValue(p_GUID, out p_Name))
+            return TryGetPartition(p_Name, out p_Partition);
 
         p_Partition = null;
         return false;
@@ -880,6 +897,12 @@ public class EngineMounter : IEngineMounter
                 s_Partition.Name.ToLowerInvariant(),
                 (_, _) => s_Partition.Name.ToLowerInvariant()
             );
+
+            m_MountedEbxPartitionsGuids.AddOrUpdate(
+                EbxReader.GetPartitionGuid(s_Variant),
+                s_Partition.Name.ToLowerInvariant(),
+                (_, _) => s_Partition.Name.ToLowerInvariant()
+            );
         }
 
         // Mount all partitions.
@@ -888,7 +911,7 @@ public class EngineMounter : IEngineMounter
             CasBundle.Dbx? s_Partition = p_Bundle.Bundle.DbxEntries[i];
 
             // Mount only available dbx
-            if (!m_Catalog.ContainsEntry(s_Partition.Hash))
+            if (m_Catalog is null ||!m_Catalog.ContainsEntry(s_Partition.Hash))
                 continue;
 
             // Create variant.
@@ -1010,6 +1033,12 @@ public class EngineMounter : IEngineMounter
                     s_Partition.Name.ToLowerInvariant(),
                     (_, _) => s_Partition.Name.ToLowerInvariant()
                 );
+
+                m_MountedEbxPartitionsGuids.AddOrUpdate(
+                    EbxReader.GetPartitionGuid(s_Variant),
+                    s_Partition.Name.ToLowerInvariant(),
+                    (_, _) => s_Partition.Name.ToLowerInvariant()
+                );
             }
 
             // Mount all partitions.
@@ -1018,7 +1047,7 @@ public class EngineMounter : IEngineMounter
                 CasBundle.Dbx? s_Partition = s_DeltaBundle.DbxEntries[i];
 
                 // Mount only available dbx
-                if (!m_Catalog.ContainsEntry(s_Partition.Hash))
+                if (m_Catalog is null || !m_Catalog.ContainsEntry(s_Partition.Hash))
                     continue;
                 
                 // Create variant.
@@ -1129,6 +1158,12 @@ public class EngineMounter : IEngineMounter
 
                 m_MountedEbxPartitionsLowerNameHashes.AddOrUpdate(
                     RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Partition.Name),
+                    s_Partition.Name.ToLowerInvariant(),
+                    (_, _) => s_Partition.Name.ToLowerInvariant()
+                );
+
+                m_MountedEbxPartitionsGuids.AddOrUpdate(
+                    EbxReader.GetPartitionGuid(s_Variant),
                     s_Partition.Name.ToLowerInvariant(),
                     (_, _) => s_Partition.Name.ToLowerInvariant()
                 );
