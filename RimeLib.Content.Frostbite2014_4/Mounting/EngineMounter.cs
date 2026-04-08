@@ -671,8 +671,11 @@ public class EngineMounter : IEngineMounter
         var s_Variant = new ChunkVariant(s_ChunkEntry, 0, (uint)s_ChunkEntry.GetSize(), null, p_SbEntry.Name, null);
         var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant, s_ChunkEntry.Id.ToString());
 
-        // Here we always replace because patched chunks get registered after and they override old ones.
-        m_MountedChunks.AddOrUpdate(s_ChunkEntry.Id, s_MountedObject, (p_GUID, p_MountedObject) => s_MountedObject);
+        m_MountedChunks.AddOrUpdate(s_ChunkEntry.Id, s_MountedObject, (p_GUID, p_MountedObject) =>
+        {
+            p_MountedObject.AddOrUpdateVariant(v => v.GetContainedSuperbundle() == p_SbEntry.Name && v.GetContainedBundle() == null, s_Variant);
+            return p_MountedObject;
+        });
     }
 
     protected void ParseSuperbundles()

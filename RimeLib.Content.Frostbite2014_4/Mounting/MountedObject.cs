@@ -1,53 +1,116 @@
 using RimeLib.Content.Mounting;
 
-namespace RimeLib.Content.Frostbite2014_4.Mounting;
-
-internal class MountedObject<T> : IMountedObject<T> where T : IObjectVariant
+namespace RimeLib.Content.Frostbite2014_4.Mounting
 {
-	public IEnumerable<T> Variants => m_Variants;
-	public T FirstVariant => m_Variants.First();
-	public string OriginalName { get; }
+    internal class MountedObject<T> : IMountedObject<T> where T : IObjectVariant
+    {
+        public IEnumerable<T> Variants
+        {
+            get
+            {
+                lock (m_SyncRoot)
+                    return m_Variants.ToArray();
+            }
+        }
 
-	protected List<T> m_Variants = new List<T>();
+        public T FirstVariant
+        {
+            get
+            {
+                lock (m_SyncRoot)
+                    return m_Variants.First();
+            }
+        }
+        public string OriginalName { get; }
 
-	internal MountedObject(T p_Variant, string p_OriginalName)
-	{
-		m_Variants.Add(p_Variant);
-		OriginalName = p_OriginalName;
-	}
+        private readonly object m_SyncRoot = new();
+        protected List<T> m_Variants = new List<T>();
 
-	internal void AddVariant(T p_Variant)
-	{
-		m_Variants.Add(p_Variant);
-	}
+        internal MountedObject(T p_Variant, string p_OriginalName)
+        {
+            m_Variants.Add(p_Variant);
+            OriginalName = p_OriginalName;
+        }
 
-	internal void RemoveVariant(T p_Variant)
-	{
-		m_Variants.RemoveAll(p_OtherVariant => p_OtherVariant.Equals(p_Variant));
-	}
-}
+        internal void AddVariant(T p_Variant)
+        {
+            lock (m_SyncRoot)
+                m_Variants.Add(p_Variant);
+        }
 
-internal class MountedObject : IMountedObject
-{
-	public IEnumerable<IObjectVariant> Variants => m_Variants;
-	public IObjectVariant FirstVariant => m_Variants.First();
-	public string OriginalName { get; }
+        internal void RemoveVariant(T p_Variant)
+        {
+            lock (m_SyncRoot)
+                m_Variants.RemoveAll(p_OtherVariant => p_OtherVariant.Equals(p_Variant));
+        }
 
-	protected List<IObjectVariant> m_Variants = new List<IObjectVariant>();
+        internal void AddOrUpdateVariant(Func<T, bool> p_Match, T p_NewVariant)
+        {
+            lock (m_SyncRoot)
+            {
+                var s_Index = m_Variants.FindIndex(p_Match.Invoke);
 
-	internal MountedObject(IObjectVariant p_Variant, string p_OriginalName)
-	{
-		m_Variants.Add(p_Variant);
-		OriginalName = p_OriginalName;
-	}
+                if (s_Index >= 0)
+                    m_Variants[s_Index] = p_NewVariant;
+                else
+                    m_Variants.Add(p_NewVariant);
+            }
+        }
+    }
 
-	internal void AddVariant(IObjectVariant p_Variant)
-	{
-		m_Variants.Add(p_Variant);
-	}
+    internal class MountedObject : IMountedObject
+    {
+        public IEnumerable<IObjectVariant> Variants
+        {
+            get
+            {
+                lock (m_SyncRoot)
+                    return m_Variants.ToArray();
+            }
+        }
 
-	internal void RemoveVariant(IObjectVariant p_Variant)
-	{
-		m_Variants.RemoveAll(p_OtherVariant => p_OtherVariant.Equals(p_Variant));
-	}
+        public IObjectVariant FirstVariant
+        {
+            get
+            {
+                lock (m_SyncRoot)
+                    return m_Variants.First();
+            }
+        }
+        public string OriginalName { get; }
+
+        private readonly object m_SyncRoot = new();
+        protected List<IObjectVariant> m_Variants = new List<IObjectVariant>();
+
+        internal MountedObject(IObjectVariant p_Variant, string p_OriginalName)
+        {
+            m_Variants.Add(p_Variant);
+            OriginalName = p_OriginalName;
+        }
+
+        internal void AddVariant(IObjectVariant p_Variant)
+        {
+            lock (m_SyncRoot)
+                m_Variants.Add(p_Variant);
+        }
+
+        internal void RemoveVariant(IObjectVariant p_Variant)
+        {
+            lock (m_SyncRoot)
+                m_Variants.RemoveAll(p_OtherVariant => p_OtherVariant.Equals(p_Variant));
+        }
+
+        internal void AddOrUpdateVariant(Func<IObjectVariant, bool> p_Match, IObjectVariant p_NewVariant)
+        {
+            lock (m_SyncRoot)
+            {
+                var s_Index = m_Variants.FindIndex(p_Match.Invoke);
+
+                if (s_Index >= 0)
+                    m_Variants[s_Index] = p_NewVariant;
+                else
+                    m_Variants.Add(p_NewVariant);
+            }
+        }
+    }
 }
