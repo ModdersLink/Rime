@@ -11,7 +11,7 @@ namespace RimeLib.Cmd.Commands.Game
     public class DumpPartitionJsonByGuidCommand : Command
     {
         [CommandArgument(Description = "The name of the partition to dump to JSON.")]
-        public GUID? GUID { get; set; }
+        public GUID? Guid { get; set; }
 
         [CommandArgument(Description = "The destination file name where the partition will be dumped to.")]
         public FileInfo? Destination { get; set; }
@@ -23,7 +23,7 @@ namespace RimeLib.Cmd.Commands.Game
         {
             try
             {
-                ((GameContext) p_Context).DumpPartitionJsonByGuid(GUID!, Destination!, Formatting);
+                ((GameContext) p_Context).DumpPartitionJsonByGuid(Guid!, Destination!, Formatting);
                 p_Writer.WriteLine("Partition successfully dumped to JSON.");
                 return true;
             }

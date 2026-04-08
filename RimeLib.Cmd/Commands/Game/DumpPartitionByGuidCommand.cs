@@ -10,7 +10,7 @@ namespace RimeLib.Cmd.Commands.Game
     public class DumpPartitionByGuidCommand : Command
     {
         [CommandArgument(Description = "The guid of the partition to dump.")]
-        public GUID? GUID { get; set; }
+        public GUID? Guid { get; set; }
 
         [CommandArgument(Description = "The destination file name where the partition will be dumped to.")]
         public FileInfo? Destination { get; set; }
@@ -19,7 +19,7 @@ namespace RimeLib.Cmd.Commands.Game
         {
             try
             {
-                ((GameContext) p_Context).DumpPartitionByGuid(GUID!, Destination!);
+                ((GameContext) p_Context).DumpPartitionByGuid(Guid!, Destination!);
                 p_Writer.WriteLine("Partition successfully dumped.");
                 return true;
             }
