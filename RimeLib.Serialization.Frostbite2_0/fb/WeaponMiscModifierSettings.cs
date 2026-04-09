@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(1, 5)]
-	public class WeaponMiscModifierSettings :
+	public partial class WeaponMiscModifierSettings :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public bool EnableBreathControl { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private bool _EnableBreathControl;
 		
-		[ContainerField(1), LayoutImmutable, Blittable, JsonProperty(Order = 1)]
-		public bool CanBeInSupportedShooting { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(1), LayoutImmutable, Blittable, JsonProperty(Order = 1)]
+		private bool _CanBeInSupportedShooting;
 		
-		[ContainerField(2), LayoutImmutable, Blittable, JsonProperty(Order = 2)]
-		public bool UnZoomOnBoltAction { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(2), LayoutImmutable, Blittable, JsonProperty(Order = 2)]
+		private bool _UnZoomOnBoltAction;
 		
-		[ContainerField(3), LayoutImmutable, Blittable, JsonProperty(Order = 3)]
-		public bool HoldBoltActionUntilZoomRelease { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(3), LayoutImmutable, Blittable, JsonProperty(Order = 3)]
+		private bool _HoldBoltActionUntilZoomRelease;
 		
-		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
-		public bool IsSilenced { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		private bool _IsSilenced;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

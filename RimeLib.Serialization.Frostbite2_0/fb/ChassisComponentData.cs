@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class ChassisComponentData :
+	public partial class ChassisComponentData :
 		PartComponentData
 	{
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public CtrRef<VehicleConfigData> VehicleConfig { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private CtrRef<VehicleConfigData> _VehicleConfig = new();
 
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public CtrRef<GearboxConfigData> GearboxConfig { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private CtrRef<GearboxConfigData> _GearboxConfig = new();
 
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public RefArray<VehicleWaterEffectData> WaterStreakEffects { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private RefArray<VehicleWaterEffectData> _WaterStreakEffects = new();
 
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public RefArray<VehicleWaterEffectData> WaterEffects { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private RefArray<VehicleWaterEffectData> _WaterEffects = new();
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public float TriggerGroundEffectImpulse { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private float _TriggerGroundEffectImpulse;
 
-		[ContainerField(132), JsonProperty(Order = 132)]
-		public CtrRef<LandingGearLogicData> LandingGearLogic { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(132), JsonProperty(Order = 132)]
+		private CtrRef<LandingGearLogicData> _LandingGearLogic = new();
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public bool AlwaysFullThrottle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private bool _AlwaysFullThrottle;
 
-		[ContainerField(137), LayoutImmutable, Blittable, JsonProperty(Order = 137)]
-		public bool ForceLandingGearsRetract { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(137), LayoutImmutable, Blittable, JsonProperty(Order = 137)]
+		private bool _ForceLandingGearsRetract;
 
-		[ContainerField(138), LayoutImmutable, Blittable, JsonProperty(Order = 138)]
-		public bool AllowNegativeThrottle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(138), LayoutImmutable, Blittable, JsonProperty(Order = 138)]
+		private bool _AllowNegativeThrottle;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

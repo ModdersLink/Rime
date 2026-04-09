@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class FollowConstantData :
+	public partial class FollowConstantData :
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float DistanceFromPlayerBeforeTeleport { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _DistanceFromPlayerBeforeTeleport;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float FollowHumanMaxDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _FollowHumanMaxDistance;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float FollowHumanInCombatMaxDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _FollowHumanInCombatMaxDistance;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float FollowAiMaxDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _FollowAiMaxDistance;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float FollowAiInCombatMaxDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _FollowAiInCombatMaxDistance;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float FollowMimicPoseDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _FollowMimicPoseDistance;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float FollowInertia { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _FollowInertia;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public float LookAwayAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private float _LookAwayAngle;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

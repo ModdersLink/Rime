@@ -14,22 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class EntityRecordingData :
+	public partial class EntityRecordingData :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public GUID EntityGuid { get; set; } = GUID.Empty;
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private GUID _EntityGuid = GUID.Empty;
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public RefArray<PropertyRecordingData> Data { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private RefArray<PropertyRecordingData> _Data = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			EntityGuid.Serialize(p_Writer);
 			(RimeWriter Writer, uint ArrayIndex) s_Data = p_EbxWriter.GetArrayWriter(Data.GetType(), Data.Count);
 			p_Writer.Write(s_Data.ArrayIndex);

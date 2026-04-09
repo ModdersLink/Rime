@@ -14,42 +14,53 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class LocalLightEntityData :
+	public partial class LocalLightEntityData :
 		SpatialEntityData
 	{
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public Vec3 Color { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private Vec3 _Color = new();
 
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public Vec3 ParticleColorScale { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private Vec3 _ParticleColorScale = new();
 
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public Vec3 EnlightenColorScale { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private Vec3 _EnlightenColorScale = new();
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public float Radius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private float _Radius;
 
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public float Intensity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private float _Intensity;
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public float AttenuationOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private float _AttenuationOffset;
 
-		[ContainerField(140), JsonProperty(Order = 140)]
-		public EnlightenColorMode EnlightenColorMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(140), JsonProperty(Order = 140)]
+		private EnlightenColorMode _EnlightenColorMode = new();
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public bool EnlightenEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private bool _EnlightenEnable;
 
-		[ContainerField(145), LayoutImmutable, Blittable, JsonProperty(Order = 145)]
-		public bool Visible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(145), LayoutImmutable, Blittable, JsonProperty(Order = 145)]
+		private bool _Visible;
 
-		[ContainerField(146), LayoutImmutable, Blittable, JsonProperty(Order = 146)]
-		public bool SpecularEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(146), LayoutImmutable, Blittable, JsonProperty(Order = 146)]
+		private bool _SpecularEnable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

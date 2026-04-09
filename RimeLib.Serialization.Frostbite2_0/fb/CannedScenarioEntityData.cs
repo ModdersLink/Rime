@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 60)]
-	public class CannedScenarioEntityData :
+	public partial class CannedScenarioEntityData :
 		EntityData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CannedAnimationBinding CannedAnimBinding { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CannedAnimationBinding _CannedAnimBinding = new();
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public int AnimationEntitySpacePriority { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private int _AnimationEntitySpacePriority;
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public bool AlwaysClearEntitySpaceWhenInScenario { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private bool _AlwaysClearEntitySpaceWhenInScenario;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class ActionNode :
+	public partial class ActionNode :
 		UINodeData
 	{
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public int ActionKey { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private int _ActionKey;
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public List<string> Params { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private List<string> _Params = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public CtrRef<Asset> ActionAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private CtrRef<Asset> _ActionAsset = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public CtrRef<UINodePort> In { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private CtrRef<UINodePort> _In = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public CtrRef<UINodePort> Out { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private CtrRef<UINodePort> _Out = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public RefArray<UINodePort> DataInputs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private RefArray<UINodePort> _DataInputs = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public bool AppendIncomingParams { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private bool _AppendIncomingParams;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

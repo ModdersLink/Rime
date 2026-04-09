@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class CameraSineCurveData :
+	public partial class CameraSineCurveData :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public float Frequency { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private float _Frequency;
 		
-		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
-		public float Amplitude { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		private float _Amplitude;
 		
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float PhaseShift { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _PhaseShift;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

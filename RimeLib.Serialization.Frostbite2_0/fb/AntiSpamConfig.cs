@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class AntiSpamConfig :
+	public partial class AntiSpamConfig :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public float DetectionInterval { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private float _DetectionInterval;
 		
-		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
-		public uint DetectionIntervalMaxMessageCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		private uint _DetectionIntervalMaxMessageCount;
 		
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public uint ServerSideMessageCountTolerance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private uint _ServerSideMessageCountTolerance;
 		
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public uint SecondsBlocked { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private uint _SecondsBlocked;
 		
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public uint ServerSideSecondsBlockedTolerance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private uint _ServerSideSecondsBlockedTolerance;
 		
-		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
-		public string NotificationSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		private string _NotificationSid = string.Empty;
 		
-		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
-		public string StillBlockedSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
+		private string _StillBlockedSid = string.Empty;
 		
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public CtrRef<SoundWaveAsset> WarningSound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private CtrRef<SoundWaveAsset> _WarningSound = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class StaticModelGroupEntityData :
+	public partial class StaticModelGroupEntityData :
 		GamePhysicsEntityData
 	{
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public List<StaticModelGroupMemberData> MemberDatas { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private List<StaticModelGroupMemberData> _MemberDatas = new();
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public GUID HackToSolveRealTimeTweakingIssue { get; set; } = GUID.Empty;
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private GUID _HackToSolveRealTimeTweakingIssue = GUID.Empty;
 
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public uint NetworkIdCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private uint _NetworkIdCount;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

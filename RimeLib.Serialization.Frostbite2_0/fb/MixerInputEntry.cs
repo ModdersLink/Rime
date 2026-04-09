@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class MixerInputEntry :
+	public partial class MixerInputEntry :
 		AudioGraphNodePortGroup
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AudioGraphNodePort Out { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AudioGraphNodePort _Out = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<AudioGraphParameter> Source { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<AudioGraphParameter> _Source = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public MixerValueAccumulateMode AccumulateMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private MixerValueAccumulateMode _AccumulateMode = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

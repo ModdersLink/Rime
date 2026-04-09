@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 32)]
-	public class SensingSphere :
+	public partial class SensingSphere :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public Vec3 Position { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private Vec3 _Position = new();
 		
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float RadiusSqr { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _RadiusSqr;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

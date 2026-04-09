@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(8, 24)]
-	public class UIGPSPosition :
+	public partial class UIGPSPosition :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public double Latitude { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private double _Latitude;
 		
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public double Longitude { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private double _Longitude;
 		
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public double SeaLevelOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private double _SeaLevelOffset;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

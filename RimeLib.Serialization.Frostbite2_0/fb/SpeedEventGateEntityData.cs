@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class SpeedEventGateEntityData :
+	public partial class SpeedEventGateEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public float MinSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private float _MinSpeed;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public float MaxSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private float _MaxSpeed;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

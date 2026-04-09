@@ -14,28 +14,34 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class CharacterSprintData :
+	public partial class CharacterSprintData :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float SprintPowerDecreasePerSecond { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _SprintPowerDecreasePerSecond;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float SprintPowerIncreasePerSecond { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _SprintPowerIncreasePerSecond;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float SprintMinimumPower { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _SprintMinimumPower;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public bool AllowContinousSprinting { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private bool _AllowContinousSprinting;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(SprintPowerDecreasePerSecond);
 			p_Writer.Write(SprintPowerIncreasePerSecond);
 			p_Writer.Write(SprintMinimumPower);

@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 8)]
-	public class UIFontMapping :
+	public partial class UIFontMapping :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public List<string> ScaleformFontName { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private List<string> _ScaleformFontName = new();
 		
-		[ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
-		public string FontLongName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
+		private string _FontLongName = string.Empty;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

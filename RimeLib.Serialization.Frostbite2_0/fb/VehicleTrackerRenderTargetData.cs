@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class VehicleTrackerRenderTargetData :
+	public partial class VehicleTrackerRenderTargetData :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public Vec2 PositionOffset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private Vec2 _PositionOffset = new();
 		
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public int RenderTargetIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private int _RenderTargetIndex;
 		
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float RenderTargetApectRatio { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _RenderTargetApectRatio;
 		
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float ScaleSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _ScaleSize;
 		
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public bool UseRenderTarget { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private bool _UseRenderTarget;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

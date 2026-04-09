@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class DynamicWeaponPickupEntityData :
+	public partial class DynamicWeaponPickupEntityData :
 		PickupEntityData
 	{
-		[ContainerField(176), JsonProperty(Order = 176)]
-		public List<DynamicWeaponPickupSlotData> WeaponSlots { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), JsonProperty(Order = 176)]
+		private List<DynamicWeaponPickupSlotData> _WeaponSlots = new();
 
-		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
-		public bool KeepAmmoState { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		private bool _KeepAmmoState;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

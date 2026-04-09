@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class UIPresenceCompData :
+	public partial class UIPresenceCompData :
 		UIComponentData
 	{
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)

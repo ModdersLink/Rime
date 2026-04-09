@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class DropWeaponComponentData :
+	public partial class DropWeaponComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public CtrRef<PickupEntityAsset> DeathPickup { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private CtrRef<PickupEntityAsset> _DeathPickup = new();
 
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public EntryInputActionEnum ActionIdentifier { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private EntryInputActionEnum _ActionIdentifier = new();
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public float DropWeaponAfterTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private float _DropWeaponAfterTime;
 
-		[ContainerField(108), JsonProperty(Order = 108)]
-		public CtrRef<PickupEntityAsset> Pickup { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(108), JsonProperty(Order = 108)]
+		private CtrRef<PickupEntityAsset> _Pickup = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public List<WeaponSlot> ExcludedWeaponSlots { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private List<WeaponSlot> _ExcludedWeaponSlots = new();
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float WeaponDropTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _WeaponDropTime;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public bool ListenToAnimationWeaponDropSignal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private bool _ListenToAnimationWeaponDropSignal;
 
-		[ContainerField(121), LayoutImmutable, Blittable, JsonProperty(Order = 121)]
-		public bool AllowDropWeaponOnAction { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(121), LayoutImmutable, Blittable, JsonProperty(Order = 121)]
+		private bool _AllowDropWeaponOnAction;
 
-		[ContainerField(122), LayoutImmutable, Blittable, JsonProperty(Order = 122)]
-		public bool RequireWeaponSlotEmpty { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(122), LayoutImmutable, Blittable, JsonProperty(Order = 122)]
+		private bool _RequireWeaponSlotEmpty;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

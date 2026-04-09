@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class WeaponEntityData :
+	public partial class WeaponEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public List<WeaponStateData> WeaponStates { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private List<WeaponStateData> _WeaponStates = new();
 
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public WeaponClassEnum WeaponClass { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private WeaponClassEnum _WeaponClass = new();
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public CtrRef<GameAIWeaponData> AIData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private CtrRef<GameAIWeaponData> _AIData = new();
 
-		[ContainerField(108), JsonProperty(Order = 108)]
-		public CtrRef<WeaponFiringData> WeaponFiring { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(108), JsonProperty(Order = 108)]
+		private CtrRef<WeaponFiringData> _WeaponFiring = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public CtrRef<WeaponData> CustomWeaponType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private CtrRef<WeaponData> _CustomWeaponType = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

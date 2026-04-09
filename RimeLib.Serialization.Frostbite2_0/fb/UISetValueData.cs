@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class UISetValueData :
+	public partial class UISetValueData :
 		EntityData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public UIDataSourceInfo DataSource { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private UIDataSourceInfo _DataSource = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public int IntValue { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private int _IntValue;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float FloatValue { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _FloatValue;
 
-		[ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
-		public string StringValue { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
+		private string _StringValue = string.Empty;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public bool BoolValue { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private bool _BoolValue;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

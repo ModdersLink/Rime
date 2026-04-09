@@ -14,42 +14,53 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 256)]
-	public class VehicleCameraData :
+	public partial class VehicleCameraData :
 		TargetCameraData
 	{
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public Vec3 MoveToPosition { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private Vec3 _MoveToPosition = new();
 
-		[ContainerField(176), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public Vec3 MoveToPositionSlopeFactor { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private Vec3 _MoveToPositionSlopeFactor = new();
 
-		[ContainerField(192), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public Vec3 TargetOffset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(192), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private Vec3 _TargetOffset = new();
 
-		[ContainerField(208), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 208)]
-		public Vec3 TargetOffsetSlopeFactor { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(208), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		private Vec3 _TargetOffsetSlopeFactor = new();
 
-		[ContainerField(224), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public Vec3 RotationFactor { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(224), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private Vec3 _RotationFactor = new();
 
-		[ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
-		public float PositionFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
+		private float _PositionFactor;
 
-		[ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
-		public float ResetDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
+		private float _ResetDistance;
 
-		[ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
-		public bool FixedPosition { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
+		private bool _FixedPosition;
 
-		[ContainerField(249), LayoutImmutable, Blittable, JsonProperty(Order = 249)]
-		public bool FixedAngleZ { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(249), LayoutImmutable, Blittable, JsonProperty(Order = 249)]
+		private bool _FixedAngleZ;
 
-		[ContainerField(250), LayoutImmutable, Blittable, JsonProperty(Order = 250)]
-		public bool UseTerrainAdjustment { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(250), LayoutImmutable, Blittable, JsonProperty(Order = 250)]
+		private bool _UseTerrainAdjustment;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

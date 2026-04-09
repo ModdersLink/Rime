@@ -14,25 +14,30 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class GeographicalData :
+	public partial class GeographicalData :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public UIGeoLatitude Latitude { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private UIGeoLatitude _Latitude = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public UIGeoLongitude Longitude { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private UIGeoLongitude _Longitude = new();
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float SeaLevelOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _SeaLevelOffset;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			Latitude.Serialize(p_Writer, p_EbxWriter);
 			Longitude.Serialize(p_Writer, p_EbxWriter);
 			p_Writer.Write(SeaLevelOffset);

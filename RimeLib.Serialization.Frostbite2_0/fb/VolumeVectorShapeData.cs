@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class VolumeVectorShapeData :
+	public partial class VolumeVectorShapeData :
 		VectorShapeData
 	{
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float Height { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _Height;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

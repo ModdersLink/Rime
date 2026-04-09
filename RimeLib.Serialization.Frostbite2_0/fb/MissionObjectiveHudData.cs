@@ -14,38 +14,46 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 64)]
-	public class MissionObjectiveHudData :
+	public partial class MissionObjectiveHudData :
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 CameraPosition { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _CameraPosition = new();
 
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public Vec2 HorizontalBoundaries { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private Vec2 _HorizontalBoundaries = new();
 
-		[ContainerField(40), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public Vec2 VerticalBoundaries { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private Vec2 _VerticalBoundaries = new();
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float CameraRotation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _CameraRotation;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public float CameraFov { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private float _CameraFov;
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public float CameraLookDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private float _CameraLookDistance;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public float CameraDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private float _CameraDistance;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
-			p_Writer.WriteNullBytes(8);
+			p_Writer.WriteNullBytes(16);
 			CameraPosition.Serialize(p_Writer, p_EbxWriter);
 			HorizontalBoundaries.Serialize(p_Writer, p_EbxWriter);
 			VerticalBoundaries.Serialize(p_Writer, p_EbxWriter);

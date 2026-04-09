@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class PresenceServerBrowserServiceData :
+	public partial class PresenceServerBrowserServiceData :
 		PresenceServiceData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public MatchmakingCriteria FilterCriterias { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private MatchmakingCriteria _FilterCriterias = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public uint ListCapacity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private uint _ListCapacity;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

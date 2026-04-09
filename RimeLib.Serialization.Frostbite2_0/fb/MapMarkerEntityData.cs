@@ -14,99 +14,129 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 208)]
-	public class MapMarkerEntityData :
+	public partial class MapMarkerEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public Vec3 BaseTransform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private Vec3 _BaseTransform = new();
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public float ProgressMinTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private float _ProgressMinTime;
 
-		[ContainerField(116), LayoutImmutable, JsonProperty(Order = 116)]
-		public string Sid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, JsonProperty(Order = 116)]
+		private string _Sid = string.Empty;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public int NrOfPassengers { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private int _NrOfPassengers;
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public int NrOfEntries { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private int _NrOfEntries;
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public float ProgressTime1Player { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private float _ProgressTime1Player;
 
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public float ShowRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private float _ShowRadius;
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public float HideRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private float _HideRadius;
 
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public float BlinkTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private float _BlinkTime;
 
-		[ContainerField(144), JsonProperty(Order = 144)]
-		public MapMarkerType MarkerType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), JsonProperty(Order = 144)]
+		private MapMarkerType _MarkerType = new();
 
-		[ContainerField(148), JsonProperty(Order = 148)]
-		public TeamId VisibleForTeam { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(148), JsonProperty(Order = 148)]
+		private TeamId _VisibleForTeam = new();
 
-		[ContainerField(152), JsonProperty(Order = 152)]
-		public TeamId OwnerTeam { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(152), JsonProperty(Order = 152)]
+		private TeamId _OwnerTeam = new();
 
-		[ContainerField(156), JsonProperty(Order = 156)]
-		public UIHudIcon HudIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(156), JsonProperty(Order = 156)]
+		private UIHudIcon _HudIcon = new();
 
-		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public float VerticalOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private float _VerticalOffset;
 
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public float FocusPointRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private float _FocusPointRadius;
 
-		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
-		public float InstantFlagReturnRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
+		private float _InstantFlagReturnRadius;
 
-		[ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
-		public float Progress { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
+		private float _Progress;
 
-		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public float ProgressPlayerSpeedUpPercentage { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private float _ProgressPlayerSpeedUpPercentage;
 
-		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
-		public uint TrackedPlayersInRange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		private uint _TrackedPlayersInRange;
 
-		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
-		public float TrackingPlayerRange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		private float _TrackingPlayerRange;
 
-		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
-		public float ProgressTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		private float _ProgressTime;
 
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public bool OnlyShowSnapped { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private bool _OnlyShowSnapped;
 
-		[ContainerField(193), LayoutImmutable, Blittable, JsonProperty(Order = 193)]
-		public bool FlagControlMarker { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(193), LayoutImmutable, Blittable, JsonProperty(Order = 193)]
+		private bool _FlagControlMarker;
 
-		[ContainerField(194), LayoutImmutable, Blittable, JsonProperty(Order = 194)]
-		public bool ShowProgress { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(194), LayoutImmutable, Blittable, JsonProperty(Order = 194)]
+		private bool _ShowProgress;
 
-		[ContainerField(195), LayoutImmutable, Blittable, JsonProperty(Order = 195)]
-		public bool UseMarkerTransform { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(195), LayoutImmutable, Blittable, JsonProperty(Order = 195)]
+		private bool _UseMarkerTransform;
 
-		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
-		public bool IsVisible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
+		private bool _IsVisible;
 
-		[ContainerField(197), LayoutImmutable, Blittable, JsonProperty(Order = 197)]
-		public bool Snap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(197), LayoutImmutable, Blittable, JsonProperty(Order = 197)]
+		private bool _Snap;
 
-		[ContainerField(198), LayoutImmutable, Blittable, JsonProperty(Order = 198)]
-		public bool ShowAirTargetBox { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(198), LayoutImmutable, Blittable, JsonProperty(Order = 198)]
+		private bool _ShowAirTargetBox;
 
-		[ContainerField(199), LayoutImmutable, Blittable, JsonProperty(Order = 199)]
-		public bool IsFocusPoint { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(199), LayoutImmutable, Blittable, JsonProperty(Order = 199)]
+		private bool _IsFocusPoint;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

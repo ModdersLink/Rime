@@ -14,72 +14,93 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 272)]
-	public class BulletEntityData :
+	public partial class BulletEntityData :
 		MeshProjectileEntityData
 	{
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public float Stamina { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private float _Stamina;
 
-		[ContainerField(196), JsonProperty(Order = 196)]
-		public CtrRef<SoundAsset> FlyBySound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(196), JsonProperty(Order = 196)]
+		private CtrRef<SoundAsset> _FlyBySound = new();
 
-		[ContainerField(200), JsonProperty(Order = 200)]
-		public CtrRef<ExplosionEntityData> DudExplosion { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(200), JsonProperty(Order = 200)]
+		private CtrRef<ExplosionEntityData> _DudExplosion = new();
 
-		[ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
-		public float Gravity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
+		private float _Gravity;
 
-		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
-		public float ImpactImpulse { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		private float _ImpactImpulse;
 
-		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
-		public float DetonationTimeVariation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
+		private float _DetonationTimeVariation;
 
-		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
-		public float VehicleDetonationRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		private float _VehicleDetonationRadius;
 
-		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
-		public float VehicleDetonationActivationDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
+		private float _VehicleDetonationActivationDelay;
 
-		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public float FlyBySoundRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private float _FlyBySoundRadius;
 
-		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
-		public float FlyBySoundSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		private float _FlyBySoundSpeed;
 
-		[ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
-		public float FirstFrameTravelDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
+		private float _FirstFrameTravelDistance;
 
-		[ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
-		public float DistributeDamageOverTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
+		private float _DistributeDamageOverTime;
 
-		[ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
-		public float StartDamage { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
+		private float _StartDamage;
 
-		[ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
-		public float EndDamage { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
+		private float _EndDamage;
 
-		[ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
-		public float DamageFalloffStartDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
+		private float _DamageFalloffStartDistance;
 
-		[ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
-		public float DamageFalloffEndDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
+		private float _DamageFalloffEndDistance;
 
-		[ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
-		public float TimeToArmExplosion { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
+		private float _TimeToArmExplosion;
 
-		[ContainerField(260), LayoutImmutable, Blittable, JsonProperty(Order = 260)]
-		public bool HasVehicleDetonation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(260), LayoutImmutable, Blittable, JsonProperty(Order = 260)]
+		private bool _HasVehicleDetonation;
 
-		[ContainerField(261), LayoutImmutable, Blittable, JsonProperty(Order = 261)]
-		public bool InstantHit { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(261), LayoutImmutable, Blittable, JsonProperty(Order = 261)]
+		private bool _InstantHit;
 
-		[ContainerField(262), LayoutImmutable, Blittable, JsonProperty(Order = 262)]
-		public bool StopTrailEffectOnUnspawn { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(262), LayoutImmutable, Blittable, JsonProperty(Order = 262)]
+		private bool _StopTrailEffectOnUnspawn;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

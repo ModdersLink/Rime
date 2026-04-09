@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class WindComponentData :
+	public partial class WindComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private Realm _Realm = new();
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public float WindDirection { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private float _WindDirection;
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public float WindStrength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private float _WindStrength;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

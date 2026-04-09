@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class SoldierWeaponMultiUnlock :
+	public partial class SoldierWeaponMultiUnlock :
 		UnlockUserDataBase
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<UnlockAssetBase> First { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<UnlockAssetBase> _First = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<UnlockAssetPair> UnlockAssetPairs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<UnlockAssetPair> _UnlockAssetPairs = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

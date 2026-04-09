@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class SpringData :
+	public partial class SpringData :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public float Length { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private float _Length;
 		
-		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
-		public float Stiffness { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		private float _Stiffness;
 		
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float Damping { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _Damping;
 		
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float MaxSpringForce { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _MaxSpringForce;
 		
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float ProgressiveStartRatio { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _ProgressiveStartRatio;
 		
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float ProgressiveExponent { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _ProgressiveExponent;
 		
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float VisualClipOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _VisualClipOffset;
 		
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float AttachOffsetY { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _AttachOffsetY;
 		
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float DisabledStrenghModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _DisabledStrenghModifier;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

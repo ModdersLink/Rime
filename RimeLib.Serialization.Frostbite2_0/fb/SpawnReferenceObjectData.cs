@@ -14,117 +14,153 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 384)]
-	public class SpawnReferenceObjectData :
+	public partial class SpawnReferenceObjectData :
 		ReferenceObjectData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public LinearTransform AirdropTransform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private LinearTransform _AirdropTransform = new();
 
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public LinearTransform ControllableInput { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private LinearTransform _ControllableInput = new();
 
-		[ContainerField(224), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public LinearTransform ControllableTransform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(224), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private LinearTransform _ControllableTransform = new();
 
-		[ContainerField(288), LayoutImmutable, JsonProperty(Order = 288)]
-		public string LocationNameSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(288), LayoutImmutable, JsonProperty(Order = 288)]
+		private string _LocationNameSid = string.Empty;
 
-		[ContainerField(292), LayoutImmutable, JsonProperty(Order = 292)]
-		public string LocationTextSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(292), LayoutImmutable, JsonProperty(Order = 292)]
+		private string _LocationTextSid = string.Empty;
 
-		[ContainerField(296), JsonProperty(Order = 296)]
-		public TeamId Team { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(296), JsonProperty(Order = 296)]
+		private TeamId _Team = new();
 
-		[ContainerField(300), LayoutImmutable, Blittable, JsonProperty(Order = 300)]
-		public uint SpawnProtectionFriendlyKilledCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(300), LayoutImmutable, Blittable, JsonProperty(Order = 300)]
+		private uint _SpawnProtectionFriendlyKilledCount;
 
-		[ContainerField(304), LayoutImmutable, Blittable, JsonProperty(Order = 304)]
-		public float SpawnProtectionFriendlyKilledTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(304), LayoutImmutable, Blittable, JsonProperty(Order = 304)]
+		private float _SpawnProtectionFriendlyKilledTime;
 
-		[ContainerField(308), LayoutImmutable, Blittable, JsonProperty(Order = 308)]
-		public float RotationRoll { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(308), LayoutImmutable, Blittable, JsonProperty(Order = 308)]
+		private float _RotationRoll;
 
-		[ContainerField(312), LayoutImmutable, Blittable, JsonProperty(Order = 312)]
-		public float Throttle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(312), LayoutImmutable, Blittable, JsonProperty(Order = 312)]
+		private float _Throttle;
 
-		[ContainerField(316), LayoutImmutable, Blittable, JsonProperty(Order = 316)]
-		public float InitialSpawnDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(316), LayoutImmutable, Blittable, JsonProperty(Order = 316)]
+		private float _InitialSpawnDelay;
 
-		[ContainerField(320), LayoutImmutable, Blittable, JsonProperty(Order = 320)]
-		public float SpawnDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(320), LayoutImmutable, Blittable, JsonProperty(Order = 320)]
+		private float _SpawnDelay;
 
-		[ContainerField(324), LayoutImmutable, Blittable, JsonProperty(Order = 324)]
-		public int MaxCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(324), LayoutImmutable, Blittable, JsonProperty(Order = 324)]
+		private int _MaxCount;
 
-		[ContainerField(328), LayoutImmutable, Blittable, JsonProperty(Order = 328)]
-		public int MaxCountSimultaneously { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(328), LayoutImmutable, Blittable, JsonProperty(Order = 328)]
+		private int _MaxCountSimultaneously;
 
-		[ContainerField(332), LayoutImmutable, Blittable, JsonProperty(Order = 332)]
-		public int TotalCountSimultaneouslyOfType { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(332), LayoutImmutable, Blittable, JsonProperty(Order = 332)]
+		private int _TotalCountSimultaneouslyOfType;
 
-		[ContainerField(336), LayoutImmutable, Blittable, JsonProperty(Order = 336)]
-		public float SpawnAreaRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(336), LayoutImmutable, Blittable, JsonProperty(Order = 336)]
+		private float _SpawnAreaRadius;
 
-		[ContainerField(340), LayoutImmutable, Blittable, JsonProperty(Order = 340)]
-		public float SpawnProtectionRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(340), LayoutImmutable, Blittable, JsonProperty(Order = 340)]
+		private float _SpawnProtectionRadius;
 
-		[ContainerField(344), LayoutImmutable, Blittable, JsonProperty(Order = 344)]
-		public float RotationYaw { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(344), LayoutImmutable, Blittable, JsonProperty(Order = 344)]
+		private float _RotationYaw;
 
-		[ContainerField(348), LayoutImmutable, Blittable, JsonProperty(Order = 348)]
-		public float RotationPitch { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(348), LayoutImmutable, Blittable, JsonProperty(Order = 348)]
+		private float _RotationPitch;
 
-		[ContainerField(352), LayoutImmutable, Blittable, JsonProperty(Order = 352)]
-		public float InitialVelocity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(352), LayoutImmutable, Blittable, JsonProperty(Order = 352)]
+		private float _InitialVelocity;
 
-		[ContainerField(356), LayoutImmutable, Blittable, JsonProperty(Order = 356)]
-		public int TakeControlEntryIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(356), LayoutImmutable, Blittable, JsonProperty(Order = 356)]
+		private int _TakeControlEntryIndex;
 
-		[ContainerField(360), LayoutImmutable, Blittable, JsonProperty(Order = 360)]
-		public bool SpawnProtectionCheckAllTeams { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(360), LayoutImmutable, Blittable, JsonProperty(Order = 360)]
+		private bool _SpawnProtectionCheckAllTeams;
 
-		[ContainerField(361), LayoutImmutable, Blittable, JsonProperty(Order = 361)]
-		public bool ClearBangersOnSpawn { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(361), LayoutImmutable, Blittable, JsonProperty(Order = 361)]
+		private bool _ClearBangersOnSpawn;
 
-		[ContainerField(362), LayoutImmutable, Blittable, JsonProperty(Order = 362)]
-		public bool TryToSpawnOutOfSight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(362), LayoutImmutable, Blittable, JsonProperty(Order = 362)]
+		private bool _TryToSpawnOutOfSight;
 
-		[ContainerField(363), LayoutImmutable, Blittable, JsonProperty(Order = 363)]
-		public bool SendWeaponEvents { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(363), LayoutImmutable, Blittable, JsonProperty(Order = 363)]
+		private bool _SendWeaponEvents;
 
-		[ContainerField(364), LayoutImmutable, Blittable, JsonProperty(Order = 364)]
-		public bool TakeControlOnTransformChange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(364), LayoutImmutable, Blittable, JsonProperty(Order = 364)]
+		private bool _TakeControlOnTransformChange;
 
-		[ContainerField(365), LayoutImmutable, Blittable, JsonProperty(Order = 365)]
-		public bool ReturnControlOnIdle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(365), LayoutImmutable, Blittable, JsonProperty(Order = 365)]
+		private bool _ReturnControlOnIdle;
 
-		[ContainerField(366), LayoutImmutable, Blittable, JsonProperty(Order = 366)]
-		public bool AutoSpawn { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(366), LayoutImmutable, Blittable, JsonProperty(Order = 366)]
+		private bool _AutoSpawn;
 
-		[ContainerField(367), LayoutImmutable, Blittable, JsonProperty(Order = 367)]
-		public bool UseAsSpawnPoint { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(367), LayoutImmutable, Blittable, JsonProperty(Order = 367)]
+		private bool _UseAsSpawnPoint;
 
-		[ContainerField(368), LayoutImmutable, Blittable, JsonProperty(Order = 368)]
-		public bool LockedTeam { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(368), LayoutImmutable, Blittable, JsonProperty(Order = 368)]
+		private bool _LockedTeam;
 
-		[ContainerField(369), LayoutImmutable, Blittable, JsonProperty(Order = 369)]
-		public bool InitialAutoSpawn { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(369), LayoutImmutable, Blittable, JsonProperty(Order = 369)]
+		private bool _InitialAutoSpawn;
 
-		[ContainerField(370), LayoutImmutable, Blittable, JsonProperty(Order = 370)]
-		public bool OverwriteThrottle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(370), LayoutImmutable, Blittable, JsonProperty(Order = 370)]
+		private bool _OverwriteThrottle;
 
-		[ContainerField(371), LayoutImmutable, Blittable, JsonProperty(Order = 371)]
-		public bool OnlySendEventForHumanPlayers { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(371), LayoutImmutable, Blittable, JsonProperty(Order = 371)]
+		private bool _OnlySendEventForHumanPlayers;
 
-		[ContainerField(372), LayoutImmutable, Blittable, JsonProperty(Order = 372)]
-		public bool Enabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(372), LayoutImmutable, Blittable, JsonProperty(Order = 372)]
+		private bool _Enabled;
 
-		[ContainerField(373), LayoutImmutable, Blittable, JsonProperty(Order = 373)]
-		public bool IsDynamicSpawn { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(373), LayoutImmutable, Blittable, JsonProperty(Order = 373)]
+		private bool _IsDynamicSpawn;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

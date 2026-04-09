@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class WeaponUnlockPickupEntityData :
+	public partial class WeaponUnlockPickupEntityData :
 		PickupEntityData
 	{
-		[ContainerField(176), JsonProperty(Order = 176)]
-		public List<WeaponUnlockPickupData> Weapons { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), JsonProperty(Order = 176)]
+		private List<WeaponUnlockPickupData> _Weapons = new();
 
-		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
-		public bool UseForPersistence { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		private bool _UseForPersistence;
 
-		[ContainerField(181), LayoutImmutable, Blittable, JsonProperty(Order = 181)]
-		public bool RandomlySelectOneWeapon { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(181), LayoutImmutable, Blittable, JsonProperty(Order = 181)]
+		private bool _RandomlySelectOneWeapon;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

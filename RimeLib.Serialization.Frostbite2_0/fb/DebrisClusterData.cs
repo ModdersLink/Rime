@@ -14,84 +14,109 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 208)]
-	public class DebrisClusterData :
+	public partial class DebrisClusterData :
 		GameEntityData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public Vec3 PushVelocityMul { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private Vec3 _PushVelocityMul = new();
 
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public Vec3 PushVelocityRndMul { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private Vec3 _PushVelocityRndMul = new();
 
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public Vec3 InitRotationRndMul { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private Vec3 _InitRotationRndMul = new();
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public float ClusterLifetime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private float _ClusterLifetime;
 
-		[ContainerField(148), JsonProperty(Order = 148)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(148), JsonProperty(Order = 148)]
+		private CtrRef<MeshAsset> _Mesh = new();
 
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public uint CompositePartCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private uint _CompositePartCount;
 
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public uint MaxActivePartsCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private uint _MaxActivePartsCount;
 
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public List<DebrisClusterPartInfoData> PartHierarchy { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private List<DebrisClusterPartInfoData> _PartHierarchy = new();
 
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public float ActivationPushForceMul { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private float _ActivationPushForceMul;
 
-		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
-		public float ProjectileForceTransferMul { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
+		private float _ProjectileForceTransferMul;
 
-		[ContainerField(172), JsonProperty(Order = 172)]
-		public CtrRef<PhysicsEntityData> PhysicsData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(172), JsonProperty(Order = 172)]
+		private CtrRef<PhysicsEntityData> _PhysicsData = new();
 
-		[ContainerField(176), JsonProperty(Order = 176)]
-		public CtrRef<GameEntityData> Explosion { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), JsonProperty(Order = 176)]
+		private CtrRef<GameEntityData> _Explosion = new();
 
-		[ContainerField(180), JsonProperty(Order = 180)]
-		public CtrRef<EffectBlueprint> ActivationEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(180), JsonProperty(Order = 180)]
+		private CtrRef<EffectBlueprint> _ActivationEffect = new();
 
-		[ContainerField(184), JsonProperty(Order = 184)]
-		public CtrRef<EffectBlueprint> Effect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(184), JsonProperty(Order = 184)]
+		private CtrRef<EffectBlueprint> _Effect = new();
 
-		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
-		public float OnPartCollisionSpeedThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		private float _OnPartCollisionSpeedThreshold;
 
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public bool PartialDestruction { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private bool _PartialDestruction;
 
-		[ContainerField(193), LayoutImmutable, Blittable, JsonProperty(Order = 193)]
-		public bool ClientSideOnly { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(193), LayoutImmutable, Blittable, JsonProperty(Order = 193)]
+		private bool _ClientSideOnly;
 
-		[ContainerField(194), LayoutImmutable, Blittable, JsonProperty(Order = 194)]
-		public bool OnPartCollisionEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(194), LayoutImmutable, Blittable, JsonProperty(Order = 194)]
+		private bool _OnPartCollisionEnable;
 
-		[ContainerField(195), LayoutImmutable, Blittable, JsonProperty(Order = 195)]
-		public bool NoCollision { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(195), LayoutImmutable, Blittable, JsonProperty(Order = 195)]
+		private bool _NoCollision;
 
-		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
-		public bool KillPartsOnCollision { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
+		private bool _KillPartsOnCollision;
 
-		[ContainerField(197), LayoutImmutable, Blittable, JsonProperty(Order = 197)]
-		public bool DeactivatePartsOnSleep { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(197), LayoutImmutable, Blittable, JsonProperty(Order = 197)]
+		private bool _DeactivatePartsOnSleep;
 
-		[ContainerField(198), LayoutImmutable, Blittable, JsonProperty(Order = 198)]
-		public bool ActivateOnSpawn { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(198), LayoutImmutable, Blittable, JsonProperty(Order = 198)]
+		private bool _ActivateOnSpawn;
 
-		[ContainerField(199), LayoutImmutable, Blittable, JsonProperty(Order = 199)]
-		public bool InEffectWorldOnly { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(199), LayoutImmutable, Blittable, JsonProperty(Order = 199)]
+		private bool _InEffectWorldOnly;
 
-		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
-		public bool SpawnExplosionOnFirstImpactOnly { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
+		private bool _SpawnExplosionOnFirstImpactOnly;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

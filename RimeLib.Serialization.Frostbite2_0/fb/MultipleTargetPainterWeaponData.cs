@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class MultipleTargetPainterWeaponData :
+	public partial class MultipleTargetPainterWeaponData :
 		WeaponData
 	{
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public SpottingType SpottingBehavior { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private SpottingType _SpottingBehavior = new();
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float TimeObjectIsPainted { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _TimeObjectIsPainted;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float Angle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _Angle;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float TimeObjectIsSpotted { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _TimeObjectIsSpotted;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float Range { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _Range;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public bool UseSpotting { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private bool _UseSpotting;
 
-		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
-		public bool UseLaserPainting { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
+		private bool _UseLaserPainting;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

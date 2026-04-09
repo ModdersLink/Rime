@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class DetonatedWeaponData :
+	public partial class DetonatedWeaponData :
 		WeaponData
 	{
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<LockingControllerData> LockingController { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<LockingControllerData> _LockingController = new();
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float Range { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _Range;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

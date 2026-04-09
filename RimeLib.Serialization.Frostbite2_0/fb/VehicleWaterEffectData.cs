@@ -14,23 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 48)]
-	public class VehicleWaterEffectData :
+	public partial class VehicleWaterEffectData :
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 Position { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _Position = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public CtrRef<EffectBlueprint> Effect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private CtrRef<EffectBlueprint> _Effect = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
-			p_Writer.WriteNullBytes(8);
+			p_Writer.WriteNullBytes(16);
 			Position.Serialize(p_Writer, p_EbxWriter);
 			p_Writer.Write(p_EbxWriter.WriteImport(Effect));
 			p_Writer.WriteNullBytes(12);

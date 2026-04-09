@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class EloParameters :
+	public partial class EloParameters :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public List<EloFunctionPoint> KWinner { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private List<EloFunctionPoint> _KWinner = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public List<EloFunctionPoint> KLoser { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private List<EloFunctionPoint> _KLoser = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public List<EloFunctionPoint> KNewbie { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private List<EloFunctionPoint> _KNewbie = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public List<EloFunctionPoint> KCompetitor { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private List<EloFunctionPoint> _KCompetitor = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<EloExpectedFunctionPoint> Expected { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<EloExpectedFunctionPoint> _Expected = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

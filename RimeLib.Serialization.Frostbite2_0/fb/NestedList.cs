@@ -14,45 +14,57 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class NestedList :
+	public partial class NestedList :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
-		public string Label { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
+		private string _Label = string.Empty;
 		
-		[ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
-		public string Index { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
+		private string _Index = string.Empty;
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public UIDataSourceInfo ListDataSource { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private UIDataSourceInfo _ListDataSource = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public UIDataSourceInfo DynamicShowList { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private UIDataSourceInfo _DynamicShowList = new();
 		
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public List<string> StaticItems { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private List<string> _StaticItems = new();
 		
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public DefaultSelectionItem DefaultHighlighted { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private DefaultSelectionItem _DefaultHighlighted = new();
 		
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public UIListRowType RowType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private UIListRowType _RowType = new();
 		
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public bool UseAsNormalListRows { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private bool _UseAsNormalListRows;
 		
-		[ContainerField(69), LayoutImmutable, Blittable, JsonProperty(Order = 69)]
-		public bool HiddenOnPC { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(69), LayoutImmutable, Blittable, JsonProperty(Order = 69)]
+		private bool _HiddenOnPC;
 		
-		[ContainerField(70), LayoutImmutable, Blittable, JsonProperty(Order = 70)]
-		public bool HiddenOnXenon { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(70), LayoutImmutable, Blittable, JsonProperty(Order = 70)]
+		private bool _HiddenOnXenon;
 		
-		[ContainerField(71), LayoutImmutable, Blittable, JsonProperty(Order = 71)]
-		public bool HighLightOnUpdate { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(71), LayoutImmutable, Blittable, JsonProperty(Order = 71)]
+		private bool _HighLightOnUpdate;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

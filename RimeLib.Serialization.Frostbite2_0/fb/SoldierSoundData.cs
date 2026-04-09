@@ -14,49 +14,62 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class SoldierSoundData :
+	public partial class SoldierSoundData :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<SoundAsset> Movement { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<SoundAsset> _Movement = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<SoundAsset> Death { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<SoundAsset> _Death = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<SoundAsset> BulletImpact { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<SoundAsset> _BulletImpact = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<SoundAsset> Healing { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<SoundAsset> _Healing = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<SoundAsset> BreathControl { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<SoundAsset> _BreathControl = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public CtrRef<SoundAsset> HitIndicator { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private CtrRef<SoundAsset> _HitIndicator = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public CtrRef<SoundAsset> PickupKit { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private CtrRef<SoundAsset> _PickupKit = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public CtrRef<SoundAsset> PickupAmmo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private CtrRef<SoundAsset> _PickupAmmo = new();
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public float SprintTimeForRecovery { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private float _SprintTimeForRecovery;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float MovementThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _MovementThreshold;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float MinHealSoundTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _MinHealSoundTime;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(p_EbxWriter.WriteImport(Movement));
 			p_Writer.Write(p_EbxWriter.WriteImport(Death));
 			p_Writer.Write(p_EbxWriter.WriteImport(BulletImpact));

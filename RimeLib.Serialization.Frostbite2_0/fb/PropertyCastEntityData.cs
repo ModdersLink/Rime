@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class PropertyCastEntityData :
+	public partial class PropertyCastEntityData :
 		EntityData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private Realm _Realm = new();
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public int IntValue { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private int _IntValue;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float FloatValue { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _FloatValue;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public bool BoolValue { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private bool _BoolValue;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

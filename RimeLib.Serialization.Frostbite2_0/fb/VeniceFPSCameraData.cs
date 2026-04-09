@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 240)]
-	public class VeniceFPSCameraData :
+	public partial class VeniceFPSCameraData :
 		FPSCameraData
 	{
-		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public float SuppressionBlurAmountMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private float _SuppressionBlurAmountMultiplier;
 
-		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
-		public float SuppressionBlurSizeMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		private float _SuppressionBlurSizeMultiplier;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class UIComponentData :
+	public partial class UIComponentData :
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
-		public string ShortName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
+		private string _ShortName = string.Empty;
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<string> DataSources { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<string> _DataSources = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public UIUpdateType UpdateType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private UIUpdateType _UpdateType = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public int UpdatesPerSecond { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private int _UpdatesPerSecond;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

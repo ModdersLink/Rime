@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class WeaponUnlockPickupData :
+	public partial class WeaponUnlockPickupData :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public UnlockWeaponAndSlot UnlockWeaponAndSlot { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private UnlockWeaponAndSlot _UnlockWeaponAndSlot = new();
 		
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public int AltWeaponSlot { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private int _AltWeaponSlot;
 		
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public int LinkedToWeaponSlot { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private int _LinkedToWeaponSlot;
 		
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public uint MinAmmo { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private uint _MinAmmo;
 		
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public uint MaxAmmo { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private uint _MaxAmmo;
 		
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public bool DefaultToFullAmmo { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private bool _DefaultToFullAmmo;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

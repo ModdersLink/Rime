@@ -14,28 +14,34 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class CustomizedMaterialData :
+	public partial class CustomizedMaterialData :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public List<string> MaterialNames { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private List<string> _MaterialNames = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<UnlockableColorCollection> ColorParameters { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<UnlockableColorCollection> _ColorParameters = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<UnlockableTextureCollection> TextureParameters { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<UnlockableTextureCollection> _TextureParameters = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<UnlockableTextureSliceCollection> TextureSliceParameters { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<UnlockableTextureSliceCollection> _TextureSliceParameters = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			(RimeWriter Writer, uint ArrayIndex) s_MaterialNames = p_EbxWriter.GetArrayWriter(MaterialNames.GetType(), MaterialNames.Count);
 			p_Writer.Write(s_MaterialNames.ArrayIndex);
 			foreach (var s_Entry in MaterialNames)

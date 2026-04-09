@@ -14,28 +14,34 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class RegistryContainer :
+	public partial class RegistryContainer :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public RefArray<DataContainer> EntityRegistry { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private RefArray<DataContainer> _EntityRegistry = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<DataContainer> AssetRegistry { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<DataContainer> _AssetRegistry = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<DataContainer> BlueprintRegistry { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<DataContainer> _BlueprintRegistry = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<DataContainer> ReferenceObjectRegistry { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<DataContainer> _ReferenceObjectRegistry = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			(RimeWriter Writer, uint ArrayIndex) s_EntityRegistry = p_EbxWriter.GetArrayWriter(EntityRegistry.GetType(), EntityRegistry.Count);
 			p_Writer.Write(s_EntityRegistry.ArrayIndex);
 			foreach (var s_Entry in EntityRegistry)

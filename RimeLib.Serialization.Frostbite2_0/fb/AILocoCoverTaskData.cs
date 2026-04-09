@@ -14,60 +14,77 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class AILocoCoverTaskData :
+	public partial class AILocoCoverTaskData :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public Vec3 WantedPos { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private Vec3 _WantedPos = new();
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 ThreatPosition { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _ThreatPosition = new();
 		
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AntPoseEnum CoverPose { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AntPoseEnum _CoverPose = new();
 		
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float WaitTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _WaitTime;
 		
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public CoverPeekType PeekOut { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private CoverPeekType _PeekOut = new();
 		
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float WorldAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _WorldAngle;
 		
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float OffsetLength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _OffsetLength;
 		
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public AntPoseEnum ExitPose { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private AntPoseEnum _ExitPose = new();
 		
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public float ExitAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private float _ExitAngle;
 		
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public float DistanceToNextWaypoint { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private float _DistanceToNextWaypoint;
 		
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public AntCoverEnum CoverType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private AntCoverEnum _CoverType = new();
 		
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public CoverEnterStrategy EnterStrategy { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private CoverEnterStrategy _EnterStrategy = new();
 		
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public CoverExitStyle ExitStyle { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private CoverExitStyle _ExitStyle = new();
 		
-		[ContainerField(76), JsonProperty(Order = 76)]
-		public CoverFireType PrepareFireType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(76), JsonProperty(Order = 76)]
+		private CoverFireType _PrepareFireType = new();
 		
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public bool ForceExitCover { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private bool _ForceExitCover;
 		
-		[ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
-		public bool UseClientPosition { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
+		private bool _UseClientPosition;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

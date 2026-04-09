@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class VisualTerrainEntityData :
+	public partial class VisualTerrainEntityData :
 		EntityData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<TerrainData> Terrain { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<TerrainData> _Terrain = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<VisualTerrainSettings> Settings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<VisualTerrainSettings> _Settings = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class LensFlareEntityData :
+	public partial class LensFlareEntityData :
 		SpatialEntityData
 	{
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public List<LensFlareElement> Elements { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private List<LensFlareElement> _Elements = new();
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public float OccluderSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private float _OccluderSize;
 
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public bool Visible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private bool _Visible;
 
-		[ContainerField(89), LayoutImmutable, Blittable, JsonProperty(Order = 89)]
-		public bool HalfRes { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(89), LayoutImmutable, Blittable, JsonProperty(Order = 89)]
+		private bool _HalfRes;
 
-		[ContainerField(90), LayoutImmutable, Blittable, JsonProperty(Order = 90)]
-		public bool DebugDrawOccluder { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(90), LayoutImmutable, Blittable, JsonProperty(Order = 90)]
+		private bool _DebugDrawOccluder;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

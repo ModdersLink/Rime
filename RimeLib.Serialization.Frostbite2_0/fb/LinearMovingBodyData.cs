@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class LinearMovingBodyData :
+	public partial class LinearMovingBodyData :
 		MovingBodyData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 Axis { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _Axis = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public EndPointData Start { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private EndPointData _Start = new();
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public EndPointData End { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private EndPointData _End = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

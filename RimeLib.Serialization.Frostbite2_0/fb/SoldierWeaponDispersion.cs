@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class SoldierWeaponDispersion :
+	public partial class SoldierWeaponDispersion :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public FiringDispersionData StandDispersion { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private FiringDispersionData _StandDispersion = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public FiringDispersionData CrouchDispersion { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private FiringDispersionData _CrouchDispersion = new();
 		
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public FiringDispersionData ProneDispersion { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private FiringDispersionData _ProneDispersion = new();
 		
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float JumpDispersionAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _JumpDispersionAngle;
 		
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public float ProneTransitionDispersionAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private float _ProneTransitionDispersionAngle;
 		
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public float MoveDispersionAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private float _MoveDispersionAngle;
 		
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public float MoveZoomedDispersionAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private float _MoveZoomedDispersionAngle;
 		
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public float DecreasePerSecond { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private float _DecreasePerSecond;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class SoldierWeaponSwitchingData :
+	public partial class SoldierWeaponSwitchingData :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public List<WeaponSwitchingMapData> SwitchMap { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private List<WeaponSwitchingMapData> _SwitchMap = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<DirectWeaponSwitchingMapData> DirectSwitchMap { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<DirectWeaponSwitchingMapData> _DirectSwitchMap = new();
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float SwitchToGadgetCooldownTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _SwitchToGadgetCooldownTime;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

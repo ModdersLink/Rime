@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class WheelComponentData :
+	public partial class WheelComponentData :
 		PartComponentData
 	{
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public CtrRef<WheelConfigData> Config { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private CtrRef<WheelConfigData> _Config = new();
 
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public WheelPhysicsType PhysicsType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private WheelPhysicsType _PhysicsType = new();
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public float EffectClampVelocity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private float _EffectClampVelocity;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

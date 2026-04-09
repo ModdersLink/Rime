@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class SocketObjectData :
+	public partial class SocketObjectData :
 		SocketObjectDataBase
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public GUID Asset1pGuid { get; set; } = GUID.Empty;
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private GUID _Asset1pGuid = GUID.Empty;
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public List<GUID> Variation1pGuids { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private List<GUID> _Variation1pGuids = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public GUID Asset1pZoomGuid { get; set; } = GUID.Empty;
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private GUID _Asset1pZoomGuid = GUID.Empty;
 
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public List<GUID> Variation1pZoomGuids { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private List<GUID> _Variation1pZoomGuids = new();
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public GUID Asset3pGuid { get; set; } = GUID.Empty;
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private GUID _Asset3pGuid = GUID.Empty;
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public List<GUID> Variation3pGuids { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private List<GUID> _Variation3pGuids = new();
 
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public RefArray<CustomizedMaterialData> CustomizedMaterials { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private RefArray<CustomizedMaterialData> _CustomizedMaterials = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

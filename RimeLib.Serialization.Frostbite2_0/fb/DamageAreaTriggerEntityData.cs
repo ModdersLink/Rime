@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class DamageAreaTriggerEntityData :
+	public partial class DamageAreaTriggerEntityData :
 		TriggerEntityData
 	{
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public float DamagePerSecond { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private float _DamagePerSecond;
 
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public TeamId TeamOfImmortalCharacters { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private TeamId _TeamOfImmortalCharacters = new();
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public float DamageTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private float _DamageTime;
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public bool DamageVehicles { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private bool _DamageVehicles;
 
-		[ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
-		public bool DamageBangers { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
+		private bool _DamageBangers;
 
-		[ContainerField(126), LayoutImmutable, Blittable, JsonProperty(Order = 126)]
-		public bool ExcludeImmortalCharactersInTeam { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(126), LayoutImmutable, Blittable, JsonProperty(Order = 126)]
+		private bool _ExcludeImmortalCharactersInTeam;
 
-		[ContainerField(127), LayoutImmutable, Blittable, JsonProperty(Order = 127)]
-		public bool DamageCharacters { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(127), LayoutImmutable, Blittable, JsonProperty(Order = 127)]
+		private bool _DamageCharacters;
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public bool ExcludeShieldedSoldiers { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private bool _ExcludeShieldedSoldiers;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

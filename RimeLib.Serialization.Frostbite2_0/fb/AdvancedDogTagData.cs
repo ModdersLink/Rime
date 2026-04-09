@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 80)]
-	public class AdvancedDogTagData :
+	public partial class AdvancedDogTagData :
 		DogTagData
 	{
-		[ContainerField(68), LayoutImmutable, JsonProperty(Order = 68)]
-		public string StatCode { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, JsonProperty(Order = 68)]
+		private string _StatCode = string.Empty;
 
-		[ContainerField(72), LayoutImmutable, JsonProperty(Order = 72)]
-		public string StatSID { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(72), LayoutImmutable, JsonProperty(Order = 72)]
+		private string _StatSID = string.Empty;
 
-		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
-		public bool IsStatMeasuredInTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
+		private bool _IsStatMeasuredInTime;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,28 +14,34 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class WeaponSpeedData :
+	public partial class WeaponSpeedData :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float ZoomOutSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _ZoomOutSpeed;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float ZoomInSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _ZoomInSpeed;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float UnDeploySpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _UnDeploySpeed;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float DeploySpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _DeploySpeed;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(ZoomOutSpeed);
 			p_Writer.Write(ZoomInSpeed);
 			p_Writer.Write(UnDeploySpeed);

@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class TargetEvaluatorComponentData :
+	public partial class TargetEvaluatorComponentData :
 		ComponentData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public float UpdateInterval { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private float _UpdateInterval;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

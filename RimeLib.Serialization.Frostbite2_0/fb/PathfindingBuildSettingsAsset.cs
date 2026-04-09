@@ -14,51 +14,65 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class PathfindingBuildSettingsAsset :
+	public partial class PathfindingBuildSettingsAsset :
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float EntityRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _EntityRadius;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float EntityHeight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _EntityHeight;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float MaxWalkableSlope { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _MaxWalkableSlope;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float MaxStep { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _MaxStep;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float MinIslandSurfaceArea { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _MinIslandSurfaceArea;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float VoxSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _VoxSize;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float GridSideLength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _GridSideLength;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public float AdditionalInwardsSmoothingDist { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private float _AdditionalInwardsSmoothingDist;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public uint TerrainSamplingStep { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private uint _TerrainSamplingStep;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public bool TesselateForPathingAccuracy { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private bool _TesselateForPathingAccuracy;
 
-		[ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
-		public bool UseEnhancedTerrainTracking { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
+		private bool _UseEnhancedTerrainTracking;
 
-		[ContainerField(50), LayoutImmutable, Blittable, JsonProperty(Order = 50)]
-		public bool OptimizeForAxisAligned { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(50), LayoutImmutable, Blittable, JsonProperty(Order = 50)]
+		private bool _OptimizeForAxisAligned;
 
-		[ContainerField(51), LayoutImmutable, Blittable, JsonProperty(Order = 51)]
-		public bool LeaveSmallIslandsTouchingPortals { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(51), LayoutImmutable, Blittable, JsonProperty(Order = 51)]
+		private bool _LeaveSmallIslandsTouchingPortals;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

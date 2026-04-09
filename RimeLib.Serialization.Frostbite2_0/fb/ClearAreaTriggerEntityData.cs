@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class ClearAreaTriggerEntityData :
+	public partial class ClearAreaTriggerEntityData :
 		TriggerEntityData
 	{
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public TeamId TeamOfImmortalSoldiers { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private TeamId _TeamOfImmortalSoldiers = new();
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public bool RemoveBangers { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private bool _RemoveBangers;
 
-		[ContainerField(117), LayoutImmutable, Blittable, JsonProperty(Order = 117)]
-		public bool RemoveVehicles { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(117), LayoutImmutable, Blittable, JsonProperty(Order = 117)]
+		private bool _RemoveVehicles;
 
-		[ContainerField(118), LayoutImmutable, Blittable, JsonProperty(Order = 118)]
-		public bool RemoveEffects { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(118), LayoutImmutable, Blittable, JsonProperty(Order = 118)]
+		private bool _RemoveEffects;
 
-		[ContainerField(119), LayoutImmutable, Blittable, JsonProperty(Order = 119)]
-		public bool RemoveStaticModels { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(119), LayoutImmutable, Blittable, JsonProperty(Order = 119)]
+		private bool _RemoveStaticModels;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public bool RemoveDebrisClusters { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private bool _RemoveDebrisClusters;
 
-		[ContainerField(121), LayoutImmutable, Blittable, JsonProperty(Order = 121)]
-		public bool ExcludeImmortalSoldiersInTeam { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(121), LayoutImmutable, Blittable, JsonProperty(Order = 121)]
+		private bool _ExcludeImmortalSoldiersInTeam;
 
-		[ContainerField(122), LayoutImmutable, Blittable, JsonProperty(Order = 122)]
-		public bool RemoveMeshProxies { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(122), LayoutImmutable, Blittable, JsonProperty(Order = 122)]
+		private bool _RemoveMeshProxies;
 
-		[ContainerField(123), LayoutImmutable, Blittable, JsonProperty(Order = 123)]
-		public bool RemoveSoldiers { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(123), LayoutImmutable, Blittable, JsonProperty(Order = 123)]
+		private bool _RemoveSoldiers;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,42 +14,53 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 88)]
-	public class MatrixPannerNodeData :
+	public partial class MatrixPannerNodeData :
 		AudioGraphNodeData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AudioGraphNodePort In { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AudioGraphNodePort _In = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AudioGraphNodePort FrontLeft { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AudioGraphNodePort _FrontLeft = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AudioGraphNodePort Center { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AudioGraphNodePort _Center = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AudioGraphNodePort FrontRight { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AudioGraphNodePort _FrontRight = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public AudioGraphNodePort RearLeft { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private AudioGraphNodePort _RearLeft = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public AudioGraphNodePort Lfe { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private AudioGraphNodePort _Lfe = new();
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public AudioGraphNodePort RearRight { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private AudioGraphNodePort _RearRight = new();
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public AudioGraphNodePort FarRearLeft { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private AudioGraphNodePort _FarRearLeft = new();
 
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public AudioGraphNodePort FarRearRight { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private AudioGraphNodePort _FarRearRight = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public AudioGraphNodePort Out { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private AudioGraphNodePort _Out = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

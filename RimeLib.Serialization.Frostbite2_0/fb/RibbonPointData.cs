@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 48)]
-	public class RibbonPointData :
+	public partial class RibbonPointData :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public Vec4 UserMaskRight { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private Vec4 _UserMaskRight = new();
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec4 UserMaskLeft { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec4 _UserMaskLeft = new();
 		
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float Right { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _Right;
 		
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float Left { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _Left;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class EmitterEntityData :
+	public partial class EmitterEntityData :
 		EffectEntityData
 	{
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public CtrRef<EmitterAsset> Emitter { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private CtrRef<EmitterAsset> _Emitter = new();
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float SpawnProbability { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _SpawnProbability;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

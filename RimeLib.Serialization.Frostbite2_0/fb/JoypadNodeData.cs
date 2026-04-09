@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class JoypadNodeData :
+	public partial class JoypadNodeData :
 		AudioGraphNodeData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AudioGraphNodePort LeftAnalogX { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AudioGraphNodePort _LeftAnalogX = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AudioGraphNodePort LeftAnalogY { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AudioGraphNodePort _LeftAnalogY = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AudioGraphNodePort RightAnalogX { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AudioGraphNodePort _RightAnalogX = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AudioGraphNodePort RightAnalogY { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AudioGraphNodePort _RightAnalogY = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public AudioGraphNodePort AButton { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private AudioGraphNodePort _AButton = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public AudioGraphNodePort BButton { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private AudioGraphNodePort _BButton = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

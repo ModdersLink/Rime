@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class InteractionEntityData :
+	public partial class InteractionEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public float UseWithinRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private float _UseWithinRadius;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public float UseWithinAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private float _UseWithinAngle;
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public CtrRef<SoundAsset> PreInteractionSoundEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private CtrRef<SoundAsset> _PreInteractionSoundEffect = new();
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public uint MaxUses { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private uint _MaxUses;
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public bool AllowInteractionViaRemoteEntry { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private bool _AllowInteractionViaRemoteEntry;
 
-		[ContainerField(113), LayoutImmutable, Blittable, JsonProperty(Order = 113)]
-		public bool TestIfOccluded { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(113), LayoutImmutable, Blittable, JsonProperty(Order = 113)]
+		private bool _TestIfOccluded;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

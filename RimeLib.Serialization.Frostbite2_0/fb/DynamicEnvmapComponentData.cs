@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class DynamicEnvmapComponentData :
+	public partial class DynamicEnvmapComponentData :
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public Vec3 KeyColorEnvmap { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private Vec3 _KeyColorEnvmap = new();
 
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public Vec3 GroundColorEnvmap { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private Vec3 _GroundColorEnvmap = new();
 
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public Vec3 SkyColorEnvmap { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private Vec3 _SkyColorEnvmap = new();
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public bool Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private bool _Enable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

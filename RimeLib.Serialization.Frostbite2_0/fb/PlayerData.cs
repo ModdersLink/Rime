@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class PlayerData :
+	public partial class PlayerData :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<PlayerViewData> PlayerView { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<PlayerViewData> _PlayerView = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<EntryInputActionMapsData> InputConceptDefinition { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<EntryInputActionMapsData> _InputConceptDefinition = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<InputActionMappingsData> InputMapping { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<InputActionMappingsData> _InputMapping = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

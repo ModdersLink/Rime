@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class StaticModelEntityData :
+	public partial class StaticModelEntityData :
 		GamePhysicsEntityData
 	{
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public RefArray<PartLinkData> PartLinks { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private RefArray<PartLinkData> _PartLinks = new();
 
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private CtrRef<MeshAsset> _Mesh = new();
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public uint BoneCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private uint _BoneCount;
 
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public List<LinearTransform> BasePoseTransforms { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private List<LinearTransform> _BasePoseTransforms = new();
 
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public StaticModelNetworkInfo NetworkInfo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private StaticModelNetworkInfo _NetworkInfo = new();
 
-		[ContainerField(144), JsonProperty(Order = 144)]
-		public List<PhysicsPartInfo> PhysicsPartInfos { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), JsonProperty(Order = 144)]
+		private List<PhysicsPartInfo> _PhysicsPartInfos = new();
 
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public bool ExcludeFromNearbyObjectDestruction { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private bool _ExcludeFromNearbyObjectDestruction;
 
-		[ContainerField(149), LayoutImmutable, Blittable, JsonProperty(Order = 149)]
-		public bool AnimatePhysics { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(149), LayoutImmutable, Blittable, JsonProperty(Order = 149)]
+		private bool _AnimatePhysics;
 
-		[ContainerField(150), LayoutImmutable, Blittable, JsonProperty(Order = 150)]
-		public bool Visible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(150), LayoutImmutable, Blittable, JsonProperty(Order = 150)]
+		private bool _Visible;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

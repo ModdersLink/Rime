@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class RotateVectorData :
+	public partial class RotateVectorData :
 		EvaluatorData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float Angle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _Angle;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public bool RotateWithinPlane { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private bool _RotateWithinPlane;
 
-		[ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
-		public bool InputAffectsPhi { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
+		private bool _InputAffectsPhi;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

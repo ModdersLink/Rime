@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 4)]
-	public class MatchmakingRankedRule :
+	public partial class MatchmakingRankedRule :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
-		public string MinFitThreshold { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
+		private string _MinFitThreshold = string.Empty;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

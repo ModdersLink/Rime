@@ -14,146 +14,190 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 288)]
-	public class VehicleConfigData :
+	public partial class VehicleConfigData :
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 CenterOfMass { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _CenterOfMass = new();
 
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public Vec3 CenterOfMassHandlingOffset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private Vec3 _CenterOfMassHandlingOffset = new();
 
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public Vec3 InertiaModifier { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private Vec3 _InertiaModifier = new();
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public CtrRef<AeroDynamicPhysicsData> AeroDynamicPhysics { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private CtrRef<AeroDynamicPhysicsData> _AeroDynamicPhysics = new();
 
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public CtrRef<VehicleParachuteData> ParachutePhysics { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private CtrRef<VehicleParachuteData> _ParachutePhysics = new();
 
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public CtrRef<MotorbikeData> MotorbikePhysics { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private CtrRef<MotorbikeData> _MotorbikePhysics = new();
 
-		[ContainerField(76), JsonProperty(Order = 76)]
-		public CtrRef<MotionDampingData> MotionDamping { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(76), JsonProperty(Order = 76)]
+		private CtrRef<MotionDampingData> _MotionDamping = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public VehicleInputData Input { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private VehicleInputData _Input = new();
 
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public CtrRef<FloatPhysicsData> FloatPhysics { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private CtrRef<FloatPhysicsData> _FloatPhysics = new();
 
-		[ContainerField(164), JsonProperty(Order = 164)]
-		public CtrRef<StabilizerData> Stabilizer { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(164), JsonProperty(Order = 164)]
+		private CtrRef<StabilizerData> _Stabilizer = new();
 
-		[ContainerField(168), JsonProperty(Order = 168)]
-		public List<StabilizerSettings> Stabilizers { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(168), JsonProperty(Order = 168)]
+		private List<StabilizerSettings> _Stabilizers = new();
 
-		[ContainerField(172), JsonProperty(Order = 172)]
-		public List<ConstantForceData> ConstantForce { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(172), JsonProperty(Order = 172)]
+		private List<ConstantForceData> _ConstantForce = new();
 
-		[ContainerField(176), JsonProperty(Order = 176)]
-		public VehicleMode VehicleModeAtReset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), JsonProperty(Order = 176)]
+		private VehicleMode _VehicleModeAtReset = new();
 
-		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
-		public float BodyMass { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		private float _BodyMass;
 
-		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
-		public float GravityModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		private float _GravityModifier;
 
-		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
-		public float YawMin { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		private float _YawMin;
 
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public float YawMax { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private float _YawMax;
 
-		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
-		public float DownForceBaseFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
+		private float _DownForceBaseFactor;
 
-		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
-		public float DownForceWheelFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
+		private float _DownForceWheelFactor;
 
-		[ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
-		public float VehicleModeChangeEnteringTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
+		private float _VehicleModeChangeEnteringTime;
 
-		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
-		public float VehicleModeChangeStartingTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		private float _VehicleModeChangeStartingTime;
 
-		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
-		public float VehicleModeChangeStoppingTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
+		private float _VehicleModeChangeStoppingTime;
 
-		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
-		public float VehicleModeChangeLeavingTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		private float _VehicleModeChangeLeavingTime;
 
-		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
-		public float StandStillLowSpeedTimeLimit { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
+		private float _StandStillLowSpeedTimeLimit;
 
-		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public float StaticFrictionBreakCollisionMod { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private float _StaticFrictionBreakCollisionMod;
 
-		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
-		public float StaticFrictionBreakVelocityMod { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		private float _StaticFrictionBreakVelocityMod;
 
-		[ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
-		public float CoefficientOfAirFriction { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
+		private float _CoefficientOfAirFriction;
 
-		[ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
-		public float AirDensity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
+		private float _AirDensity;
 
-		[ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
-		public float AirDragArea { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
+		private float _AirDragArea;
 
-		[ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
-		public float WindResistanceBaseFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
+		private float _WindResistanceBaseFactor;
 
-		[ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
-		public float WindResistanceVelocityFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
+		private float _WindResistanceVelocityFactor;
 
-		[ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
-		public float WindResistanceVelocityFactorMin { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
+		private float _WindResistanceVelocityFactorMin;
 
-		[ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
-		public float WindResistanceVelocityFactorMax { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
+		private float _WindResistanceVelocityFactorMax;
 
-		[ContainerField(260), JsonProperty(Order = 260)]
-		public AntiRollBars AntiRollBars { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(260), JsonProperty(Order = 260)]
+		private AntiRollBars _AntiRollBars = new();
 
-		[ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
-		public bool UseDownForceWheelFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
+		private bool _UseDownForceWheelFactor;
 
-		[ContainerField(269), LayoutImmutable, Blittable, JsonProperty(Order = 269)]
-		public bool UseGearbox { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(269), LayoutImmutable, Blittable, JsonProperty(Order = 269)]
+		private bool _UseGearbox;
 
-		[ContainerField(270), LayoutImmutable, Blittable, JsonProperty(Order = 270)]
-		public bool UseStandStillBrake { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(270), LayoutImmutable, Blittable, JsonProperty(Order = 270)]
+		private bool _UseStandStillBrake;
 
-		[ContainerField(271), LayoutImmutable, Blittable, JsonProperty(Order = 271)]
-		public bool UseStandStillSleep { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(271), LayoutImmutable, Blittable, JsonProperty(Order = 271)]
+		private bool _UseStandStillSleep;
 
-		[ContainerField(272), LayoutImmutable, Blittable, JsonProperty(Order = 272)]
-		public bool UseTurnAroundForce { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(272), LayoutImmutable, Blittable, JsonProperty(Order = 272)]
+		private bool _UseTurnAroundForce;
 
-		[ContainerField(273), LayoutImmutable, Blittable, JsonProperty(Order = 273)]
-		public bool UseMotorcycleControl { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(273), LayoutImmutable, Blittable, JsonProperty(Order = 273)]
+		private bool _UseMotorcycleControl;
 
-		[ContainerField(274), LayoutImmutable, Blittable, JsonProperty(Order = 274)]
-		public bool InvertPitchAllowed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(274), LayoutImmutable, Blittable, JsonProperty(Order = 274)]
+		private bool _InvertPitchAllowed;
 
-		[ContainerField(275), LayoutImmutable, Blittable, JsonProperty(Order = 275)]
-		public bool UseWindResistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(275), LayoutImmutable, Blittable, JsonProperty(Order = 275)]
+		private bool _UseWindResistance;
 
-		[ContainerField(276), LayoutImmutable, Blittable, JsonProperty(Order = 276)]
-		public bool UseDownForce { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(276), LayoutImmutable, Blittable, JsonProperty(Order = 276)]
+		private bool _UseDownForce;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
-			p_Writer.WriteNullBytes(8);
+			p_Writer.WriteNullBytes(16);
 			CenterOfMass.Serialize(p_Writer, p_EbxWriter);
 			CenterOfMassHandlingOffset.Serialize(p_Writer, p_EbxWriter);
 			InertiaModifier.Serialize(p_Writer, p_EbxWriter);

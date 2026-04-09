@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class AIEntryData :
+	public partial class AIEntryData :
 		GameAIEntryData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<AIVehicleBehaviourData> EquipmentType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<AIVehicleBehaviourData> _EquipmentType = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<ArmamentData> Armament { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<ArmamentData> _Armament = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<MobilityData> Mobility { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<MobilityData> _Mobility = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public StrengthType StrengthType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private StrengthType _StrengthType = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float ReuseTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _ReuseTime;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public bool Forbidden { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private bool _Forbidden;
 
-		[ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
-		public bool HasExposedSoldier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
+		private bool _HasExposedSoldier;
 
-		[ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
-		public bool InterludeOnly { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
+		private bool _InterludeOnly;
 
-		[ContainerField(35), LayoutImmutable, Blittable, JsonProperty(Order = 35)]
-		public bool InvalidForAI { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(35), LayoutImmutable, Blittable, JsonProperty(Order = 35)]
+		private bool _InvalidForAI;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class WeaponSocketObjectData :
+	public partial class WeaponSocketObjectData :
 		SocketObjectDataBase
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public List<uint> ReferencedAssetHashes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private List<uint> _ReferencedAssetHashes = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<Asset> Asset1p { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<Asset> _Asset1p = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<Asset> Asset1pzoom { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<Asset> _Asset1pzoom = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<Asset> Asset3p { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<Asset> _Asset3p = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class WorldData :
+	public partial class WorldData :
 		SubWorldData
 	{
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public CtrRef<MaterialGridData> RuntimeMaterialGrid { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private CtrRef<MaterialGridData> _RuntimeMaterialGrid = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 176)]
-	public class HovercraftFloatPhysicsData :
+	public partial class HovercraftFloatPhysicsData :
 		HullFloatPhysicsData
 	{
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public Vec3 LandResistanceAxisMod { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private Vec3 _LandResistanceAxisMod = new();
 
-		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public Vec3 LandFrictionAxisMod { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private Vec3 _LandFrictionAxisMod = new();
 
-		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public float FrontLength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private float _FrontLength;
 
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public float SideLength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private float _SideLength;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

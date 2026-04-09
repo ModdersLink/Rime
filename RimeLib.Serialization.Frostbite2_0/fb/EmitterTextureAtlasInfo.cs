@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class EmitterTextureAtlasInfo :
+	public partial class EmitterTextureAtlasInfo :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public Vec2 MinUv { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private Vec2 _MinUv = new();
 		
-		[ContainerField(8), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public Vec2 MaxUv { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private Vec2 _MaxUv = new();
 		
-		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
-		public string TextureName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
+		private string _TextureName = string.Empty;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

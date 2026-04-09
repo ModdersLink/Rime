@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class PackagingCellData :
+	public partial class PackagingCellData :
 		EntityData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<PackagingRule> Rules { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<PackagingRule> _Rules = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<PackagingCellData> Targets { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<PackagingCellData> _Targets = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public List<Vec2> Shape { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private List<Vec2> _Shape = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

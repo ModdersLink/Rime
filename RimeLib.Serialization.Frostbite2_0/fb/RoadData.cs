@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class RoadData :
+	public partial class RoadData :
 		RibbonData
 	{
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader2d { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private CtrRef<SurfaceShaderBaseAsset> _Shader2d = new();
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader3dZOnly { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private CtrRef<SurfaceShaderBaseAsset> _Shader3dZOnly = new();
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public float UvTileFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private float _UvTileFactor;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public bool StickToTerrain { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private bool _StickToTerrain;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

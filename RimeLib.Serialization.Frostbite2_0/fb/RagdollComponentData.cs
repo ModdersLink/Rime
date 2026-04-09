@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class RagdollComponentData :
+	public partial class RagdollComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public CtrRef<SkeletonAsset> SkeletonAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private CtrRef<SkeletonAsset> _SkeletonAsset = new();
 
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public CtrRef<RagdollAsset> RagdollAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private CtrRef<RagdollAsset> _RagdollAsset = new();
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public CtrRef<SkeletonCollisionData> SkeletonCollisionData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private CtrRef<SkeletonCollisionData> _SkeletonCollisionData = new();
 
-		[ContainerField(108), JsonProperty(Order = 108)]
-		public RagdollBinding Binding { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(108), JsonProperty(Order = 108)]
+		private RagdollBinding _Binding = new();
 
-		[ContainerField(128), LayoutImmutable, JsonProperty(Order = 128)]
-		public string LeftLegBoneName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, JsonProperty(Order = 128)]
+		private string _LeftLegBoneName = string.Empty;
 
-		[ContainerField(132), LayoutImmutable, JsonProperty(Order = 132)]
-		public string RightLegBoneName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, JsonProperty(Order = 132)]
+		private string _RightLegBoneName = string.Empty;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

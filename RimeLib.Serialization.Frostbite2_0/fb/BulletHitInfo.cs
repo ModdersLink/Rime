@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 48)]
-	public class BulletHitInfo :
+	public partial class BulletHitInfo :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public Vec3 Direction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private Vec3 _Direction = new();
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 SpawnPosition { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _SpawnPosition = new();
 		
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public CtrRef<SoldierWeaponUnlockAsset> WeaponUnlockAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private CtrRef<SoldierWeaponUnlockAsset> _WeaponUnlockAsset = new();
 		
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public AntHitReactionWeaponType WeaponType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private AntHitReactionWeaponType _WeaponType = new();
 		
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public int BoneType { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private int _BoneType;
 		
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public int ShooterPlayerId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private int _ShooterPlayerId;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

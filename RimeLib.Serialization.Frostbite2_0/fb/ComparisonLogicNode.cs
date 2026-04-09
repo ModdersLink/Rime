@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class ComparisonLogicNode :
+	public partial class ComparisonLogicNode :
 		UINodeData
 	{
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<UINodePort> In { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<UINodePort> _In = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public RefArray<UINodePort> Outputs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private RefArray<UINodePort> _Outputs = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public UIDataSourceInfo DataSourceInfo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private UIDataSourceInfo _DataSourceInfo = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public bool SkipFractionals { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private bool _SkipFractionals;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

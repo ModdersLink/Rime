@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class RumbleFiringData :
+	public partial class RumbleFiringData :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public float LowRumble { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private float _LowRumble;
 		
-		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
-		public float HighRumble { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		private float _HighRumble;
 		
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float RumbleDuration { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _RumbleDuration;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

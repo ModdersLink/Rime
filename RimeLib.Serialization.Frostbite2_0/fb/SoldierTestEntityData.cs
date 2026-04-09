@@ -14,96 +14,125 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 208)]
-	public class SoldierTestEntityData :
+	public partial class SoldierTestEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public CtrRef<SoldierBlueprint> TestSoldier { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private CtrRef<SoldierBlueprint> _TestSoldier = new();
 
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public CtrRef<SoldierSpawnTemplateData> Template { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private CtrRef<SoldierSpawnTemplateData> _Template = new();
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public CtrRef<VehicleBlueprint> TestVehicle { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private CtrRef<VehicleBlueprint> _TestVehicle = new();
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public float SpecialAnimationIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private float _SpecialAnimationIndex;
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public CtrRef<RawFileAsset> UnlocksProfile { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private CtrRef<RawFileAsset> _UnlocksProfile = new();
 
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public TeamId Team { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private TeamId _Team = new();
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public int RandomSeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private int _RandomSeed;
 
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public CtrRef<MovementActionData> StartSequence { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private CtrRef<MovementActionData> _StartSequence = new();
 
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public CtrRef<MovementActionRoot> StartSequenceRoot { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private CtrRef<MovementActionRoot> _StartSequenceRoot = new();
 
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public float YawInputVal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private float _YawInputVal;
 
-		[ContainerField(136), LayoutImmutable, JsonProperty(Order = 136)]
-		public string CameraMovementsFilename { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, JsonProperty(Order = 136)]
+		private string _CameraMovementsFilename = string.Empty;
 
-		[ContainerField(140), JsonProperty(Order = 140)]
-		public CtrRef<InputRecorderData> InputRecorder { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(140), JsonProperty(Order = 140)]
+		private CtrRef<InputRecorderData> _InputRecorder = new();
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public float ThrottleInputVal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private float _ThrottleInputVal;
 
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public float FireInputVal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private float _FireInputVal;
 
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public float StrafeInputVal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private float _StrafeInputVal;
 
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public float ProneInputVal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private float _ProneInputVal;
 
-		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public float PitchInputVal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private float _PitchInputVal;
 
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public float RollInputVal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private float _RollInputVal;
 
-		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
-		public float ZoomInputVal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
+		private float _ZoomInputVal;
 
-		[ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
-		public float JumpInputVal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
+		private float _JumpInputVal;
 
-		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public float ActiveInputRecording { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private float _ActiveInputRecording;
 
-		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
-		public float AuthoritativeAimingActive { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		private float _AuthoritativeAimingActive;
 
-		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
-		public float FireCounterMeasure { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		private float _FireCounterMeasure;
 
-		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
-		public float AuthoritativeYaw { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		private float _AuthoritativeYaw;
 
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public float AuthoritativePitch { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private float _AuthoritativePitch;
 
-		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
-		public bool RunAutomatically { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
+		private bool _RunAutomatically;
 
-		[ContainerField(197), LayoutImmutable, Blittable, JsonProperty(Order = 197)]
-		public bool UseUnlocksProfile { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(197), LayoutImmutable, Blittable, JsonProperty(Order = 197)]
+		private bool _UseUnlocksProfile;
 
-		[ContainerField(198), LayoutImmutable, Blittable, JsonProperty(Order = 198)]
-		public bool SprintInputVal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(198), LayoutImmutable, Blittable, JsonProperty(Order = 198)]
+		private bool _SprintInputVal;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

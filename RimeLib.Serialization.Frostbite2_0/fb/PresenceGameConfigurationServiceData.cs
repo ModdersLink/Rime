@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class PresenceGameConfigurationServiceData :
+	public partial class PresenceGameConfigurationServiceData :
 		PresenceServiceData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public OnlineEnvironmentConsoleUrl ConfigUrl { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private OnlineEnvironmentConsoleUrl _ConfigUrl = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

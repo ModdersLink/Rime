@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class GainFaderNodeData :
+	public partial class GainFaderNodeData :
 		AudioGraphNodeData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AudioGraphNodePort In { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AudioGraphNodePort _In = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AudioGraphNodePort Start { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AudioGraphNodePort _Start = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AudioGraphNodePort StartTime { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AudioGraphNodePort _StartTime = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AudioGraphNodePort FadeTime { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AudioGraphNodePort _FadeTime = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public AudioGraphNodePort Amplitude { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private AudioGraphNodePort _Amplitude = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public AudioGraphNodePort Out { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private AudioGraphNodePort _Out = new();
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public GainFaderFadeType FadeType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private GainFaderFadeType _FadeType = new();
 
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public SoundGraphPluginRef Plugin { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private SoundGraphPluginRef _Plugin = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

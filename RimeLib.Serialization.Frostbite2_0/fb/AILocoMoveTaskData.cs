@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 48)]
-	public class AILocoMoveTaskData :
+	public partial class AILocoMoveTaskData :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public Vec3 WantedPos { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private Vec3 _WantedPos = new();
 		
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float WorldAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _WorldAngle;
 		
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float WaitTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _WaitTime;
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AntPoseEnum EnterPose { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AntPoseEnum _EnterPose = new();
 		
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public AntPoseEnum ExitPose { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private AntPoseEnum _ExitPose = new();
 		
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public bool OverrideAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private bool _OverrideAngle;
 		
-		[ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
-		public bool UseClientPosition { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
+		private bool _UseClientPosition;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

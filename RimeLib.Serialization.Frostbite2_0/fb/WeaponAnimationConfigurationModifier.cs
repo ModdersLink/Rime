@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class WeaponAnimationConfigurationModifier :
+	public partial class WeaponAnimationConfigurationModifier :
 		WeaponModifierBase
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public List<float> ZoomInOutMeshTransitionFactors { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private List<float> _ZoomInOutMeshTransitionFactors = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AnimationConfigurationData AnimationConfiguration { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AnimationConfigurationData _AnimationConfiguration = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AnimatedFireEnum AnimatedFireType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AnimatedFireEnum _AnimatedFireType = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

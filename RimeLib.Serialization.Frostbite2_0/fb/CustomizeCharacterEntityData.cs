@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class CustomizeCharacterEntityData :
+	public partial class CustomizeCharacterEntityData :
 		CustomizeBaseEntityData
 	{
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<CustomizeCharacterData> CustomizeCharacterData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<CustomizeCharacterData> _CustomizeCharacterData = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

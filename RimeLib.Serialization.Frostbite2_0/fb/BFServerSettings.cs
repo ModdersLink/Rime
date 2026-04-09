@@ -14,138 +14,181 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 160)]
-	public class BFServerSettings :
+	public partial class BFServerSettings :
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
-		public string ServerMessage { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
+		private string _ServerMessage = string.Empty;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float CTFRoundTimeModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _CTFRoundTimeModifier;
 
-		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
-		public string ForceTeamForPlayerTag { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		private string _ForceTeamForPlayerTag = string.Empty;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public int ForceTeamForPlayerTagTeam { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private int _ForceTeamForPlayerTagTeam;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float NoInteractivityTimeoutTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _NoInteractivityTimeoutTime;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float NoInteractivityThresholdLimit { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _NoInteractivityThresholdLimit;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public uint NoInteractivityBanRoundCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private uint _NoInteractivityBanRoundCount;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public uint TeamKillCountForKick { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private uint _TeamKillCountForKick;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float TeamKillValueForKick { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _TeamKillValueForKick;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float TeamKillValueIncrease { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _TeamKillValueIncrease;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public float TeamKillValueDecreasePerSecond { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private float _TeamKillValueDecreasePerSecond;
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public uint TeamKillKickForBan { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private uint _TeamKillKickForBan;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public int RoundMaxPlayerCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private int _RoundMaxPlayerCount;
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public int RoundMinPlayerCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private int _RoundMinPlayerCount;
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public int RoundLockdownCountdown { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private int _RoundLockdownCountdown;
 
-		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
-		public int RoundRestartCountdown { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
+		private int _RoundRestartCountdown;
 
-		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
-		public int RoundWarmupTimeout { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
+		private int _RoundWarmupTimeout;
 
-		[ContainerField(80), LayoutImmutable, JsonProperty(Order = 80)]
-		public string BannerUrl { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, JsonProperty(Order = 80)]
+		private string _BannerUrl = string.Empty;
 
-		[ContainerField(84), LayoutImmutable, JsonProperty(Order = 84)]
-		public string ServerPreset { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, JsonProperty(Order = 84)]
+		private string _ServerPreset = string.Empty;
 
-		[ContainerField(88), LayoutImmutable, JsonProperty(Order = 88)]
-		public string ServerDescription { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, JsonProperty(Order = 88)]
+		private string _ServerDescription = string.Empty;
 
-		[ContainerField(92), LayoutImmutable, JsonProperty(Order = 92)]
-		public string ServerAdministrationSettings { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, JsonProperty(Order = 92)]
+		private string _ServerAdministrationSettings = string.Empty;
 
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public uint GameSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private uint _GameSize;
 
-		[ContainerField(100), LayoutImmutable, JsonProperty(Order = 100)]
-		public string ServerAdministrationMapRotation { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, JsonProperty(Order = 100)]
+		private string _ServerAdministrationMapRotation = string.Empty;
 
-		[ContainerField(104), LayoutImmutable, JsonProperty(Order = 104)]
-		public string ServerAdministrationMapRotationInformation { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, JsonProperty(Order = 104)]
+		private string _ServerAdministrationMapRotationInformation = string.Empty;
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public uint ServerAdministrationRoundsPerMap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private uint _ServerAdministrationRoundsPerMap;
 
-		[ContainerField(112), LayoutImmutable, JsonProperty(Order = 112)]
-		public string Spectators { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, JsonProperty(Order = 112)]
+		private string _Spectators = string.Empty;
 
-		[ContainerField(116), LayoutImmutable, JsonProperty(Order = 116)]
-		public string PunkBusterVersion { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, JsonProperty(Order = 116)]
+		private string _PunkBusterVersion = string.Empty;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public uint TeamSwitchImbalanceLimit { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private uint _TeamSwitchImbalanceLimit;
 
-		[ContainerField(124), LayoutImmutable, JsonProperty(Order = 124)]
-		public string GameMod { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, JsonProperty(Order = 124)]
+		private string _GameMod = string.Empty;
 
-		[ContainerField(128), LayoutImmutable, JsonProperty(Order = 128)]
-		public string PingSite { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, JsonProperty(Order = 128)]
+		private string _PingSite = string.Empty;
 
-		[ContainerField(132), LayoutImmutable, JsonProperty(Order = 132)]
-		public string OverrideServerConfigurationStartTime { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, JsonProperty(Order = 132)]
+		private string _OverrideServerConfigurationStartTime = string.Empty;
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public uint GunMasterWeaponsPresetIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private uint _GunMasterWeaponsPresetIndex;
 
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public int ServerConfigurationRefreshInterval { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private int _ServerConfigurationRefreshInterval;
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public int DeathmatchFriendZoneFallbackCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private int _DeathmatchFriendZoneFallbackCount;
 
-		[ContainerField(148), JsonProperty(Order = 148)]
-		public VoiceChannel DefaultVoiceChannel { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(148), JsonProperty(Order = 148)]
+		private VoiceChannel _DefaultVoiceChannel = new();
 
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public bool MapSequencerEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private bool _MapSequencerEnabled;
 
-		[ContainerField(153), LayoutImmutable, Blittable, JsonProperty(Order = 153)]
-		public bool KickAPlayerOnVIPJoin { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(153), LayoutImmutable, Blittable, JsonProperty(Order = 153)]
+		private bool _KickAPlayerOnVIPJoin;
 
-		[ContainerField(154), LayoutImmutable, Blittable, JsonProperty(Order = 154)]
-		public bool IsManDownRotationEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(154), LayoutImmutable, Blittable, JsonProperty(Order = 154)]
+		private bool _IsManDownRotationEnabled;
 
-		[ContainerField(155), LayoutImmutable, Blittable, JsonProperty(Order = 155)]
-		public bool IsKillerCameraEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(155), LayoutImmutable, Blittable, JsonProperty(Order = 155)]
+		private bool _IsKillerCameraEnabled;
 
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public bool PremiumStatus { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private bool _PremiumStatus;
 
-		[ContainerField(157), LayoutImmutable, Blittable, JsonProperty(Order = 157)]
-		public bool OverrideAutoBalance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(157), LayoutImmutable, Blittable, JsonProperty(Order = 157)]
+		private bool _OverrideAutoBalance;
 
-		[ContainerField(158), LayoutImmutable, Blittable, JsonProperty(Order = 158)]
-		public bool AutoBalance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(158), LayoutImmutable, Blittable, JsonProperty(Order = 158)]
+		private bool _AutoBalance;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

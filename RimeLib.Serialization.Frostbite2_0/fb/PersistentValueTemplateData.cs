@@ -14,42 +14,53 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class PersistentValueTemplateData :
+	public partial class PersistentValueTemplateData :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
-		public string Name { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
+		private string _Name = string.Empty;
 		
-		[ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
-		public string DefaultValue { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
+		private string _DefaultValue = string.Empty;
 		
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float DefaultFloatValue { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _DefaultFloatValue;
 		
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public int DefaultIntValue { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private int _DefaultIntValue;
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public PersistentValueType ValueType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private PersistentValueType _ValueType = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public PersistentValueDataType DataType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private PersistentValueDataType _DataType = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public PersistentValueHistoryType HistoryType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private PersistentValueHistoryType _HistoryType = new();
 		
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public AwardGroup Group { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private AwardGroup _Group = new();
 		
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public bool ClubStat { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private bool _ClubStat;
 		
-		[ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
-		public bool ForceIntoTemplate { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
+		private bool _ForceIntoTemplate;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

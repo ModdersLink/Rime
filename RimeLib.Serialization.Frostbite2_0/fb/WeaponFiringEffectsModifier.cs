@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class WeaponFiringEffectsModifier :
+	public partial class WeaponFiringEffectsModifier :
 		WeaponModifierBase
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public List<FireEffectData> FireEffects1p { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private List<FireEffectData> _FireEffects1p = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public List<FireEffectData> FireEffects3p { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private List<FireEffectData> _FireEffects3p = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

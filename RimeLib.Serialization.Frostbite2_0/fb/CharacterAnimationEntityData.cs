@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class CharacterAnimationEntityData :
+	public partial class CharacterAnimationEntityData :
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public LinearTransform EntitySpaceTransform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private LinearTransform _EntitySpaceTransform = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public AntRef Controller { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private AntRef _Controller = new();
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public float TrackLength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private float _TrackLength;
 
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public float ExternalTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private float _ExternalTime;
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public float WarpAnimationBlendTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private float _WarpAnimationBlendTime;
 
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public bool RestoreControllerOnFinish { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private bool _RestoreControllerOnFinish;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

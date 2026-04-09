@@ -14,135 +14,177 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 256)]
-	public class MultipleActorScenarioEntityData :
+	public partial class MultipleActorScenarioEntityData :
 		SpatialEntityData
 	{
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public LinearTransform WorldSpaceConnectTransform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private LinearTransform _WorldSpaceConnectTransform = new();
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public int Actor5Part { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private int _Actor5Part;
 
-		[ContainerField(148), JsonProperty(Order = 148)]
-		public AntRef ScenarioAntRef { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(148), JsonProperty(Order = 148)]
+		private AntRef _ScenarioAntRef = new();
 
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public int LevelChoice { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private int _LevelChoice;
 
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public int ScenarioChoice { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private int _ScenarioChoice;
 
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private Realm _Realm = new();
 
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public int Actor6Part { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private int _Actor6Part;
 
-		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
-		public int Actor1 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
+		private int _Actor1;
 
-		[ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
-		public int Actor1Part { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
+		private int _Actor1Part;
 
-		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public int Actor1SecondPart { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private int _Actor1SecondPart;
 
-		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
-		public int Actor2 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		private int _Actor2;
 
-		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
-		public int Actor2Part { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		private int _Actor2Part;
 
-		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
-		public int Actor2SecondPart { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		private int _Actor2SecondPart;
 
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public int Actor3 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private int _Actor3;
 
-		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
-		public int Actor3Part { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
+		private int _Actor3Part;
 
-		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
-		public int Actor3SecondPart { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
+		private int _Actor3SecondPart;
 
-		[ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
-		public int Actor4 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
+		private int _Actor4;
 
-		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
-		public int Actor4Part { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		private int _Actor4Part;
 
-		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
-		public int Actor4SecondPart { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
+		private int _Actor4SecondPart;
 
-		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
-		public int Actor5 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		private int _Actor5;
 
-		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
-		public int Actor5SecondPart { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
+		private int _Actor5SecondPart;
 
-		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public int Actor6SecondPart { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private int _Actor6SecondPart;
 
-		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
-		public int Actor6 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		private int _Actor6;
 
-		[ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
-		public float ExternalTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
+		private float _ExternalTime;
 
-		[ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
-		public bool AligningEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
+		private bool _AligningEnabled;
 
-		[ContainerField(237), LayoutImmutable, Blittable, JsonProperty(Order = 237)]
-		public bool ScenarioActive { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(237), LayoutImmutable, Blittable, JsonProperty(Order = 237)]
+		private bool _ScenarioActive;
 
-		[ContainerField(238), LayoutImmutable, Blittable, JsonProperty(Order = 238)]
-		public bool Actor1Prepared { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(238), LayoutImmutable, Blittable, JsonProperty(Order = 238)]
+		private bool _Actor1Prepared;
 
-		[ContainerField(239), LayoutImmutable, Blittable, JsonProperty(Order = 239)]
-		public bool Actor2Prepared { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(239), LayoutImmutable, Blittable, JsonProperty(Order = 239)]
+		private bool _Actor2Prepared;
 
-		[ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
-		public bool Actor3Prepared { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
+		private bool _Actor3Prepared;
 
-		[ContainerField(241), LayoutImmutable, Blittable, JsonProperty(Order = 241)]
-		public bool Actor4Prepared { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(241), LayoutImmutable, Blittable, JsonProperty(Order = 241)]
+		private bool _Actor4Prepared;
 
-		[ContainerField(242), LayoutImmutable, Blittable, JsonProperty(Order = 242)]
-		public bool Actor5Prepared { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(242), LayoutImmutable, Blittable, JsonProperty(Order = 242)]
+		private bool _Actor5Prepared;
 
-		[ContainerField(243), LayoutImmutable, Blittable, JsonProperty(Order = 243)]
-		public bool Actor6Prepared { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(243), LayoutImmutable, Blittable, JsonProperty(Order = 243)]
+		private bool _Actor6Prepared;
 
-		[ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
-		public bool CheckActor1Finished { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
+		private bool _CheckActor1Finished;
 
-		[ContainerField(245), LayoutImmutable, Blittable, JsonProperty(Order = 245)]
-		public bool CheckActor2Finished { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(245), LayoutImmutable, Blittable, JsonProperty(Order = 245)]
+		private bool _CheckActor2Finished;
 
-		[ContainerField(246), LayoutImmutable, Blittable, JsonProperty(Order = 246)]
-		public bool CheckActor3Finished { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(246), LayoutImmutable, Blittable, JsonProperty(Order = 246)]
+		private bool _CheckActor3Finished;
 
-		[ContainerField(247), LayoutImmutable, Blittable, JsonProperty(Order = 247)]
-		public bool CheckActor4Finished { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(247), LayoutImmutable, Blittable, JsonProperty(Order = 247)]
+		private bool _CheckActor4Finished;
 
-		[ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
-		public bool CheckActor5Finished { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
+		private bool _CheckActor5Finished;
 
-		[ContainerField(249), LayoutImmutable, Blittable, JsonProperty(Order = 249)]
-		public bool CheckActor6Finished { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(249), LayoutImmutable, Blittable, JsonProperty(Order = 249)]
+		private bool _CheckActor6Finished;
 
-		[ContainerField(250), LayoutImmutable, Blittable, JsonProperty(Order = 250)]
-		public bool UseInputEventPlayerAsPlayer1 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(250), LayoutImmutable, Blittable, JsonProperty(Order = 250)]
+		private bool _UseInputEventPlayerAsPlayer1;
 
-		[ContainerField(251), LayoutImmutable, Blittable, JsonProperty(Order = 251)]
-		public bool UseExternalTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(251), LayoutImmutable, Blittable, JsonProperty(Order = 251)]
+		private bool _UseExternalTime;
 
-		[ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
-		public bool WorldSpace { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
+		private bool _WorldSpace;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

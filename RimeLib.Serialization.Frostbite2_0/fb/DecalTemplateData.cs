@@ -14,54 +14,69 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class DecalTemplateData :
+	public partial class DecalTemplateData :
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float Size { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _Size;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float RandomSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _RandomSize;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float Rotation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _Rotation;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float RandomRotation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _RandomRotation;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float ClipAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _ClipAngle;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float ProximityRadiusFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _ProximityRadiusFactor;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float NormalOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _NormalOffset;
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private CtrRef<SurfaceShaderBaseAsset> _Shader = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public int MeshUVIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private int _MeshUVIndex;
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public DecalAtlasTile AtlasTile { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private DecalAtlasTile _AtlasTile = new();
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public sbyte SortingPriority { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private sbyte _SortingPriority;
 
-		[ContainerField(69), LayoutImmutable, Blittable, JsonProperty(Order = 69)]
-		public bool Projected { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(69), LayoutImmutable, Blittable, JsonProperty(Order = 69)]
+		private bool _Projected;
 
-		[ContainerField(70), LayoutImmutable, Blittable, JsonProperty(Order = 70)]
-		public bool ProjectMultiple { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(70), LayoutImmutable, Blittable, JsonProperty(Order = 70)]
+		private bool _ProjectMultiple;
 
-		[ContainerField(71), LayoutImmutable, Blittable, JsonProperty(Order = 71)]
-		public sbyte MaterialIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(71), LayoutImmutable, Blittable, JsonProperty(Order = 71)]
+		private sbyte _MaterialIndex;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

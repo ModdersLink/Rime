@@ -14,37 +14,46 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 208)]
-	public class WeaponLagSpringEffectData :
+	public partial class WeaponLagSpringEffectData :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public WeaponLagEffectSpringVector OffsetSprings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private WeaponLagEffectSpringVector _OffsetSprings = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public WeaponLagEffectSpringVector RotationSprings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private WeaponLagEffectSpringVector _RotationSprings = new();
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public WeaponLagEffectForceData JumpForces { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private WeaponLagEffectForceData _JumpForces = new();
 
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public WeaponLagEffectForceData LandForces { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private WeaponLagEffectForceData _LandForces = new();
 
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public WeaponLagEffectForceData PoseUpForces { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private WeaponLagEffectForceData _PoseUpForces = new();
 
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public WeaponLagEffectForceData PoseDownForces { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private WeaponLagEffectForceData _PoseDownForces = new();
 
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public float ZoomForceModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private float _ZoomForceModifier;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			OffsetSprings.Serialize(p_Writer, p_EbxWriter);
 			RotationSprings.Serialize(p_Writer, p_EbxWriter);
 			p_Writer.WriteNullBytes(8);

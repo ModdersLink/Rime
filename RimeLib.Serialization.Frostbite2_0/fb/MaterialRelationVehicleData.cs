@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class MaterialRelationVehicleData :
+	public partial class MaterialRelationVehicleData :
 		PhysicsMaterialRelationPropertyData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<EffectBlueprint> ChassiEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<EffectBlueprint> _ChassiEffect = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<EffectBlueprint> TrackEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<EffectBlueprint> _TrackEffect = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<EffectBlueprint> WheelEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<EffectBlueprint> _WheelEffect = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<EffectBlueprint> GroundEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<EffectBlueprint> _GroundEffect = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

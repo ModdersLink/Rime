@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class TerrainEntityData :
+	public partial class TerrainEntityData :
 		GamePhysicsEntityData
 	{
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public CtrRef<TerrainData> TerrainAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private CtrRef<TerrainData> _TerrainAsset = new();
 
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public CtrRef<MaterialContainerPair> WaterMaterial { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private CtrRef<MaterialContainerPair> _WaterMaterial = new();
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public bool Visible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private bool _Visible;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

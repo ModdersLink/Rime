@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class BoatFloatPhysicsData :
+	public partial class BoatFloatPhysicsData :
 		HullFloatPhysicsData
 	{
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public float FrontRatio { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private float _FrontRatio;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

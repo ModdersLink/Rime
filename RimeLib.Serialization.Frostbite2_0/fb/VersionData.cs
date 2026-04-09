@@ -14,32 +14,38 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class VersionData :
+	public partial class VersionData :
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
-		public string disclaimer { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
+		private string _disclaimer = string.Empty;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public int Version { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private int _Version;
 
-		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
-		public string DateTime { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		private string _DateTime = string.Empty;
 
-		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
-		public string BranchId { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
+		private string _BranchId = string.Empty;
 
-		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
-		public string GameName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
+		private string _GameName = string.Empty;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
-			p_Writer.Write(p_EbxWriter.WriteString(disclaimer));
+			p_Writer.Write(p_EbxWriter.WriteString(Disclaimer));
 			p_Writer.Write(Version);
 			p_Writer.Write(p_EbxWriter.WriteString(DateTime));
 			p_Writer.Write(p_EbxWriter.WriteString(BranchId));

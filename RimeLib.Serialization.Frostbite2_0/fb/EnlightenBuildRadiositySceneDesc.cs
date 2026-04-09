@@ -14,52 +14,66 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class EnlightenBuildRadiositySceneDesc :
+	public partial class EnlightenBuildRadiositySceneDesc :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public List<EnlightenLightProbeSet> LightProbeSets { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private List<EnlightenLightProbeSet> _LightProbeSets = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public List<EnlightenInputInstance> Instances { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private List<EnlightenInputInstance> _Instances = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<Vec3> StaticLightProbes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<Vec3> _StaticLightProbes = new();
 
-		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
-		public string Terrain { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		private string _Terrain = string.Empty;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public uint SamplesPerCluster { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private uint _SamplesPerCluster;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float SystemInfluenceRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _SystemInfluenceRadius;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public uint SystemSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private uint _SystemSize;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public uint IrBudget { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private uint _IrBudget;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public float ClusterSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private float _ClusterSize;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public bool SaveDebugData { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private bool _SaveDebugData;
 
-		[ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
-		public bool DistributedBuild { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
+		private bool _DistributedBuild;
 
-		[ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
-		public bool CacheEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
+		private bool _CacheEnable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			(RimeWriter Writer, uint ArrayIndex) s_LightProbeSets = p_EbxWriter.GetArrayWriter(LightProbeSets.GetType(), LightProbeSets.Count);
 			p_Writer.Write(s_LightProbeSets.ArrayIndex);
 			foreach (var s_Entry in LightProbeSets)

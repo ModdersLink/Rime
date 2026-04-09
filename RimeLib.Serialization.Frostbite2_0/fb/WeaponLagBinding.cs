@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class WeaponLagBinding :
+	public partial class WeaponLagBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef EntityPitch { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _EntityPitch = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef EntityYaw { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _EntityYaw = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef PitchResult { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _PitchResult = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef YawResult { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _YawResult = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef RollResult { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _RollResult = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

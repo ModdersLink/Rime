@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class FollowWaypointsEntityData :
+	public partial class FollowWaypointsEntityData :
 		EntityData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RouteType TypeOfRoute { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RouteType _TypeOfRoute = new();
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public bool UsePathFinding { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private bool _UsePathFinding;
 
-		[ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
-		public bool StartAtGeometricallyClosestWaypoint { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
+		private bool _StartAtGeometricallyClosestWaypoint;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

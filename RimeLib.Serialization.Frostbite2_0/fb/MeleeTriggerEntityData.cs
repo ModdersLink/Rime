@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class MeleeTriggerEntityData :
+	public partial class MeleeTriggerEntityData :
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public LinearTransform ConnectTransform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private LinearTransform _ConnectTransform = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public CtrRef<AntEnumeration> MeleeType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private CtrRef<AntEnumeration> _MeleeType = new();
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public bool MeleeEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private bool _MeleeEnabled;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

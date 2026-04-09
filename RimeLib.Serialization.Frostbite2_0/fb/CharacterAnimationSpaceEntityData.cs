@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class CharacterAnimationSpaceEntityData :
+	public partial class CharacterAnimationSpaceEntityData :
 		EntityData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private Realm _Realm = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef SpacePositionGS { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _SpacePositionGS = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef SpaceRotationGS { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _SpaceRotationGS = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float WarpAnimationBlendTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _WarpAnimationBlendTime;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

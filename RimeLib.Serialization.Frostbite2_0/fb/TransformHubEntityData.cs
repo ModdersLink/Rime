@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 544)]
-	public class TransformHubEntityData :
+	public partial class TransformHubEntityData :
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public LinearTransform In4 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private LinearTransform _In4 = new();
 
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public LinearTransform In1 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private LinearTransform _In1 = new();
 
-		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public LinearTransform In2 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private LinearTransform _In2 = new();
 
-		[ContainerField(208), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 208)]
-		public LinearTransform In3 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(208), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		private LinearTransform _In3 = new();
 
-		[ContainerField(272), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 272)]
-		public LinearTransform In8 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(272), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 272)]
+		private LinearTransform _In8 = new();
 
-		[ContainerField(336), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 336)]
-		public LinearTransform In5 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(336), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 336)]
+		private LinearTransform _In5 = new();
 
-		[ContainerField(400), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 400)]
-		public LinearTransform In6 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(400), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 400)]
+		private LinearTransform _In6 = new();
 
-		[ContainerField(464), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 464)]
-		public LinearTransform In7 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(464), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 464)]
+		private LinearTransform _In7 = new();
 
-		[ContainerField(528), JsonProperty(Order = 528)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(528), JsonProperty(Order = 528)]
+		private Realm _Realm = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class AnimationSignalEntityData :
+	public partial class AnimationSignalEntityData :
 		EntityData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private Realm _Realm = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef Signal { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _Signal = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef IntGameState { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _IntGameState = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AntRef FloatGameState { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AntRef _FloatGameState = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public int ValueInt { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private int _ValueInt;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float ValueFloat { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _ValueFloat;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public bool Reset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private bool _Reset;
 
-		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
-		public bool Continuous { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
+		private bool _Continuous;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

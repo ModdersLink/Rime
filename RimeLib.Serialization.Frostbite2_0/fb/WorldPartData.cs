@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class WorldPartData :
+	public partial class WorldPartData :
 		SpatialPrefabBlueprint
 	{
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public GUID HackToSolveRealTimeTweakingIssue { get; set; } = GUID.Empty;
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private GUID _HackToSolveRealTimeTweakingIssue = GUID.Empty;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public bool UseDeferredEntityCreation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private bool _UseDeferredEntityCreation;
 
-		[ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
-		public bool Enabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
+		private bool _Enabled;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

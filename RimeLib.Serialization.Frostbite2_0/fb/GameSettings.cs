@@ -14,135 +14,177 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 120)]
-	public class GameSettings :
+	public partial class GameSettings :
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public uint MaxPlayerCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private uint _MaxPlayerCount;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public uint MaxSpectatorCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private uint _MaxSpectatorCount;
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<SubWorldInclusion> LayerInclusionTable { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<SubWorldInclusion> _LayerInclusionTable = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public LogFileCollisionMode LogFileCollisionMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private LogFileCollisionMode _LogFileCollisionMode = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public uint LogFileRotationHistoryLength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private uint _LogFileRotationHistoryLength;
 
-		[ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
-		public string Level { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
+		private string _Level = string.Empty;
 
-		[ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
-		public string DefaultLayerInclusion { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
+		private string _DefaultLayerInclusion = string.Empty;
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public RefArray<InputConfigurationAsset> InputConfiguration { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private RefArray<InputConfigurationAsset> _InputConfiguration = new();
 
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public TeamId DefaultTeamId { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private TeamId _DefaultTeamId = new();
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float LevelWarmUpTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _LevelWarmUpTime;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public float TimeToWaitForQuitTaskCompletion { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private float _TimeToWaitForQuitTaskCompletion;
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public GamePlatform Platform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private GamePlatform _Platform = new();
 
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public CtrRef<VersionData> Version { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private CtrRef<VersionData> _Version = new();
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public uint PS3ContentRatingAge { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private uint _PS3ContentRatingAge;
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public int DifficultyIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private int _DifficultyIndex;
 
-		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
-		public float TimeBeforeSpawnIsAllowed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
+		private float _TimeBeforeSpawnIsAllowed;
 
-		[ContainerField(76), JsonProperty(Order = 76)]
-		public CtrRef<SoldierWeaponSwitchingData> SoldierWeaponSwitching { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(76), JsonProperty(Order = 76)]
+		private CtrRef<SoldierWeaponSwitchingData> _SoldierWeaponSwitching = new();
 
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public uint LogHistory { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private uint _LogHistory;
 
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public CtrRef<DifficultyDatas> DifficultySettings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private CtrRef<DifficultyDatas> _DifficultySettings = new();
 
-		[ContainerField(88), JsonProperty(Order = 88)]
-		public RefArray<BlueprintBundleMetadataContainer> MetadataContainers { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(88), JsonProperty(Order = 88)]
+		private RefArray<BlueprintBundleMetadataContainer> _MetadataContainers = new();
 
-		[ContainerField(92), JsonProperty(Order = 92)]
-		public SKU CurrentSKU { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(92), JsonProperty(Order = 92)]
+		private SKU _CurrentSKU = new();
 
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public CtrRef<PlayerData> Player { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private CtrRef<PlayerData> _Player = new();
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public bool LogFileEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private bool _LogFileEnable;
 
-		[ContainerField(101), LayoutImmutable, Blittable, JsonProperty(Order = 101)]
-		public bool RotateLogs { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(101), LayoutImmutable, Blittable, JsonProperty(Order = 101)]
+		private bool _RotateLogs;
 
-		[ContainerField(102), LayoutImmutable, Blittable, JsonProperty(Order = 102)]
-		public bool EnableLoadingProfile { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(102), LayoutImmutable, Blittable, JsonProperty(Order = 102)]
+		private bool _EnableLoadingProfile;
 
-		[ContainerField(103), LayoutImmutable, Blittable, JsonProperty(Order = 103)]
-		public bool AdjustVehicleCenterOfMass { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(103), LayoutImmutable, Blittable, JsonProperty(Order = 103)]
+		private bool _AdjustVehicleCenterOfMass;
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public bool AutoAimEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private bool _AutoAimEnabled;
 
-		[ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
-		public bool HasUnlimitedAmmo { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
+		private bool _HasUnlimitedAmmo;
 
-		[ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
-		public bool HasUnlimitedMags { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
+		private bool _HasUnlimitedMags;
 
-		[ContainerField(107), LayoutImmutable, Blittable, JsonProperty(Order = 107)]
-		public bool ResourceRefreshAlwaysAllowed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(107), LayoutImmutable, Blittable, JsonProperty(Order = 107)]
+		private bool _ResourceRefreshAlwaysAllowed;
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public bool UseSpeedBasedDetailedCollision { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private bool _UseSpeedBasedDetailedCollision;
 
-		[ContainerField(109), LayoutImmutable, Blittable, JsonProperty(Order = 109)]
-		public bool AimAssistEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(109), LayoutImmutable, Blittable, JsonProperty(Order = 109)]
+		private bool _AimAssistEnabled;
 
-		[ContainerField(110), LayoutImmutable, Blittable, JsonProperty(Order = 110)]
-		public bool AimAssistUsePolynomials { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(110), LayoutImmutable, Blittable, JsonProperty(Order = 110)]
+		private bool _AimAssistUsePolynomials;
 
-		[ContainerField(111), LayoutImmutable, Blittable, JsonProperty(Order = 111)]
-		public bool ForceFreeStreaming { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(111), LayoutImmutable, Blittable, JsonProperty(Order = 111)]
+		private bool _ForceFreeStreaming;
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public bool ForceDisableFreeStreaming { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private bool _ForceDisableFreeStreaming;
 
-		[ContainerField(113), LayoutImmutable, Blittable, JsonProperty(Order = 113)]
-		public bool IsGodMode { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(113), LayoutImmutable, Blittable, JsonProperty(Order = 113)]
+		private bool _IsGodMode;
 
-		[ContainerField(114), LayoutImmutable, Blittable, JsonProperty(Order = 114)]
-		public bool IsJesusMode { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(114), LayoutImmutable, Blittable, JsonProperty(Order = 114)]
+		private bool _IsJesusMode;
 
-		[ContainerField(115), LayoutImmutable, Blittable, JsonProperty(Order = 115)]
-		public bool IsJesusModeAi { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(115), LayoutImmutable, Blittable, JsonProperty(Order = 115)]
+		private bool _IsJesusModeAi;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public bool UseSingleWeaponSelector { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private bool _UseSingleWeaponSelector;
 
-		[ContainerField(117), LayoutImmutable, Blittable, JsonProperty(Order = 117)]
-		public bool GameAdministrationEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(117), LayoutImmutable, Blittable, JsonProperty(Order = 117)]
+		private bool _GameAdministrationEnabled;
 
-		[ContainerField(118), LayoutImmutable, Blittable, JsonProperty(Order = 118)]
-		public bool AllowDestructionOutsideCombatArea { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(118), LayoutImmutable, Blittable, JsonProperty(Order = 118)]
+		private bool _AllowDestructionOutsideCombatArea;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

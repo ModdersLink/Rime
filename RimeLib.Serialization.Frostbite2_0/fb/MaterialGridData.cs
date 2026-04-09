@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class MaterialGridData :
+	public partial class MaterialGridData :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<MaterialContainerPair> DefaultMaterial { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<MaterialContainerPair> _DefaultMaterial = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<MaterialContainerPair> MaterialPairs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<MaterialContainerPair> _MaterialPairs = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public List<uint> MaterialIndexMap { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private List<uint> _MaterialIndexMap = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public uint DefaultMaterialIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private uint _DefaultMaterialIndex;
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public List<MaterialRelationPropertyPair> MaterialProperties { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private List<MaterialRelationPropertyPair> _MaterialProperties = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public List<MaterialInteractionGridRow> InteractionGrid { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private List<MaterialInteractionGridRow> _InteractionGrid = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

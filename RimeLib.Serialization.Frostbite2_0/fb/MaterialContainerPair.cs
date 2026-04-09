@@ -14,25 +14,30 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class MaterialContainerPair :
+	public partial class MaterialContainerPair :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public uint FlagsAndIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private uint _FlagsAndIndex;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public sbyte PhysicsPropertyIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private sbyte _PhysicsPropertyIndex;
 
-		[ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
-		public sbyte PhysicsMaterialIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
+		private sbyte _PhysicsMaterialIndex;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(FlagsAndIndex);
 			p_Writer.Write(PhysicsPropertyIndex);
 			p_Writer.Write(PhysicsMaterialIndex);

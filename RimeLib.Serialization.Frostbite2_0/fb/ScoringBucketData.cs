@@ -14,43 +14,54 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class ScoringBucketData :
+	public partial class ScoringBucketData :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public ScoringBucket DestinationBucket { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private ScoringBucket _DestinationBucket = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public ScoringBucketType BucketType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private ScoringBucketType _BucketType = new();
 
-		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
-		public string Name { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
+		private string _Name = string.Empty;
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<ScoringBucketData> TeamTotalBucket { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<ScoringBucketData> _TeamTotalBucket = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public List<ScoringBucketUnlockData> Unlocks { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private List<ScoringBucketUnlockData> _Unlocks = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public RefArray<StatsCategoryBaseData> ConnectedCategories { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private RefArray<StatsCategoryBaseData> _ConnectedCategories = new();
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public bool AddToEntry { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private bool _AddToEntry;
 
-		[ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
-		public bool RoundScore { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
+		private bool _RoundScore;
 
-		[ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
-		public bool GlobalScore { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
+		private bool _GlobalScore;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write((int) DestinationBucket);
 			p_Writer.Write((int) BucketType);
 			p_Writer.Write(p_EbxWriter.WriteString(Name));

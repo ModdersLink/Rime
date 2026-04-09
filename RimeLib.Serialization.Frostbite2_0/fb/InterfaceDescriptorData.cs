@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class InterfaceDescriptorData :
+	public partial class InterfaceDescriptorData :
 		DynamicDataContainer
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public List<DynamicEvent> InputEvents { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private List<DynamicEvent> _InputEvents = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<DynamicEvent> OutputEvents { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<DynamicEvent> _OutputEvents = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public List<DynamicLink> InputLinks { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private List<DynamicLink> _InputLinks = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public List<DynamicLink> OutputLinks { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private List<DynamicLink> _OutputLinks = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

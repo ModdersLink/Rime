@@ -14,46 +14,58 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class VoiceOverDialogTrack :
+	public partial class VoiceOverDialogTrack :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<VoiceOverValueConnection> Source { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<VoiceOverValueConnection> _Source = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<VoiceOverValueConnection> TakeControl { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<VoiceOverValueConnection> _TakeControl = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<VoiceOverDialogTakeMapping> TakeIndexMapping { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<VoiceOverDialogTakeMapping> _TakeIndexMapping = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public VoiceOverDialogTakeBehavior TakeSwitching { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private VoiceOverDialogTakeBehavior _TakeSwitching = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public RefArray<VoiceOverDialogClip> Clips { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private RefArray<VoiceOverDialogClip> _Clips = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public CtrRef<AudioGraphNodeData> SamplerNode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private CtrRef<AudioGraphNodeData> _SamplerNode = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public CtrRef<AudioGraphNodeData> Output { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private CtrRef<AudioGraphNodeData> _Output = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public CtrRef<VoiceOverConversationQueueGroup> QueueGroup { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private CtrRef<VoiceOverConversationQueueGroup> _QueueGroup = new();
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public sbyte ParentTrackIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private sbyte _ParentTrackIndex;
 
-		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
-		public bool TakeSwitchingOnResume { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
+		private bool _TakeSwitchingOnResume;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(p_EbxWriter.WriteImport(Source));
 			p_Writer.Write(p_EbxWriter.WriteImport(TakeControl));
 			(RimeWriter Writer, uint ArrayIndex) s_TakeIndexMapping = p_EbxWriter.GetArrayWriter(TakeIndexMapping.GetType(), TakeIndexMapping.Count);

@@ -14,204 +14,269 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 256)]
-	public class AnimatedWeaponBinding :
+	public partial class AnimatedWeaponBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef Deploy { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _Deploy = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef AltDeploy { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _AltDeploy = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef Undeploy { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _Undeploy = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef QuickSwitch { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _QuickSwitch = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef Reload { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _Reload = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef ReloadShotgun { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _ReloadShotgun = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AntRef Fire { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AntRef _Fire = new();
 		
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public AntRef FireSingle { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private AntRef _FireSingle = new();
 		
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AntRef FireHoldAndRelease { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AntRef _FireHoldAndRelease = new();
 		
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public AntRef FireSimple { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private AntRef _FireSimple = new();
 		
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public AntRef FirstShotSpawned { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private AntRef _FirstShotSpawned = new();
 		
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public AntRef BoltAction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private AntRef _BoltAction = new();
 		
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public AntRef PumpAction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private AntRef _PumpAction = new();
 		
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public AntRef MeleeAttack { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private AntRef _MeleeAttack = new();
 		
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public AntRef QuickThrow { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private AntRef _QuickThrow = new();
 		
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public AntRef QuickThrowType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private AntRef _QuickThrowType = new();
 		
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public AntRef AimBody { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private AntRef _AimBody = new();
 		
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public AntRef AlwaysAimHead { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private AntRef _AlwaysAimHead = new();
 		
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public AntRef OneHanded { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private AntRef _OneHanded = new();
 		
-		[ContainerField(76), JsonProperty(Order = 76)]
-		public AntRef OneHandedAiming { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(76), JsonProperty(Order = 76)]
+		private AntRef _OneHandedAiming = new();
 		
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public AntRef AimingEnabled { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private AntRef _AimingEnabled = new();
 		
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public AntRef LowerGun { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private AntRef _LowerGun = new();
 		
-		[ContainerField(88), JsonProperty(Order = 88)]
-		public AntRef BreathControl { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(88), JsonProperty(Order = 88)]
+		private AntRef _BreathControl = new();
 		
-		[ContainerField(92), JsonProperty(Order = 92)]
-		public AntRef RflType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(92), JsonProperty(Order = 92)]
+		private AntRef _RflType = new();
 		
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public AntRef PstlType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private AntRef _PstlType = new();
 		
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public AntRef HgrType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private AntRef _HgrType = new();
 		
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public AntRef ATType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private AntRef _ATType = new();
 		
-		[ContainerField(108), JsonProperty(Order = 108)]
-		public AntRef ShgType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(108), JsonProperty(Order = 108)]
+		private AntRef _ShgType = new();
 		
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public AntRef LMGType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private AntRef _LMGType = new();
 		
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public AntRef BagType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private AntRef _BagType = new();
 		
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public AntRef SnpType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private AntRef _SnpType = new();
 		
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public AntRef Zoom { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private AntRef _Zoom = new();
 		
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public AntRef AimBodyWeight { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private AntRef _AimBodyWeight = new();
 		
-		[ContainerField(132), JsonProperty(Order = 132)]
-		public AntRef DisableZoomToggleWeight { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(132), JsonProperty(Order = 132)]
+		private AntRef _DisableZoomToggleWeight = new();
 		
-		[ContainerField(136), JsonProperty(Order = 136)]
-		public AntRef ZoomParameter { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(136), JsonProperty(Order = 136)]
+		private AntRef _ZoomParameter = new();
 		
-		[ContainerField(140), JsonProperty(Order = 140)]
-		public AntRef ZoomScaleFactor { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(140), JsonProperty(Order = 140)]
+		private AntRef _ZoomScaleFactor = new();
 		
-		[ContainerField(144), JsonProperty(Order = 144)]
-		public AntRef Dispersion { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), JsonProperty(Order = 144)]
+		private AntRef _Dispersion = new();
 		
-		[ContainerField(148), JsonProperty(Order = 148)]
-		public AntRef AimTargetPosBody { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(148), JsonProperty(Order = 148)]
+		private AntRef _AimTargetPosBody = new();
 		
-		[ContainerField(152), JsonProperty(Order = 152)]
-		public AntRef ZoomOutSpeed { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(152), JsonProperty(Order = 152)]
+		private AntRef _ZoomOutSpeed = new();
 		
-		[ContainerField(156), JsonProperty(Order = 156)]
-		public AntRef ZoomInSpeed { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(156), JsonProperty(Order = 156)]
+		private AntRef _ZoomInSpeed = new();
 		
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public AntRef UnDeploySpeed { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private AntRef _UnDeploySpeed = new();
 		
-		[ContainerField(164), JsonProperty(Order = 164)]
-		public AntRef DeploySpeed { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(164), JsonProperty(Order = 164)]
+		private AntRef _DeploySpeed = new();
 		
-		[ContainerField(168), JsonProperty(Order = 168)]
-		public AntRef LightEnabled { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(168), JsonProperty(Order = 168)]
+		private AntRef _LightEnabled = new();
 		
-		[ContainerField(172), JsonProperty(Order = 172)]
-		public AntRef FireModeChanged { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(172), JsonProperty(Order = 172)]
+		private AntRef _FireModeChanged = new();
 		
-		[ContainerField(176), JsonProperty(Order = 176)]
-		public AntRef AnimType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), JsonProperty(Order = 176)]
+		private AntRef _AnimType = new();
 		
-		[ContainerField(180), JsonProperty(Order = 180)]
-		public AntRef GunDown { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(180), JsonProperty(Order = 180)]
+		private AntRef _GunDown = new();
 		
-		[ContainerField(184), JsonProperty(Order = 184)]
-		public AntRef NumberOfBulletsLeftInGun { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(184), JsonProperty(Order = 184)]
+		private AntRef _NumberOfBulletsLeftInGun = new();
 		
-		[ContainerField(188), JsonProperty(Order = 188)]
-		public AntRef BulletsLeftInGun { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(188), JsonProperty(Order = 188)]
+		private AntRef _BulletsLeftInGun = new();
 		
-		[ContainerField(192), JsonProperty(Order = 192)]
-		public AntRef AbortVehicleDeploy { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(192), JsonProperty(Order = 192)]
+		private AntRef _AbortVehicleDeploy = new();
 		
-		[ContainerField(196), JsonProperty(Order = 196)]
-		public AntRef CurrentProjectileIndex { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(196), JsonProperty(Order = 196)]
+		private AntRef _CurrentProjectileIndex = new();
 		
-		[ContainerField(200), JsonProperty(Order = 200)]
-		public AntRef WeaponActionESIG { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(200), JsonProperty(Order = 200)]
+		private AntRef _WeaponActionESIG = new();
 		
-		[ContainerField(204), JsonProperty(Order = 204)]
-		public AntRef IsSprinting { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(204), JsonProperty(Order = 204)]
+		private AntRef _IsSprinting = new();
 		
-		[ContainerField(208), JsonProperty(Order = 208)]
-		public AntRef PreparingToBash { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(208), JsonProperty(Order = 208)]
+		private AntRef _PreparingToBash = new();
 		
-		[ContainerField(212), JsonProperty(Order = 212)]
-		public AntRef JustStartedSprinting { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(212), JsonProperty(Order = 212)]
+		private AntRef _JustStartedSprinting = new();
 		
-		[ContainerField(216), JsonProperty(Order = 216)]
-		public AntRef KickBackInIronSight { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(216), JsonProperty(Order = 216)]
+		private AntRef _KickBackInIronSight = new();
 		
-		[ContainerField(220), JsonProperty(Order = 220)]
-		public AntRef ZoomingTime { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(220), JsonProperty(Order = 220)]
+		private AntRef _ZoomingTime = new();
 		
-		[ContainerField(224), JsonProperty(Order = 224)]
-		public AntRef TriggerZoomGunTwitch { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(224), JsonProperty(Order = 224)]
+		private AntRef _TriggerZoomGunTwitch = new();
 		
-		[ContainerField(228), JsonProperty(Order = 228)]
-		public AntRef WeaponChooserSignal { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(228), JsonProperty(Order = 228)]
+		private AntRef _WeaponChooserSignal = new();
 		
-		[ContainerField(232), JsonProperty(Order = 232)]
-		public AntRef WeaponClassSignal { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(232), JsonProperty(Order = 232)]
+		private AntRef _WeaponClassSignal = new();
 		
-		[ContainerField(236), JsonProperty(Order = 236)]
-		public AntRef OffsetX { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(236), JsonProperty(Order = 236)]
+		private AntRef _OffsetX = new();
 		
-		[ContainerField(240), JsonProperty(Order = 240)]
-		public AntRef OffsetY { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(240), JsonProperty(Order = 240)]
+		private AntRef _OffsetY = new();
 		
-		[ContainerField(244), JsonProperty(Order = 244)]
-		public AntRef OffsetZ { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(244), JsonProperty(Order = 244)]
+		private AntRef _OffsetZ = new();
 		
-		[ContainerField(248), JsonProperty(Order = 248)]
-		public AntRef AIAllowFire { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(248), JsonProperty(Order = 248)]
+		private AntRef _AIAllowFire = new();
 		
-		[ContainerField(252), JsonProperty(Order = 252)]
-		public AntRef AIAltFireFromAnt { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(252), JsonProperty(Order = 252)]
+		private AntRef _AIAltFireFromAnt = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

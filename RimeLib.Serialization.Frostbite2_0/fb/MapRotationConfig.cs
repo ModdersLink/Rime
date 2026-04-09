@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class MapRotationConfig :
+	public partial class MapRotationConfig :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public int MapRotationId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private int _MapRotationId;
 		
-		[ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
-		public string NameSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, JsonProperty(Order = 4)]
+		private string _NameSid = string.Empty;
 		
-		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
-		public string DescSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		private string _DescSid = string.Empty;
 		
-		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
-		public string Mod { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
+		private string _Mod = string.Empty;
 		
-		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
-		public string GameMode { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
+		private string _GameMode = string.Empty;
 		
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public bool RandomizeStartingMap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private bool _RandomizeStartingMap;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

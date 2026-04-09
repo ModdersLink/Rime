@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class UIWidgetPathBinding :
+	public partial class UIWidgetPathBinding :
 		UIDataBinding
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public UIDataSourceInfo WidgetPathQuery { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private UIDataSourceInfo _WidgetPathQuery = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public UIDataSourceInfo Visibility { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private UIDataSourceInfo _Visibility = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

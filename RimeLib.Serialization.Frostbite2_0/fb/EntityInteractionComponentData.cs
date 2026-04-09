@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class EntityInteractionComponentData :
+	public partial class EntityInteractionComponentData :
 		ComponentData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public float PickupRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private float _PickupRadius;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public float MaxAmmoPickupTimer { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private float _MaxAmmoPickupTimer;
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public float MaxAmmoCrateTimer { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private float _MaxAmmoCrateTimer;
 
-		[ContainerField(108), JsonProperty(Order = 108)]
-		public InteractionTypesData InteractWithTypes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(108), JsonProperty(Order = 108)]
+		private InteractionTypesData _InteractWithTypes = new();
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float MaxLookAtAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _MaxLookAtAngle;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public float SoldierInteractRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private float _SoldierInteractRadius;
 
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public EntryInputActionEnum SoldierInteractInputAction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private EntryInputActionEnum _SoldierInteractInputAction = new();
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public bool AllowInteractionWithSoldiers { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private bool _AllowInteractionWithSoldiers;
 
-		[ContainerField(129), LayoutImmutable, Blittable, JsonProperty(Order = 129)]
-		public bool OnlyAllowInteractionWithManDownSoldiers { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(129), LayoutImmutable, Blittable, JsonProperty(Order = 129)]
+		private bool _OnlyAllowInteractionWithManDownSoldiers;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

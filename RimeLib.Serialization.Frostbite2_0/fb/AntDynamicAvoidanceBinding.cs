@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class AntDynamicAvoidanceBinding :
+	public partial class AntDynamicAvoidanceBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef TimeUntilCollision { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _TimeUntilCollision = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef DistanceUntilCollision { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _DistanceUntilCollision = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef NormalizedVelocity { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _NormalizedVelocity = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef Speed { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _Speed = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

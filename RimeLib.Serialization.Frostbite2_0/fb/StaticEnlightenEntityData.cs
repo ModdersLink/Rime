@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class StaticEnlightenEntityData :
+	public partial class StaticEnlightenEntityData :
 		EnlightenEntityData
 	{
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<StaticEnlightenData> EnlightenData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<StaticEnlightenData> _EnlightenData = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public CtrRef<EnlightenDataAsset> DynamicEnlightenData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private CtrRef<EnlightenDataAsset> _DynamicEnlightenData = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

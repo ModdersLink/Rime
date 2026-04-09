@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class PlayerCameraEntityData :
+	public partial class PlayerCameraEntityData :
 		CameraEntityBaseData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public TargetMode SoldierTargetMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private TargetMode _SoldierTargetMode = new();
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public uint SoldierCameraIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private uint _SoldierCameraIndex;
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public TargetMode VehicleTargetMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private TargetMode _VehicleTargetMode = new();
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public uint VehicleCameraIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private uint _VehicleCameraIndex;
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public bool ReleaseControlIfTargetLost { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private bool _ReleaseControlIfTargetLost;
 
-		[ContainerField(113), LayoutImmutable, Blittable, JsonProperty(Order = 113)]
-		public bool ShouldTargetControllable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(113), LayoutImmutable, Blittable, JsonProperty(Order = 113)]
+		private bool _ShouldTargetControllable;
 
-		[ContainerField(114), LayoutImmutable, Blittable, JsonProperty(Order = 114)]
-		public bool ShouldTargetVehicleDriverEntry { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(114), LayoutImmutable, Blittable, JsonProperty(Order = 114)]
+		private bool _ShouldTargetVehicleDriverEntry;
 
-		[ContainerField(115), LayoutImmutable, Blittable, JsonProperty(Order = 115)]
-		public bool ShouldTargetExtraPlayerInDoublePlayerEvent { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(115), LayoutImmutable, Blittable, JsonProperty(Order = 115)]
+		private bool _ShouldTargetExtraPlayerInDoublePlayerEvent;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

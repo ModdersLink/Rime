@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class PropertyGateEntityData :
+	public partial class PropertyGateEntityData :
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public LinearTransform TransformIn { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private LinearTransform _TransformIn = new();
 
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public Vec4 Vec4In { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private Vec4 _Vec4In = new();
 
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public Vec3 Vec3In { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private Vec3 _Vec3In = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private Realm _Realm = new();
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float FloatIn { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _FloatIn;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public int IntIn { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private int _IntIn;
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public bool BoolIn { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private bool _BoolIn;
 
-		[ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
-		public bool Default { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
+		private bool _Default;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

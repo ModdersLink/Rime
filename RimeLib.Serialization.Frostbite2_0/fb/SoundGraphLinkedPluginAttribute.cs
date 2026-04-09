@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class SoundGraphLinkedPluginAttribute :
+	public partial class SoundGraphLinkedPluginAttribute :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public SoundGraphPluginRef Plugin { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private SoundGraphPluginRef _Plugin = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public CtrRef<AudioGraphNodeData> Node { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private CtrRef<AudioGraphNodeData> _Node = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AudioGraphNodePort Port { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AudioGraphNodePort _Port = new();
 		
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public sbyte AttributeIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private sbyte _AttributeIndex;
 		
-		[ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
-		public bool AllowExtremeValues { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
+		private bool _AllowExtremeValues;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

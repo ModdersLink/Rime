@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class DelayTriggerEntityData :
+	public partial class DelayTriggerEntityData :
 		TriggerEventEntityData
 	{
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public bool AutoTriggerEvent { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private bool _AutoTriggerEvent;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

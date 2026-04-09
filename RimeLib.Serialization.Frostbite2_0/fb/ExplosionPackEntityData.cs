@@ -14,48 +14,61 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 256)]
-	public class ExplosionPackEntityData :
+	public partial class ExplosionPackEntityData :
 		MeshProjectileEntityData
 	{
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public float TimeToLiveOnPlayerDeath { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private float _TimeToLiveOnPlayerDeath;
 
-		[ContainerField(196), JsonProperty(Order = 196)]
-		public SoldierDetonationData SoldierDetonationData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(196), JsonProperty(Order = 196)]
+		private SoldierDetonationData _SoldierDetonationData = new();
 
-		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
-		public float VehicleDetonationActivationDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		private float _VehicleDetonationActivationDelay;
 
-		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
-		public float VehicleDetonationRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
+		private float _VehicleDetonationRadius;
 
-		[ContainerField(224), JsonProperty(Order = 224)]
-		public UIHudIcon Icon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(224), JsonProperty(Order = 224)]
+		private UIHudIcon _Icon = new();
 
-		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
-		public float SpottedTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		private float _SpottedTime;
 
-		[ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
-		public float DefuseRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
+		private float _DefuseRadius;
 
-		[ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
-		public float Health { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
+		private float _Health;
 
-		[ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
-		public bool HasRemoteDetonator { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
+		private bool _HasRemoteDetonator;
 
-		[ContainerField(241), LayoutImmutable, Blittable, JsonProperty(Order = 241)]
-		public bool IsDestructible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(241), LayoutImmutable, Blittable, JsonProperty(Order = 241)]
+		private bool _IsDestructible;
 
-		[ContainerField(242), LayoutImmutable, Blittable, JsonProperty(Order = 242)]
-		public bool HasVehicleDetonation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(242), LayoutImmutable, Blittable, JsonProperty(Order = 242)]
+		private bool _HasVehicleDetonation;
 
-		[ContainerField(243), LayoutImmutable, Blittable, JsonProperty(Order = 243)]
-		public bool ReceivesExplosionDamage { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(243), LayoutImmutable, Blittable, JsonProperty(Order = 243)]
+		private bool _ReceivesExplosionDamage;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class GameAnimationConfig :
+	public partial class GameAnimationConfig :
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public bool ServerEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private bool _ServerEnable;
 
-		[ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
-		public bool ClientEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
+		private bool _ClientEnable;
 
-		[ContainerField(14), LayoutImmutable, Blittable, JsonProperty(Order = 14)]
-		public bool UseRawGamepadInput { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(14), LayoutImmutable, Blittable, JsonProperty(Order = 14)]
+		private bool _UseRawGamepadInput;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

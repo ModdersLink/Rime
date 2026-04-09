@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class ProfileOptionsAsset :
+	public partial class ProfileOptionsAsset :
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
-		public string FileName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
+		private string _FileName = string.Empty;
 
-		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
-		public string ContentName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
+		private string _ContentName = string.Empty;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public uint FileSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private uint _FileSize;
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public RefArray<ProfileOptionData> Options { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private RefArray<ProfileOptionData> _Options = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public bool AutoSaveOnQuit { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private bool _AutoSaveOnQuit;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

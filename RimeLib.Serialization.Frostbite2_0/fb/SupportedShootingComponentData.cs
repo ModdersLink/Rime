@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class SupportedShootingComponentData :
+	public partial class SupportedShootingComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public CtrRef<SupportedShootingCommonData> CommonData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private CtrRef<SupportedShootingCommonData> _CommonData = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

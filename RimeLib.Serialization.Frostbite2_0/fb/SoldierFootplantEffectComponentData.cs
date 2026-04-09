@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class SoldierFootplantEffectComponentData :
+	public partial class SoldierFootplantEffectComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public CtrRef<MaterialContainerPair> FootMaterialPair { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private CtrRef<MaterialContainerPair> _FootMaterialPair = new();
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public float HeightOverGroundThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private float _HeightOverGroundThreshold;
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public float FootVelocityThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private float _FootVelocityThreshold;
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public float LodDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private float _LodDistance;
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public bool FullFootplantingEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private bool _FullFootplantingEnabled;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

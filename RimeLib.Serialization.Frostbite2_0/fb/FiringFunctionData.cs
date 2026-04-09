@@ -14,51 +14,65 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 496)]
-	public class FiringFunctionData :
+	public partial class FiringFunctionData :
 		GameDataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public List<FiringDispersionData> Dispersion { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private List<FiringDispersionData> _Dispersion = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public SoldierWeaponDispersion WeaponDispersion { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private SoldierWeaponDispersion _WeaponDispersion = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public List<FireEffectData> FireEffects1p { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private List<FireEffectData> _FireEffects1p = new();
 
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public List<FireEffectData> FireEffects3p { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private List<FireEffectData> _FireEffects3p = new();
 
-		[ContainerField(88), JsonProperty(Order = 88)]
-		public CtrRef<SoundAsset> Sound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(88), JsonProperty(Order = 88)]
+		private CtrRef<SoundAsset> _Sound = new();
 
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public ShotConfigData Shot { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private ShotConfigData _Shot = new();
 
-		[ContainerField(192), JsonProperty(Order = 192)]
-		public FireLogicData FireLogic { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(192), JsonProperty(Order = 192)]
+		private FireLogicData _FireLogic = new();
 
-		[ContainerField(344), JsonProperty(Order = 344)]
-		public AmmoConfigData Ammo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(344), JsonProperty(Order = 344)]
+		private AmmoConfigData _Ammo = new();
 
-		[ContainerField(384), JsonProperty(Order = 384)]
-		public OverHeatData OverHeat { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(384), JsonProperty(Order = 384)]
+		private OverHeatData _OverHeat = new();
 
-		[ContainerField(480), LayoutImmutable, Blittable, JsonProperty(Order = 480)]
-		public float SelfHealTimeWhenDeployed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(480), LayoutImmutable, Blittable, JsonProperty(Order = 480)]
+		private float _SelfHealTimeWhenDeployed;
 
-		[ContainerField(484), LayoutImmutable, Blittable, JsonProperty(Order = 484)]
-		public float AmmoCrateReloadDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(484), LayoutImmutable, Blittable, JsonProperty(Order = 484)]
+		private float _AmmoCrateReloadDelay;
 
-		[ContainerField(488), LayoutImmutable, Blittable, JsonProperty(Order = 488)]
-		public bool UnlimitedAmmoForAI { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(488), LayoutImmutable, Blittable, JsonProperty(Order = 488)]
+		private bool _UnlimitedAmmoForAI;
 
-		[ContainerField(489), LayoutImmutable, Blittable, JsonProperty(Order = 489)]
-		public bool UsePrimaryAmmo { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(489), LayoutImmutable, Blittable, JsonProperty(Order = 489)]
+		private bool _UsePrimaryAmmo;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

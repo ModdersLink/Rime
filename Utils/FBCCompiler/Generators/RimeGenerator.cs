@@ -66,6 +66,7 @@ namespace FBCC.Generators
             m_Writer.WriteLine("using RimeLib.Serialization.Attributes;");
             m_Writer.WriteLine("using RimeLib.Serialization;");
             m_Writer.WriteLine("using RimeLib.Serialization.Frostbite2_0.Ebx;");
+            m_Writer.WriteLine("using CommunityToolkit.Mvvm.ComponentModel;");
 
             m_Writer.WriteLine(m_Indent);
 
@@ -136,6 +137,19 @@ namespace FBCC.Generators
             {
                 case "GUID":
                     return 16;
+                case "Vec2":
+                    return 8;
+                case "Vec3":
+                case "Vec4":
+                    return 16;
+                case "DataContainer":
+                    return 0;
+                case "AxisAlignedBox":
+                    return 32;
+                case "FileRef":
+                    return 4;
+                case "LinearTransform":
+                    return 64;
             }
 
             var s_LastInheritedClass = ContainerManager.GetContainerByName(p_Name);
@@ -199,9 +213,9 @@ namespace FBCC.Generators
                 s_ClassAttributes.Length > 0 ? ", " + s_ClassAttributes : "");
 
             if (p_Class.Name == "DataContainer")
-                m_Writer.Write(m_Indent + "public abstract class {0}", p_Class.Name);
+                m_Writer.Write(m_Indent + "public abstract partial class {0}", p_Class.Name);
             else
-                m_Writer.Write(m_Indent + "public class {0}", p_Class.Name);
+                m_Writer.Write(m_Indent + "public partial class {0}", p_Class.Name);
 
             if (p_Class.Name == "DataContainer")
             {
@@ -273,15 +287,16 @@ namespace FBCC.Generators
                     s_CustomNameProperty = $", Name = \"{s_Member.Name}\"";
                 }
                 
-                m_Writer.WriteLine($"{m_Indent}[ContainerField({s_Member.Offset}{s_CustomNameProperty}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}, JsonProperty(Order = {s_Member.Offset})]");
+                m_Writer.WriteLine($"{m_Indent}[ObservableProperty]");
+                m_Writer.WriteLine($"{m_Indent}[property: ContainerField({s_Member.Offset}{s_CustomNameProperty}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}, JsonProperty(Order = {s_Member.Offset})]");
 
                 if (s_Pointer && s_Member.Array)
                 {
-                    m_Writer.WriteLine($"{m_Indent}public RefArray<{s_Type}> {s_MemberName} {{ get; set; }} = new();");
+                    m_Writer.WriteLine($"{m_Indent}private RefArray<{s_Type}> _{s_MemberName} = new();");
                 }
                 else if (s_Pointer && !s_Member.Array)
                 {
-                    m_Writer.WriteLine($"{m_Indent}public CtrRef<{s_Type}> {s_MemberName} {{ get; set; }} = new();");
+                    m_Writer.WriteLine($"{m_Indent}private CtrRef<{s_Type}> _{s_MemberName} = new();");
                 }
                 else if (!s_Pointer && !s_Member.Array)
                 {
@@ -290,24 +305,24 @@ namespace FBCC.Generators
                         switch (s_Type)
                         {
                             case "string":
-                                m_Writer.WriteLine($"{m_Indent}public {s_Type} {s_MemberName} {{ get; set; }} = string.Empty;");
+                                m_Writer.WriteLine($"{m_Indent}private {s_Type} _{s_MemberName} = string.Empty;");
                                 break;
                             case "GUID":
-                                m_Writer.WriteLine($"{m_Indent}public {s_Type} {s_MemberName} {{ get; set; }} = GUID.Empty;");
+                                m_Writer.WriteLine($"{m_Indent}private {s_Type} _{s_MemberName} = GUID.Empty;");
                                 break;
                             default:
-                                m_Writer.WriteLine($"{m_Indent}public {s_Type} {s_MemberName} {{ get; set; }}");
+                                m_Writer.WriteLine($"{m_Indent}private {s_Type} _{s_MemberName};");
                                 break;
                         }
                     }
                     else
                     {
-                        m_Writer.WriteLine($"{m_Indent}public {s_Type} {s_MemberName} {{ get; set; }} = new();");
+                        m_Writer.WriteLine($"{m_Indent}private {s_Type} _{s_MemberName} = new();");
                     }
                 }
                 else if (!s_Pointer && s_Member.Array)
                 {
-                    m_Writer.WriteLine($"{m_Indent}public List<{s_Type}> {s_MemberName} {{ get; set; }} = new();");
+                    m_Writer.WriteLine($"{m_Indent}private List<{s_Type}> _{s_MemberName} = new();");
                 }
 
                 m_Writer.WriteLine();
@@ -531,7 +546,7 @@ namespace FBCC.Generators
 
             m_Writer.WriteLine($"{m_Indent}[ContainerType({p_Struct.Alignment}, {s_SizeAttribute.Parameters[0]}){(s_StructAttributes.Length > 0 ? ", " + s_StructAttributes : "")}]");
 
-            m_Writer.Write(m_Indent + "public class {0}", p_Struct.Name);
+            m_Writer.Write(m_Indent + "public partial class {0}", p_Struct.Name);
             m_Writer.WriteLine(" :");
             m_Writer.WriteLine($"{m_Indent}\tEbxSerializable");
 
@@ -564,7 +579,8 @@ namespace FBCC.Generators
                     throw new System.Exception("not enough size parameters.");
 
                 var s_FieldAttributes = string.Join(", ", s_Member.Attributes.Except(new [] {s_MemberFlagsAttribute }));
-                m_Writer.WriteLine($"{m_Indent}[ContainerField({s_Member.Offset}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}, JsonProperty(Order = {s_Member.Offset})]");
+                m_Writer.WriteLine($"{m_Indent}[ObservableProperty]");
+                m_Writer.WriteLine($"{m_Indent}[property: ContainerField({s_Member.Offset}){(s_FieldAttributes.Length > 0 ? ", " + s_FieldAttributes : "")}, JsonProperty(Order = {s_Member.Offset})]");
 
 
                 /*m_Writer.Write(m_Indent + "[ContainerField({0})", s_Member.Offset);
@@ -577,11 +593,11 @@ namespace FBCC.Generators
 
                 if (s_Pointer && s_Member.Array)
                 {
-                    m_Writer.WriteLine(m_Indent + "public RefArray<{2}> {0} {{ get; set; }} = new();", s_Member.Name, s_Member.Offset, s_Type);
+                    m_Writer.WriteLine(m_Indent + "private RefArray<{2}> _{0} = new();", s_Member.Name, s_Member.Offset, s_Type);
                 }
                 else if (s_Pointer && !s_Member.Array)
                 {
-                    m_Writer.WriteLine(m_Indent + "public CtrRef<{2}> {0} {{ get; set; }} = new();", s_Member.Name, s_Member.Offset, s_Type);
+                    m_Writer.WriteLine(m_Indent + "private CtrRef<{2}> _{0} = new();", s_Member.Name, s_Member.Offset, s_Type);
                 }
                 else if (!s_Pointer && !s_Member.Array)
                 {
@@ -590,24 +606,24 @@ namespace FBCC.Generators
                         switch (s_Type)
                         {
                             case "string":
-                                m_Writer.WriteLine($"{m_Indent}public {s_Type} {s_Member.Name} {{ get; set; }} = string.Empty;");
+                                m_Writer.WriteLine($"{m_Indent}private {s_Type} _{s_Member.Name} = string.Empty;");
                                 break;
                             case "GUID":
-                                m_Writer.WriteLine($"{m_Indent}public {s_Type} {s_Member.Name} {{ get; set; }} = GUID.Empty;");
+                                m_Writer.WriteLine($"{m_Indent}private {s_Type} _{s_Member.Name} = GUID.Empty;");
                                 break;
                             default:
-                                m_Writer.WriteLine($"{m_Indent}public {s_Type} {s_Member.Name} {{ get; set; }}");
+                                m_Writer.WriteLine($"{m_Indent}private {s_Type} _{s_Member.Name};");
                                 break;
                         }
                     }
                     else
                     {
-                        m_Writer.WriteLine(m_Indent + "public {0} {1} {{ get; set; }} = new();", s_Type, s_Member.Name, s_Member.Offset);
+                        m_Writer.WriteLine(m_Indent + "private {0} _{1} = new();", s_Type, s_Member.Name, s_Member.Offset);
                     }
                 }
                 else if (!s_Pointer && s_Member.Array)
                 {
-                    m_Writer.WriteLine(m_Indent + "public List<{0}> {1} {{ get; set; }} = new();", s_Type, s_Member.Name, s_Member.Offset);
+                    m_Writer.WriteLine(m_Indent + "private List<{0}> _{1} = new();", s_Type, s_Member.Name, s_Member.Offset);
                 }
 
                 m_Writer.WriteLine(m_Indent);

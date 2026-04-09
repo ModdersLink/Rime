@@ -14,45 +14,57 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class UIGraphAsset :
+	public partial class UIGraphAsset :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<UINodeData> Nodes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<UINodeData> _Nodes = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<GlobalNode> GlobalNode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<GlobalNode> _GlobalNode = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<UINodeConnection> Connections { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<UINodeConnection> _Connections = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<UIAudioEventAsset> AudioEventMappings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<UIAudioEventAsset> _AudioEventMappings = new();
 
-		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
-		public string BundleAssetName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
+		private string _BundleAssetName = string.Empty;
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public RefArray<UIEventAsset> EventList { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private RefArray<UIEventAsset> _EventList = new();
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public bool Modal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private bool _Modal;
 
-		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
-		public bool ProtectScreens { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
+		private bool _ProtectScreens;
 
-		[ContainerField(38), LayoutImmutable, Blittable, JsonProperty(Order = 38)]
-		public bool IsWin32UIGraphAsset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(38), LayoutImmutable, Blittable, JsonProperty(Order = 38)]
+		private bool _IsWin32UIGraphAsset;
 
-		[ContainerField(39), LayoutImmutable, Blittable, JsonProperty(Order = 39)]
-		public bool IsXenonUIGraphAsset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(39), LayoutImmutable, Blittable, JsonProperty(Order = 39)]
+		private bool _IsXenonUIGraphAsset;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public bool IsPs3UIGraphAsset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private bool _IsPs3UIGraphAsset;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

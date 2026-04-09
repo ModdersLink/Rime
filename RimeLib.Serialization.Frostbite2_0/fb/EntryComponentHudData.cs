@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class EntryComponentHudData :
+	public partial class EntryComponentHudData :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public int Index { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private int _Index;
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public EntrySeatType SeatType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private EntrySeatType _SeatType = new();
 		
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public bool Frustum { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private bool _Frustum;
 		
-		[ContainerField(9), LayoutImmutable, Blittable, JsonProperty(Order = 9)]
-		public bool Visible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(9), LayoutImmutable, Blittable, JsonProperty(Order = 9)]
+		private bool _Visible;
 		
-		[ContainerField(10), LayoutImmutable, Blittable, JsonProperty(Order = 10)]
-		public bool MaximizeMiniMapOnEntry { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(10), LayoutImmutable, Blittable, JsonProperty(Order = 10)]
+		private bool _MaximizeMiniMapOnEntry;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

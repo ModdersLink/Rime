@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class PolynomialOperatorData :
+	public partial class PolynomialOperatorData :
 		EvaluatorData
 	{
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public PolynomialTempData FirstOperand { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private PolynomialTempData _FirstOperand = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public PolynomialTempData SecondOperand { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private PolynomialTempData _SecondOperand = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public PolynomialOperation Operation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private PolynomialOperation _Operation = new();
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public float MinClampResult { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private float _MinClampResult;
 
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public float MaxClampResult { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private float _MaxClampResult;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

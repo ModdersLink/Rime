@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class DirectWeaponSwitchingMapData :
+	public partial class DirectWeaponSwitchingMapData :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public EntryInputActionEnum Action { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private EntryInputActionEnum _Action = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public WeaponSwitchingEnum ToWeapon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private WeaponSwitchingEnum _ToWeapon = new();
 		
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float PreventMeleeRepeatTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _PreventMeleeRepeatTime;
 		
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float SwitchBackToPrevMaxTimePressed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _SwitchBackToPrevMaxTimePressed;
 		
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public bool UseQuickSwitch { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private bool _UseQuickSwitch;
 		
-		[ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
-		public bool FireAndSwitchBackToPrev { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
+		private bool _FireAndSwitchBackToPrev;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class IrReverbNodeData :
+	public partial class IrReverbNodeData :
 		AudioGraphNodeData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AudioGraphNodePort In { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AudioGraphNodePort _In = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AudioGraphNodePort Out { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AudioGraphNodePort _Out = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AudioGraphNodePort Reverb0 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AudioGraphNodePort _Reverb0 = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AudioGraphNodePort Amplitude0 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AudioGraphNodePort _Amplitude0 = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public AudioGraphNodePort Reverb1 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private AudioGraphNodePort _Reverb1 = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public AudioGraphNodePort Amplitude1 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private AudioGraphNodePort _Amplitude1 = new();
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public float MaxReverbLength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private float _MaxReverbLength;
 
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public SoundGraphPluginRef ReverbPlugin { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private SoundGraphPluginRef _ReverbPlugin = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

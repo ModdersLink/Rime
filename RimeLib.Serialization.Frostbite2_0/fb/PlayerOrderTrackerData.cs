@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class PlayerOrderTrackerData :
+	public partial class PlayerOrderTrackerData :
 		HudTrackerData
 	{
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public UIHudIcon AttackIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private UIHudIcon _AttackIcon = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public UIHudIcon DefendIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private UIHudIcon _DefendIcon = new();
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public UIHudIcon MoveToIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private UIHudIcon _MoveToIcon = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

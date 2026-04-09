@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 240)]
-	public class UINametagCompData :
+	public partial class UINametagCompData :
 		UI3dIconCompData
 	{
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public Vec4 SquadTint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private Vec4 _SquadTint = new();
 
-		[ContainerField(176), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public Vec4 EnemyTint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private Vec4 _EnemyTint = new();
 
-		[ContainerField(192), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public Vec4 FriendlyTint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(192), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private Vec4 _FriendlyTint = new();
 
-		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
-		public int OrderCooldown { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		private int _OrderCooldown;
 
-		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
-		public int TooltipCooldown { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
+		private int _TooltipCooldown;
 
-		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
-		public float HealthBarSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		private float _HealthBarSize;
 
-		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
-		public float NameFontSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
+		private float _NameFontSize;
 
-		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public float NameGlowSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private float _NameGlowSize;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

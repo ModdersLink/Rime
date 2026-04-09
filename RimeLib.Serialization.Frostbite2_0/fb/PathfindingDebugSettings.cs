@@ -14,61 +14,78 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class PathfindingDebugSettings :
+	public partial class PathfindingDebugSettings :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public int TypesToDrawMask { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private int _TypesToDrawMask;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public int TextOffsetY { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private int _TextOffsetY;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public int TextStartX { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private int _TextStartX;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public int TextStartY { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private int _TextStartY;
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public PathfindingReplayMode ReplayMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private PathfindingReplayMode _ReplayMode = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public bool DrawConnections { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private bool _DrawConnections;
 
-		[ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
-		public bool DrawObstacles { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
+		private bool _DrawObstacles;
 
-		[ContainerField(30), LayoutImmutable, Blittable, JsonProperty(Order = 30)]
-		public bool DrawPolygonOutline { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(30), LayoutImmutable, Blittable, JsonProperty(Order = 30)]
+		private bool _DrawPolygonOutline;
 
-		[ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
-		public bool DrawFilledPolygons { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
+		private bool _DrawFilledPolygons;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public bool DrawMemory { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private bool _DrawMemory;
 
-		[ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
-		public bool DrawStats { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
+		private bool _DrawStats;
 
-		[ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
-		public bool DrawTimings { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
+		private bool _DrawTimings;
 
-		[ContainerField(35), LayoutImmutable, Blittable, JsonProperty(Order = 35)]
-		public bool OriginalPaths { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(35), LayoutImmutable, Blittable, JsonProperty(Order = 35)]
+		private bool _OriginalPaths;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public bool RandomPositions { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private bool _RandomPositions;
 
-		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
-		public bool PotentialObstacles { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
+		private bool _PotentialObstacles;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(TypesToDrawMask);
 			p_Writer.Write(TextOffsetY);
 			p_Writer.Write(TextStartX);

@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class SoundBusData :
+	public partial class SoundBusData :
 		AudioGraphNodeData
 	{
-		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
-		public string BusName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		private string _BusName = string.Empty;
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public SoundGraphPluginRef SubmixPlugin { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private SoundGraphPluginRef _SubmixPlugin = new();
 
-		[ContainerField(15), LayoutImmutable, Blittable, JsonProperty(Order = 15)]
-		public sbyte ChannelCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(15), LayoutImmutable, Blittable, JsonProperty(Order = 15)]
+		private sbyte _ChannelCount;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

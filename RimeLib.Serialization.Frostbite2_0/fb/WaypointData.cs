@@ -14,25 +14,30 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class WaypointData :
+	public partial class WaypointData :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public int SchematicsNameHash { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private int _SchematicsNameHash;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public ushort WaypointId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private ushort _WaypointId;
 
-		[ContainerField(14), LayoutImmutable, Blittable, JsonProperty(Order = 14)]
-		public bool UseClientsPosition { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(14), LayoutImmutable, Blittable, JsonProperty(Order = 14)]
+		private bool _UseClientsPosition;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(SchematicsNameHash);
 			p_Writer.Write(WaypointId);
 			p_Writer.Write(UseClientsPosition);

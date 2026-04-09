@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class StateNode :
+	public partial class StateNode :
 		UINodeData
 	{
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<UIScreenAsset> Screen { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<UIScreenAsset> _Screen = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<UINodePort> In { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<UINodePort> _In = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public CtrRef<UINodePort> Show { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private CtrRef<UINodePort> _Show = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public CtrRef<UINodePort> Hide { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private CtrRef<UINodePort> _Hide = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public RefArray<UINodePort> Inputs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private RefArray<UINodePort> _Inputs = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public RefArray<UINodePort> Outputs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private RefArray<UINodePort> _Outputs = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public bool RenderToTexture { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private bool _RenderToTexture;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

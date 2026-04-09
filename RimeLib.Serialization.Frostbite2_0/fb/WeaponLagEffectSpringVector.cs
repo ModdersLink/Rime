@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class WeaponLagEffectSpringVector :
+	public partial class WeaponLagEffectSpringVector :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public WeaponLagEffectSpringData SpringX { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private WeaponLagEffectSpringData _SpringX = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public WeaponLagEffectSpringData SpringY { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private WeaponLagEffectSpringData _SpringY = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public WeaponLagEffectSpringData SpringZ { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private WeaponLagEffectSpringData _SpringZ = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

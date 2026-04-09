@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 8)]
-	public class PathfindingObjectCategoryRepresentation :
+	public partial class PathfindingObjectCategoryRepresentation :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public CtrRef<PathfindingObjectCategoryAsset> Category { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private CtrRef<PathfindingObjectCategoryAsset> _Category = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public PathfindingRepresentation Representation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private PathfindingRepresentation _Representation = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

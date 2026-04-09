@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class MessageEntityData :
+	public partial class MessageEntityData :
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
-		public string MessageSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
+		private string _MessageSid = string.Empty;
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<MessageLineData> AdditionalMessages { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<MessageLineData> _AdditionalMessages = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public UIMessageEntityType MessageType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private UIMessageEntityType _MessageType = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float DisplayTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _DisplayTime;
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public EntryInputActionEnum EntryInputAction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private EntryInputActionEnum _EntryInputAction = new();
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public bool Enabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private bool _Enabled;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

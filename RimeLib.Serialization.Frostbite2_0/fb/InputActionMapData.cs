@@ -14,28 +14,34 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class InputActionMapData :
+	public partial class InputActionMapData :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public RefArray<InputActionsData> Actions { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private RefArray<InputActionsData> _Actions = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public InputActionMapPlatform PlatformSpecific { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private InputActionMapPlatform _PlatformSpecific = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public InputActionMapSlot Slot { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private InputActionMapSlot _Slot = new();
 
-		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
-		public string CopyKeyBindingsFrom { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		private string _CopyKeyBindingsFrom = string.Empty;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			(RimeWriter Writer, uint ArrayIndex) s_Actions = p_EbxWriter.GetArrayWriter(Actions.GetType(), Actions.Count);
 			p_Writer.Write(s_Actions.ArrayIndex);
 			foreach (var s_Entry in Actions)

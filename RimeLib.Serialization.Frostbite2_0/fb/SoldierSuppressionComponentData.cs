@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class SoldierSuppressionComponentData :
+	public partial class SoldierSuppressionComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public SuppressionReactionData ReactionToSuppression { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private SuppressionReactionData _ReactionToSuppression = new();
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public float SuppressionResistModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private float _SuppressionResistModifier;
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public float SuppressionBoostModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private float _SuppressionBoostModifier;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float SuppressionDecay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _SuppressionDecay;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public float SuppressionSphereRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private float _SuppressionSphereRadius;
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public float FallOffDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private float _FallOffDelay;
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public float FallOffMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private float _FallOffMultiplier;
 
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public bool SuppressionAbortsHealthRegeneration { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private bool _SuppressionAbortsHealthRegeneration;
 
-		[ContainerField(133), LayoutImmutable, Blittable, JsonProperty(Order = 133)]
-		public bool CheckLineOfSight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(133), LayoutImmutable, Blittable, JsonProperty(Order = 133)]
+		private bool _CheckLineOfSight;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

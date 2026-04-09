@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class LookAtEntityData :
+	public partial class LookAtEntityData :
 		SpatialEntityData
 	{
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public bool RunOnce { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private bool _RunOnce;
 
-		[ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
-		public bool UseStaticDirection { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
+		private bool _UseStaticDirection;
 
-		[ContainerField(82), LayoutImmutable, Blittable, JsonProperty(Order = 82)]
-		public bool Enabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(82), LayoutImmutable, Blittable, JsonProperty(Order = 82)]
+		private bool _Enabled;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

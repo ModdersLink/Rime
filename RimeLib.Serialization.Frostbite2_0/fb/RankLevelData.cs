@@ -14,37 +14,46 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class RankLevelData :
+	public partial class RankLevelData :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
-		public string RankName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		private string _RankName = string.Empty;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public uint PointsNeeded { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private uint _PointsNeeded;
 
-		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
-		public string ImageName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
+		private string _ImageName = string.Empty;
 
-		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
-		public string IconName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		private string _IconName = string.Empty;
 
-		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
-		public string SoundName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
+		private string _SoundName = string.Empty;
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public List<BasicUnlockInfo> UnlockInfos { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private List<BasicUnlockInfo> _UnlockInfos = new();
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public int RankNumber { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private int _RankNumber;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(p_EbxWriter.WriteString(RankName));
 			p_Writer.Write(PointsNeeded);
 			p_Writer.Write(p_EbxWriter.WriteString(ImageName));

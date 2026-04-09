@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class LicenseInfo :
+	public partial class LicenseInfo :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
-		public string Name { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
+		private string _Name = string.Empty;
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public GamePlatform StagingPlatform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private GamePlatform _StagingPlatform = new();
 		
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public bool AllowStaging { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private bool _AllowStaging;
 		
-		[ContainerField(9), LayoutImmutable, Blittable, JsonProperty(Order = 9)]
-		public bool ClientOnly { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(9), LayoutImmutable, Blittable, JsonProperty(Order = 9)]
+		private bool _ClientOnly;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

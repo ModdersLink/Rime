@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class GameSplineEntityData :
+	public partial class GameSplineEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public GameSplineType SplineType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private GameSplineType _SplineType = new();
 
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public List<Vec3> LocalPoints { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private List<Vec3> _LocalPoints = new();
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public List<Vec3> Normals { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private List<Vec3> _Normals = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

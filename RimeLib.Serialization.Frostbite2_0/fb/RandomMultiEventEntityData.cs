@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class RandomMultiEventEntityData :
+	public partial class RandomMultiEventEntityData :
 		EntityData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private Realm _Realm = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<float> RandomEventWeight { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<float> _RandomEventWeight = new();
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public bool UniformDistribution { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private bool _UniformDistribution;
 
-		[ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
-		public bool ResetOutputsWhenAllHasTriggered { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
+		private bool _ResetOutputsWhenAllHasTriggered;
 
-		[ContainerField(22), LayoutImmutable, Blittable, JsonProperty(Order = 22)]
-		public bool DisableOutputOnTrigger { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(22), LayoutImmutable, Blittable, JsonProperty(Order = 22)]
+		private bool _DisableOutputOnTrigger;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

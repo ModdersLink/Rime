@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 224)]
-	public class FPSCameraData :
+	public partial class FPSCameraData :
 		TargetCameraData
 	{
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public TurnEffectData TurnEffectSettings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private TurnEffectData _TurnEffectSettings = new();
 
-		[ContainerField(192), JsonProperty(Order = 192)]
-		public BlurEffectData BlurEffectSettings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(192), JsonProperty(Order = 192)]
+		private BlurEffectData _BlurEffectSettings = new();
 
-		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
-		public float FOV { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		private float _FOV;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

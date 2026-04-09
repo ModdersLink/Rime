@@ -14,48 +14,61 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class SoundWaveAsset :
+	public partial class SoundWaveAsset :
 		SoundDataAsset
 	{
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<SoundWaveVariation> Variations { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<SoundWaveVariation> _Variations = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public List<SoundWaveLocalizationInfo> Localization { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private List<SoundWaveLocalizationInfo> _Localization = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public List<string> SubtitleStringIds { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private List<string> _SubtitleStringIds = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public SoundWaveVariationSelection Selection { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private SoundWaveVariationSelection _Selection = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public CtrRef<StreamPoolAsset> StreamPool { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private CtrRef<StreamPoolAsset> _StreamPool = new();
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public bool Seekable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private bool _Seekable;
 
-		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
-		public bool PreferAvailableVariations { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
+		private bool _PreferAvailableVariations;
 
-		[ContainerField(42), LayoutImmutable, Blittable, JsonProperty(Order = 42)]
-		public sbyte PersistentVariationCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(42), LayoutImmutable, Blittable, JsonProperty(Order = 42)]
+		private sbyte _PersistentVariationCount;
 
-		[ContainerField(43), LayoutImmutable, Blittable, JsonProperty(Order = 43)]
-		public sbyte ChannelCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(43), LayoutImmutable, Blittable, JsonProperty(Order = 43)]
+		private sbyte _ChannelCount;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public sbyte VoicePriority { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private sbyte _VoicePriority;
 
-		[ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
-		public sbyte PrimePriority { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
+		private sbyte _PrimePriority;
 
-		[ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
-		public sbyte RequestPriority { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
+		private sbyte _RequestPriority;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

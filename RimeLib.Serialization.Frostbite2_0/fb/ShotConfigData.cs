@@ -14,66 +14,85 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class ShotConfigData :
+	public partial class ShotConfigData :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public Vec3 InitialPosition { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private Vec3 _InitialPosition = new();
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 InitialDirection { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _InitialDirection = new();
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public Vec3 InitialSpeed { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private Vec3 _InitialSpeed = new();
 		
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float InheritWeaponSpeedAmount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _InheritWeaponSpeedAmount;
 		
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public CtrRef<ExplosionEntityData> MuzzleExplosion { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private CtrRef<ExplosionEntityData> _MuzzleExplosion = new();
 		
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public CtrRef<ProjectileEntityData> ProjectileData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private CtrRef<ProjectileEntityData> _ProjectileData = new();
 		
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public CtrRef<ProjectileEntityData> SecondaryProjectileData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private CtrRef<ProjectileEntityData> _SecondaryProjectileData = new();
 		
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public CtrRef<ProjectileBlueprint> Projectile { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private CtrRef<ProjectileBlueprint> _Projectile = new();
 		
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public CtrRef<ProjectileBlueprint> SecondaryProjectile { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private CtrRef<ProjectileBlueprint> _SecondaryProjectile = new();
 		
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public List<UnlockableProjectile> AlternateProjectiles { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private List<UnlockableProjectile> _AlternateProjectiles = new();
 		
-		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
-		public float SpawnDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
+		private float _SpawnDelay;
 		
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public uint NumberOfBulletsPerShell { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private uint _NumberOfBulletsPerShell;
 		
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public uint NumberOfBulletsPerShot { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private uint _NumberOfBulletsPerShot;
 		
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public uint NumberOfBulletsPerBurst { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private uint _NumberOfBulletsPerBurst;
 		
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public bool RelativeTargetAiming { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private bool _RelativeTargetAiming;
 		
-		[ContainerField(93), LayoutImmutable, Blittable, JsonProperty(Order = 93)]
-		public bool ForceSpawnToCamera { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(93), LayoutImmutable, Blittable, JsonProperty(Order = 93)]
+		private bool _ForceSpawnToCamera;
 		
-		[ContainerField(94), LayoutImmutable, Blittable, JsonProperty(Order = 94)]
-		public bool SpawnVisualAtWeaponBone { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(94), LayoutImmutable, Blittable, JsonProperty(Order = 94)]
+		private bool _SpawnVisualAtWeaponBone;
 		
-		[ContainerField(95), LayoutImmutable, Blittable, JsonProperty(Order = 95)]
-		public bool ActiveForceSpawnToCamera { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(95), LayoutImmutable, Blittable, JsonProperty(Order = 95)]
+		private bool _ActiveForceSpawnToCamera;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

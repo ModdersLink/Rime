@@ -14,63 +14,81 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class HullFloatPhysicsData :
+	public partial class HullFloatPhysicsData :
 		FloatPhysicsData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 WaterResistanceAxisMod { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _WaterResistanceAxisMod = new();
 
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public Vec3 WaterFrictionAxisMod { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private Vec3 _WaterFrictionAxisMod = new();
 
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public Vec3 Offset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private Vec3 _Offset = new();
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public int SubSurfaceSplits { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private int _SubSurfaceSplits;
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public float Depth { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private float _Depth;
 
-		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
-		public float Width { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
+		private float _Width;
 
-		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
-		public float Length { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
+		private float _Length;
 
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public float FrontCurveDegree { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private float _FrontCurveDegree;
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public float SideCurveDegree { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private float _SideCurveDegree;
 
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public float NonEngineSteer { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private float _NonEngineSteer;
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public float NonEngineSteerMinSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private float _NonEngineSteerMinSpeed;
 
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public float NonEngineSteerMaxSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private float _NonEngineSteerMaxSpeed;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public float WaterDampeningMod { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private float _WaterDampeningMod;
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public float LiftModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private float _LiftModifier;
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public float SupportSizeMod { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private float _SupportSizeMod;
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public float AngularDampening { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private float _AngularDampening;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float FrictionThrottleModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _FrictionThrottleModifier;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

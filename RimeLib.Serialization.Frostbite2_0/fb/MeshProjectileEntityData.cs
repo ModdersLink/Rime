@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class MeshProjectileEntityData :
+	public partial class MeshProjectileEntityData :
 		ProjectileEntityData
 	{
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public Vec3 InitialAngularVelocity { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private Vec3 _InitialAngularVelocity = new();
 
-		[ContainerField(176), JsonProperty(Order = 176)]
-		public CtrRef<EffectBlueprint> TrailEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), JsonProperty(Order = 176)]
+		private CtrRef<EffectBlueprint> _TrailEffect = new();
 
-		[ContainerField(180), JsonProperty(Order = 180)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(180), JsonProperty(Order = 180)]
+		private CtrRef<MeshAsset> _Mesh = new();
 
-		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
-		public float MaxAttachableInclination { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		private float _MaxAttachableInclination;
 
-		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
-		public bool ExtraDamping { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		private bool _ExtraDamping;
 
-		[ContainerField(189), LayoutImmutable, Blittable, JsonProperty(Order = 189)]
-		public bool IsAttachable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(189), LayoutImmutable, Blittable, JsonProperty(Order = 189)]
+		private bool _IsAttachable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

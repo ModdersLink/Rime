@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class DynamicAvoidanceEntityData :
+	public partial class DynamicAvoidanceEntityData :
 		EntityData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public DynamicAvoidanceMode RepelOthers { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private DynamicAvoidanceMode _RepelOthers = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public DynamicAvoidanceMode ReportPredictedCollision { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private DynamicAvoidanceMode _ReportPredictedCollision = new();
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float CollisionRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _CollisionRadius;
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private Realm _Realm = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public AntDynamicAvoidanceBinding AntBinding { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private AntDynamicAvoidanceBinding _AntBinding = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public bool AffectedByRepellingForce { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private bool _AffectedByRepellingForce;
 
-		[ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
-		public bool PredictedByOthers { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
+		private bool _PredictedByOthers;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

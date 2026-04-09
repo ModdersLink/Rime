@@ -14,78 +14,101 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 92)]
-	public class ArtilleryStrikeWeaponData :
+	public partial class ArtilleryStrikeWeaponData :
 		WeaponData
 	{
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float MaxStrikeDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _MaxStrikeDistance;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float StrikeRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _StrikeRadius;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float SpawnHeight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _SpawnHeight;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float MaxRandomSpawnHeight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _MaxRandomSpawnHeight;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float StrikeCameraOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _StrikeCameraOffset;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float SpawnHeightMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _SpawnHeightMultiplier;
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public CtrRef<TargetCameraData> Camera { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private CtrRef<TargetCameraData> _Camera = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float AimingCameraHeight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _AimingCameraHeight;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float StrikeCameraHeight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _StrikeCameraHeight;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public float AimingCameraOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private float _AimingCameraOffset;
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public float StrikeCameraFov { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private float _StrikeCameraFov;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public float AimingCameraFov { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private float _AimingCameraFov;
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public float DelayBeforeAimingCamera { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private float _DelayBeforeAimingCamera;
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public float ValidMinDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private float _ValidMinDistance;
 
-		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
-		public float FireCameraTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
+		private float _FireCameraTime;
 
-		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
-		public float StrikeCameraTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
+		private float _StrikeCameraTime;
 
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public float ValidMaxDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private float _ValidMaxDistance;
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public float ValidMaxAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private float _ValidMaxAngle;
 
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public bool IncreaseSpawnHeightWithDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private bool _IncreaseSpawnHeightWithDistance;
 
-		[ContainerField(89), LayoutImmutable, Blittable, JsonProperty(Order = 89)]
-		public bool EnableProjectileTrails { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(89), LayoutImmutable, Blittable, JsonProperty(Order = 89)]
+		private bool _EnableProjectileTrails;
 
-		[ContainerField(90), LayoutImmutable, Blittable, JsonProperty(Order = 90)]
-		public bool EnableCameraRotation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(90), LayoutImmutable, Blittable, JsonProperty(Order = 90)]
+		private bool _EnableCameraRotation;
 
-		[ContainerField(91), LayoutImmutable, Blittable, JsonProperty(Order = 91)]
-		public bool FireProjectileFromWeapon { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(91), LayoutImmutable, Blittable, JsonProperty(Order = 91)]
+		private bool _FireProjectileFromWeapon;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

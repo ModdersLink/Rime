@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 224)]
-	public class ChildComponentData :
+	public partial class ChildComponentData :
 		PartComponentData
 	{
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public LinearTransform AlignTransform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private LinearTransform _AlignTransform = new();
 
-		[ContainerField(176), JsonProperty(Order = 176)]
-		public CtrRef<MovingBodyData> MovingBody { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), JsonProperty(Order = 176)]
+		private CtrRef<MovingBodyData> _MovingBody = new();
 
-		[ContainerField(180), JsonProperty(Order = 180)]
-		public VehicleHealthZoneData HealthZone { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(180), JsonProperty(Order = 180)]
+		private VehicleHealthZoneData _HealthZone = new();
 
-		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
-		public float SoundEffectStartRpm { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
+		private float _SoundEffectStartRpm;
 
-		[ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
-		public float SoundEffectStopRpm { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
+		private float _SoundEffectStopRpm;
 
-		[ContainerField(208), JsonProperty(Order = 208)]
-		public CtrRef<AlignmentData> AlignmentSettings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(208), JsonProperty(Order = 208)]
+		private CtrRef<AlignmentData> _AlignmentSettings = new();
 
-		[ContainerField(212), JsonProperty(Order = 212)]
-		public CtrRef<SoundAsset> SoundEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(212), JsonProperty(Order = 212)]
+		private CtrRef<SoundAsset> _SoundEffect = new();
 
-		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
-		public bool EnableAlignToCamera { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		private bool _EnableAlignToCamera;
 
-		[ContainerField(217), LayoutImmutable, Blittable, JsonProperty(Order = 217)]
-		public bool WorldSpacePositionLock { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(217), LayoutImmutable, Blittable, JsonProperty(Order = 217)]
+		private bool _WorldSpacePositionLock;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

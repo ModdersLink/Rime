@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class SupportedShootingBinding :
+	public partial class SupportedShootingBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef Supported { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _Supported = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef SupportedPos { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _SupportedPos = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef ForwardVector { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _ForwardVector = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef Yaw { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _Yaw = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef Pitch { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _Pitch = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef DistToObject { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _DistToObject = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AntRef HeightOfObject { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AntRef _HeightOfObject = new();
 		
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public AntRef Undeploying { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private AntRef _Undeploying = new();
 		
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AntRef AnimatedCamera { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AntRef _AnimatedCamera = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

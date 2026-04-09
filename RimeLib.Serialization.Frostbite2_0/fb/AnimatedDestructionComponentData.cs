@@ -14,11 +14,12 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class AnimatedDestructionComponentData :
+	public partial class AnimatedDestructionComponentData :
 		AntAnimatableComponentData
 	{
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)

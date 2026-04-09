@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class MeshComponentData :
+	public partial class MeshComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public RefArray<BoneFakePhysicsData> BoneFakePhysics { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private RefArray<BoneFakePhysicsData> _BoneFakePhysics = new();
 
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private CtrRef<MeshAsset> _Mesh = new();
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public CtrRef<SkeletonAsset> Skeleton { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private CtrRef<SkeletonAsset> _Skeleton = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

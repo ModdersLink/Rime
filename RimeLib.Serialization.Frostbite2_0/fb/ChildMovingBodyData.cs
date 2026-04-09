@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class ChildMovingBodyData :
+	public partial class ChildMovingBodyData :
 		LinearMovingBodyData
 	{
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public float InputDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private float _InputDelay;
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public float Speed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private float _Speed;
 
-		[ContainerField(88), JsonProperty(Order = 88)]
-		public EntryInputActionEnum InputAction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(88), JsonProperty(Order = 88)]
+		private EntryInputActionEnum _InputAction = new();
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public float TriggerImpulse { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private float _TriggerImpulse;
 
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public bool IsOneShotInput { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private bool _IsOneShotInput;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

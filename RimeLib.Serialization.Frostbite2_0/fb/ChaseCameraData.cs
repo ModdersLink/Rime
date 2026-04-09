@@ -14,87 +14,113 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 272)]
-	public class ChaseCameraData :
+	public partial class ChaseCameraData :
 		TargetCameraData
 	{
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public Vec3 TargetOffset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private Vec3 _TargetOffset = new();
 
-		[ContainerField(176), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public Vec3 ToWantedPositionScale { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private Vec3 _ToWantedPositionScale = new();
 
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public float AwayFromTargetForceScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private float _AwayFromTargetForceScale;
 
-		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
-		public float TargetRotationOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
+		private float _TargetRotationOffset;
 
-		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
-		public float MaxViewRotationAngleDeg { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
+		private float _MaxViewRotationAngleDeg;
 
-		[ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
-		public float WantedAngleDeg { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
+		private float _WantedAngleDeg;
 
-		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
-		public float WantedDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		private float _WantedDistance;
 
-		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
-		public float MaxDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
+		private float _MaxDistance;
 
-		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
-		public float SnapDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		private float _SnapDistance;
 
-		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
-		public float ForceFieldRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
+		private float _ForceFieldRadius;
 
-		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public float CollisionRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private float _CollisionRadius;
 
-		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
-		public float ForceFieldForceScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		private float _ForceFieldForceScale;
 
-		[ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
-		public float MaxVelocity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
+		private float _MaxVelocity;
 
-		[ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
-		public float VelocityDrag { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
+		private float _VelocityDrag;
 
-		[ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
-		public float PillExpandSizeSpeedAcceleration { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
+		private float _PillExpandSizeSpeedAcceleration;
 
-		[ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
-		public float PillMinimumCollisionRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
+		private float _PillMinimumCollisionRadius;
 
-		[ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
-		public float PillMaximumCollisionRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
+		private float _PillMaximumCollisionRadius;
 
-		[ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
-		public float PillMinimumCollisionLength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
+		private float _PillMinimumCollisionLength;
 
-		[ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
-		public float LookDistanceScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
+		private float _LookDistanceScale;
 
-		[ContainerField(260), LayoutImmutable, Blittable, JsonProperty(Order = 260)]
-		public float LookDistanceInFrontOfTarget { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(260), LayoutImmutable, Blittable, JsonProperty(Order = 260)]
+		private float _LookDistanceInFrontOfTarget;
 
-		[ContainerField(264), LayoutImmutable, Blittable, JsonProperty(Order = 264)]
-		public uint UpdateRate { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(264), LayoutImmutable, Blittable, JsonProperty(Order = 264)]
+		private uint _UpdateRate;
 
-		[ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
-		public bool KeepTargetPitch { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
+		private bool _KeepTargetPitch;
 
-		[ContainerField(269), LayoutImmutable, Blittable, JsonProperty(Order = 269)]
-		public bool InheritTargetVelocity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(269), LayoutImmutable, Blittable, JsonProperty(Order = 269)]
+		private bool _InheritTargetVelocity;
 
-		[ContainerField(270), LayoutImmutable, Blittable, JsonProperty(Order = 270)]
-		public bool ShouldRollWithTarget { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(270), LayoutImmutable, Blittable, JsonProperty(Order = 270)]
+		private bool _ShouldRollWithTarget;
 
-		[ContainerField(271), LayoutImmutable, Blittable, JsonProperty(Order = 271)]
-		public bool HasCollision { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(271), LayoutImmutable, Blittable, JsonProperty(Order = 271)]
+		private bool _HasCollision;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

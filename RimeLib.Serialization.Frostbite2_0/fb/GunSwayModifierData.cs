@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 212)]
-	public class GunSwayModifierData :
+	public partial class GunSwayModifierData :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<UnlockAssetBase> UnlockAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<UnlockAssetBase> _UnlockAsset = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public GunSwayStanceZoomModifierData StandZoomModifier { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private GunSwayStanceZoomModifierData _StandZoomModifier = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public GunSwayStanceZoomModifierData StandNoZoomModifier { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private GunSwayStanceZoomModifierData _StandNoZoomModifier = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public GunSwayStanceZoomModifierData CrouchZoomModifier { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private GunSwayStanceZoomModifierData _CrouchZoomModifier = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public GunSwayStanceZoomModifierData CrouchNoZoomModifier { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private GunSwayStanceZoomModifierData _CrouchNoZoomModifier = new();
 
-		[ContainerField(144), JsonProperty(Order = 144)]
-		public GunSwayStanceZoomModifierData ProneZoomModifier { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), JsonProperty(Order = 144)]
+		private GunSwayStanceZoomModifierData _ProneZoomModifier = new();
 
-		[ContainerField(176), JsonProperty(Order = 176)]
-		public GunSwayStanceZoomModifierData ProneNoZoomModifier { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), JsonProperty(Order = 176)]
+		private GunSwayStanceZoomModifierData _ProneNoZoomModifier = new();
 
-		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
-		public bool OnlyInSupportedShooting { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		private bool _OnlyInSupportedShooting;
 
-		[ContainerField(209), LayoutImmutable, Blittable, JsonProperty(Order = 209)]
-		public bool OnlyOnWeaponLightEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(209), LayoutImmutable, Blittable, JsonProperty(Order = 209)]
+		private bool _OnlyOnWeaponLightEnabled;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

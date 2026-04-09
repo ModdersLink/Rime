@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class WaveSwitcherNodeData :
+	public partial class WaveSwitcherNodeData :
 		AudioGraphNodeData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AudioGraphNodePort Index { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AudioGraphNodePort _Index = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AudioGraphNodePort Advance { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AudioGraphNodePort _Advance = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AudioGraphNodePort Wave { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AudioGraphNodePort _Wave = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AudioGraphNodePort IndexChanged { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AudioGraphNodePort _IndexChanged = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public RefArray<SoundWaveAsset> Waves { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private RefArray<SoundWaveAsset> _Waves = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float DefaultIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _DefaultIndex;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public bool IsRandom { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private bool _IsRandom;
 
-		[ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
-		public bool RandomStartIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
+		private bool _RandomStartIndex;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

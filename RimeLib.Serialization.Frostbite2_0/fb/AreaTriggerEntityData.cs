@@ -14,42 +14,53 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 208)]
-	public class AreaTriggerEntityData :
+	public partial class AreaTriggerEntityData :
 		TriggerEntityData
 	{
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public LinearTransform GeometryTransform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private LinearTransform _GeometryTransform = new();
 
-		[ContainerField(176), JsonProperty(Order = 176)]
-		public AreaTriggerInclude Include { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), JsonProperty(Order = 176)]
+		private AreaTriggerInclude _Include = new();
 
-		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
-		public float InsideAreaEventRepeatTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		private float _InsideAreaEventRepeatTime;
 
-		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
-		public float Radius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		private float _Radius;
 
-		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
-		public bool UseCharacterEntity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		private bool _UseCharacterEntity;
 
-		[ContainerField(189), LayoutImmutable, Blittable, JsonProperty(Order = 189)]
-		public bool OneInsideAreaEventPerSoldier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(189), LayoutImmutable, Blittable, JsonProperty(Order = 189)]
+		private bool _OneInsideAreaEventPerSoldier;
 
-		[ContainerField(190), LayoutImmutable, Blittable, JsonProperty(Order = 190)]
-		public bool TriggerOnlyOnLeave { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(190), LayoutImmutable, Blittable, JsonProperty(Order = 190)]
+		private bool _TriggerOnlyOnLeave;
 
-		[ContainerField(191), LayoutImmutable, Blittable, JsonProperty(Order = 191)]
-		public bool ResetOnEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(191), LayoutImmutable, Blittable, JsonProperty(Order = 191)]
+		private bool _ResetOnEnable;
 
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public bool TriggerOnLeaveOnDeath { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private bool _TriggerOnLeaveOnDeath;
 
-		[ContainerField(193), LayoutImmutable, Blittable, JsonProperty(Order = 193)]
-		public bool TriggerOnLeaveOnDisable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(193), LayoutImmutable, Blittable, JsonProperty(Order = 193)]
+		private bool _TriggerOnLeaveOnDisable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

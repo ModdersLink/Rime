@@ -14,254 +14,334 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 384)]
-	public class WheelConfigData :
+	public partial class WheelConfigData :
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 Offset { get; set; } = new();
-
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public Vec3 Inertia { get; set; } = new();
-
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public CtrRef<RotationBodyData> RotationBody { get; set; } = new();
-
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public SphereCollisionData SphereCollision { get; set; } = new();
-
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public SpringData Spring { get; set; } = new();
-
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public float Mass { get; set; }
-
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public float Radius { get; set; }
-
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public float Width { get; set; }
-
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public float RollingResistanceInternalBaseFactor { get; set; }
-
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float RollingResistanceBaseFactor { get; set; }
-
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public float RollingResistanceVelocityFactor { get; set; }
-
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public float EngineBrakeVelocityFactor { get; set; }
-
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public float EngineBrakeMinFactor { get; set; }
-
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public float EngineBrakeMaxFactor { get; set; }
-
-		[ContainerField(136), JsonProperty(Order = 136)]
-		public List<Vec2> TransmissionLoss { get; set; } = new();
-
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public float DiffGearRatio { get; set; }
-
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public float LowSpeedSteeringSensitivity { get; set; }
-
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public float MidSpeedSteeringSensitivity { get; set; }
-
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public float HighSpeedSteeringSensitivity { get; set; }
-
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public float SensitivityRangeScale { get; set; }
-
-		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public float LowSpeedSteeringSensitivityLimit { get; set; }
-
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public float MidSpeedSteeringSensitivityLimit { get; set; }
-
-		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
-		public float HighSpeedSteeringSensitivityLimit { get; set; }
-
-		[ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
-		public float TrackedTurnSpeedLimit { get; set; }
-
-		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public float TrackedForwardSpeedLimit { get; set; }
-
-		[ContainerField(180), JsonProperty(Order = 180)]
-		public CtrRef<Curve2D> SteerInertia { get; set; } = new();
-
-		[ContainerField(184), JsonProperty(Order = 184)]
-		public List<SensitivityAtVelocity> SteeringSensitivity { get; set; } = new();
-
-		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
-		public float SlopeGripMinAngle { get; set; }
-
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public float SlopeGripMaxAngle { get; set; }
-
-		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
-		public int SlopeGripExponent { get; set; }
-
-		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
-		public float OffGroundGravityModifier { get; set; }
-
-		[ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
-		public float SideSlipAngleMaxSlipCondition { get; set; }
-
-		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
-		public float AngularVelocityMinSlipCondition { get; set; }
-
-		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
-		public float WheelVelocityXMinSlipCondition { get; set; }
-
-		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
-		public float WheelSlipRatioMaxSlipCondition { get; set; }
-
-		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
-		public float LongitudinalFrictionForceMaxFactor { get; set; }
-
-		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public float LateralFrictionForceMaxFactor { get; set; }
-
-		[ContainerField(228), JsonProperty(Order = 228)]
-		public List<FrictionScaleAtVelocity> LongitudeFrictionScale { get; set; } = new();
-
-		[ContainerField(232), JsonProperty(Order = 232)]
-		public List<FrictionScaleAtVelocity> LattitudeFrictionScale { get; set; } = new();
-
-		[ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
-		public float WheelFrictionLattitudeBrakeScale { get; set; }
-
-		[ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
-		public float MaxSlipRatio { get; set; }
-
-		[ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
-		public float Resistance { get; set; }
-
-		[ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
-		public float FxTorqueRadiusMultiplier { get; set; }
-
-		[ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
-		public float FrictionMomentVelocityMin { get; set; }
-
-		[ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
-		public float FrictionMomentVelocityMax { get; set; }
-
-		[ContainerField(260), LayoutImmutable, Blittable, JsonProperty(Order = 260)]
-		public float FrictionMomentMultiplier { get; set; }
-
-		[ContainerField(264), LayoutImmutable, Blittable, JsonProperty(Order = 264)]
-		public float FrictionMomentMaxFactor { get; set; }
-
-		[ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
-		public float BrakeFactor { get; set; }
-
-		[ContainerField(272), LayoutImmutable, Blittable, JsonProperty(Order = 272)]
-		public float BrakeForce { get; set; }
-
-		[ContainerField(276), LayoutImmutable, Blittable, JsonProperty(Order = 276)]
-		public float HandBrakeFactor { get; set; }
-
-		[ContainerField(280), LayoutImmutable, Blittable, JsonProperty(Order = 280)]
-		public float HandBrakeForce { get; set; }
-
-		[ContainerField(284), LayoutImmutable, Blittable, JsonProperty(Order = 284)]
-		public float LateralPosK { get; set; }
-
-		[ContainerField(288), LayoutImmutable, Blittable, JsonProperty(Order = 288)]
-		public float LateralNegK { get; set; }
-
-		[ContainerField(292), LayoutImmutable, Blittable, JsonProperty(Order = 292)]
-		public float LongitudinalPosK { get; set; }
-
-		[ContainerField(296), LayoutImmutable, Blittable, JsonProperty(Order = 296)]
-		public float LongitudinalNegK { get; set; }
-
-		[ContainerField(300), LayoutImmutable, Blittable, JsonProperty(Order = 300)]
-		public float AlignMomScale { get; set; }
-
-		[ContainerField(304), LayoutImmutable, Blittable, JsonProperty(Order = 304)]
-		public float WheelBaseLateral { get; set; }
-
-		[ContainerField(308), LayoutImmutable, Blittable, JsonProperty(Order = 308)]
-		public float WheelBaseLongitudinal { get; set; }
-
-		[ContainerField(312), LayoutImmutable, Blittable, JsonProperty(Order = 312)]
-		public int DrivingType { get; set; }
-
-		[ContainerField(316), LayoutImmutable, Blittable, JsonProperty(Order = 316)]
-		public int SteeringType { get; set; }
-
-		[ContainerField(320), LayoutImmutable, Blittable, JsonProperty(Order = 320)]
-		public int FrictionMethod { get; set; }
-
-		[ContainerField(324), LayoutImmutable, Blittable, JsonProperty(Order = 324)]
-		public int AckermanDeviceType { get; set; }
-
-		[ContainerField(328), LayoutImmutable, Blittable, JsonProperty(Order = 328)]
-		public float CollisionYawDampeningDuration { get; set; }
-
-		[ContainerField(332), LayoutImmutable, Blittable, JsonProperty(Order = 332)]
-		public float CollisionYawDampening { get; set; }
-
-		[ContainerField(336), LayoutImmutable, Blittable, JsonProperty(Order = 336)]
-		public float ConstantSpringForceFrictionScale { get; set; }
-
-		[ContainerField(340), LayoutImmutable, Blittable, JsonProperty(Order = 340)]
-		public int RotationDirectionIndex { get; set; }
-
-		[ContainerField(344), LayoutImmutable, Blittable, JsonProperty(Order = 344)]
-		public int SteeringAngleIndex { get; set; }
-
-		[ContainerField(348), LayoutImmutable, Blittable, JsonProperty(Order = 348)]
-		public int PacejkaConfigIndex { get; set; }
-
-		[ContainerField(352), LayoutImmutable, Blittable, JsonProperty(Order = 352)]
-		public int EngineIndex { get; set; }
-
-		[ContainerField(356), JsonProperty(Order = 356)]
-		public CtrRef<MaterialContainerPair> CollisionMaterialPair { get; set; } = new();
-
-		[ContainerField(360), LayoutImmutable, Blittable, JsonProperty(Order = 360)]
-		public bool AlwaysGrip { get; set; }
-
-		[ContainerField(361), LayoutImmutable, Blittable, JsonProperty(Order = 361)]
-		public bool UseRollingResistanceBaseFactor { get; set; }
-
-		[ContainerField(362), LayoutImmutable, Blittable, JsonProperty(Order = 362)]
-		public bool UseEngineBrake { get; set; }
-
-		[ContainerField(363), LayoutImmutable, Blittable, JsonProperty(Order = 363)]
-		public bool IsAllowedToSpin { get; set; }
-
-		[ContainerField(364), LayoutImmutable, Blittable, JsonProperty(Order = 364)]
-		public bool HasSteeringInverted { get; set; }
-
-		[ContainerField(365), LayoutImmutable, Blittable, JsonProperty(Order = 365)]
-		public bool UseFrictionMoment { get; set; }
-
-		[ContainerField(366), LayoutImmutable, Blittable, JsonProperty(Order = 366)]
-		public bool UseLowSpeedAutoBrake { get; set; }
-
-		[ContainerField(367), LayoutImmutable, Blittable, JsonProperty(Order = 367)]
-		public bool AdjustWheelRotation { get; set; }
-
-		[ContainerField(368), LayoutImmutable, Blittable, JsonProperty(Order = 368)]
-		public bool UseRollingResistanceVelocityFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _Offset = new();
+
+		[ObservableProperty]
+		[property: ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private Vec3 _Inertia = new();
+
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private CtrRef<RotationBodyData> _RotationBody = new();
+
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private SphereCollisionData _SphereCollision = new();
+
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private SpringData _Spring = new();
+
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private float _Mass;
+
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private float _Radius;
+
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private float _Width;
+
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private float _RollingResistanceInternalBaseFactor;
+
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _RollingResistanceBaseFactor;
+
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private float _RollingResistanceVelocityFactor;
+
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private float _EngineBrakeVelocityFactor;
+
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private float _EngineBrakeMinFactor;
+
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private float _EngineBrakeMaxFactor;
+
+		[ObservableProperty]
+		[property: ContainerField(136), JsonProperty(Order = 136)]
+		private List<Vec2> _TransmissionLoss = new();
+
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private float _DiffGearRatio;
+
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private float _LowSpeedSteeringSensitivity;
+
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private float _MidSpeedSteeringSensitivity;
+
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private float _HighSpeedSteeringSensitivity;
+
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private float _SensitivityRangeScale;
+
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private float _LowSpeedSteeringSensitivityLimit;
+
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private float _MidSpeedSteeringSensitivityLimit;
+
+		[ObservableProperty]
+		[property: ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
+		private float _HighSpeedSteeringSensitivityLimit;
+
+		[ObservableProperty]
+		[property: ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
+		private float _TrackedTurnSpeedLimit;
+
+		[ObservableProperty]
+		[property: ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private float _TrackedForwardSpeedLimit;
+
+		[ObservableProperty]
+		[property: ContainerField(180), JsonProperty(Order = 180)]
+		private CtrRef<Curve2D> _SteerInertia = new();
+
+		[ObservableProperty]
+		[property: ContainerField(184), JsonProperty(Order = 184)]
+		private List<SensitivityAtVelocity> _SteeringSensitivity = new();
+
+		[ObservableProperty]
+		[property: ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		private float _SlopeGripMinAngle;
+
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private float _SlopeGripMaxAngle;
+
+		[ObservableProperty]
+		[property: ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
+		private int _SlopeGripExponent;
+
+		[ObservableProperty]
+		[property: ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
+		private float _OffGroundGravityModifier;
+
+		[ObservableProperty]
+		[property: ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
+		private float _SideSlipAngleMaxSlipCondition;
+
+		[ObservableProperty]
+		[property: ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		private float _AngularVelocityMinSlipCondition;
+
+		[ObservableProperty]
+		[property: ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
+		private float _WheelVelocityXMinSlipCondition;
+
+		[ObservableProperty]
+		[property: ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		private float _WheelSlipRatioMaxSlipCondition;
+
+		[ObservableProperty]
+		[property: ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
+		private float _LongitudinalFrictionForceMaxFactor;
+
+		[ObservableProperty]
+		[property: ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private float _LateralFrictionForceMaxFactor;
+
+		[ObservableProperty]
+		[property: ContainerField(228), JsonProperty(Order = 228)]
+		private List<FrictionScaleAtVelocity> _LongitudeFrictionScale = new();
+
+		[ObservableProperty]
+		[property: ContainerField(232), JsonProperty(Order = 232)]
+		private List<FrictionScaleAtVelocity> _LattitudeFrictionScale = new();
+
+		[ObservableProperty]
+		[property: ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
+		private float _WheelFrictionLattitudeBrakeScale;
+
+		[ObservableProperty]
+		[property: ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
+		private float _MaxSlipRatio;
+
+		[ObservableProperty]
+		[property: ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
+		private float _Resistance;
+
+		[ObservableProperty]
+		[property: ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
+		private float _FxTorqueRadiusMultiplier;
+
+		[ObservableProperty]
+		[property: ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
+		private float _FrictionMomentVelocityMin;
+
+		[ObservableProperty]
+		[property: ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
+		private float _FrictionMomentVelocityMax;
+
+		[ObservableProperty]
+		[property: ContainerField(260), LayoutImmutable, Blittable, JsonProperty(Order = 260)]
+		private float _FrictionMomentMultiplier;
+
+		[ObservableProperty]
+		[property: ContainerField(264), LayoutImmutable, Blittable, JsonProperty(Order = 264)]
+		private float _FrictionMomentMaxFactor;
+
+		[ObservableProperty]
+		[property: ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
+		private float _BrakeFactor;
+
+		[ObservableProperty]
+		[property: ContainerField(272), LayoutImmutable, Blittable, JsonProperty(Order = 272)]
+		private float _BrakeForce;
+
+		[ObservableProperty]
+		[property: ContainerField(276), LayoutImmutable, Blittable, JsonProperty(Order = 276)]
+		private float _HandBrakeFactor;
+
+		[ObservableProperty]
+		[property: ContainerField(280), LayoutImmutable, Blittable, JsonProperty(Order = 280)]
+		private float _HandBrakeForce;
+
+		[ObservableProperty]
+		[property: ContainerField(284), LayoutImmutable, Blittable, JsonProperty(Order = 284)]
+		private float _LateralPosK;
+
+		[ObservableProperty]
+		[property: ContainerField(288), LayoutImmutable, Blittable, JsonProperty(Order = 288)]
+		private float _LateralNegK;
+
+		[ObservableProperty]
+		[property: ContainerField(292), LayoutImmutable, Blittable, JsonProperty(Order = 292)]
+		private float _LongitudinalPosK;
+
+		[ObservableProperty]
+		[property: ContainerField(296), LayoutImmutable, Blittable, JsonProperty(Order = 296)]
+		private float _LongitudinalNegK;
+
+		[ObservableProperty]
+		[property: ContainerField(300), LayoutImmutable, Blittable, JsonProperty(Order = 300)]
+		private float _AlignMomScale;
+
+		[ObservableProperty]
+		[property: ContainerField(304), LayoutImmutable, Blittable, JsonProperty(Order = 304)]
+		private float _WheelBaseLateral;
+
+		[ObservableProperty]
+		[property: ContainerField(308), LayoutImmutable, Blittable, JsonProperty(Order = 308)]
+		private float _WheelBaseLongitudinal;
+
+		[ObservableProperty]
+		[property: ContainerField(312), LayoutImmutable, Blittable, JsonProperty(Order = 312)]
+		private int _DrivingType;
+
+		[ObservableProperty]
+		[property: ContainerField(316), LayoutImmutable, Blittable, JsonProperty(Order = 316)]
+		private int _SteeringType;
+
+		[ObservableProperty]
+		[property: ContainerField(320), LayoutImmutable, Blittable, JsonProperty(Order = 320)]
+		private int _FrictionMethod;
+
+		[ObservableProperty]
+		[property: ContainerField(324), LayoutImmutable, Blittable, JsonProperty(Order = 324)]
+		private int _AckermanDeviceType;
+
+		[ObservableProperty]
+		[property: ContainerField(328), LayoutImmutable, Blittable, JsonProperty(Order = 328)]
+		private float _CollisionYawDampeningDuration;
+
+		[ObservableProperty]
+		[property: ContainerField(332), LayoutImmutable, Blittable, JsonProperty(Order = 332)]
+		private float _CollisionYawDampening;
+
+		[ObservableProperty]
+		[property: ContainerField(336), LayoutImmutable, Blittable, JsonProperty(Order = 336)]
+		private float _ConstantSpringForceFrictionScale;
+
+		[ObservableProperty]
+		[property: ContainerField(340), LayoutImmutable, Blittable, JsonProperty(Order = 340)]
+		private int _RotationDirectionIndex;
+
+		[ObservableProperty]
+		[property: ContainerField(344), LayoutImmutable, Blittable, JsonProperty(Order = 344)]
+		private int _SteeringAngleIndex;
+
+		[ObservableProperty]
+		[property: ContainerField(348), LayoutImmutable, Blittable, JsonProperty(Order = 348)]
+		private int _PacejkaConfigIndex;
+
+		[ObservableProperty]
+		[property: ContainerField(352), LayoutImmutable, Blittable, JsonProperty(Order = 352)]
+		private int _EngineIndex;
+
+		[ObservableProperty]
+		[property: ContainerField(356), JsonProperty(Order = 356)]
+		private CtrRef<MaterialContainerPair> _CollisionMaterialPair = new();
+
+		[ObservableProperty]
+		[property: ContainerField(360), LayoutImmutable, Blittable, JsonProperty(Order = 360)]
+		private bool _AlwaysGrip;
+
+		[ObservableProperty]
+		[property: ContainerField(361), LayoutImmutable, Blittable, JsonProperty(Order = 361)]
+		private bool _UseRollingResistanceBaseFactor;
+
+		[ObservableProperty]
+		[property: ContainerField(362), LayoutImmutable, Blittable, JsonProperty(Order = 362)]
+		private bool _UseEngineBrake;
+
+		[ObservableProperty]
+		[property: ContainerField(363), LayoutImmutable, Blittable, JsonProperty(Order = 363)]
+		private bool _IsAllowedToSpin;
+
+		[ObservableProperty]
+		[property: ContainerField(364), LayoutImmutable, Blittable, JsonProperty(Order = 364)]
+		private bool _HasSteeringInverted;
+
+		[ObservableProperty]
+		[property: ContainerField(365), LayoutImmutable, Blittable, JsonProperty(Order = 365)]
+		private bool _UseFrictionMoment;
+
+		[ObservableProperty]
+		[property: ContainerField(366), LayoutImmutable, Blittable, JsonProperty(Order = 366)]
+		private bool _UseLowSpeedAutoBrake;
+
+		[ObservableProperty]
+		[property: ContainerField(367), LayoutImmutable, Blittable, JsonProperty(Order = 367)]
+		private bool _AdjustWheelRotation;
+
+		[ObservableProperty]
+		[property: ContainerField(368), LayoutImmutable, Blittable, JsonProperty(Order = 368)]
+		private bool _UseRollingResistanceVelocityFactor;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
-			p_Writer.WriteNullBytes(8);
+			p_Writer.WriteNullBytes(16);
 			Offset.Serialize(p_Writer, p_EbxWriter);
 			Inertia.Serialize(p_Writer, p_EbxWriter);
 			p_Writer.Write(p_EbxWriter.WriteImport(RotationBody));

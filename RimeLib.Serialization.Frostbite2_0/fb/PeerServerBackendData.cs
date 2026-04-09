@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class PeerServerBackendData :
+	public partial class PeerServerBackendData :
 		ServerBackendData
 	{
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public PeerCreateGameParameters CreateParameters { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private PeerCreateGameParameters _CreateParameters = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

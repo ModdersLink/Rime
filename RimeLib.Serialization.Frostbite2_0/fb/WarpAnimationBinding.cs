@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class WarpAnimationBinding :
+	public partial class WarpAnimationBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef ConnectJointGroup { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _ConnectJointGroup = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef ConnectJointWeight { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _ConnectJointWeight = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef EnableAlign { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _EnableAlign = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef DisableCulling { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _DisableCulling = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef TranslationYWarpTolerance { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _TranslationYWarpTolerance = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

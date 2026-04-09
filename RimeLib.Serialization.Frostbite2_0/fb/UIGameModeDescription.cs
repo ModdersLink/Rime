@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class UIGameModeDescription :
+	public partial class UIGameModeDescription :
 		UIItemDescription
 	{
-		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
-		public string Identifier { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
+		private string _Identifier = string.Empty;
 
-		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
-		public string Name { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		private string _Name = string.Empty;
 
-		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
-		public string Abbreviation { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
+		private string _Abbreviation = string.Empty;
 
-		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
-		public string Desc { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
+		private string _Desc = string.Empty;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public int BattlelogId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private int _BattlelogId;
 
-		[ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
-		public string TexturePath { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
+		private string _TexturePath = string.Empty;
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public List<GameModeVariation> Variations { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private List<GameModeVariation> _Variations = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,96 +14,125 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class HudData :
+	public partial class HudData :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public float CrosshairScaleMin { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private float _CrosshairScaleMin;
 		
-		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
-		public float CrosshairScaleMax { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		private float _CrosshairScaleMax;
 		
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float CrosshairOpacityMin { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _CrosshairOpacityMin;
 		
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float CrosshairOpacityMax { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _CrosshairOpacityMax;
 		
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float CrosshairOpacityModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _CrosshairOpacityModifier;
 		
-		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
-		public string CrosshairTypeId { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		private string _CrosshairTypeId = string.Empty;
 		
-		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
-		public string WeaponClass { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
+		private string _WeaponClass = string.Empty;
 		
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float CameraShakeModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _CameraShakeModifier;
 		
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float SeaLevelAltFreq { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _SeaLevelAltFreq;
 		
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float LowAmmoWarning { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _LowAmmoWarning;
 		
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public float ReloadPrompt { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private float _ReloadPrompt;
 		
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public int RenderTargetIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private int _RenderTargetIndex;
 		
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public CtrRef<UIPartPropertyList> HudPropertyList { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private CtrRef<UIPartPropertyList> _HudPropertyList = new();
 		
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public bool ShowMinimap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private bool _ShowMinimap;
 		
-		[ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
-		public bool InfiniteAmmo { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
+		private bool _InfiniteAmmo;
 		
-		[ContainerField(54), LayoutImmutable, Blittable, JsonProperty(Order = 54)]
-		public bool HideCrosshairWhenAimOnFriend { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(54), LayoutImmutable, Blittable, JsonProperty(Order = 54)]
+		private bool _HideCrosshairWhenAimOnFriend;
 		
-		[ContainerField(55), LayoutImmutable, Blittable, JsonProperty(Order = 55)]
-		public bool HideAmmo { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(55), LayoutImmutable, Blittable, JsonProperty(Order = 55)]
+		private bool _HideAmmo;
 		
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public bool UseRangeMeter { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private bool _UseRangeMeter;
 		
-		[ContainerField(57), LayoutImmutable, Blittable, JsonProperty(Order = 57)]
-		public bool UsePredictedSight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(57), LayoutImmutable, Blittable, JsonProperty(Order = 57)]
+		private bool _UsePredictedSight;
 		
-		[ContainerField(58), LayoutImmutable, Blittable, JsonProperty(Order = 58)]
-		public bool UseWeaponOrientations { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(58), LayoutImmutable, Blittable, JsonProperty(Order = 58)]
+		private bool _UseWeaponOrientations;
 		
-		[ContainerField(59), LayoutImmutable, Blittable, JsonProperty(Order = 59)]
-		public bool UseVelocityVectorMarker { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(59), LayoutImmutable, Blittable, JsonProperty(Order = 59)]
+		private bool _UseVelocityVectorMarker;
 		
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public bool UseLockingController { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private bool _UseLockingController;
 		
-		[ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
-		public bool UseThrust { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
+		private bool _UseThrust;
 		
-		[ContainerField(62), LayoutImmutable, Blittable, JsonProperty(Order = 62)]
-		public bool UseGForce { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(62), LayoutImmutable, Blittable, JsonProperty(Order = 62)]
+		private bool _UseGForce;
 		
-		[ContainerField(63), LayoutImmutable, Blittable, JsonProperty(Order = 63)]
-		public bool UseSkidSlip { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(63), LayoutImmutable, Blittable, JsonProperty(Order = 63)]
+		private bool _UseSkidSlip;
 		
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public bool UseClimbRate { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private bool _UseClimbRate;
 		
-		[ContainerField(65), LayoutImmutable, Blittable, JsonProperty(Order = 65)]
-		public bool UseAimWarning { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(65), LayoutImmutable, Blittable, JsonProperty(Order = 65)]
+		private bool _UseAimWarning;
 		
-		[ContainerField(66), LayoutImmutable, Blittable, JsonProperty(Order = 66)]
-		public bool UseRenderTarget { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(66), LayoutImmutable, Blittable, JsonProperty(Order = 66)]
+		private bool _UseRenderTarget;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

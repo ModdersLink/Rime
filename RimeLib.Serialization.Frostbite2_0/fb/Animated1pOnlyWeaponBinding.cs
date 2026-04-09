@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class Animated1pOnlyWeaponBinding :
+	public partial class Animated1pOnlyWeaponBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef UndeployFinished { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _UndeployFinished = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef CameraFreeWeight { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _CameraFreeWeight = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef Deploy1P { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _Deploy1P = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef HideWeapon1p { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _HideWeapon1p = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

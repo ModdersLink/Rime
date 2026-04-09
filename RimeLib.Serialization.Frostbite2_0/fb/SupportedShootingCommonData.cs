@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 100)]
-	public class SupportedShootingCommonData :
+	public partial class SupportedShootingCommonData :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AimingConstraintsData AimingConstraints { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AimingConstraintsData _AimingConstraints = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public EntryInputActionEnum EnterSupportedShootingAction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private EntryInputActionEnum _EnterSupportedShootingAction = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public SupportedShootingBinding Binding { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private SupportedShootingBinding _Binding = new();
 
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public SupportedShootingProximityChecking Stand { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private SupportedShootingProximityChecking _Stand = new();
 
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public SupportedShootingProximityChecking Crouch { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private SupportedShootingProximityChecking _Crouch = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

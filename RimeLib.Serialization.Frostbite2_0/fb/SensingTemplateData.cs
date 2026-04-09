@@ -14,48 +14,61 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(8, 144)]
-	public class SensingTemplateData :
+	public partial class SensingTemplateData :
 		GameSensingTemplateData
 	{
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public double AwareForgetTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private double _AwareForgetTime;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public double LostForgetTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private double _LostForgetTime;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public double TimeUntilUnseenIsLost { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private double _TimeUntilUnseenIsLost;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public float MaximumMergeDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private float _MaximumMergeDistance;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float MaximumAlertDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _MaximumAlertDistance;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float MaximumReadinessRaiseDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _MaximumReadinessRaiseDistance;
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public SensingLimits ReadyLimits { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private SensingLimits _ReadyLimits = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public SensingLimits RelaxedLimits { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private SensingLimits _RelaxedLimits = new();
 
-		[ContainerField(108), LayoutImmutable, JsonProperty(Order = 108)]
-		public string DebugText { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, JsonProperty(Order = 108)]
+		private string _DebugText = string.Empty;
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public SensingLimits CombatLimits { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private SensingLimits _CombatLimits = new();
 
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public bool UseSenseSharing { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private bool _UseSenseSharing;
 
-		[ContainerField(141), LayoutImmutable, Blittable, JsonProperty(Order = 141)]
-		public bool NoticeBullets { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(141), LayoutImmutable, Blittable, JsonProperty(Order = 141)]
+		private bool _NoticeBullets;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

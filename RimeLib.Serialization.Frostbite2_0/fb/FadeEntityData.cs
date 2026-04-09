@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class FadeEntityData :
+	public partial class FadeEntityData :
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float FadeTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _FadeTime;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float MaxWaitFadedWhileStreamingTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _MaxWaitFadedWhileStreamingTime;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public bool FadeScreen { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private bool _FadeScreen;
 
-		[ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
-		public bool FadeUI { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
+		private bool _FadeUI;
 
-		[ContainerField(22), LayoutImmutable, Blittable, JsonProperty(Order = 22)]
-		public bool FadeRumble { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(22), LayoutImmutable, Blittable, JsonProperty(Order = 22)]
+		private bool _FadeRumble;
 
-		[ContainerField(23), LayoutImmutable, Blittable, JsonProperty(Order = 23)]
-		public bool FadeAudio { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(23), LayoutImmutable, Blittable, JsonProperty(Order = 23)]
+		private bool _FadeAudio;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public bool FadeMovie { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private bool _FadeMovie;
 
-		[ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
-		public bool StartFaded { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
+		private bool _StartFaded;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

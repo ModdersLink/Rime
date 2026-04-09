@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 8)]
-	public class LevelDescriptionInclusionCategory :
+	public partial class LevelDescriptionInclusionCategory :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
-		public string Category { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
+		private string _Category = string.Empty;
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public List<string> Mode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private List<string> _Mode = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

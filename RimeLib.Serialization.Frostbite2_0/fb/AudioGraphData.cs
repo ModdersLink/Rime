@@ -14,34 +14,42 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class AudioGraphData :
+	public partial class AudioGraphData :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public RefArray<AudioGraphNodeData> Nodes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private RefArray<AudioGraphNodeData> _Nodes = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<AudioGraphParameter> PublicParameters { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<AudioGraphParameter> _PublicParameters = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<AudioGraphEvent> PublicEvents { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<AudioGraphEvent> _PublicEvents = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<AudioGraphAssetParameter> PublicAssetParameters { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<AudioGraphAssetParameter> _PublicAssetParameters = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public ushort PublicValueCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private ushort _PublicValueCount;
 
-		[ContainerField(26), LayoutImmutable, Blittable, JsonProperty(Order = 26)]
-		public ushort ValueCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(26), LayoutImmutable, Blittable, JsonProperty(Order = 26)]
+		private ushort _ValueCount;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			(RimeWriter Writer, uint ArrayIndex) s_Nodes = p_EbxWriter.GetArrayWriter(Nodes.GetType(), Nodes.Count);
 			p_Writer.Write(s_Nodes.ArrayIndex);
 			foreach (var s_Entry in Nodes)

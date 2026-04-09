@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class PowerToolWeaponData :
+	public partial class PowerToolWeaponData :
 		WeaponData
 	{
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<SoundAsset> RepairSound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<SoundAsset> _RepairSound = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<SoundAsset> RepairCompletedSound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<SoundAsset> _RepairCompletedSound = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<SoundAsset> DamageSound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<SoundAsset> _DamageSound = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public CtrRef<MaterialContainerPair> RepairMaterialPair { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private CtrRef<MaterialContainerPair> _RepairMaterialPair = new();
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public bool PlayFireEffectOnRepairOnly { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private bool _PlayFireEffectOnRepairOnly;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

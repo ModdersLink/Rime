@@ -14,48 +14,61 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 528)]
-	public class SpecialMovesComponentData :
+	public partial class SpecialMovesComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public SpecialMoveStateData VaultOverHighState { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private SpecialMoveStateData _VaultOverHighState = new();
 
-		[ContainerField(156), JsonProperty(Order = 156)]
-		public SpecialMoveStateData VaultUpHighState { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(156), JsonProperty(Order = 156)]
+		private SpecialMoveStateData _VaultUpHighState = new();
 
-		[ContainerField(216), JsonProperty(Order = 216)]
-		public SpecialMoveStateData VaultOverLowState { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(216), JsonProperty(Order = 216)]
+		private SpecialMoveStateData _VaultOverLowState = new();
 
-		[ContainerField(276), JsonProperty(Order = 276)]
-		public SpecialMoveStateData SprintToProneState { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(276), JsonProperty(Order = 276)]
+		private SpecialMoveStateData _SprintToProneState = new();
 
-		[ContainerField(336), JsonProperty(Order = 336)]
-		public SpecialMoveStateData DeathState { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(336), JsonProperty(Order = 336)]
+		private SpecialMoveStateData _DeathState = new();
 
-		[ContainerField(396), JsonProperty(Order = 396)]
-		public SpecialMoveStateData SpecialAnimationState { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(396), JsonProperty(Order = 396)]
+		private SpecialMoveStateData _SpecialAnimationState = new();
 
-		[ContainerField(456), JsonProperty(Order = 456)]
-		public List<SpecialMoveStateData> IndexedDeathStates { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(456), JsonProperty(Order = 456)]
+		private List<SpecialMoveStateData> _IndexedDeathStates = new();
 
-		[ContainerField(460), JsonProperty(Order = 460)]
-		public List<SpecialMoveStateData> IndexedSpecialAnimationStates { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(460), JsonProperty(Order = 460)]
+		private List<SpecialMoveStateData> _IndexedSpecialAnimationStates = new();
 
-		[ContainerField(464), JsonProperty(Order = 464)]
-		public List<SpecialMoveVaultStateCriteria> IndexedVaultOverHighStates { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(464), JsonProperty(Order = 464)]
+		private List<SpecialMoveVaultStateCriteria> _IndexedVaultOverHighStates = new();
 
-		[ContainerField(468), JsonProperty(Order = 468)]
-		public List<SpecialMoveVaultStateCriteria> IndexedVaultUpStates { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(468), JsonProperty(Order = 468)]
+		private List<SpecialMoveVaultStateCriteria> _IndexedVaultUpStates = new();
 
-		[ContainerField(472), JsonProperty(Order = 472)]
-		public List<SpecialMoveVaultStateCriteria> IndexedVaultOverLowStates { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(472), JsonProperty(Order = 472)]
+		private List<SpecialMoveVaultStateCriteria> _IndexedVaultOverLowStates = new();
 
-		[ContainerField(476), JsonProperty(Order = 476)]
-		public SpecialMovesBinding Binding { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(476), JsonProperty(Order = 476)]
+		private SpecialMovesBinding _Binding = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

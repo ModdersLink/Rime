@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class MaterialPropertySoundData :
+	public partial class MaterialPropertySoundData :
 		PhysicsMaterialRelationPropertyData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<SoundAsset> ImpactSound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<SoundAsset> _ImpactSound = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<SoundAsset> ScrapeSound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<SoundAsset> _ScrapeSound = new();
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float ScrapeLength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _ScrapeLength;
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<MaterialSoldierSoundSettings> SoldierSettings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<MaterialSoldierSoundSettings> _SoldierSettings = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float Softness { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _Softness;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float MaterialSoundId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _MaterialSoundId;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class VoiceOverIntervalNode :
+	public partial class VoiceOverIntervalNode :
 		VoiceOverExpressionNode
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<VoiceOverValueConnection> Threshold { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<VoiceOverValueConnection> _Threshold = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<VoiceOverValue> Time { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<VoiceOverValue> _Time = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<VoiceOverValue> False { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<VoiceOverValue> _False = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<VoiceOverValue> True { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<VoiceOverValue> _True = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<VoiceOverInterval> Interval { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<VoiceOverInterval> _Interval = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

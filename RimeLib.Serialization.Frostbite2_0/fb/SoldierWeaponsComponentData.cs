@@ -14,54 +14,69 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 480)]
-	public class SoldierWeaponsComponentData :
+	public partial class SoldierWeaponsComponentData :
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public LinearTransform AimDir { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private LinearTransform _AimDir = new();
 
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public CtrRef<SkeletonAsset> WeaponSkeleton { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private CtrRef<SkeletonAsset> _WeaponSkeleton = new();
 
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public int PrimaryWeaponId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private int _PrimaryWeaponId;
 
-		[ContainerField(168), JsonProperty(Order = 168)]
-		public AnimatedWeaponBinding AnimatedWeaponBinding { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(168), JsonProperty(Order = 168)]
+		private AnimatedWeaponBinding _AnimatedWeaponBinding = new();
 
-		[ContainerField(424), JsonProperty(Order = 424)]
-		public Animated1pOnlyWeaponBinding Animated1pOnlyWeaponBinding { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(424), JsonProperty(Order = 424)]
+		private Animated1pOnlyWeaponBinding _Animated1pOnlyWeaponBinding = new();
 
-		[ContainerField(440), JsonProperty(Order = 440)]
-		public Animated3pOnlyWeaponBinding Animated3pOnlyWeaponBinding { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(440), JsonProperty(Order = 440)]
+		private Animated3pOnlyWeaponBinding _Animated3pOnlyWeaponBinding = new();
 
-		[ContainerField(448), LayoutImmutable, Blittable, JsonProperty(Order = 448)]
-		public float LockTimeMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(448), LayoutImmutable, Blittable, JsonProperty(Order = 448)]
+		private float _LockTimeMultiplier;
 
-		[ContainerField(452), LayoutImmutable, Blittable, JsonProperty(Order = 452)]
-		public int GrenadeIncrease { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(452), LayoutImmutable, Blittable, JsonProperty(Order = 452)]
+		private int _GrenadeIncrease;
 
-		[ContainerField(456), LayoutImmutable, Blittable, JsonProperty(Order = 456)]
-		public float AmmoClipIncreaseMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(456), LayoutImmutable, Blittable, JsonProperty(Order = 456)]
+		private float _AmmoClipIncreaseMultiplier;
 
-		[ContainerField(460), LayoutImmutable, Blittable, JsonProperty(Order = 460)]
-		public float ExplosiveIncreaseMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(460), LayoutImmutable, Blittable, JsonProperty(Order = 460)]
+		private float _ExplosiveIncreaseMultiplier;
 
-		[ContainerField(464), LayoutImmutable, Blittable, JsonProperty(Order = 464)]
-		public int UnderslungGrenadeIncrease { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(464), LayoutImmutable, Blittable, JsonProperty(Order = 464)]
+		private int _UnderslungGrenadeIncrease;
 
-		[ContainerField(468), LayoutImmutable, Blittable, JsonProperty(Order = 468)]
-		public bool UseExternalAimDir { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(468), LayoutImmutable, Blittable, JsonProperty(Order = 468)]
+		private bool _UseExternalAimDir;
 
-		[ContainerField(469), LayoutImmutable, Blittable, JsonProperty(Order = 469)]
-		public bool UnlimitedAmmo { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(469), LayoutImmutable, Blittable, JsonProperty(Order = 469)]
+		private bool _UnlimitedAmmo;
 
-		[ContainerField(470), LayoutImmutable, Blittable, JsonProperty(Order = 470)]
-		public bool UnlimitedMags { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(470), LayoutImmutable, Blittable, JsonProperty(Order = 470)]
+		private bool _UnlimitedMags;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

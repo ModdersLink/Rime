@@ -14,51 +14,65 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class WindowSettings :
+	public partial class WindowSettings :
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public int PosX { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private int _PosX;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public int PosY { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private int _PosY;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public uint Width { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private uint _Width;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public uint Height { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private uint _Height;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public bool BordersEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private bool _BordersEnable;
 
-		[ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
-		public bool AutoSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
+		private bool _AutoSize;
 
-		[ContainerField(30), LayoutImmutable, Blittable, JsonProperty(Order = 30)]
-		public bool FullscreenAutoSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(30), LayoutImmutable, Blittable, JsonProperty(Order = 30)]
+		private bool _FullscreenAutoSize;
 
-		[ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
-		public bool FullscreenWhenJoiningServer { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
+		private bool _FullscreenWhenJoiningServer;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public bool EnableEscape { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private bool _EnableEscape;
 
-		[ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
-		public bool EnableInputOnActivate { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
+		private bool _EnableInputOnActivate;
 
-		[ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
-		public bool HibernateOnClose { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
+		private bool _HibernateOnClose;
 
-		[ContainerField(35), LayoutImmutable, Blittable, JsonProperty(Order = 35)]
-		public bool Hidden { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(35), LayoutImmutable, Blittable, JsonProperty(Order = 35)]
+		private bool _Hidden;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public bool Minimized { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private bool _Minimized;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

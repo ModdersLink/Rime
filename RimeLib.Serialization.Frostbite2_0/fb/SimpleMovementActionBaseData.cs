@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class SimpleMovementActionBaseData :
+	public partial class SimpleMovementActionBaseData :
 		MovementActionData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public SimpleMovementActionTimeData StartTimeInfo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private SimpleMovementActionTimeData _StartTimeInfo = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public SimpleMovementActionTimeData RunTimeInfo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private SimpleMovementActionTimeData _RunTimeInfo = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

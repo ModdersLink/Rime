@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class LightProbeVolumeData :
+	public partial class LightProbeVolumeData :
 		SpatialEntityData
 	{
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public uint Xres { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private uint _Xres;
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public uint Yres { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private uint _Yres;
 
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public uint Zres { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private uint _Zres;
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public float BlendDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private float _BlendDistance;
 
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public int Priority { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private int _Priority;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

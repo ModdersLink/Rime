@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class VoiceOverDistanceNode :
+	public partial class VoiceOverDistanceNode :
 		VoiceOverExpressionNode
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<VoiceOverValueConnection> A { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<VoiceOverValueConnection> _A = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<VoiceOverValueConnection> B { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<VoiceOverValueConnection> _B = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<VoiceOverValueConnection> Threshold { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<VoiceOverValueConnection> _Threshold = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<VoiceOverValue> Distance { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<VoiceOverValue> _Distance = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<VoiceOverValue> False { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<VoiceOverValue> _False = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public CtrRef<VoiceOverValue> True { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private CtrRef<VoiceOverValue> _True = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public VoiceOverCompareExpressionType Operation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private VoiceOverCompareExpressionType _Operation = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

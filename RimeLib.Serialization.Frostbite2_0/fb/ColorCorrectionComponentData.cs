@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class ColorCorrectionComponentData :
+	public partial class ColorCorrectionComponentData :
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public Vec3 Contrast { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private Vec3 _Contrast = new();
 
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public Vec3 Saturation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private Vec3 _Saturation = new();
 
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public Vec3 Brightness { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private Vec3 _Brightness = new();
 
-		[ContainerField(144), JsonProperty(Order = 144)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), JsonProperty(Order = 144)]
+		private Realm _Realm = new();
 
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public float Hue { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private float _Hue;
 
-		[ContainerField(152), JsonProperty(Order = 152)]
-		public CtrRef<TextureAsset> ColorGradingTexture { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(152), JsonProperty(Order = 152)]
+		private CtrRef<TextureAsset> _ColorGradingTexture = new();
 
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public bool ColorGradingEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private bool _ColorGradingEnable;
 
-		[ContainerField(157), LayoutImmutable, Blittable, JsonProperty(Order = 157)]
-		public bool Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(157), LayoutImmutable, Blittable, JsonProperty(Order = 157)]
+		private bool _Enable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

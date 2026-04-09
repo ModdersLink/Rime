@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class EntityBusData :
+	public partial class EntityBusData :
 		DataBusData
 	{
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public List<EventConnection> EventConnections { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private List<EventConnection> _EventConnections = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<InterfaceDescriptorData> Descriptor { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<InterfaceDescriptorData> _Descriptor = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public bool NeedNetworkId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private bool _NeedNetworkId;
 
-		[ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
-		public bool InterfaceHasConnections { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
+		private bool _InterfaceHasConnections;
 
-		[ContainerField(30), LayoutImmutable, Blittable, JsonProperty(Order = 30)]
-		public bool AlwaysCreateEntityBusClient { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(30), LayoutImmutable, Blittable, JsonProperty(Order = 30)]
+		private bool _AlwaysCreateEntityBusClient;
 
-		[ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
-		public bool AlwaysCreateEntityBusServer { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
+		private bool _AlwaysCreateEntityBusServer;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

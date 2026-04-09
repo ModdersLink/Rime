@@ -14,87 +14,113 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 92)]
-	public class WeaponStateData :
+	public partial class WeaponStateData :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public List<uint> ReferencedAssetHashes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private List<uint> _ReferencedAssetHashes = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public RefArray<BoneFakePhysicsData> BoneFakePhysics { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private RefArray<BoneFakePhysicsData> _BoneFakePhysics = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<SkinnedMeshAsset> Mesh1p { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<SkinnedMeshAsset> _Mesh1p = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<SkinnedMeshAsset> MeshZoom1p { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<SkinnedMeshAsset> _MeshZoom1p = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<SkinnedMeshAsset> Mesh3p { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<SkinnedMeshAsset> _Mesh3p = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef Weapon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _Weapon = new();
 		
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float ZoomMeshTransitionFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _ZoomMeshTransitionFactor;
 		
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float ZoomScaleFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _ZoomScaleFactor;
 		
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public List<float> ZoomInOutMeshTransitionFactors { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private List<float> _ZoomInOutMeshTransitionFactors = new();
 		
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public CtrRef<ScopeFilterData> ZoomedScopeFilter { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private CtrRef<ScopeFilterData> _ZoomedScopeFilter = new();
 		
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public CtrRef<ScopeFilterData> NonZoomedScopeFilter { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private CtrRef<ScopeFilterData> _NonZoomedScopeFilter = new();
 		
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float KeepAimingTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _KeepAimingTime;
 		
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public AnimationConfigurationData AnimationConfiguration { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private AnimationConfigurationData _AnimationConfiguration = new();
 		
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public AnimatedFireEnum AnimatedFireType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private AnimatedFireEnum _AnimatedFireType = new();
 		
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public AnimatedAimingEnum AnimatedAimingType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private AnimatedAimingEnum _AnimatedAimingType = new();
 		
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public List<LinearTransform> Mesh3pTransforms { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private List<LinearTransform> _Mesh3pTransforms = new();
 		
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public List<RigidMeshSocketTransform> Mesh3pRigidMeshSocketObjectTransforms { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private List<RigidMeshSocketTransform> _Mesh3pRigidMeshSocketObjectTransforms = new();
 		
-		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
-		public float HideProjectileAfterFireTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
+		private float _HideProjectileAfterFireTime;
 		
-		[ContainerField(80), LayoutImmutable, JsonProperty(Order = 80)]
-		public string ProjectileBoneName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, JsonProperty(Order = 80)]
+		private string _ProjectileBoneName = string.Empty;
 		
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public bool IsOneHanded { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private bool _IsOneHanded;
 		
-		[ContainerField(85), LayoutImmutable, Blittable, JsonProperty(Order = 85)]
-		public bool PlayDeployAfterFire { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(85), LayoutImmutable, Blittable, JsonProperty(Order = 85)]
+		private bool _PlayDeployAfterFire;
 		
-		[ContainerField(86), LayoutImmutable, Blittable, JsonProperty(Order = 86)]
-		public bool SkipFireAnimation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(86), LayoutImmutable, Blittable, JsonProperty(Order = 86)]
+		private bool _SkipFireAnimation;
 		
-		[ContainerField(87), LayoutImmutable, Blittable, JsonProperty(Order = 87)]
-		public bool SkipDeployAnimation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(87), LayoutImmutable, Blittable, JsonProperty(Order = 87)]
+		private bool _SkipDeployAnimation;
 		
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public bool SkipReloadAnimation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private bool _SkipReloadAnimation;
 		
-		[ContainerField(89), LayoutImmutable, Blittable, JsonProperty(Order = 89)]
-		public bool AlwaysAimHead { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(89), LayoutImmutable, Blittable, JsonProperty(Order = 89)]
+		private bool _AlwaysAimHead;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class StaticEnlightenData :
+	public partial class StaticEnlightenData :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<TextureAsset> StaticIrradianceChromaTexture { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<TextureAsset> _StaticIrradianceChromaTexture = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<TextureAsset> StaticIrradianceLumaTexture { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<TextureAsset> _StaticIrradianceLumaTexture = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<TextureAsset> StaticDirectionTexture { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<TextureAsset> _StaticDirectionTexture = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

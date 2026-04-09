@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class PersistenceConfiguration :
+	public partial class PersistenceConfiguration :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<StatCategoryTreeCollection> StatCategoryTreeCollection { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<StatCategoryTreeCollection> _StatCategoryTreeCollection = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<PlayerTypeProfile> MPProfile { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<PlayerTypeProfile> _MPProfile = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<PlayerTypeProfile> SPProfile { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<PlayerTypeProfile> _SPProfile = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<PlayerTypeProfile> CoopProfile { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<PlayerTypeProfile> _CoopProfile = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public CtrRef<PointSystemParamsAsset> PointSystemParams { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private CtrRef<PointSystemParamsAsset> _PointSystemParams = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public CtrRef<LicenseConfiguration> LicenseConfig { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private CtrRef<LicenseConfiguration> _LicenseConfig = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

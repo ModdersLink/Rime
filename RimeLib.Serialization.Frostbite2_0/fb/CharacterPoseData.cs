@@ -14,47 +14,58 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class CharacterPoseData :
+	public partial class CharacterPoseData :
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 EyePosition { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _EyePosition = new();
 
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public Vec3 CollisionBoxMaxExpand { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private Vec3 _CollisionBoxMaxExpand = new();
 
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public Vec3 CollisionBoxMinExpand { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private Vec3 _CollisionBoxMinExpand = new();
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public float Height { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private float _Height;
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public float StepHeight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private float _StepHeight;
 
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public List<Vec2> ThrottleModifierCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private List<Vec2> _ThrottleModifierCurve = new();
 
-		[ContainerField(76), JsonProperty(Order = 76)]
-		public CharacterPoseType PoseType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(76), JsonProperty(Order = 76)]
+		private CharacterPoseType _PoseType = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public CharacterPoseCollisionType CollisionType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private CharacterPoseCollisionType _CollisionType = new();
 
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public LookConstraintsData LookConstraints { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private LookConstraintsData _LookConstraints = new();
 
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public List<PoseTransitionTime> TransitionTimes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private List<PoseTransitionTime> _TransitionTimes = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
-			p_Writer.WriteNullBytes(8);
+			p_Writer.WriteNullBytes(16);
 			EyePosition.Serialize(p_Writer, p_EbxWriter);
 			CollisionBoxMaxExpand.Serialize(p_Writer, p_EbxWriter);
 			CollisionBoxMinExpand.Serialize(p_Writer, p_EbxWriter);

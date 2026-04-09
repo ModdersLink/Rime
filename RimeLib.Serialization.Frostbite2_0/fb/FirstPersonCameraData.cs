@@ -14,95 +14,122 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 176)]
-	public class FirstPersonCameraData :
+	public partial class FirstPersonCameraData :
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 Offset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _Offset = new();
 
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public Vec3 WeaponBaseOffset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private Vec3 _WeaponBaseOffset = new();
 
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public Vec3 WeaponLagRotationOffset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private Vec3 _WeaponLagRotationOffset = new();
 
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public Vec3 Rotation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private Vec3 _Rotation = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public CtrRef<WeaponLagSpringEffectData> WeaponSpringEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private CtrRef<WeaponLagSpringEffectData> _WeaponSpringEffect = new();
 
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public CtrRef<WeaponLagSpringEffectData> CameraSpringEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private CtrRef<WeaponLagSpringEffectData> _CameraSpringEffect = new();
 
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public float MoveStrafeModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private float _MoveStrafeModifier;
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public float MoveForwardModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private float _MoveForwardModifier;
 
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public float RotateYawModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private float _RotateYawModifier;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public float RotatePitchModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private float _RotatePitchModifier;
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public float RotateRollModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private float _RotateRollModifier;
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public float ZoomMoveStrafeModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private float _ZoomMoveStrafeModifier;
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public float ZoomMoveForwardModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private float _ZoomMoveForwardModifier;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float ZoomRotateYawModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _ZoomRotateYawModifier;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public float ZoomRotatePitchModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private float _ZoomRotatePitchModifier;
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public float ZoomRotateRollModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private float _ZoomRotateRollModifier;
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public float ReleaseModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private float _ReleaseModifier;
 
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public float ReleaseModifierPitch { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private float _ReleaseModifierPitch;
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public float ReleaseModifierYaw { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private float _ReleaseModifierYaw;
 
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public float ReleaseModifierRoll { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private float _ReleaseModifierRoll;
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public float OffsetReleaseModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private float _OffsetReleaseModifier;
 
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public float ZoomReleaseModifierPitch { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private float _ZoomReleaseModifierPitch;
 
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public float ZoomReleaseModifierYaw { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private float _ZoomReleaseModifierYaw;
 
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public float ZoomReleaseModifierRoll { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private float _ZoomReleaseModifierRoll;
 
-		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public float ZoomOffsetReleaseModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private float _ZoomOffsetReleaseModifier;
 
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public float RotationAdditionToOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private float _RotationAdditionToOffset;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
-			p_Writer.WriteNullBytes(8);
+			p_Writer.WriteNullBytes(16);
 			Offset.Serialize(p_Writer, p_EbxWriter);
 			WeaponBaseOffset.Serialize(p_Writer, p_EbxWriter);
 			WeaponLagRotationOffset.Serialize(p_Writer, p_EbxWriter);

@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class PerformanceTrackerSettings :
+	public partial class PerformanceTrackerSettings :
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float Interval { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _Interval;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public bool Enabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private bool _Enabled;
 
-		[ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
-		public bool SupressPerformanceStatsOnIdle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
+		private bool _SupressPerformanceStatsOnIdle;
 
-		[ContainerField(18), LayoutImmutable, Blittable, JsonProperty(Order = 18)]
-		public bool SupressPerformanceStatsUntilSpawned { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(18), LayoutImmutable, Blittable, JsonProperty(Order = 18)]
+		private bool _SupressPerformanceStatsUntilSpawned;
 
-		[ContainerField(19), LayoutImmutable, Blittable, JsonProperty(Order = 19)]
-		public bool JuiceLogPerformance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(19), LayoutImmutable, Blittable, JsonProperty(Order = 19)]
+		private bool _JuiceLogPerformance;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,69 +14,89 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 84)]
-	public class UINestedListDataBinding :
+	public partial class UINestedListDataBinding :
 		UIDataBinding
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public int ListIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private int _ListIndex;
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public List<NestedList> NestedLists { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private List<NestedList> _NestedLists = new();
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public int RowSpacing { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private int _RowSpacing;
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public DefaultSelectionItem DefaultHighlightedRow { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private DefaultSelectionItem _DefaultHighlightedRow = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public UIListNavigationType NavigationType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private UIListNavigationType _NavigationType = new();
 
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public UIListRowType RowType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private UIListRowType _RowType = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public UIListEmptyRowType EmptyRowType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private UIListEmptyRowType _EmptyRowType = new();
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public int SelectorWidth { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private int _SelectorWidth;
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public UIDataSourceInfo Visibility { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private UIDataSourceInfo _Visibility = new();
 
-		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
-		public bool SendIndexWithEvent { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
+		private bool _SendIndexWithEvent;
 
-		[ContainerField(73), LayoutImmutable, Blittable, JsonProperty(Order = 73)]
-		public bool UseScrollBar { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(73), LayoutImmutable, Blittable, JsonProperty(Order = 73)]
+		private bool _UseScrollBar;
 
-		[ContainerField(74), LayoutImmutable, Blittable, JsonProperty(Order = 74)]
-		public bool DataIncludesButtonLayout { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(74), LayoutImmutable, Blittable, JsonProperty(Order = 74)]
+		private bool _DataIncludesButtonLayout;
 
-		[ContainerField(75), LayoutImmutable, Blittable, JsonProperty(Order = 75)]
-		public bool ClearListAtNavigationEvent { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(75), LayoutImmutable, Blittable, JsonProperty(Order = 75)]
+		private bool _ClearListAtNavigationEvent;
 
-		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
-		public bool Use3DSelection { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
+		private bool _Use3DSelection;
 
-		[ContainerField(77), LayoutImmutable, Blittable, JsonProperty(Order = 77)]
-		public bool InvertVisible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(77), LayoutImmutable, Blittable, JsonProperty(Order = 77)]
+		private bool _InvertVisible;
 
-		[ContainerField(78), LayoutImmutable, Blittable, JsonProperty(Order = 78)]
-		public bool Visible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(78), LayoutImmutable, Blittable, JsonProperty(Order = 78)]
+		private bool _Visible;
 
-		[ContainerField(79), LayoutImmutable, Blittable, JsonProperty(Order = 79)]
-		public bool ScreenRotationEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(79), LayoutImmutable, Blittable, JsonProperty(Order = 79)]
+		private bool _ScreenRotationEnabled;
 
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public bool HighLightOnUpdate { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private bool _HighLightOnUpdate;
 
-		[ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
-		public bool KeepScrollOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
+		private bool _KeepScrollOffset;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

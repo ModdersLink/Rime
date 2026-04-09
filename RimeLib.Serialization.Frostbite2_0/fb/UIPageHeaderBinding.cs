@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class UIPageHeaderBinding :
+	public partial class UIPageHeaderBinding :
 		UIDataBinding
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public UIDataSourceInfo Header { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private UIDataSourceInfo _Header = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public UIDataSourceInfo SubHeader { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private UIDataSourceInfo _SubHeader = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public UIDataSourceInfo Icon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private UIDataSourceInfo _Icon = new();
 
-		[ContainerField(56), LayoutImmutable, JsonProperty(Order = 56)]
-		public string StaticHeader { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, JsonProperty(Order = 56)]
+		private string _StaticHeader = string.Empty;
 
-		[ContainerField(60), LayoutImmutable, JsonProperty(Order = 60)]
-		public string StaticSubHeader { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, JsonProperty(Order = 60)]
+		private string _StaticSubHeader = string.Empty;
 
-		[ContainerField(64), LayoutImmutable, JsonProperty(Order = 64)]
-		public string StaticIcon { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, JsonProperty(Order = 64)]
+		private string _StaticIcon = string.Empty;
 
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public List<UILevelSpecificPageHeader> LevelSpecificHeaders { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private List<UILevelSpecificPageHeader> _LevelSpecificHeaders = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

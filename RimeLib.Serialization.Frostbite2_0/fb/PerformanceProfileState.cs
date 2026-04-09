@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(8, 56)]
-	public class PerformanceProfileState :
+	public partial class PerformanceProfileState :
 		MetricState
 	{
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public uint ProcessorCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private uint _ProcessorCount;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public uint ProcessorCoreCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private uint _ProcessorCoreCount;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public uint ProcessorClock { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private uint _ProcessorClock;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public uint TotalMemMB { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private uint _TotalMemMB;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public uint GpuMemMB { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private uint _GpuMemMB;
 
-		[ContainerField(44), LayoutImmutable, JsonProperty(Order = 44)]
-		public string GraphicAdapterName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, JsonProperty(Order = 44)]
+		private string _GraphicAdapterName = string.Empty;
 
-		[ContainerField(48), LayoutImmutable, JsonProperty(Order = 48)]
-		public string Platform { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, JsonProperty(Order = 48)]
+		private string _Platform = string.Empty;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,114 +14,149 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 256)]
-	public class VegetationTreeEntityData :
+	public partial class VegetationTreeEntityData :
 		VegetationBaseEntityData
 	{
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public CtrRef<EffectBlueprint> GroundImpactEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private CtrRef<EffectBlueprint> _GroundImpactEffect = new();
 
-		[ContainerField(132), JsonProperty(Order = 132)]
-		public CtrRef<EffectBlueprint> StemRipEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(132), JsonProperty(Order = 132)]
+		private CtrRef<EffectBlueprint> _StemRipEffect = new();
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public float StemPhysicsWidth { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private float _StemPhysicsWidth;
 
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public float ColiPlaneDepth { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private float _ColiPlaneDepth;
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public float StemHitpoints { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private float _StemHitpoints;
 
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public float BranchHitpoints { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private float _BranchHitpoints;
 
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public float BranchL2Hitpoints { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private float _BranchL2Hitpoints;
 
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public float StemStiffness { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private float _StemStiffness;
 
-		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public float StemStiffnessSpread { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private float _StemStiffnessSpread;
 
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public float BranchStiffness { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private float _BranchStiffness;
 
-		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
-		public float BranchStiffnessL2 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
+		private float _BranchStiffnessL2;
 
-		[ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
-		public int StemBoneCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
+		private int _StemBoneCount;
 
-		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public float WindStem { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private float _WindStem;
 
-		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
-		public float WindBranch { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		private float _WindBranch;
 
-		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
-		public float WindBranchL2 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		private float _WindBranchL2;
 
-		[ContainerField(188), JsonProperty(Order = 188)]
-		public CtrRef<EffectBlueprint> TreeFallEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(188), JsonProperty(Order = 188)]
+		private CtrRef<EffectBlueprint> _TreeFallEffect = new();
 
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public float BreakableJointThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private float _BreakableJointThreshold;
 
-		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
-		public float FallDirectionEnd { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
+		private float _FallDirectionEnd;
 
-		[ContainerField(200), JsonProperty(Order = 200)]
-		public CtrRef<EffectBlueprint> LocalWindEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(200), JsonProperty(Order = 200)]
+		private CtrRef<EffectBlueprint> _LocalWindEffect = new();
 
-		[ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
-		public float ImpactThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
+		private float _ImpactThreshold;
 
-		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
-		public float CollisionImpactMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		private float _CollisionImpactMultiplier;
 
-		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
-		public float FallDirectionStart { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
+		private float _FallDirectionStart;
 
-		[ContainerField(216), JsonProperty(Order = 216)]
-		public CtrRef<EffectBlueprint> SplashDistantEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(216), JsonProperty(Order = 216)]
+		private CtrRef<EffectBlueprint> _SplashDistantEffect = new();
 
-		[ContainerField(220), JsonProperty(Order = 220)]
-		public CtrRef<EffectBlueprint> BulletImpactEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(220), JsonProperty(Order = 220)]
+		private CtrRef<EffectBlueprint> _BulletImpactEffect = new();
 
-		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public float PartsTimeToLive { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private float _PartsTimeToLive;
 
-		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
-		public uint ShadowLODOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		private uint _ShadowLODOffset;
 
-		[ContainerField(232), JsonProperty(Order = 232)]
-		public CtrRef<EffectBlueprint> SplashNearEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(232), JsonProperty(Order = 232)]
+		private CtrRef<EffectBlueprint> _SplashNearEffect = new();
 
-		[ContainerField(236), JsonProperty(Order = 236)]
-		public CtrRef<EffectBlueprint> CollisionEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(236), JsonProperty(Order = 236)]
+		private CtrRef<EffectBlueprint> _CollisionEffect = new();
 
-		[ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
-		public bool ForceFullSim { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
+		private bool _ForceFullSim;
 
-		[ContainerField(241), LayoutImmutable, Blittable, JsonProperty(Order = 241)]
-		public bool UseImpactThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(241), LayoutImmutable, Blittable, JsonProperty(Order = 241)]
+		private bool _UseImpactThreshold;
 
-		[ContainerField(242), LayoutImmutable, Blittable, JsonProperty(Order = 242)]
-		public bool UsePhysicsShapes { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(242), LayoutImmutable, Blittable, JsonProperty(Order = 242)]
+		private bool _UsePhysicsShapes;
 
-		[ContainerField(243), LayoutImmutable, Blittable, JsonProperty(Order = 243)]
-		public bool ConstraintStemB1 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(243), LayoutImmutable, Blittable, JsonProperty(Order = 243)]
+		private bool _ConstraintStemB1;
 
-		[ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
-		public bool ConstraintStemB2 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
+		private bool _ConstraintStemB2;
 
-		[ContainerField(245), LayoutImmutable, Blittable, JsonProperty(Order = 245)]
-		public bool ClientSideOnly { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(245), LayoutImmutable, Blittable, JsonProperty(Order = 245)]
+		private bool _ClientSideOnly;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

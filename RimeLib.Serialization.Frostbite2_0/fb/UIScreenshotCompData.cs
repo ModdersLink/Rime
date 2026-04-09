@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class UIScreenshotCompData :
+	public partial class UIScreenshotCompData :
 		UIComponentData
 	{
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public uint ResizeImageWidth { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private uint _ResizeImageWidth;
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public List<ScreenshotInfo> ScreenshotInfos { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private List<ScreenshotInfo> _ScreenshotInfos = new();
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public uint ResizeImageHeight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private uint _ResizeImageHeight;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public bool AutoResizeImage { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private bool _AutoResizeImage;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class UIButtonDataBinding :
+	public partial class UIButtonDataBinding :
 		UIDataBinding
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public UIDataSourceInfo ButtonsDatasource { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private UIDataSourceInfo _ButtonsDatasource = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public UIButtonSet DefaultButtonSet { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private UIButtonSet _DefaultButtonSet = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public UIDataSourceInfo Visibility { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private UIDataSourceInfo _Visibility = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public bool InvertVisible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private bool _InvertVisible;
 
-		[ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
-		public bool Visible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
+		private bool _Visible;
 
-		[ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
-		public bool InputOnRelease { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
+		private bool _InputOnRelease;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

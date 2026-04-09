@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 80)]
-	public class AISettingsData :
+	public partial class AISettingsData :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<SoundEnvironmentConstantData> SoundEnvironmentConstants { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<SoundEnvironmentConstantData> _SoundEnvironmentConstants = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<CoverConstantData> CoverConstants { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<CoverConstantData> _CoverConstants = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<DecisionConstantData> DecisionConstants { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<DecisionConstantData> _DecisionConstants = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<PositionEvaluationConstantData> PositionEvaluationConstants { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<PositionEvaluationConstantData> _PositionEvaluationConstants = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public CtrRef<TimingConstantData> TimingConstants { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private CtrRef<TimingConstantData> _TimingConstants = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public CtrRef<DebugConstantData> DebugConstants { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private CtrRef<DebugConstantData> _DebugConstants = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public ReadinessLevels ReadinessLevels { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private ReadinessLevels _ReadinessLevels = new();
 
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public CtrRef<BehaviourTemplateData> DefaultBehaviourTemplate { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private CtrRef<BehaviourTemplateData> _DefaultBehaviourTemplate = new();
 
-		[ContainerField(76), JsonProperty(Order = 76)]
-		public CtrRef<AIVehicleBehaviourData> DefaultVehicleType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(76), JsonProperty(Order = 76)]
+		private CtrRef<AIVehicleBehaviourData> _DefaultVehicleType = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

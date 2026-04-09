@@ -14,45 +14,57 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class RotorComponentData :
+	public partial class RotorComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public RotorModelData LowRpmModel { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private RotorModelData _LowRpmModel = new();
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public RotorModelData HighRpmModel { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private RotorModelData _HighRpmModel = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public RotationAxis RotationAxis { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private RotationAxis _RotationAxis = new();
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float RotationMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _RotationMultiplier;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public float ChangeModelRpm { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private float _ChangeModelRpm;
 
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public CtrRef<EffectBlueprint> BlowEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private CtrRef<EffectBlueprint> _BlowEffect = new();
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public float TriggerGroundEffectHeight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private float _TriggerGroundEffectHeight;
 
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public float CriticallyDamagedRotationForce { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private float _CriticallyDamagedRotationForce;
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public bool OnlyTriggerBlowEffectInWater { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private bool _OnlyTriggerBlowEffectInWater;
 
-		[ContainerField(137), LayoutImmutable, Blittable, JsonProperty(Order = 137)]
-		public bool GroundEffectOnTerrainOnly { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(137), LayoutImmutable, Blittable, JsonProperty(Order = 137)]
+		private bool _GroundEffectOnTerrainOnly;
 
-		[ContainerField(138), LayoutImmutable, Blittable, JsonProperty(Order = 138)]
-		public bool CriticalDamage { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(138), LayoutImmutable, Blittable, JsonProperty(Order = 138)]
+		private bool _CriticalDamage;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

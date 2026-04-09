@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class BreakableModelEntityData :
+	public partial class BreakableModelEntityData :
 		GamePhysicsEntityData
 	{
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public CtrRef<SurfaceShaderBaseAsset> DecalVolumeShader { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private CtrRef<SurfaceShaderBaseAsset> _DecalVolumeShader = new();
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float DecalVolumeScaleFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _DecalVolumeScaleFactor;
 
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private CtrRef<MeshAsset> _Mesh = new();
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public uint BoneCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private uint _BoneCount;
 
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public CtrRef<EdgeModelLightMapData> EdgeModelLightMapData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private CtrRef<EdgeModelLightMapData> _EdgeModelLightMapData = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

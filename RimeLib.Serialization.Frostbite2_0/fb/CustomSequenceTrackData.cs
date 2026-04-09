@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class CustomSequenceTrackData :
+	public partial class CustomSequenceTrackData :
 		EntityData
 	{
-		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
-		public string TrackName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
+		private string _TrackName = string.Empty;
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<CustomSequenceTrackLinkMapping> InputLinkMap { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<CustomSequenceTrackLinkMapping> _InputLinkMap = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<CustomSequenceTrackLinkMapping> OutputLinkMap { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<CustomSequenceTrackLinkMapping> _OutputLinkMap = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public RefArray<CustomSequenceTrackEventMapping> EventMap { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private RefArray<CustomSequenceTrackEventMapping> _EventMap = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public RefArray<CustomSequenceTrackPropertyMapping> SourcePropertyMap { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private RefArray<CustomSequenceTrackPropertyMapping> _SourcePropertyMap = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public RefArray<CustomSequenceTrackPropertyMapping> TargetPropertyMap { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private RefArray<CustomSequenceTrackPropertyMapping> _TargetPropertyMap = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public RefArray<CustomSequenceTrackPropertyMapping> SourceAndTargetPropertyMap { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private RefArray<CustomSequenceTrackPropertyMapping> _SourceAndTargetPropertyMap = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

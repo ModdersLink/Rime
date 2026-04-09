@@ -14,25 +14,30 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class RichPresencePresenceString :
+	public partial class RichPresencePresenceString :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
-		public string SID { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		private string _SID = string.Empty;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public bool Interpolated { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private bool _Interpolated;
 
-		[ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
-		public sbyte Index { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
+		private sbyte _Index;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(p_EbxWriter.WriteString(SID));
 			p_Writer.Write(Interpolated);
 			p_Writer.Write(Index);

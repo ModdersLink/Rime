@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class VoiceOverLogicAsset :
+	public partial class VoiceOverLogicAsset :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<VoiceOverEvent> Events { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<VoiceOverEvent> _Events = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<VoiceOverGroup> Groups { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<VoiceOverGroup> _Groups = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<VoiceOverLogicFlow> Flows { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<VoiceOverLogicFlow> _Flows = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<VoiceOverSystemAsset> System { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<VoiceOverSystemAsset> _System = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

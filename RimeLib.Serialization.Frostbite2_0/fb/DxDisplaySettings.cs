@@ -14,117 +14,153 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 88)]
-	public class DxDisplaySettings :
+	public partial class DxDisplaySettings :
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public uint FullscreenWidth { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private uint _FullscreenWidth;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public uint FullscreenHeight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private uint _FullscreenHeight;
 
-		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
-		public string AmdMinDriverVersion { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		private string _AmdMinDriverVersion = string.Empty;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public uint NvidiaMinDriverVersion { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private uint _NvidiaMinDriverVersion;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float FullscreenRefreshRate { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _FullscreenRefreshRate;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float StereoSeparationScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _StereoSeparationScale;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float StereoDepth { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _StereoDepth;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public int FullscreenOutputIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private int _FullscreenOutputIndex;
 
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public List<int> DebugBreakIgnoredIDs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private List<int> _DebugBreakIgnoredIDs = new();
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float StereoConvergenceScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _StereoConvergenceScale;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public float StereoSoldierZoomConvergenceScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private float _StereoSoldierZoomConvergenceScale;
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public int ForceRenderAheadLimit { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private int _ForceRenderAheadLimit;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public int PresentInterval { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private int _PresentInterval;
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public bool DebugBreakOnWarningEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private bool _DebugBreakOnWarningEnable;
 
-		[ContainerField(65), LayoutImmutable, Blittable, JsonProperty(Order = 65)]
-		public bool DebugInfoEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(65), LayoutImmutable, Blittable, JsonProperty(Order = 65)]
+		private bool _DebugInfoEnable;
 
-		[ContainerField(66), LayoutImmutable, Blittable, JsonProperty(Order = 66)]
-		public bool Fullscreen { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(66), LayoutImmutable, Blittable, JsonProperty(Order = 66)]
+		private bool _Fullscreen;
 
-		[ContainerField(67), LayoutImmutable, Blittable, JsonProperty(Order = 67)]
-		public bool DebugBreakOnErrorEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(67), LayoutImmutable, Blittable, JsonProperty(Order = 67)]
+		private bool _DebugBreakOnErrorEnable;
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public bool CreateMinimalWindow { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private bool _CreateMinimalWindow;
 
-		[ContainerField(69), LayoutImmutable, Blittable, JsonProperty(Order = 69)]
-		public bool DriverInternalThreadingEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(69), LayoutImmutable, Blittable, JsonProperty(Order = 69)]
+		private bool _DriverInternalThreadingEnable;
 
-		[ContainerField(70), LayoutImmutable, Blittable, JsonProperty(Order = 70)]
-		public bool DebugBreakOnInfoEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(70), LayoutImmutable, Blittable, JsonProperty(Order = 70)]
+		private bool _DebugBreakOnInfoEnable;
 
-		[ContainerField(71), LayoutImmutable, Blittable, JsonProperty(Order = 71)]
-		public bool FullscreenModeEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(71), LayoutImmutable, Blittable, JsonProperty(Order = 71)]
+		private bool _FullscreenModeEnable;
 
-		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
-		public bool VSyncEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
+		private bool _VSyncEnable;
 
-		[ContainerField(73), LayoutImmutable, Blittable, JsonProperty(Order = 73)]
-		public bool TripleBufferingEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(73), LayoutImmutable, Blittable, JsonProperty(Order = 73)]
+		private bool _TripleBufferingEnable;
 
-		[ContainerField(74), LayoutImmutable, Blittable, JsonProperty(Order = 74)]
-		public bool Dx10PlusEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(74), LayoutImmutable, Blittable, JsonProperty(Order = 74)]
+		private bool _Dx10PlusEnable;
 
-		[ContainerField(75), LayoutImmutable, Blittable, JsonProperty(Order = 75)]
-		public bool NvApiEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(75), LayoutImmutable, Blittable, JsonProperty(Order = 75)]
+		private bool _NvApiEnable;
 
-		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
-		public bool NvPerfHudEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
+		private bool _NvPerfHudEnable;
 
-		[ContainerField(77), LayoutImmutable, Blittable, JsonProperty(Order = 77)]
-		public bool StereoEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(77), LayoutImmutable, Blittable, JsonProperty(Order = 77)]
+		private bool _StereoEnable;
 
-		[ContainerField(78), LayoutImmutable, Blittable, JsonProperty(Order = 78)]
-		public bool Dx11Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(78), LayoutImmutable, Blittable, JsonProperty(Order = 78)]
+		private bool _Dx11Enable;
 
-		[ContainerField(79), LayoutImmutable, Blittable, JsonProperty(Order = 79)]
-		public bool Dx10Dot0Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(79), LayoutImmutable, Blittable, JsonProperty(Order = 79)]
+		private bool _Dx10Dot0Enable;
 
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public bool RefDriverEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private bool _RefDriverEnable;
 
-		[ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
-		public bool Dx10Dot1Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
+		private bool _Dx10Dot1Enable;
 
-		[ContainerField(82), LayoutImmutable, Blittable, JsonProperty(Order = 82)]
-		public bool MinDriverRequired { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(82), LayoutImmutable, Blittable, JsonProperty(Order = 82)]
+		private bool _MinDriverRequired;
 
-		[ContainerField(83), LayoutImmutable, Blittable, JsonProperty(Order = 83)]
-		public bool WarpDriverEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(83), LayoutImmutable, Blittable, JsonProperty(Order = 83)]
+		private bool _WarpDriverEnable;
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public bool NullDriverEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private bool _NullDriverEnable;
 
-		[ContainerField(85), LayoutImmutable, Blittable, JsonProperty(Order = 85)]
-		public bool MultiGpuValidationEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(85), LayoutImmutable, Blittable, JsonProperty(Order = 85)]
+		private bool _MultiGpuValidationEnable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

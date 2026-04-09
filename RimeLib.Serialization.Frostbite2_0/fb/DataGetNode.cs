@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class DataGetNode :
+	public partial class DataGetNode :
 		UINodeData
 	{
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<UINodePort> In { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<UINodePort> _In = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<UINodePort> Out { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<UINodePort> _Out = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public UIDataSourceInfo DataSource { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private UIDataSourceInfo _DataSource = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

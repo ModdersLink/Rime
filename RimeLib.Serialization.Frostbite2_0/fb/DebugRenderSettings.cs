@@ -14,52 +14,66 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class DebugRenderSettings :
+	public partial class DebugRenderSettings :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float TextQueueTimeVisible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _TextQueueTimeVisible;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public uint Ps3SpuFrameBufferSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private uint _Ps3SpuFrameBufferSize;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float TextViewDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _TextViewDistance;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public uint TextQueueMaxLineCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private uint _TextQueueMaxLineCount;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public uint DxMaxVertexCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private uint _DxMaxVertexCount;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public int ProcessJobCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private int _ProcessJobCount;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public bool DrawStatsEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private bool _DrawStatsEnable;
 
-		[ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
-		public bool Ps3SpuEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
+		private bool _Ps3SpuEnable;
 
-		[ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
-		public bool Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
+		private bool _Enable;
 
-		[ContainerField(35), LayoutImmutable, Blittable, JsonProperty(Order = 35)]
-		public bool TextQueueLocationTop { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(35), LayoutImmutable, Blittable, JsonProperty(Order = 35)]
+		private bool _TextQueueLocationTop;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public bool DxLine2dAntialiasingEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private bool _DxLine2dAntialiasingEnable;
 
-		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
-		public bool DxLine3dAntialiasingEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
+		private bool _DxLine3dAntialiasingEnable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(TextQueueTimeVisible);
 			p_Writer.Write(Ps3SpuFrameBufferSize);
 			p_Writer.Write(TextViewDistance);

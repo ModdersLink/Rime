@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class MatchmakingCreateGameParameters :
+	public partial class MatchmakingCreateGameParameters :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public MatchmakingNetworkTopology GameTopology { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private MatchmakingNetworkTopology _GameTopology = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public MatchmakingPeer2PeerMode PeerMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private MatchmakingPeer2PeerMode _PeerMode = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public MatchmakingNetworkTopology VoipTopology { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private MatchmakingNetworkTopology _VoipTopology = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public MatchmakingGameSettings Settings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private MatchmakingGameSettings _Settings = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public List<MatchmakingGameAttribute> Attributes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private List<MatchmakingGameAttribute> _Attributes = new();
 		
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public uint QueueCapacity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private uint _QueueCapacity;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

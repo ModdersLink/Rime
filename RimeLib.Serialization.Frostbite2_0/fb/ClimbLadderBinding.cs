@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class ClimbLadderBinding :
+	public partial class ClimbLadderBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef ClimbLadderPhase { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _ClimbLadderPhase = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef ClimbLadderConnectPhase { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _ClimbLadderConnectPhase = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef ClimbLadderTransitionPhase { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _ClimbLadderTransitionPhase = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef OnLadder { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _OnLadder = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef LadderTopTransition { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _LadderTopTransition = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef FallHigh { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _FallHigh = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

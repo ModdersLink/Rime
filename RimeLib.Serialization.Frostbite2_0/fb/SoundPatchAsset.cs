@@ -14,51 +14,65 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class SoundPatchAsset :
+	public partial class SoundPatchAsset :
 		SoundGraphAsset
 	{
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public RefArray<AudioGraphNodeData> OutputNodes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private RefArray<AudioGraphNodeData> _OutputNodes = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float Loudness { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _Loudness;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float AILoudness { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _AILoudness;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float Radius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _Radius;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public float DopplerFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private float _DopplerFactor;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float MasterPitch { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _MasterPitch;
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public CtrRef<MixGroup> MixGroup { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private CtrRef<MixGroup> _MixGroup = new();
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public CtrRef<AudioGraphEvent> DefaultStopEvent { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private CtrRef<AudioGraphEvent> _DefaultStopEvent = new();
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public CtrRef<AudioGraphEvent> DefaultStartEvent { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private CtrRef<AudioGraphEvent> _DefaultStartEvent = new();
 
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public CtrRef<AudioGraphEvent> DefaultForceInitEvent { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private CtrRef<AudioGraphEvent> _DefaultForceInitEvent = new();
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public CtrRef<AudioGraphEvent> DefaultEnterScopeEvent { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private CtrRef<AudioGraphEvent> _DefaultEnterScopeEvent = new();
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public bool IsPersistent { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private bool _IsPersistent;
 
-		[ContainerField(69), LayoutImmutable, Blittable, JsonProperty(Order = 69)]
-		public bool IsLooping { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(69), LayoutImmutable, Blittable, JsonProperty(Order = 69)]
+		private bool _IsLooping;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class StatCategoriesBaseTree :
+	public partial class StatCategoriesBaseTree :
 		TreeBase
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<StatsCategoryBaseData> RootBaseCategories { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<StatsCategoryBaseData> _RootBaseCategories = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<CriteriaData> ParamX { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<CriteriaData> _ParamX = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<CriteriaData> ParamY { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<CriteriaData> _ParamY = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public bool ProcessAllLevelsInTree { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private bool _ProcessAllLevelsInTree;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

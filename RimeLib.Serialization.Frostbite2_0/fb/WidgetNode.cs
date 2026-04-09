@@ -14,45 +14,57 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class WidgetNode :
+	public partial class WidgetNode :
 		UINodeData
 	{
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<UIWidgetAsset> WidgetAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<UIWidgetAsset> _WidgetAsset = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public int FocusIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private int _FocusIndex;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public int ZDepthLevel { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private int _ZDepthLevel;
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public WidgetVerticalAlignment VerticalAlign { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private WidgetVerticalAlignment _VerticalAlign = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public WidgetHorisontalAlignment HorisontalAlign { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private WidgetHorisontalAlignment _HorisontalAlign = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public CtrRef<UIDataBinding> DataBinding { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private CtrRef<UIDataBinding> _DataBinding = new();
 
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public List<UIWidgetProperty> WidgetProperties { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private List<UIWidgetProperty> _WidgetProperties = new();
 
-		[ContainerField(48), LayoutImmutable, JsonProperty(Order = 48)]
-		public string InstanceName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, JsonProperty(Order = 48)]
+		private string _InstanceName = string.Empty;
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public RefArray<UINodePort> Inputs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private RefArray<UINodePort> _Inputs = new();
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public RefArray<UINodePort> Outputs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private RefArray<UINodePort> _Outputs = new();
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public bool AlwaysInFocus { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private bool _AlwaysInFocus;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

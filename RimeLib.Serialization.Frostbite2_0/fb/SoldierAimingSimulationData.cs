@@ -14,51 +14,65 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 120)]
-	public class SoldierAimingSimulationData :
+	public partial class SoldierAimingSimulationData :
 		GameDataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public RefArray<ZoomLevelData> ZoomLevels { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private RefArray<ZoomLevelData> _ZoomLevels = new();
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float ZoomTransitionTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _ZoomTransitionTime;
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<SoldierAimAssistData> AimAssist { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<SoldierAimAssistData> _AimAssist = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AimingPoseData StandPose { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AimingPoseData _StandPose = new();
 
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public AimingPoseData CrouchPose { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private AimingPoseData _CrouchPose = new();
 
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public AimingPoseData PronePose { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private AimingPoseData _PronePose = new();
 
-		[ContainerField(92), JsonProperty(Order = 92)]
-		public List<ZoomLevelSpecificTransitionTime> ZoomTransitionTimeArray { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(92), JsonProperty(Order = 92)]
+		private List<ZoomLevelSpecificTransitionTime> _ZoomTransitionTimeArray = new();
 
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public float FovTransitionTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private float _FovTransitionTime;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public float FovDelayTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private float _FovDelayTime;
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public RefArray<AimerModifierData> Modifiers { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private RefArray<AimerModifierData> _Modifiers = new();
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public float AimingRange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private float _AimingRange;
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public float LockAimToTargetSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private float _LockAimToTargetSpeed;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public bool ReturnToZoomAfterReload { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private bool _ReturnToZoomAfterReload;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

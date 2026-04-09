@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 8)]
-	public class SoundWaveLocalizationInfo :
+	public partial class SoundWaveLocalizationInfo :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public CtrRef<AudioLanguage> Language { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private CtrRef<AudioLanguage> _Language = new();
 		
-		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
-		public ushort FirstVariationIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		private ushort _FirstVariationIndex;
 		
-		[ContainerField(6), LayoutImmutable, Blittable, JsonProperty(Order = 6)]
-		public ushort VariationCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(6), LayoutImmutable, Blittable, JsonProperty(Order = 6)]
+		private ushort _VariationCount;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

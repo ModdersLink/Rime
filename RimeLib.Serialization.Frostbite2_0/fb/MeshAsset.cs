@@ -14,42 +14,53 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class MeshAsset :
+	public partial class MeshAsset :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<MeshLodGroup> LodGroup { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<MeshLodGroup> _LodGroup = new();
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float LodScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _LodScale;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float CullScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _CullScale;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public uint NameHash { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private uint _NameHash;
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public EnlightenType EnlightenType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private EnlightenType _EnlightenType = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public RefArray<MeshMaterial> Materials { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private RefArray<MeshMaterial> _Materials = new();
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public bool OccluderHighPriority { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private bool _OccluderHighPriority;
 
-		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
-		public bool StreamingEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
+		private bool _StreamingEnable;
 
-		[ContainerField(38), LayoutImmutable, Blittable, JsonProperty(Order = 38)]
-		public bool DestructionMaterialEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(38), LayoutImmutable, Blittable, JsonProperty(Order = 38)]
+		private bool _DestructionMaterialEnable;
 
-		[ContainerField(39), LayoutImmutable, Blittable, JsonProperty(Order = 39)]
-		public bool OccluderMeshEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(39), LayoutImmutable, Blittable, JsonProperty(Order = 39)]
+		private bool _OccluderMeshEnable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

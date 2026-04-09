@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 164)]
-	public class UITrackingtagCompData :
+	public partial class UITrackingtagCompData :
 		UI3dIconCompData
 	{
-		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public bool ShowUnlockedLockAlways { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private bool _ShowUnlockedLockAlways;
 
-		[ContainerField(161), LayoutImmutable, Blittable, JsonProperty(Order = 161)]
-		public bool ShowUnlockedLockOnRadar { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(161), LayoutImmutable, Blittable, JsonProperty(Order = 161)]
+		private bool _ShowUnlockedLockOnRadar;
 
-		[ContainerField(162), LayoutImmutable, Blittable, JsonProperty(Order = 162)]
-		public bool ShowUnlockedLockOnHeat { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(162), LayoutImmutable, Blittable, JsonProperty(Order = 162)]
+		private bool _ShowUnlockedLockOnHeat;
 
-		[ContainerField(163), LayoutImmutable, Blittable, JsonProperty(Order = 163)]
-		public bool ShowUnlockedLockOnLaserPainted { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(163), LayoutImmutable, Blittable, JsonProperty(Order = 163)]
+		private bool _ShowUnlockedLockOnLaserPainted;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

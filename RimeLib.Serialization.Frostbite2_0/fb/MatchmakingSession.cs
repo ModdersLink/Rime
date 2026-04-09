@@ -14,34 +14,42 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 88)]
-	public class MatchmakingSession :
+	public partial class MatchmakingSession :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public MatchmakingSessionMode Mode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private MatchmakingSessionMode _Mode = new();
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public uint DurationMs { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private uint _DurationMs;
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public MatchmakingCriteria Criteria { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private MatchmakingCriteria _Criteria = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public MatchmakingCreateGameParameters CreateGameParams { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private MatchmakingCreateGameParameters _CreateGameParams = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public CtrRef<MatchmakingSession> OnNotFound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private CtrRef<MatchmakingSession> _OnNotFound = new();
 
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public RefArray<MatchmakingModifier> Modifiers { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private RefArray<MatchmakingModifier> _Modifiers = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write((int) Mode);
 			p_Writer.Write(DurationMs);
 			Criteria.Serialize(p_Writer, p_EbxWriter);

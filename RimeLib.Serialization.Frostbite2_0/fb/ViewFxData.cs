@@ -14,31 +14,38 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class ViewFxData :
+	public partial class ViewFxData :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public PoissonRadialBlurData PoissonRadialBlur { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private PoissonRadialBlurData _PoissonRadialBlur = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public ColorTintData ColorTint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private ColorTintData _ColorTint = new();
 
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public float BlurAdd { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private float _BlurAdd;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public bool ColorTintEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private bool _ColorTintEnable;
 
-		[ContainerField(101), LayoutImmutable, Blittable, JsonProperty(Order = 101)]
-		public bool PoissonRadialBlurEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(101), LayoutImmutable, Blittable, JsonProperty(Order = 101)]
+		private bool _PoissonRadialBlurEnable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			PoissonRadialBlur.Serialize(p_Writer, p_EbxWriter);
 			p_Writer.WriteNullBytes(4);
 			ColorTint.Serialize(p_Writer, p_EbxWriter);

@@ -14,56 +14,70 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class RigidBodyData :
+	public partial class RigidBodyData :
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 InertiaModifier { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _InertiaModifier = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public RigidBodyType RigidBodyType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private RigidBodyType _RigidBodyType = new();
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float Mass { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _Mass;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public float Restitution { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private float _Restitution;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float Friction { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _Friction;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float AngularVelocityDamping { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _AngularVelocityDamping;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public float LinearVelocityDamping { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private float _LinearVelocityDamping;
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public uint InteractionToolkitCollisionVolumeId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private uint _InteractionToolkitCollisionVolumeId;
 
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public RigidBodyMotionType MotionType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private RigidBodyMotionType _MotionType = new();
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public RigidBodyQualityType QualityType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private RigidBodyQualityType _QualityType = new();
 
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public RigidBodyCollisionLayer CollisionLayer { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private RigidBodyCollisionLayer _CollisionLayer = new();
 
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public CtrRef<FloatPhysicsData> FloatPhysics { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private CtrRef<FloatPhysicsData> _FloatPhysics = new();
 
-		[ContainerField(76), JsonProperty(Order = 76)]
-		public RefArray<RigidBodyConstraintData> Constraints { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(76), JsonProperty(Order = 76)]
+		private RefArray<RigidBodyConstraintData> _Constraints = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
-			p_Writer.WriteNullBytes(8);
+			p_Writer.WriteNullBytes(16);
 			InertiaModifier.Serialize(p_Writer, p_EbxWriter);
 			p_Writer.Write((int) RigidBodyType);
 			p_Writer.Write(Mass);

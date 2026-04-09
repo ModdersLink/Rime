@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 240)]
-	public class WarpAnimationComponentData :
+	public partial class WarpAnimationComponentData :
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public LinearTransform ConnectTransform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private LinearTransform _ConnectTransform = new();
 
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public CannedAnimationBinding CannedAnimBinding { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private CannedAnimationBinding _CannedAnimBinding = new();
 
-		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
-		public int AnimationEntitySpacePriority { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
+		private int _AnimationEntitySpacePriority;
 
-		[ContainerField(204), JsonProperty(Order = 204)]
-		public WarpAnimationBinding WarpBinding { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(204), JsonProperty(Order = 204)]
+		private WarpAnimationBinding _WarpBinding = new();
 
-		[ContainerField(224), JsonProperty(Order = 224)]
-		public GameplayBones BoneToAlign { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(224), JsonProperty(Order = 224)]
+		private GameplayBones _BoneToAlign = new();
 
-		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
-		public bool RequireAnimationWeight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		private bool _RequireAnimationWeight;
 
-		[ContainerField(229), LayoutImmutable, Blittable, JsonProperty(Order = 229)]
-		public bool ForceAnimationTransform { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(229), LayoutImmutable, Blittable, JsonProperty(Order = 229)]
+		private bool _ForceAnimationTransform;
 
-		[ContainerField(230), LayoutImmutable, Blittable, JsonProperty(Order = 230)]
-		public bool ExternalConnectTransform { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(230), LayoutImmutable, Blittable, JsonProperty(Order = 230)]
+		private bool _ExternalConnectTransform;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

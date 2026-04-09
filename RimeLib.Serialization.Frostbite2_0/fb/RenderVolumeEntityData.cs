@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class RenderVolumeEntityData :
+	public partial class RenderVolumeEntityData :
 		SpatialEntityData
 	{
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public Vec4 UserMasks { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private Vec4 _UserMasks = new();
 
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public SurfaceShaderInstanceDataStruct Shader { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private SurfaceShaderInstanceDataStruct _Shader = new();
 
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public RenderVolumeTransformType TransformType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private RenderVolumeTransformType _TransformType = new();
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public bool Enabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private bool _Enabled;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

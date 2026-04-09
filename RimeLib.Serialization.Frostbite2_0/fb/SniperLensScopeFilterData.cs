@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class SniperLensScopeFilterData :
+	public partial class SniperLensScopeFilterData :
 		ScopeFilterData
 	{
-		[ContainerField(12), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public Vec2 ChromaticAberrationStrengths { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private Vec2 _ChromaticAberrationStrengths = new();
 
-		[ContainerField(20), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public Vec2 BlurCenter { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private Vec2 _BlurCenter = new();
 
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public Vec3 ChromaticAberrationColor1 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private Vec3 _ChromaticAberrationColor1 = new();
 
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public Vec3 ChromaticAberrationColor2 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private Vec3 _ChromaticAberrationColor2 = new();
 
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public Vec2 RadialBlendDistanceCoefficients { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private Vec2 _RadialBlendDistanceCoefficients = new();
 
-		[ContainerField(72), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 72)]
-		public Vec2 ChromaticAberrationDisplacement1 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 72)]
+		private Vec2 _ChromaticAberrationDisplacement1 = new();
 
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public Vec2 ChromaticAberrationDisplacement2 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private Vec2 _ChromaticAberrationDisplacement2 = new();
 
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public float BlurScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private float _BlurScale;
 
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public ColorTintData ColorTintData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private ColorTintData _ColorTintData = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

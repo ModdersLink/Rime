@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class DacNodeData :
+	public partial class DacNodeData :
 		AudioGraphNodeData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AudioGraphNodePort In { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AudioGraphNodePort _In = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AudioGraphNodePort SpeakerCount { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AudioGraphNodePort _SpeakerCount = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AudioGraphNodePort SampleRate { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AudioGraphNodePort _SampleRate = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public SoundGraphPluginRef VuPlugin { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private SoundGraphPluginRef _VuPlugin = new();
 
-		[ContainerField(35), JsonProperty(Order = 35)]
-		public SoundGraphPluginRef GainPlugin { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(35), JsonProperty(Order = 35)]
+		private SoundGraphPluginRef _GainPlugin = new();
 
-		[ContainerField(38), JsonProperty(Order = 38)]
-		public SoundGraphPluginRef DacPlugin { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(38), JsonProperty(Order = 38)]
+		private SoundGraphPluginRef _DacPlugin = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

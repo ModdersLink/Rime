@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class DestructionPartComponentData :
+	public partial class DestructionPartComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public RefArray<GameObjectData> Objects { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private RefArray<GameObjectData> _Objects = new();
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public uint PartIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private uint _PartIndex;
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public DestructionConnectivityType ConnectivityType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private DestructionConnectivityType _ConnectivityType = new();
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public bool Fixed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private bool _Fixed;
 
-		[ContainerField(109), LayoutImmutable, Blittable, JsonProperty(Order = 109)]
-		public bool Fragile { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(109), LayoutImmutable, Blittable, JsonProperty(Order = 109)]
+		private bool _Fragile;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

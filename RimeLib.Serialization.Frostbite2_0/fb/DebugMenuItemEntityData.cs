@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class DebugMenuItemEntityData :
+	public partial class DebugMenuItemEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public DebugMenuItemType ItemType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private DebugMenuItemType _ItemType = new();
 
-		[ContainerField(100), LayoutImmutable, JsonProperty(Order = 100)]
-		public string Text { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, JsonProperty(Order = 100)]
+		private string _Text = string.Empty;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

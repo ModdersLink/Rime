@@ -14,45 +14,57 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class VoiceOverSystemAsset :
+	public partial class VoiceOverSystemAsset :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<VoiceOverInterval> Intervals { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<VoiceOverInterval> _Intervals = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<VoiceOverLabel> Labels { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<VoiceOverLabel> _Labels = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<VoiceOverObject> Types { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<VoiceOverObject> _Types = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public RefArray<VoiceOverObject> Objects { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private RefArray<VoiceOverObject> _Objects = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public RefArray<VoiceOverGlobalConstantValue> Constants { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private RefArray<VoiceOverGlobalConstantValue> _Constants = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public CtrRef<AudioLanguage> MasterLanguage { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private CtrRef<AudioLanguage> _MasterLanguage = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public CtrRef<VoiceOverPronunciation> DefaultPronunciation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private CtrRef<VoiceOverPronunciation> _DefaultPronunciation = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public RefArray<VoiceOverPronunciation> Pronunciations { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private RefArray<VoiceOverPronunciation> _Pronunciations = new();
 
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public RefArray<VoiceOverConversationQueueGroup> QueueGroups { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private RefArray<VoiceOverConversationQueueGroup> _QueueGroups = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public CtrRef<VoiceOverConversationQueueGroup> DefaultPositionedQueueGroup { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private CtrRef<VoiceOverConversationQueueGroup> _DefaultPositionedQueueGroup = new();
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public CtrRef<VoiceOverConversationQueueGroup> DefaultUnpositionedQueueGroup { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private CtrRef<VoiceOverConversationQueueGroup> _DefaultUnpositionedQueueGroup = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

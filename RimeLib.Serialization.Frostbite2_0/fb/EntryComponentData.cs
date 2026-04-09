@@ -14,96 +14,125 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class EntryComponentData :
+	public partial class EntryComponentData :
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public Vec3 SoldierOffset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private Vec3 _SoldierOffset = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public CtrRef<GameAIEntryData> AIData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private CtrRef<GameAIEntryData> _AIData = new();
 
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public EntryClass EntryClass { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private EntryClass _EntryClass = new();
 
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public CtrRef<EntryInputActionMapsData> InputConceptDefinition { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private CtrRef<EntryInputActionMapsData> _InputConceptDefinition = new();
 
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public CtrRef<InputActionMappingsData> InputMapping { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private CtrRef<InputActionMappingsData> _InputMapping = new();
 
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public RefArray<InputCurveData> InputCurves { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private RefArray<InputCurveData> _InputCurves = new();
 
-		[ContainerField(132), JsonProperty(Order = 132)]
-		public EntryComponentHudData HudData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(132), JsonProperty(Order = 132)]
+		private EntryComponentHudData _HudData = new();
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public int EntryOrderNumber { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private int _EntryOrderNumber;
 
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public float EnterImpulse { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private float _EnterImpulse;
 
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public float EntryRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private float _EntryRadius;
 
-		[ContainerField(156), JsonProperty(Order = 156)]
-		public EntryInputActionEnum TriggerEventOnKey { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(156), JsonProperty(Order = 156)]
+		private EntryInputActionEnum _TriggerEventOnKey = new();
 
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public EntrySpottingSettings EntrySpottingSettings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private EntrySpottingSettings _EntrySpottingSettings = new();
 
-		[ContainerField(164), JsonProperty(Order = 164)]
-		public PoseConstraintsData PoseConstraints { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(164), JsonProperty(Order = 164)]
+		private PoseConstraintsData _PoseConstraints = new();
 
-		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
-		public float SoldierTransitionInvisbleTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
+		private float _SoldierTransitionInvisbleTime;
 
-		[ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
-		public int NumberOfStances { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
+		private int _NumberOfStances;
 
-		[ContainerField(176), JsonProperty(Order = 176)]
-		public CtrRef<EntryComponentSoundData> EntryComponentSound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), JsonProperty(Order = 176)]
+		private CtrRef<EntryComponentSoundData> _EntryComponentSound = new();
 
-		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
-		public bool LockSoldierAimingToEntry { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		private bool _LockSoldierAimingToEntry;
 
-		[ContainerField(181), LayoutImmutable, Blittable, JsonProperty(Order = 181)]
-		public bool IsAllowedToExitInAir { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(181), LayoutImmutable, Blittable, JsonProperty(Order = 181)]
+		private bool _IsAllowedToExitInAir;
 
-		[ContainerField(182), LayoutImmutable, Blittable, JsonProperty(Order = 182)]
-		public bool Show1pSoldierInEntry { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(182), LayoutImmutable, Blittable, JsonProperty(Order = 182)]
+		private bool _Show1pSoldierInEntry;
 
-		[ContainerField(183), LayoutImmutable, Blittable, JsonProperty(Order = 183)]
-		public bool StancesEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(183), LayoutImmutable, Blittable, JsonProperty(Order = 183)]
+		private bool _StancesEnabled;
 
-		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
-		public bool Show1pSoldierInEntryForPlayerOnly { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		private bool _Show1pSoldierInEntryForPlayerOnly;
 
-		[ContainerField(185), LayoutImmutable, Blittable, JsonProperty(Order = 185)]
-		public bool HideSoldierForPassengers { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(185), LayoutImmutable, Blittable, JsonProperty(Order = 185)]
+		private bool _HideSoldierForPassengers;
 
-		[ContainerField(186), LayoutImmutable, Blittable, JsonProperty(Order = 186)]
-		public bool Show3pSoldierWeaponInEntry { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(186), LayoutImmutable, Blittable, JsonProperty(Order = 186)]
+		private bool _Show3pSoldierWeaponInEntry;
 
-		[ContainerField(187), LayoutImmutable, Blittable, JsonProperty(Order = 187)]
-		public bool ShowSoldierGearInEntry { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(187), LayoutImmutable, Blittable, JsonProperty(Order = 187)]
+		private bool _ShowSoldierGearInEntry;
 
-		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
-		public bool IsShielded { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		private bool _IsShielded;
 
-		[ContainerField(189), LayoutImmutable, Blittable, JsonProperty(Order = 189)]
-		public bool ForbiddenForHuman { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(189), LayoutImmutable, Blittable, JsonProperty(Order = 189)]
+		private bool _ForbiddenForHuman;
 
-		[ContainerField(190), LayoutImmutable, Blittable, JsonProperty(Order = 190)]
-		public bool ShowSoldierWeaponInEntry { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(190), LayoutImmutable, Blittable, JsonProperty(Order = 190)]
+		private bool _ShowSoldierWeaponInEntry;
 
-		[ContainerField(191), LayoutImmutable, Blittable, JsonProperty(Order = 191)]
-		public bool ShowSoldierInEntry { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(191), LayoutImmutable, Blittable, JsonProperty(Order = 191)]
+		private bool _ShowSoldierInEntry;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

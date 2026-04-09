@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class SkeletonAsset :
+	public partial class SkeletonAsset :
 		BaseSkeletonAsset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public List<string> BoneNames { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private List<string> _BoneNames = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<int> Hierarchy { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<int> _Hierarchy = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public List<LinearTransform> LocalPose { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private List<LinearTransform> _LocalPose = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public List<LinearTransform> ModelPose { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private List<LinearTransform> _ModelPose = new();
 
-		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
-		public string WeaponBoneName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
+		private string _WeaponBoneName = string.Empty;
 
-		[ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
-		public string HeadBoneName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
+		private string _HeadBoneName = string.Empty;
 
-		[ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
-		public string HipBoneName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
+		private string _HipBoneName = string.Empty;
 
-		[ContainerField(40), LayoutImmutable, JsonProperty(Order = 40)]
-		public string CameraBoneName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, JsonProperty(Order = 40)]
+		private string _CameraBoneName = string.Empty;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

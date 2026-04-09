@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(8, 32)]
-	public class StatSurveyEvent :
+	public partial class StatSurveyEvent :
 		MetricEvent
 	{
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public GUID SurveyMetricLink { get; set; } = GUID.Empty;
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private GUID _SurveyMetricLink = GUID.Empty;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

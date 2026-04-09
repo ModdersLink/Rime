@@ -14,57 +14,73 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class ConeOutputNodeData :
+	public partial class ConeOutputNodeData :
 		OutputNodeData
 	{
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public Vec3 Direction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private Vec3 _Direction = new();
 
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public AudioGraphNodePort PositionY { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private AudioGraphNodePort _PositionY = new();
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public AudioGraphNodePort PositionX { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private AudioGraphNodePort _PositionX = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public AudioGraphNodePort PositionZ { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private AudioGraphNodePort _PositionZ = new();
 
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public AudioGraphNodePort OuterAngle { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private AudioGraphNodePort _OuterAngle = new();
 
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public AudioGraphNodePort InnerAngle { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private AudioGraphNodePort _InnerAngle = new();
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public float OutsideGain { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private float _OutsideGain;
 
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public float PanSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private float _PanSize;
 
-		[ContainerField(144), JsonProperty(Order = 144)]
-		public AudioGraphNodePort CenterLevel { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), JsonProperty(Order = 144)]
+		private AudioGraphNodePort _CenterLevel = new();
 
-		[ContainerField(152), JsonProperty(Order = 152)]
-		public AudioGraphNodePort LfeLevel { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(152), JsonProperty(Order = 152)]
+		private AudioGraphNodePort _LfeLevel = new();
 
-		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public float HFDampingAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private float _HFDampingAngle;
 
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public float ReverbGain { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private float _ReverbGain;
 
-		[ContainerField(168), JsonProperty(Order = 168)]
-		public CtrRef<SoundBusData> ReverbSend { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(168), JsonProperty(Order = 168)]
+		private CtrRef<SoundBusData> _ReverbSend = new();
 
-		[ContainerField(172), JsonProperty(Order = 172)]
-		public SoundGraphPluginRef PanPlugin { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(172), JsonProperty(Order = 172)]
+		private SoundGraphPluginRef _PanPlugin = new();
 
-		[ContainerField(175), JsonProperty(Order = 175)]
-		public SoundGraphPluginRef ReverbSendPlugin { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(175), JsonProperty(Order = 175)]
+		private SoundGraphPluginRef _ReverbSendPlugin = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

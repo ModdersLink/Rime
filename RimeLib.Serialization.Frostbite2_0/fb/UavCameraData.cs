@@ -14,51 +14,65 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 240)]
-	public class UavCameraData :
+	public partial class UavCameraData :
 		TargetCameraData
 	{
-		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public float ViewDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private float _ViewDistance;
 
-		[ContainerField(164), JsonProperty(Order = 164)]
-		public List<CameraSineCurveData> ViewDistanceCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(164), JsonProperty(Order = 164)]
+		private List<CameraSineCurveData> _ViewDistanceCurve = new();
 
-		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
-		public float ViewAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
+		private float _ViewAngle;
 
-		[ContainerField(172), JsonProperty(Order = 172)]
-		public List<CameraSineCurveData> ViewAngleCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(172), JsonProperty(Order = 172)]
+		private List<CameraSineCurveData> _ViewAngleCurve = new();
 
-		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public float RotationSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private float _RotationSpeed;
 
-		[ContainerField(180), JsonProperty(Order = 180)]
-		public List<CameraSineCurveData> RotationSpeedCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(180), JsonProperty(Order = 180)]
+		private List<CameraSineCurveData> _RotationSpeedCurve = new();
 
-		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
-		public float ZoomFov { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		private float _ZoomFov;
 
-		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
-		public float ZoomDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		private float _ZoomDelay;
 
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public float ZoomTransitionTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private float _ZoomTransitionTime;
 
-		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
-		public float Fov { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
+		private float _Fov;
 
-		[ContainerField(200), JsonProperty(Order = 200)]
-		public UavCameraPointData FocusPoint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(200), JsonProperty(Order = 200)]
+		private UavCameraPointData _FocusPoint = new();
 
-		[ContainerField(216), JsonProperty(Order = 216)]
-		public UavCameraPointData CenterPoint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(216), JsonProperty(Order = 216)]
+		private UavCameraPointData _CenterPoint = new();
 
-		[ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
-		public float UpWeightDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
+		private float _UpWeightDistance;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

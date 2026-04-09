@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 224)]
-	public class SoldierEntryComponentData :
+	public partial class SoldierEntryComponentData :
 		EntryComponentData
 	{
-		[ContainerField(192), JsonProperty(Order = 192)]
-		public AimingConstraintsData AimingConstraints { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(192), JsonProperty(Order = 192)]
+		private AimingConstraintsData _AimingConstraints = new();
 
-		[ContainerField(208), JsonProperty(Order = 208)]
-		public CtrRef<AntEnumeration> AntEntryEnumeration { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(208), JsonProperty(Order = 208)]
+		private CtrRef<AntEnumeration> _AntEntryEnumeration = new();
 
-		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
-		public bool AlignConstraintsToEntity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
+		private bool _AlignConstraintsToEntity;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

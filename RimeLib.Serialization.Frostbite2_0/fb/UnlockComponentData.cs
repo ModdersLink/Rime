@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class UnlockComponentData :
+	public partial class UnlockComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public CtrRef<UnlockAssetBase> UnlockAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private CtrRef<UnlockAssetBase> _UnlockAsset = new();
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public uint UnlockDataKey { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private uint _UnlockDataKey;
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public bool UnlockableFromAllEntries { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private bool _UnlockableFromAllEntries;
 
-		[ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
-		public bool InvertUnlockTest { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
+		private bool _InvertUnlockTest;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

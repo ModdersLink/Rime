@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class SensingComponentData :
+	public partial class SensingComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public CtrRef<SensingTemplateData> Template { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private CtrRef<SensingTemplateData> _Template = new();
 
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public CtrRef<SensingSettings> Settings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private CtrRef<SensingSettings> _Settings = new();
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public bool Enabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private bool _Enabled;
 
-		[ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
-		public bool SharedPlayerMemory { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
+		private bool _SharedPlayerMemory;
 
-		[ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
-		public bool UseWeaponTransform { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
+		private bool _UseWeaponTransform;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,57 +14,73 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class OnlineSettings :
+	public partial class OnlineSettings :
 		SystemSettings
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public BackendType Backend { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private BackendType _Backend = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public BackendType PeerBackend { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private BackendType _PeerBackend = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public OnlineEnvironment Environment { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private OnlineEnvironment _Environment = new();
 
-		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
-		public string MatchmakingToken { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
+		private string _MatchmakingToken = string.Empty;
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public CtrRef<OnlineProviderAsset> Provider { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private CtrRef<OnlineProviderAsset> _Provider = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public CtrRef<RichPresenceData> RichPresence { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private CtrRef<RichPresenceData> _RichPresence = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public CtrRef<ChatSettings> ChatSettings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private CtrRef<ChatSettings> _ChatSettings = new();
 
-		[ContainerField(40), LayoutImmutable, JsonProperty(Order = 40)]
-		public string MatchmakingOptions { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, JsonProperty(Order = 40)]
+		private string _MatchmakingOptions = string.Empty;
 
-		[ContainerField(44), LayoutImmutable, JsonProperty(Order = 44)]
-		public string Region { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, JsonProperty(Order = 44)]
+		private string _Region = string.Empty;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public uint NegativeUserCacheRefreshPeriod { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private uint _NegativeUserCacheRefreshPeriod;
 
-		[ContainerField(52), LayoutImmutable, JsonProperty(Order = 52)]
-		public string MatchmakingMode { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, JsonProperty(Order = 52)]
+		private string _MatchmakingMode = string.Empty;
 
-		[ContainerField(56), LayoutImmutable, JsonProperty(Order = 56)]
-		public string Country { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, JsonProperty(Order = 56)]
+		private string _Country = string.Empty;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public bool IsSecure { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private bool _IsSecure;
 
-		[ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
-		public bool SupportHostMigration { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
+		private bool _SupportHostMigration;
 
-		[ContainerField(62), LayoutImmutable, Blittable, JsonProperty(Order = 62)]
-		public bool MatchmakeImmediately { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(62), LayoutImmutable, Blittable, JsonProperty(Order = 62)]
+		private bool _MatchmakeImmediately;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

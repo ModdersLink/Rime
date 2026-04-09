@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class WarningSystemComponentData :
+	public partial class WarningSystemComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public CtrRef<SoundAsset> AimWarnSoundEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private CtrRef<SoundAsset> _AimWarnSoundEffect = new();
 
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public CtrRef<SoundAsset> MissileWarnSoundEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private CtrRef<SoundAsset> _MissileWarnSoundEffect = new();
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public CtrRef<SoundAsset> LowHealthWarnSoundEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private CtrRef<SoundAsset> _LowHealthWarnSoundEffect = new();
 
-		[ContainerField(108), JsonProperty(Order = 108)]
-		public CtrRef<SoundAsset> LockingWarnSoundEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(108), JsonProperty(Order = 108)]
+		private CtrRef<SoundAsset> _LockingWarnSoundEffect = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public CtrRef<SoundAsset> LockedWarnSoundEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private CtrRef<SoundAsset> _LockedWarnSoundEffect = new();
 
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public WarningPlayerType PlayerType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private WarningPlayerType _PlayerType = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

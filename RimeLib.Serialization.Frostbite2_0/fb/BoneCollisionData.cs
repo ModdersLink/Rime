@@ -14,54 +14,69 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class BoneCollisionData :
+	public partial class BoneCollisionData :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public Vec4 DebugDrawColor { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private Vec4 _DebugDrawColor = new();
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 CapsuleOffset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _CapsuleOffset = new();
 		
-		[ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
-		public string BoneName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
+		private string _BoneName = string.Empty;
 		
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public HitReactionType AnimationHitReactionType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private HitReactionType _AnimationHitReactionType = new();
 		
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public CtrRef<MaterialContainerPair> MaterialPair { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private CtrRef<MaterialContainerPair> _MaterialPair = new();
 		
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public int BoneAxis { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private int _BoneAxis;
 		
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float CapsuleLength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _CapsuleLength;
 		
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public float CapsuleRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private float _CapsuleRadius;
 		
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public PitchModifier MinPitch { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private PitchModifier _MinPitch = new();
 		
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public PitchModifier MaxPitch { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private PitchModifier _MaxPitch = new();
 		
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public bool ValidInHiLod { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private bool _ValidInHiLod;
 		
-		[ContainerField(129), LayoutImmutable, Blittable, JsonProperty(Order = 129)]
-		public bool ValidInLowLod { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(129), LayoutImmutable, Blittable, JsonProperty(Order = 129)]
+		private bool _ValidInLowLod;
 		
-		[ContainerField(130), LayoutImmutable, Blittable, JsonProperty(Order = 130)]
-		public bool UsePhysicsRotation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(130), LayoutImmutable, Blittable, JsonProperty(Order = 130)]
+		private bool _UsePhysicsRotation;
 		
-		[ContainerField(131), LayoutImmutable, Blittable, JsonProperty(Order = 131)]
-		public bool DeactivateIfBehindWall { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(131), LayoutImmutable, Blittable, JsonProperty(Order = 131)]
+		private bool _DeactivateIfBehindWall;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

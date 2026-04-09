@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class EventIfSwitchEntityData :
+	public partial class EventIfSwitchEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public bool RunOnce { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private bool _RunOnce;
 
-		[ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
-		public bool StartState { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
+		private bool _StartState;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

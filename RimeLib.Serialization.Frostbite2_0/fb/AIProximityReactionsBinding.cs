@@ -14,54 +14,69 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class AIProximityReactionsBinding :
+	public partial class AIProximityReactionsBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef AIReaction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _AIReaction = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef AIExplosionReaction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _AIExplosionReaction = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef AIExplosionForce { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _AIExplosionForce = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef AIStunReaction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _AIStunReaction = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef AIStunReactionRandomFactor { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _AIStunReactionRandomFactor = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef AIReactionDirection { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _AIReactionDirection = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AntRef FireNearby { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AntRef _FireNearby = new();
 		
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public AntRef AimUpAndDown { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private AntRef _AimUpAndDown = new();
 		
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AntRef FocusAimScale { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AntRef _FocusAimScale = new();
 		
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public AntRef FocusAiming { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private AntRef _FocusAiming = new();
 		
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public AntRef EnableProceduralHeadAim { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private AntRef _EnableProceduralHeadAim = new();
 		
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public AntRef KillFromAnimation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private AntRef _KillFromAnimation = new();
 		
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public AntRef PlayerAnimationKill { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private AntRef _PlayerAnimationKill = new();
 		
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public AntRef PlayerInitiatedRagdoll { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private AntRef _PlayerInitiatedRagdoll = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

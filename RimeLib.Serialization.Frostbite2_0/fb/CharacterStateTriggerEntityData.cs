@@ -14,66 +14,85 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class CharacterStateTriggerEntityData :
+	public partial class CharacterStateTriggerEntityData :
 		TriggerEntityData
 	{
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public uint ActiveWeaponSlot { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private uint _ActiveWeaponSlot;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float Pitch { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _Pitch;
 
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public CharacterPoseAction CharacterPose { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private CharacterPoseAction _CharacterPose = new();
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public uint AmmoToSet { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private uint _AmmoToSet;
 
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public CharacterPoseAction PoseToCheck { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private CharacterPoseAction _PoseToCheck = new();
 
-		[ContainerField(132), JsonProperty(Order = 132)]
-		public CtrRef<SoldierWeaponBlueprint> Weapon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(132), JsonProperty(Order = 132)]
+		private CtrRef<SoldierWeaponBlueprint> _Weapon = new();
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public uint HealthToSet { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private uint _HealthToSet;
 
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public uint HealthToCheck { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private uint _HealthToCheck;
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public uint SeatIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private uint _SeatIndex;
 
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public bool ExcludeConnectedVehicles { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private bool _ExcludeConnectedVehicles;
 
-		[ContainerField(149), LayoutImmutable, Blittable, JsonProperty(Order = 149)]
-		public bool ContinueToCheckIfHoldingWrongWeapon { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(149), LayoutImmutable, Blittable, JsonProperty(Order = 149)]
+		private bool _ContinueToCheckIfHoldingWrongWeapon;
 
-		[ContainerField(150), LayoutImmutable, Blittable, JsonProperty(Order = 150)]
-		public bool StayInVehicleOnMove { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(150), LayoutImmutable, Blittable, JsonProperty(Order = 150)]
+		private bool _StayInVehicleOnMove;
 
-		[ContainerField(151), LayoutImmutable, Blittable, JsonProperty(Order = 151)]
-		public bool CheckHealthGreaterOrEqual { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(151), LayoutImmutable, Blittable, JsonProperty(Order = 151)]
+		private bool _CheckHealthGreaterOrEqual;
 
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public bool CheckAllWeapons { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private bool _CheckAllWeapons;
 
-		[ContainerField(153), LayoutImmutable, Blittable, JsonProperty(Order = 153)]
-		public bool ShouldCheckSeatIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(153), LayoutImmutable, Blittable, JsonProperty(Order = 153)]
+		private bool _ShouldCheckSeatIndex;
 
-		[ContainerField(154), LayoutImmutable, Blittable, JsonProperty(Order = 154)]
-		public bool UseExitPointWhenLeavingVehicle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(154), LayoutImmutable, Blittable, JsonProperty(Order = 154)]
+		private bool _UseExitPointWhenLeavingVehicle;
 
-		[ContainerField(155), LayoutImmutable, Blittable, JsonProperty(Order = 155)]
-		public bool DisablePhysicsWhenLeavingVehicle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(155), LayoutImmutable, Blittable, JsonProperty(Order = 155)]
+		private bool _DisablePhysicsWhenLeavingVehicle;
 
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public bool UsePitch { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private bool _UsePitch;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

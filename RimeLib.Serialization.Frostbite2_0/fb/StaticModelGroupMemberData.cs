@@ -14,48 +14,61 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class StaticModelGroupMemberData :
+	public partial class StaticModelGroupMemberData :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public List<LinearTransform> InstanceTransforms { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private List<LinearTransform> _InstanceTransforms = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public List<float> InstanceScale { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private List<float> _InstanceScale = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public List<uint> InstanceObjectVariation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private List<uint> _InstanceObjectVariation = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public List<bool> InstanceCastSunShadow { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private List<bool> _InstanceCastSunShadow = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<GamePhysicsEntityData> MemberType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<GamePhysicsEntityData> _MemberType = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<EntityData> MeshEntityType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<EntityData> _MeshEntityType = new();
 		
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public uint InstanceCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private uint _InstanceCount;
 		
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public uint HealthStateEntityManagerId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private uint _HealthStateEntityManagerId;
 		
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public IndexRange PhysicsPartRange { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private IndexRange _PhysicsPartRange = new();
 		
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public uint PhysicsPartCountPerInstance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private uint _PhysicsPartCountPerInstance;
 		
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public IndexRange NetworkIdRange { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private IndexRange _NetworkIdRange = new();
 		
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public uint NetworkIdCountPerInstance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private uint _NetworkIdCountPerInstance;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

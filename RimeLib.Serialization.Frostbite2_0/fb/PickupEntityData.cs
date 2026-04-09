@@ -14,81 +14,105 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 176)]
-	public class PickupEntityData :
+	public partial class PickupEntityData :
 		GamePhysicsEntityData
 	{
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public PickupPlayerEnum RandomizeAmmoOnDropForPlayer { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private PickupPlayerEnum _RandomizeAmmoOnDropForPlayer = new();
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public int MinRandomClipAmmoPercent { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private int _MinRandomClipAmmoPercent;
 
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public CtrRef<ObjectBlueprint> PhysicsBlueprint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private CtrRef<ObjectBlueprint> _PhysicsBlueprint = new();
 
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private CtrRef<MeshAsset> _Mesh = new();
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public int MaxRandomClipAmmoPercent { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private int _MaxRandomClipAmmoPercent;
 
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public uint PreferredWeaponSlot { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private uint _PreferredWeaponSlot;
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public float TimeToLive { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private float _TimeToLive;
 
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public int MinRandomSpareAmmoPercent { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private int _MinRandomSpareAmmoPercent;
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public float InteractionRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private float _InteractionRadius;
 
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public int MaxRandomSpareAmmoPercent { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private int _MaxRandomSpareAmmoPercent;
 
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public bool UnspawnOnPickup { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private bool _UnspawnOnPickup;
 
-		[ContainerField(153), LayoutImmutable, Blittable, JsonProperty(Order = 153)]
-		public bool UnspawnOnAmmoPickup { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(153), LayoutImmutable, Blittable, JsonProperty(Order = 153)]
+		private bool _UnspawnOnAmmoPickup;
 
-		[ContainerField(154), LayoutImmutable, Blittable, JsonProperty(Order = 154)]
-		public bool ForceWeaponSlotSelection { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(154), LayoutImmutable, Blittable, JsonProperty(Order = 154)]
+		private bool _ForceWeaponSlotSelection;
 
-		[ContainerField(155), LayoutImmutable, Blittable, JsonProperty(Order = 155)]
-		public bool DisplayInMiniMap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(155), LayoutImmutable, Blittable, JsonProperty(Order = 155)]
+		private bool _DisplayInMiniMap;
 
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public bool HasAutomaticAmmoPickup { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private bool _HasAutomaticAmmoPickup;
 
-		[ContainerField(157), LayoutImmutable, Blittable, JsonProperty(Order = 157)]
-		public bool UseWeaponMesh { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(157), LayoutImmutable, Blittable, JsonProperty(Order = 157)]
+		private bool _UseWeaponMesh;
 
-		[ContainerField(158), LayoutImmutable, Blittable, JsonProperty(Order = 158)]
-		public bool AllowPickup { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(158), LayoutImmutable, Blittable, JsonProperty(Order = 158)]
+		private bool _AllowPickup;
 
-		[ContainerField(159), LayoutImmutable, Blittable, JsonProperty(Order = 159)]
-		public bool ContentIsStatic { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(159), LayoutImmutable, Blittable, JsonProperty(Order = 159)]
+		private bool _ContentIsStatic;
 
-		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public bool PositionIsStatic { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private bool _PositionIsStatic;
 
-		[ContainerField(161), LayoutImmutable, Blittable, JsonProperty(Order = 161)]
-		public bool IgnoreNullWeaponSlots { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(161), LayoutImmutable, Blittable, JsonProperty(Order = 161)]
+		private bool _IgnoreNullWeaponSlots;
 
-		[ContainerField(162), LayoutImmutable, Blittable, JsonProperty(Order = 162)]
-		public bool ReplaceAllContent { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(162), LayoutImmutable, Blittable, JsonProperty(Order = 162)]
+		private bool _ReplaceAllContent;
 
-		[ContainerField(163), LayoutImmutable, Blittable, JsonProperty(Order = 163)]
-		public bool RemoveWeaponOnDrop { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(163), LayoutImmutable, Blittable, JsonProperty(Order = 163)]
+		private bool _RemoveWeaponOnDrop;
 
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public bool SendPlayerInEventOnPickup { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private bool _SendPlayerInEventOnPickup;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

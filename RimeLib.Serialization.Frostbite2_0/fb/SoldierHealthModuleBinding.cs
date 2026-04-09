@@ -14,81 +14,105 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 92)]
-	public class SoldierHealthModuleBinding :
+	public partial class SoldierHealthModuleBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef HeadShot { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _HeadShot = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef LeftArmHit { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _LeftArmHit = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef RightArmHit { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _RightArmHit = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef LeftLegHit { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _LeftLegHit = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef RightLegHit { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _RightLegHit = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef OnGround { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _OnGround = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AntRef DeathAnimationTriggered { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AntRef _DeathAnimationTriggered = new();
 		
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public AntRef RandomAnimationIndex { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private AntRef _RandomAnimationIndex = new();
 		
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AntRef Sprinting { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AntRef _Sprinting = new();
 		
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public AntRef HitLeft { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private AntRef _HitLeft = new();
 		
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public AntRef HitRight { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private AntRef _HitRight = new();
 		
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public AntRef HitFront { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private AntRef _HitFront = new();
 		
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public AntRef HitBack { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private AntRef _HitBack = new();
 		
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public AntRef DeathHitDirection { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private AntRef _DeathHitDirection = new();
 		
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public AntRef Explosion { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private AntRef _Explosion = new();
 		
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public AntRef Dead { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private AntRef _Dead = new();
 		
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public AntRef Revived { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private AntRef _Revived = new();
 		
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public AntRef RandomValue { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private AntRef _RandomValue = new();
 		
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public AntRef Pose { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private AntRef _Pose = new();
 		
-		[ContainerField(76), JsonProperty(Order = 76)]
-		public AntRef RightSpeed { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(76), JsonProperty(Order = 76)]
+		private AntRef _RightSpeed = new();
 		
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public AntRef ForwardSpeed { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private AntRef _ForwardSpeed = new();
 		
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public AntRef CriticallyHit { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private AntRef _CriticallyHit = new();
 		
-		[ContainerField(88), JsonProperty(Order = 88)]
-		public AntRef InteractiveManDown { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(88), JsonProperty(Order = 88)]
+		private AntRef _InteractiveManDown = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,63 +14,81 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class LifeCounterEntityData :
+	public partial class LifeCounterEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public int StartingLifeCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private int _StartingLifeCount;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public float DisplayTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private float _DisplayTime;
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public TeamId TeamId { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private TeamId _TeamId = new();
 
-		[ContainerField(108), JsonProperty(Order = 108)]
-		public List<int> LifeTresholdValues { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(108), JsonProperty(Order = 108)]
+		private List<int> _LifeTresholdValues = new();
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public int UiShowCountLowerThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private int _UiShowCountLowerThreshold;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public int UiShowCountUpperThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private int _UiShowCountUpperThreshold;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public int BaseCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private int _BaseCount;
 
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public List<float> ReinforceTable { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private List<float> _ReinforceTable = new();
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public int ReinforceThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private int _ReinforceThreshold;
 
-		[ContainerField(132), LayoutImmutable, JsonProperty(Order = 132)]
-		public string ReinforceMessageSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, JsonProperty(Order = 132)]
+		private string _ReinforceMessageSid = string.Empty;
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public float FightHarderTreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private float _FightHarderTreshold;
 
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public float DefensiveKillRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private float _DefensiveKillRadius;
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public float FallbackTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private float _FallbackTime;
 
-		[ContainerField(148), LayoutImmutable, JsonProperty(Order = 148)]
-		public string FightHarderMessageSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, JsonProperty(Order = 148)]
+		private string _FightHarderMessageSid = string.Empty;
 
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public bool Attacker { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private bool _Attacker;
 
-		[ContainerField(153), LayoutImmutable, Blittable, JsonProperty(Order = 153)]
-		public bool SetBestSquadSpawner { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(153), LayoutImmutable, Blittable, JsonProperty(Order = 153)]
+		private bool _SetBestSquadSpawner;
 
-		[ContainerField(154), LayoutImmutable, Blittable, JsonProperty(Order = 154)]
-		public bool SimpleReinforce { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(154), LayoutImmutable, Blittable, JsonProperty(Order = 154)]
+		private bool _SimpleReinforce;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

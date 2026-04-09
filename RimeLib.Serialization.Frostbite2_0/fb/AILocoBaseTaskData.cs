@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class AILocoBaseTaskData :
+	public partial class AILocoBaseTaskData :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntPoseEnum PoseChangeMovingTowards { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntPoseEnum _PoseChangeMovingTowards = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntAttentionStateEnum AttentionChangeMovingTowards { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntAttentionStateEnum _AttentionChangeMovingTowards = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntSpeedLevel SpeedChangeMovingTowards { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntSpeedLevel _SpeedChangeMovingTowards = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntPoseEnum PoseChange { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntPoseEnum _PoseChange = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntAttentionStateEnum AttentionStateChange { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntAttentionStateEnum _AttentionStateChange = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntSpeedLevel SpeedLevelChange { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntSpeedLevel _SpeedLevelChange = new();
 		
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float Radius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _Radius;
 		
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public bool IsScripted { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private bool _IsScripted;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

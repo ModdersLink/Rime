@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(1, 6)]
-	public class InteractionTypesData :
+	public partial class InteractionTypesData :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public bool InteractionEntity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private bool _InteractionEntity;
 		
-		[ContainerField(1), LayoutImmutable, Blittable, JsonProperty(Order = 1)]
-		public bool PickupEntity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(1), LayoutImmutable, Blittable, JsonProperty(Order = 1)]
+		private bool _PickupEntity;
 		
-		[ContainerField(2), LayoutImmutable, Blittable, JsonProperty(Order = 2)]
-		public bool AmmoCrateEntity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(2), LayoutImmutable, Blittable, JsonProperty(Order = 2)]
+		private bool _AmmoCrateEntity;
 		
-		[ContainerField(3), LayoutImmutable, Blittable, JsonProperty(Order = 3)]
-		public bool VehicleEntity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(3), LayoutImmutable, Blittable, JsonProperty(Order = 3)]
+		private bool _VehicleEntity;
 		
-		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
-		public bool ExplosionPackEntity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		private bool _ExplosionPackEntity;
 		
-		[ContainerField(5), LayoutImmutable, Blittable, JsonProperty(Order = 5)]
-		public bool SoldierEntity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(5), LayoutImmutable, Blittable, JsonProperty(Order = 5)]
+		private bool _SoldierEntity;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

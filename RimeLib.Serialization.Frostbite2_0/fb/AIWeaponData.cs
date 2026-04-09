@@ -14,141 +14,185 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 156)]
-	public class AIWeaponData :
+	public partial class AIWeaponData :
 		GameAIWeaponData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public Strengths Strengths { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private Strengths _Strengths = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float MaxBurstCoolDownTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _MaxBurstCoolDownTime;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float LostTargetBurstCoolDownModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _LostTargetBurstCoolDownModifier;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float FinalAccuracyPercentage { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _FinalAccuracyPercentage;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public float AimTransitionFireDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private float _AimTransitionFireDelay;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float MinRange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _MinRange;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float MaxRange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _MaxRange;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public float OptimalRangePercentage { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private float _OptimalRangePercentage;
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public ReloadBehavior ReloadBehavior { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private ReloadBehavior _ReloadBehavior = new();
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public float MinExtraReloadTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private float _MinExtraReloadTime;
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public float MaxExtraReloadTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private float _MaxExtraReloadTime;
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public float MinBurstCoolDownTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private float _MinBurstCoolDownTime;
 
-		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
-		public float AimAngularVelocity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
+		private float _AimAngularVelocity;
 
-		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
-		public float InnerInaccurateDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
+		private float _InnerInaccurateDistance;
 
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public float AngleToTargetSnap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private float _AngleToTargetSnap;
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public float SweepDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private float _SweepDistance;
 
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public float SweepTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private float _SweepTime;
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public float WaitTimeBeforeFire { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private float _WaitTimeBeforeFire;
 
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public BurstLimit BurstLimitNear { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private BurstLimit _BurstLimitNear = new();
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public BurstLimit BurstLimitFar { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private BurstLimit _BurstLimitFar = new();
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public float StartAccuracyPercentage { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private float _StartAccuracyPercentage;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float MinimumAccuracyBeforeFiring { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _MinimumAccuracyBeforeFiring;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public float OuterInaccurateDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private float _OuterInaccurateDistance;
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public float AdditionalMinimumAccuracyAtMinRange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private float _AdditionalMinimumAccuracyAtMinRange;
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public float GravityModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private float _GravityModifier;
 
-		[ContainerField(132), JsonProperty(Order = 132)]
-		public SweepSelectionType SweepType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(132), JsonProperty(Order = 132)]
+		private SweepSelectionType _SweepType = new();
 
-		[ContainerField(136), JsonProperty(Order = 136)]
-		public AimOrigin AimOrigin { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(136), JsonProperty(Order = 136)]
+		private AimOrigin _AimOrigin = new();
 
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public bool UseZoom { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private bool _UseZoom;
 
-		[ContainerField(141), LayoutImmutable, Blittable, JsonProperty(Order = 141)]
-		public bool AllowedAgainstImmortals { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(141), LayoutImmutable, Blittable, JsonProperty(Order = 141)]
+		private bool _AllowedAgainstImmortals;
 
-		[ContainerField(142), LayoutImmutable, Blittable, JsonProperty(Order = 142)]
-		public bool AimWhileReloading { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(142), LayoutImmutable, Blittable, JsonProperty(Order = 142)]
+		private bool _AimWhileReloading;
 
-		[ContainerField(143), LayoutImmutable, Blittable, JsonProperty(Order = 143)]
-		public bool AimHighIndirectPath { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(143), LayoutImmutable, Blittable, JsonProperty(Order = 143)]
+		private bool _AimHighIndirectPath;
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public bool Indirect { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private bool _Indirect;
 
-		[ContainerField(145), LayoutImmutable, Blittable, JsonProperty(Order = 145)]
-		public bool IsMelee { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(145), LayoutImmutable, Blittable, JsonProperty(Order = 145)]
+		private bool _IsMelee;
 
-		[ContainerField(146), LayoutImmutable, Blittable, JsonProperty(Order = 146)]
-		public bool SweepFirstAttack { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(146), LayoutImmutable, Blittable, JsonProperty(Order = 146)]
+		private bool _SweepFirstAttack;
 
-		[ContainerField(147), LayoutImmutable, Blittable, JsonProperty(Order = 147)]
-		public bool IsBlindFireAllowed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(147), LayoutImmutable, Blittable, JsonProperty(Order = 147)]
+		private bool _IsBlindFireAllowed;
 
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public bool CanAltAttack { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private bool _CanAltAttack;
 
-		[ContainerField(149), LayoutImmutable, Blittable, JsonProperty(Order = 149)]
-		public bool IsStandStill { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(149), LayoutImmutable, Blittable, JsonProperty(Order = 149)]
+		private bool _IsStandStill;
 
-		[ContainerField(150), LayoutImmutable, Blittable, JsonProperty(Order = 150)]
-		public bool CanSuppress { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(150), LayoutImmutable, Blittable, JsonProperty(Order = 150)]
+		private bool _CanSuppress;
 
-		[ContainerField(151), LayoutImmutable, Blittable, JsonProperty(Order = 151)]
-		public bool UseFromCover { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(151), LayoutImmutable, Blittable, JsonProperty(Order = 151)]
+		private bool _UseFromCover;
 
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public bool InaccuracyFollowsTarget { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private bool _InaccuracyFollowsTarget;
 
-		[ContainerField(153), LayoutImmutable, Blittable, JsonProperty(Order = 153)]
-		public bool UseInaccuracyAtCloseRange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(153), LayoutImmutable, Blittable, JsonProperty(Order = 153)]
+		private bool _UseInaccuracyAtCloseRange;
 
-		[ContainerField(154), LayoutImmutable, Blittable, JsonProperty(Order = 154)]
-		public bool DisableWeaponSway { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(154), LayoutImmutable, Blittable, JsonProperty(Order = 154)]
+		private bool _DisableWeaponSway;
 
-		[ContainerField(155), LayoutImmutable, Blittable, JsonProperty(Order = 155)]
-		public bool IsAiAllowed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(155), LayoutImmutable, Blittable, JsonProperty(Order = 155)]
+		private bool _IsAiAllowed;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

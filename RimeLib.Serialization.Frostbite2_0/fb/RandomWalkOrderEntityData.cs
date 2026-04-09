@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class RandomWalkOrderEntityData :
+	public partial class RandomWalkOrderEntityData :
 		BFOrderEntityData
 	{
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public bool CombatForbidden { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private bool _CombatForbidden;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

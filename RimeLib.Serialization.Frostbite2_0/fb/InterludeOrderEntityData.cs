@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class InterludeOrderEntityData :
+	public partial class InterludeOrderEntityData :
 		BFOrderEntityData
 	{
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public bool IsCutscene { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private bool _IsCutscene;
 
-		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
-		public bool Crouch { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
+		private bool _Crouch;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

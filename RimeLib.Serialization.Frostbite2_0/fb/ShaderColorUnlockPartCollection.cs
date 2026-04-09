@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class ShaderColorUnlockPartCollection :
+	public partial class ShaderColorUnlockPartCollection :
 		ShaderCustomizationUnlockPartCollection
 	{
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<ColorReference> DefaultColorReference { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<ColorReference> _DefaultColorReference = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public RefArray<ColorUnlockPartData> UnlockParts { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private RefArray<ColorUnlockPartData> _UnlockParts = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

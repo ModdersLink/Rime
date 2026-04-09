@@ -14,72 +14,93 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 240)]
-	public class StaticCameraData :
+	public partial class StaticCameraData :
 		TargetCameraData
 	{
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public List<Vec3> LeftCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private List<Vec3> _LeftCurve = new();
 
-		[ContainerField(164), JsonProperty(Order = 164)]
-		public List<Vec3> RightCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(164), JsonProperty(Order = 164)]
+		private List<Vec3> _RightCurve = new();
 
-		[ContainerField(168), JsonProperty(Order = 168)]
-		public List<Vec3> UpCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(168), JsonProperty(Order = 168)]
+		private List<Vec3> _UpCurve = new();
 
-		[ContainerField(172), JsonProperty(Order = 172)]
-		public List<Vec3> DownCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(172), JsonProperty(Order = 172)]
+		private List<Vec3> _DownCurve = new();
 
-		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public float UpPitchAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private float _UpPitchAngle;
 
-		[ContainerField(180), JsonProperty(Order = 180)]
-		public EntryInputActionEnum YawInputAction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(180), JsonProperty(Order = 180)]
+		private EntryInputActionEnum _YawInputAction = new();
 
-		[ContainerField(184), JsonProperty(Order = 184)]
-		public RefArray<CameraLoosePartPhysicsData> LoosePartPhysics { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(184), JsonProperty(Order = 184)]
+		private RefArray<CameraLoosePartPhysicsData> _LoosePartPhysics = new();
 
-		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
-		public float LeftYawAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		private float _LeftYawAngle;
 
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public float RightYawAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private float _RightYawAngle;
 
-		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
-		public float PitchSensitivityZoomed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
+		private float _PitchSensitivityZoomed;
 
-		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
-		public float DownPitchAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
+		private float _DownPitchAngle;
 
-		[ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
-		public int AverageFilterFrames { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
+		private int _AverageFilterFrames;
 
-		[ContainerField(208), JsonProperty(Order = 208)]
-		public EntryInputActionEnum PitchInputAction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(208), JsonProperty(Order = 208)]
+		private EntryInputActionEnum _PitchInputAction = new();
 
-		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
-		public float YawSensitivityZoomed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
+		private float _YawSensitivityZoomed;
 
-		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
-		public float PitchSensitivityNonZoomed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		private float _PitchSensitivityNonZoomed;
 
-		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
-		public float YawSensitivityNonZoomed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
+		private float _YawSensitivityNonZoomed;
 
-		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public bool ResetAccumulatedInputOnViewChange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private bool _ResetAccumulatedInputOnViewChange;
 
-		[ContainerField(225), LayoutImmutable, Blittable, JsonProperty(Order = 225)]
-		public bool MirrorHorizontalCurves { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(225), LayoutImmutable, Blittable, JsonProperty(Order = 225)]
+		private bool _MirrorHorizontalCurves;
 
-		[ContainerField(226), LayoutImmutable, Blittable, JsonProperty(Order = 226)]
-		public bool AccumulateInput { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(226), LayoutImmutable, Blittable, JsonProperty(Order = 226)]
+		private bool _AccumulateInput;
 
-		[ContainerField(227), LayoutImmutable, Blittable, JsonProperty(Order = 227)]
-		public bool MirrorVerticalCurves { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(227), LayoutImmutable, Blittable, JsonProperty(Order = 227)]
+		private bool _MirrorVerticalCurves;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

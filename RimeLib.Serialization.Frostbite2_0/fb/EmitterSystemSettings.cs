@@ -14,151 +14,198 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 104)]
-	public class EmitterSystemSettings :
+	public partial class EmitterSystemSettings :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public uint MeshDrawCountLimit { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private uint _MeshDrawCountLimit;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float TimeScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _TimeScale;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float GlobalResetStartTimeInterval { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _GlobalResetStartTimeInterval;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float QuadHalfResSlice2ThresholdLow { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _QuadHalfResSlice2ThresholdLow;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float QuadHalfResSlice2ThresholdHigh { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _QuadHalfResSlice2ThresholdHigh;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float QuadHalfResSlice1ThresholdLow { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _QuadHalfResSlice1ThresholdLow;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float QuadHalfResSlice1ThresholdHigh { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _QuadHalfResSlice1ThresholdHigh;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public int DebugOverdrawCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private int _DebugOverdrawCount;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public uint DrawStats { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private uint _DrawStats;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float MeshStreamingPriorityMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _MeshStreamingPriorityMultiplier;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float QuadZOcclusionBias { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _QuadZOcclusionBias;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public uint DrawBoundingBoxes { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private uint _DrawBoundingBoxes;
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public float MinScreenArea { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private float _MinScreenArea;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public float QuadNearFadeDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private float _QuadNearFadeDistance;
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public int QuadTechnique { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private int _QuadTechnique;
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public float MeshCullingDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private float _MeshCullingDistance;
 
-		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
-		public bool EnableFixedTimeStep { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
+		private bool _EnableFixedTimeStep;
 
-		[ContainerField(73), LayoutImmutable, Blittable, JsonProperty(Order = 73)]
-		public bool ZBufferCullEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(73), LayoutImmutable, Blittable, JsonProperty(Order = 73)]
+		private bool _ZBufferCullEnable;
 
-		[ContainerField(74), LayoutImmutable, Blittable, JsonProperty(Order = 74)]
-		public bool QuadEnableOverdrawRendering { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(74), LayoutImmutable, Blittable, JsonProperty(Order = 74)]
+		private bool _QuadEnableOverdrawRendering;
 
-		[ContainerField(75), LayoutImmutable, Blittable, JsonProperty(Order = 75)]
-		public bool QuadColorShaderCostsEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(75), LayoutImmutable, Blittable, JsonProperty(Order = 75)]
+		private bool _QuadColorShaderCostsEnable;
 
-		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
-		public bool DrawProjectedBoxes { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
+		private bool _DrawProjectedBoxes;
 
-		[ContainerField(77), LayoutImmutable, Blittable, JsonProperty(Order = 77)]
-		public bool QuadSimpleRenderingEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(77), LayoutImmutable, Blittable, JsonProperty(Order = 77)]
+		private bool _QuadSimpleRenderingEnable;
 
-		[ContainerField(78), LayoutImmutable, Blittable, JsonProperty(Order = 78)]
-		public bool EnableJobs { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(78), LayoutImmutable, Blittable, JsonProperty(Order = 78)]
+		private bool _EnableJobs;
 
-		[ContainerField(79), LayoutImmutable, Blittable, JsonProperty(Order = 79)]
-		public bool EnableRendering { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(79), LayoutImmutable, Blittable, JsonProperty(Order = 79)]
+		private bool _EnableRendering;
 
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public bool QuadHalfResEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private bool _QuadHalfResEnable;
 
-		[ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
-		public bool QuadEnableRendering { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
+		private bool _QuadEnableRendering;
 
-		[ContainerField(82), LayoutImmutable, Blittable, JsonProperty(Order = 82)]
-		public bool EnableFixedDelta { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(82), LayoutImmutable, Blittable, JsonProperty(Order = 82)]
+		private bool _EnableFixedDelta;
 
-		[ContainerField(83), LayoutImmutable, Blittable, JsonProperty(Order = 83)]
-		public bool QuadClipScaleEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(83), LayoutImmutable, Blittable, JsonProperty(Order = 83)]
+		private bool _QuadClipScaleEnable;
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public bool QuadNiceRenderingEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private bool _QuadNiceRenderingEnable;
 
-		[ContainerField(85), LayoutImmutable, Blittable, JsonProperty(Order = 85)]
-		public bool QuadGroupsJoinAll { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(85), LayoutImmutable, Blittable, JsonProperty(Order = 85)]
+		private bool _QuadGroupsJoinAll;
 
-		[ContainerField(86), LayoutImmutable, Blittable, JsonProperty(Order = 86)]
-		public bool QuadGroupsJoinNone { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(86), LayoutImmutable, Blittable, JsonProperty(Order = 86)]
+		private bool _QuadGroupsJoinNone;
 
-		[ContainerField(87), LayoutImmutable, Blittable, JsonProperty(Order = 87)]
-		public bool QuadGroupsJoinNiceAndSimple { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(87), LayoutImmutable, Blittable, JsonProperty(Order = 87)]
+		private bool _QuadGroupsJoinNiceAndSimple;
 
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public bool QuadEnableOpaque { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private bool _QuadEnableOpaque;
 
-		[ContainerField(89), LayoutImmutable, Blittable, JsonProperty(Order = 89)]
-		public bool QuadVertexShadowsEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(89), LayoutImmutable, Blittable, JsonProperty(Order = 89)]
+		private bool _QuadVertexShadowsEnable;
 
-		[ContainerField(90), LayoutImmutable, Blittable, JsonProperty(Order = 90)]
-		public bool QuadPointLightsEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(90), LayoutImmutable, Blittable, JsonProperty(Order = 90)]
+		private bool _QuadPointLightsEnable;
 
-		[ContainerField(91), LayoutImmutable, Blittable, JsonProperty(Order = 91)]
-		public bool QuadSpotLightsEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(91), LayoutImmutable, Blittable, JsonProperty(Order = 91)]
+		private bool _QuadSpotLightsEnable;
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public bool QuadEnableSorting { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private bool _QuadEnableSorting;
 
-		[ContainerField(93), LayoutImmutable, Blittable, JsonProperty(Order = 93)]
-		public bool MeshRenderingEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(93), LayoutImmutable, Blittable, JsonProperty(Order = 93)]
+		private bool _MeshRenderingEnable;
 
-		[ContainerField(94), LayoutImmutable, Blittable, JsonProperty(Order = 94)]
-		public bool MeshDrawTransforms { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(94), LayoutImmutable, Blittable, JsonProperty(Order = 94)]
+		private bool _MeshDrawTransforms;
 
-		[ContainerField(95), LayoutImmutable, Blittable, JsonProperty(Order = 95)]
-		public bool MeshDrawBoundingBoxes { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(95), LayoutImmutable, Blittable, JsonProperty(Order = 95)]
+		private bool _MeshDrawBoundingBoxes;
 
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public bool MeshShadowEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private bool _MeshShadowEnable;
 
-		[ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
-		public bool QuadEnableWireframe { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
+		private bool _QuadEnableWireframe;
 
-		[ContainerField(98), LayoutImmutable, Blittable, JsonProperty(Order = 98)]
-		public bool Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(98), LayoutImmutable, Blittable, JsonProperty(Order = 98)]
+		private bool _Enable;
 
-		[ContainerField(99), LayoutImmutable, Blittable, JsonProperty(Order = 99)]
-		public bool QuadEnableZOcclusion { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(99), LayoutImmutable, Blittable, JsonProperty(Order = 99)]
+		private bool _QuadEnableZOcclusion;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public bool MeshDrawCullStats { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private bool _MeshDrawCullStats;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(MeshDrawCountLimit);
 			p_Writer.Write(TimeScale);
 			p_Writer.Write(GlobalResetStartTimeInterval);

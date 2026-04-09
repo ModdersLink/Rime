@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class VoiceOverGlobalNode :
+	public partial class VoiceOverGlobalNode :
 		VoiceOverExpressionNode
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<VoiceOverValue> Value { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<VoiceOverValue> _Value = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<VoiceOverNamedValue> Field { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<VoiceOverNamedValue> _Field = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<VoiceOverObject> Object { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<VoiceOverObject> _Object = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

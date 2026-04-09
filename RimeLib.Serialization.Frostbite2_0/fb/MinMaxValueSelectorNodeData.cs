@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class MinMaxValueSelectorNodeData :
+	public partial class MinMaxValueSelectorNodeData :
 		AudioGraphNodeData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public RefArray<MinMaxValueSelectorEntry> Inputs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private RefArray<MinMaxValueSelectorEntry> _Inputs = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AudioGraphNodePort MaxValue { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AudioGraphNodePort _MaxValue = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AudioGraphNodePort MaxIndex { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AudioGraphNodePort _MaxIndex = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public AudioGraphNodePort MinValue { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private AudioGraphNodePort _MinValue = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public AudioGraphNodePort MinIndex { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private AudioGraphNodePort _MinIndex = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

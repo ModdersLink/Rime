@@ -14,347 +14,458 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 416)]
-	public class GlobalPostProcessSettings :
+	public partial class GlobalPostProcessSettings :
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 Brightness { get; set; } = new();
-
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public Vec3 ForceBloomScale { get; set; } = new();
-
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public Vec4 ForceVignetteColor { get; set; } = new();
-
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public Vec3 Contrast { get; set; } = new();
-
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public Vec3 Saturation { get; set; } = new();
-
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public Vec2 FilmGrainTextureScale { get; set; } = new();
-
-		[ContainerField(104), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public Vec2 ForceVignetteScale { get; set; } = new();
-
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public Vec3 FilmGrainColorScale { get; set; } = new();
-
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public uint Ps3EdgeMlaaJobPriority { get; set; }
-
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public uint BloomBlurIterationCount { get; set; }
-
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public uint DebugModeStep { get; set; }
-
-		[ContainerField(140), JsonProperty(Order = 140)]
-		public BlurFilter BloomBlurFilter { get; set; } = new();
-
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public float LdrBloomRange { get; set; }
-
-		[ContainerField(148), JsonProperty(Order = 148)]
-		public PostProcessDebugMode DebugMode { get; set; } = new();
-
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public float UserBrightnessMin { get; set; }
-
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public float UIBrightnessNorm { get; set; }
-
-		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public uint Ps3EdgeMlaaJobCount { get; set; }
-
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public uint Ps3EdgeMlaaAbsoluteThreshold { get; set; }
-
-		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
-		public uint BloomPyramidLevelCount { get; set; }
-
-		[ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
-		public uint BloomPyramidFinalLevel { get; set; }
-
-		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public float UserBrightnessMax { get; set; }
-
-		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
-		public float UserBrightnessMulScale { get; set; }
-
-		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
-		public float UserBrightnessAddScale { get; set; }
-
-		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
-		public uint DownsampleAverageStartMipmap { get; set; }
-
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public uint Ps3EdgeMlaaThresholdFactor { get; set; }
-
-		[ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
-		public uint Ps3EdgeMlaaThresholdBase { get; set; }
-
-		[ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
-		public uint Ps3TiledLdrMipmapCount { get; set; }
-
-		[ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
-		public uint Ps3TiledFloatMipmapCount { get; set; }
-
-		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
-		public uint Ps3TiledBloomMipmapCount { get; set; }
-
-		[ContainerField(212), JsonProperty(Order = 212)]
-		public BlurFilter HbaoGaussianBlurSize { get; set; } = new();
-
-		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
-		public float ForceExposure { get; set; }
-
-		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
-		public float ForceBlurAdd { get; set; }
-
-		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public int ForceDofEnable { get; set; }
-
-		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
-		public float ForceDofFocusDistance { get; set; }
-
-		[ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
-		public float ForceDofNearDistanceScale { get; set; }
-
-		[ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
-		public float ForceDofFarDistanceScale { get; set; }
-
-		[ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
-		public float ForceDofScale { get; set; }
-
-		[ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
-		public float ForceDofBlurFilterDeviation { get; set; }
-
-		[ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
-		public uint HbaoTemporalFilterMaxNumFrames { get; set; }
-
-		[ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
-		public int HbaoForceVendor { get; set; }
-
-		[ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
-		public float ForceVignetteExponent { get; set; }
-
-		[ContainerField(260), LayoutImmutable, Blittable, JsonProperty(Order = 260)]
-		public float HbaoTemporalFilterThreshold { get; set; }
-
-		[ContainerField(264), LayoutImmutable, Blittable, JsonProperty(Order = 264)]
-		public int ForceTonemapMethod { get; set; }
-
-		[ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
-		public float LUTGammaR { get; set; }
-
-		[ContainerField(272), LayoutImmutable, Blittable, JsonProperty(Order = 272)]
-		public float LUTGammaG { get; set; }
-
-		[ContainerField(276), LayoutImmutable, Blittable, JsonProperty(Order = 276)]
-		public float HbaoTemporalFilterThreshold2 { get; set; }
-
-		[ContainerField(280), LayoutImmutable, Blittable, JsonProperty(Order = 280)]
-		public int ForceChromostereopsisEnable { get; set; }
-
-		[ContainerField(284), LayoutImmutable, Blittable, JsonProperty(Order = 284)]
-		public int ForceChromostereopsisOffset { get; set; }
-
-		[ContainerField(288), LayoutImmutable, Blittable, JsonProperty(Order = 288)]
-		public float ForceChromostereopsisScale { get; set; }
-
-		[ContainerField(292), LayoutImmutable, Blittable, JsonProperty(Order = 292)]
-		public uint HbaoBilateralBlurRadius { get; set; }
-
-		[ContainerField(296), LayoutImmutable, Blittable, JsonProperty(Order = 296)]
-		public float ForceMiddleGray { get; set; }
-
-		[ContainerField(300), LayoutImmutable, Blittable, JsonProperty(Order = 300)]
-		public float LUTGammaB { get; set; }
-
-		[ContainerField(304), LayoutImmutable, Blittable, JsonProperty(Order = 304)]
-		public float LUTGammaCurbOffset { get; set; }
-
-		[ContainerField(308), LayoutImmutable, Blittable, JsonProperty(Order = 308)]
-		public float HbaoBilateralBlurSharpness { get; set; }
-
-		[ContainerField(312), LayoutImmutable, Blittable, JsonProperty(Order = 312)]
-		public uint HbaoRandomTextureWidth { get; set; }
-
-		[ContainerField(316), LayoutImmutable, Blittable, JsonProperty(Order = 316)]
-		public float LensScopeFilterColorScale { get; set; }
-
-		[ContainerField(320), LayoutImmutable, Blittable, JsonProperty(Order = 320)]
-		public float HbaoStepCount { get; set; }
-
-		[ContainerField(324), LayoutImmutable, Blittable, JsonProperty(Order = 324)]
-		public float HbaoMaxFootprintRadius { get; set; }
-
-		[ContainerField(328), LayoutImmutable, Blittable, JsonProperty(Order = 328)]
-		public float HbaoDirCount { get; set; }
-
-		[ContainerField(332), LayoutImmutable, Blittable, JsonProperty(Order = 332)]
-		public float Hue { get; set; }
-
-		[ContainerField(336), LayoutImmutable, Blittable, JsonProperty(Order = 336)]
-		public uint HbaoQuality { get; set; }
-
-		[ContainerField(340), LayoutImmutable, Blittable, JsonProperty(Order = 340)]
-		public uint HbaoRandomDirVariationCount { get; set; }
-
-		[ContainerField(344), LayoutImmutable, Blittable, JsonProperty(Order = 344)]
-		public float ForceDiffusionDofPlaneInFocus { get; set; }
-
-		[ContainerField(348), LayoutImmutable, Blittable, JsonProperty(Order = 348)]
-		public float DiffusionDofLuminance { get; set; }
-
-		[ContainerField(352), LayoutImmutable, Blittable, JsonProperty(Order = 352)]
-		public uint HbaoTemporalFilterDebugMode { get; set; }
-
-		[ContainerField(356), LayoutImmutable, Blittable, JsonProperty(Order = 356)]
-		public float ForceDiffusionDofAperture { get; set; }
-
-		[ContainerField(360), LayoutImmutable, Blittable, JsonProperty(Order = 360)]
-		public float ForceDiffusionDofFocalLength { get; set; }
-
-		[ContainerField(364), JsonProperty(Order = 364)]
-		public DynamicAOMethod DynamicAOMethod { get; set; } = new();
-
-		[ContainerField(368), LayoutImmutable, Blittable, JsonProperty(Order = 368)]
-		public bool DrawDebugInfo { get; set; }
-
-		[ContainerField(369), LayoutImmutable, Blittable, JsonProperty(Order = 369)]
-		public bool ColorGradingForceUpdateAlways { get; set; }
-
-		[ContainerField(370), LayoutImmutable, Blittable, JsonProperty(Order = 370)]
-		public bool BloomBlurEnable { get; set; }
-
-		[ContainerField(371), LayoutImmutable, Blittable, JsonProperty(Order = 371)]
-		public bool HdrBlurEnable { get; set; }
-
-		[ContainerField(372), LayoutImmutable, Blittable, JsonProperty(Order = 372)]
-		public bool BlurBlendEnable { get; set; }
-
-		[ContainerField(373), LayoutImmutable, Blittable, JsonProperty(Order = 373)]
-		public bool DownsampleAverageFromBloomEnable { get; set; }
-
-		[ContainerField(374), LayoutImmutable, Blittable, JsonProperty(Order = 374)]
-		public bool FilmGrainEnable { get; set; }
-
-		[ContainerField(375), LayoutImmutable, Blittable, JsonProperty(Order = 375)]
-		public bool Ldr16BitBloomEnable { get; set; }
-
-		[ContainerField(376), LayoutImmutable, Blittable, JsonProperty(Order = 376)]
-		public bool DynamicAOEnable { get; set; }
-
-		[ContainerField(377), LayoutImmutable, Blittable, JsonProperty(Order = 377)]
-		public bool DiffusionDofEnable { get; set; }
-
-		[ContainerField(378), LayoutImmutable, Blittable, JsonProperty(Order = 378)]
-		public bool HbaoHalfResEnable { get; set; }
-
-		[ContainerField(379), LayoutImmutable, Blittable, JsonProperty(Order = 379)]
-		public bool HbaoHalfResDepthEnable { get; set; }
-
-		[ContainerField(380), LayoutImmutable, Blittable, JsonProperty(Order = 380)]
-		public bool HbaoVectorizedEnable { get; set; }
-
-		[ContainerField(381), LayoutImmutable, Blittable, JsonProperty(Order = 381)]
-		public bool Ps3CompressedRenderTargetsEnable { get; set; }
-
-		[ContainerField(382), LayoutImmutable, Blittable, JsonProperty(Order = 382)]
-		public bool HdrBloomEnable { get; set; }
-
-		[ContainerField(383), LayoutImmutable, Blittable, JsonProperty(Order = 383)]
-		public bool FilmGrainRandomEnable { get; set; }
-
-		[ContainerField(384), LayoutImmutable, Blittable, JsonProperty(Order = 384)]
-		public bool DirectExposureEnable { get; set; }
-
-		[ContainerField(385), LayoutImmutable, Blittable, JsonProperty(Order = 385)]
-		public bool ExposureClampEnable { get; set; }
-
-		[ContainerField(386), LayoutImmutable, Blittable, JsonProperty(Order = 386)]
-		public bool FilmGrainLinearFilteringEnable { get; set; }
-
-		[ContainerField(387), LayoutImmutable, Blittable, JsonProperty(Order = 387)]
-		public bool HbaoBilateralBlurEnable { get; set; }
-
-		[ContainerField(388), LayoutImmutable, Blittable, JsonProperty(Order = 388)]
-		public bool ColorGradingEnable { get; set; }
-
-		[ContainerField(389), LayoutImmutable, Blittable, JsonProperty(Order = 389)]
-		public bool ColorTransformEnable { get; set; }
-
-		[ContainerField(390), LayoutImmutable, Blittable, JsonProperty(Order = 390)]
-		public bool HbaoBilateralBlurCsEnable { get; set; }
-
-		[ContainerField(391), LayoutImmutable, Blittable, JsonProperty(Order = 391)]
-		public bool HbaoTemporalFilterEnable { get; set; }
-
-		[ContainerField(392), LayoutImmutable, Blittable, JsonProperty(Order = 392)]
-		public bool QuarterDownsamplingEnable { get; set; }
-
-		[ContainerField(393), LayoutImmutable, Blittable, JsonProperty(Order = 393)]
-		public bool DrawDebugUserBrightnessLUT { get; set; }
-
-		[ContainerField(394), LayoutImmutable, Blittable, JsonProperty(Order = 394)]
-		public bool BloomPyramidAttenuateEnable { get; set; }
-
-		[ContainerField(395), LayoutImmutable, Blittable, JsonProperty(Order = 395)]
-		public bool DownsampleBeforeBlurEnable { get; set; }
-
-		[ContainerField(396), LayoutImmutable, Blittable, JsonProperty(Order = 396)]
-		public bool HbaoGaussianBlurEnable { get; set; }
-
-		[ContainerField(397), LayoutImmutable, Blittable, JsonProperty(Order = 397)]
-		public bool HbaoGaussianBlurHalfResEnable { get; set; }
-
-		[ContainerField(398), LayoutImmutable, Blittable, JsonProperty(Order = 398)]
-		public bool BloomPyramidEnable { get; set; }
-
-		[ContainerField(399), LayoutImmutable, Blittable, JsonProperty(Order = 399)]
-		public bool UserBrightnessLUTEnable { get; set; }
-
-		[ContainerField(400), LayoutImmutable, Blittable, JsonProperty(Order = 400)]
-		public bool Ps3EdgeMlaaEnable { get; set; }
-
-		[ContainerField(401), LayoutImmutable, Blittable, JsonProperty(Order = 401)]
-		public bool Ps3EdgeMlaaCopyOnly { get; set; }
-
-		[ContainerField(402), LayoutImmutable, Blittable, JsonProperty(Order = 402)]
-		public bool Ps3EdgeMlaaShowEdges { get; set; }
-
-		[ContainerField(403), LayoutImmutable, Blittable, JsonProperty(Order = 403)]
-		public bool Ps3EdgeMlaaRelativeEdgeDetection { get; set; }
-
-		[ContainerField(404), LayoutImmutable, Blittable, JsonProperty(Order = 404)]
-		public bool Ps3EdgeMlaaGpuBlockEnable { get; set; }
-
-		[ContainerField(405), LayoutImmutable, Blittable, JsonProperty(Order = 405)]
-		public bool Ps3BackBufferAsLdrTargetEnable { get; set; }
-
-		[ContainerField(406), LayoutImmutable, Blittable, JsonProperty(Order = 406)]
-		public bool DownsampleLogAverageEnable { get; set; }
-
-		[ContainerField(407), LayoutImmutable, Blittable, JsonProperty(Order = 407)]
-		public bool BloomQuarterResEnable { get; set; }
-
-		[ContainerField(408), LayoutImmutable, Blittable, JsonProperty(Order = 408)]
-		public bool BloomEnable { get; set; }
-
-		[ContainerField(409), LayoutImmutable, Blittable, JsonProperty(Order = 409)]
-		public bool LensScopeFilterEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _Brightness = new();
+
+		[ObservableProperty]
+		[property: ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private Vec3 _ForceBloomScale = new();
+
+		[ObservableProperty]
+		[property: ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private Vec4 _ForceVignetteColor = new();
+
+		[ObservableProperty]
+		[property: ContainerField(64), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private Vec3 _Contrast = new();
+
+		[ObservableProperty]
+		[property: ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private Vec3 _Saturation = new();
+
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private Vec2 _FilmGrainTextureScale = new();
+
+		[ObservableProperty]
+		[property: ContainerField(104), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private Vec2 _ForceVignetteScale = new();
+
+		[ObservableProperty]
+		[property: ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private Vec3 _FilmGrainColorScale = new();
+
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private uint _Ps3EdgeMlaaJobPriority;
+
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private uint _BloomBlurIterationCount;
+
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private uint _DebugModeStep;
+
+		[ObservableProperty]
+		[property: ContainerField(140), JsonProperty(Order = 140)]
+		private BlurFilter _BloomBlurFilter = new();
+
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private float _LdrBloomRange;
+
+		[ObservableProperty]
+		[property: ContainerField(148), JsonProperty(Order = 148)]
+		private PostProcessDebugMode _DebugMode = new();
+
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private float _UserBrightnessMin;
+
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private float _UIBrightnessNorm;
+
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private uint _Ps3EdgeMlaaJobCount;
+
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private uint _Ps3EdgeMlaaAbsoluteThreshold;
+
+		[ObservableProperty]
+		[property: ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
+		private uint _BloomPyramidLevelCount;
+
+		[ObservableProperty]
+		[property: ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
+		private uint _BloomPyramidFinalLevel;
+
+		[ObservableProperty]
+		[property: ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private float _UserBrightnessMax;
+
+		[ObservableProperty]
+		[property: ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		private float _UserBrightnessMulScale;
+
+		[ObservableProperty]
+		[property: ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		private float _UserBrightnessAddScale;
+
+		[ObservableProperty]
+		[property: ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		private uint _DownsampleAverageStartMipmap;
+
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private uint _Ps3EdgeMlaaThresholdFactor;
+
+		[ObservableProperty]
+		[property: ContainerField(196), LayoutImmutable, Blittable, JsonProperty(Order = 196)]
+		private uint _Ps3EdgeMlaaThresholdBase;
+
+		[ObservableProperty]
+		[property: ContainerField(200), LayoutImmutable, Blittable, JsonProperty(Order = 200)]
+		private uint _Ps3TiledLdrMipmapCount;
+
+		[ObservableProperty]
+		[property: ContainerField(204), LayoutImmutable, Blittable, JsonProperty(Order = 204)]
+		private uint _Ps3TiledFloatMipmapCount;
+
+		[ObservableProperty]
+		[property: ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		private uint _Ps3TiledBloomMipmapCount;
+
+		[ObservableProperty]
+		[property: ContainerField(212), JsonProperty(Order = 212)]
+		private BlurFilter _HbaoGaussianBlurSize = new();
+
+		[ObservableProperty]
+		[property: ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		private float _ForceExposure;
+
+		[ObservableProperty]
+		[property: ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
+		private float _ForceBlurAdd;
+
+		[ObservableProperty]
+		[property: ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private int _ForceDofEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		private float _ForceDofFocusDistance;
+
+		[ObservableProperty]
+		[property: ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
+		private float _ForceDofNearDistanceScale;
+
+		[ObservableProperty]
+		[property: ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
+		private float _ForceDofFarDistanceScale;
+
+		[ObservableProperty]
+		[property: ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
+		private float _ForceDofScale;
+
+		[ObservableProperty]
+		[property: ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
+		private float _ForceDofBlurFilterDeviation;
+
+		[ObservableProperty]
+		[property: ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
+		private uint _HbaoTemporalFilterMaxNumFrames;
+
+		[ObservableProperty]
+		[property: ContainerField(252), LayoutImmutable, Blittable, JsonProperty(Order = 252)]
+		private int _HbaoForceVendor;
+
+		[ObservableProperty]
+		[property: ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
+		private float _ForceVignetteExponent;
+
+		[ObservableProperty]
+		[property: ContainerField(260), LayoutImmutable, Blittable, JsonProperty(Order = 260)]
+		private float _HbaoTemporalFilterThreshold;
+
+		[ObservableProperty]
+		[property: ContainerField(264), LayoutImmutable, Blittable, JsonProperty(Order = 264)]
+		private int _ForceTonemapMethod;
+
+		[ObservableProperty]
+		[property: ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
+		private float _LUTGammaR;
+
+		[ObservableProperty]
+		[property: ContainerField(272), LayoutImmutable, Blittable, JsonProperty(Order = 272)]
+		private float _LUTGammaG;
+
+		[ObservableProperty]
+		[property: ContainerField(276), LayoutImmutable, Blittable, JsonProperty(Order = 276)]
+		private float _HbaoTemporalFilterThreshold2;
+
+		[ObservableProperty]
+		[property: ContainerField(280), LayoutImmutable, Blittable, JsonProperty(Order = 280)]
+		private int _ForceChromostereopsisEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(284), LayoutImmutable, Blittable, JsonProperty(Order = 284)]
+		private int _ForceChromostereopsisOffset;
+
+		[ObservableProperty]
+		[property: ContainerField(288), LayoutImmutable, Blittable, JsonProperty(Order = 288)]
+		private float _ForceChromostereopsisScale;
+
+		[ObservableProperty]
+		[property: ContainerField(292), LayoutImmutable, Blittable, JsonProperty(Order = 292)]
+		private uint _HbaoBilateralBlurRadius;
+
+		[ObservableProperty]
+		[property: ContainerField(296), LayoutImmutable, Blittable, JsonProperty(Order = 296)]
+		private float _ForceMiddleGray;
+
+		[ObservableProperty]
+		[property: ContainerField(300), LayoutImmutable, Blittable, JsonProperty(Order = 300)]
+		private float _LUTGammaB;
+
+		[ObservableProperty]
+		[property: ContainerField(304), LayoutImmutable, Blittable, JsonProperty(Order = 304)]
+		private float _LUTGammaCurbOffset;
+
+		[ObservableProperty]
+		[property: ContainerField(308), LayoutImmutable, Blittable, JsonProperty(Order = 308)]
+		private float _HbaoBilateralBlurSharpness;
+
+		[ObservableProperty]
+		[property: ContainerField(312), LayoutImmutable, Blittable, JsonProperty(Order = 312)]
+		private uint _HbaoRandomTextureWidth;
+
+		[ObservableProperty]
+		[property: ContainerField(316), LayoutImmutable, Blittable, JsonProperty(Order = 316)]
+		private float _LensScopeFilterColorScale;
+
+		[ObservableProperty]
+		[property: ContainerField(320), LayoutImmutable, Blittable, JsonProperty(Order = 320)]
+		private float _HbaoStepCount;
+
+		[ObservableProperty]
+		[property: ContainerField(324), LayoutImmutable, Blittable, JsonProperty(Order = 324)]
+		private float _HbaoMaxFootprintRadius;
+
+		[ObservableProperty]
+		[property: ContainerField(328), LayoutImmutable, Blittable, JsonProperty(Order = 328)]
+		private float _HbaoDirCount;
+
+		[ObservableProperty]
+		[property: ContainerField(332), LayoutImmutable, Blittable, JsonProperty(Order = 332)]
+		private float _Hue;
+
+		[ObservableProperty]
+		[property: ContainerField(336), LayoutImmutable, Blittable, JsonProperty(Order = 336)]
+		private uint _HbaoQuality;
+
+		[ObservableProperty]
+		[property: ContainerField(340), LayoutImmutable, Blittable, JsonProperty(Order = 340)]
+		private uint _HbaoRandomDirVariationCount;
+
+		[ObservableProperty]
+		[property: ContainerField(344), LayoutImmutable, Blittable, JsonProperty(Order = 344)]
+		private float _ForceDiffusionDofPlaneInFocus;
+
+		[ObservableProperty]
+		[property: ContainerField(348), LayoutImmutable, Blittable, JsonProperty(Order = 348)]
+		private float _DiffusionDofLuminance;
+
+		[ObservableProperty]
+		[property: ContainerField(352), LayoutImmutable, Blittable, JsonProperty(Order = 352)]
+		private uint _HbaoTemporalFilterDebugMode;
+
+		[ObservableProperty]
+		[property: ContainerField(356), LayoutImmutable, Blittable, JsonProperty(Order = 356)]
+		private float _ForceDiffusionDofAperture;
+
+		[ObservableProperty]
+		[property: ContainerField(360), LayoutImmutable, Blittable, JsonProperty(Order = 360)]
+		private float _ForceDiffusionDofFocalLength;
+
+		[ObservableProperty]
+		[property: ContainerField(364), JsonProperty(Order = 364)]
+		private DynamicAOMethod _DynamicAOMethod = new();
+
+		[ObservableProperty]
+		[property: ContainerField(368), LayoutImmutable, Blittable, JsonProperty(Order = 368)]
+		private bool _DrawDebugInfo;
+
+		[ObservableProperty]
+		[property: ContainerField(369), LayoutImmutable, Blittable, JsonProperty(Order = 369)]
+		private bool _ColorGradingForceUpdateAlways;
+
+		[ObservableProperty]
+		[property: ContainerField(370), LayoutImmutable, Blittable, JsonProperty(Order = 370)]
+		private bool _BloomBlurEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(371), LayoutImmutable, Blittable, JsonProperty(Order = 371)]
+		private bool _HdrBlurEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(372), LayoutImmutable, Blittable, JsonProperty(Order = 372)]
+		private bool _BlurBlendEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(373), LayoutImmutable, Blittable, JsonProperty(Order = 373)]
+		private bool _DownsampleAverageFromBloomEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(374), LayoutImmutable, Blittable, JsonProperty(Order = 374)]
+		private bool _FilmGrainEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(375), LayoutImmutable, Blittable, JsonProperty(Order = 375)]
+		private bool _Ldr16BitBloomEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(376), LayoutImmutable, Blittable, JsonProperty(Order = 376)]
+		private bool _DynamicAOEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(377), LayoutImmutable, Blittable, JsonProperty(Order = 377)]
+		private bool _DiffusionDofEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(378), LayoutImmutable, Blittable, JsonProperty(Order = 378)]
+		private bool _HbaoHalfResEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(379), LayoutImmutable, Blittable, JsonProperty(Order = 379)]
+		private bool _HbaoHalfResDepthEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(380), LayoutImmutable, Blittable, JsonProperty(Order = 380)]
+		private bool _HbaoVectorizedEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(381), LayoutImmutable, Blittable, JsonProperty(Order = 381)]
+		private bool _Ps3CompressedRenderTargetsEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(382), LayoutImmutable, Blittable, JsonProperty(Order = 382)]
+		private bool _HdrBloomEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(383), LayoutImmutable, Blittable, JsonProperty(Order = 383)]
+		private bool _FilmGrainRandomEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(384), LayoutImmutable, Blittable, JsonProperty(Order = 384)]
+		private bool _DirectExposureEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(385), LayoutImmutable, Blittable, JsonProperty(Order = 385)]
+		private bool _ExposureClampEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(386), LayoutImmutable, Blittable, JsonProperty(Order = 386)]
+		private bool _FilmGrainLinearFilteringEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(387), LayoutImmutable, Blittable, JsonProperty(Order = 387)]
+		private bool _HbaoBilateralBlurEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(388), LayoutImmutable, Blittable, JsonProperty(Order = 388)]
+		private bool _ColorGradingEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(389), LayoutImmutable, Blittable, JsonProperty(Order = 389)]
+		private bool _ColorTransformEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(390), LayoutImmutable, Blittable, JsonProperty(Order = 390)]
+		private bool _HbaoBilateralBlurCsEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(391), LayoutImmutable, Blittable, JsonProperty(Order = 391)]
+		private bool _HbaoTemporalFilterEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(392), LayoutImmutable, Blittable, JsonProperty(Order = 392)]
+		private bool _QuarterDownsamplingEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(393), LayoutImmutable, Blittable, JsonProperty(Order = 393)]
+		private bool _DrawDebugUserBrightnessLUT;
+
+		[ObservableProperty]
+		[property: ContainerField(394), LayoutImmutable, Blittable, JsonProperty(Order = 394)]
+		private bool _BloomPyramidAttenuateEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(395), LayoutImmutable, Blittable, JsonProperty(Order = 395)]
+		private bool _DownsampleBeforeBlurEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(396), LayoutImmutable, Blittable, JsonProperty(Order = 396)]
+		private bool _HbaoGaussianBlurEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(397), LayoutImmutable, Blittable, JsonProperty(Order = 397)]
+		private bool _HbaoGaussianBlurHalfResEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(398), LayoutImmutable, Blittable, JsonProperty(Order = 398)]
+		private bool _BloomPyramidEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(399), LayoutImmutable, Blittable, JsonProperty(Order = 399)]
+		private bool _UserBrightnessLUTEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(400), LayoutImmutable, Blittable, JsonProperty(Order = 400)]
+		private bool _Ps3EdgeMlaaEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(401), LayoutImmutable, Blittable, JsonProperty(Order = 401)]
+		private bool _Ps3EdgeMlaaCopyOnly;
+
+		[ObservableProperty]
+		[property: ContainerField(402), LayoutImmutable, Blittable, JsonProperty(Order = 402)]
+		private bool _Ps3EdgeMlaaShowEdges;
+
+		[ObservableProperty]
+		[property: ContainerField(403), LayoutImmutable, Blittable, JsonProperty(Order = 403)]
+		private bool _Ps3EdgeMlaaRelativeEdgeDetection;
+
+		[ObservableProperty]
+		[property: ContainerField(404), LayoutImmutable, Blittable, JsonProperty(Order = 404)]
+		private bool _Ps3EdgeMlaaGpuBlockEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(405), LayoutImmutable, Blittable, JsonProperty(Order = 405)]
+		private bool _Ps3BackBufferAsLdrTargetEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(406), LayoutImmutable, Blittable, JsonProperty(Order = 406)]
+		private bool _DownsampleLogAverageEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(407), LayoutImmutable, Blittable, JsonProperty(Order = 407)]
+		private bool _BloomQuarterResEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(408), LayoutImmutable, Blittable, JsonProperty(Order = 408)]
+		private bool _BloomEnable;
+
+		[ObservableProperty]
+		[property: ContainerField(409), LayoutImmutable, Blittable, JsonProperty(Order = 409)]
+		private bool _LensScopeFilterEnable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
-			p_Writer.WriteNullBytes(8);
+			p_Writer.WriteNullBytes(16);
 			Brightness.Serialize(p_Writer, p_EbxWriter);
 			ForceBloomScale.Serialize(p_Writer, p_EbxWriter);
 			ForceVignetteColor.Serialize(p_Writer, p_EbxWriter);

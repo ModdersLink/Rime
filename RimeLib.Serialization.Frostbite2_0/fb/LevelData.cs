@@ -14,90 +14,117 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 180)]
-	public class LevelData :
+	public partial class LevelData :
 		WorldData
 	{
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public CtrRef<ReferenceObjectData> LevelReference { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private CtrRef<ReferenceObjectData> _LevelReference = new();
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public PathfindingBlob PathfindingBlobInfo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private PathfindingBlob _PathfindingBlobInfo = new();
 
-		[ContainerField(76), JsonProperty(Order = 76)]
-		public CtrRef<GameAISystem> AISystem { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(76), JsonProperty(Order = 76)]
+		private CtrRef<GameAISystem> _AISystem = new();
 
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public float WorldSizeXZ { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private float _WorldSizeXZ;
 
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public LevelDescription LevelDescription { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private LevelDescription _LevelDescription = new();
 
-		[ContainerField(100), LayoutImmutable, JsonProperty(Order = 100)]
-		public string GameConfigurationName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, JsonProperty(Order = 100)]
+		private string _GameConfigurationName = string.Empty;
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public CtrRef<EmitterSystemAsset> EmitterSystemAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private CtrRef<EmitterSystemAsset> _EmitterSystemAsset = new();
 
-		[ContainerField(108), JsonProperty(Order = 108)]
-		public RefArray<EmitterExclusionVolumeData> EmitterExclusionVolumes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(108), JsonProperty(Order = 108)]
+		private RefArray<EmitterExclusionVolumeData> _EmitterExclusionVolumes = new();
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public float DefaultFOV { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private float _DefaultFOV;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float InfantryFOVMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _InfantryFOVMultiplier;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public uint MaxEntityBusNetworkCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private uint _MaxEntityBusNetworkCount;
 
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public CtrRef<SoundStateSettingsAsset> SoundStates { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private CtrRef<SoundStateSettingsAsset> _SoundStates = new();
 
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public CtrRef<VoiceOverSystemAsset> VoiceOverSystem { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private CtrRef<VoiceOverSystemAsset> _VoiceOverSystem = new();
 
-		[ContainerField(132), JsonProperty(Order = 132)]
-		public RefArray<VoiceOverLogicAsset> VoiceOverLogic { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(132), JsonProperty(Order = 132)]
+		private RefArray<VoiceOverLogicAsset> _VoiceOverLogic = new();
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public float MaxVehicleHeight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private float _MaxVehicleHeight;
 
-		[ContainerField(140), JsonProperty(Order = 140)]
-		public CtrRef<AnimatedSkeletonDatabase> AnimatedSkeletonDatabase { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(140), JsonProperty(Order = 140)]
+		private CtrRef<AnimatedSkeletonDatabase> _AnimatedSkeletonDatabase = new();
 
-		[ContainerField(144), JsonProperty(Order = 144)]
-		public CtrRef<EnlightenShaderDatabaseAsset> EnlightenShaderDatabase { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), JsonProperty(Order = 144)]
+		private CtrRef<EnlightenShaderDatabaseAsset> _EnlightenShaderDatabase = new();
 
-		[ContainerField(148), JsonProperty(Order = 148)]
-		public RefArray<AntProjectAsset> AntProjectAssets { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(148), JsonProperty(Order = 148)]
+		private RefArray<AntProjectAsset> _AntProjectAssets = new();
 
-		[ContainerField(152), LayoutImmutable, JsonProperty(Order = 152)]
-		public string AerialHeightmapData { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, JsonProperty(Order = 152)]
+		private string _AerialHeightmapData = string.Empty;
 
-		[ContainerField(156), JsonProperty(Order = 156)]
-		public CtrRef<LevelAudioObstructionAsset> AudioObstructionInfo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(156), JsonProperty(Order = 156)]
+		private CtrRef<LevelAudioObstructionAsset> _AudioObstructionInfo = new();
 
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public RefArray<CameraTransition> CameraTransitions { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private RefArray<CameraTransition> _CameraTransitions = new();
 
-		[ContainerField(164), JsonProperty(Order = 164)]
-		public RefArray<CameraModeAsset> CameraModes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(164), JsonProperty(Order = 164)]
+		private RefArray<CameraModeAsset> _CameraModes = new();
 
-		[ContainerField(168), JsonProperty(Order = 168)]
-		public CtrRef<FaceAnimationWaveMappings> FaceAnimationsWaveMappings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(168), JsonProperty(Order = 168)]
+		private CtrRef<FaceAnimationWaveMappings> _FaceAnimationsWaveMappings = new();
 
-		[ContainerField(172), JsonProperty(Order = 172)]
-		public CtrRef<Asset> HackForceBuild { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(172), JsonProperty(Order = 172)]
+		private CtrRef<Asset> _HackForceBuild = new();
 
-		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public bool HugeBroadPhase { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private bool _HugeBroadPhase;
 
-		[ContainerField(177), LayoutImmutable, Blittable, JsonProperty(Order = 177)]
-		public bool FreeStreamingEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(177), LayoutImmutable, Blittable, JsonProperty(Order = 177)]
+		private bool _FreeStreamingEnable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

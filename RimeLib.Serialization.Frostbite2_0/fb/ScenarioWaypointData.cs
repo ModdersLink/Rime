@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class ScenarioWaypointData :
+	public partial class ScenarioWaypointData :
 		AbstractLocoWaypointData
 	{
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public AntRef ScenarioAntRef { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private AntRef _ScenarioAntRef = new();
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public ScenarioTaskData ScenarioTask { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private ScenarioTaskData _ScenarioTask = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

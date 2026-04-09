@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class VehicleProjectileEntityData :
+	public partial class VehicleProjectileEntityData :
 		ProjectileEntityData
 	{
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public CtrRef<VehicleBlueprint> Vehicle { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private CtrRef<VehicleBlueprint> _Vehicle = new();
 
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public float EnterDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private float _EnterDelay;
 
-		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
-		public float NoVehicleCollisionTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
+		private float _NoVehicleCollisionTime;
 
-		[ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
-		public float AlignWithGroundRayLength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
+		private float _AlignWithGroundRayLength;
 
-		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public bool AutoEnter { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private bool _AutoEnter;
 
-		[ContainerField(177), LayoutImmutable, Blittable, JsonProperty(Order = 177)]
-		public bool AlignWithGround { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(177), LayoutImmutable, Blittable, JsonProperty(Order = 177)]
+		private bool _AlignWithGround;
 
-		[ContainerField(178), LayoutImmutable, Blittable, JsonProperty(Order = 178)]
-		public bool CheckGroundWhenSpawned { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(178), LayoutImmutable, Blittable, JsonProperty(Order = 178)]
+		private bool _CheckGroundWhenSpawned;
 
-		[ContainerField(179), LayoutImmutable, Blittable, JsonProperty(Order = 179)]
-		public bool DeployInsideNeutralCombatAreaOnly { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(179), LayoutImmutable, Blittable, JsonProperty(Order = 179)]
+		private bool _DeployInsideNeutralCombatAreaOnly;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,60 +14,77 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class SoldierEmoteBinding :
+	public partial class SoldierEmoteBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef Speak { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _Speak = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef IsSquadLeader { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _IsSquadLeader = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef EmoteSpot { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _EmoteSpot = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef EmoteOk { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _EmoteOk = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef EmoteNeedARide { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _EmoteNeedARide = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef EmoteGoGoGo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _EmoteGoGoGo = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AntRef EmoteNeedBackup { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AntRef _EmoteNeedBackup = new();
 		
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public AntRef EmoteThanks { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private AntRef _EmoteThanks = new();
 		
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AntRef EmoteNeedMedic { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AntRef _EmoteNeedMedic = new();
 		
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public AntRef EmoteFollowMe { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private AntRef _EmoteFollowMe = new();
 		
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public AntRef EmoteNeedAmmo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private AntRef _EmoteNeedAmmo = new();
 		
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public AntRef EmoteSorry { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private AntRef _EmoteSorry = new();
 		
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public AntRef EmoteNo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private AntRef _EmoteNo = new();
 		
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public AntRef EmoteDefendCapturePoint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private AntRef _EmoteDefendCapturePoint = new();
 		
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public AntRef EmoteAttackCapturePoint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private AntRef _EmoteAttackCapturePoint = new();
 		
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public AntRef EmoteMoveToPosition { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private AntRef _EmoteMoveToPosition = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

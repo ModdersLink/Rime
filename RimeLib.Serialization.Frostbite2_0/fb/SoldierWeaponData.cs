@@ -14,105 +14,137 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 336)]
-	public class SoldierWeaponData :
+	public partial class SoldierWeaponData :
 		WeaponEntityData
 	{
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public Vec3 InteractionOffset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private Vec3 _InteractionOffset = new();
 
-		[ContainerField(144), JsonProperty(Order = 144)]
-		public List<WeaponModifierData> WeaponModifierData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), JsonProperty(Order = 144)]
+		private List<WeaponModifierData> _WeaponModifierData = new();
 
-		[ContainerField(148), JsonProperty(Order = 148)]
-		public CtrRef<SoldierAimingSimulationData> AimingController { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(148), JsonProperty(Order = 148)]
+		private CtrRef<SoldierAimingSimulationData> _AimingController = new();
 
-		[ContainerField(152), JsonProperty(Order = 152)]
-		public CtrRef<FirstPersonCameraData> FirstPersonCamera { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(152), JsonProperty(Order = 152)]
+		private CtrRef<FirstPersonCameraData> _FirstPersonCamera = new();
 
-		[ContainerField(156), JsonProperty(Order = 156)]
-		public HudData Hud { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(156), JsonProperty(Order = 156)]
+		private HudData _Hud = new();
 
-		[ContainerField(224), LayoutImmutable, JsonProperty(Order = 224)]
-		public string DamageGiverName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(224), LayoutImmutable, JsonProperty(Order = 224)]
+		private string _DamageGiverName = string.Empty;
 
-		[ContainerField(240), JsonProperty(Order = 240)]
-		public PickupSettingsData PickupSettings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(240), JsonProperty(Order = 240)]
+		private PickupSettingsData _PickupSettings = new();
 
-		[ContainerField(272), JsonProperty(Order = 272)]
-		public WeaponAnimBaseSetEnum AnimBaseSet { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(272), JsonProperty(Order = 272)]
+		private WeaponAnimBaseSetEnum _AnimBaseSet = new();
 
-		[ContainerField(276), JsonProperty(Order = 276)]
-		public CtrRef<AntPackageAsset> AnimationData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(276), JsonProperty(Order = 276)]
+		private CtrRef<AntPackageAsset> _AnimationData = new();
 
-		[ContainerField(280), LayoutImmutable, Blittable, JsonProperty(Order = 280)]
-		public float RenderFov { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(280), LayoutImmutable, Blittable, JsonProperty(Order = 280)]
+		private float _RenderFov;
 
-		[ContainerField(284), LayoutImmutable, Blittable, JsonProperty(Order = 284)]
-		public float ZoomRenderFov { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(284), LayoutImmutable, Blittable, JsonProperty(Order = 284)]
+		private float _ZoomRenderFov;
 
-		[ContainerField(288), JsonProperty(Order = 288)]
-		public CtrRef<StreamGroupData> StreamGroup1p { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(288), JsonProperty(Order = 288)]
+		private CtrRef<StreamGroupData> _StreamGroup1p = new();
 
-		[ContainerField(292), JsonProperty(Order = 292)]
-		public CtrRef<EntityVoiceOverInfo> VoiceOverInfo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(292), JsonProperty(Order = 292)]
+		private CtrRef<EntityVoiceOverInfo> _VoiceOverInfo = new();
 
-		[ContainerField(296), JsonProperty(Order = 296)]
-		public QuickThrowTypeEnum QuickThrowType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(296), JsonProperty(Order = 296)]
+		private QuickThrowTypeEnum _QuickThrowType = new();
 
-		[ContainerField(300), JsonProperty(Order = 300)]
-		public CtrRef<SoldierWeaponCustomizationAsset> Customization { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(300), JsonProperty(Order = 300)]
+		private CtrRef<SoldierWeaponCustomizationAsset> _Customization = new();
 
-		[ContainerField(304), LayoutImmutable, Blittable, JsonProperty(Order = 304)]
-		public float WeaponFloatParam { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(304), LayoutImmutable, Blittable, JsonProperty(Order = 304)]
+		private float _WeaponFloatParam;
 
-		[ContainerField(308), JsonProperty(Order = 308)]
-		public RefArray<SocketData> Sockets { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(308), JsonProperty(Order = 308)]
+		private RefArray<SocketData> _Sockets = new();
 
-		[ContainerField(312), JsonProperty(Order = 312)]
-		public EntryInputActionEnum SwitchWeaponStateInputAction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(312), JsonProperty(Order = 312)]
+		private EntryInputActionEnum _SwitchWeaponStateInputAction = new();
 
-		[ContainerField(316), JsonProperty(Order = 316)]
-		public CtrRef<SoldierWeaponBlueprint> SoldierWeaponBlueprint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(316), JsonProperty(Order = 316)]
+		private CtrRef<SoldierWeaponBlueprint> _SoldierWeaponBlueprint = new();
 
-		[ContainerField(320), LayoutImmutable, JsonProperty(Order = 320)]
-		public string PersistenceId { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(320), LayoutImmutable, JsonProperty(Order = 320)]
+		private string _PersistenceId = string.Empty;
 
-		[ContainerField(324), LayoutImmutable, Blittable, JsonProperty(Order = 324)]
-		public bool AllowSwitchingToWeaponOutOfAmmo { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(324), LayoutImmutable, Blittable, JsonProperty(Order = 324)]
+		private bool _AllowSwitchingToWeaponOutOfAmmo;
 
-		[ContainerField(325), LayoutImmutable, Blittable, JsonProperty(Order = 325)]
-		public bool HideWhenOutOfAmmo { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(325), LayoutImmutable, Blittable, JsonProperty(Order = 325)]
+		private bool _HideWhenOutOfAmmo;
 
-		[ContainerField(326), LayoutImmutable, Blittable, JsonProperty(Order = 326)]
-		public bool LowerOnOwnTeam { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(326), LayoutImmutable, Blittable, JsonProperty(Order = 326)]
+		private bool _LowerOnOwnTeam;
 
-		[ContainerField(327), LayoutImmutable, Blittable, JsonProperty(Order = 327)]
-		public bool RedeployWhenSwitchingWeaponStates { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(327), LayoutImmutable, Blittable, JsonProperty(Order = 327)]
+		private bool _RedeployWhenSwitchingWeaponStates;
 
-		[ContainerField(328), LayoutImmutable, Blittable, JsonProperty(Order = 328)]
-		public bool UseQuickThrowOnAutomaticSwitchback { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(328), LayoutImmutable, Blittable, JsonProperty(Order = 328)]
+		private bool _UseQuickThrowOnAutomaticSwitchback;
 
-		[ContainerField(329), LayoutImmutable, Blittable, JsonProperty(Order = 329)]
-		public bool EnableBreathControl { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(329), LayoutImmutable, Blittable, JsonProperty(Order = 329)]
+		private bool _EnableBreathControl;
 
-		[ContainerField(330), LayoutImmutable, Blittable, JsonProperty(Order = 330)]
-		public bool CanBeInSupportedShooting { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(330), LayoutImmutable, Blittable, JsonProperty(Order = 330)]
+		private bool _CanBeInSupportedShooting;
 
-		[ContainerField(331), LayoutImmutable, Blittable, JsonProperty(Order = 331)]
-		public bool AllowSwitchingToWeaponReloading { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(331), LayoutImmutable, Blittable, JsonProperty(Order = 331)]
+		private bool _AllowSwitchingToWeaponReloading;
 
-		[ContainerField(332), LayoutImmutable, Blittable, JsonProperty(Order = 332)]
-		public bool SwitchToPrimaryWhenOutOfAmmo { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(332), LayoutImmutable, Blittable, JsonProperty(Order = 332)]
+		private bool _SwitchToPrimaryWhenOutOfAmmo;
 
-		[ContainerField(333), LayoutImmutable, Blittable, JsonProperty(Order = 333)]
-		public bool AllowSwitchingToWeaponInVehicles { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(333), LayoutImmutable, Blittable, JsonProperty(Order = 333)]
+		private bool _AllowSwitchingToWeaponInVehicles;
 
-		[ContainerField(334), LayoutImmutable, Blittable, JsonProperty(Order = 334)]
-		public bool IsSilenced { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(334), LayoutImmutable, Blittable, JsonProperty(Order = 334)]
+		private bool _IsSilenced;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

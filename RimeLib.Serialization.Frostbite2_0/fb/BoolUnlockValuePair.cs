@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class BoolUnlockValuePair :
+	public partial class BoolUnlockValuePair :
 		UnlockValuePair
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public bool DefaultValue { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private bool _DefaultValue;
 
-		[ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
-		public bool UnlockedValue { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
+		private bool _UnlockedValue;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

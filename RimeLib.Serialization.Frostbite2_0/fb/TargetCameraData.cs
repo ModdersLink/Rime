@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class TargetCameraData :
+	public partial class TargetCameraData :
 		CameraData
 	{
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public HudData Hud { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private HudData _Hud = new();
 
-		[ContainerField(148), JsonProperty(Order = 148)]
-		public RefArray<UIPartData> UIParts { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(148), JsonProperty(Order = 148)]
+		private RefArray<UIPartData> _UIParts = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

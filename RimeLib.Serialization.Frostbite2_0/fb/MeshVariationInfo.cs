@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class MeshVariationInfo :
+	public partial class MeshVariationInfo :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public CtrRef<MeshAsset> MeshAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private CtrRef<MeshAsset> _MeshAsset = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public CtrRef<MeshAsset> OrigMeshAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private CtrRef<MeshAsset> _OrigMeshAsset = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<ObjectVariation> VariationAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<ObjectVariation> _VariationAsset = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

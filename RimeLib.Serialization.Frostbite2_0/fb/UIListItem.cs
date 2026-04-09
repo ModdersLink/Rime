@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class UIListItem :
+	public partial class UIListItem :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
-		public string Label { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, JsonProperty(Order = 0)]
+		private string _Label = string.Empty;
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public UIDataSourceInfo IsEnabled { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private UIDataSourceInfo _IsEnabled = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public UIDataSourceInfo IsVisible { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private UIDataSourceInfo _IsVisible = new();
 		
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public UIDataSourceInfo ToggleItems { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private UIDataSourceInfo _ToggleItems = new();
 		
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public UIDataSourceInfo DataUpdate { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private UIDataSourceInfo _DataUpdate = new();
 		
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public bool DefaultIsVisible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private bool _DefaultIsVisible;
 		
-		[ContainerField(69), LayoutImmutable, Blittable, JsonProperty(Order = 69)]
-		public bool DefaultIsEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(69), LayoutImmutable, Blittable, JsonProperty(Order = 69)]
+		private bool _DefaultIsEnabled;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

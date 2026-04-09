@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class SearchAndDestroyOrderEntityData :
+	public partial class SearchAndDestroyOrderEntityData :
 		BFOrderEntityData
 	{
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public TargetPosKnowledgeType TargetPosKnowledge { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private TargetPosKnowledgeType _TargetPosKnowledge = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float FindTargetTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _FindTargetTime;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public bool TargetAreaFollowsTarget { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private bool _TargetAreaFollowsTarget;
 
-		[ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
-		public bool Aggressive { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
+		private bool _Aggressive;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

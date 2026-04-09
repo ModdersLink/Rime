@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class Ps3PresenceBackendData :
+	public partial class Ps3PresenceBackendData :
 		PresenceBackendData
 	{
-		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
-		public string CommunicationId { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
+		private string _CommunicationId = string.Empty;
 
-		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
-		public string CommunicationSignature { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		private string _CommunicationSignature = string.Empty;
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public List<Ps3SkuSettings> SkuSettings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private List<Ps3SkuSettings> _SkuSettings = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public List<Ps3ParentalLockAgeSettings> ParentalLockAgeSettings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private List<Ps3ParentalLockAgeSettings> _ParentalLockAgeSettings = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

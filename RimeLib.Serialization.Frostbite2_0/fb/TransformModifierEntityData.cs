@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class TransformModifierEntityData :
+	public partial class TransformModifierEntityData :
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public LinearTransform In { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private LinearTransform _In = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private Realm _Realm = new();
 
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public ModifierAxis Left { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private ModifierAxis _Left = new();
 
-		[ContainerField(88), JsonProperty(Order = 88)]
-		public ModifierAxis Up { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(88), JsonProperty(Order = 88)]
+		private ModifierAxis _Up = new();
 
-		[ContainerField(92), JsonProperty(Order = 92)]
-		public ModifierAxis Forward { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(92), JsonProperty(Order = 92)]
+		private ModifierAxis _Forward = new();
 
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public bool InvertLeft { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private bool _InvertLeft;
 
-		[ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
-		public bool InvertUp { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
+		private bool _InvertUp;
 
-		[ContainerField(98), LayoutImmutable, Blittable, JsonProperty(Order = 98)]
-		public bool InvertForward { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(98), LayoutImmutable, Blittable, JsonProperty(Order = 98)]
+		private bool _InvertForward;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

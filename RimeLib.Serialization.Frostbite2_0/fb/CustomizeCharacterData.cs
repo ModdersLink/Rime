@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class CustomizeCharacterData :
+	public partial class CustomizeCharacterData :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public List<CustomizeVisual> VisualGroups { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private List<CustomizeVisual> _VisualGroups = new();
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float OverrideCriticalHealthThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _OverrideCriticalHealthThreshold;
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<UnlockAssetBase> Unlocks { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<UnlockAssetBase> _Unlocks = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float OverrideMaxHealth { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _OverrideMaxHealth;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public bool ClearVisualState { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private bool _ClearVisualState;
 
-		[ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
-		public bool RestoreToOriginalVisualState { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
+		private bool _RestoreToOriginalVisualState;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

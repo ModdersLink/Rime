@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class PartComponentData :
+	public partial class PartComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public RefArray<HealthStateData> HealthStates { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private RefArray<HealthStateData> _HealthStates = new();
 
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public RefArray<PartLinkData> PartLinks { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private RefArray<PartLinkData> _PartLinks = new();
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public bool IsSupported { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private bool _IsSupported;
 
-		[ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
-		public bool IsFragile { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
+		private bool _IsFragile;
 
-		[ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
-		public bool IsNetworkable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
+		private bool _IsNetworkable;
 
-		[ContainerField(107), LayoutImmutable, Blittable, JsonProperty(Order = 107)]
-		public bool IsWindow { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(107), LayoutImmutable, Blittable, JsonProperty(Order = 107)]
+		private bool _IsWindow;
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public bool AnimatePhysics { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private bool _AnimatePhysics;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

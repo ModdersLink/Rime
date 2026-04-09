@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class UIVehicleUnlockDescription :
+	public partial class UIVehicleUnlockDescription :
 		UIItemDescription
 	{
-		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
-		public string Name { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
+		private string _Name = string.Empty;
 
-		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
-		public string Description { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		private string _Description = string.Empty;
 
-		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
-		public string Category { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
+		private string _Category = string.Empty;
 
-		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
-		public string TexturePath { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
+		private string _TexturePath = string.Empty;
 
-		[ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
-		public string IconTexturePath { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
+		private string _IconTexturePath = string.Empty;
 
-		[ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
-		public string UnlockTexturePath { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
+		private string _UnlockTexturePath = string.Empty;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public bool HiddenInProgression { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private bool _HiddenInProgression;
 
-		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
-		public bool NotExplicitelySelectable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
+		private bool _NotExplicitelySelectable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

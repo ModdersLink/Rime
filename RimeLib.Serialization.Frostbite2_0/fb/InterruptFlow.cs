@@ -14,24 +14,27 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 8)]
-	public class InterruptFlow :
+	public partial class InterruptFlow :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public UIInterruptID interruptEnum { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private UIInterruptID _interruptEnum = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public CtrRef<UIGraphAsset> interruptFlow { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private CtrRef<UIGraphAsset> _interruptFlowRef = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
-			p_Writer.Write((int) interruptEnum);
-			p_Writer.Write(p_EbxWriter.WriteImport(interruptFlow));
+			p_Writer.Write((int) InterruptEnum);
+			p_Writer.Write(p_EbxWriter.WriteImport(InterruptFlowRef));
 		}
 	}
 }

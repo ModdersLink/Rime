@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class ReferenceObjectData :
+	public partial class ReferenceObjectData :
 		GameObjectData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public LinearTransform BlueprintTransform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private LinearTransform _BlueprintTransform = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public CtrRef<Blueprint> Blueprint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private CtrRef<Blueprint> _Blueprint = new();
 
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public CtrRef<ObjectVariation> ObjectVariation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private CtrRef<ObjectVariation> _ObjectVariation = new();
 
-		[ContainerField(88), JsonProperty(Order = 88)]
-		public StreamRealm StreamRealm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(88), JsonProperty(Order = 88)]
+		private StreamRealm _StreamRealm = new();
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public bool CastSunShadowEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private bool _CastSunShadowEnable;
 
-		[ContainerField(93), LayoutImmutable, Blittable, JsonProperty(Order = 93)]
-		public bool Excluded { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(93), LayoutImmutable, Blittable, JsonProperty(Order = 93)]
+		private bool _Excluded;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

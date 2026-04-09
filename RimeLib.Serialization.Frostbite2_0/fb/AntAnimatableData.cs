@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class AntAnimatableData :
+	public partial class AntAnimatableData :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef Actor { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _Actor = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public CtrRef<ProceduralAwarenessAntRefs> ProceduralAwareness { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private CtrRef<ProceduralAwarenessAntRefs> _ProceduralAwareness = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef RightHandEffectorDisableOverride { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _RightHandEffectorDisableOverride = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef LeftHandEffectorDisableOverride { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _LeftHandEffectorDisableOverride = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<MasterSkeletonAsset> MasterSkeletonAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<MasterSkeletonAsset> _MasterSkeletonAsset = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

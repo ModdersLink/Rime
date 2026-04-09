@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class AIVehicleTypes :
+	public partial class AIVehicleTypes :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<AIVehicleBehaviourData> VehicleTypes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<AIVehicleBehaviourData> _VehicleTypes = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<BehaviourData> Goals { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<BehaviourData> _Goals = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<BehaviourData> Intents { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<BehaviourData> _Intents = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

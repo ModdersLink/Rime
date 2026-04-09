@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class UIStateAsset :
+	public partial class UIStateAsset :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<UIComponentData> UIComponents { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<UIComponentData> _UIComponents = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<UIAsset> ActionscriptLibraries { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<UIAsset> _ActionscriptLibraries = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public List<string> ActionscriptNames { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private List<string> _ActionscriptNames = new();
 
-		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
-		public string StateName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
+		private string _StateName = string.Empty;
 
-		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
-		public string StatePath { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
+		private string _StatePath = string.Empty;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

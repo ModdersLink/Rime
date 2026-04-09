@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 88)]
-	public class UICompassDataBinding :
+	public partial class UICompassDataBinding :
 		UIDataBinding
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public UIDataSourceInfo Heading { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private UIDataSourceInfo _Heading = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public UIDataSourceInfo Objectives { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private UIDataSourceInfo _Objectives = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public UIDataSourceInfo Visibility { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private UIDataSourceInfo _Visibility = new();
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public UIDataSourceInfo ShowAirRadar { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private UIDataSourceInfo _ShowAirRadar = new();
 
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public UIDataSourceInfo RadarSweepDegree { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private UIDataSourceInfo _RadarSweepDegree = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

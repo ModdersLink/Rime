@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class OnlineConfiguration :
+	public partial class OnlineConfiguration :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public BackendType Backend { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private BackendType _Backend = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<OnlineProviderAsset> Provider { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<OnlineProviderAsset> _Provider = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<RichPresenceData> RichPresence { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<RichPresenceData> _RichPresence = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<ChatSettings> Chat { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<ChatSettings> _Chat = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

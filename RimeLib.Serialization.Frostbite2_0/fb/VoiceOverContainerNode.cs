@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class VoiceOverContainerNode :
+	public partial class VoiceOverContainerNode :
 		VoiceOverStructureNode
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<VoiceOverValueConnection> Condition { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<VoiceOverValueConnection> _Condition = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<VoiceOverIntervalNode> Interval { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<VoiceOverIntervalNode> _Interval = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<VoiceOverStructureNode> TrueRelationship { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<VoiceOverStructureNode> _TrueRelationship = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public RefArray<VoiceOverStructureNode> FalseRelationship { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private RefArray<VoiceOverStructureNode> _FalseRelationship = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public VoiceOverContainerConditionMode ConditionMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private VoiceOverContainerConditionMode _ConditionMode = new();
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float Probability { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _Probability;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

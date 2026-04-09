@@ -14,25 +14,30 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class BoneFakePhysicsData :
+	public partial class BoneFakePhysicsData :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<FakePhysicsData> FakePhysics { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<FakePhysicsData> _FakePhysics = new();
 
-		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
-		public string BoneName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
+		private string _BoneName = string.Empty;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public int BoneId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private int _BoneId;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(p_EbxWriter.WriteImport(FakePhysics));
 			p_Writer.Write(p_EbxWriter.WriteString(BoneName));
 			p_Writer.Write(BoneId);

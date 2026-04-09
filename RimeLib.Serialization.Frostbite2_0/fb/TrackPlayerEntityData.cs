@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class TrackPlayerEntityData :
+	public partial class TrackPlayerEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public float SnapHeightOffsetY { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private float _SnapHeightOffsetY;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public bool RandomizeTracker { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private bool _RandomizeTracker;
 
-		[ContainerField(101), LayoutImmutable, Blittable, JsonProperty(Order = 101)]
-		public bool SnapHeightOnKilledDestroyed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(101), LayoutImmutable, Blittable, JsonProperty(Order = 101)]
+		private bool _SnapHeightOnKilledDestroyed;
 
-		[ContainerField(102), LayoutImmutable, Blittable, JsonProperty(Order = 102)]
-		public bool CheckPlayerAlive { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(102), LayoutImmutable, Blittable, JsonProperty(Order = 102)]
+		private bool _CheckPlayerAlive;
 
-		[ContainerField(103), LayoutImmutable, Blittable, JsonProperty(Order = 103)]
-		public bool EnforceSharedCombatArea { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(103), LayoutImmutable, Blittable, JsonProperty(Order = 103)]
+		private bool _EnforceSharedCombatArea;
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public bool UpdateFlagComponent { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private bool _UpdateFlagComponent;
 
-		[ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
-		public bool TrackMultiplePlayers { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
+		private bool _TrackMultiplePlayers;
 
-		[ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
-		public bool Reseted { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
+		private bool _Reseted;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

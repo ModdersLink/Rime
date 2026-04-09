@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class EnlightenPipelineTerrainMesh :
+	public partial class EnlightenPipelineTerrainMesh :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public Vec2 UvTranslation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private Vec2 _UvTranslation = new();
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public AxisAlignedBox BoundingBox { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private AxisAlignedBox _BoundingBox = new();
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public Vec4 UvTransform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private Vec4 _UvTransform = new();
 		
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public uint LightMapResolution { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private uint _LightMapResolution;
 		
-		[ContainerField(68), LayoutImmutable, JsonProperty(Order = 68)]
-		public string TerrainMeshName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, JsonProperty(Order = 68)]
+		private string _TerrainMeshName = string.Empty;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,31 +14,38 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class VoiceOverDialogClip :
+	public partial class VoiceOverDialogClip :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float Offset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _Offset;
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public List<VoiceOverDialogTake> Takes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private List<VoiceOverDialogTake> _Takes = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<VoiceOverDialogClip> OffsetReferences { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<VoiceOverDialogClip> _OffsetReferences = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<VoiceOverDialogClipEvents> Events { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<VoiceOverDialogClipEvents> _Events = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public sbyte SequenceIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private sbyte _SequenceIndex;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(Offset);
 			(RimeWriter Writer, uint ArrayIndex) s_Takes = p_EbxWriter.GetArrayWriter(Takes.GetType(), Takes.Count);
 			p_Writer.Write(s_Takes.ArrayIndex);

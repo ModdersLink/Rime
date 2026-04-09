@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class TransformPartPropertyTrackData :
+	public partial class TransformPartPropertyTrackData :
 		PropertyTrackData
 	{
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public TransformPart TransformPart { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private TransformPart _TransformPart = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CurveInfinityType PreInfinity { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CurveInfinityType _PreInfinity = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CurveInfinityType PostInfinity { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CurveInfinityType _PostInfinity = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public uint KeyStartIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private uint _KeyStartIndex;
 
-		[ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
-		public string ResourceName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
+		private string _ResourceName = string.Empty;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public uint KeyCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private uint _KeyCount;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public bool Weighted { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private bool _Weighted;
 
-		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
-		public bool IsStatic { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
+		private bool _IsStatic;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

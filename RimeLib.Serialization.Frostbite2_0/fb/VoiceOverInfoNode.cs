@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class VoiceOverInfoNode :
+	public partial class VoiceOverInfoNode :
 		VoiceOverExpressionNode
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<VoiceOverValueConnection> Object { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<VoiceOverValueConnection> _Object = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<VoiceOverValue> Value { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<VoiceOverValue> _Value = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<VoiceOverNamedValue> Field { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<VoiceOverNamedValue> _Field = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<VoiceOverObject> ExpectedType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<VoiceOverObject> _ExpectedType = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

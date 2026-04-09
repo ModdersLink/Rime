@@ -14,108 +14,141 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 124)]
-	public class VeniceOnlineSettings :
+	public partial class VeniceOnlineSettings :
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public uint WebFeedMaxFetchAttempts { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private uint _WebFeedMaxFetchAttempts;
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<OnlinePlatformConfiguration> Platforms { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<OnlinePlatformConfiguration> _Platforms = new();
 
-		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
-		public string ServiceNameOverride { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		private string _ServiceNameOverride = string.Empty;
 
-		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
-		public string ClientGameConfigurationOverride { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
+		private string _ClientGameConfigurationOverride = string.Empty;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public int BlazeLogLevel { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private int _BlazeLogLevel;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public int DirtySockLogLevel { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private int _DirtySockLogLevel;
 
-		[ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
-		public string BattlelogReportURL { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
+		private string _BattlelogReportURL = string.Empty;
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public RefArray<EntitlementQuery> EntitlementQueries { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private RefArray<EntitlementQuery> _EntitlementQueries = new();
 
-		[ContainerField(44), LayoutImmutable, JsonProperty(Order = 44)]
-		public string WebFeedUrlPrefix { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, JsonProperty(Order = 44)]
+		private string _WebFeedUrlPrefix = string.Empty;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float SnowrollerOrphanTimeout { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _SnowrollerOrphanTimeout;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public int QueueCapacityOverride { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private int _QueueCapacityOverride;
 
-		[ContainerField(56), LayoutImmutable, JsonProperty(Order = 56)]
-		public string WebFeedCountUrlPrefix { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, JsonProperty(Order = 56)]
+		private string _WebFeedCountUrlPrefix = string.Empty;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public uint MatchFeedMaxFetchAttempts { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private uint _MatchFeedMaxFetchAttempts;
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public DTagUploadPolicy DogTagUploadPolicy { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private DTagUploadPolicy _DogTagUploadPolicy = new();
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public uint WebFeedUnreadCountFetchPeriod { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private uint _WebFeedUnreadCountFetchPeriod;
 
-		[ContainerField(72), LayoutImmutable, JsonProperty(Order = 72)]
-		public string MatchImagesUrlPrefix { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(72), LayoutImmutable, JsonProperty(Order = 72)]
+		private string _MatchImagesUrlPrefix = string.Empty;
 
-		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
-		public uint WebFeedMaxItems { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
+		private uint _WebFeedMaxItems;
 
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public uint WebFeedMinimumMillisecondsBetweenRequests { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private uint _WebFeedMinimumMillisecondsBetweenRequests;
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public uint WebFeedMillisecondsBetweenNewRequestAttempt { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private uint _WebFeedMillisecondsBetweenNewRequestAttempt;
 
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public uint MatchFeedMinimumMillisecondsBetweenRequests { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private uint _MatchFeedMinimumMillisecondsBetweenRequests;
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public uint MatchFeedMinimumMillisecondsBetweenMatchRequests { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private uint _MatchFeedMinimumMillisecondsBetweenMatchRequests;
 
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public uint PingPeriod { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private uint _PingPeriod;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public uint MatchFeedMinimumMillisecondsBetweenNewRequestAttempt { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private uint _MatchFeedMinimumMillisecondsBetweenNewRequestAttempt;
 
-		[ContainerField(104), LayoutImmutable, JsonProperty(Order = 104)]
-		public string MatchFeedDetailsUrlPrefix { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, JsonProperty(Order = 104)]
+		private string _MatchFeedDetailsUrlPrefix = string.Empty;
 
-		[ContainerField(108), LayoutImmutable, JsonProperty(Order = 108)]
-		public string MatchFeedListUrlPrefix { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, JsonProperty(Order = 108)]
+		private string _MatchFeedListUrlPrefix = string.Empty;
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public uint MatchFeedMinimumMillisecondsBetweenMatchReloads { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private uint _MatchFeedMinimumMillisecondsBetweenMatchReloads;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public bool EnableSnowroller { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private bool _EnableSnowroller;
 
-		[ContainerField(117), LayoutImmutable, Blittable, JsonProperty(Order = 117)]
-		public bool EnableQoS { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(117), LayoutImmutable, Blittable, JsonProperty(Order = 117)]
+		private bool _EnableQoS;
 
-		[ContainerField(118), LayoutImmutable, Blittable, JsonProperty(Order = 118)]
-		public bool PunkBusterActivateClient { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(118), LayoutImmutable, Blittable, JsonProperty(Order = 118)]
+		private bool _PunkBusterActivateClient;
 
-		[ContainerField(119), LayoutImmutable, Blittable, JsonProperty(Order = 119)]
-		public bool PunkBusterActivateServer { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(119), LayoutImmutable, Blittable, JsonProperty(Order = 119)]
+		private bool _PunkBusterActivateServer;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public bool BattlelogReport { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private bool _BattlelogReport;
 
-		[ContainerField(121), LayoutImmutable, Blittable, JsonProperty(Order = 121)]
-		public bool UseFallback { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(121), LayoutImmutable, Blittable, JsonProperty(Order = 121)]
+		private bool _UseFallback;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

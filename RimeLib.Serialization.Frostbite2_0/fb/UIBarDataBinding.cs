@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 60)]
-	public class UIBarDataBinding :
+	public partial class UIBarDataBinding :
 		UIDataBinding
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public UIDataSourceInfo Visibility { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private UIDataSourceInfo _Visibility = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public UIDataSourceInfo Value { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private UIDataSourceInfo _Value = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public UIDataSourceInfo Color { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private UIDataSourceInfo _Color = new();
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public bool Refresh { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private bool _Refresh;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,22 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class VoiceOverLanguageRoot :
+	public partial class VoiceOverLanguageRoot :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<AudioLanguage> Language { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<AudioLanguage> _Language = new();
 
-		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
-		public string Path { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
+		private string _Path = string.Empty;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(p_EbxWriter.WriteImport(Language));
 			p_Writer.Write(p_EbxWriter.WriteString(Path));
 		}

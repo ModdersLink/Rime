@@ -14,88 +14,114 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class VegetationSystemSettings :
+	public partial class VegetationSystemSettings :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float WindVariation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _WindVariation;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float WindVariationRate { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _WindVariationRate;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float WindStrength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _WindStrength;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float JointTensionLimit { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _JointTensionLimit;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public int ForceShadowLod { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private int _ForceShadowLod;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public uint MaxPreSimsPerJob { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private uint _MaxPreSimsPerJob;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public uint SimulationMemKbClient { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private uint _SimulationMemKbClient;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float MaxActiveDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _MaxActiveDistance;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public uint SimulationMemKbServer { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private uint _SimulationMemKbServer;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public uint JobCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private uint _JobCount;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public int JointTensionLimitIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private int _JointTensionLimitIndex;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public float TimeScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private float _TimeScale;
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public bool LocalInfluencesEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private bool _LocalInfluencesEnabled;
 
-		[ContainerField(57), LayoutImmutable, Blittable, JsonProperty(Order = 57)]
-		public bool SubDestructionEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(57), LayoutImmutable, Blittable, JsonProperty(Order = 57)]
+		private bool _SubDestructionEnabled;
 
-		[ContainerField(58), LayoutImmutable, Blittable, JsonProperty(Order = 58)]
-		public bool DissolveEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(58), LayoutImmutable, Blittable, JsonProperty(Order = 58)]
+		private bool _DissolveEnable;
 
-		[ContainerField(59), LayoutImmutable, Blittable, JsonProperty(Order = 59)]
-		public bool Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(59), LayoutImmutable, Blittable, JsonProperty(Order = 59)]
+		private bool _Enable;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public bool SimulateServerSide { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private bool _SimulateServerSide;
 
-		[ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
-		public bool EnableJobs { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
+		private bool _EnableJobs;
 
-		[ContainerField(62), LayoutImmutable, Blittable, JsonProperty(Order = 62)]
-		public bool ShadowMeshEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(62), LayoutImmutable, Blittable, JsonProperty(Order = 62)]
+		private bool _ShadowMeshEnable;
 
-		[ContainerField(63), LayoutImmutable, Blittable, JsonProperty(Order = 63)]
-		public bool DrawNodes { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(63), LayoutImmutable, Blittable, JsonProperty(Order = 63)]
+		private bool _DrawNodes;
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public bool DrawEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private bool _DrawEnable;
 
-		[ContainerField(65), LayoutImmutable, Blittable, JsonProperty(Order = 65)]
-		public bool BatchDrawEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(65), LayoutImmutable, Blittable, JsonProperty(Order = 65)]
+		private bool _BatchDrawEnable;
 
-		[ContainerField(66), LayoutImmutable, Blittable, JsonProperty(Order = 66)]
-		public bool DestructionEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(66), LayoutImmutable, Blittable, JsonProperty(Order = 66)]
+		private bool _DestructionEnabled;
 
-		[ContainerField(67), LayoutImmutable, Blittable, JsonProperty(Order = 67)]
-		public bool UseShadowLodOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(67), LayoutImmutable, Blittable, JsonProperty(Order = 67)]
+		private bool _UseShadowLodOffset;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(WindVariation);
 			p_Writer.Write(WindVariationRate);
 			p_Writer.Write(WindStrength);

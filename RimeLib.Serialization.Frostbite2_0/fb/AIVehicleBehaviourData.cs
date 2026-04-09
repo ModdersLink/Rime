@@ -14,31 +14,38 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class AIVehicleBehaviourData :
+	public partial class AIVehicleBehaviourData :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
-		public string Name { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		private string _Name = string.Empty;
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public List<string> Controls { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private List<string> _Controls = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<string> Behaviours { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<string> _Behaviours = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public List<string> Goals { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private List<string> _Goals = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public List<IntentData> Intents { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private List<IntentData> _Intents = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(p_EbxWriter.WriteString(Name));
 			(RimeWriter Writer, uint ArrayIndex) s_Controls = p_EbxWriter.GetArrayWriter(Controls.GetType(), Controls.Count);
 			p_Writer.Write(s_Controls.ArrayIndex);

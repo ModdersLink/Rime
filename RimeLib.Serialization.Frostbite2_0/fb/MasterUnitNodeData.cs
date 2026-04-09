@@ -14,75 +14,97 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 172)]
-	public class MasterUnitNodeData :
+	public partial class MasterUnitNodeData :
 		AudioGraphNodeData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AudioGraphNodePort SettingsIndex { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AudioGraphNodePort _SettingsIndex = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AudioGraphNodePort Amplitude { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AudioGraphNodePort _Amplitude = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AudioGraphNodePort MasterGain { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AudioGraphNodePort _MasterGain = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AudioGraphNodePort MasterLfeGain { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AudioGraphNodePort _MasterLfeGain = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public AudioGraphNodePort MasterDialogGain { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private AudioGraphNodePort _MasterDialogGain = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public AudioGraphNodePort MainMixGain { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private AudioGraphNodePort _MainMixGain = new();
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public AudioGraphNodePort PostEffectsGain { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private AudioGraphNodePort _PostEffectsGain = new();
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public AudioGraphNodePort ReverbGain { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private AudioGraphNodePort _ReverbGain = new();
 
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public AudioGraphNodePort FadeTime { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private AudioGraphNodePort _FadeTime = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public AudioGraphNodePort HighPassFreq { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private AudioGraphNodePort _HighPassFreq = new();
 
-		[ContainerField(88), JsonProperty(Order = 88)]
-		public AudioGraphNodePort LowShelfFreq { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(88), JsonProperty(Order = 88)]
+		private AudioGraphNodePort _LowShelfFreq = new();
 
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public AudioGraphNodePort LowShelfGain { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private AudioGraphNodePort _LowShelfGain = new();
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public AudioGraphNodePort HighShelfFreq { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private AudioGraphNodePort _HighShelfFreq = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public AudioGraphNodePort HighShelfGain { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private AudioGraphNodePort _HighShelfGain = new();
 
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public AudioGraphNodePort CompThreshold { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private AudioGraphNodePort _CompThreshold = new();
 
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public AudioGraphNodePort CompRatio { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private AudioGraphNodePort _CompRatio = new();
 
-		[ContainerField(136), JsonProperty(Order = 136)]
-		public AudioGraphNodePort CompAttack { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(136), JsonProperty(Order = 136)]
+		private AudioGraphNodePort _CompAttack = new();
 
-		[ContainerField(144), JsonProperty(Order = 144)]
-		public AudioGraphNodePort CompRelease { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), JsonProperty(Order = 144)]
+		private AudioGraphNodePort _CompRelease = new();
 
-		[ContainerField(152), JsonProperty(Order = 152)]
-		public AudioGraphNodePort DistClipLevel { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(152), JsonProperty(Order = 152)]
+		private AudioGraphNodePort _DistClipLevel = new();
 
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public AudioGraphNodePort ParallelDistortionGain { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private AudioGraphNodePort _ParallelDistortionGain = new();
 
-		[ContainerField(168), JsonProperty(Order = 168)]
-		public RefArray<MasterUnitSettings> Settings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(168), JsonProperty(Order = 168)]
+		private RefArray<MasterUnitSettings> _Settings = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

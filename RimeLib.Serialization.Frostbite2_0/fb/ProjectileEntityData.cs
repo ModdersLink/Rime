@@ -14,51 +14,65 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class ProjectileEntityData :
+	public partial class ProjectileEntityData :
 		GamePhysicsEntityData
 	{
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public float VisualConvergeDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private float _VisualConvergeDistance;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float InitialSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _InitialSpeed;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public float TimeToLive { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private float _TimeToLive;
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public uint MaxCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private uint _MaxCount;
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public float InitMeshHideTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private float _InitMeshHideTime;
 
-		[ContainerField(132), JsonProperty(Order = 132)]
-		public CtrRef<MaterialContainerPair> MaterialPair { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(132), JsonProperty(Order = 132)]
+		private CtrRef<MaterialContainerPair> _MaterialPair = new();
 
-		[ContainerField(136), JsonProperty(Order = 136)]
-		public AntHitReactionWeaponType HitReactionWeaponType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(136), JsonProperty(Order = 136)]
+		private AntHitReactionWeaponType _HitReactionWeaponType = new();
 
-		[ContainerField(140), JsonProperty(Order = 140)]
-		public CtrRef<ExplosionEntityData> Explosion { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(140), JsonProperty(Order = 140)]
+		private CtrRef<ExplosionEntityData> _Explosion = new();
 
-		[ContainerField(144), JsonProperty(Order = 144)]
-		public CtrRef<WeaponSuppressionData> SuppressionData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), JsonProperty(Order = 144)]
+		private CtrRef<WeaponSuppressionData> _SuppressionData = new();
 
-		[ContainerField(148), LayoutImmutable, JsonProperty(Order = 148)]
-		public string AmmunitionType { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, JsonProperty(Order = 148)]
+		private string _AmmunitionType = string.Empty;
 
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public bool ServerProjectileDisabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private bool _ServerProjectileDisabled;
 
-		[ContainerField(153), LayoutImmutable, Blittable, JsonProperty(Order = 153)]
-		public bool DetonateOnTimeout { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(153), LayoutImmutable, Blittable, JsonProperty(Order = 153)]
+		private bool _DetonateOnTimeout;
 
-		[ContainerField(154), LayoutImmutable, Blittable, JsonProperty(Order = 154)]
-		public bool SuppressOwnerVehicleDamage { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(154), LayoutImmutable, Blittable, JsonProperty(Order = 154)]
+		private bool _SuppressOwnerVehicleDamage;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

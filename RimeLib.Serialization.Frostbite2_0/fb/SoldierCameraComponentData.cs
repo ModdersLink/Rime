@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class SoldierCameraComponentData :
+	public partial class SoldierCameraComponentData :
 		ComponentData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public float ExplosionImpulseMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private float _ExplosionImpulseMultiplier;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public float StrafeTiltStrength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private float _StrafeTiltStrength;
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public float PitchTiltStrength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private float _PitchTiltStrength;
 
-		[ContainerField(108), JsonProperty(Order = 108)]
-		public RefArray<TargetCameraData> Cameras { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(108), JsonProperty(Order = 108)]
+		private RefArray<TargetCameraData> _Cameras = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public CameraBinding CameraBinding { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private CameraBinding _CameraBinding = new();
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public float ForceFieldOfView { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private float _ForceFieldOfView;
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public bool AuthoritativeEyePosition { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private bool _AuthoritativeEyePosition;
 
-		[ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
-		public bool DisableAiming { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
+		private bool _DisableAiming;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

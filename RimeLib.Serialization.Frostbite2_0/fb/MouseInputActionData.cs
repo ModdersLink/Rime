@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class MouseInputActionData :
+	public partial class MouseInputActionData :
 		AxesInputActionData
 	{
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public InputDeviceMouseButtons Button { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private InputDeviceMouseButtons _Button = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public bool SimulateJoystickAxis { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private bool _SimulateJoystickAxis;
 
-		[ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
-		public bool RememberExcessInput { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
+		private bool _RememberExcessInput;
 
-		[ContainerField(26), LayoutImmutable, Blittable, JsonProperty(Order = 26)]
-		public bool ScaleScrollWheelAxisInput { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(26), LayoutImmutable, Blittable, JsonProperty(Order = 26)]
+		private bool _ScaleScrollWheelAxisInput;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

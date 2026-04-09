@@ -14,144 +14,189 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 544)]
-	public class SunFlareComponentData :
+	public partial class SunFlareComponentData :
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public Vec4 Element5AlphaScreenPosCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private Vec4 _Element5AlphaScreenPosCurve = new();
 
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public Vec4 Element5AlphaOccluderCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private Vec4 _Element5AlphaOccluderCurve = new();
 
-		[ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public Vec4 Element5SizeScreenPosCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private Vec4 _Element5SizeScreenPosCurve = new();
 
-		[ContainerField(144), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public Vec4 Element2SizeOccluderCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private Vec4 _Element2SizeOccluderCurve = new();
 
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public Vec4 Element5SizeOccluderCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private Vec4 _Element5SizeOccluderCurve = new();
 
-		[ContainerField(176), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public Vec4 Element2AlphaOccluderCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private Vec4 _Element2AlphaOccluderCurve = new();
 
-		[ContainerField(192), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public Vec4 Element2AlphaScreenPosCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(192), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private Vec4 _Element2AlphaScreenPosCurve = new();
 
-		[ContainerField(208), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 208)]
-		public Vec2 Element1Size { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(208), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		private Vec2 _Element1Size = new();
 
-		[ContainerField(224), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public Vec4 Element1SizeOccluderCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(224), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private Vec4 _Element1SizeOccluderCurve = new();
 
-		[ContainerField(240), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 240)]
-		public Vec4 Element1SizeScreenPosCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(240), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 240)]
+		private Vec4 _Element1SizeScreenPosCurve = new();
 
-		[ContainerField(256), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 256)]
-		public Vec4 Element1AlphaOccluderCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(256), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 256)]
+		private Vec4 _Element1AlphaOccluderCurve = new();
 
-		[ContainerField(272), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 272)]
-		public Vec4 Element1AlphaScreenPosCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(272), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 272)]
+		private Vec4 _Element1AlphaScreenPosCurve = new();
 
-		[ContainerField(288), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 288)]
-		public Vec2 Element5Size { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(288), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 288)]
+		private Vec2 _Element5Size = new();
 
-		[ContainerField(304), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 304)]
-		public Vec4 Element4SizeOccluderCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(304), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 304)]
+		private Vec4 _Element4SizeOccluderCurve = new();
 
-		[ContainerField(320), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 320)]
-		public Vec2 Element3Size { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(320), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 320)]
+		private Vec2 _Element3Size = new();
 
-		[ContainerField(328), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 328)]
-		public Vec2 Element2Size { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(328), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 328)]
+		private Vec2 _Element2Size = new();
 
-		[ContainerField(336), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 336)]
-		public Vec4 Element4AlphaScreenPosCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(336), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 336)]
+		private Vec4 _Element4AlphaScreenPosCurve = new();
 
-		[ContainerField(352), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 352)]
-		public Vec4 Element2SizeScreenPosCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(352), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 352)]
+		private Vec4 _Element2SizeScreenPosCurve = new();
 
-		[ContainerField(368), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 368)]
-		public Vec4 Element4SizeScreenPosCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(368), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 368)]
+		private Vec4 _Element4SizeScreenPosCurve = new();
 
-		[ContainerField(384), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 384)]
-		public Vec2 Element4Size { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(384), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 384)]
+		private Vec2 _Element4Size = new();
 
-		[ContainerField(400), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 400)]
-		public Vec4 Element3AlphaScreenPosCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(400), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 400)]
+		private Vec4 _Element3AlphaScreenPosCurve = new();
 
-		[ContainerField(416), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 416)]
-		public Vec4 Element4AlphaOccluderCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(416), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 416)]
+		private Vec4 _Element4AlphaOccluderCurve = new();
 
-		[ContainerField(432), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 432)]
-		public Vec4 Element3SizeOccluderCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(432), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 432)]
+		private Vec4 _Element3SizeOccluderCurve = new();
 
-		[ContainerField(448), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 448)]
-		public Vec4 Element3SizeScreenPosCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(448), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 448)]
+		private Vec4 _Element3SizeScreenPosCurve = new();
 
-		[ContainerField(464), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 464)]
-		public Vec4 Element3AlphaOccluderCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(464), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 464)]
+		private Vec4 _Element3AlphaOccluderCurve = new();
 
-		[ContainerField(480), JsonProperty(Order = 480)]
-		public CtrRef<SurfaceShaderBaseAsset> Element1Shader { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(480), JsonProperty(Order = 480)]
+		private CtrRef<SurfaceShaderBaseAsset> _Element1Shader = new();
 
-		[ContainerField(484), LayoutImmutable, Blittable, JsonProperty(Order = 484)]
-		public float OccluderSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(484), LayoutImmutable, Blittable, JsonProperty(Order = 484)]
+		private float _OccluderSize;
 
-		[ContainerField(488), JsonProperty(Order = 488)]
-		public CtrRef<SurfaceShaderBaseAsset> Element2Shader { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(488), JsonProperty(Order = 488)]
+		private CtrRef<SurfaceShaderBaseAsset> _Element2Shader = new();
 
-		[ContainerField(492), LayoutImmutable, Blittable, JsonProperty(Order = 492)]
-		public float Element3RayDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(492), LayoutImmutable, Blittable, JsonProperty(Order = 492)]
+		private float _Element3RayDistance;
 
-		[ContainerField(496), JsonProperty(Order = 496)]
-		public CtrRef<SurfaceShaderBaseAsset> Element4Shader { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(496), JsonProperty(Order = 496)]
+		private CtrRef<SurfaceShaderBaseAsset> _Element4Shader = new();
 
-		[ContainerField(500), LayoutImmutable, Blittable, JsonProperty(Order = 500)]
-		public float Element4RayDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(500), LayoutImmutable, Blittable, JsonProperty(Order = 500)]
+		private float _Element4RayDistance;
 
-		[ContainerField(504), LayoutImmutable, Blittable, JsonProperty(Order = 504)]
-		public float Element2RayDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(504), LayoutImmutable, Blittable, JsonProperty(Order = 504)]
+		private float _Element2RayDistance;
 
-		[ContainerField(508), LayoutImmutable, Blittable, JsonProperty(Order = 508)]
-		public float Element1RayDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(508), LayoutImmutable, Blittable, JsonProperty(Order = 508)]
+		private float _Element1RayDistance;
 
-		[ContainerField(512), LayoutImmutable, Blittable, JsonProperty(Order = 512)]
-		public float Element5RayDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(512), LayoutImmutable, Blittable, JsonProperty(Order = 512)]
+		private float _Element5RayDistance;
 
-		[ContainerField(516), JsonProperty(Order = 516)]
-		public CtrRef<SurfaceShaderBaseAsset> Element3Shader { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(516), JsonProperty(Order = 516)]
+		private CtrRef<SurfaceShaderBaseAsset> _Element3Shader = new();
 
-		[ContainerField(520), JsonProperty(Order = 520)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(520), JsonProperty(Order = 520)]
+		private Realm _Realm = new();
 
-		[ContainerField(524), JsonProperty(Order = 524)]
-		public CtrRef<SurfaceShaderBaseAsset> Element5Shader { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(524), JsonProperty(Order = 524)]
+		private CtrRef<SurfaceShaderBaseAsset> _Element5Shader = new();
 
-		[ContainerField(528), LayoutImmutable, Blittable, JsonProperty(Order = 528)]
-		public bool Element5Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(528), LayoutImmutable, Blittable, JsonProperty(Order = 528)]
+		private bool _Element5Enable;
 
-		[ContainerField(529), LayoutImmutable, Blittable, JsonProperty(Order = 529)]
-		public bool Element3Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(529), LayoutImmutable, Blittable, JsonProperty(Order = 529)]
+		private bool _Element3Enable;
 
-		[ContainerField(530), LayoutImmutable, Blittable, JsonProperty(Order = 530)]
-		public bool Element2Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(530), LayoutImmutable, Blittable, JsonProperty(Order = 530)]
+		private bool _Element2Enable;
 
-		[ContainerField(531), LayoutImmutable, Blittable, JsonProperty(Order = 531)]
-		public bool Element1Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(531), LayoutImmutable, Blittable, JsonProperty(Order = 531)]
+		private bool _Element1Enable;
 
-		[ContainerField(532), LayoutImmutable, Blittable, JsonProperty(Order = 532)]
-		public bool DebugDrawOccluder { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(532), LayoutImmutable, Blittable, JsonProperty(Order = 532)]
+		private bool _DebugDrawOccluder;
 
-		[ContainerField(533), LayoutImmutable, Blittable, JsonProperty(Order = 533)]
-		public bool Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(533), LayoutImmutable, Blittable, JsonProperty(Order = 533)]
+		private bool _Enable;
 
-		[ContainerField(534), LayoutImmutable, Blittable, JsonProperty(Order = 534)]
-		public bool Element4Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(534), LayoutImmutable, Blittable, JsonProperty(Order = 534)]
+		private bool _Element4Enable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

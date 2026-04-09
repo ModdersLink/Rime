@@ -14,51 +14,65 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class SyncedBFSettings :
+	public partial class SyncedBFSettings :
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float GameModeCounterModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _GameModeCounterModifier;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public bool UnlicensedUnlocksUnlocked { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private bool _UnlicensedUnlocksUnlocked;
 
-		[ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
-		public bool NoMinimap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
+		private bool _NoMinimap;
 
-		[ContainerField(18), LayoutImmutable, Blittable, JsonProperty(Order = 18)]
-		public bool NoHud { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(18), LayoutImmutable, Blittable, JsonProperty(Order = 18)]
+		private bool _NoHud;
 
-		[ContainerField(19), LayoutImmutable, Blittable, JsonProperty(Order = 19)]
-		public bool NoMinimapSpotting { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(19), LayoutImmutable, Blittable, JsonProperty(Order = 19)]
+		private bool _NoMinimapSpotting;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public bool No3dSpotting { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private bool _No3dSpotting;
 
-		[ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
-		public bool NoNameTag { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
+		private bool _NoNameTag;
 
-		[ContainerField(22), LayoutImmutable, Blittable, JsonProperty(Order = 22)]
-		public bool OnlySquadLeaderSpawn { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(22), LayoutImmutable, Blittable, JsonProperty(Order = 22)]
+		private bool _OnlySquadLeaderSpawn;
 
-		[ContainerField(23), LayoutImmutable, Blittable, JsonProperty(Order = 23)]
-		public bool TeamSwitchingAllowed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(23), LayoutImmutable, Blittable, JsonProperty(Order = 23)]
+		private bool _TeamSwitchingAllowed;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public bool MemoryDefragUI { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private bool _MemoryDefragUI;
 
-		[ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
-		public bool MemoryGarbageCollectHavok { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
+		private bool _MemoryGarbageCollectHavok;
 
-		[ContainerField(26), LayoutImmutable, Blittable, JsonProperty(Order = 26)]
-		public bool MemoryDefragGlobal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(26), LayoutImmutable, Blittable, JsonProperty(Order = 26)]
+		private bool _MemoryDefragGlobal;
 
-		[ContainerField(27), LayoutImmutable, Blittable, JsonProperty(Order = 27)]
-		public bool AllUnlocksUnlocked { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(27), LayoutImmutable, Blittable, JsonProperty(Order = 27)]
+		private bool _AllUnlocksUnlocked;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class OnlinePlatformConfiguration :
+	public partial class OnlinePlatformConfiguration :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public GamePlatform Platform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private GamePlatform _Platform = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public CtrRef<OnlineServicesAsset> Services { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private CtrRef<OnlineServicesAsset> _Services = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public RefArray<PresenceBackendData> ClientBackends { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private RefArray<PresenceBackendData> _ClientBackends = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<ServerBackendData> ServerBackends { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<ServerBackendData> _ServerBackends = new();
 		
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public bool IsFallback { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private bool _IsFallback;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

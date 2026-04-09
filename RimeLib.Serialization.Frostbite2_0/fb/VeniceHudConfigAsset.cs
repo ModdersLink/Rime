@@ -14,94 +14,122 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 152)]
-	public class VeniceHudConfigAsset :
+	public partial class VeniceHudConfigAsset :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<SoundWaveAsset> AmmoPickupSound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<SoundWaveAsset> _AmmoPickupSound = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<SoundWaveAsset> WeaponPickupSound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<SoundWaveAsset> _WeaponPickupSound = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<SoundWaveAsset> NewObjectiveSound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<SoundWaveAsset> _NewObjectiveSound = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<SoundWaveAsset> ObjectiveCompletedSound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<SoundWaveAsset> _ObjectiveCompletedSound = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<SoundWaveAsset> ObjectiveUpdatedSound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<SoundWaveAsset> _ObjectiveUpdatedSound = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public CtrRef<SoundWaveAsset> MPVictorySoundMec { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private CtrRef<SoundWaveAsset> _MPVictorySoundMec = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public CtrRef<SoundWaveAsset> MPVictorySoundUs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private CtrRef<SoundWaveAsset> _MPVictorySoundUs = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public CtrRef<SoundWaveAsset> MPVictorySoundRu { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private CtrRef<SoundWaveAsset> _MPVictorySoundRu = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public CtrRef<SoundWaveAsset> MPDefeatSoundMec { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private CtrRef<SoundWaveAsset> _MPDefeatSoundMec = new();
 
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public CtrRef<SoundWaveAsset> MPDefeatSoundUs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private CtrRef<SoundWaveAsset> _MPDefeatSoundUs = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public CtrRef<SoundWaveAsset> MPDefeatSoundRu { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private CtrRef<SoundWaveAsset> _MPDefeatSoundRu = new();
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public CtrRef<SoundWaveAsset> ArtilleryAiming { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private CtrRef<SoundWaveAsset> _ArtilleryAiming = new();
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public CtrRef<SoundWaveAsset> ArtilleryAimingOOA { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private CtrRef<SoundWaveAsset> _ArtilleryAimingOOA = new();
 
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public CtrRef<SoundWaveAsset> MortarStrikeLocking { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private CtrRef<SoundWaveAsset> _MortarStrikeLocking = new();
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public CtrRef<SoundWaveAsset> LaserDesignatorLocked { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private CtrRef<SoundWaveAsset> _LaserDesignatorLocked = new();
 
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public CtrRef<SoundWaveAsset> LaserDesignatorLocking { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private CtrRef<SoundWaveAsset> _LaserDesignatorLocking = new();
 
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public RefArray<UINametag> Nametags { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private RefArray<UINametag> _Nametags = new();
 
-		[ContainerField(76), JsonProperty(Order = 76)]
-		public List<SpawnScreenWeaponData> SpawnScreenWeapons { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(76), JsonProperty(Order = 76)]
+		private List<SpawnScreenWeaponData> _SpawnScreenWeapons = new();
 
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public float MaxOrderIconDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private float _MaxOrderIconDistance;
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public float InnerNametagRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private float _InnerNametagRadius;
 
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public float OuterNametagRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private float _OuterNametagRadius;
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public float CriticalHealthThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private float _CriticalHealthThreshold;
 
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public UITaggedVehicleCrosshair TaggedVehicleCrosshair { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private UITaggedVehicleCrosshair _TaggedVehicleCrosshair = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public UIMinimapConfig Minimap { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private UIMinimapConfig _Minimap = new();
 
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public bool ShowSpawnPointsOnMinimap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private bool _ShowSpawnPointsOnMinimap;
 
-		[ContainerField(149), LayoutImmutable, Blittable, JsonProperty(Order = 149)]
-		public bool NametagHealthVisibleForAll { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(149), LayoutImmutable, Blittable, JsonProperty(Order = 149)]
+		private bool _NametagHealthVisibleForAll;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(p_EbxWriter.WriteImport(AmmoPickupSound));
 			p_Writer.Write(p_EbxWriter.WriteImport(WeaponPickupSound));
 			p_Writer.Write(p_EbxWriter.WriteImport(NewObjectiveSound));

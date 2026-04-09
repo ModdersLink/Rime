@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class AntAnimatableComponentData :
+	public partial class AntAnimatableComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private Realm _Realm = new();
 
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public SubRealm SubRealm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private SubRealm _SubRealm = new();
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public AntAnimationHandlerData AnimationData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private AntAnimationHandlerData _AnimationData = new();
 
-		[ContainerField(152), JsonProperty(Order = 152)]
-		public CtrRef<SkinnedMeshAsset> Mesh { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(152), JsonProperty(Order = 152)]
+		private CtrRef<SkinnedMeshAsset> _Mesh = new();
 
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public bool AutoActivate { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private bool _AutoActivate;
 
-		[ContainerField(157), LayoutImmutable, Blittable, JsonProperty(Order = 157)]
-		public bool AnimationControlledFromStart { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(157), LayoutImmutable, Blittable, JsonProperty(Order = 157)]
+		private bool _AnimationControlledFromStart;
 
-		[ContainerField(158), LayoutImmutable, Blittable, JsonProperty(Order = 158)]
-		public bool ForceDisableCulling { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(158), LayoutImmutable, Blittable, JsonProperty(Order = 158)]
+		private bool _ForceDisableCulling;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

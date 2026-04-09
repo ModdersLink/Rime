@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class TeamData :
+	public partial class TeamData :
 		TeamAsset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<SoldierBlueprint> Soldier { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<SoldierBlueprint> _Soldier = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public FactionId Faction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private FactionId _Faction = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<SoldierCustomizationAsset> SoldierCustomization { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<SoldierCustomizationAsset> _SoldierCustomization = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public RefArray<VehicleCustomizationAsset> VehicleCustomization { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private RefArray<VehicleCustomizationAsset> _VehicleCustomization = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

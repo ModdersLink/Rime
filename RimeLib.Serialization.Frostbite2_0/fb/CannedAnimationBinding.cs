@@ -14,42 +14,53 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class CannedAnimationBinding :
+	public partial class CannedAnimationBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef LevelIndex { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _LevelIndex = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef ScenarioIndex { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _ScenarioIndex = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef ActorIndex { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _ActorIndex = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef PartIndex { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _PartIndex = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef TriggerCannedAnimation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _TriggerCannedAnimation = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef ExitCannedAnimation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _ExitCannedAnimation = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AntRef ExternalTime { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AntRef _ExternalTime = new();
 		
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public AntRef BlendValue { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private AntRef _BlendValue = new();
 		
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AntRef AdvanceScenario { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AntRef _AdvanceScenario = new();
 		
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public AntRef EnteredLoop { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private AntRef _EnteredLoop = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class CharacterCustomizationAsset :
+	public partial class CharacterCustomizationAsset :
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
-		public string LabelSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
+		private string _LabelSid = string.Empty;
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public UIHudIcon UIHudIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private UIHudIcon _UIHudIcon = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<VoiceOverLabel> VoiceOverLabels { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<VoiceOverLabel> _VoiceOverLabels = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<CustomizationTable> VisualTable { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<CustomizationTable> _VisualTable = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public CtrRef<CustomizationTable> SpecializationTable { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private CtrRef<CustomizationTable> _SpecializationTable = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

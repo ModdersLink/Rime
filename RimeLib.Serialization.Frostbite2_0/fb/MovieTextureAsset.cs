@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class MovieTextureAsset :
+	public partial class MovieTextureAsset :
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public GUID ChunkGuid { get; set; } = GUID.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private GUID _ChunkGuid = GUID.Empty;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public uint ChunkSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private uint _ChunkSize;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public GUID SubtitleChunkGuid { get; set; } = GUID.Empty;
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private GUID _SubtitleChunkGuid = GUID.Empty;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public uint SubtitleChunkSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private uint _SubtitleChunkSize;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public bool HasLocalizedAudioTracks { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private bool _HasLocalizedAudioTracks;
 
-		[ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
-		public bool OverrideBackgroundMusic { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
+		private bool _OverrideBackgroundMusic;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

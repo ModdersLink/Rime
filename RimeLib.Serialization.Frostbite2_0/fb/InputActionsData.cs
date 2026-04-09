@@ -14,31 +14,38 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class InputActionsData :
+	public partial class InputActionsData :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
-		public string NameSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		private string _NameSid = string.Empty;
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public InputConceptIdentifiers ConceptIdentifier { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private InputConceptIdentifiers _ConceptIdentifier = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public InputConceptIdentifiers CopyKeyBindingFrom { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private InputConceptIdentifiers _CopyKeyBindingFrom = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<InputActionData> InputActions { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<InputActionData> _InputActions = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public bool HideInKeyBindings { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private bool _HideInKeyBindings;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(p_EbxWriter.WriteString(NameSid));
 			p_Writer.Write((int) ConceptIdentifier);
 			p_Writer.Write((int) CopyKeyBindingFrom);

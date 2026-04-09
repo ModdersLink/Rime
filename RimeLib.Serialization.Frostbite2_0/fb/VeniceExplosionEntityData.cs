@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class VeniceExplosionEntityData :
+	public partial class VeniceExplosionEntityData :
 		ExplosionEntityData
 	{
-		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public float UnspottableTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private float _UnspottableTime;
 
-		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
-		public bool UnspotsOnExplode { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		private bool _UnspotsOnExplode;
 
-		[ContainerField(181), LayoutImmutable, Blittable, JsonProperty(Order = 181)]
-		public bool SpotsOnExplode { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(181), LayoutImmutable, Blittable, JsonProperty(Order = 181)]
+		private bool _SpotsOnExplode;
 
-		[ContainerField(182), LayoutImmutable, Blittable, JsonProperty(Order = 182)]
-		public bool IsCausingSuppression { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(182), LayoutImmutable, Blittable, JsonProperty(Order = 182)]
+		private bool _IsCausingSuppression;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

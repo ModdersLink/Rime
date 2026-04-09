@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class AnimatedSkeletonDatabaseItem :
+	public partial class AnimatedSkeletonDatabaseItem :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public CtrRef<SkeletonAsset> Asset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private CtrRef<SkeletonAsset> _Asset = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public List<int> Names { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private List<int> _Names = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<SkeletonCollisionData> SoldierCollision { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<SkeletonCollisionData> _SoldierCollision = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<SkeletonCollisionData> RagdollCollision { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<SkeletonCollisionData> _RagdollCollision = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<RagdollAsset> Ragdoll { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<RagdollAsset> _Ragdoll = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public List<string> SpecialBones { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private List<string> _SpecialBones = new();
 		
-		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
-		public string HipBone { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
+		private string _HipBone = string.Empty;
 		
-		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
-		public string HeadBone { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
+		private string _HeadBone = string.Empty;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

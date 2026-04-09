@@ -14,69 +14,89 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 100)]
-	public class HudVehicleTrackerData :
+	public partial class HudVehicleTrackerData :
 		UIPartData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public EdgePointerData EdgePointer { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private EdgePointerData _EdgePointer = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public UIHudIcon EnemyTrackerIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private UIHudIcon _EnemyTrackerIcon = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public UIHudIcon OutsideScreenTrackerIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private UIHudIcon _OutsideScreenTrackerIcon = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public VehicleTrackerRenderTargetData RenderTargetData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private VehicleTrackerRenderTargetData _RenderTargetData = new();
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public UIHudIcon MissileTrackerIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private UIHudIcon _MissileTrackerIcon = new();
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public float IconSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private float _IconSize;
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public float RadarSensitivity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private float _RadarSensitivity;
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public float HeatSensitivity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private float _HeatSensitivity;
 
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public UIHudIcon FriendlyTrackerIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private UIHudIcon _FriendlyTrackerIcon = new();
 
-		[ContainerField(76), JsonProperty(Order = 76)]
-		public UIHudIcon LaserPaintedVehicleTrackerIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(76), JsonProperty(Order = 76)]
+		private UIHudIcon _LaserPaintedVehicleTrackerIcon = new();
 
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public float MaxDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private float _MaxDistance;
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public float DistanceIconShrinkFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private float _DistanceIconShrinkFactor;
 
-		[ContainerField(88), JsonProperty(Order = 88)]
-		public UIHudIcon MissileLockTrackerIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(88), JsonProperty(Order = 88)]
+		private UIHudIcon _MissileLockTrackerIcon = new();
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public bool TrackOnlyUsedVehicles { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private bool _TrackOnlyUsedVehicles;
 
-		[ContainerField(93), LayoutImmutable, Blittable, JsonProperty(Order = 93)]
-		public bool UseTrackerSignatures { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(93), LayoutImmutable, Blittable, JsonProperty(Order = 93)]
+		private bool _UseTrackerSignatures;
 
-		[ContainerField(94), LayoutImmutable, Blittable, JsonProperty(Order = 94)]
-		public bool EnableEdgePointers { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(94), LayoutImmutable, Blittable, JsonProperty(Order = 94)]
+		private bool _EnableEdgePointers;
 
-		[ContainerField(95), LayoutImmutable, Blittable, JsonProperty(Order = 95)]
-		public bool TrackLaserPaintedObjects { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(95), LayoutImmutable, Blittable, JsonProperty(Order = 95)]
+		private bool _TrackLaserPaintedObjects;
 
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public bool UseCameraComponentTransform { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private bool _UseCameraComponentTransform;
 
-		[ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
-		public bool ShowTracker { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
+		private bool _ShowTracker;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,57 +14,73 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class GameInteractionEntityData :
+	public partial class GameInteractionEntityData :
 		InteractionEntityData
 	{
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public BlinkType Blink { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private BlinkType _Blink = new();
 
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public float CapturepointVerticalOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private float _CapturepointVerticalOffset;
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public float DelayBetweenUses { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private float _DelayBetweenUses;
 
-		[ContainerField(140), JsonProperty(Order = 140)]
-		public TeamId TeamId { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(140), JsonProperty(Order = 140)]
+		private TeamId _TeamId = new();
 
-		[ContainerField(144), JsonProperty(Order = 144)]
-		public EntryInputActionEnum InputAction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), JsonProperty(Order = 144)]
+		private EntryInputActionEnum _InputAction = new();
 
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public float HoldToInteractTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private float _HoldToInteractTime;
 
-		[ContainerField(152), JsonProperty(Order = 152)]
-		public InteractionEntityType InteractionEntityType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(152), JsonProperty(Order = 152)]
+		private InteractionEntityType _InteractionEntityType = new();
 
-		[ContainerField(156), LayoutImmutable, JsonProperty(Order = 156)]
-		public string InteractionSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, JsonProperty(Order = 156)]
+		private string _InteractionSid = string.Empty;
 
-		[ContainerField(160), LayoutImmutable, JsonProperty(Order = 160)]
-		public string InteractingSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, JsonProperty(Order = 160)]
+		private string _InteractingSid = string.Empty;
 
-		[ContainerField(164), LayoutImmutable, JsonProperty(Order = 164)]
-		public string FriendlyTextSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, JsonProperty(Order = 164)]
+		private string _FriendlyTextSid = string.Empty;
 
-		[ContainerField(168), LayoutImmutable, JsonProperty(Order = 168)]
-		public string NameSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(168), LayoutImmutable, JsonProperty(Order = 168)]
+		private string _NameSid = string.Empty;
 
-		[ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
-		public float InteractionVerticalOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
+		private float _InteractionVerticalOffset;
 
-		[ContainerField(176), LayoutImmutable, JsonProperty(Order = 176)]
-		public string EnemyTextSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(176), LayoutImmutable, JsonProperty(Order = 176)]
+		private string _EnemyTextSid = string.Empty;
 
-		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
-		public bool ShrinkSnap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		private bool _ShrinkSnap;
 
-		[ContainerField(181), LayoutImmutable, Blittable, JsonProperty(Order = 181)]
-		public bool ShowAsCapturePoint { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(181), LayoutImmutable, Blittable, JsonProperty(Order = 181)]
+		private bool _ShowAsCapturePoint;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

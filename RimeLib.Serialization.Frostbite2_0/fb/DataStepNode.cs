@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class DataStepNode :
+	public partial class DataStepNode :
 		UINodeData
 	{
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<UINodePort> In { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<UINodePort> _In = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<UINodePort> Out { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<UINodePort> _Out = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public List<float> Steps { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private List<float> _Steps = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public UIDataSourceInfo CurrentStepDataSource { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private UIDataSourceInfo _CurrentStepDataSource = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public UIDataSourceInfo DataSource { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private UIDataSourceInfo _DataSource = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

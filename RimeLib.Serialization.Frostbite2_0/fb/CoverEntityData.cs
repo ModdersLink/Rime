@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class CoverEntityData :
+	public partial class CoverEntityData :
 		SpatialEntityData
 	{
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public float Width { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private float _Width;
 
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public CoverType CoverType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private CoverType _CoverType = new();
 
-		[ContainerField(88), JsonProperty(Order = 88)]
-		public List<CoverSlot> Slots { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(88), JsonProperty(Order = 88)]
+		private List<CoverSlot> _Slots = new();
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public bool RightEdgeBlocked { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private bool _RightEdgeBlocked;
 
-		[ContainerField(93), LayoutImmutable, Blittable, JsonProperty(Order = 93)]
-		public bool TopBlocked { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(93), LayoutImmutable, Blittable, JsonProperty(Order = 93)]
+		private bool _TopBlocked;
 
-		[ContainerField(94), LayoutImmutable, Blittable, JsonProperty(Order = 94)]
-		public bool LeftEdgeBlocked { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(94), LayoutImmutable, Blittable, JsonProperty(Order = 94)]
+		private bool _LeftEdgeBlocked;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

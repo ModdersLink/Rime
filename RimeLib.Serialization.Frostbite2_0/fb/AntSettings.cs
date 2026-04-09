@@ -14,106 +14,138 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class AntSettings :
+	public partial class AntSettings :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float DetailedCollisionSpeedLimit { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _DetailedCollisionSpeedLimit;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float LeanSignalScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _LeanSignalScale;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float LeanSignalClamp { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _LeanSignalClamp;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public int MaxInterpolationSlots { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private int _MaxInterpolationSlots;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public int MaxSingleBoneInterpolationSlots { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private int _MaxSingleBoneInterpolationSlots;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float ReducedInterpolationDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _ReducedInterpolationDistance;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float TrajectoryInterpolationDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _TrajectoryInterpolationDistance;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float ForceLodDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _ForceLodDistance;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public int MaxAnimatablesPerPoseJob { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private int _MaxAnimatablesPerPoseJob;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float CheckGiantSoldiers { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _CheckGiantSoldiers;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public bool ClientEmulatesServer { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private bool _ClientEmulatesServer;
 
-		[ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
-		public bool UseCameraFov { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
+		private bool _UseCameraFov;
 
-		[ContainerField(50), LayoutImmutable, Blittable, JsonProperty(Order = 50)]
-		public bool UpdateEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(50), LayoutImmutable, Blittable, JsonProperty(Order = 50)]
+		private bool _UpdateEnable;
 
-		[ContainerField(51), LayoutImmutable, Blittable, JsonProperty(Order = 51)]
-		public bool EnablePA { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(51), LayoutImmutable, Blittable, JsonProperty(Order = 51)]
+		private bool _EnablePA;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public bool UseWeaponFov { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private bool _UseWeaponFov;
 
-		[ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
-		public bool DisableAnimManagerSceneOps { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
+		private bool _DisableAnimManagerSceneOps;
 
-		[ContainerField(54), LayoutImmutable, Blittable, JsonProperty(Order = 54)]
-		public bool DisableAILodFeature { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(54), LayoutImmutable, Blittable, JsonProperty(Order = 54)]
+		private bool _DisableAILodFeature;
 
-		[ContainerField(55), LayoutImmutable, Blittable, JsonProperty(Order = 55)]
-		public bool DisableModelAnimationCulling { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(55), LayoutImmutable, Blittable, JsonProperty(Order = 55)]
+		private bool _DisableModelAnimationCulling;
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public bool EnableJobs { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private bool _EnableJobs;
 
-		[ContainerField(57), LayoutImmutable, Blittable, JsonProperty(Order = 57)]
-		public bool ForcePoseUpdate { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(57), LayoutImmutable, Blittable, JsonProperty(Order = 57)]
+		private bool _ForcePoseUpdate;
 
-		[ContainerField(58), LayoutImmutable, Blittable, JsonProperty(Order = 58)]
-		public bool RunAsHighPriority { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(58), LayoutImmutable, Blittable, JsonProperty(Order = 58)]
+		private bool _RunAsHighPriority;
 
-		[ContainerField(59), LayoutImmutable, Blittable, JsonProperty(Order = 59)]
-		public bool InterpolatePoses { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(59), LayoutImmutable, Blittable, JsonProperty(Order = 59)]
+		private bool _InterpolatePoses;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public bool AllowVariableTickLength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private bool _AllowVariableTickLength;
 
-		[ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
-		public bool EnablePackageCache { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
+		private bool _EnablePackageCache;
 
-		[ContainerField(62), LayoutImmutable, Blittable, JsonProperty(Order = 62)]
-		public bool UseHIK { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(62), LayoutImmutable, Blittable, JsonProperty(Order = 62)]
+		private bool _UseHIK;
 
-		[ContainerField(63), LayoutImmutable, Blittable, JsonProperty(Order = 63)]
-		public bool UpdateLoddingEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(63), LayoutImmutable, Blittable, JsonProperty(Order = 63)]
+		private bool _UpdateLoddingEnable;
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public bool BlockOnJobs { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private bool _BlockOnJobs;
 
-		[ContainerField(65), LayoutImmutable, Blittable, JsonProperty(Order = 65)]
-		public bool EnableDebugLogFile { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(65), LayoutImmutable, Blittable, JsonProperty(Order = 65)]
+		private bool _EnableDebugLogFile;
 
-		[ContainerField(66), LayoutImmutable, Blittable, JsonProperty(Order = 66)]
-		public bool EnablePoseJobs { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(66), LayoutImmutable, Blittable, JsonProperty(Order = 66)]
+		private bool _EnablePoseJobs;
 
-		[ContainerField(67), LayoutImmutable, Blittable, JsonProperty(Order = 67)]
-		public bool UsePA { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(67), LayoutImmutable, Blittable, JsonProperty(Order = 67)]
+		private bool _UsePA;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(DetailedCollisionSpeedLimit);
 			p_Writer.Write(LeanSignalScale);
 			p_Writer.Write(LeanSignalClamp);

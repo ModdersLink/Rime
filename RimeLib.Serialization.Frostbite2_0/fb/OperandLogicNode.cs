@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(8, 80)]
-	public class OperandLogicNode :
+	public partial class OperandLogicNode :
 		UINodeData
 	{
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public UIDataSourceInfo LeftDataSourceInfo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private UIDataSourceInfo _LeftDataSourceInfo = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public UILogicOperator Operator { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private UILogicOperator _Operator = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public UIDataSourceInfo RightDataSourceInfo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private UIDataSourceInfo _RightDataSourceInfo = new();
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public double RightLiteralOperand { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private double _RightLiteralOperand;
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public CtrRef<UINodePort> In { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private CtrRef<UINodePort> _In = new();
 
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public CtrRef<UINodePort> True { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private CtrRef<UINodePort> _True = new();
 
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public CtrRef<UINodePort> False { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private CtrRef<UINodePort> _False = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,78 +14,101 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 256)]
-	public class UIMinimapData :
+	public partial class UIMinimapData :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public Vec2 WorldCenter { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private Vec2 _WorldCenter = new();
 		
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec4 CombatAreaColor { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec4 _CombatAreaColor = new();
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public Vec4 DetailTextureTint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private Vec4 _DetailTextureTint = new();
 		
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public Vec2 CombatAreaMultiplyWrapAmount { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private Vec2 _CombatAreaMultiplyWrapAmount = new();
 		
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public UIMinimapDistanceFieldParams Vegetation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private UIMinimapDistanceFieldParams _Vegetation = new();
 		
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public CtrRef<TextureAsset> FadeTexture { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private CtrRef<TextureAsset> _FadeTexture = new();
 		
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public float StreamingMinimapDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private float _StreamingMinimapDelay;
 		
-		[ContainerField(136), JsonProperty(Order = 136)]
-		public CtrRef<TextureAsset> AirRadarFadeTexture { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(136), JsonProperty(Order = 136)]
+		private CtrRef<TextureAsset> _AirRadarFadeTexture = new();
 		
-		[ContainerField(140), JsonProperty(Order = 140)]
-		public CtrRef<TextureAsset> DetailTexture { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(140), JsonProperty(Order = 140)]
+		private CtrRef<TextureAsset> _DetailTexture = new();
 		
-		[ContainerField(144), JsonProperty(Order = 144)]
-		public UIMinimapDistanceFieldParams Detail { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), JsonProperty(Order = 144)]
+		private UIMinimapDistanceFieldParams _Detail = new();
 		
-		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
-		public float StreamingMinimapTransitionSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		private float _StreamingMinimapTransitionSpeed;
 		
-		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
-		public float WorldRotation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
+		private float _WorldRotation;
 		
-		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
-		public float WorldRange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		private float _WorldRange;
 		
-		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
-		public float CombatAreaDistanceScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
+		private float _CombatAreaDistanceScale;
 		
-		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public float CombatAreaFadeSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private float _CombatAreaFadeSpeed;
 		
-		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
-		public float CombatAreaAlphaThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		private float _CombatAreaAlphaThreshold;
 		
-		[ContainerField(232), JsonProperty(Order = 232)]
-		public CtrRef<TextureAsset> CombatAreaMultiplyTexture { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(232), JsonProperty(Order = 232)]
+		private CtrRef<TextureAsset> _CombatAreaMultiplyTexture = new();
 		
-		[ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
-		public float WorldSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
+		private float _WorldSize;
 		
-		[ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
-		public float AirRadarRange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(240), LayoutImmutable, Blittable, JsonProperty(Order = 240)]
+		private float _AirRadarRange;
 		
-		[ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
-		public float CombatAreaScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(244), LayoutImmutable, Blittable, JsonProperty(Order = 244)]
+		private float _CombatAreaScale;
 		
-		[ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
-		public bool UseStreamingMinimap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
+		private bool _UseStreamingMinimap;
 		
-		[ContainerField(249), LayoutImmutable, Blittable, JsonProperty(Order = 249)]
-		public bool UseCombatAreaTexture { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(249), LayoutImmutable, Blittable, JsonProperty(Order = 249)]
+		private bool _UseCombatAreaTexture;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

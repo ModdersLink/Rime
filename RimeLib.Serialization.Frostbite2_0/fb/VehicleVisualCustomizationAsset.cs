@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class VehicleVisualCustomizationAsset :
+	public partial class VehicleVisualCustomizationAsset :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<ShaderTextureUnlockPartCollection> TextureUnlockPartCollections { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<ShaderTextureUnlockPartCollection> _TextureUnlockPartCollections = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<TextUnlockPartData> TextUnlockParts { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<TextUnlockPartData> _TextUnlockParts = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

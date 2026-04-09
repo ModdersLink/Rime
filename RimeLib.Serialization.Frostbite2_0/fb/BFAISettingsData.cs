@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 100)]
-	public class BFAISettingsData :
+	public partial class BFAISettingsData :
 		AISettingsData
 	{
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public CtrRef<MovementConstantData> MovementConstants { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private CtrRef<MovementConstantData> _MovementConstants = new();
 
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public CtrRef<TurretControlConstantData> TurretControlConstants { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private CtrRef<TurretControlConstantData> _TurretControlConstants = new();
 
-		[ContainerField(88), JsonProperty(Order = 88)]
-		public CtrRef<SearchAndDestroyConstantData> SearchAndDestroyConstants { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(88), JsonProperty(Order = 88)]
+		private CtrRef<SearchAndDestroyConstantData> _SearchAndDestroyConstants = new();
 
-		[ContainerField(92), JsonProperty(Order = 92)]
-		public CtrRef<FollowConstantData> FollowConstants { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(92), JsonProperty(Order = 92)]
+		private CtrRef<FollowConstantData> _FollowConstants = new();
 
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public CtrRef<CombatConstantData> CombatConstants { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private CtrRef<CombatConstantData> _CombatConstants = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

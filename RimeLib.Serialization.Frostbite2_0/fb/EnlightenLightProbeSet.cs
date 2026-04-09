@@ -14,51 +14,65 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class EnlightenLightProbeSet :
+	public partial class EnlightenLightProbeSet :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public LinearTransform Transform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private LinearTransform _Transform = new();
 		
-		[ContainerField(64), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public AxisAlignedBox BoundingBox { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private AxisAlignedBox _BoundingBox = new();
 		
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public uint SizeX { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private uint _SizeX;
 		
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public uint SizeZ { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private uint _SizeZ;
 		
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public uint SizeY { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private uint _SizeY;
 		
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public int SystemId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private int _SystemId;
 		
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public float BlendDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private float _BlendDistance;
 		
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public int Priority { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private int _Priority;
 		
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public List<Vec3> Positions { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private List<Vec3> _Positions = new();
 		
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public List<uint> ValidIndices { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private List<uint> _ValidIndices = new();
 		
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public List<int> InputSystems { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private List<int> _InputSystems = new();
 		
-		[ContainerField(132), JsonProperty(Order = 132)]
-		public PrecomputeCache Cache { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(132), JsonProperty(Order = 132)]
+		private PrecomputeCache _Cache = new();
 		
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public bool StaticProbeSet { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private bool _StaticProbeSet;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class SoundTestAsset :
+	public partial class SoundTestAsset :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<SoundTestTaskSpec> TaskSpecs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<SoundTestTaskSpec> _TaskSpecs = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<SoundTestSpec> TestSpecs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<SoundTestSpec> _TestSpecs = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<SoundTestSuite> Suites { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<SoundTestSuite> _Suites = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

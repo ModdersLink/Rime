@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class ControllableEntityData :
+	public partial class ControllableEntityData :
 		GamePhysicsEntityData
 	{
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public float LowHealthThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private float _LowHealthThreshold;
 
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public TeamId DefaultTeam { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private TeamId _DefaultTeam = new();
 
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public CtrRef<MaterialContainerPair> MaterialPair { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private CtrRef<MaterialContainerPair> _MaterialPair = new();
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public bool ResetTeamOnLastPlayerExits { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private bool _ResetTeamOnLastPlayerExits;
 
-		[ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
-		public bool FakeImmortal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
+		private bool _FakeImmortal;
 
-		[ContainerField(126), LayoutImmutable, Blittable, JsonProperty(Order = 126)]
-		public bool UsePrediction { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(126), LayoutImmutable, Blittable, JsonProperty(Order = 126)]
+		private bool _UsePrediction;
 
-		[ContainerField(127), LayoutImmutable, Blittable, JsonProperty(Order = 127)]
-		public bool Immortal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(127), LayoutImmutable, Blittable, JsonProperty(Order = 127)]
+		private bool _Immortal;
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public bool ForceForegroundRendering { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private bool _ForceForegroundRendering;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

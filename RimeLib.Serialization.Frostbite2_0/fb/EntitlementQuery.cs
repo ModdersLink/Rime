@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class EntitlementQuery :
+	public partial class EntitlementQuery :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public List<EntitlementData> EntitlementsData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private List<EntitlementData> _EntitlementsData = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<string> GroupNames { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<string> _GroupNames = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public GamePlatform Platform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private GamePlatform _Platform = new();
 
-		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
-		public string EntitlementTag { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
+		private string _EntitlementTag = string.Empty;
 
-		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
-		public string ProductId { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
+		private string _ProductId = string.Empty;
 
-		[ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
-		public string ProjectId { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
+		private string _ProjectId = string.Empty;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

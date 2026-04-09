@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 76)]
-	public class SkinnedSocketObjectData :
+	public partial class SkinnedSocketObjectData :
 		SocketObjectData
 	{
-		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
-		public int FaceposerLibraryIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
+		private int _FaceposerLibraryIndex;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

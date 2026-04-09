@@ -14,63 +14,81 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 512)]
-	public class VehicleSpawnReferenceObjectData :
+	public partial class VehicleSpawnReferenceObjectData :
 		SpawnReferenceObjectData
 	{
-		[ContainerField(384), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 384)]
-		public LinearTransform AirDropCarrierTransform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(384), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 384)]
+		private LinearTransform _AirDropCarrierTransform = new();
 
-		[ContainerField(448), LayoutImmutable, Blittable, JsonProperty(Order = 448)]
-		public float TimeUntilAbandoned { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(448), LayoutImmutable, Blittable, JsonProperty(Order = 448)]
+		private float _TimeUntilAbandoned;
 
-		[ContainerField(452), LayoutImmutable, Blittable, JsonProperty(Order = 452)]
-		public float TimeUntilAbandonedIsDestroyed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(452), LayoutImmutable, Blittable, JsonProperty(Order = 452)]
+		private float _TimeUntilAbandonedIsDestroyed;
 
-		[ContainerField(456), JsonProperty(Order = 456)]
-		public EntryEnterRestriction EnterRestriction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(456), JsonProperty(Order = 456)]
+		private EntryEnterRestriction _EnterRestriction = new();
 
-		[ContainerField(460), LayoutImmutable, Blittable, JsonProperty(Order = 460)]
-		public float BotBailWhenHealthBelow { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(460), LayoutImmutable, Blittable, JsonProperty(Order = 460)]
+		private float _BotBailWhenHealthBelow;
 
-		[ContainerField(464), LayoutImmutable, Blittable, JsonProperty(Order = 464)]
-		public float BotBailOutDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(464), LayoutImmutable, Blittable, JsonProperty(Order = 464)]
+		private float _BotBailOutDelay;
 
-		[ContainerField(468), LayoutImmutable, Blittable, JsonProperty(Order = 468)]
-		public float WreckDuration { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(468), LayoutImmutable, Blittable, JsonProperty(Order = 468)]
+		private float _WreckDuration;
 
-		[ContainerField(472), LayoutImmutable, Blittable, JsonProperty(Order = 472)]
-		public float RespawnRange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(472), LayoutImmutable, Blittable, JsonProperty(Order = 472)]
+		private float _RespawnRange;
 
-		[ContainerField(476), LayoutImmutable, Blittable, JsonProperty(Order = 476)]
-		public int ActiveStanceEntryIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(476), LayoutImmutable, Blittable, JsonProperty(Order = 476)]
+		private int _ActiveStanceEntryIndex;
 
-		[ContainerField(480), LayoutImmutable, Blittable, JsonProperty(Order = 480)]
-		public int ActiveStance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(480), LayoutImmutable, Blittable, JsonProperty(Order = 480)]
+		private int _ActiveStance;
 
-		[ContainerField(484), LayoutImmutable, Blittable, JsonProperty(Order = 484)]
-		public float KeepAliveRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(484), LayoutImmutable, Blittable, JsonProperty(Order = 484)]
+		private float _KeepAliveRadius;
 
-		[ContainerField(488), LayoutImmutable, Blittable, JsonProperty(Order = 488)]
-		public float VehicleIsNearDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(488), LayoutImmutable, Blittable, JsonProperty(Order = 488)]
+		private float _VehicleIsNearDistance;
 
-		[ContainerField(492), LayoutImmutable, Blittable, JsonProperty(Order = 492)]
-		public bool SetTeamOnSpawn { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(492), LayoutImmutable, Blittable, JsonProperty(Order = 492)]
+		private bool _SetTeamOnSpawn;
 
-		[ContainerField(493), LayoutImmutable, Blittable, JsonProperty(Order = 493)]
-		public bool ApplyDamageToAbandonedVehicles { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(493), LayoutImmutable, Blittable, JsonProperty(Order = 493)]
+		private bool _ApplyDamageToAbandonedVehicles;
 
-		[ContainerField(494), LayoutImmutable, Blittable, JsonProperty(Order = 494)]
-		public bool EnableAvailableSeatOutput { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(494), LayoutImmutable, Blittable, JsonProperty(Order = 494)]
+		private bool _EnableAvailableSeatOutput;
 
-		[ContainerField(495), LayoutImmutable, Blittable, JsonProperty(Order = 495)]
-		public bool DisregardSpawnAllowedSetting { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(495), LayoutImmutable, Blittable, JsonProperty(Order = 495)]
+		private bool _DisregardSpawnAllowedSetting;
 
-		[ContainerField(496), LayoutImmutable, Blittable, JsonProperty(Order = 496)]
-		public bool AffectedByImpulse { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(496), LayoutImmutable, Blittable, JsonProperty(Order = 496)]
+		private bool _AffectedByImpulse;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

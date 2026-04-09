@@ -14,34 +14,42 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class SoundTestSpec :
+	public partial class SoundTestSpec :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
-		public string Name { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		private string _Name = string.Empty;
 
-		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
-		public string Description { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
+		private string _Description = string.Empty;
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<SoundTestTask> MainStartTask { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<SoundTestTask> _MainStartTask = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<SoundTestTask> MainStopTask { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<SoundTestTask> _MainStopTask = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float Duration { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _Duration;
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public RefArray<SoundTestTask> Tasks { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private RefArray<SoundTestTask> _Tasks = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(p_EbxWriter.WriteString(Name));
 			p_Writer.Write(p_EbxWriter.WriteString(Description));
 			p_Writer.Write(p_EbxWriter.WriteImport(MainStartTask));

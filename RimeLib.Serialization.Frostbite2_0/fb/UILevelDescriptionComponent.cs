@@ -14,54 +14,69 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 368)]
-	public class UILevelDescriptionComponent :
+	public partial class UILevelDescriptionComponent :
 		LevelDescriptionComponent
 	{
-		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
-		public string MPLoadingAssetPath { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		private string _MPLoadingAssetPath = string.Empty;
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<SoundAsset> LoadingMusic { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<SoundAsset> _LoadingMusic = new();
 
-		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
-		public string LoadingMusicPath { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
+		private string _LoadingMusicPath = string.Empty;
 
-		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
-		public string LevelImagePath { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		private string _LevelImagePath = string.Empty;
 
-		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
-		public string LoadingImagePath { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
+		private string _LoadingImagePath = string.Empty;
 
-		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
-		public string SPLoadingAssetPath { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
+		private string _SPLoadingAssetPath = string.Empty;
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public UIGPSPosition GPSPosition { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private UIGPSPosition _GPSPosition = new();
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public CtrRef<GameTipAsset> HintAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private CtrRef<GameTipAsset> _HintAsset = new();
 
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public RefArray<UICreditsAsset> CreditsAssets { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private RefArray<UICreditsAsset> _CreditsAssets = new();
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public UIMinimapData MinimapData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private UIMinimapData _MinimapData = new();
 
-		[ContainerField(320), JsonProperty(Order = 320)]
-		public UILevelStatData LevelCompledStatData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(320), JsonProperty(Order = 320)]
+		private UILevelStatData _LevelCompledStatData = new();
 
-		[ContainerField(336), JsonProperty(Order = 336)]
-		public UILevelStatData LevelScoreStatData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(336), JsonProperty(Order = 336)]
+		private UILevelStatData _LevelScoreStatData = new();
 
-		[ContainerField(352), LayoutImmutable, Blittable, JsonProperty(Order = 352)]
-		public int SortIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(352), LayoutImmutable, Blittable, JsonProperty(Order = 352)]
+		private int _SortIndex;
 
-		[ContainerField(356), LayoutImmutable, Blittable, JsonProperty(Order = 356)]
-		public bool IsMenuLevel { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(356), LayoutImmutable, Blittable, JsonProperty(Order = 356)]
+		private bool _IsMenuLevel;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

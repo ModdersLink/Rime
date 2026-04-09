@@ -14,22 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class VoiceOverDialogGroup :
+	public partial class VoiceOverDialogGroup :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<SoundAsset> Sound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<SoundAsset> _Sound = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<VoiceOverDialogTrack> Tracks { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<VoiceOverDialogTrack> _Tracks = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(p_EbxWriter.WriteImport(Sound));
 			(RimeWriter Writer, uint ArrayIndex) s_Tracks = p_EbxWriter.GetArrayWriter(Tracks.GetType(), Tracks.Count);
 			p_Writer.Write(s_Tracks.ArrayIndex);

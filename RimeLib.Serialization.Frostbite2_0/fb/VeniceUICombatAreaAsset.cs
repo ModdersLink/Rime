@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class VeniceUICombatAreaAsset :
+	public partial class VeniceUICombatAreaAsset :
 		UICombatAreaAsset
 	{
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<UIDistanceFieldAsset> DistanceField { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<UIDistanceFieldAsset> _DistanceField = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<UIDistanceFieldAsset> SurroundingDistanceField { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<UIDistanceFieldAsset> _SurroundingDistanceField = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

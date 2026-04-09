@@ -14,54 +14,69 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class PhysicsEntityData :
+	public partial class PhysicsEntityData :
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 InertiaModifier { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _InertiaModifier = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public RefArray<HavokAsset> ScaledAssets { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private RefArray<HavokAsset> _ScaledAssets = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public RefArray<RigidBodyData> RigidBodies { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private RefArray<RigidBodyData> _RigidBodies = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public CtrRef<HavokAsset> Asset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private CtrRef<HavokAsset> _Asset = new();
 
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public CtrRef<FloatPhysicsData> FloatPhysics { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private CtrRef<FloatPhysicsData> _FloatPhysics = new();
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float Mass { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _Mass;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public float Restitution { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private float _Restitution;
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public float Friction { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private float _Friction;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public float LinearVelocityDamping { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private float _LinearVelocityDamping;
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public float AngularVelocityDamping { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private float _AngularVelocityDamping;
 
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public CtrRef<ProximityData> Proximity { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private CtrRef<ProximityData> _Proximity = new();
 
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public RefArray<RigidBodyConstraintData> Constraints { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private RefArray<RigidBodyConstraintData> _Constraints = new();
 
-		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
-		public bool EncapsulatePartsInLists { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
+		private bool _EncapsulatePartsInLists;
 
-		[ContainerField(77), LayoutImmutable, Blittable, JsonProperty(Order = 77)]
-		public bool MovableParts { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(77), LayoutImmutable, Blittable, JsonProperty(Order = 77)]
+		private bool _MovableParts;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

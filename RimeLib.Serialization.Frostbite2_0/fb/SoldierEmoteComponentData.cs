@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 176)]
-	public class SoldierEmoteComponentData :
+	public partial class SoldierEmoteComponentData :
 		ComponentData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public SoldierEmoteBinding Binding { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private SoldierEmoteBinding _Binding = new();
 
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public RefArray<SoldierEmoteNetworkedMessageMapping> NetworkedMessageMappings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private RefArray<SoldierEmoteNetworkedMessageMapping> _NetworkedMessageMappings = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

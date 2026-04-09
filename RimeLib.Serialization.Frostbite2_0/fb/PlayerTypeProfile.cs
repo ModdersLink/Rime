@@ -14,39 +14,49 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class PlayerTypeProfile :
+	public partial class PlayerTypeProfile :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<PersistenceData> Values { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<PersistenceData> _Values = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<AwardDataTree> Awards { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<AwardDataTree> _Awards = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<RankParamsAsset> RankParams { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<RankParamsAsset> _RankParams = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<ScoringData> Scoring { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<ScoringData> _Scoring = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public CtrRef<DogTagsAsset> DogTags { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private CtrRef<DogTagsAsset> _DogTags = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public EloParameters EloParams { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private EloParameters _EloParams = new();
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public CtrRef<StaticUnlockList> StaticUnlocks { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private CtrRef<StaticUnlockList> _StaticUnlocks = new();
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public CtrRef<StatSpamSettings> SpamSettings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private CtrRef<StatSpamSettings> _SpamSettings = new();
 
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public List<string> OrderedUnlockNames { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private List<string> _OrderedUnlockNames = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,111 +14,145 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class CapturePointEntityData :
+	public partial class CapturePointEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public int EnemyTicketLossWhenCaptured { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private int _EnemyTicketLossWhenCaptured;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public int MinNrToTakeControl { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private int _MinNrToTakeControl;
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public RefArray<ObjectBlueprint> FlagTemplates { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private RefArray<ObjectBlueprint> _FlagTemplates = new();
 
-		[ContainerField(108), JsonProperty(Order = 108)]
-		public CtrRef<ObjectBlueprint> CapturePoint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(108), JsonProperty(Order = 108)]
+		private CtrRef<ObjectBlueprint> _CapturePoint = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public TeamId InitialOwnerTeam { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private TeamId _InitialOwnerTeam = new();
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float CaptureRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _CaptureRadius;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public int MaxCaptureMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private int _MaxCaptureMultiplier;
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public int AreaValue { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private int _AreaValue;
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public uint SpawnMenuListOrdinal { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private uint _SpawnMenuListOrdinal;
 
-		[ContainerField(132), JsonProperty(Order = 132)]
-		public List<AreaValueTeam> AreaValues { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(132), JsonProperty(Order = 132)]
+		private List<AreaValueTeam> _AreaValues = new();
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public int TimeToGetControl { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private int _TimeToGetControl;
 
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public int TimeToLoseControl { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private int _TimeToLoseControl;
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public float ReturnMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private float _ReturnMultiplier;
 
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public int OnlyTakeableByTeam { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private int _OnlyTakeableByTeam;
 
-		[ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
-		public float ShowRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, Blittable, JsonProperty(Order = 152)]
+		private float _ShowRadius;
 
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public float HideRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private float _HideRadius;
 
-		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public float AddedMultiplierPerPlayer { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private float _AddedMultiplierPerPlayer;
 
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public float Modify3DIconVerticalOffset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private float _Modify3DIconVerticalOffset;
 
-		[ContainerField(168), JsonProperty(Order = 168)]
-		public CapturableType CapturableType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(168), JsonProperty(Order = 168)]
+		private CapturableType _CapturableType = new();
 
-		[ContainerField(172), LayoutImmutable, JsonProperty(Order = 172)]
-		public string IntruderWarningSID { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(172), LayoutImmutable, JsonProperty(Order = 172)]
+		private string _IntruderWarningSID = string.Empty;
 
-		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public bool IsCapturedInUpperSphere { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private bool _IsCapturedInUpperSphere;
 
-		[ContainerField(177), LayoutImmutable, Blittable, JsonProperty(Order = 177)]
-		public bool DisableWhenLosingControl { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(177), LayoutImmutable, Blittable, JsonProperty(Order = 177)]
+		private bool _DisableWhenLosingControl;
 
-		[ContainerField(178), LayoutImmutable, Blittable, JsonProperty(Order = 178)]
-		public bool LoseControlWhenNotClose { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(178), LayoutImmutable, Blittable, JsonProperty(Order = 178)]
+		private bool _LoseControlWhenNotClose;
 
-		[ContainerField(179), LayoutImmutable, Blittable, JsonProperty(Order = 179)]
-		public bool DisableIfEnemyInside { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(179), LayoutImmutable, Blittable, JsonProperty(Order = 179)]
+		private bool _DisableIfEnemyInside;
 
-		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
-		public bool IsVisible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		private bool _IsVisible;
 
-		[ContainerField(181), LayoutImmutable, Blittable, JsonProperty(Order = 181)]
-		public bool ForceSnap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(181), LayoutImmutable, Blittable, JsonProperty(Order = 181)]
+		private bool _ForceSnap;
 
-		[ContainerField(182), LayoutImmutable, Blittable, JsonProperty(Order = 182)]
-		public bool UseAreaValuesPerTeam { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(182), LayoutImmutable, Blittable, JsonProperty(Order = 182)]
+		private bool _UseAreaValuesPerTeam;
 
-		[ContainerField(183), LayoutImmutable, Blittable, JsonProperty(Order = 183)]
-		public bool IntruderWarning { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(183), LayoutImmutable, Blittable, JsonProperty(Order = 183)]
+		private bool _IntruderWarning;
 
-		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
-		public bool ShowOnMinimap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		private bool _ShowOnMinimap;
 
-		[ContainerField(185), LayoutImmutable, Blittable, JsonProperty(Order = 185)]
-		public bool HoistFlag { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(185), LayoutImmutable, Blittable, JsonProperty(Order = 185)]
+		private bool _HoistFlag;
 
-		[ContainerField(186), LayoutImmutable, Blittable, JsonProperty(Order = 186)]
-		public bool StartAtBottom { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(186), LayoutImmutable, Blittable, JsonProperty(Order = 186)]
+		private bool _StartAtBottom;
 
-		[ContainerField(187), LayoutImmutable, Blittable, JsonProperty(Order = 187)]
-		public bool RemoveWhenCaptured { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(187), LayoutImmutable, Blittable, JsonProperty(Order = 187)]
+		private bool _RemoveWhenCaptured;
 
-		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
-		public bool SeesawCapturing { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		private bool _SeesawCapturing;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

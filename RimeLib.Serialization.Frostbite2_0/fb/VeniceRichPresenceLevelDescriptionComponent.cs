@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 16)]
-	public class VeniceRichPresenceLevelDescriptionComponent :
+	public partial class VeniceRichPresenceLevelDescriptionComponent :
 		LevelDescriptionComponent
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<RichPresencePresenceString> PresenceMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<RichPresencePresenceString> _PresenceMode = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public List<RichPresenceContextSetting> ContextValues { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private List<RichPresenceContextSetting> _ContextValues = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

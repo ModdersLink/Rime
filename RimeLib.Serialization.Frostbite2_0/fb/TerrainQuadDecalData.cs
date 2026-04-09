@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class TerrainQuadDecalData :
+	public partial class TerrainQuadDecalData :
 		VisualVectorShapeData
 	{
-		[ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public Vec4 UserMasks { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private Vec4 _UserMasks = new();
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader3dZOnly { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private CtrRef<SurfaceShaderBaseAsset> _Shader3dZOnly = new();
 
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader2d { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private CtrRef<SurfaceShaderBaseAsset> _Shader2d = new();
 
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public CtrRef<TerrainQuadDecalAtlasTileTemplateData> AtlasTileTemplate { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private CtrRef<TerrainQuadDecalAtlasTileTemplateData> _AtlasTileTemplate = new();
 
-		[ContainerField(76), JsonProperty(Order = 76)]
-		public TerrainQuadDecalAtlasTile AtlasTile { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(76), JsonProperty(Order = 76)]
+		private TerrainQuadDecalAtlasTile _AtlasTile = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,84 +14,109 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 152)]
-	public class FireLogicData :
+	public partial class FireLogicData :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public HoldAndReleaseData HoldAndRelease { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private HoldAndReleaseData _HoldAndRelease = new();
 		
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public BoltActionData BoltAction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private BoltActionData _BoltAction = new();
 		
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public RecoilData Recoil { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private RecoilData _Recoil = new();
 		
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public EntryInputActionEnum FireInputAction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private EntryInputActionEnum _FireInputAction = new();
 		
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public EntryInputActionEnum ReloadInputAction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private EntryInputActionEnum _ReloadInputAction = new();
 		
-		[ContainerField(88), JsonProperty(Order = 88)]
-		public EntryInputActionEnum CycleFireModeInputAction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(88), JsonProperty(Order = 88)]
+		private EntryInputActionEnum _CycleFireModeInputAction = new();
 		
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public float TriggerPullWeight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private float _TriggerPullWeight;
 		
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public float RateOfFire { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private float _RateOfFire;
 		
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public float RateOfFireForBurst { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private float _RateOfFireForBurst;
 		
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public float ClientFireRateMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private float _ClientFireRateMultiplier;
 		
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public float ReloadDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private float _ReloadDelay;
 		
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public List<FireLogicType> FireLogicTypeArray { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private List<FireLogicType> _FireLogicTypeArray = new();
 		
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float ReloadThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _ReloadThreshold;
 		
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public float PreFireDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private float _PreFireDelay;
 		
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public float ReloadTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private float _ReloadTime;
 		
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public float ReloadTimeBulletsLeft { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private float _ReloadTimeBulletsLeft;
 		
-		[ContainerField(132), JsonProperty(Order = 132)]
-		public FireLogicType FireLogicType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(132), JsonProperty(Order = 132)]
+		private FireLogicType _FireLogicType = new();
 		
-		[ContainerField(136), JsonProperty(Order = 136)]
-		public ReloadLogic ReloadLogic { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(136), JsonProperty(Order = 136)]
+		private ReloadLogic _ReloadLogic = new();
 		
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public float AutomaticDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private float _AutomaticDelay;
 		
-		[ContainerField(144), JsonProperty(Order = 144)]
-		public ReloadType ReloadType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), JsonProperty(Order = 144)]
+		private ReloadType _ReloadType = new();
 		
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public bool HoldOffReloadUntilZoomRelease { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private bool _HoldOffReloadUntilZoomRelease;
 		
-		[ContainerField(149), LayoutImmutable, Blittable, JsonProperty(Order = 149)]
-		public bool ForceReloadActionOnFireTrigger { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(149), LayoutImmutable, Blittable, JsonProperty(Order = 149)]
+		private bool _ForceReloadActionOnFireTrigger;
 		
-		[ContainerField(150), LayoutImmutable, Blittable, JsonProperty(Order = 150)]
-		public bool HoldOffReloadUntilFireRelease { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(150), LayoutImmutable, Blittable, JsonProperty(Order = 150)]
+		private bool _HoldOffReloadUntilFireRelease;
 		
-		[ContainerField(151), LayoutImmutable, Blittable, JsonProperty(Order = 151)]
-		public bool AlwaysAutoReload { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(151), LayoutImmutable, Blittable, JsonProperty(Order = 151)]
+		private bool _AlwaysAutoReload;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

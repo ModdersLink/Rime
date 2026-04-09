@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class ScoringData :
+	public partial class ScoringData :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<ScoringTypeData> ScoringTypes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<ScoringTypeData> _ScoringTypes = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<ScoringHandlerData> ScoringHandlers { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<ScoringHandlerData> _ScoringHandlers = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<ScoringBucketData> Buckets { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<ScoringBucketData> _Buckets = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

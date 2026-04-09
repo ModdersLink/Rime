@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class LockingWeaponData :
+	public partial class LockingWeaponData :
 		WeaponData
 	{
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<LockingControllerData> LockingController { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<LockingControllerData> _LockingController = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<LockingControllerData> SecondaryLockingController { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<LockingControllerData> _SecondaryLockingController = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public WarnTarget WarnLock { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private WarnTarget _WarnLock = new();
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public bool IsHoming { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private bool _IsHoming;
 
-		[ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
-		public bool IsGuidedWhenZoomed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
+		private bool _IsGuidedWhenZoomed;
 
-		[ContainerField(30), LayoutImmutable, Blittable, JsonProperty(Order = 30)]
-		public bool FireOnlyWhenLockedOn { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(30), LayoutImmutable, Blittable, JsonProperty(Order = 30)]
+		private bool _FireOnlyWhenLockedOn;
 
-		[ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
-		public bool IsGuided { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
+		private bool _IsGuided;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

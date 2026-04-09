@@ -14,120 +14,157 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 288)]
-	public class SoldierEntityData :
+	public partial class SoldierEntityData :
 		CharacterEntityData
 	{
-		[ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public Vec3 FLIRKeyColor { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private Vec3 _FLIRKeyColor = new();
 
-		[ContainerField(176), JsonProperty(Order = 176)]
-		public CtrRef<MaterialContainerPair> HeadMaterialPair { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(176), JsonProperty(Order = 176)]
+		private CtrRef<MaterialContainerPair> _HeadMaterialPair = new();
 
-		[ContainerField(180), JsonProperty(Order = 180)]
-		public RefArray<BoneFakePhysicsData> BoneFakePhysics { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(180), JsonProperty(Order = 180)]
+		private RefArray<BoneFakePhysicsData> _BoneFakePhysics = new();
 
-		[ContainerField(184), JsonProperty(Order = 184)]
-		public CtrRef<SoldierAutoAimData> AutoAim { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(184), JsonProperty(Order = 184)]
+		private CtrRef<SoldierAutoAimData> _AutoAim = new();
 
-		[ContainerField(188), JsonProperty(Order = 188)]
-		public CtrRef<SoldierAimingConstraintsData> AimingConstraints { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(188), JsonProperty(Order = 188)]
+		private CtrRef<SoldierAimingConstraintsData> _AimingConstraints = new();
 
-		[ContainerField(192), JsonProperty(Order = 192)]
-		public CtrRef<SoldierHeadCollisionData> HeadCollision { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(192), JsonProperty(Order = 192)]
+		private CtrRef<SoldierHeadCollisionData> _HeadCollision = new();
 
-		[ContainerField(196), JsonProperty(Order = 196)]
-		public CtrRef<CharacterPhysicsData> CharacterPhysics { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(196), JsonProperty(Order = 196)]
+		private CtrRef<CharacterPhysicsData> _CharacterPhysics = new();
 
-		[ContainerField(200), JsonProperty(Order = 200)]
-		public CtrRef<MaterialContainerPair> FootMaterialPair { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(200), JsonProperty(Order = 200)]
+		private CtrRef<MaterialContainerPair> _FootMaterialPair = new();
 
-		[ContainerField(204), JsonProperty(Order = 204)]
-		public CtrRef<SoldierSprintSettingsData> SprintSettings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(204), JsonProperty(Order = 204)]
+		private CtrRef<SoldierSprintSettingsData> _SprintSettings = new();
 
-		[ContainerField(208), JsonProperty(Order = 208)]
-		public List<SoldierMeshData> Meshes1p { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(208), JsonProperty(Order = 208)]
+		private List<SoldierMeshData> _Meshes1p = new();
 
-		[ContainerField(212), JsonProperty(Order = 212)]
-		public List<SoldierMeshData> Meshes3p { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(212), JsonProperty(Order = 212)]
+		private List<SoldierMeshData> _Meshes3p = new();
 
-		[ContainerField(216), JsonProperty(Order = 216)]
-		public List<HidableSoldierMeshWeaponPart> HidableMeshParts { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(216), JsonProperty(Order = 216)]
+		private List<HidableSoldierMeshWeaponPart> _HidableMeshParts = new();
 
-		[ContainerField(220), JsonProperty(Order = 220)]
-		public CtrRef<SoldierSoundData> Sound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(220), JsonProperty(Order = 220)]
+		private CtrRef<SoldierSoundData> _Sound = new();
 
-		[ContainerField(224), JsonProperty(Order = 224)]
-		public CtrRef<StreamGroupData> StreamGroup1p { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(224), JsonProperty(Order = 224)]
+		private CtrRef<StreamGroupData> _StreamGroup1p = new();
 
-		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
-		public float ImpulseReactionTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		private float _ImpulseReactionTime;
 
-		[ContainerField(232), JsonProperty(Order = 232)]
-		public CtrRef<SoldierHealthModuleData> HealthModule { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(232), JsonProperty(Order = 232)]
+		private CtrRef<SoldierHealthModuleData> _HealthModule = new();
 
-		[ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
-		public float MaxHealth { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
+		private float _MaxHealth;
 
-		[ContainerField(240), JsonProperty(Order = 240)]
-		public CtrRef<CollisionData> CollisionInfo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(240), JsonProperty(Order = 240)]
+		private CtrRef<CollisionData> _CollisionInfo = new();
 
-		[ContainerField(244), JsonProperty(Order = 244)]
-		public CtrRef<EntityVoiceOverInfo> VoiceOverInfo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(244), JsonProperty(Order = 244)]
+		private CtrRef<EntityVoiceOverInfo> _VoiceOverInfo = new();
 
-		[ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
-		public float FLIRValue { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(248), LayoutImmutable, Blittable, JsonProperty(Order = 248)]
+		private float _FLIRValue;
 
-		[ContainerField(252), JsonProperty(Order = 252)]
-		public RefArray<BreathControlData> BreathControl { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(252), JsonProperty(Order = 252)]
+		private RefArray<BreathControlData> _BreathControl = new();
 
-		[ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
-		public float ExplosionDamageModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(256), LayoutImmutable, Blittable, JsonProperty(Order = 256)]
+		private float _ExplosionDamageModifier;
 
-		[ContainerField(260), JsonProperty(Order = 260)]
-		public RefArray<UIPartData> UIParts { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(260), JsonProperty(Order = 260)]
+		private RefArray<UIPartData> _UIParts = new();
 
-		[ContainerField(264), LayoutImmutable, Blittable, JsonProperty(Order = 264)]
-		public float RegenerationDelayModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(264), LayoutImmutable, Blittable, JsonProperty(Order = 264)]
+		private float _RegenerationDelayModifier;
 
-		[ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
-		public bool FreeSpaceCheck { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
+		private bool _FreeSpaceCheck;
 
-		[ContainerField(269), LayoutImmutable, Blittable, JsonProperty(Order = 269)]
-		public bool ProximityCheck { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(269), LayoutImmutable, Blittable, JsonProperty(Order = 269)]
+		private bool _ProximityCheck;
 
-		[ContainerField(270), LayoutImmutable, Blittable, JsonProperty(Order = 270)]
-		public bool EnableGroundmapLighting { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(270), LayoutImmutable, Blittable, JsonProperty(Order = 270)]
+		private bool _EnableGroundmapLighting;
 
-		[ContainerField(271), LayoutImmutable, Blittable, JsonProperty(Order = 271)]
-		public bool ShowWeaponWhenDead { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(271), LayoutImmutable, Blittable, JsonProperty(Order = 271)]
+		private bool _ShowWeaponWhenDead;
 
-		[ContainerField(272), LayoutImmutable, Blittable, JsonProperty(Order = 272)]
-		public bool LowerGunOnOwnTeam { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(272), LayoutImmutable, Blittable, JsonProperty(Order = 272)]
+		private bool _LowerGunOnOwnTeam;
 
-		[ContainerField(273), LayoutImmutable, Blittable, JsonProperty(Order = 273)]
-		public bool UseSpineXRotation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(273), LayoutImmutable, Blittable, JsonProperty(Order = 273)]
+		private bool _UseSpineXRotation;
 
-		[ContainerField(274), LayoutImmutable, Blittable, JsonProperty(Order = 274)]
-		public bool CollisionEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(274), LayoutImmutable, Blittable, JsonProperty(Order = 274)]
+		private bool _CollisionEnabled;
 
-		[ContainerField(275), LayoutImmutable, Blittable, JsonProperty(Order = 275)]
-		public bool PhysicsControlled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(275), LayoutImmutable, Blittable, JsonProperty(Order = 275)]
+		private bool _PhysicsControlled;
 
-		[ContainerField(276), LayoutImmutable, Blittable, JsonProperty(Order = 276)]
-		public bool IsPushable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(276), LayoutImmutable, Blittable, JsonProperty(Order = 276)]
+		private bool _IsPushable;
 
-		[ContainerField(277), LayoutImmutable, Blittable, JsonProperty(Order = 277)]
-		public bool HumanPlayerControlled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(277), LayoutImmutable, Blittable, JsonProperty(Order = 277)]
+		private bool _HumanPlayerControlled;
 
-		[ContainerField(278), LayoutImmutable, Blittable, JsonProperty(Order = 278)]
-		public bool InteractiveManDownAllowed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(278), LayoutImmutable, Blittable, JsonProperty(Order = 278)]
+		private bool _InteractiveManDownAllowed;
 
-		[ContainerField(279), LayoutImmutable, Blittable, JsonProperty(Order = 279)]
-		public bool ShowNametag { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(279), LayoutImmutable, Blittable, JsonProperty(Order = 279)]
+		private bool _ShowNametag;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class PhantomComponentData :
+	public partial class PhantomComponentData :
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public Vec3 BoxSize { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private Vec3 _BoxSize = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public AntRef AsyncQueryPointerAsset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private AntRef _AsyncQueryPointerAsset = new();
 
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public AntRef EnableTrajectoryOverride { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private AntRef _EnableTrajectoryOverride = new();
 
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public AntRef TrajectoryOverride { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private AntRef _TrajectoryOverride = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class ShootAtFromCoverData :
+	public partial class ShootAtFromCoverData :
 		EntityData
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public StrengthType StrengthType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private StrengthType _StrengthType = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public ShootType ShootType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private ShootType _ShootType = new();
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public bool CycleTargets { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private bool _CycleTargets;
 
-		[ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
-		public bool RandomTargetOrder { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
+		private bool _RandomTargetOrder;
 
-		[ContainerField(22), LayoutImmutable, Blittable, JsonProperty(Order = 22)]
-		public bool PreferAlternativeWeapon { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(22), LayoutImmutable, Blittable, JsonProperty(Order = 22)]
+		private bool _PreferAlternativeWeapon;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

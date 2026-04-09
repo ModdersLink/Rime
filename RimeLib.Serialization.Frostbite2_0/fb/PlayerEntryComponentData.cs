@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 224)]
-	public class PlayerEntryComponentData :
+	public partial class PlayerEntryComponentData :
 		EntryComponentData
 	{
-		[ContainerField(192), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public Vec3 AnimationAccelerationMultiplier { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(192), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private Vec3 _AnimationAccelerationMultiplier = new();
 
-		[ContainerField(208), JsonProperty(Order = 208)]
-		public AntEntryIdEnum AntEntryId { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(208), JsonProperty(Order = 208)]
+		private AntEntryIdEnum _AntEntryId = new();
 
-		[ContainerField(212), LayoutImmutable, JsonProperty(Order = 212)]
-		public string AntEntryID { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(212), LayoutImmutable, JsonProperty(Order = 212)]
+		private string _AntEntryID = string.Empty;
 
-		[ContainerField(216), JsonProperty(Order = 216)]
-		public CtrRef<AntEnumeration> AntEntryEnumeration { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(216), JsonProperty(Order = 216)]
+		private CtrRef<AntEnumeration> _AntEntryEnumeration = new();
 
-		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
-		public float ShieldedTransitionExitTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
+		private float _ShieldedTransitionExitTime;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

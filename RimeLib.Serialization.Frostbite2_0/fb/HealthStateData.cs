@@ -14,43 +14,54 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class HealthStateData :
+	public partial class HealthStateData :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public RefArray<GameObjectData> Objects { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private RefArray<GameObjectData> _Objects = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<NetworkableLoosePartPhysicsData> LoosePartPhysics { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<NetworkableLoosePartPhysicsData> _LoosePartPhysics = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<ObjectBlueprint> SpawnedBangerBlueprint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<ObjectBlueprint> _SpawnedBangerBlueprint = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<BangerSpawnImpulseParams> SpawnedBangerImpulseParams { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<BangerSpawnImpulseParams> _SpawnedBangerImpulseParams = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float Health { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _Health;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public uint PartIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private uint _PartIndex;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public bool PhysicsEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private bool _PhysicsEnabled;
 
-		[ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
-		public bool CopyDamageToBanger { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
+		private bool _CopyDamageToBanger;
 
-		[ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
-		public bool CanSupportOtherParts { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
+		private bool _CanSupportOtherParts;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			(RimeWriter Writer, uint ArrayIndex) s_Objects = p_EbxWriter.GetArrayWriter(Objects.GetType(), Objects.Count);
 			p_Writer.Write(s_Objects.ArrayIndex);
 			foreach (var s_Entry in Objects)

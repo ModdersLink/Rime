@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class SoundGraphInfo :
+	public partial class SoundGraphInfo :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public List<SoundGraphVoiceInfo> Voices { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private List<SoundGraphVoiceInfo> _Voices = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public List<SoundGraphLinkedPluginAttribute> LinkedPluginAttributes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private List<SoundGraphLinkedPluginAttribute> _LinkedPluginAttributes = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public List<SoundGraphPluginConnection> Connections { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private List<SoundGraphPluginConnection> _Connections = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public List<SoundGraphPluginConstructParam> ConstructParams { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private List<SoundGraphPluginConstructParam> _ConstructParams = new();
 		
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public uint PluginsParamCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private uint _PluginsParamCount;
 		
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public uint PluginCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private uint _PluginCount;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

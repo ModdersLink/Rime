@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class HitReactionComponentBinding :
+	public partial class HitReactionComponentBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef Hit { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _Hit = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef AllowKillFromAnimation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _AllowKillFromAnimation = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef Direction { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _Direction = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef FiringDistance { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _FiringDistance = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef BoneType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _BoneType = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef ImpactType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _ImpactType = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AntRef Immortal { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AntRef _Immortal = new();
 		
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public AntRef RandomAnimationIndex { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private AntRef _RandomAnimationIndex = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

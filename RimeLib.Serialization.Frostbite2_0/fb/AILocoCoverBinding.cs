@@ -14,66 +14,85 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 72)]
-	public class AILocoCoverBinding :
+	public partial class AILocoCoverBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef PrepareFire { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _PrepareFire = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef ThrowGrenade { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _ThrowGrenade = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef PeekOut { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _PeekOut = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef IdleBehindCover { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _IdleBehindCover = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef PeekType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _PeekType = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef CoverTypeEnum { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _CoverTypeEnum = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AntRef CoverFireStyle { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AntRef _CoverFireStyle = new();
 		
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public AntRef EnterCover { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private AntRef _EnterCover = new();
 		
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AntRef ExitCover { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AntRef _ExitCover = new();
 		
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public AntRef IsCloseCover { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private AntRef _IsCloseCover = new();
 		
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public AntRef DistanceScale { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private AntRef _DistanceScale = new();
 		
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public AntRef AbsoluteDistance { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private AntRef _AbsoluteDistance = new();
 		
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public AntRef AngleToNormal { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private AntRef _AngleToNormal = new();
 		
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public AntRef OutAngle { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private AntRef _OutAngle = new();
 		
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public AntRef ThreatAngle { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private AntRef _ThreatAngle = new();
 		
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public AntRef StopExitCoverOutAround { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private AntRef _StopExitCoverOutAround = new();
 		
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public AntRef EnterStrategy { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private AntRef _EnterStrategy = new();
 		
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public AntRef ExitStyle { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private AntRef _ExitStyle = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

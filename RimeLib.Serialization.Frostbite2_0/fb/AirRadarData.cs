@@ -14,60 +14,77 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class AirRadarData :
+	public partial class AirRadarData :
 		UIPartData
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float RadarRange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _RadarRange;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float RadarSensitivity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _RadarSensitivity;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float HeatSensitivity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _HeatSensitivity;
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public UIHudIcon MissileIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private UIHudIcon _MissileIcon = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public UIHudIcon CenterIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private UIHudIcon _CenterIcon = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public UIHudIcon FriendlyIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private UIHudIcon _FriendlyIcon = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public UIHudIcon EnemyIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private UIHudIcon _EnemyIcon = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public UIHudIcon LaserPaintedIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private UIHudIcon _LaserPaintedIcon = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public UIHudIcon NorthIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private UIHudIcon _NorthIcon = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public SubScreenData SubScreen { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private SubScreenData _SubScreen = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public UIHudIcon WestIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private UIHudIcon _WestIcon = new();
 
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public UIHudIcon SouthIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private UIHudIcon _SouthIcon = new();
 
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public UIHudIcon EastIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private UIHudIcon _EastIcon = new();
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public bool TrackLaserPaintedObjects { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private bool _TrackLaserPaintedObjects;
 
-		[ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
-		public bool TrackOnlyUsedVehicles { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
+		private bool _TrackOnlyUsedVehicles;
 
-		[ContainerField(126), LayoutImmutable, Blittable, JsonProperty(Order = 126)]
-		public bool UseCameraComponentTransform { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(126), LayoutImmutable, Blittable, JsonProperty(Order = 126)]
+		private bool _UseCameraComponentTransform;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

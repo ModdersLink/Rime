@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class DebugTextEntityData :
+	public partial class DebugTextEntityData :
 		SpatialEntityData
 	{
-		[ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public Vec3 TextColor { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private Vec3 _TextColor = new();
 
-		[ContainerField(96), LayoutImmutable, JsonProperty(Order = 96)]
-		public string DebugText { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, JsonProperty(Order = 96)]
+		private string _DebugText = string.Empty;
 
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private Realm _Realm = new();
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public float Scale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private float _Scale;
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public bool Visible { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private bool _Visible;
 
-		[ContainerField(109), LayoutImmutable, Blittable, JsonProperty(Order = 109)]
-		public bool Centered { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(109), LayoutImmutable, Blittable, JsonProperty(Order = 109)]
+		private bool _Centered;
 
-		[ContainerField(110), LayoutImmutable, Blittable, JsonProperty(Order = 110)]
-		public bool DepthTest { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(110), LayoutImmutable, Blittable, JsonProperty(Order = 110)]
+		private bool _DepthTest;
 
-		[ContainerField(111), LayoutImmutable, Blittable, JsonProperty(Order = 111)]
-		public bool ScaleWithDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(111), LayoutImmutable, Blittable, JsonProperty(Order = 111)]
+		private bool _ScaleWithDistance;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

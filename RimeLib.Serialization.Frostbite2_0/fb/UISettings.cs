@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class UISettings :
+	public partial class UISettings :
 		SystemSettings
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public UISystemType System { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private UISystemType _System = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<UIBundlesAsset> Bundles { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<UIBundlesAsset> _Bundles = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<ProfileOptionsAsset> ProfileOptions { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<ProfileOptionsAsset> _ProfileOptions = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public LanguageFormat Language { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private LanguageFormat _Language = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public DataCopSettings DataCop { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private DataCopSettings _DataCop = new();
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public bool OneBundlePerGraph { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private bool _OneBundlePerGraph;
 
-		[ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
-		public bool DrawEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
+		private bool _DrawEnable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

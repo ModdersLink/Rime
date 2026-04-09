@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class LogicalExpressionNodeData :
+	public partial class LogicalExpressionNodeData :
 		AudioGraphNodeData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public RefArray<LogicalExpressionEntry> Inputs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private RefArray<LogicalExpressionEntry> _Inputs = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AudioGraphNodePort Trigger { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AudioGraphNodePort _Trigger = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public LogicalExpressionOperator Operator { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private LogicalExpressionOperator _Operator = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

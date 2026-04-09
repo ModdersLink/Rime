@@ -14,55 +14,70 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class CriteriaData :
+	public partial class CriteriaData :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float CompletionValue { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _CompletionValue;
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<CriteriaGateList> GateList { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<CriteriaGateList> _GateList = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public StatEvent Measuring { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private StatEvent _Measuring = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<StatsCategoryBaseData> ParamX { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<StatsCategoryBaseData> _ParamX = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<StatsCategoryBaseData> ParamY { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<StatsCategoryBaseData> _ParamY = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public RefArray<StatsCategoryBaseData> OrParamsX { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private RefArray<StatsCategoryBaseData> _OrParamsX = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public CriteriaType CriteriaType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private CriteriaType _CriteriaType = new();
 
-		[ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
-		public string DescriptionSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
+		private string _DescriptionSid = string.Empty;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public float ScaleFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private float _ScaleFactor;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float Scale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _Scale;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public bool ShouldSummarize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private bool _ShouldSummarize;
 
-		[ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
-		public bool ShouldHide { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
+		private bool _ShouldHide;
 
-		[ContainerField(50), LayoutImmutable, Blittable, JsonProperty(Order = 50)]
-		public bool CountEvents { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(50), LayoutImmutable, Blittable, JsonProperty(Order = 50)]
+		private bool _CountEvents;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(CompletionValue);
 			p_Writer.Write(p_EbxWriter.WriteImport(GateList));
 			p_Writer.Write((int) Measuring);

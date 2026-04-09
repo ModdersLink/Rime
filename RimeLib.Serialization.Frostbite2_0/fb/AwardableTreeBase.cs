@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class AwardableTreeBase :
+	public partial class AwardableTreeBase :
 		TreeBase
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<StatCategoryTreeCollection> StatCategoryTreeCollection { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<StatCategoryTreeCollection> _StatCategoryTreeCollection = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<CriteriaData> GeneralCriteria { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<CriteriaData> _GeneralCriteria = new();
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public bool GeneralStatistics { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private bool _GeneralStatistics;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,111 +14,145 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 160)]
-	public class UISquadCompData :
+	public partial class UISquadCompData :
 		UIComponentData
 	{
-		[ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
-		public string Squad15 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, JsonProperty(Order = 28)]
+		private string _Squad15 = string.Empty;
 
-		[ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
-		public string Squad32 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, JsonProperty(Order = 32)]
+		private string _Squad32 = string.Empty;
 
-		[ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
-		public string Squad1 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, JsonProperty(Order = 36)]
+		private string _Squad1 = string.Empty;
 
-		[ContainerField(40), LayoutImmutable, JsonProperty(Order = 40)]
-		public string Squad2 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, JsonProperty(Order = 40)]
+		private string _Squad2 = string.Empty;
 
-		[ContainerField(44), LayoutImmutable, JsonProperty(Order = 44)]
-		public string Squad3 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, JsonProperty(Order = 44)]
+		private string _Squad3 = string.Empty;
 
-		[ContainerField(48), LayoutImmutable, JsonProperty(Order = 48)]
-		public string Squad4 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, JsonProperty(Order = 48)]
+		private string _Squad4 = string.Empty;
 
-		[ContainerField(52), LayoutImmutable, JsonProperty(Order = 52)]
-		public string Squad5 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, JsonProperty(Order = 52)]
+		private string _Squad5 = string.Empty;
 
-		[ContainerField(56), LayoutImmutable, JsonProperty(Order = 56)]
-		public string Squad6 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, JsonProperty(Order = 56)]
+		private string _Squad6 = string.Empty;
 
-		[ContainerField(60), LayoutImmutable, JsonProperty(Order = 60)]
-		public string Squad7 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, JsonProperty(Order = 60)]
+		private string _Squad7 = string.Empty;
 
-		[ContainerField(64), LayoutImmutable, JsonProperty(Order = 64)]
-		public string Squad8 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, JsonProperty(Order = 64)]
+		private string _Squad8 = string.Empty;
 
-		[ContainerField(68), LayoutImmutable, JsonProperty(Order = 68)]
-		public string Squad9 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, JsonProperty(Order = 68)]
+		private string _Squad9 = string.Empty;
 
-		[ContainerField(72), LayoutImmutable, JsonProperty(Order = 72)]
-		public string Squad10 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(72), LayoutImmutable, JsonProperty(Order = 72)]
+		private string _Squad10 = string.Empty;
 
-		[ContainerField(76), LayoutImmutable, JsonProperty(Order = 76)]
-		public string Squad11 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(76), LayoutImmutable, JsonProperty(Order = 76)]
+		private string _Squad11 = string.Empty;
 
-		[ContainerField(80), LayoutImmutable, JsonProperty(Order = 80)]
-		public string Squad12 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, JsonProperty(Order = 80)]
+		private string _Squad12 = string.Empty;
 
-		[ContainerField(84), LayoutImmutable, JsonProperty(Order = 84)]
-		public string Squad13 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, JsonProperty(Order = 84)]
+		private string _Squad13 = string.Empty;
 
-		[ContainerField(88), LayoutImmutable, JsonProperty(Order = 88)]
-		public string Squad14 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, JsonProperty(Order = 88)]
+		private string _Squad14 = string.Empty;
 
-		[ContainerField(92), LayoutImmutable, JsonProperty(Order = 92)]
-		public string Squad16 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, JsonProperty(Order = 92)]
+		private string _Squad16 = string.Empty;
 
-		[ContainerField(96), LayoutImmutable, JsonProperty(Order = 96)]
-		public string Squad24 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, JsonProperty(Order = 96)]
+		private string _Squad24 = string.Empty;
 
-		[ContainerField(100), LayoutImmutable, JsonProperty(Order = 100)]
-		public string Squad17 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, JsonProperty(Order = 100)]
+		private string _Squad17 = string.Empty;
 
-		[ContainerField(104), LayoutImmutable, JsonProperty(Order = 104)]
-		public string Squad18 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, JsonProperty(Order = 104)]
+		private string _Squad18 = string.Empty;
 
-		[ContainerField(108), LayoutImmutable, JsonProperty(Order = 108)]
-		public string Squad19 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, JsonProperty(Order = 108)]
+		private string _Squad19 = string.Empty;
 
-		[ContainerField(112), LayoutImmutable, JsonProperty(Order = 112)]
-		public string Squad20 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, JsonProperty(Order = 112)]
+		private string _Squad20 = string.Empty;
 
-		[ContainerField(116), LayoutImmutable, JsonProperty(Order = 116)]
-		public string Squad21 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, JsonProperty(Order = 116)]
+		private string _Squad21 = string.Empty;
 
-		[ContainerField(120), LayoutImmutable, JsonProperty(Order = 120)]
-		public string Squad22 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, JsonProperty(Order = 120)]
+		private string _Squad22 = string.Empty;
 
-		[ContainerField(124), LayoutImmutable, JsonProperty(Order = 124)]
-		public string Squad23 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, JsonProperty(Order = 124)]
+		private string _Squad23 = string.Empty;
 
-		[ContainerField(128), LayoutImmutable, JsonProperty(Order = 128)]
-		public string Squad31 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, JsonProperty(Order = 128)]
+		private string _Squad31 = string.Empty;
 
-		[ContainerField(132), LayoutImmutable, JsonProperty(Order = 132)]
-		public string Squad25 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, JsonProperty(Order = 132)]
+		private string _Squad25 = string.Empty;
 
-		[ContainerField(136), LayoutImmutable, JsonProperty(Order = 136)]
-		public string Squad26 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, JsonProperty(Order = 136)]
+		private string _Squad26 = string.Empty;
 
-		[ContainerField(140), LayoutImmutable, JsonProperty(Order = 140)]
-		public string Squad27 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, JsonProperty(Order = 140)]
+		private string _Squad27 = string.Empty;
 
-		[ContainerField(144), LayoutImmutable, JsonProperty(Order = 144)]
-		public string Squad28 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, JsonProperty(Order = 144)]
+		private string _Squad28 = string.Empty;
 
-		[ContainerField(148), LayoutImmutable, JsonProperty(Order = 148)]
-		public string Squad29 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, JsonProperty(Order = 148)]
+		private string _Squad29 = string.Empty;
 
-		[ContainerField(152), LayoutImmutable, JsonProperty(Order = 152)]
-		public string Squad30 { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, JsonProperty(Order = 152)]
+		private string _Squad30 = string.Empty;
 
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public bool HideLocalSquadBoostData { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private bool _HideLocalSquadBoostData;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

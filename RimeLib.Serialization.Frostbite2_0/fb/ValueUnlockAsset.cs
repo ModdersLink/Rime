@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class ValueUnlockAsset :
+	public partial class ValueUnlockAsset :
 		UnlockAssetBase
 	{
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public RefArray<UnlockValuePair> UnlockValues { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private RefArray<UnlockValuePair> _UnlockValues = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class AntAnimationHandlerData :
+	public partial class AntAnimationHandlerData :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntAnimatableData Animatable { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntAnimatableData _Animatable = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef RootController { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _RootController = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public LodBinding LodBinding { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private LodBinding _LodBinding = new();
 		
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public RefArray<AntPackageAsset> AntPackageData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private RefArray<AntPackageAsset> _AntPackageData = new();
 		
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public List<GameplayBone> BonesToMirror { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private List<GameplayBone> _BonesToMirror = new();
 		
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public bool ReportBackFromAnt { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private bool _ReportBackFromAnt;
 		
-		[ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
-		public bool EnableMasterSlaveCopy { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
+		private bool _EnableMasterSlaveCopy;
 		
-		[ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
-		public bool IsProp { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
+		private bool _IsProp;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

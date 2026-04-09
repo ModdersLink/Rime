@@ -14,34 +14,42 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class SoundWaveVariation :
+	public partial class SoundWaveVariation :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public List<SoundWaveSubtitle> Subtitles { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private List<SoundWaveSubtitle> _Subtitles = new();
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public uint SeekTablesSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private uint _SeekTablesSize;
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<SoundWaveVariationSegment> Segments { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<SoundWaveVariationSegment> _Segments = new();
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public sbyte ChunkIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private sbyte _ChunkIndex;
 
-		[ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
-		public sbyte FirstLoopSegmentIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
+		private sbyte _FirstLoopSegmentIndex;
 
-		[ContainerField(22), LayoutImmutable, Blittable, JsonProperty(Order = 22)]
-		public sbyte LastLoopSegmentIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(22), LayoutImmutable, Blittable, JsonProperty(Order = 22)]
+		private sbyte _LastLoopSegmentIndex;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			(RimeWriter Writer, uint ArrayIndex) s_Subtitles = p_EbxWriter.GetArrayWriter(Subtitles.GetType(), Subtitles.Count);
 			p_Writer.Write(s_Subtitles.ArrayIndex);
 			foreach (var s_Entry in Subtitles)

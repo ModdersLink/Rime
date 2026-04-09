@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class StatEventTriggerEntityData :
+	public partial class StatEventTriggerEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public StatEvent StatEvent { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private StatEvent _StatEvent = new();
 
-		[ContainerField(100), LayoutImmutable, JsonProperty(Order = 100)]
-		public string MiscParamX { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, JsonProperty(Order = 100)]
+		private string _MiscParamX = string.Empty;
 
-		[ContainerField(104), LayoutImmutable, JsonProperty(Order = 104)]
-		public string MiscParamY { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, JsonProperty(Order = 104)]
+		private string _MiscParamY = string.Empty;
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public bool SendToAll { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private bool _SendToAll;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

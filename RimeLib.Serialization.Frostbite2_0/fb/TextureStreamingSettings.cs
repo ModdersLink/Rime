@@ -14,145 +14,190 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 108)]
-	public class TextureStreamingSettings :
+	public partial class TextureStreamingSettings :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public float FadeMipmapTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private float _FadeMipmapTime;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float MipmapBias { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _MipmapBias;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public uint MaxTextureSizeKb { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private uint _MaxTextureSizeKb;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public uint MaxFrameTextureCreateCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private uint _MaxFrameTextureCreateCount;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public uint MaxPendingLoadCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private uint _MaxPendingLoadCount;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public uint MinMipmapCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private uint _MinMipmapCount;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public uint MaxMipmapCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private uint _MaxMipmapCount;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public uint XenonFinalPoolSizeAdjustment { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private uint _XenonFinalPoolSizeAdjustment;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public uint XenonRetailPoolSizeAdjustment { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private uint _XenonRetailPoolSizeAdjustment;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public uint PoolHeadroomSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private uint _PoolHeadroomSize;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public uint OnDemandPoolSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private uint _OnDemandPoolSize;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public uint ListViewPageIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private uint _ListViewPageIndex;
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public uint PoolSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private uint _PoolSize;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public int ForceMipmap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private int _ForceMipmap;
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public float PriorityThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private float _PriorityThreshold;
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public uint DefragFrameTransferLimit { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private uint _DefragFrameTransferLimit;
 
-		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
-		public uint MinTextureSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
+		private uint _MinTextureSize;
 
-		[ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
-		public uint MaxFrameTextureCreateSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(76), LayoutImmutable, Blittable, JsonProperty(Order = 76)]
+		private uint _MaxFrameTextureCreateSize;
 
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public bool OnlyWantedInPool { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private bool _OnlyWantedInPool;
 
-		[ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
-		public bool DxImmutableUsageEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(81), LayoutImmutable, Blittable, JsonProperty(Order = 81)]
+		private bool _DxImmutableUsageEnable;
 
-		[ContainerField(82), LayoutImmutable, Blittable, JsonProperty(Order = 82)]
-		public bool MipmapsEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(82), LayoutImmutable, Blittable, JsonProperty(Order = 82)]
+		private bool _MipmapsEnable;
 
-		[ContainerField(83), LayoutImmutable, Blittable, JsonProperty(Order = 83)]
-		public bool UploadMipmapsEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(83), LayoutImmutable, Blittable, JsonProperty(Order = 83)]
+		private bool _UploadMipmapsEnable;
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public bool TextureUpdateEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private bool _TextureUpdateEnable;
 
-		[ContainerField(85), LayoutImmutable, Blittable, JsonProperty(Order = 85)]
-		public bool AsyncCreatesEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(85), LayoutImmutable, Blittable, JsonProperty(Order = 85)]
+		private bool _AsyncCreatesEnable;
 
-		[ContainerField(86), LayoutImmutable, Blittable, JsonProperty(Order = 86)]
-		public bool LoadMipmapsEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(86), LayoutImmutable, Blittable, JsonProperty(Order = 86)]
+		private bool _LoadMipmapsEnable;
 
-		[ContainerField(87), LayoutImmutable, Blittable, JsonProperty(Order = 87)]
-		public bool ForceWantedEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(87), LayoutImmutable, Blittable, JsonProperty(Order = 87)]
+		private bool _ForceWantedEnable;
 
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public bool UpdateEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private bool _UpdateEnable;
 
-		[ContainerField(89), LayoutImmutable, Blittable, JsonProperty(Order = 89)]
-		public bool PoolEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(89), LayoutImmutable, Blittable, JsonProperty(Order = 89)]
+		private bool _PoolEnable;
 
-		[ContainerField(90), LayoutImmutable, Blittable, JsonProperty(Order = 90)]
-		public bool DefragEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(90), LayoutImmutable, Blittable, JsonProperty(Order = 90)]
+		private bool _DefragEnable;
 
-		[ContainerField(91), LayoutImmutable, Blittable, JsonProperty(Order = 91)]
-		public bool DefragTransfersEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(91), LayoutImmutable, Blittable, JsonProperty(Order = 91)]
+		private bool _DefragTransfersEnable;
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public bool ChunkLoadEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private bool _ChunkLoadEnable;
 
-		[ContainerField(93), LayoutImmutable, Blittable, JsonProperty(Order = 93)]
-		public bool InstantUnloadingEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(93), LayoutImmutable, Blittable, JsonProperty(Order = 93)]
+		private bool _InstantUnloadingEnable;
 
-		[ContainerField(94), LayoutImmutable, Blittable, JsonProperty(Order = 94)]
-		public bool FadeMipmapsEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(94), LayoutImmutable, Blittable, JsonProperty(Order = 94)]
+		private bool _FadeMipmapsEnable;
 
-		[ContainerField(95), LayoutImmutable, Blittable, JsonProperty(Order = 95)]
-		public bool DynamicLoadingEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(95), LayoutImmutable, Blittable, JsonProperty(Order = 95)]
+		private bool _DynamicLoadingEnable;
 
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public bool Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private bool _Enable;
 
-		[ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
-		public bool DrawStatsEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
+		private bool _DrawStatsEnable;
 
-		[ContainerField(98), LayoutImmutable, Blittable, JsonProperty(Order = 98)]
-		public bool DrawTextureGroupStatsEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(98), LayoutImmutable, Blittable, JsonProperty(Order = 98)]
+		private bool _DrawTextureGroupStatsEnable;
 
-		[ContainerField(99), LayoutImmutable, Blittable, JsonProperty(Order = 99)]
-		public bool DrawTextureFormatStatsEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(99), LayoutImmutable, Blittable, JsonProperty(Order = 99)]
+		private bool _DrawTextureFormatStatsEnable;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public bool DrawLoadingListEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private bool _DrawLoadingListEnable;
 
-		[ContainerField(101), LayoutImmutable, Blittable, JsonProperty(Order = 101)]
-		public bool DrawPriorityListEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(101), LayoutImmutable, Blittable, JsonProperty(Order = 101)]
+		private bool _DrawPriorityListEnable;
 
-		[ContainerField(102), LayoutImmutable, Blittable, JsonProperty(Order = 102)]
-		public bool OverridePoolSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(102), LayoutImmutable, Blittable, JsonProperty(Order = 102)]
+		private bool _OverridePoolSize;
 
-		[ContainerField(103), LayoutImmutable, Blittable, JsonProperty(Order = 103)]
-		public bool DumpLoadedList { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(103), LayoutImmutable, Blittable, JsonProperty(Order = 103)]
+		private bool _DumpLoadedList;
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public bool UseConditionalStreaming { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private bool _UseConditionalStreaming;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(FadeMipmapTime);
 			p_Writer.Write(MipmapBias);
 			p_Writer.Write(MaxTextureSizeKb);

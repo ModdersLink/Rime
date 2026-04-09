@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class TimingConstantData :
+	public partial class TimingConstantData :
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float UpdateTimePerFrame { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _UpdateTimePerFrame;
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public SubsystemTimingConfigData SubsystemTimeParts { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private SubsystemTimingConfigData _SubsystemTimeParts = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public RefArray<BotPriorityConfigData> PriorityClasses { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private RefArray<BotPriorityConfigData> _PriorityClasses = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

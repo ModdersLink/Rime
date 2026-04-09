@@ -14,22 +14,26 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class PersistentValueTemplate :
+	public partial class PersistentValueTemplate :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public PersistentValueTemplateData Data { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private PersistentValueTemplateData _Data = new();
 
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public RefArray<AbstractPersistentStatRef> DerivedFormulaRefs { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private RefArray<AbstractPersistentStatRef> _DerivedFormulaRefs = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			Data.Serialize(p_Writer, p_EbxWriter);
 			(RimeWriter Writer, uint ArrayIndex) s_DerivedFormulaRefs = p_EbxWriter.GetArrayWriter(DerivedFormulaRefs.GetType(), DerivedFormulaRefs.Count);
 			p_Writer.Write(s_DerivedFormulaRefs.ArrayIndex);

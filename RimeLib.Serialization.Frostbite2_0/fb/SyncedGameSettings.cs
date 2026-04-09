@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class SyncedGameSettings :
+	public partial class SyncedGameSettings :
 		SystemSettings
 	{
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float MaxAllowedLatency { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _MaxAllowedLatency;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float ManDownTimeModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _ManDownTimeModifier;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float BulletDamageModifier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _BulletDamageModifier;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public uint DifficultyIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private uint _DifficultyIndex;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public bool DisableRegenerateHealth { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private bool _DisableRegenerateHealth;
 
-		[ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
-		public bool EnableFriendlyFire { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
+		private bool _EnableFriendlyFire;
 
-		[ContainerField(30), LayoutImmutable, Blittable, JsonProperty(Order = 30)]
-		public bool AllowClientSideDamageArbitration { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(30), LayoutImmutable, Blittable, JsonProperty(Order = 30)]
+		private bool _AllowClientSideDamageArbitration;
 
-		[ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
-		public bool DisableToggleEntryCamera { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
+		private bool _DisableToggleEntryCamera;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

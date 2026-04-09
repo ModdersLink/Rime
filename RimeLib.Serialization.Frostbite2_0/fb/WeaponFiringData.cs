@@ -14,60 +14,77 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class WeaponFiringData :
+	public partial class WeaponFiringData :
 		GameDataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<FiringFunctionData> PrimaryFire { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<FiringFunctionData> _PrimaryFire = new();
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float DeployTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _DeployTime;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float ReactivateCooldownTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _ReactivateCooldownTime;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float DisableZoomOnDeployTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _DisableZoomOnDeployTime;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float AltDeployTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _AltDeployTime;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public int AltDeployId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private int _AltDeployId;
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public CtrRef<WeaponSwayData> WeaponSway { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private CtrRef<WeaponSwayData> _WeaponSway = new();
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float SupportDelayProne { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _SupportDelayProne;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public float SupportDelayStand { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private float _SupportDelayStand;
 
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public RumbleFiringData Rumble { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private RumbleFiringData _Rumble = new();
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public bool InflictSelfDamage { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private bool _InflictSelfDamage;
 
-		[ContainerField(57), LayoutImmutable, Blittable, JsonProperty(Order = 57)]
-		public bool UseAutoAiming { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(57), LayoutImmutable, Blittable, JsonProperty(Order = 57)]
+		private bool _UseAutoAiming;
 
-		[ContainerField(58), LayoutImmutable, Blittable, JsonProperty(Order = 58)]
-		public bool ShowEnemyNametagOnAim { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(58), LayoutImmutable, Blittable, JsonProperty(Order = 58)]
+		private bool _ShowEnemyNametagOnAim;
 
-		[ContainerField(59), LayoutImmutable, Blittable, JsonProperty(Order = 59)]
-		public bool ReloadWholeMags { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(59), LayoutImmutable, Blittable, JsonProperty(Order = 59)]
+		private bool _ReloadWholeMags;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public bool DisableReloadWhileSprinting { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private bool _DisableReloadWhileSprinting;
 
-		[ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
-		public bool AbortReloadOnSprint { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
+		private bool _AbortReloadOnSprint;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

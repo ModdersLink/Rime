@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 76)]
-	public class GunSwayBaseMoveData :
+	public partial class GunSwayBaseMoveData :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public GunSwayDispersionData BaseValue { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private GunSwayDispersionData _BaseValue = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public GunSwayDispersionData Moving { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private GunSwayDispersionData _Moving = new();
 		
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public GunSwayRecoilData Recoil { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private GunSwayRecoilData _Recoil = new();
 		
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public GunSwayLagData GunSwayLag { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private GunSwayLagData _GunSwayLag = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

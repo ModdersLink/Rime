@@ -14,71 +14,90 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class AlternateCameraViewData :
+	public partial class AlternateCameraViewData :
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 MeshOffset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _MeshOffset = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public HudData Hud { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private HudData _Hud = new();
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public float FieldOfView { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private float _FieldOfView;
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public float WorldSpaceLockEfficiency { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private float _WorldSpaceLockEfficiency;
 
-		[ContainerField(108), JsonProperty(Order = 108)]
-		public CtrRef<RigidMeshAsset> Mesh { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(108), JsonProperty(Order = 108)]
+		private CtrRef<RigidMeshAsset> _Mesh = new();
 
-		[ContainerField(112), JsonProperty(Order = 112)]
-		public CtrRef<ObjectBlueprint> MaskMeshBlueprint { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), JsonProperty(Order = 112)]
+		private CtrRef<ObjectBlueprint> _MaskMeshBlueprint = new();
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float FadeInDuration { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _FadeInDuration;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public float FovTransitionTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private float _FovTransitionTime;
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public float BlackDuration { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private float _BlackDuration;
 
-		[ContainerField(128), JsonProperty(Order = 128)]
-		public InputSuppressionData InputSuppression { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(128), JsonProperty(Order = 128)]
+		private InputSuppressionData _InputSuppression = new();
 
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public float ScreenExposureAreaScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private float _ScreenExposureAreaScale;
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public float FadeOutDuration { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private float _FadeOutDuration;
 
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public bool AllowFieldOfViewScaling { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private bool _AllowFieldOfViewScaling;
 
-		[ContainerField(141), LayoutImmutable, Blittable, JsonProperty(Order = 141)]
-		public bool LockMeshToRenderView { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(141), LayoutImmutable, Blittable, JsonProperty(Order = 141)]
+		private bool _LockMeshToRenderView;
 
-		[ContainerField(142), LayoutImmutable, Blittable, JsonProperty(Order = 142)]
-		public bool ToggleViewChange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(142), LayoutImmutable, Blittable, JsonProperty(Order = 142)]
+		private bool _ToggleViewChange;
 
-		[ContainerField(143), LayoutImmutable, Blittable, JsonProperty(Order = 143)]
-		public bool UseProfileOptionForToggleViewChange { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(143), LayoutImmutable, Blittable, JsonProperty(Order = 143)]
+		private bool _UseProfileOptionForToggleViewChange;
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public bool FLIREnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private bool _FLIREnabled;
 
-		[ContainerField(145), LayoutImmutable, Blittable, JsonProperty(Order = 145)]
-		public bool FadeToBlack { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(145), LayoutImmutable, Blittable, JsonProperty(Order = 145)]
+		private bool _FadeToBlack;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
-			p_Writer.WriteNullBytes(8);
+			p_Writer.WriteNullBytes(16);
 			MeshOffset.Serialize(p_Writer, p_EbxWriter);
 			Hud.Serialize(p_Writer, p_EbxWriter);
 			p_Writer.Write(FieldOfView);

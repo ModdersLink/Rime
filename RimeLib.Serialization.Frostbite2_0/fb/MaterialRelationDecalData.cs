@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class MaterialRelationDecalData :
+	public partial class MaterialRelationDecalData :
 		PhysicsMaterialRelationPropertyData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<DecalTemplateData> Decal { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<DecalTemplateData> _Decal = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

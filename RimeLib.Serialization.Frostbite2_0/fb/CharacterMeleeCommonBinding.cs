@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class CharacterMeleeCommonBinding :
+	public partial class CharacterMeleeCommonBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef MeleeDistance { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _MeleeDistance = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef MeleeAngle { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _MeleeAngle = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef MeleeDefenceTime { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _MeleeDefenceTime = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef MeleeSequenceTime { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _MeleeSequenceTime = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef MeleeAborted { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _MeleeAborted = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef CloseToTarget { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _CloseToTarget = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AntRef MeleeType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AntRef _MeleeType = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

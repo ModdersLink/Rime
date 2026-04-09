@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class StatsCategoryScoreboardPositionData :
+	public partial class StatsCategoryScoreboardPositionData :
 		StatsCategoryBaseData
 	{
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public List<ScoreboardPosition> Positions { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private List<ScoreboardPosition> _Positions = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

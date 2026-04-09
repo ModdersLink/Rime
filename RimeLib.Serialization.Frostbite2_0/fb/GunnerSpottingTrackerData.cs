@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class GunnerSpottingTrackerData :
+	public partial class GunnerSpottingTrackerData :
 		HudTrackerData
 	{
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public UIHudIcon SpottedInfantryIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private UIHudIcon _SpottedInfantryIcon = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public UIHudIcon SpottedVehicleIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private UIHudIcon _SpottedVehicleIcon = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

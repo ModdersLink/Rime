@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 96)]
-	public class MeshProxyEntityData :
+	public partial class MeshProxyEntityData :
 		SpatialEntityData
 	{
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public CtrRef<MeshAsset> Mesh { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private CtrRef<MeshAsset> _Mesh = new();
 
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public List<LinearTransform> BasePoseTransforms { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private List<LinearTransform> _BasePoseTransforms = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

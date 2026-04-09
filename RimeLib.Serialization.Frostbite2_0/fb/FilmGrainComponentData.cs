@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class FilmGrainComponentData :
+	public partial class FilmGrainComponentData :
 		ComponentData
 	{
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public Vec3 ColorScale { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private Vec3 _ColorScale = new();
 
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public Vec2 TextureScale { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private Vec2 _TextureScale = new();
 
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private Realm _Realm = new();
 
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public CtrRef<TextureAsset> Texture { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private CtrRef<TextureAsset> _Texture = new();
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public bool LinearFilteringEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private bool _LinearFilteringEnable;
 
-		[ContainerField(129), LayoutImmutable, Blittable, JsonProperty(Order = 129)]
-		public bool RandomEnable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(129), LayoutImmutable, Blittable, JsonProperty(Order = 129)]
+		private bool _RandomEnable;
 
-		[ContainerField(130), LayoutImmutable, Blittable, JsonProperty(Order = 130)]
-		public bool Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(130), LayoutImmutable, Blittable, JsonProperty(Order = 130)]
+		private bool _Enable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

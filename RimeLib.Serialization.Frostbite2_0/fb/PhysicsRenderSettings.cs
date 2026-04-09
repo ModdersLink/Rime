@@ -14,127 +14,166 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class PhysicsRenderSettings :
+	public partial class PhysicsRenderSettings :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public int RenderSpecificPart { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private int _RenderSpecificPart;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public float ViewDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private float _ViewDistance;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public bool RenderClient { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private bool _RenderClient;
 
-		[ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
-		public bool RenderEffectWorld { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
+		private bool _RenderEffectWorld;
 
-		[ContainerField(18), LayoutImmutable, Blittable, JsonProperty(Order = 18)]
-		public bool RenderDetail { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(18), LayoutImmutable, Blittable, JsonProperty(Order = 18)]
+		private bool _RenderDetail;
 
-		[ContainerField(19), LayoutImmutable, Blittable, JsonProperty(Order = 19)]
-		public bool RenderStatic { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(19), LayoutImmutable, Blittable, JsonProperty(Order = 19)]
+		private bool _RenderStatic;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public bool RenderUngrouped { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private bool _RenderUngrouped;
 
-		[ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
-		public bool RenderRagdoll { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(21), LayoutImmutable, Blittable, JsonProperty(Order = 21)]
+		private bool _RenderRagdoll;
 
-		[ContainerField(22), LayoutImmutable, Blittable, JsonProperty(Order = 22)]
-		public bool RenderGroup { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(22), LayoutImmutable, Blittable, JsonProperty(Order = 22)]
+		private bool _RenderGroup;
 
-		[ContainerField(23), LayoutImmutable, Blittable, JsonProperty(Order = 23)]
-		public bool RenderPhantoms { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(23), LayoutImmutable, Blittable, JsonProperty(Order = 23)]
+		private bool _RenderPhantoms;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public bool RenderCharacterCollision { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private bool _RenderCharacterCollision;
 
-		[ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
-		public bool RenderWater { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
+		private bool _RenderWater;
 
-		[ContainerField(26), LayoutImmutable, Blittable, JsonProperty(Order = 26)]
-		public bool RenderSolidGeometry { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(26), LayoutImmutable, Blittable, JsonProperty(Order = 26)]
+		private bool _RenderSolidGeometry;
 
-		[ContainerField(27), LayoutImmutable, Blittable, JsonProperty(Order = 27)]
-		public bool UseShapeCache { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(27), LayoutImmutable, Blittable, JsonProperty(Order = 27)]
+		private bool _UseShapeCache;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public bool RenderConstraints { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private bool _RenderConstraints;
 
-		[ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
-		public bool RenderOnlyContactConstraints { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(29), LayoutImmutable, Blittable, JsonProperty(Order = 29)]
+		private bool _RenderOnlyContactConstraints;
 
-		[ContainerField(30), LayoutImmutable, Blittable, JsonProperty(Order = 30)]
-		public bool RenderConstraintCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(30), LayoutImmutable, Blittable, JsonProperty(Order = 30)]
+		private bool _RenderConstraintCount;
 
-		[ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
-		public bool RenderActiveConstraintCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(31), LayoutImmutable, Blittable, JsonProperty(Order = 31)]
+		private bool _RenderActiveConstraintCount;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public bool RenderSimulationIslands { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private bool _RenderSimulationIslands;
 
-		[ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
-		public bool RenderBroadphaseHandles { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(33), LayoutImmutable, Blittable, JsonProperty(Order = 33)]
+		private bool _RenderBroadphaseHandles;
 
-		[ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
-		public bool RenderDestructionConnections { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(34), LayoutImmutable, Blittable, JsonProperty(Order = 34)]
+		private bool _RenderDestructionConnections;
 
-		[ContainerField(35), LayoutImmutable, Blittable, JsonProperty(Order = 35)]
-		public bool RenderPartBoundingBoxes { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(35), LayoutImmutable, Blittable, JsonProperty(Order = 35)]
+		private bool _RenderPartBoundingBoxes;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public bool RenderOnlyBoundingBoxes { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private bool _RenderOnlyBoundingBoxes;
 
-		[ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
-		public bool RenderInertia { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(37), LayoutImmutable, Blittable, JsonProperty(Order = 37)]
+		private bool _RenderInertia;
 
-		[ContainerField(38), LayoutImmutable, Blittable, JsonProperty(Order = 38)]
-		public bool RenderCenterOfMass { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(38), LayoutImmutable, Blittable, JsonProperty(Order = 38)]
+		private bool _RenderCenterOfMass;
 
-		[ContainerField(39), LayoutImmutable, Blittable, JsonProperty(Order = 39)]
-		public bool RenderLinearVelocity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(39), LayoutImmutable, Blittable, JsonProperty(Order = 39)]
+		private bool _RenderLinearVelocity;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public bool RenderCollidesWithTerrain { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private bool _RenderCollidesWithTerrain;
 
-		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
-		public bool RenderCollisionSpheres { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
+		private bool _RenderCollisionSpheres;
 
-		[ContainerField(42), LayoutImmutable, Blittable, JsonProperty(Order = 42)]
-		public bool RenderEntityStats { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(42), LayoutImmutable, Blittable, JsonProperty(Order = 42)]
+		private bool _RenderEntityStats;
 
-		[ContainerField(43), LayoutImmutable, Blittable, JsonProperty(Order = 43)]
-		public bool RenderWorldStats { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(43), LayoutImmutable, Blittable, JsonProperty(Order = 43)]
+		private bool _RenderWorldStats;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public bool ShowContactsInWorldStats { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private bool _ShowContactsInWorldStats;
 
-		[ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
-		public bool ShowInactiveContactsInWorldStats { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
+		private bool _ShowInactiveContactsInWorldStats;
 
-		[ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
-		public bool ShowPhantomsInWorldStats { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
+		private bool _ShowPhantomsInWorldStats;
 
-		[ContainerField(47), LayoutImmutable, Blittable, JsonProperty(Order = 47)]
-		public bool ShowFixedObjectsInWorldStats { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(47), LayoutImmutable, Blittable, JsonProperty(Order = 47)]
+		private bool _ShowFixedObjectsInWorldStats;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public bool RenderMemoryUsed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private bool _RenderMemoryUsed;
 
-		[ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
-		public bool CollisionSpawnDebug { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(49), LayoutImmutable, Blittable, JsonProperty(Order = 49)]
+		private bool _CollisionSpawnDebug;
 
-		[ContainerField(50), LayoutImmutable, Blittable, JsonProperty(Order = 50)]
-		public bool RenderServer { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(50), LayoutImmutable, Blittable, JsonProperty(Order = 50)]
+		private bool _RenderServer;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(RenderSpecificPart);
 			p_Writer.Write(ViewDistance);
 			p_Writer.Write(RenderClient);

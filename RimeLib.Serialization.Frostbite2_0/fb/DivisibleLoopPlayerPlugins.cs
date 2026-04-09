@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(1, 12)]
-	public class DivisibleLoopPlayerPlugins :
+	public partial class DivisibleLoopPlayerPlugins :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public SoundGraphPluginRef SndPlayer { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private SoundGraphPluginRef _SndPlayer = new();
 		
-		[ContainerField(3), JsonProperty(Order = 3)]
-		public SoundGraphPluginRef Pause { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(3), JsonProperty(Order = 3)]
+		private SoundGraphPluginRef _Pause = new();
 		
-		[ContainerField(6), JsonProperty(Order = 6)]
-		public SoundGraphPluginRef Gain { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(6), JsonProperty(Order = 6)]
+		private SoundGraphPluginRef _Gain = new();
 		
-		[ContainerField(9), JsonProperty(Order = 9)]
-		public SoundGraphPluginRef GainFader { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(9), JsonProperty(Order = 9)]
+		private SoundGraphPluginRef _GainFader = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

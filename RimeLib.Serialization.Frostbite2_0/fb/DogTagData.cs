@@ -14,42 +14,53 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class DogTagData :
+	public partial class DogTagData :
 		UnlockAssetBase
 	{
-		[ContainerField(40), LayoutImmutable, JsonProperty(Order = 40)]
-		public string NameSID { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, JsonProperty(Order = 40)]
+		private string _NameSID = string.Empty;
 
-		[ContainerField(44), LayoutImmutable, JsonProperty(Order = 44)]
-		public string DescriptionSID { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, JsonProperty(Order = 44)]
+		private string _DescriptionSID = string.Empty;
 
-		[ContainerField(48), LayoutImmutable, JsonProperty(Order = 48)]
-		public string ImageName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, JsonProperty(Order = 48)]
+		private string _ImageName = string.Empty;
 
-		[ContainerField(52), LayoutImmutable, JsonProperty(Order = 52)]
-		public string SmallImageName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, JsonProperty(Order = 52)]
+		private string _SmallImageName = string.Empty;
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public DogTagCategory Category { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private DogTagCategory _Category = new();
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public bool InvertText { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private bool _InvertText;
 
-		[ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
-		public bool IsAlwaysAvailable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
+		private bool _IsAlwaysAvailable;
 
-		[ContainerField(62), LayoutImmutable, Blittable, JsonProperty(Order = 62)]
-		public bool ExcludedOnXenon { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(62), LayoutImmutable, Blittable, JsonProperty(Order = 62)]
+		private bool _ExcludedOnXenon;
 
-		[ContainerField(63), LayoutImmutable, Blittable, JsonProperty(Order = 63)]
-		public bool ExcludedOnPs3 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(63), LayoutImmutable, Blittable, JsonProperty(Order = 63)]
+		private bool _ExcludedOnPs3;
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public bool ExcludedOnWin32 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private bool _ExcludedOnWin32;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

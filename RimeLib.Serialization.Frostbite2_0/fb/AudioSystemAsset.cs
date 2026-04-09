@@ -14,54 +14,69 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class AudioSystemAsset :
+	public partial class AudioSystemAsset :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<SoundMasterPatchAsset> MasterPatch { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<SoundMasterPatchAsset> _MasterPatch = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<SoundWaveAsset> DefaultWave { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<SoundWaveAsset> _DefaultWave = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<StreamPoolAsset> StreamPools { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<StreamPoolAsset> _StreamPools = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public uint SampleRate { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private uint _SampleRate;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float SoundSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _SoundSpeed;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float DopplerFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _DopplerFactor;
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public CtrRef<SoundTestAsset> Tests { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private CtrRef<SoundTestAsset> _Tests = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public CtrRef<MixerSystemAsset> MixerSystem { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private CtrRef<MixerSystemAsset> _MixerSystem = new();
 
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public RefArray<AudioLanguage> Languages { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private RefArray<AudioLanguage> _Languages = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public RefArray<AudioLanguageSetting> LanguageSettings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private RefArray<AudioLanguageSetting> _LanguageSettings = new();
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public CtrRef<AudioLanguage> DefaultLanguage { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private CtrRef<AudioLanguage> _DefaultLanguage = new();
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public RefArray<SoundScopeData> Scopes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private RefArray<SoundScopeData> _Scopes = new();
 
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public RefArray<SoundScopeStrategyData> ScopeStrategies { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private RefArray<SoundScopeStrategyData> _ScopeStrategies = new();
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public RefArray<SoundScopeSetupData> ScopeSetups { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private RefArray<SoundScopeSetupData> _ScopeSetups = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

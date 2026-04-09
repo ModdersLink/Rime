@@ -14,84 +14,109 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class ModelAnimationEntityData :
+	public partial class ModelAnimationEntityData :
 		EntityData
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public LinearTransform AnimationEntitySpace { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private LinearTransform _AnimationEntitySpace = new();
 
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public GameplayBones BoneToPlace { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private GameplayBones _BoneToPlace = new();
 
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public Realm Realm { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private Realm _Realm = new();
 
-		[ContainerField(88), JsonProperty(Order = 88)]
-		public ModelAnimationTransformType ModelAnimationTransformType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(88), JsonProperty(Order = 88)]
+		private ModelAnimationTransformType _ModelAnimationTransformType = new();
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public int InstanceSeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private int _InstanceSeed;
 
-		[ContainerField(96), LayoutImmutable, JsonProperty(Order = 96)]
-		public string DefaultAnimation { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, JsonProperty(Order = 96)]
+		private string _DefaultAnimation = string.Empty;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public int AnimationIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private int _AnimationIndex;
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public CtrRef<AntAnimationSetAsset> AnimationSet { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private CtrRef<AntAnimationSetAsset> _AnimationSet = new();
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public float ExternalTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private float _ExternalTime;
 
-		[ContainerField(112), LayoutImmutable, JsonProperty(Order = 112)]
-		public string RootMeshBoneName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, JsonProperty(Order = 112)]
+		private string _RootMeshBoneName = string.Empty;
 
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public ModelAnimationUpdateOrder JointWorldTransformUpdateOrder { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private ModelAnimationUpdateOrder _JointWorldTransformUpdateOrder = new();
 
-		[ContainerField(120), LayoutImmutable, JsonProperty(Order = 120)]
-		public string ConnectBoneName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, JsonProperty(Order = 120)]
+		private string _ConnectBoneName = string.Empty;
 
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public List<int> JointOutputPropertyIds { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private List<int> _JointOutputPropertyIds = new();
 
-		[ContainerField(128), LayoutImmutable, JsonProperty(Order = 128)]
-		public string TrajectoryBoneName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, JsonProperty(Order = 128)]
+		private string _TrajectoryBoneName = string.Empty;
 
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public bool AnimationEntitySpaceActive { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private bool _AnimationEntitySpaceActive;
 
-		[ContainerField(133), LayoutImmutable, Blittable, JsonProperty(Order = 133)]
-		public bool PlayFirstFrame { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(133), LayoutImmutable, Blittable, JsonProperty(Order = 133)]
+		private bool _PlayFirstFrame;
 
-		[ContainerField(134), LayoutImmutable, Blittable, JsonProperty(Order = 134)]
-		public bool Looping { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(134), LayoutImmutable, Blittable, JsonProperty(Order = 134)]
+		private bool _Looping;
 
-		[ContainerField(135), LayoutImmutable, Blittable, JsonProperty(Order = 135)]
-		public bool EnableJointWorldTransformOutput { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(135), LayoutImmutable, Blittable, JsonProperty(Order = 135)]
+		private bool _EnableJointWorldTransformOutput;
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public bool ResetAfterStop { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private bool _ResetAfterStop;
 
-		[ContainerField(137), LayoutImmutable, Blittable, JsonProperty(Order = 137)]
-		public bool AutoStart { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(137), LayoutImmutable, Blittable, JsonProperty(Order = 137)]
+		private bool _AutoStart;
 
-		[ContainerField(138), LayoutImmutable, Blittable, JsonProperty(Order = 138)]
-		public bool ShowDebugTransforms { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(138), LayoutImmutable, Blittable, JsonProperty(Order = 138)]
+		private bool _ShowDebugTransforms;
 
-		[ContainerField(139), LayoutImmutable, Blittable, JsonProperty(Order = 139)]
-		public bool ApplyRotationCompensation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(139), LayoutImmutable, Blittable, JsonProperty(Order = 139)]
+		private bool _ApplyRotationCompensation;
 
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public bool ApplyPreTransformation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private bool _ApplyPreTransformation;
 
-		[ContainerField(141), LayoutImmutable, Blittable, JsonProperty(Order = 141)]
-		public bool DisableCulling { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(141), LayoutImmutable, Blittable, JsonProperty(Order = 141)]
+		private bool _DisableCulling;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

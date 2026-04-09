@@ -14,19 +14,22 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class Curve2D :
+	public partial class Curve2D :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public List<Vec2> Curve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private List<Vec2> _Curve = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			(RimeWriter Writer, uint ArrayIndex) s_Curve = p_EbxWriter.GetArrayWriter(Curve.GetType(), Curve.Count);
 			p_Writer.Write(s_Curve.ArrayIndex);
 			foreach (var s_Entry in Curve)

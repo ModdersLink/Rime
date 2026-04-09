@@ -14,48 +14,61 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(1, 12)]
-	public class MatchmakingGameSettings :
+	public partial class MatchmakingGameSettings :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public bool OpenToBrowsing { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private bool _OpenToBrowsing;
 		
-		[ContainerField(1), LayoutImmutable, Blittable, JsonProperty(Order = 1)]
-		public bool OpenToInvites { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(1), LayoutImmutable, Blittable, JsonProperty(Order = 1)]
+		private bool _OpenToInvites;
 		
-		[ContainerField(2), LayoutImmutable, Blittable, JsonProperty(Order = 2)]
-		public bool OpenToMatchmaking { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(2), LayoutImmutable, Blittable, JsonProperty(Order = 2)]
+		private bool _OpenToMatchmaking;
 		
-		[ContainerField(3), LayoutImmutable, Blittable, JsonProperty(Order = 3)]
-		public bool OpenToJoinByPlayer { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(3), LayoutImmutable, Blittable, JsonProperty(Order = 3)]
+		private bool _OpenToJoinByPlayer;
 		
-		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
-		public bool HostMigratable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		private bool _HostMigratable;
 		
-		[ContainerField(5), LayoutImmutable, Blittable, JsonProperty(Order = 5)]
-		public bool Ranked { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(5), LayoutImmutable, Blittable, JsonProperty(Order = 5)]
+		private bool _Ranked;
 		
-		[ContainerField(6), LayoutImmutable, Blittable, JsonProperty(Order = 6)]
-		public bool AdminOnlyInvites { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(6), LayoutImmutable, Blittable, JsonProperty(Order = 6)]
+		private bool _AdminOnlyInvites;
 		
-		[ContainerField(7), LayoutImmutable, Blittable, JsonProperty(Order = 7)]
-		public bool EnforceSingleGroupJoin { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(7), LayoutImmutable, Blittable, JsonProperty(Order = 7)]
+		private bool _EnforceSingleGroupJoin;
 		
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public bool JoinInProgressSupported { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private bool _JoinInProgressSupported;
 		
-		[ContainerField(9), LayoutImmutable, Blittable, JsonProperty(Order = 9)]
-		public bool AdminInvitesOnlyIgnoreEntryChecks { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(9), LayoutImmutable, Blittable, JsonProperty(Order = 9)]
+		private bool _AdminInvitesOnlyIgnoreEntryChecks;
 		
-		[ContainerField(10), LayoutImmutable, Blittable, JsonProperty(Order = 10)]
-		public bool EnablePersistedGameId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(10), LayoutImmutable, Blittable, JsonProperty(Order = 10)]
+		private bool _EnablePersistedGameId;
 		
-		[ContainerField(11), LayoutImmutable, Blittable, JsonProperty(Order = 11)]
-		public bool AllowSameTeamId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(11), LayoutImmutable, Blittable, JsonProperty(Order = 11)]
+		private bool _AllowSameTeamId;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

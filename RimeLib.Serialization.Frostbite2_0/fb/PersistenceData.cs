@@ -14,51 +14,65 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class PersistenceData :
+	public partial class PersistenceData :
 		AbstractPersistenceData
 	{
-		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
-		public string PersistenceName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
+		private string _PersistenceName = string.Empty;
 
-		[ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
-		public string ClubPersistenceName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, JsonProperty(Order = 16)]
+		private string _ClubPersistenceName = string.Empty;
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<PersistenceStatGroup> ClientDefaultGroup { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<PersistenceStatGroup> _ClientDefaultGroup = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public List<PersistentValueTemplateData> Values { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private List<PersistentValueTemplateData> _Values = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public List<CustomReportValueData> CustomReportValues { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private List<CustomReportValueData> _CustomReportValues = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public CtrRef<PersistenceStatGroup> ServerDefaultGroup { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private CtrRef<PersistenceStatGroup> _ServerDefaultGroup = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public CtrRef<PersistenceRetentionPolicy> RetentionPolicy { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private CtrRef<PersistenceRetentionPolicy> _RetentionPolicy = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public List<PersistenceConsumableMapping> ConsumableMappings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private List<PersistenceConsumableMapping> _ConsumableMappings = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public bool HistoryDaily { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private bool _HistoryDaily;
 
-		[ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
-		public bool HistoryWeekly { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
+		private bool _HistoryWeekly;
 
-		[ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
-		public bool HistoryMonthly { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(46), LayoutImmutable, Blittable, JsonProperty(Order = 46)]
+		private bool _HistoryMonthly;
 
-		[ContainerField(47), LayoutImmutable, Blittable, JsonProperty(Order = 47)]
-		public bool OutputProperties { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(47), LayoutImmutable, Blittable, JsonProperty(Order = 47)]
+		private bool _OutputProperties;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public bool DeltaGameReports { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private bool _DeltaGameReports;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

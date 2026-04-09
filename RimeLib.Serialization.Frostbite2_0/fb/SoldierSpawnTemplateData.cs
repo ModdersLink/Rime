@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class SoldierSpawnTemplateData :
+	public partial class SoldierSpawnTemplateData :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<CustomizeSoldierData> CustomizeSoldierData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<CustomizeSoldierData> _CustomizeSoldierData = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<GameSensingTemplateData> Sensing { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<GameSensingTemplateData> _Sensing = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<GameBehaviourTemplateData> Behaviour { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<GameBehaviourTemplateData> _Behaviour = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<AnimationSpawnTemplate> AnimationTemplate { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<AnimationSpawnTemplate> _AnimationTemplate = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public RefArray<VoiceOverLabel> VoiceOverLabels { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private RefArray<VoiceOverLabel> _VoiceOverLabels = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

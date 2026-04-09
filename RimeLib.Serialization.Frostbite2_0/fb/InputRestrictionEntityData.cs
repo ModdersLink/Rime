@@ -14,159 +14,209 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 160)]
-	public class InputRestrictionEntityData :
+	public partial class InputRestrictionEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public bool ApplyRestrictionsToSpecificPlayer { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private bool _ApplyRestrictionsToSpecificPlayer;
 
-		[ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
-		public bool Throttle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
+		private bool _Throttle;
 
-		[ContainerField(98), LayoutImmutable, Blittable, JsonProperty(Order = 98)]
-		public bool Strafe { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(98), LayoutImmutable, Blittable, JsonProperty(Order = 98)]
+		private bool _Strafe;
 
-		[ContainerField(99), LayoutImmutable, Blittable, JsonProperty(Order = 99)]
-		public bool Brake { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(99), LayoutImmutable, Blittable, JsonProperty(Order = 99)]
+		private bool _Brake;
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public bool HandBrake { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private bool _HandBrake;
 
-		[ContainerField(101), LayoutImmutable, Blittable, JsonProperty(Order = 101)]
-		public bool Clutch { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(101), LayoutImmutable, Blittable, JsonProperty(Order = 101)]
+		private bool _Clutch;
 
-		[ContainerField(102), LayoutImmutable, Blittable, JsonProperty(Order = 102)]
-		public bool Yaw { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(102), LayoutImmutable, Blittable, JsonProperty(Order = 102)]
+		private bool _Yaw;
 
-		[ContainerField(103), LayoutImmutable, Blittable, JsonProperty(Order = 103)]
-		public bool Pitch { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(103), LayoutImmutable, Blittable, JsonProperty(Order = 103)]
+		private bool _Pitch;
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public bool Roll { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private bool _Roll;
 
-		[ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
-		public bool Fire { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
+		private bool _Fire;
 
-		[ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
-		public bool FireCountermeasure { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
+		private bool _FireCountermeasure;
 
-		[ContainerField(107), LayoutImmutable, Blittable, JsonProperty(Order = 107)]
-		public bool AltFire { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(107), LayoutImmutable, Blittable, JsonProperty(Order = 107)]
+		private bool _AltFire;
 
-		[ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
-		public bool CycleRadioChannel { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(108), LayoutImmutable, Blittable, JsonProperty(Order = 108)]
+		private bool _CycleRadioChannel;
 
-		[ContainerField(109), LayoutImmutable, Blittable, JsonProperty(Order = 109)]
-		public bool SelectMeleeWeapon { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(109), LayoutImmutable, Blittable, JsonProperty(Order = 109)]
+		private bool _SelectMeleeWeapon;
 
-		[ContainerField(110), LayoutImmutable, Blittable, JsonProperty(Order = 110)]
-		public bool Zoom { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(110), LayoutImmutable, Blittable, JsonProperty(Order = 110)]
+		private bool _Zoom;
 
-		[ContainerField(111), LayoutImmutable, Blittable, JsonProperty(Order = 111)]
-		public bool Jump { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(111), LayoutImmutable, Blittable, JsonProperty(Order = 111)]
+		private bool _Jump;
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public bool ChangeVehicle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private bool _ChangeVehicle;
 
-		[ContainerField(113), LayoutImmutable, Blittable, JsonProperty(Order = 113)]
-		public bool ChangeEntry { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(113), LayoutImmutable, Blittable, JsonProperty(Order = 113)]
+		private bool _ChangeEntry;
 
-		[ContainerField(114), LayoutImmutable, Blittable, JsonProperty(Order = 114)]
-		public bool ChangePose { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(114), LayoutImmutable, Blittable, JsonProperty(Order = 114)]
+		private bool _ChangePose;
 
-		[ContainerField(115), LayoutImmutable, Blittable, JsonProperty(Order = 115)]
-		public bool ToggleParachute { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(115), LayoutImmutable, Blittable, JsonProperty(Order = 115)]
+		private bool _ToggleParachute;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public bool ChangeWeapon { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private bool _ChangeWeapon;
 
-		[ContainerField(117), LayoutImmutable, Blittable, JsonProperty(Order = 117)]
-		public bool Reload { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(117), LayoutImmutable, Blittable, JsonProperty(Order = 117)]
+		private bool _Reload;
 
-		[ContainerField(118), LayoutImmutable, Blittable, JsonProperty(Order = 118)]
-		public bool ToggleCamera { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(118), LayoutImmutable, Blittable, JsonProperty(Order = 118)]
+		private bool _ToggleCamera;
 
-		[ContainerField(119), LayoutImmutable, Blittable, JsonProperty(Order = 119)]
-		public bool Sprint { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(119), LayoutImmutable, Blittable, JsonProperty(Order = 119)]
+		private bool _Sprint;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public bool ScoreboardMenu { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private bool _ScoreboardMenu;
 
-		[ContainerField(121), LayoutImmutable, Blittable, JsonProperty(Order = 121)]
-		public bool MapZoom { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(121), LayoutImmutable, Blittable, JsonProperty(Order = 121)]
+		private bool _MapZoom;
 
-		[ContainerField(122), LayoutImmutable, Blittable, JsonProperty(Order = 122)]
-		public bool GearUp { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(122), LayoutImmutable, Blittable, JsonProperty(Order = 122)]
+		private bool _GearUp;
 
-		[ContainerField(123), LayoutImmutable, Blittable, JsonProperty(Order = 123)]
-		public bool GearDown { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(123), LayoutImmutable, Blittable, JsonProperty(Order = 123)]
+		private bool _GearDown;
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public bool ThreeDimensionalMap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private bool _ThreeDimensionalMap;
 
-		[ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
-		public bool GiveOrder { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(125), LayoutImmutable, Blittable, JsonProperty(Order = 125)]
+		private bool _GiveOrder;
 
-		[ContainerField(126), LayoutImmutable, Blittable, JsonProperty(Order = 126)]
-		public bool Prone { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(126), LayoutImmutable, Blittable, JsonProperty(Order = 126)]
+		private bool _Prone;
 
-		[ContainerField(127), LayoutImmutable, Blittable, JsonProperty(Order = 127)]
-		public bool SwitchPrimaryInventory { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(127), LayoutImmutable, Blittable, JsonProperty(Order = 127)]
+		private bool _SwitchPrimaryInventory;
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public bool SwitchPrimaryWeapon { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private bool _SwitchPrimaryWeapon;
 
-		[ContainerField(129), LayoutImmutable, Blittable, JsonProperty(Order = 129)]
-		public bool GrenadeLauncher { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(129), LayoutImmutable, Blittable, JsonProperty(Order = 129)]
+		private bool _GrenadeLauncher;
 
-		[ContainerField(130), LayoutImmutable, Blittable, JsonProperty(Order = 130)]
-		public bool StaticGadget { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(130), LayoutImmutable, Blittable, JsonProperty(Order = 130)]
+		private bool _StaticGadget;
 
-		[ContainerField(131), LayoutImmutable, Blittable, JsonProperty(Order = 131)]
-		public bool DynamicGadget1 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(131), LayoutImmutable, Blittable, JsonProperty(Order = 131)]
+		private bool _DynamicGadget1;
 
-		[ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
-		public bool DynamicGadget2 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, Blittable, JsonProperty(Order = 132)]
+		private bool _DynamicGadget2;
 
-		[ContainerField(133), LayoutImmutable, Blittable, JsonProperty(Order = 133)]
-		public bool MeleeAttack { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(133), LayoutImmutable, Blittable, JsonProperty(Order = 133)]
+		private bool _MeleeAttack;
 
-		[ContainerField(134), LayoutImmutable, Blittable, JsonProperty(Order = 134)]
-		public bool ThrowGrenade { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(134), LayoutImmutable, Blittable, JsonProperty(Order = 134)]
+		private bool _ThrowGrenade;
 
-		[ContainerField(135), LayoutImmutable, Blittable, JsonProperty(Order = 135)]
-		public bool SelectWeapon1 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(135), LayoutImmutable, Blittable, JsonProperty(Order = 135)]
+		private bool _SelectWeapon1;
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public bool SelectWeapon2 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private bool _SelectWeapon2;
 
-		[ContainerField(137), LayoutImmutable, Blittable, JsonProperty(Order = 137)]
-		public bool SelectWeapon3 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(137), LayoutImmutable, Blittable, JsonProperty(Order = 137)]
+		private bool _SelectWeapon3;
 
-		[ContainerField(138), LayoutImmutable, Blittable, JsonProperty(Order = 138)]
-		public bool SelectWeapon4 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(138), LayoutImmutable, Blittable, JsonProperty(Order = 138)]
+		private bool _SelectWeapon4;
 
-		[ContainerField(139), LayoutImmutable, Blittable, JsonProperty(Order = 139)]
-		public bool SelectWeapon5 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(139), LayoutImmutable, Blittable, JsonProperty(Order = 139)]
+		private bool _SelectWeapon5;
 
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public bool SelectWeapon6 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private bool _SelectWeapon6;
 
-		[ContainerField(141), LayoutImmutable, Blittable, JsonProperty(Order = 141)]
-		public bool SelectWeapon7 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(141), LayoutImmutable, Blittable, JsonProperty(Order = 141)]
+		private bool _SelectWeapon7;
 
-		[ContainerField(142), LayoutImmutable, Blittable, JsonProperty(Order = 142)]
-		public bool SelectWeapon8 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(142), LayoutImmutable, Blittable, JsonProperty(Order = 142)]
+		private bool _SelectWeapon8;
 
-		[ContainerField(143), LayoutImmutable, Blittable, JsonProperty(Order = 143)]
-		public bool SelectWeapon9 { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(143), LayoutImmutable, Blittable, JsonProperty(Order = 143)]
+		private bool _SelectWeapon9;
 
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public bool OverridePreviousInputRestriction { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private bool _OverridePreviousInputRestriction;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

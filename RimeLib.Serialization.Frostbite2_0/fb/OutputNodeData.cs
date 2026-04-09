@@ -14,63 +14,81 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 80)]
-	public class OutputNodeData :
+	public partial class OutputNodeData :
 		AudioGraphNodeData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AudioGraphNodePort In { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AudioGraphNodePort _In = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AudioGraphNodePort BypassHeadroom { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AudioGraphNodePort _BypassHeadroom = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float MinDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _MinDistance;
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public AudioCurve AttenuationCurve { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private AudioCurve _AttenuationCurve = new();
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float Gain { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _Gain;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public float HFDampingDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private float _HFDampingDistance;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float HFDampingObstruction { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _HFDampingObstruction;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float HFDampingOcclusion { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _HFDampingOcclusion;
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public SoundGraphPluginRef MainSendPlugin { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private SoundGraphPluginRef _MainSendPlugin = new();
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public CtrRef<SoundBusData> MainSend { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private CtrRef<SoundBusData> _MainSend = new();
 
-		[ContainerField(60), LayoutImmutable, JsonProperty(Order = 60)]
-		public string OutputName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, JsonProperty(Order = 60)]
+		private string _OutputName = string.Empty;
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public OutputTransformSource TransformSource { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private OutputTransformSource _TransformSource = new();
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public uint OutputNameHash { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private uint _OutputNameHash;
 
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public SoundGraphPluginRef LowPassPlugin { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private SoundGraphPluginRef _LowPassPlugin = new();
 
-		[ContainerField(75), JsonProperty(Order = 75)]
-		public SoundGraphPluginRef VuPlugin { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(75), JsonProperty(Order = 75)]
+		private SoundGraphPluginRef _VuPlugin = new();
 
-		[ContainerField(78), LayoutImmutable, Blittable, JsonProperty(Order = 78)]
-		public bool Solo { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(78), LayoutImmutable, Blittable, JsonProperty(Order = 78)]
+		private bool _Solo;
 
-		[ContainerField(79), LayoutImmutable, Blittable, JsonProperty(Order = 79)]
-		public bool EnableHdr { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(79), LayoutImmutable, Blittable, JsonProperty(Order = 79)]
+		private bool _EnableHdr;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

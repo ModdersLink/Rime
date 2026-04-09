@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class UIFontAsset :
+	public partial class UIFontAsset :
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
-		public string SourceFile { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
+		private string _SourceFile = string.Empty;
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<UITextDatabase> TextDatabase { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<UITextDatabase> _TextDatabase = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public List<string> ScaleformFontName { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private List<string> _ScaleformFontName = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public bool NumericsOnly { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private bool _NumericsOnly;
 
-		[ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
-		public bool CompleteKorean { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(25), LayoutImmutable, Blittable, JsonProperty(Order = 25)]
+		private bool _CompleteKorean;
 
-		[ContainerField(26), LayoutImmutable, Blittable, JsonProperty(Order = 26)]
-		public bool CompleteJapanese { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(26), LayoutImmutable, Blittable, JsonProperty(Order = 26)]
+		private bool _CompleteJapanese;
 
-		[ContainerField(27), LayoutImmutable, Blittable, JsonProperty(Order = 27)]
-		public bool CompleteTraditionalChinese { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(27), LayoutImmutable, Blittable, JsonProperty(Order = 27)]
+		private bool _CompleteTraditionalChinese;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

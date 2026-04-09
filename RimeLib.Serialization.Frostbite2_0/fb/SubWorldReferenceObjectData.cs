@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class SubWorldReferenceObjectData :
+	public partial class SubWorldReferenceObjectData :
 		ReferenceObjectData
 	{
-		[ContainerField(96), LayoutImmutable, JsonProperty(Order = 96)]
-		public string BundleName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, JsonProperty(Order = 96)]
+		private string _BundleName = string.Empty;
 
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public CtrRef<SubWorldInclusionSettings> InclusionSettings { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private CtrRef<SubWorldInclusionSettings> _InclusionSettings = new();
 
-		[ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
-		public bool AutoLoad { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(104), LayoutImmutable, Blittable, JsonProperty(Order = 104)]
+		private bool _AutoLoad;
 
-		[ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
-		public bool IsWin32SubLevel { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(105), LayoutImmutable, Blittable, JsonProperty(Order = 105)]
+		private bool _IsWin32SubLevel;
 
-		[ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
-		public bool IsXenonSubLevel { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(106), LayoutImmutable, Blittable, JsonProperty(Order = 106)]
+		private bool _IsXenonSubLevel;
 
-		[ContainerField(107), LayoutImmutable, Blittable, JsonProperty(Order = 107)]
-		public bool IsPs3SubLevel { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(107), LayoutImmutable, Blittable, JsonProperty(Order = 107)]
+		private bool _IsPs3SubLevel;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

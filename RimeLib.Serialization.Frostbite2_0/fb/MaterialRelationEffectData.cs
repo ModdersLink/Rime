@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class MaterialRelationEffectData :
+	public partial class MaterialRelationEffectData :
 		PhysicsMaterialRelationPropertyData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public RefArray<EffectBlueprint> ImpactEffects { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private RefArray<EffectBlueprint> _ImpactEffects = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<ObjectBlueprint> ImpactDebris { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<ObjectBlueprint> _ImpactDebris = new();
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float ImpactEffectMaxSpreadAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _ImpactEffectMaxSpreadAngle;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public bool MirrorImpactDirection { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private bool _MirrorImpactDirection;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

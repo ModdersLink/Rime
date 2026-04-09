@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class UnderFireTriggerEntityData :
+	public partial class UnderFireTriggerEntityData :
 		TriggerEntityData
 	{
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public float Radius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private float _Radius;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float CoolDownTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _CoolDownTime;
 
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public CtrRef<MaterialContainerPair> TriggerOnMaterialOnly { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private CtrRef<MaterialContainerPair> _TriggerOnMaterialOnly = new();
 
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public AreaTriggerInclude TriggeredBy { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private AreaTriggerInclude _TriggeredBy = new();
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public bool DisableIfTrackEntityIsLost { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private bool _DisableIfTrackEntityIsLost;
 
-		[ContainerField(129), LayoutImmutable, Blittable, JsonProperty(Order = 129)]
-		public bool RandomYaw { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(129), LayoutImmutable, Blittable, JsonProperty(Order = 129)]
+		private bool _RandomYaw;
 
-		[ContainerField(130), LayoutImmutable, Blittable, JsonProperty(Order = 130)]
-		public bool IndicateHit { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(130), LayoutImmutable, Blittable, JsonProperty(Order = 130)]
+		private bool _IndicateHit;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

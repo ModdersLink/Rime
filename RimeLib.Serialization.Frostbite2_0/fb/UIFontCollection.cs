@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class UIFontCollection :
+	public partial class UIFontCollection :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public LanguageFormat Language { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private LanguageFormat _Language = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<UITextDatabase> TextDatabase { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<UITextDatabase> _TextDatabase = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<UIFontAsset> Fonts { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<UIFontAsset> _Fonts = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public ResourceBundleKind BundleKind { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private ResourceBundleKind _BundleKind = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

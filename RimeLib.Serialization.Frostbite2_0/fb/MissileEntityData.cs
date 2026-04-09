@@ -14,84 +14,109 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 320)]
-	public class MissileEntityData :
+	public partial class MissileEntityData :
 		MeshProjectileEntityData
 	{
-		[ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
-		public float Gravity { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(192), LayoutImmutable, Blittable, JsonProperty(Order = 192)]
+		private float _Gravity;
 
-		[ContainerField(196), JsonProperty(Order = 196)]
-		public CtrRef<EffectBlueprint> EngineEffect { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(196), JsonProperty(Order = 196)]
+		private CtrRef<EffectBlueprint> _EngineEffect = new();
 
-		[ContainerField(200), JsonProperty(Order = 200)]
-		public CtrRef<ExplosionEntityData> DudExplosion { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(200), JsonProperty(Order = 200)]
+		private CtrRef<ExplosionEntityData> _DudExplosion = new();
 
-		[ContainerField(204), JsonProperty(Order = 204)]
-		public CtrRef<SoundAsset> FlyBySound { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(204), JsonProperty(Order = 204)]
+		private CtrRef<SoundAsset> _FlyBySound = new();
 
-		[ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
-		public float EngineStrength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(208), LayoutImmutable, Blittable, JsonProperty(Order = 208)]
+		private float _EngineStrength;
 
-		[ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
-		public float MaxSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(212), LayoutImmutable, Blittable, JsonProperty(Order = 212)]
+		private float _MaxSpeed;
 
-		[ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
-		public float EngineTimeToIgnition { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(216), LayoutImmutable, Blittable, JsonProperty(Order = 216)]
+		private float _EngineTimeToIgnition;
 
-		[ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
-		public float EngineTimeToLive { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(220), LayoutImmutable, Blittable, JsonProperty(Order = 220)]
+		private float _EngineTimeToLive;
 
-		[ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
-		public float TimeToActivateGuidingSystem { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(224), LayoutImmutable, Blittable, JsonProperty(Order = 224)]
+		private float _TimeToActivateGuidingSystem;
 
-		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
-		public float TimeToArm { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		private float _TimeToArm;
 
-		[ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
-		public float MaxTurnAngle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(232), LayoutImmutable, Blittable, JsonProperty(Order = 232)]
+		private float _MaxTurnAngle;
 
-		[ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
-		public float Drag { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(236), LayoutImmutable, Blittable, JsonProperty(Order = 236)]
+		private float _Drag;
 
-		[ContainerField(240), JsonProperty(Order = 240)]
-		public NearTargetDetonationData NearTargetDetonation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(240), JsonProperty(Order = 240)]
+		private NearTargetDetonationData _NearTargetDetonation = new();
 
-		[ContainerField(256), JsonProperty(Order = 256)]
-		public TeamId DefaultTeam { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(256), JsonProperty(Order = 256)]
+		private TeamId _DefaultTeam = new();
 
-		[ContainerField(260), LayoutImmutable, Blittable, JsonProperty(Order = 260)]
-		public float FlyBySoundRadius { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(260), LayoutImmutable, Blittable, JsonProperty(Order = 260)]
+		private float _FlyBySoundRadius;
 
-		[ContainerField(264), LayoutImmutable, Blittable, JsonProperty(Order = 264)]
-		public float FlyBySoundSpeed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(264), LayoutImmutable, Blittable, JsonProperty(Order = 264)]
+		private float _FlyBySoundSpeed;
 
-		[ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
-		public float ImpactImpulse { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(268), LayoutImmutable, Blittable, JsonProperty(Order = 268)]
+		private float _ImpactImpulse;
 
-		[ContainerField(272), LayoutImmutable, Blittable, JsonProperty(Order = 272)]
-		public float Damage { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(272), LayoutImmutable, Blittable, JsonProperty(Order = 272)]
+		private float _Damage;
 
-		[ContainerField(276), JsonProperty(Order = 276)]
-		public MissileUnguidedData UnguidedData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(276), JsonProperty(Order = 276)]
+		private MissileUnguidedData _UnguidedData = new();
 
-		[ContainerField(296), JsonProperty(Order = 296)]
-		public WarnTarget WarnTarget { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(296), JsonProperty(Order = 296)]
+		private WarnTarget _WarnTarget = new();
 
-		[ContainerField(300), JsonProperty(Order = 300)]
-		public MissileLockableInfoData LockableInfo { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(300), JsonProperty(Order = 300)]
+		private MissileLockableInfoData _LockableInfo = new();
 
-		[ContainerField(308), JsonProperty(Order = 308)]
-		public CtrRef<LockingControllerData> LockingController { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(308), JsonProperty(Order = 308)]
+		private CtrRef<LockingControllerData> _LockingController = new();
 
-		[ContainerField(312), LayoutImmutable, Blittable, JsonProperty(Order = 312)]
-		public bool WarnOnPointingMissile { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(312), LayoutImmutable, Blittable, JsonProperty(Order = 312)]
+		private bool _WarnOnPointingMissile;
 
-		[ContainerField(313), LayoutImmutable, Blittable, JsonProperty(Order = 313)]
-		public bool ApplyGravityWhenGuided { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(313), LayoutImmutable, Blittable, JsonProperty(Order = 313)]
+		private bool _ApplyGravityWhenGuided;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

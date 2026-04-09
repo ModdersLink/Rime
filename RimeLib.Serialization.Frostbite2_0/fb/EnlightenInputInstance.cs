@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 80)]
-	public class EnlightenInputInstance :
+	public partial class EnlightenInputInstance :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public LinearTransform Transform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private LinearTransform _Transform = new();
 		
-		[ContainerField(64), LayoutImmutable, JsonProperty(Order = 64)]
-		public string Asset { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, JsonProperty(Order = 64)]
+		private string _Asset = string.Empty;
 		
-		[ContainerField(68), LayoutImmutable, JsonProperty(Order = 68)]
-		public string ObjectVariation { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, JsonProperty(Order = 68)]
+		private string _ObjectVariation = string.Empty;
 		
-		[ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
-		public int SystemId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(72), LayoutImmutable, Blittable, JsonProperty(Order = 72)]
+		private int _SystemId;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

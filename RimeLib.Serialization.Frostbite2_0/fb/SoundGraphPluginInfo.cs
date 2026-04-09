@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class SoundGraphPluginInfo :
+	public partial class SoundGraphPluginInfo :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public uint Id { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private uint _Id;
 		
-		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
-		public uint EnableAttributeReadMask { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		private uint _EnableAttributeReadMask;
 		
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public sbyte ConnectionIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private sbyte _ConnectionIndex;
 		
-		[ContainerField(9), LayoutImmutable, Blittable, JsonProperty(Order = 9)]
-		public sbyte OutputChannelCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(9), LayoutImmutable, Blittable, JsonProperty(Order = 9)]
+		private sbyte _OutputChannelCount;
 		
-		[ContainerField(10), LayoutImmutable, Blittable, JsonProperty(Order = 10)]
-		public sbyte ConstructParamsIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(10), LayoutImmutable, Blittable, JsonProperty(Order = 10)]
+		private sbyte _ConstructParamsIndex;
 		
-		[ContainerField(11), LayoutImmutable, Blittable, JsonProperty(Order = 11)]
-		public sbyte ConstructParamCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(11), LayoutImmutable, Blittable, JsonProperty(Order = 11)]
+		private sbyte _ConstructParamCount;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

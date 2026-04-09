@@ -14,51 +14,65 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class RotationBodyData :
+	public partial class RotationBodyData :
 		MovingBodyData
 	{
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public float AngularMomentumMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private float _AngularMomentumMultiplier;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float AngularMomentumThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _AngularMomentumThreshold;
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public float AngularMomentumDamping { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private float _AngularMomentumDamping;
 
-		[ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
-		public float AngularMomentumDampingAcc { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(28), LayoutImmutable, Blittable, JsonProperty(Order = 28)]
+		private float _AngularMomentumDampingAcc;
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float AngularMomentumDampingDeacc { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _AngularMomentumDampingDeacc;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float AngularConstraintMin { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _AngularConstraintMin;
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public CtrRef<ExtendedConstraintsData> ExtendedConstraints { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private CtrRef<ExtendedConstraintsData> _ExtendedConstraints = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float AngularConstraintMax { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _AngularConstraintMax;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public int RotationAxis { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private int _RotationAxis;
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public bool UsePostSatisfyConstraints { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private bool _UsePostSatisfyConstraints;
 
-		[ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
-		public bool UseAngularMomentumThreshold { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
+		private bool _UseAngularMomentumThreshold;
 
-		[ContainerField(54), LayoutImmutable, Blittable, JsonProperty(Order = 54)]
-		public bool UseAngularMomentumDamping { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(54), LayoutImmutable, Blittable, JsonProperty(Order = 54)]
+		private bool _UseAngularMomentumDamping;
 
-		[ContainerField(55), LayoutImmutable, Blittable, JsonProperty(Order = 55)]
-		public bool UseAngularConstraint { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(55), LayoutImmutable, Blittable, JsonProperty(Order = 55)]
+		private bool _UseAngularConstraint;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

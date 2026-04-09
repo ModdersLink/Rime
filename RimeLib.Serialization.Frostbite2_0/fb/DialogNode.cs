@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 60)]
-	public class DialogNode :
+	public partial class DialogNode :
 		StateNode
 	{
-		[ContainerField(48), LayoutImmutable, JsonProperty(Order = 48)]
-		public string DialogTitle { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, JsonProperty(Order = 48)]
+		private string _DialogTitle = string.Empty;
 
-		[ContainerField(52), LayoutImmutable, JsonProperty(Order = 52)]
-		public string DialogText { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, JsonProperty(Order = 52)]
+		private string _DialogText = string.Empty;
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public List<UIPopupButton> Buttons { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private List<UIPopupButton> _Buttons = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

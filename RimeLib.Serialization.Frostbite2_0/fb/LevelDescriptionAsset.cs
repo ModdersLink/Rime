@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class LevelDescriptionAsset :
+	public partial class LevelDescriptionAsset :
 		Asset
 	{
-		[ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
-		public string LevelName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, JsonProperty(Order = 12)]
+		private string _LevelName = string.Empty;
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<LevelDescriptionInclusionCategory> Categories { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<LevelDescriptionInclusionCategory> _Categories = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public LevelDescription Description { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private LevelDescription _Description = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public List<string> StartPoints { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private List<string> _StartPoints = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

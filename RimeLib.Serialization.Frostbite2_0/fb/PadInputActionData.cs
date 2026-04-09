@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class PadInputActionData :
+	public partial class PadInputActionData :
 		AxesInputActionData
 	{
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public InputDevicePadButtons Button { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private InputDevicePadButtons _Button = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public InputDevicePOVs Pov { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private InputDevicePOVs _Pov = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public InputDevicePadButtons PS3AlternativeButton { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private InputDevicePadButtons _PS3AlternativeButton = new();
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public bool UseSquareInput { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private bool _UseSquareInput;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

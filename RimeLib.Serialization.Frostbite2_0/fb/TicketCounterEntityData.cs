@@ -14,48 +14,61 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class TicketCounterEntityData :
+	public partial class TicketCounterEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public List<TicketCountPercentage> TicketPercentages { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private List<TicketCountPercentage> _TicketPercentages = new();
 
-		[ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
-		public int TicketLossPerMin { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, Blittable, JsonProperty(Order = 100)]
+		private int _TicketLossPerMin;
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public TicketDecreaseType DecreaseTickets { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private TicketDecreaseType _DecreaseTickets = new();
 
-		[ContainerField(108), JsonProperty(Order = 108)]
-		public TeamId TeamId { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(108), JsonProperty(Order = 108)]
+		private TeamId _TeamId = new();
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public int TicketLossWhenLostAll { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private int _TicketLossWhenLostAll;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public int TicketLossWhenLostAllControlsPoint { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private int _TicketLossWhenLostAllControlsPoint;
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public int InitialTicketCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private int _InitialTicketCount;
 
-		[ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
-		public int TicketLossStart { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(124), LayoutImmutable, Blittable, JsonProperty(Order = 124)]
+		private int _TicketLossStart;
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public bool SetBestSquadSpawner { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private bool _SetBestSquadSpawner;
 
-		[ContainerField(129), LayoutImmutable, Blittable, JsonProperty(Order = 129)]
-		public bool HaltTicketLossOnEqualPointCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(129), LayoutImmutable, Blittable, JsonProperty(Order = 129)]
+		private bool _HaltTicketLossOnEqualPointCount;
 
-		[ContainerField(130), LayoutImmutable, Blittable, JsonProperty(Order = 130)]
-		public bool ResetCapturePointsOnReset { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(130), LayoutImmutable, Blittable, JsonProperty(Order = 130)]
+		private bool _ResetCapturePointsOnReset;
 
-		[ContainerField(131), LayoutImmutable, Blittable, JsonProperty(Order = 131)]
-		public bool SpawnAlwaysAllowed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(131), LayoutImmutable, Blittable, JsonProperty(Order = 131)]
+		private bool _SpawnAlwaysAllowed;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

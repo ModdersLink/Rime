@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class OrderReadiness :
+	public partial class OrderReadiness :
 		UrgencyUserData
 	{
-		[ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
-		public string OrderType { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, JsonProperty(Order = 20)]
+		private string _OrderType = string.Empty;
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public ReadinessState MinimumReadiness { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private ReadinessState _MinimumReadiness = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

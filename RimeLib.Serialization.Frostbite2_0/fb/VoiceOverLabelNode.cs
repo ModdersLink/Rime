@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 40)]
-	public class VoiceOverLabelNode :
+	public partial class VoiceOverLabelNode :
 		VoiceOverExpressionNode
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public RefArray<VoiceOverLabelSource> Sources { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private RefArray<VoiceOverLabelSource> _Sources = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<VoiceOverValue> False { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<VoiceOverValue> _False = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<VoiceOverValue> True { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<VoiceOverValue> _True = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public RefArray<VoiceOverLabel> WantedLabels { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private RefArray<VoiceOverLabel> _WantedLabels = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public RefArray<VoiceOverLabel> UnwantedLabels { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private RefArray<VoiceOverLabel> _UnwantedLabels = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public VoiceOverLabelSourceMode SourceMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private VoiceOverLabelSourceMode _SourceMode = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public VoiceOverLabelCompareMode WantedCompareMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private VoiceOverLabelCompareMode _WantedCompareMode = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public VoiceOverLabelCompareMode UnwantedCompareMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private VoiceOverLabelCompareMode _UnwantedCompareMode = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

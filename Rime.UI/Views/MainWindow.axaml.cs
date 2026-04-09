@@ -1,6 +1,6 @@
 using Avalonia.Controls;
 
-namespace RimeLib.UI.Views
+namespace Rime.UI.Views
 {
     public partial class MainWindow : Window
     {

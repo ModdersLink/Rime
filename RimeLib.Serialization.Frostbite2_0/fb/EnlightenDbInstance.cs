@@ -14,54 +14,69 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class EnlightenDbInstance :
+	public partial class EnlightenDbInstance :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public AxisAlignedBox WorldBoundingbox { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private AxisAlignedBox _WorldBoundingbox = new();
 		
-		[ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public LinearTransform WorldTransform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private LinearTransform _WorldTransform = new();
 		
-		[ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public Vec2 UvTranslation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private Vec2 _UvTranslation = new();
 		
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public Vec4 UvTransform { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private Vec4 _UvTransform = new();
 		
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public uint GeometryId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private uint _GeometryId;
 		
-		[ContainerField(132), LayoutImmutable, JsonProperty(Order = 132)]
-		public string ObjectVariation { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(132), LayoutImmutable, JsonProperty(Order = 132)]
+		private string _ObjectVariation = string.Empty;
 		
-		[ContainerField(136), LayoutImmutable, JsonProperty(Order = 136)]
-		public string GuidString { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, JsonProperty(Order = 136)]
+		private string _GuidString = string.Empty;
 		
-		[ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
-		public uint UvSizeX { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, Blittable, JsonProperty(Order = 140)]
+		private uint _UvSizeX;
 		
-		[ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
-		public uint UvSizeY { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(144), LayoutImmutable, Blittable, JsonProperty(Order = 144)]
+		private uint _UvSizeY;
 		
-		[ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
-		public float PixelSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(148), LayoutImmutable, Blittable, JsonProperty(Order = 148)]
+		private float _PixelSize;
 		
-		[ContainerField(152), LayoutImmutable, JsonProperty(Order = 152)]
-		public string EnlightenMeshName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(152), LayoutImmutable, JsonProperty(Order = 152)]
+		private string _EnlightenMeshName = string.Empty;
 		
-		[ContainerField(156), LayoutImmutable, JsonProperty(Order = 156)]
-		public string MeshAsset { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, JsonProperty(Order = 156)]
+		private string _MeshAsset = string.Empty;
 		
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public List<ulong> InstanceAlbedos { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private List<ulong> _InstanceAlbedos = new();
 		
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public GUID CacheKey { get; set; } = GUID.Empty;
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private GUID _CacheKey = GUID.Empty;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

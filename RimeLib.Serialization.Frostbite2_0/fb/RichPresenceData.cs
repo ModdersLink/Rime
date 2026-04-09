@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class RichPresenceData :
+	public partial class RichPresenceData :
 		Asset
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<RichPresencePresenceString> PresenceModes { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<RichPresencePresenceString> _PresenceModes = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<RichPresencePresenceString> DefaultMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<RichPresencePresenceString> _DefaultMode = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<RichPresencePresenceString> InactiveMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<RichPresencePresenceString> _InactiveMode = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public RefArray<RichPresenceContext> Contexts { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private RefArray<RichPresenceContext> _Contexts = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public List<RichPresenceProperty> Properties { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private List<RichPresenceProperty> _Properties = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

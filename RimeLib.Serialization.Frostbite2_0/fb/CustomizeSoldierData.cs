@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class CustomizeSoldierData :
+	public partial class CustomizeSoldierData :
 		CustomizeCharacterData
 	{
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public List<UnlockWeaponAndSlot> Weapons { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private List<UnlockWeaponAndSlot> _Weapons = new();
 
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public WeaponSlot ActiveSlot { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private WeaponSlot _ActiveSlot = new();
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public CtrRef<PickupEntityAsset> DeathPickup { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private CtrRef<PickupEntityAsset> _DeathPickup = new();
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public bool RemoveAllExistingWeapons { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private bool _RemoveAllExistingWeapons;
 
-		[ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
-		public bool DisableDeathPickup { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(45), LayoutImmutable, Blittable, JsonProperty(Order = 45)]
+		private bool _DisableDeathPickup;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

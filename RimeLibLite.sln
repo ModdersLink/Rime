@@ -65,8 +65,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Terrain.Frostbite2_
 		{4D596497-B3A1-4143-BE4B-D3D9DE3AF340} = {4D596497-B3A1-4143-BE4B-D3D9DE3AF340}
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.CodeGen", "RimeLib.CodeGen\RimeLib.CodeGen.csproj", "{D8E0673D-5AC8-406E-8540-1C4AD08F8E5A}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TextureBuilder", "Utils\TextureBuilder\TextureBuilder.csproj", "{ABE866C9-682D-4A14-B800-24EA33B33AC1}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{3F11DB22-14A7-40F2-9570-72D540C671C7}"
@@ -133,7 +131,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Mesh.Frostbite2013_
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Texture.Frostbite2013_2", "RimeLib.Texture.Frostbite2013_2\RimeLib.Texture.Frostbite2013_2.csproj", "{C5ACB65A-971B-4089-A80A-9D36D5D1D029}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.UI", "RimeLib.UI\RimeLib.UI.csproj", "{9DB0A996-5821-4990-B1A7-1FF6E4E236C8}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rime.UI", "Rime.UI\Rime.UI.csproj", "{874984CD-676D-4E0B-A168-FF29BA33EF66}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -249,10 +247,6 @@ Global
 		{A0B4C70A-C749-4FF4-BC90-381820A80685}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A0B4C70A-C749-4FF4-BC90-381820A80685}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A0B4C70A-C749-4FF4-BC90-381820A80685}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D8E0673D-5AC8-406E-8540-1C4AD08F8E5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D8E0673D-5AC8-406E-8540-1C4AD08F8E5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D8E0673D-5AC8-406E-8540-1C4AD08F8E5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D8E0673D-5AC8-406E-8540-1C4AD08F8E5A}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ABE866C9-682D-4A14-B800-24EA33B33AC1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{ABE866C9-682D-4A14-B800-24EA33B33AC1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ABE866C9-682D-4A14-B800-24EA33B33AC1}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -355,10 +349,10 @@ Global
 		{C5ACB65A-971B-4089-A80A-9D36D5D1D029}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5ACB65A-971B-4089-A80A-9D36D5D1D029}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5ACB65A-971B-4089-A80A-9D36D5D1D029}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9DB0A996-5821-4990-B1A7-1FF6E4E236C8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9DB0A996-5821-4990-B1A7-1FF6E4E236C8}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9DB0A996-5821-4990-B1A7-1FF6E4E236C8}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9DB0A996-5821-4990-B1A7-1FF6E4E236C8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{874984CD-676D-4E0B-A168-FF29BA33EF66}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{874984CD-676D-4E0B-A168-FF29BA33EF66}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{874984CD-676D-4E0B-A168-FF29BA33EF66}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{874984CD-676D-4E0B-A168-FF29BA33EF66}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

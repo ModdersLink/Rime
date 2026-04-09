@@ -21,13 +21,13 @@ namespace FBCC
             var s_Args = new List<string>()
             {
                 //"--arch-x64",
-                @"--in=C:\Games\Battlefield 3\__fbc__\gen2",
-                //"--gen-rime",
-                //@"--out=C:\Code\OrfeasZ\RimeLibLite\RimeLib.Serialization.Frostbite2_0",
+                @"--in=D:\gen",
+                "--gen-rime",
+                @"--out=D:\gen-out",
                 //"--gen-bindings",
                 //@"--out=C:\Code\EmulatorNexus\VeniceUnleashed\Components\VeniceEXT\Src",
-                "--gen-native",
-                @"--out=C:\Users\Orfeas\home\projects\pointlimit\venice-unleashed\Components\FrostbiteSDK\Src",
+                //"--gen-native",
+                //@"--out=C:\Users\Orfeas\home\projects\pointlimit\venice-unleashed\Components\FrostbiteSDK\Src",
                 //"--gen-vext-docs",
                 //@"--out=B:\Games\Battlefield 3\__fbc__\doc",
             };

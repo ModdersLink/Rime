@@ -1,13 +1,19 @@
 using Avalonia.Controls;
 using Avalonia.Controls.Templates;
-using RimeLib.UI.ViewModels;
+using Rime.UI.ViewModels;
 using System;
+using System.Diagnostics.CodeAnalysis;
 
-namespace RimeLib.UI
+namespace Rime.UI
 {
+    /// <summary>
+    /// Given a view model, returns the corresponding view if possible.
+    /// </summary>
+    [RequiresUnreferencedCode(
+        "Default implementation of ViewLocator involves reflection which may be trimmed away.",
+        Url = "https://docs.avaloniaui.net/docs/concepts/view-locator")]
     public class ViewLocator : IDataTemplate
     {
-
         public Control? Build(object? param)
         {
             if (param is null)

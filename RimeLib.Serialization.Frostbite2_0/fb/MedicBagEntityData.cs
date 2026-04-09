@@ -14,15 +14,17 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 272)]
-	public class MedicBagEntityData :
+	public partial class MedicBagEntityData :
 		ExplosionPackEntityData
 	{
-		[ContainerField(256), JsonProperty(Order = 256)]
-		public HealerData Healer { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(256), JsonProperty(Order = 256)]
+		private HealerData _Healer = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

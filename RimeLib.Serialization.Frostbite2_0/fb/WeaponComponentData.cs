@@ -14,60 +14,77 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class WeaponComponentData :
+	public partial class WeaponComponentData :
 		PartComponentData
 	{
-		[ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public Vec3 ProjectileSpawnOffset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(112), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private Vec3 _ProjectileSpawnOffset = new();
 
-		[ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
-		public float ImpulseStrength { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, Blittable, JsonProperty(Order = 128)]
+		private float _ImpulseStrength;
 
-		[ContainerField(132), JsonProperty(Order = 132)]
-		public CtrRef<MeshAsset> WeaponMesh { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(132), JsonProperty(Order = 132)]
+		private CtrRef<MeshAsset> _WeaponMesh = new();
 
-		[ContainerField(136), JsonProperty(Order = 136)]
-		public CtrRef<WeaponFiringData> WeaponFiring { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(136), JsonProperty(Order = 136)]
+		private CtrRef<WeaponFiringData> _WeaponFiring = new();
 
-		[ContainerField(140), LayoutImmutable, JsonProperty(Order = 140)]
-		public string DamageGiverName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(140), LayoutImmutable, JsonProperty(Order = 140)]
+		private string _DamageGiverName = string.Empty;
 
-		[ContainerField(144), JsonProperty(Order = 144)]
-		public CtrRef<GameAIWeaponData> AIData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(144), JsonProperty(Order = 144)]
+		private CtrRef<GameAIWeaponData> _AIData = new();
 
-		[ContainerField(148), JsonProperty(Order = 148)]
-		public CtrRef<WeaponData> CustomWeaponType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(148), JsonProperty(Order = 148)]
+		private CtrRef<WeaponData> _CustomWeaponType = new();
 
-		[ContainerField(152), JsonProperty(Order = 152)]
-		public WeaponClassification Classification { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(152), JsonProperty(Order = 152)]
+		private WeaponClassification _Classification = new();
 
-		[ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
-		public float ExplosionDamageMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(156), LayoutImmutable, Blittable, JsonProperty(Order = 156)]
+		private float _ExplosionDamageMultiplier;
 
-		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public float ReloadTimeMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private float _ReloadTimeMultiplier;
 
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public float DamageMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private float _DamageMultiplier;
 
-		[ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
-		public uint WeaponItemHash { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(168), LayoutImmutable, Blittable, JsonProperty(Order = 168)]
+		private uint _WeaponItemHash;
 
-		[ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
-		public float OverheatDropPerSecondMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(172), LayoutImmutable, Blittable, JsonProperty(Order = 172)]
+		private float _OverheatDropPerSecondMultiplier;
 
-		[ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
-		public float LockTimeMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(176), LayoutImmutable, Blittable, JsonProperty(Order = 176)]
+		private float _LockTimeMultiplier;
 
-		[ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
-		public float LockingAcceptanceAngleMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(180), LayoutImmutable, Blittable, JsonProperty(Order = 180)]
+		private float _LockingAcceptanceAngleMultiplier;
 
-		[ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
-		public bool SequentialFiring { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(184), LayoutImmutable, Blittable, JsonProperty(Order = 184)]
+		private bool _SequentialFiring;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

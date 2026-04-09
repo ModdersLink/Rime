@@ -14,46 +14,58 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 24)]
-	public class ServerMetricsSettings :
+	public partial class ServerMetricsSettings :
 		DataContainer
 	{
-		[ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
-		public string ReportName { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, JsonProperty(Order = 8)]
+		private string _ReportName = string.Empty;
 
-		[ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
-		public bool Enabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(12), LayoutImmutable, Blittable, JsonProperty(Order = 12)]
+		private bool _Enabled;
 
-		[ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
-		public bool DbxReportEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(13), LayoutImmutable, Blittable, JsonProperty(Order = 13)]
+		private bool _DbxReportEnabled;
 
-		[ContainerField(14), LayoutImmutable, Blittable, JsonProperty(Order = 14)]
-		public bool TickTelemetryEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(14), LayoutImmutable, Blittable, JsonProperty(Order = 14)]
+		private bool _TickTelemetryEnabled;
 
-		[ContainerField(15), LayoutImmutable, Blittable, JsonProperty(Order = 15)]
-		public bool DevelopmentTelemetryEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(15), LayoutImmutable, Blittable, JsonProperty(Order = 15)]
+		private bool _DevelopmentTelemetryEnabled;
 
-		[ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public bool PerformanceTelemetryEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(16), LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private bool _PerformanceTelemetryEnabled;
 
-		[ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
-		public bool JuiceTelemetryEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(17), LayoutImmutable, Blittable, JsonProperty(Order = 17)]
+		private bool _JuiceTelemetryEnabled;
 
-		[ContainerField(18), LayoutImmutable, Blittable, JsonProperty(Order = 18)]
-		public bool PerformanceProfileStateEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(18), LayoutImmutable, Blittable, JsonProperty(Order = 18)]
+		private bool _PerformanceProfileStateEnabled;
 
-		[ContainerField(19), LayoutImmutable, Blittable, JsonProperty(Order = 19)]
-		public bool TransactionTelemetryEnabled { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(19), LayoutImmutable, Blittable, JsonProperty(Order = 19)]
+		private bool _TransactionTelemetryEnabled;
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public bool CompressTransactions { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private bool _CompressTransactions;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(p_EbxWriter.WriteString(ReportName));
 			p_Writer.Write(Enabled);
 			p_Writer.Write(DbxReportEnabled);

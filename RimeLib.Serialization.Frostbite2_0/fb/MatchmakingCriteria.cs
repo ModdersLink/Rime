@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 32)]
-	public class MatchmakingCriteria :
+	public partial class MatchmakingCriteria :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public MatchmakingSizeRule SizeRule { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private MatchmakingSizeRule _SizeRule = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public MatchmakingPingSiteRule PingSiteRule { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private MatchmakingPingSiteRule _PingSiteRule = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public MatchmakingRankedRule RankedRule { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private MatchmakingRankedRule _RankedRule = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public List<MatchmakingGenericRule> GenericRules { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private List<MatchmakingGenericRule> _GenericRules = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public MatchmakingVirtualizedRule VirtualizedRule { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private MatchmakingVirtualizedRule _VirtualizedRule = new();
 		
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public List<MatchmakingUserExtendedDataRule> UEDRules { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private List<MatchmakingUserExtendedDataRule> _UEDRules = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

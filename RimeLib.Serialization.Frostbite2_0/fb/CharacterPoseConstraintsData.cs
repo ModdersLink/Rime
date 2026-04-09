@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(1, 3)]
-	public class CharacterPoseConstraintsData :
+	public partial class CharacterPoseConstraintsData :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public bool StandPose { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private bool _StandPose;
 		
-		[ContainerField(1), LayoutImmutable, Blittable, JsonProperty(Order = 1)]
-		public bool CrouchPose { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(1), LayoutImmutable, Blittable, JsonProperty(Order = 1)]
+		private bool _CrouchPose;
 		
-		[ContainerField(2), LayoutImmutable, Blittable, JsonProperty(Order = 2)]
-		public bool PronePose { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(2), LayoutImmutable, Blittable, JsonProperty(Order = 2)]
+		private bool _PronePose;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

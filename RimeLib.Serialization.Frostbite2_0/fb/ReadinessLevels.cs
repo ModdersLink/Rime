@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 36)]
-	public class ReadinessLevels :
+	public partial class ReadinessLevels :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public ReadinessLevelCharacteristics Patrol { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private ReadinessLevelCharacteristics _Patrol = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public ReadinessLevelCharacteristics Ready { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private ReadinessLevelCharacteristics _Ready = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public ReadinessLevelCharacteristics Combat { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private ReadinessLevelCharacteristics _Combat = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

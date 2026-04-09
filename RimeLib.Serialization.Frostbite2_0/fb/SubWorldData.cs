@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 44)]
-	public class SubWorldData :
+	public partial class SubWorldData :
 		SpatialPrefabBlueprint
 	{
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public CtrRef<RegistryContainer> RegistryContainer { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private CtrRef<RegistryContainer> _RegistryContainer = new();
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public bool IsWin32SubLevel { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private bool _IsWin32SubLevel;
 
-		[ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
-		public bool IsXenonSubLevel { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(41), LayoutImmutable, Blittable, JsonProperty(Order = 41)]
+		private bool _IsXenonSubLevel;
 
-		[ContainerField(42), LayoutImmutable, Blittable, JsonProperty(Order = 42)]
-		public bool IsPs3SubLevel { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(42), LayoutImmutable, Blittable, JsonProperty(Order = 42)]
+		private bool _IsPs3SubLevel;
 
-		[ContainerField(43), LayoutImmutable, Blittable, JsonProperty(Order = 43)]
-		public bool RememberStateOnStreamOut { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(43), LayoutImmutable, Blittable, JsonProperty(Order = 43)]
+		private bool _RememberStateOnStreamOut;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

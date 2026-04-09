@@ -14,24 +14,29 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 32)]
-	public class UnlockableProjectile :
+	public partial class UnlockableProjectile :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public Vec3 InitialSpeed { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private Vec3 _InitialSpeed = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<ProjectileEntityData> ProjectileData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<ProjectileEntityData> _ProjectileData = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<ProjectileBlueprint> Projectile { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<ProjectileBlueprint> _Projectile = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public CtrRef<UnlockAssetBase> Unlock { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private CtrRef<UnlockAssetBase> _Unlock = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

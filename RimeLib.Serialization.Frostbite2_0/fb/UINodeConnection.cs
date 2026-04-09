@@ -14,31 +14,38 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 28)]
-	public class UINodeConnection :
+	public partial class UINodeConnection :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public CtrRef<UINodeData> SourceNode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private CtrRef<UINodeData> _SourceNode = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<UINodeData> TargetNode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<UINodeData> _TargetNode = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<UINodePort> SourcePort { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<UINodePort> _SourcePort = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<UINodePort> TargetPort { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<UINodePort> _TargetPort = new();
 
-		[ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
-		public int NumScreensToPop { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, Blittable, JsonProperty(Order = 24)]
+		private int _NumScreensToPop;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write(p_EbxWriter.WriteImport(SourceNode));
 			p_Writer.Write(p_EbxWriter.WriteImport(TargetNode));
 			p_Writer.Write(p_EbxWriter.WriteImport(SourcePort));

@@ -14,29 +14,34 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 64)]
-	public class DestructionVolumeData :
+	public partial class DestructionVolumeData :
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public AxisAlignedBox BoundingBox { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private AxisAlignedBox _BoundingBox = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public CtrRef<DestructionVolumeAsset> Asset { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private CtrRef<DestructionVolumeAsset> _Asset = new();
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public List<Vec4> Impacts { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private List<Vec4> _Impacts = new();
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public List<uint> PartToImpactIndices { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private List<uint> _PartToImpactIndices = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
-			p_Writer.WriteNullBytes(8);
+			p_Writer.WriteNullBytes(16);
 			BoundingBox.Serialize(p_Writer, p_EbxWriter);
 			p_Writer.Write(p_EbxWriter.WriteImport(Asset));
 			(RimeWriter Writer, uint ArrayIndex) s_Impacts = p_EbxWriter.GetArrayWriter(Impacts.GetType(), Impacts.Count);

@@ -14,42 +14,53 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 416)]
-	public class CharacterSpawnReferenceObjectData :
+	public partial class CharacterSpawnReferenceObjectData :
 		SpawnReferenceObjectData
 	{
-		[ContainerField(384), JsonProperty(Order = 384)]
-		public PlayerSpawnType PlayerType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(384), JsonProperty(Order = 384)]
+		private PlayerSpawnType _PlayerType = new();
 
-		[ContainerField(388), LayoutImmutable, Blittable, JsonProperty(Order = 388)]
-		public uint VehicleEntryIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(388), LayoutImmutable, Blittable, JsonProperty(Order = 388)]
+		private uint _VehicleEntryIndex;
 
-		[ContainerField(392), JsonProperty(Order = 392)]
-		public CtrRef<SoldierSpawnTemplateData> Template { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(392), JsonProperty(Order = 392)]
+		private CtrRef<SoldierSpawnTemplateData> _Template = new();
 
-		[ContainerField(396), LayoutImmutable, Blittable, JsonProperty(Order = 396)]
-		public float HumanTargetPreference { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(396), LayoutImmutable, Blittable, JsonProperty(Order = 396)]
+		private float _HumanTargetPreference;
 
-		[ContainerField(400), JsonProperty(Order = 400)]
-		public UIHudIcon MinimapIcon { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(400), JsonProperty(Order = 400)]
+		private UIHudIcon _MinimapIcon = new();
 
-		[ContainerField(404), LayoutImmutable, Blittable, JsonProperty(Order = 404)]
-		public bool AllowFallbackOnNextAvailabeVehicleEntry { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(404), LayoutImmutable, Blittable, JsonProperty(Order = 404)]
+		private bool _AllowFallbackOnNextAvailabeVehicleEntry;
 
-		[ContainerField(405), LayoutImmutable, Blittable, JsonProperty(Order = 405)]
-		public bool CheckMaxPlayersInVehicle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(405), LayoutImmutable, Blittable, JsonProperty(Order = 405)]
+		private bool _CheckMaxPlayersInVehicle;
 
-		[ContainerField(406), LayoutImmutable, Blittable, JsonProperty(Order = 406)]
-		public bool AffectMinimapPosition { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(406), LayoutImmutable, Blittable, JsonProperty(Order = 406)]
+		private bool _AffectMinimapPosition;
 
-		[ContainerField(407), LayoutImmutable, Blittable, JsonProperty(Order = 407)]
-		public bool IsTarget { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(407), LayoutImmutable, Blittable, JsonProperty(Order = 407)]
+		private bool _IsTarget;
 
-		[ContainerField(408), LayoutImmutable, Blittable, JsonProperty(Order = 408)]
-		public bool IgnoreVehicleIcon { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(408), LayoutImmutable, Blittable, JsonProperty(Order = 408)]
+		private bool _IgnoreVehicleIcon;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

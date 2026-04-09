@@ -14,57 +14,73 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 60)]
-	public class VehicleEntryListenerBinding :
+	public partial class VehicleEntryListenerBinding :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public AntRef InVehicle { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private AntRef _InVehicle = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public AntRef InOpenEntry { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private AntRef _InOpenEntry = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public AntRef VehicleEntryFire { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private AntRef _VehicleEntryFire = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public AntRef VehicleEntryYaw { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private AntRef _VehicleEntryYaw = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public AntRef VehicleEntryPitch { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private AntRef _VehicleEntryPitch = new();
 		
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public AntRef VehicleEntryRoll { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private AntRef _VehicleEntryRoll = new();
 		
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public AntRef VehicleEntryRotation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private AntRef _VehicleEntryRotation = new();
 		
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public AntRef VehicleEntryForceX { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private AntRef _VehicleEntryForceX = new();
 		
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public AntRef VehicleEntryForceY { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private AntRef _VehicleEntryForceY = new();
 		
-		[ContainerField(36), JsonProperty(Order = 36)]
-		public AntRef VehicleEntryForceZ { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(36), JsonProperty(Order = 36)]
+		private AntRef _VehicleEntryForceZ = new();
 		
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public AntRef VehicleEntryIndex { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private AntRef _VehicleEntryIndex = new();
 		
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public AntRef VehicleEntryIndexUpdated { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private AntRef _VehicleEntryIndexUpdated = new();
 		
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public AntRef VehicleOpenEntryIndex { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private AntRef _VehicleOpenEntryIndex = new();
 		
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public AntRef InVehicleRetrigger { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private AntRef _InVehicleRetrigger = new();
 		
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public AntRef VehicleEntryChooserIndex { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private AntRef _VehicleEntryChooserIndex = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,30 +14,37 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 12)]
-	public class PackagingDetailInfo :
+	public partial class PackagingDetailInfo :
 		EbxSerializable
 	{
-		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public int MipsToSkip { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private int _MipsToSkip;
 		
-		[ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
-		public int LodsToSkip { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(4), LayoutImmutable, Blittable, JsonProperty(Order = 4)]
+		private int _LodsToSkip;
 		
-		[ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
-		public bool IncludeAnimation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(8), LayoutImmutable, Blittable, JsonProperty(Order = 8)]
+		private bool _IncludeAnimation;
 		
-		[ContainerField(9), LayoutImmutable, Blittable, JsonProperty(Order = 9)]
-		public bool IncludeMeshes { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(9), LayoutImmutable, Blittable, JsonProperty(Order = 9)]
+		private bool _IncludeMeshes;
 		
-		[ContainerField(10), LayoutImmutable, Blittable, JsonProperty(Order = 10)]
-		public bool IncludeSounds { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(10), LayoutImmutable, Blittable, JsonProperty(Order = 10)]
+		private bool _IncludeSounds;
 		
-		[ContainerField(11), LayoutImmutable, Blittable, JsonProperty(Order = 11)]
-		public bool IncludeTextures { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(11), LayoutImmutable, Blittable, JsonProperty(Order = 11)]
+		private bool _IncludeTextures;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

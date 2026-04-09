@@ -14,74 +14,94 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 240)]
-	public class SkyEffectState :
+	public partial class SkyEffectState :
 		DataContainer
 	{
-		[ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
-		public Vec3 CloudLayerSunColor { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 16)]
+		private Vec3 _CloudLayerSunColor = new();
 
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public float PanoramicTileFactor { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private float _PanoramicTileFactor;
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float SunSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _SunSize;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public float SkyGradientScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private float _SkyGradientScale;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public float SunScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private float _SunScale;
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public float PanoramicUVMinX { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private float _PanoramicUVMinX;
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public CtrRef<TextureAsset> SkyGradientTexture { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private CtrRef<TextureAsset> _SkyGradientTexture = new();
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public float PanoramicUVMinY { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private float _PanoramicUVMinY;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public float PanoramicUVMaxY { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private float _PanoramicUVMaxY;
 
-		[ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
-		public float PanoramicUVMaxX { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(64), LayoutImmutable, Blittable, JsonProperty(Order = 64)]
+		private float _PanoramicUVMaxX;
 
-		[ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
-		public float PanoramicRotation { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(68), LayoutImmutable, Blittable, JsonProperty(Order = 68)]
+		private float _PanoramicRotation;
 
-		[ContainerField(72), JsonProperty(Order = 72)]
-		public CtrRef<TextureAsset> PanoramicTexture { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(72), JsonProperty(Order = 72)]
+		private CtrRef<TextureAsset> _PanoramicTexture = new();
 
-		[ContainerField(76), JsonProperty(Order = 76)]
-		public CtrRef<TextureAsset> PanoramicAlphaTexture { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(76), JsonProperty(Order = 76)]
+		private CtrRef<TextureAsset> _PanoramicAlphaTexture = new();
 
-		[ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
-		public float WindDirection { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(80), LayoutImmutable, Blittable, JsonProperty(Order = 80)]
+		private float _WindDirection;
 
-		[ContainerField(84), JsonProperty(Order = 84)]
-		public CtrRef<TextureAsset> CloudLayerMaskTexture { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(84), JsonProperty(Order = 84)]
+		private CtrRef<TextureAsset> _CloudLayerMaskTexture = new();
 
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public SkyCloudLayer CloudLayer1 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private SkyCloudLayer _CloudLayer1 = new();
 
-		[ContainerField(160), JsonProperty(Order = 160)]
-		public SkyCloudLayer CloudLayer2 { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(160), JsonProperty(Order = 160)]
+		private SkyCloudLayer _CloudLayer2 = new();
 
-		[ContainerField(224), JsonProperty(Order = 224)]
-		public CtrRef<TextureAsset> StaticEnvmapTexture { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(224), JsonProperty(Order = 224)]
+		private CtrRef<TextureAsset> _StaticEnvmapTexture = new();
 
-		[ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
-		public bool Enable { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(228), LayoutImmutable, Blittable, JsonProperty(Order = 228)]
+		private bool _Enable;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
-			p_Writer.WriteNullBytes(8);
+			p_Writer.WriteNullBytes(16);
 			CloudLayerSunColor.Serialize(p_Writer, p_EbxWriter);
 			p_Writer.Write(PanoramicTileFactor);
 			p_Writer.Write(SunSize);

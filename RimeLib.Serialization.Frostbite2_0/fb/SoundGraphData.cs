@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 68)]
-	public class SoundGraphData :
+	public partial class SoundGraphData :
 		AudioGraphData
 	{
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public SoundGraphInfo Info { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private SoundGraphInfo _Info = new();
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public RefArray<AudioGraphParameter> InputParameters { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private RefArray<AudioGraphParameter> _InputParameters = new();
 
-		[ContainerField(56), JsonProperty(Order = 56)]
-		public RefArray<AudioGraphParameter> OutputParameters { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(56), JsonProperty(Order = 56)]
+		private RefArray<AudioGraphParameter> _OutputParameters = new();
 
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public RefArray<AudioGraphEvent> InputEvents { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private RefArray<AudioGraphEvent> _InputEvents = new();
 
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public RefArray<AudioGraphEvent> OutputEvents { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private RefArray<AudioGraphEvent> _OutputEvents = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

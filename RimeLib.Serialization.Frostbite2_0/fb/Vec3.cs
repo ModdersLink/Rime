@@ -18,7 +18,7 @@ using RimeLib.Serialization.Frostbite2_0.Ebx;
 namespace fb
 {
 	[ContainerType(16, 16), Homogeneous, LayoutImmutable, Blittable]
-	public class Vec3 :
+	public partial class Vec3 :
 		EbxSerializable
 	{
 		[ContainerField(0), LayoutImmutable, Blittable, JsonProperty(Order = 0)]

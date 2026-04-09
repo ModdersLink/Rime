@@ -14,51 +14,65 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 144)]
-	public class ObjectiveEntityData :
+	public partial class ObjectiveEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), LayoutImmutable, JsonProperty(Order = 96)]
-		public string ObjectiveBriefSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, JsonProperty(Order = 96)]
+		private string _ObjectiveBriefSid = string.Empty;
 
-		[ContainerField(100), LayoutImmutable, JsonProperty(Order = 100)]
-		public string ObjectiveSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(100), LayoutImmutable, JsonProperty(Order = 100)]
+		private string _ObjectiveSid = string.Empty;
 
-		[ContainerField(104), JsonProperty(Order = 104)]
-		public CtrRef<MissionObjectiveHudData> HudData { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(104), JsonProperty(Order = 104)]
+		private CtrRef<MissionObjectiveHudData> _HudData = new();
 
-		[ContainerField(108), JsonProperty(Order = 108)]
-		public ObjectiveType ObjectiveType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(108), JsonProperty(Order = 108)]
+		private ObjectiveType _ObjectiveType = new();
 
-		[ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
-		public float DisplayTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(112), LayoutImmutable, Blittable, JsonProperty(Order = 112)]
+		private float _DisplayTime;
 
-		[ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
-		public float DelayTime { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(116), LayoutImmutable, Blittable, JsonProperty(Order = 116)]
+		private float _DelayTime;
 
-		[ContainerField(120), JsonProperty(Order = 120)]
-		public SquadId SquadId { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(120), JsonProperty(Order = 120)]
+		private SquadId _SquadId = new();
 
-		[ContainerField(124), JsonProperty(Order = 124)]
-		public TeamId TeamId { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(124), JsonProperty(Order = 124)]
+		private TeamId _TeamId = new();
 
-		[ContainerField(128), LayoutImmutable, JsonProperty(Order = 128)]
-		public string SuccessSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(128), LayoutImmutable, JsonProperty(Order = 128)]
+		private string _SuccessSid = string.Empty;
 
-		[ContainerField(132), JsonProperty(Order = 132)]
-		public MessageReciever Reciever { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(132), JsonProperty(Order = 132)]
+		private MessageReciever _Reciever = new();
 
-		[ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
-		public bool RetriggerSuccessOnShowObjective { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(136), LayoutImmutable, Blittable, JsonProperty(Order = 136)]
+		private bool _RetriggerSuccessOnShowObjective;
 
-		[ContainerField(137), LayoutImmutable, Blittable, JsonProperty(Order = 137)]
-		public bool Tutorial { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(137), LayoutImmutable, Blittable, JsonProperty(Order = 137)]
+		private bool _Tutorial;
 
-		[ContainerField(138), LayoutImmutable, Blittable, JsonProperty(Order = 138)]
-		public bool DisplaySuccess { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(138), LayoutImmutable, Blittable, JsonProperty(Order = 138)]
+		private bool _DisplaySuccess;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -1,7 +1,7 @@
 ﻿using Avalonia;
 using System;
 
-namespace RimeLib.UI
+namespace Rime.UI
 {
     internal sealed class Program
     {
@@ -16,6 +16,9 @@ namespace RimeLib.UI
         public static AppBuilder BuildAvaloniaApp()
             => AppBuilder.Configure<App>()
                 .UsePlatformDetect()
+#if DEBUG
+                .WithDeveloperTools()
+#endif
                 .WithInterFont()
                 .LogToTrace();
     }

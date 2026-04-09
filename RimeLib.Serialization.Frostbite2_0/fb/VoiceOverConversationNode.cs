@@ -14,54 +14,69 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 64)]
-	public class VoiceOverConversationNode :
+	public partial class VoiceOverConversationNode :
 		VoiceOverStructureNode
 	{
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public RefArray<VoiceOverDialogGroup> Groups { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private RefArray<VoiceOverDialogGroup> _Groups = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public RefArray<VoiceOverValueConnection> Condition { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private RefArray<VoiceOverValueConnection> _Condition = new();
 
-		[ContainerField(20), JsonProperty(Order = 20)]
-		public CtrRef<VoiceOverIntervalNode> Interval { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(20), JsonProperty(Order = 20)]
+		private CtrRef<VoiceOverIntervalNode> _Interval = new();
 
-		[ContainerField(24), JsonProperty(Order = 24)]
-		public RefArray<VoiceOverStructureNode> FinishedRelationship { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(24), JsonProperty(Order = 24)]
+		private RefArray<VoiceOverStructureNode> _FinishedRelationship = new();
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public RefArray<VoiceOverStructureNode> BlockedRelationship { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private RefArray<VoiceOverStructureNode> _BlockedRelationship = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public VoiceOverContainerConditionMode ConditionMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private VoiceOverContainerConditionMode _ConditionMode = new();
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float Probability { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _Probability;
 
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public CtrRef<VoiceOverPronunciation> Pronunciation { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private CtrRef<VoiceOverPronunciation> _Pronunciation = new();
 
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public VoiceOverConversationInterruptMode InterruptMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private VoiceOverConversationInterruptMode _InterruptMode = new();
 
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public int Priority { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private int _Priority;
 
-		[ContainerField(52), JsonProperty(Order = 52)]
-		public VoiceOverConversationQueueMode QueueMode { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(52), JsonProperty(Order = 52)]
+		private VoiceOverConversationQueueMode _QueueMode = new();
 
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public float Relevancy { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private float _Relevancy;
 
-		[ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
-		public sbyte TrackCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(60), LayoutImmutable, Blittable, JsonProperty(Order = 60)]
+		private sbyte _TrackCount;
 
-		[ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
-		public sbyte LastSequenceIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(61), LayoutImmutable, Blittable, JsonProperty(Order = 61)]
+		private sbyte _LastSequenceIndex;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

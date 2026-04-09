@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 20)]
-	public class EventConnection :
+	public partial class EventConnection :
 		EbxSerializable
 	{
-		[ContainerField(0), JsonProperty(Order = 0)]
-		public CtrRef<DataContainer> Source { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), JsonProperty(Order = 0)]
+		private CtrRef<DataContainer> _Source = new();
 		
-		[ContainerField(4), JsonProperty(Order = 4)]
-		public CtrRef<DataContainer> Target { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(4), JsonProperty(Order = 4)]
+		private CtrRef<DataContainer> _Target = new();
 		
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public EventSpec SourceEvent { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private EventSpec _SourceEvent = new();
 		
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public EventSpec TargetEvent { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private EventSpec _TargetEvent = new();
 		
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public EventConnectionTargetType TargetType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private EventConnectionTargetType _TargetType = new();
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -1,4 +1,4 @@
-﻿namespace RimeLib.UI.ViewModels
+﻿namespace Rime.UI.ViewModels
 {
     public partial class MainWindowViewModel : ViewModelBase
     {

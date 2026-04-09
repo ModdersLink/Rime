@@ -14,27 +14,33 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 128)]
-	public class DecalEntityData :
+	public partial class DecalEntityData :
 		GameEntityData
 	{
-		[ContainerField(96), JsonProperty(Order = 96)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(96), JsonProperty(Order = 96)]
+		private CtrRef<SurfaceShaderBaseAsset> _Shader = new();
 
-		[ContainerField(100), JsonProperty(Order = 100)]
-		public DecalAtlasTile AtlasTile { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(100), JsonProperty(Order = 100)]
+		private DecalAtlasTile _AtlasTile = new();
 
-		[ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
-		public sbyte MaterialIndex { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(120), LayoutImmutable, Blittable, JsonProperty(Order = 120)]
+		private sbyte _MaterialIndex;
 
-		[ContainerField(121), LayoutImmutable, Blittable, JsonProperty(Order = 121)]
-		public sbyte SortingPriority { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(121), LayoutImmutable, Blittable, JsonProperty(Order = 121)]
+		private sbyte _SortingPriority;
 
-		[ContainerField(122), LayoutImmutable, Blittable, JsonProperty(Order = 122)]
-		public bool Projected { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(122), LayoutImmutable, Blittable, JsonProperty(Order = 122)]
+		private bool _Projected;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

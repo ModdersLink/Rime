@@ -14,46 +14,58 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 48)]
-	public class ScoringTypeData :
+	public partial class ScoringTypeData :
 		DataContainer
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public StatEvent Measuring { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private StatEvent _Measuring = new();
 
-		[ContainerField(12), JsonProperty(Order = 12)]
-		public CtrRef<StatsCategoryBaseData> ParamX { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(12), JsonProperty(Order = 12)]
+		private CtrRef<StatsCategoryBaseData> _ParamX = new();
 
-		[ContainerField(16), JsonProperty(Order = 16)]
-		public CtrRef<StatsCategoryBaseData> ParamY { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(16), JsonProperty(Order = 16)]
+		private CtrRef<StatsCategoryBaseData> _ParamY = new();
 
-		[ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
-		public float Limit { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(20), LayoutImmutable, Blittable, JsonProperty(Order = 20)]
+		private float _Limit;
 
-		[ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
-		public string DescriptionSid { get; set; } = string.Empty;
+		[ObservableProperty]
+		[property: ContainerField(24), LayoutImmutable, JsonProperty(Order = 24)]
+		private string _DescriptionSid = string.Empty;
 
-		[ContainerField(28), JsonProperty(Order = 28)]
-		public ScoringVisibilityType VisibilityType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(28), JsonProperty(Order = 28)]
+		private ScoringVisibilityType _VisibilityType = new();
 
-		[ContainerField(32), JsonProperty(Order = 32)]
-		public ScoringBucket Bucket { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(32), JsonProperty(Order = 32)]
+		private ScoringBucket _Bucket = new();
 
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public float Score { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private float _Score;
 
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public float AdditionalValueMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private float _AdditionalValueMultiplier;
 
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public bool ShowForTeam { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private bool _ShowForTeam;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
 			base.Serialize(p_Writer, p_EbxWriter);
+			p_Writer.WriteNullBytes(8);
 			p_Writer.Write((int) Measuring);
 			p_Writer.Write(p_EbxWriter.WriteImport(ParamX));
 			p_Writer.Write(p_EbxWriter.WriteImport(ParamY));

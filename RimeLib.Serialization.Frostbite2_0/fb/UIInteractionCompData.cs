@@ -14,21 +14,25 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 168)]
-	public class UIInteractionCompData :
+	public partial class UIInteractionCompData :
 		UI3dIconCompData
 	{
-		[ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
-		public float RepairSnapDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(160), LayoutImmutable, Blittable, JsonProperty(Order = 160)]
+		private float _RepairSnapDistance;
 
-		[ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
-		public bool RepairSnapCircle { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(164), LayoutImmutable, Blittable, JsonProperty(Order = 164)]
+		private bool _RepairSnapCircle;
 
-		[ContainerField(165), LayoutImmutable, Blittable, JsonProperty(Order = 165)]
-		public bool PickupShrinkSnap { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(165), LayoutImmutable, Blittable, JsonProperty(Order = 165)]
+		private bool _PickupShrinkSnap;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

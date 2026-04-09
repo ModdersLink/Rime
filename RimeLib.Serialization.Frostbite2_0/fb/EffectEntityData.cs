@@ -14,36 +14,45 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 112)]
-	public class EffectEntityData :
+	public partial class EffectEntityData :
 		SpatialEntityData
 	{
-		[ContainerField(80), JsonProperty(Order = 80)]
-		public RefArray<GameObjectData> Components { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(80), JsonProperty(Order = 80)]
+		private RefArray<GameObjectData> _Components = new();
 
-		[ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
-		public uint MaxInstanceCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(84), LayoutImmutable, Blittable, JsonProperty(Order = 84)]
+		private uint _MaxInstanceCount;
 
-		[ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
-		public float CullDistance { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(88), LayoutImmutable, Blittable, JsonProperty(Order = 88)]
+		private float _CullDistance;
 
-		[ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
-		public float StartDelay { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(92), LayoutImmutable, Blittable, JsonProperty(Order = 92)]
+		private float _StartDelay;
 
-		[ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
-		public bool HighEndPc { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(96), LayoutImmutable, Blittable, JsonProperty(Order = 96)]
+		private bool _HighEndPc;
 
-		[ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
-		public bool MediumPc { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(97), LayoutImmutable, Blittable, JsonProperty(Order = 97)]
+		private bool _MediumPc;
 
-		[ContainerField(98), LayoutImmutable, Blittable, JsonProperty(Order = 98)]
-		public bool LowEndPc { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(98), LayoutImmutable, Blittable, JsonProperty(Order = 98)]
+		private bool _LowEndPc;
 
-		[ContainerField(99), LayoutImmutable, Blittable, JsonProperty(Order = 99)]
-		public bool ResetInstanceWhenStarted { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(99), LayoutImmutable, Blittable, JsonProperty(Order = 99)]
+		private bool _ResetInstanceWhenStarted;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

@@ -14,60 +14,77 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(16, 192)]
-	public class EnlightenDbSystem :
+	public partial class EnlightenDbSystem :
 		EbxSerializable
 	{
-		[ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
-		public AxisAlignedBox BoundingBox { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(0), Homogeneous, LayoutImmutable, Blittable, JsonProperty(Order = 0)]
+		private AxisAlignedBox _BoundingBox = new();
 		
-		[ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
-		public uint AtlasStartX { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(32), LayoutImmutable, Blittable, JsonProperty(Order = 32)]
+		private uint _AtlasStartX;
 		
-		[ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
-		public uint AtlasStartY { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(36), LayoutImmutable, Blittable, JsonProperty(Order = 36)]
+		private uint _AtlasStartY;
 		
-		[ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
-		public uint OutputWidth { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(40), LayoutImmutable, Blittable, JsonProperty(Order = 40)]
+		private uint _OutputWidth;
 		
-		[ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
-		public uint OutputHeight { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(44), LayoutImmutable, Blittable, JsonProperty(Order = 44)]
+		private uint _OutputHeight;
 		
-		[ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
-		public uint PixelCount { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(48), LayoutImmutable, Blittable, JsonProperty(Order = 48)]
+		private uint _PixelCount;
 		
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public float PixelSize { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private float _PixelSize;
 		
-		[ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
-		public int SystemId { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(56), LayoutImmutable, Blittable, JsonProperty(Order = 56)]
+		private int _SystemId;
 		
-		[ContainerField(60), JsonProperty(Order = 60)]
-		public List<EnlightenDbInstance> Instances { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(60), JsonProperty(Order = 60)]
+		private List<EnlightenDbInstance> _Instances = new();
 		
-		[ContainerField(64), JsonProperty(Order = 64)]
-		public List<int> InputSystems { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(64), JsonProperty(Order = 64)]
+		private List<int> _InputSystems = new();
 		
-		[ContainerField(68), JsonProperty(Order = 68)]
-		public PrecomputeCache SystemCache { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(68), JsonProperty(Order = 68)]
+		private PrecomputeCache _SystemCache = new();
 		
-		[ContainerField(92), JsonProperty(Order = 92)]
-		public PrecomputeCache ClusteringCache { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(92), JsonProperty(Order = 92)]
+		private PrecomputeCache _ClusteringCache = new();
 		
-		[ContainerField(116), JsonProperty(Order = 116)]
-		public PrecomputeCache PreClusteringCache { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(116), JsonProperty(Order = 116)]
+		private PrecomputeCache _PreClusteringCache = new();
 		
-		[ContainerField(140), JsonProperty(Order = 140)]
-		public PrecomputeCache LightTransportCache { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(140), JsonProperty(Order = 140)]
+		private PrecomputeCache _LightTransportCache = new();
 		
-		[ContainerField(164), JsonProperty(Order = 164)]
-		public PrecomputeCache VisibilityCache { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(164), JsonProperty(Order = 164)]
+		private PrecomputeCache _VisibilityCache = new();
 		
-		[ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
-		public bool TerrainSystem { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(188), LayoutImmutable, Blittable, JsonProperty(Order = 188)]
+		private bool _TerrainSystem;
 		
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

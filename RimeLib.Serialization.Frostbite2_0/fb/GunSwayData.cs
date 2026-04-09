@@ -14,69 +14,89 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 808)]
-	public class GunSwayData :
+	public partial class GunSwayData :
 		WeaponSwayData
 	{
-		[ContainerField(8), JsonProperty(Order = 8)]
-		public GunSwayStandData Stand { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(8), JsonProperty(Order = 8)]
+		private GunSwayStandData _Stand = new();
 
-		[ContainerField(288), JsonProperty(Order = 288)]
-		public GunSwayCrouchProneData Crouch { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(288), JsonProperty(Order = 288)]
+		private GunSwayCrouchProneData _Crouch = new();
 
-		[ContainerField(440), JsonProperty(Order = 440)]
-		public GunSwayCrouchProneData Prone { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(440), JsonProperty(Order = 440)]
+		private GunSwayCrouchProneData _Prone = new();
 
-		[ContainerField(592), JsonProperty(Order = 592)]
-		public GunSwayStanceTransition ProneToCrouch { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(592), JsonProperty(Order = 592)]
+		private GunSwayStanceTransition _ProneToCrouch = new();
 
-		[ContainerField(612), JsonProperty(Order = 612)]
-		public GunSwayStanceTransition ProneToStand { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(612), JsonProperty(Order = 612)]
+		private GunSwayStanceTransition _ProneToStand = new();
 
-		[ContainerField(632), JsonProperty(Order = 632)]
-		public GunSwayStanceTransition CrouchToProne { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(632), JsonProperty(Order = 632)]
+		private GunSwayStanceTransition _CrouchToProne = new();
 
-		[ContainerField(652), JsonProperty(Order = 652)]
-		public GunSwayStanceTransition CrouchToStand { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(652), JsonProperty(Order = 652)]
+		private GunSwayStanceTransition _CrouchToStand = new();
 
-		[ContainerField(672), JsonProperty(Order = 672)]
-		public GunSwayStanceTransition StandToProne { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(672), JsonProperty(Order = 672)]
+		private GunSwayStanceTransition _StandToProne = new();
 
-		[ContainerField(692), JsonProperty(Order = 692)]
-		public GunSwayStanceTransition StandToCrouch { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(692), JsonProperty(Order = 692)]
+		private GunSwayStanceTransition _StandToCrouch = new();
 
-		[ContainerField(712), JsonProperty(Order = 712)]
-		public GunSwayStanceZoomModifierData SuppressionModifierUnzoomed { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(712), JsonProperty(Order = 712)]
+		private GunSwayStanceZoomModifierData _SuppressionModifierUnzoomed = new();
 
-		[ContainerField(744), JsonProperty(Order = 744)]
-		public GunSwayStanceZoomModifierData SuppressionModifierZoomed { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(744), JsonProperty(Order = 744)]
+		private GunSwayStanceZoomModifierData _SuppressionModifierZoomed = new();
 
-		[ContainerField(776), JsonProperty(Order = 776)]
-		public RefArray<GunSwayModifierData> Modifiers { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(776), JsonProperty(Order = 776)]
+		private RefArray<GunSwayModifierData> _Modifiers = new();
 
-		[ContainerField(780), LayoutImmutable, Blittable, JsonProperty(Order = 780)]
-		public float DeviationScaleFactorZoom { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(780), LayoutImmutable, Blittable, JsonProperty(Order = 780)]
+		private float _DeviationScaleFactorZoom;
 
-		[ContainerField(784), LayoutImmutable, Blittable, JsonProperty(Order = 784)]
-		public float GameplayDeviationScaleFactorZoom { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(784), LayoutImmutable, Blittable, JsonProperty(Order = 784)]
+		private float _GameplayDeviationScaleFactorZoom;
 
-		[ContainerField(788), LayoutImmutable, Blittable, JsonProperty(Order = 788)]
-		public float DeviationScaleFactorNoZoom { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(788), LayoutImmutable, Blittable, JsonProperty(Order = 788)]
+		private float _DeviationScaleFactorNoZoom;
 
-		[ContainerField(792), LayoutImmutable, Blittable, JsonProperty(Order = 792)]
-		public float GameplayDeviationScaleFactorNoZoom { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(792), LayoutImmutable, Blittable, JsonProperty(Order = 792)]
+		private float _GameplayDeviationScaleFactorNoZoom;
 
-		[ContainerField(796), LayoutImmutable, Blittable, JsonProperty(Order = 796)]
-		public float ShootingRecoilDecreaseScale { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(796), LayoutImmutable, Blittable, JsonProperty(Order = 796)]
+		private float _ShootingRecoilDecreaseScale;
 
-		[ContainerField(800), LayoutImmutable, Blittable, JsonProperty(Order = 800)]
-		public float FirstShotRecoilMultiplier { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(800), LayoutImmutable, Blittable, JsonProperty(Order = 800)]
+		private float _FirstShotRecoilMultiplier;
 
-		[ContainerField(804), JsonProperty(Order = 804)]
-		public CtrRef<CameraRecoilData> CameraRecoil { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(804), JsonProperty(Order = 804)]
+		private CtrRef<CameraRecoilData> _CameraRecoil = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

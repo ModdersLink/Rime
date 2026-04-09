@@ -14,18 +14,21 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 52)]
-	public class TerrainFillDecalData :
+	public partial class TerrainFillDecalData :
 		VisualVectorShapeData
 	{
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader2d { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private CtrRef<SurfaceShaderBaseAsset> _Shader2d = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public CtrRef<SurfaceShaderBaseAsset> Shader3dZOnly { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private CtrRef<SurfaceShaderBaseAsset> _Shader3dZOnly = new();
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{

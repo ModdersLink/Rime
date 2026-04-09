@@ -14,33 +14,41 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace fb
 {
 	[ContainerType(4, 56)]
-	public class ShootOrderEntityData :
+	public partial class ShootOrderEntityData :
 		BFOrderEntityData
 	{
-		[ContainerField(40), JsonProperty(Order = 40)]
-		public StrengthType StrengthType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(40), JsonProperty(Order = 40)]
+		private StrengthType _StrengthType = new();
 
-		[ContainerField(44), JsonProperty(Order = 44)]
-		public PoseType Pose { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(44), JsonProperty(Order = 44)]
+		private PoseType _Pose = new();
 
-		[ContainerField(48), JsonProperty(Order = 48)]
-		public ShootType ShootType { get; set; } = new();
+		[ObservableProperty]
+		[property: ContainerField(48), JsonProperty(Order = 48)]
+		private ShootType _ShootType = new();
 
-		[ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
-		public bool PreferAlternativeWeapon { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(52), LayoutImmutable, Blittable, JsonProperty(Order = 52)]
+		private bool _PreferAlternativeWeapon;
 
-		[ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
-		public bool CompleteWhenHumanIsSensed { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(53), LayoutImmutable, Blittable, JsonProperty(Order = 53)]
+		private bool _CompleteWhenHumanIsSensed;
 
-		[ContainerField(54), LayoutImmutable, Blittable, JsonProperty(Order = 54)]
-		public bool CycleTargets { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(54), LayoutImmutable, Blittable, JsonProperty(Order = 54)]
+		private bool _CycleTargets;
 
-		[ContainerField(55), LayoutImmutable, Blittable, JsonProperty(Order = 55)]
-		public bool RandomTargetOrder { get; set; }
+		[ObservableProperty]
+		[property: ContainerField(55), LayoutImmutable, Blittable, JsonProperty(Order = 55)]
+		private bool _RandomTargetOrder;
 
 		public override void Serialize(RimeWriter p_Writer, IEbxWriter p_EbxWriter)
 		{
