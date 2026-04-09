@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <LangVersion>default</LangVersion>
     <Nullable>enable</Nullable>
     <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
@@ -28,10 +28,10 @@
 
   <ItemGroup>
     <Reference Include="SharpGLTF.Core">
-      <HintPath>..\..\..\.nuget\packages\sharpgltf.core\1.0.5\lib\net8.0\SharpGLTF.Core.dll</HintPath>
+      <HintPath>..\..\..\.nuget\packages\sharpgltf.core\1.0.5\lib\net10.0\SharpGLTF.Core.dll</HintPath>
     </Reference>
     <Reference Include="SharpGLTF.Toolkit">
-      <HintPath>..\..\..\.nuget\packages\sharpgltf.toolkit\1.0.5\lib\net8.0\SharpGLTF.Toolkit.dll</HintPath>
+      <HintPath>..\..\..\.nuget\packages\sharpgltf.toolkit\1.0.5\lib\net10.0\SharpGLTF.Toolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
 
