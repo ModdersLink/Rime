@@ -901,11 +901,11 @@ public class EngineMounter : IEngineMounter
                 (_, _) => s_Partition.Name.ToLowerInvariant()
             );
 
-            m_MountedEbxPartitionsGuids.AddOrUpdate(
-                EbxReader.GetPartitionGuid(s_Variant),
-                s_Partition.Name.ToLowerInvariant(),
-                (_, _) => s_Partition.Name.ToLowerInvariant()
-            );
+            //m_MountedEbxPartitionsGuids.AddOrUpdate(
+            //    EbxReader.GetPartitionGuid(s_Variant),
+            //    s_Partition.Name.ToLowerInvariant(),
+            //    (_, _) => s_Partition.Name.ToLowerInvariant()
+            //);
         }
 
         // Mount all partitions.
@@ -1037,11 +1037,11 @@ public class EngineMounter : IEngineMounter
                     (_, _) => s_Partition.Name.ToLowerInvariant()
                 );
 
-                m_MountedEbxPartitionsGuids.AddOrUpdate(
-                    EbxReader.GetPartitionGuid(s_Variant),
-                    s_Partition.Name.ToLowerInvariant(),
-                    (_, _) => s_Partition.Name.ToLowerInvariant()
-                );
+                //m_MountedEbxPartitionsGuids.AddOrUpdate(
+                //    EbxReader.GetPartitionGuid(s_Variant),
+                //    s_Partition.Name.ToLowerInvariant(),
+                //    (_, _) => s_Partition.Name.ToLowerInvariant()
+                //);
             }
 
             // Mount all partitions.
@@ -1129,6 +1129,8 @@ public class EngineMounter : IEngineMounter
         // Mount all partitions.
         foreach (var s_Partition in p_Bundle.Ebx)
         {
+            var s_PartitionNameLower = s_Partition.Name.ToLowerInvariant();
+
             // Create variant.
             var s_Variant = new ObjectVariant(s_Partition, p_Bundle.ContainedSuperbundle.Name, p_Bundle.ContainedBundle.Id);
 
@@ -1137,7 +1139,7 @@ public class EngineMounter : IEngineMounter
 
             if (p_Bundle.IsDbx)
             {
-                m_MountedDbxPartitions.AddOrUpdate(s_Partition.Name.ToLowerInvariant(), s_MountedObject,(p_GUID, p_MountedObject) =>
+                m_MountedDbxPartitions.AddOrUpdate(s_PartitionNameLower, s_MountedObject, (p_GUID, p_MountedObject) =>
                 {
                     // If this was already mounted, just add the variant.
                     p_MountedObject.AddVariant(s_Variant);
@@ -1146,13 +1148,13 @@ public class EngineMounter : IEngineMounter
 
                 m_MountedDbxPartitionsLowerNameHashes.AddOrUpdate(
                     RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Partition.Name),
-                    s_Partition.Name.ToLowerInvariant(),
-                    (_, _) => s_Partition.Name.ToLowerInvariant()
+                    s_PartitionNameLower,
+                    (_, _) => s_PartitionNameLower
                 );
             }
             else
             {
-                m_MountedEbxPartitions.AddOrUpdate(s_Partition.Name.ToLowerInvariant(), s_MountedObject,(p_GUID, p_MountedObject) =>
+                m_MountedEbxPartitions.AddOrUpdate(s_PartitionNameLower, s_MountedObject, (p_GUID, p_MountedObject) =>
                 {
                     // If this was already mounted, just add the variant.
                     p_MountedObject.AddVariant(s_Variant);
@@ -1161,15 +1163,15 @@ public class EngineMounter : IEngineMounter
 
                 m_MountedEbxPartitionsLowerNameHashes.AddOrUpdate(
                     RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Partition.Name),
-                    s_Partition.Name.ToLowerInvariant(),
-                    (_, _) => s_Partition.Name.ToLowerInvariant()
+                    s_PartitionNameLower,
+                    (_, _) => s_PartitionNameLower
                 );
 
-                m_MountedEbxPartitionsGuids.AddOrUpdate(
-                    EbxReader.GetPartitionGuid(s_Variant),
-                    s_Partition.Name.ToLowerInvariant(),
-                    (_, _) => s_Partition.Name.ToLowerInvariant()
-                );
+                //m_MountedEbxPartitionsGuids.AddOrUpdate(
+                //    EbxReader.GetPartitionGuid(s_Variant),
+                //    s_PartitionNameLower,
+                //    (_, _) => s_PartitionNameLower
+                //);
             }
         }
 
