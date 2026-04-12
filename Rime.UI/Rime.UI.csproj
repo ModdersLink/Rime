@@ -22,12 +22,25 @@
     </PackageReference>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.4.2" />
     <PackageReference Include="Dock.Avalonia" Version="12.0.0.1" />
+    <PackageReference Include="Dock.Avalonia.Themes.Browser" Version="12.0.0.1" />
+    <PackageReference Include="Dock.Avalonia.Themes.Fluent" Version="12.0.0.1" />
+    <PackageReference Include="Dock.Controls.DeferredContentControl" Version="12.0.0.1" />
+    <PackageReference Include="Dock.Model.Avalonia" Version="12.0.0.1" />
     <PackageReference Include="Dock.Model.Mvvm" Version="12.0.0.1" />
+    <PackageReference Include="Dock.Serializer.Newtonsoft" Version="12.0.0.1" />
   </ItemGroup>
 
   <ItemGroup>
     <Compile Update="Views\MainWindow.axaml.cs">
       <DependentUpon>MainWindow.axaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\MainView.axaml.cs">
+      <DependentUpon>MainView.axaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 </Project>

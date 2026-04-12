@@ -20,10 +20,7 @@ namespace Rime.UI
         {
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
-                desktop.MainWindow = new MainWindow
-                {
-                    DataContext = new MainViewViewModel(),
-                };
+                desktop.MainWindow = new MainWindow( );
             }
 
             base.OnFrameworkInitializationCompleted();

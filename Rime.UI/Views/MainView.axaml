@@ -3,88 +3,116 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-             xmlns:vm="using:Rime.UI.ViewModels"
-             xmlns:dmc="using:Dock.Model.Controls"
-             x:DataType="vm:MainViewViewModel"
-             x:Class="Rime.UI.Views.MainView">
-  <Design.DataContext>
-    <vm:MainWindowViewModel />
-  </Design.DataContext>
-  <UserControl.Resources>
-    <StreamGeometry x:Key="DarkTheme">M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10Zm0-2V4a8 8 0 1 1 0 16Z</StreamGeometry>
-  </UserControl.Resources>
-  <Grid RowDefinitions="Auto,*,Auto" ColumnDefinitions="Auto,*" Background="Transparent">
-    <Menu Grid.Row="0" Grid.Column="0" VerticalAlignment="Top">
+             x:Class="Rime.UI.Views.MainView"
+             x:CompileBindings="True" x:DataType="DockControl">
+  <Grid RowDefinitions="Auto,*">
+
+    <Menu Grid.Row="0">
       <MenuItem Header="_File">
-        <MenuItem Header="_New Layout" />
+        <MenuItem x:Name="FileOpenLayout" Header="_Open layout..." Click="FileOpenLayout_OnClick" />
         <Separator/>
-        <MenuItem x:Name="FileOpenLayout" Header="_Open layout..." />
+        <MenuItem x:Name="FileSaveLayout" Header="_Save layout..." Click="FileSaveLayout_OnClick" />
         <Separator/>
-        <MenuItem x:Name="FileSaveLayout" Header="_Save layout..." />
+        <MenuItem x:Name="FileCloseLayout" Header="_Close layout" Click="FileCloseLayout_OnClick" />
         <Separator/>
-        <MenuItem x:Name="FileCloseLayout" Header="_Close layout" />
+        <MenuItem x:Name="FileItemsSourceExample" Header="_ItemsSource Example..." Click="FileItemsSourceExample_OnClick" />
       </MenuItem>
-      <MenuItem Header="_Window" DataContext="{Binding Layout}">
-        <MenuItem Header="_Exit Windows" />
-        <Separator />
-        <MenuItem Header="_Show Windows" />
-      </MenuItem>
+      <MenuItem Header="_View" x:Name="ViewsMenu" />
     </Menu>
-    <Panel x:Name="ToolBar" DataContext="{Binding Layout}" Grid.Row="0" Grid.Column="1">
-      <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,200,Auto,Auto,Auto"
-            HorizontalAlignment="Right"
-            Margin="4"
-            x:DataType="dmc:IRootDock">
-        <Grid.Styles>
-          <Style Selector="Button">
-            <Setter Property="Margin" Value="0" />
-            <Setter Property="Padding" Value="4" />
-            <Setter Property="VerticalAlignment" Value="Stretch" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-          </Style>
-          <Style Selector="TextBox">
-            <Setter Property="MinHeight" Value="0" />
-            <Setter Property="Margin" Value="4,0,4,0" />
-            <Setter Property="Padding" Value="4" />
-            <Setter Property="VerticalAlignment" Value="Stretch" />
-            <Setter Property="VerticalContentAlignment" Value="Center" />
-          </Style>
-          <Style Selector="ComboBox">
-            <Setter Property="Margin" Value="4,0,0,0" />
-            <Setter Property="Padding" Value="4" />
-          </Style>
-        </Grid.Styles>
-          <!--
-        <Button Content="Back" Command="{Binding GoBack}" IsEnabled="{Binding CanGoBack}" Grid.Column="0" />
-        <Button Content="Forward" Command="{Binding GoForward}" IsEnabled="{Binding CanGoForward}" Grid.Column="1" />
-        <Button Content="Dashboard" Command="{Binding Navigate}" CommandParameter="Dashboard" Grid.Column="2" />
-        <Button Content="Home" Command="{Binding Navigate}" CommandParameter="{Binding DefaultDockable}"
-                Grid.Column="3" /> -->
-        <TextBox x:Name="Id" Text="" Watermark="Dashboard" UseFloatingWatermark="True" Grid.Column="4" />
-        <!-- <Button Content="Navigate" Command="{Binding Navigate}" CommandParameter="{Binding #Id.Text}" Grid.Column="5" /> -->
-        <ComboBox x:Name="PresetComboBox"
-                  Grid.Column="6"
-                  Width="160"
-                  HorizontalContentAlignment="Left" />
-        <Button x:Name="ThemeButton" Grid.Column="7" Background="Transparent">
-          <PathIcon Width="24" Height="24" Opacity="0.6" Data="{StaticResource DarkTheme}"/>
-        </Button>
-      </Grid>
-    </Panel>
-    <DockControl x:Name="DockControl" Layout="{Binding Layout}" Margin="4"
-                     Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" />
-    <Border Grid.Row="2"
-            Grid.Column="0"
-            Grid.ColumnSpan="2"
-            Margin="4,0,4,4"
-            Padding="6,2"
-            Background="{DynamicResource DockThemeBackgroundLowBrush}"
-            BorderBrush="{DynamicResource DockThemeBorderMidBrush}"
-            BorderThickness="1"
-            CornerRadius="4">
-      <TextBlock Text="{Binding CurrentStatus}"
-                 VerticalAlignment="Center"
-                 TextTrimming="CharacterEllipsis" />
-    </Border>
+
+    <DockControl x:Name="DockControl" Grid.Row="1" InitializeLayout="True" InitializeFactory="True">
+      <DockControl.Factory>
+        <Factory HideToolsOnClose="True" HideDocumentsOnClose="True" />
+      </DockControl.Factory>
+
+      <RootDock x:Name="Root" Id="Root" IsCollapsable="False" DefaultDockable="{Binding #MainLayout}">
+
+        <!-- Windows -->
+
+        <RootDock.Windows>
+          <!--<DockWindow x:Name="DockWindow" Id="DockWindow" X="281" Y="233" Width="250" Height="400" Topmost="True">
+            <RootDock ActiveDockable="{Binding #ToolDock}" Window="{Binding #DockWindow}">
+              <ToolDock x:Name="ToolDock">
+                <Tool x:Name="ToolWindow" Id="ToolWindow" Title="Tool Window" x:DataType="Tool">
+                  <TextBlock Text="{Binding Title}"/>
+                </Tool>
+              </ToolDock>
+            </RootDock>
+          </DockWindow>-->
+        </RootDock.Windows>
+
+        <ProportionalDock x:Name="MainLayout" Id="MainLayout" Orientation="Horizontal">
+
+          <!-- Left Pane -->
+
+          <ToolDock x:Name="LeftPane" Id="LeftPane" Proportion="0.25" Alignment="Left">
+            <Tool x:Name="SolutionExplorer" Id="SolutionExplorer" Title="Solution Explorer" x:DataType="Tool">
+              <TextBlock Text="{Binding Title}"/>
+            </Tool>
+          </ToolDock>
+
+          <ProportionalDockSplitter x:Name="LeftSplitter" Id="LeftSplitter" />
+
+          <!-- Top Pane -->
+
+          <ProportionalDock x:Name="TopPane" Id="TopPane" Orientation="Vertical">
+
+            <!-- Right Pane -->
+
+            <ProportionalDock x:Name="RightPane" Id="RightPane" Orientation="Horizontal">
+
+              <!-- Documents Pane -->
+
+              <DocumentDock x:Name="DocumentsPane" Id="DocumentsPane" CanCreateDocument="True" ActiveDockable="Document1">
+                <DocumentDock.DocumentTemplate>
+                  <DocumentTemplate>
+                    <StackPanel x:DataType="Document">
+                      <TextBlock Text="Title"/>
+                      <TextBox Text="{Binding Title}"/>
+                      <TextBlock Text="Context"/>
+                      <TextBox Text="{Binding Context}" AcceptsReturn="True"/>
+                    </StackPanel>
+                  </DocumentTemplate>
+                </DocumentDock.DocumentTemplate>
+                <Document x:Name="Document1" Id="Document1" Title="Program.cs" Context="" x:DataType="Document">
+                  <TextBox Text="{Binding Context}" AcceptsReturn="True"/>
+                </Document>
+                <Document x:Name="Document2" Id="Document2" Title="App.axaml" Context="" x:DataType="Document">
+                  <TextBox Text="{Binding Context}" AcceptsReturn="True"/>
+                </Document>
+              </DocumentDock>
+
+              <ProportionalDockSplitter x:Name="RightSplitter" Id="RightSplitter" />
+
+              <!-- Properties Pane -->
+              <ToolDock x:Name="PropertiesPane" Id="PropertiesPane" Proportion="0.3" Alignment="Right">
+                <Tool x:Name="Properties" Id="Properties" Title="Properties" x:DataType="Tool">
+                  <TextBlock Text="{Binding Title}"/>
+                </Tool>
+              </ToolDock>
+
+            </ProportionalDock>
+
+            <ProportionalDockSplitter x:Name="BottomSplitter" Id="BottomSplitter" />
+
+            <!-- Bottom Pane -->
+
+            <ToolDock x:Name="BottomPane" Id="BottomPane" Proportion="0.3" Alignment="Bottom" ActiveDockable="Output">
+              <Tool x:Name="ErrorList" Id="ErrorList" Title="Error List" x:DataType="Tool">
+                <TextBlock Text="{Binding Title}"/>
+              </Tool>
+              <Tool x:Name="Output" Id="Output" Title="Output" x:DataType="Tool">
+                <TextBlock Text="{Binding Title}"/>
+              </Tool>
+            </ToolDock>
+
+          </ProportionalDock>
+
+        </ProportionalDock>
+      </RootDock>
+
+    </DockControl>
+
   </Grid>
 </UserControl>
+
