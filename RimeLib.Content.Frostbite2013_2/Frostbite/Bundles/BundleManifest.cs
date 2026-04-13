@@ -258,7 +258,7 @@ public class BundleChunkEntry : ChunkEntry
         // Wrap into a zlib reader if this is compressed.
         if (Compressed)
         {
-            s_Reader = new CodecRimeReader(s_Reader);
+            s_Reader = new CodecRimeReader(s_Reader, m_Size);
 
             // Wrap this inside a limited reader as well.
             s_Reader = new LimitedRimeReader(s_Reader, s_Reader.Length);
