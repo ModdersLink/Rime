@@ -84,13 +84,10 @@ namespace RimeLib.Content.Frostbite2013_2.Building
             // Write chunk entries.
             foreach (var s_Chunk in m_Descriptor.Chunks)
             {
-                var s_RangeStart = s_Chunk.Value.GetRangeStart();
-                var s_Size = (uint) s_Chunk.Value.GetSize();
-
                 var s_ChunkEntry = new BundleManifest.ChunkEntry(s_Chunk.Key)
                 {
                     LogicalOffset = s_Chunk.Value.GetLogicalOffset(),
-                    // TODO: LogicalSize = s_Chunk.Value.GetLogicalSize(),
+                    LogicalSize = s_Chunk.Value.GetLogicalSize(),
                 };
 
                 s_ChunkEntry.Serialize(p_Writer);
