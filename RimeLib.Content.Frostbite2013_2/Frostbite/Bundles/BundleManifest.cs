@@ -251,17 +251,19 @@ public class BundleChunkEntry : ChunkEntry
 
         // Seek to this entry.
         s_Reader.Seek(m_SeekOffset, SeekOrigin.Current);
-        
-        // Wrap inside a limited reader.
-        s_Reader = new LimitedRimeReader(s_Reader, m_Size);
 
         // Wrap into a zlib reader if this is compressed.
         if (Compressed)
         {
-            s_Reader = new CodecRimeReader(s_Reader, m_Size);
+            s_Reader = new CodecRimeReader(s_Reader, p_OriginalSize: m_Size);
 
-            // Wrap this inside a limited reader as well.
+            // Wrap inside a limited reader.
             s_Reader = new LimitedRimeReader(s_Reader, s_Reader.Length);
+        }
+        else
+        {
+            // Wrap inside a limited reader.
+            s_Reader = new LimitedRimeReader(s_Reader, m_Size);
         }
 
         return s_Reader;
