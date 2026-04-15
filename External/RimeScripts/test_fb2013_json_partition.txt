@@ -1,0 +1,11 @@
+mount_game "D:/Games/Battlefield 4" Frostbite2013_2
+select_game 1
+mount_sb win32/xp5/levels/mp_abandoned_night/xp5_night_01
+mount_all_bundles
+dump_partition_json XP5/Levels/MP_Journey_Night/MP_Zavod_Night_Pano "D:/DUMPS/MP_Zavok_Night_Pano.json" Indented
+exit
+build_sb "win32/testsb/testsb" Frostbite2013_2 "D:/DUMPS" false
+build_bundle win32/testsb/testsb
+add_json_partition XP5/Levels/MP_Journey_Night/MP_Zavod_Night_Pano "D:/DUMPS/MP_Zavok_Night_Pano.json"
+build
+build
