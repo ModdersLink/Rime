@@ -4,7 +4,9 @@ using System.IO;
 using System.Runtime.Serialization;
 using System.Security.Cryptography;
 using System.Text;
+using Newtonsoft.Json;
 using RimeLib.IO;
+using RimeLib.Json;
 
 namespace RimeLib.Frostbite.Core
 {
@@ -12,6 +14,7 @@ namespace RimeLib.Frostbite.Core
     /// fb::ResourceRef implementation
     /// </summary>
     [Serializable]
+    [JsonConverter(typeof(ResourceRefJsonConverter))]
     public class ResourceRef : IFbSerializable, ISerializable
     {
         /// <summary>
@@ -66,7 +69,11 @@ namespace RimeLib.Frostbite.Core
         /// <param name="p_Context"></param>
         protected ResourceRef(SerializationInfo p_Info, StreamingContext p_Context)
         {
-            throw new NotImplementedException();
+            var s_HexStr = p_Info.GetString("fb::ResourceRef");
+            if (s_HexStr != null)
+            {
+                Id = ulong.Parse(s_HexStr, System.Globalization.NumberStyles.HexNumber);
+            }
         }
         //public static implicit operator ResourceRef(ulong p_Elem) => new(p_Elem);
         public static implicit operator ResourceRef(long p_Elem) => new((ulong)p_Elem);

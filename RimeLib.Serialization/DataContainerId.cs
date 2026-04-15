@@ -1,7 +1,9 @@
-﻿using RimeLib.Frostbite.Core;
+﻿using System.ComponentModel;
+using RimeLib.Frostbite.Core;
 
 namespace RimeLib.Serialization;
 
+[TypeConverter(typeof(DataContainerIdTypeConverter))]
 public abstract record DataContainerId
 {
     public sealed record Guid(GUID Id) : DataContainerId()
