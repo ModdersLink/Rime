@@ -1,13 +1,13 @@
-using RimeLib.IO;
-using RimeLib.IO.Conversion;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using RimeLib.IO;
+using RimeLib.IO.Conversion;
 
-namespace RimeLib.Cmd.Scaleform
+namespace RimeLib.Content.Scaleform
 {
     // Minimal SWF/GFX reader: parses the header and splits the body into tags
     // (handles CFX/SWC zlib compression). Copied from Utils/GFxTool so the REPL

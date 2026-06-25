@@ -1,4 +1,4 @@
-namespace RimeLib.Cmd.Scaleform
+namespace RimeLib.Content.Scaleform
 {
     // Scaleform/SWF tag ids. Copied from Utils/GFxTool so the REPL can dump gfx
     // structure without depending on the GFxTool executable project.

@@ -1,7 +1,7 @@
-using RimeLib.IO;
 using System.IO;
+using RimeLib.IO;
 
-namespace RimeLib.Cmd.Scaleform
+namespace RimeLib.Content.Scaleform
 {
     // A single SWF/GFX tag: its type and raw (undecoded) body bytes.
     // Copied from Utils/GFxTool, with Data exposed for dumping.

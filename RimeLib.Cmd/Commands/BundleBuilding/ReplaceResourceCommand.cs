@@ -2,7 +2,6 @@
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
-using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using System.Diagnostics.CodeAnalysis;
