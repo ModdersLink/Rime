@@ -266,3 +266,6 @@ launchSettings.json
 !/External/ImGui.NET.dll
 !/External/ImGui.NET.pdb
 /dist
+
+# release output (build-release.ps1)
+dist/
