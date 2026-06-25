@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using RimeLib.Cmd.Commands.Game;
+using RimeLib.Cmd.Scaleform;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
@@ -59,6 +60,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpChunkCommand>();
             RegisterCommand<DumpResourceCommand>();
             RegisterCommand<DumpResourceWithChunksCommand>();
+            RegisterCommand<DumpSwfJsonCommand>();
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<DumpPartitionByGuidCommand>();
 
@@ -210,6 +212,62 @@ namespace RimeLib.Cmd.Contexts
             using var s_FileStream = File.Create(p_Destination.FullName);
 
             s_Reader.CopyTo(s_FileStream);
+        }
+
+        /// <summary>
+        /// Dumps a SwfMovie (Scaleform .gfx) resource's structure as JSON: header
+        /// fields plus the tag table (each tag's type, offset, length and raw hex
+        /// body). Tag bodies are NOT field-decoded — for full editable XML use ffdec
+        /// (-swf2xml) on the dumped .gfx. Useful for quickly inspecting which tags a
+        /// movie contains (DefineEditText, PlaceObject3, DefineSprite, etc.).
+        /// </summary>
+        /// <param name="p_Name">Name of the SwfMovie resource.</param>
+        /// <param name="p_Destination">Destination .json file to write.</param>
+        /// <exception cref="Exception">If the resource is missing or not a SwfMovie.</exception>
+        internal void DumpSwfJson(string p_Name, FileInfo p_Destination)
+        {
+            if (!m_Mounter.TryGetResource(p_Name, out var s_Resource))
+                throw new Exception($"Could not find resource with name '{p_Name}'.");
+
+            var s_Variant = s_Resource.FirstVariant;
+            if (s_Variant.GetResourceType() != ResourceType.SwfMovie)
+                throw new Exception($"Resource '{p_Name}' is not a SwfMovie (it is {s_Variant.GetResourceType()}).");
+
+            using var s_Reader = s_Variant.GetReader();
+            var s_Swf = new SwfFile(s_Reader);
+
+            var s_Tags = new List<object>();
+            for (var i = 0; i < s_Swf.Tags.Count; ++i)
+            {
+                var s_Tag = s_Swf.Tags[i];
+                s_Tags.Add(new
+                {
+                    index = i,
+                    tag = s_Tag.Tag.ToString(),
+                    tagId = (int)s_Tag.Tag,
+                    offset = s_Tag.Offset,
+                    length = s_Tag.Data.Length,
+                    dataHex = Convert.ToHexString(s_Tag.Data),
+                });
+            }
+
+            var s_Doc = new
+            {
+                name = p_Name,
+                version = s_Swf.Version,
+                compressed = s_Swf.IsCompressed,
+                stripped = s_Swf.IsStripped,
+                fps = s_Swf.Fps,
+                frameCount = s_Swf.FrameCount,
+                rect = new { left = s_Swf.Rect.X, top = s_Swf.Rect.Y, right = s_Swf.Rect.Z, bottom = s_Swf.Rect.W },
+                tagCount = s_Swf.Tags.Count,
+                tags = s_Tags,
+            };
+
+            if (p_Destination.Directory != null && !Directory.Exists(p_Destination.Directory.FullName))
+                Directory.CreateDirectory(p_Destination.Directory.FullName);
+
+            File.WriteAllText(p_Destination.FullName, JsonConvert.SerializeObject(s_Doc, Formatting.Indented));
         }
 
         /// <summary>

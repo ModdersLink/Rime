@@ -135,6 +135,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListChunksCommand>();
             RegisterCommand<AddResourceCommand>();
             RegisterCommand<AddExistingResourceCommand>();
+            RegisterCommand<ReplaceResourceCommand>();
             RegisterCommand<RemoveResourceCommand>();
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<AddPartitionCommand>();
