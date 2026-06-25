@@ -23,9 +23,14 @@ jobs:
       run: |
         dotnet publish .\Utils\RimeREPL\RimeREPL.csproj -c Release -o ./dist -r win-x64 --self-contained true /p:UseAppHost=true
         dotnet publish .\RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj -c Release -o ./dist -r win-x64 --self-contained true /p:UseAppHost=true
-        dotnet publish .\RimeLib.Texture.Frostbite2_0\RimeLib.Texture.Frostbite2_0.csproj -c Release -o ./dist -r win-x64 --self-contained true /p:UseAppHost=true
         dotnet publish .\RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj -c Release -o ./dist -r win-x64 --self-contained true /p:UseAppHost=true
-
+        dotnet publish .\RimeLib.Texture.Frostbite2_0\RimeLib.Texture.Frostbite2_0.csproj -c Release -o ./dist -r win-x64 --self-contained true /p:UseAppHost=true
+        dotnet publish .\RimeLib.Shader.Frostbite2_0\RimeLib.Shader.Frostbite2_0.csproj -c Release -o ./dist -r win-x64 --self-contained true /p:UseAppHost=true
+        dotnet publish .\RimeLib.Havok.Frostbite2_0\RimeLib.Havok.Frostbite2_0.csproj -c Release -o ./dist -r win-x64 --self-contained true /p:UseAppHost=true
+        dotnet publish .\RimeLib.Mesh.Frostbite2_0\RimeLib.Mesh.Frostbite2_0.csproj -c Release -o ./dist -r win-x64 --self-contained true /p:UseAppHost=true
+        dotnet publish .\RimeLib.Toolkit\RimeLib.Toolkit.csproj -c Release -o ./dist -r win-x64 --self-contained true /p:UseAppHost=true
+        dotnet publish .\RimeLib.Toolkit.Frostbite2_0\RimeLib.Toolkit.Frostbite2_0.csproj -c Release -o ./dist -r win-x64 --self-contained true /p:UseAppHost=true
+        
     - name: Archive
       uses: actions/upload-artifact@v4
       with:
