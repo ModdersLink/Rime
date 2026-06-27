@@ -137,6 +137,12 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<AddExistingResourceCommand>();
             RegisterCommand<ReplaceResourceCommand>();
             RegisterCommand<RemoveResourceCommand>();
+
+            if (EngineInterfaceRegistry.IsSupported<RimeLib.Terrain.Resources.ITerrainDecalsConverter>(
+                ((SbBuildingContext)p_Parent).EngineType))
+            {
+                RegisterCommand<ReplaceTerrainDecalsCommand>();
+            }
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<AddPartitionCommand>();
             RegisterCommand<AddExistingPartitionCommand>();

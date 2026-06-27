@@ -21,6 +21,7 @@
 	<ProjectReference Include="..\RimeLib.Mesh\RimeLib.Mesh.csproj" />
     <ProjectReference Include="..\RimeLib.Serialization\RimeLib.Serialization.csproj" />
     <ProjectReference Include="..\RimeLib.Shader\RimeLib.Shader.csproj" />
+    <ProjectReference Include="..\RimeLib.Terrain\RimeLib.Terrain.csproj" />
     <ProjectReference Include="..\RimeLib.Texture\RimeLib.Texture.csproj" />
     <ProjectReference Include="..\RimeLib.Toolkit\RimeLib.Toolkit.csproj" />
     <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />

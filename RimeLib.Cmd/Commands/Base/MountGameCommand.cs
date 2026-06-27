@@ -40,6 +40,7 @@ namespace RimeLib.Cmd.Commands.Base
             AssemblyUtils.LoadSupportAssembly(AssemblyType.Serialization, Engine);
             AssemblyUtils.LoadSupportAssembly(AssemblyType.Shader, Engine);
             AssemblyUtils.LoadSupportAssembly(AssemblyType.Mesh, Engine);
+            AssemblyUtils.LoadSupportAssembly(AssemblyType.Terrain, Engine);
             AssemblyUtils.LoadSupportAssembly(AssemblyType.Toolkit, Engine);
 
             // Create the mounter and mount the game.
