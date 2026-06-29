@@ -122,7 +122,12 @@ namespace RimeLib.Content.Frostbite2_0.IO
                 p_Count = (int) (m_Length - m_CurrentPosition);
 
             var s_Remaining = p_Count;
-            
+
+            // Capture the starting position ONCE: m_CurrentPosition advances as we read below,
+            // so it must not also be re-added via (p_Count - s_Remaining) or the absolute offset
+            // double-counts the bytes already read (broke multi-run single reads).
+            var s_StartPosition = m_CurrentPosition;
+
             //Debug.WriteLine($"Multiplexed reader reading {p_Count} bytes.");
 
             while (s_Remaining > 0)
@@ -132,7 +137,7 @@ namespace RimeLib.Content.Frostbite2_0.IO
                 var s_Run = m_Runs[0];
                 var s_CopyBytes = s_Run.CopyBytes;
 
-                var s_Offset = (int) m_CurrentPosition + (p_Count - s_Remaining);
+                var s_Offset = (int) s_StartPosition + (p_Count - s_Remaining);
                 
                 // Find the relative offset of this patched data run.
                 var s_PatchRunOffset = s_Run.FileId == 0 ? s_Run.CopyBytes : 0;
