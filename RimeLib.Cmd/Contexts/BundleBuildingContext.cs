@@ -136,6 +136,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<AddResourceCommand>();
             RegisterCommand<AddExistingResourceCommand>();
             RegisterCommand<ReplaceResourceCommand>();
+            RegisterCommand<ReplaceResourceAsCommand>();
             RegisterCommand<RemoveResourceCommand>();
 
             if (EngineInterfaceRegistry.IsSupported<RimeLib.Terrain.Resources.ITerrainDecalsConverter>(
@@ -146,6 +147,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<AddPartitionCommand>();
             RegisterCommand<AddExistingPartitionCommand>();
+            RegisterCommand<AddRawPartitionCommand>();
             
             var s_EngineType = ((SbBuildingContext)p_Parent).EngineType;
 
@@ -288,6 +290,13 @@ namespace RimeLib.Cmd.Contexts
             s_Generator.Generate(s_Partition, s_Writer);
 
             m_Builder.WithPartition(p_Name, new SbBuildingContext.MemoryReader(s_Stream.ToArray()));
+        }
+
+        internal void AddRawPartition(string p_Name, FileInfo p_File)
+        {
+            // Inject a raw EBX partition binary (from dump_partition) byte-for-byte, bypassing
+            // the JSON converter — preserves the exact game-built structure (so it realizes).
+            m_Builder.WithPartition(p_Name, new SbBuildingContext.MemoryReader(File.ReadAllBytes(p_File.FullName)));
         }
 
         internal void RemovePartition(string p_Name)

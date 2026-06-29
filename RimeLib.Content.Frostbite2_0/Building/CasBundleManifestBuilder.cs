@@ -5,7 +5,13 @@ using RimeLib.Content.Frostbite2_0.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
+using RimeLib.IO.Conversion;
+using System;
+using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using ICSharpCode.SharpZipLib.Zip.Compression;
+using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 
 namespace RimeLib.Content.Frostbite2_0.Building
 {
@@ -28,6 +34,99 @@ namespace RimeLib.Content.Frostbite2_0.Building
             };
         }
 
+        // Cache of compressed (Frostbite zlib-block format) payloads for file/memory-backed
+        // objects, keyed by the readable. Real BF3 cas-bundle payloads (incl. inline `idata`)
+        // are ALWAYS stored in the compressed-block format and content-addressed by the SHA1
+        // of the COMPRESSED bytes. Rime used to inline RAW bytes with Size==OriginalSize
+        // (compression flag off) which BF3 misparses -> crash. We now compress + hash the
+        // compressed payload so both Rime's reader and BF3 decompress it correctly.
+        private readonly Dictionary<IReadableObject, (byte[] Compressed, Sha1 Hash)> m_FileBackedCache = new();
+
+        // Cache of RAW (uncompressed) payloads for file/memory-backed EBX partitions.
+        // Unlike resources/chunks, EBX partitions are NEVER zlib-compressed in BF3 cas
+        // bundles: every real EBX entry across the whole BF3 install has size == originalSize,
+        // and the non-cas BundleManifestBuilder also writes EBX raw. Compressing inline EBX
+        // (size != originalSize) makes BF3 treat it as compressed and reject it ("your game
+        // data is corrupt"). So new/modified EBX delivered via cas idata must be stored raw,
+        // content-addressed by the SHA1 of the RAW bytes.
+        private readonly Dictionary<IReadableObject, (byte[] Raw, Sha1 Hash)> m_FileBackedRawCache = new();
+
+        private static bool IsFileBacked(IReadableObject p_Object)
+        {
+            return p_Object is not CatalogReadable
+                && p_Object is not InlineReadable
+                && p_Object is not ResourceEntry
+                && p_Object is not EbxEntry
+                && p_Object is not BundleChunkEntry
+                && p_Object is not CasChunkEntry;
+        }
+
+        private (byte[] Compressed, Sha1 Hash) GetFileBackedCompressed(IReadableObject p_Object)
+        {
+            if (m_FileBackedCache.TryGetValue(p_Object, out var s_Cached))
+                return s_Cached;
+
+            byte[] s_Raw;
+            using (var s_Reader = p_Object.GetReader())
+                s_Raw = s_Reader.ReadBytes((int)s_Reader.Length);
+
+            var s_Compressed = CompressBlocks(s_Raw);
+            var s_Result = (s_Compressed, Sha1.FromData(s_Compressed));
+
+            m_FileBackedCache[p_Object] = s_Result;
+            return s_Result;
+        }
+
+        // Reads a file/memory-backed object's RAW bytes (no compression) and content-addresses
+        // them by SHA1 of the raw payload. Used for EBX partitions, which BF3 stores raw.
+        private (byte[] Raw, Sha1 Hash) GetFileBackedRaw(IReadableObject p_Object)
+        {
+            if (m_FileBackedRawCache.TryGetValue(p_Object, out var s_Cached))
+                return s_Cached;
+
+            byte[] s_Raw;
+            using (var s_Reader = p_Object.GetReader())
+                s_Raw = s_Reader.ReadBytes((int)s_Reader.Length);
+
+            var s_Result = (s_Raw, Sha1.FromData(s_Raw));
+
+            m_FileBackedRawCache[p_Object] = s_Result;
+            return s_Result;
+        }
+
+        // Compresses raw bytes into the Frostbite zlib-block payload format: a sequence of
+        // segments, each = uint32 originalSize (BE) + uint32 compressedSize (BE) + deflate
+        // data; uncompressed segments are at most 0x10000 bytes. Mirrors the non-cas
+        // BundleManifestBuilder.WriteCompressed so ZlibRimeReader (and BF3) reads it back.
+        private static byte[] CompressBlocks(byte[] p_Raw)
+        {
+            using var s_Output = new MemoryStream();
+
+            var s_Offset = 0;
+            do
+            {
+                var s_BlockSize = System.Math.Min(0x10000, p_Raw.Length - s_Offset);
+
+                using var s_DeflateOutput = new MemoryStream();
+                using (var s_Deflate = new DeflaterOutputStream(s_DeflateOutput, new Deflater(Deflater.BEST_COMPRESSION), 4096))
+                {
+                    s_Deflate.Write(p_Raw, s_Offset, s_BlockSize);
+                    s_Deflate.Finish();
+                }
+
+                var s_Block = s_DeflateOutput.ToArray();
+
+                s_Output.Write(EndianBitConverter.Big.GetBytes((uint)s_BlockSize));
+                s_Output.Write(EndianBitConverter.Big.GetBytes((uint)s_Block.Length));
+                s_Output.Write(s_Block);
+
+                s_Offset += s_BlockSize;
+            }
+            while (s_Offset < p_Raw.Length);
+
+            return s_Output.ToArray();
+        }
+
         long GetCompressedSize(IReadableObject p_Object)
         {
             if (p_Object is CatalogReadable s_Catalog) return s_Catalog.GetCompressedSize();
@@ -36,8 +135,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
             if (p_Object is EbxEntry s_Ebx) return s_Ebx.PayloadSize;
             if (p_Object is BundleChunkEntry s_Chunk) return s_Chunk.PayloadSize;
             if (p_Object is CasChunkEntry s_CasChunk) return s_CasChunk.PayloadSize;
-            // File/memory-backed: size is the raw file size (stored as inline data)
-            return p_Object.GetSize();
+            // File/memory-backed: size is the COMPRESSED payload size (block format).
+            return GetFileBackedCompressed(p_Object).Compressed.Length;
         }
 
         Sha1 GetCompressedHash(IReadableObject p_Object)
@@ -48,21 +147,17 @@ namespace RimeLib.Content.Frostbite2_0.Building
             if (p_Object is EbxEntry s_Ebx) return s_Ebx.Hash;
             if (p_Object is BundleChunkEntry s_Chunk) return s_Chunk.Hash;
             if (p_Object is CasChunkEntry s_CasChunk) return s_CasChunk.Hash;
-            // File/memory-backed: compute hash from raw data
-            using var s_HashReader = p_Object.GetReader();
-            var s_Bytes = s_HashReader.ReadBytes((int)s_HashReader.Length);
-            return Sha1.FromData(s_Bytes);
+            // File/memory-backed: hash of the COMPRESSED payload (content address).
+            return GetFileBackedCompressed(p_Object).Hash;
         }
 
         byte[]? GetInlineData(IReadableObject p_Object)
         {
             if (p_Object is InlineReadable s_Inline) return s_Inline.GetCompressedData();
-            // File-backed / memory-backed objects: read data directly and embed as inline
-            if (p_Object is not CatalogReadable && p_Object is not ResourceEntry && p_Object is not EbxEntry && p_Object is not BundleChunkEntry && p_Object is not CasChunkEntry)
-            {
-                using var s_Reader = p_Object.GetReader();
-                return s_Reader.ReadBytes((int)s_Reader.Length);
-            }
+            // File-backed / memory-backed objects: embed the COMPRESSED (block-format) payload
+            // as inline data, so BF3 (and Rime's reader) decompress it instead of misparsing raw.
+            if (IsFileBacked(p_Object))
+                return GetFileBackedCompressed(p_Object).Compressed;
             return null;
         }
 
@@ -179,18 +274,39 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 var s_Readable = ResolveReadable(s_PartitionObject);
 
-                var s_PartitionReader = s_PartitionObject.GetReader();
+                long s_PartitionSize;
+                long s_PartitionOriginalSize;
+                Sha1 s_PartitionHash;
+                byte[]? s_PartitionInline;
 
-                var s_PartitionSize = GetCompressedSize(s_Readable);
-                var s_PartitionHash = GetCompressedHash(s_Readable);
+                if (IsFileBacked(s_Readable))
+                {
+                    // New/modified EBX (add_raw_partition / add_json_partition): store RAW,
+                    // with size == originalSize (BF3 never zlib-compresses EBX). Compressing
+                    // it here is what corrupted inline EBX in cas before.
+                    var (s_Raw, s_RawHash) = GetFileBackedRaw(s_Readable);
+                    s_PartitionInline = s_Raw;
+                    s_PartitionSize = s_Raw.Length;
+                    s_PartitionOriginalSize = s_Raw.Length;
+                    s_PartitionHash = s_RawHash;
+                }
+                else
+                {
+                    // Unchanged EBX (mounted catalog/inline variant): keep its existing
+                    // catalog reference (idata == null) or already-present inline data.
+                    s_PartitionSize = GetCompressedSize(s_Readable);
+                    s_PartitionOriginalSize = s_Readable.GetSize();
+                    s_PartitionHash = GetCompressedHash(s_Readable);
+                    s_PartitionInline = GetInlineData(s_Readable);
+                }
 
                 m_Header.EbxEntries[s_PartitionIndex] = new CasBundle.Ebx
                 {
                     Name = s_PartitionName,
                     Size = s_PartitionSize,
-                    OriginalSize = s_Readable.GetSize(),
+                    OriginalSize = s_PartitionOriginalSize,
                     Hash = s_PartitionHash,
-                    InlineData = GetInlineData(s_Readable)
+                    InlineData = s_PartitionInline
                 };
 
                 // Update totalSize

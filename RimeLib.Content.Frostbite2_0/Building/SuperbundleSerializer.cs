@@ -115,12 +115,18 @@ namespace RimeLib.Content.Frostbite2_0.Building
             // Bundles
             var s_BundlesListObject = new DbObject();
 
-            var s_GenPos = (long)18;
+            // The toc references each cas bundle manifest by its byte offset within the .sb.
+            // That offset is NOT a fixed constant: the preamble before the first manifest
+            // (the wrapping `{ bundles: [...] }` object) uses DbObject size-varints whose
+            // length grows with the total size (2 bytes for a small mod sb, 4 bytes for a
+            // full game sb). The old code hardcoded 18 (correct only for 4-byte varints), so
+            // small custom cas superbundles pointed past the real manifest -> BF3 read garbage
+            // and crashed at level load. We instead serialize the whole sb and locate each
+            // manifest's real offset by its (unique, path-bearing) serialized bytes.
+            var s_BundleData = new System.Collections.Generic.List<(string Id, byte[] Data)>();
 
             foreach (var s_Pair in p_Descriptor.Bundles)
             {
-                var s_Desc = s_Pair.Value;
-
                 var s_Builder = new CasBundleManifestBuilder(s_Pair.Value);
                 var s_Object = s_Builder.GetDbObject();
 
@@ -129,21 +135,12 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 s_BundlesListObject.AddElement(s_AnonDbObjectElement);
 
+                // Serialize the SAME anon element on its own to get the exact bytes that will
+                // appear (identically) inside the bundles list.
                 var s_FullObject = new DbObject();
                 s_FullObject.AddElement(s_AnonDbObjectElement);
-                var s_ObjectData = s_FullObject.Serialize();
 
-                var s_BundleInfo = new BundleInfo
-                {
-                    Id = s_Pair.Value.BundleName,
-                    Offset = s_GenPos,
-                    Size = s_ObjectData.Length,
-                    Checksum = Sha1.FromData(s_ObjectData)
-                };
-
-                m_Bundles.Add(s_BundleInfo);
-
-                s_GenPos += s_BundleInfo.Size;
+                s_BundleData.Add((s_Pair.Value.BundleName, s_FullObject.Serialize()));
             }
 
             s_BundlesListObject.AddElement(new DbObjectElement());
@@ -159,7 +156,49 @@ namespace RimeLib.Content.Frostbite2_0.Building
             var s_CasDbObject = new DbObject();
             s_CasDbObject.AddElement(s_Anon);
 
-            p_SbWriter.Write(s_CasDbObject.Serialize());
+            // Serialize the whole superbundle, then resolve each bundle's REAL offset/size.
+            var s_AllBytes = s_CasDbObject.Serialize();
+
+            var s_SearchStart = 0;
+            foreach (var (s_Id, s_Data) in s_BundleData)
+            {
+                var s_Offset = IndexOf(s_AllBytes, s_Data, s_SearchStart);
+                if (s_Offset < 0)
+                    throw new Exception($"Failed to locate cas bundle '{s_Id}' within the serialized superbundle.");
+
+                m_Bundles.Add(new BundleInfo
+                {
+                    Id = s_Id,
+                    Offset = s_Offset,
+                    Size = s_Data.Length,
+                    Checksum = Sha1.FromData(s_Data)
+                });
+
+                s_SearchStart = s_Offset + s_Data.Length;
+            }
+
+            p_SbWriter.Write(s_AllBytes);
+        }
+
+        private static int IndexOf(byte[] p_Haystack, byte[] p_Needle, int p_Start)
+        {
+            for (var s_I = p_Start; s_I <= p_Haystack.Length - p_Needle.Length; ++s_I)
+            {
+                var s_Match = true;
+                for (var s_J = 0; s_J < p_Needle.Length; ++s_J)
+                {
+                    if (p_Haystack[s_I + s_J] != p_Needle[s_J])
+                    {
+                        s_Match = false;
+                        break;
+                    }
+                }
+
+                if (s_Match)
+                    return s_I;
+            }
+
+            return -1;
         }
 
         public EngineType[] GetSupportedEngines()

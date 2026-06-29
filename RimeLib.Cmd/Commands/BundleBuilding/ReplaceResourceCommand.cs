@@ -108,11 +108,11 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            IResourceVariant? s_Variant;
-            if (s_BundleContext.Cas())
-                s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.Cas && p_Resource.GetContainedBundle() != null);
-            else
-                s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.GetContainedBundle() != null);
+            // Any variant contained in a bundle works: we only copy its type/meta/id and
+            // serve new data ourselves. (The old cas branch additionally required a
+            // CatalogReadable-backed `.Cas` variant, which wrongly excluded resources BF3
+            // stores INLINE — so cas builds could never override an inlined resource.)
+            var s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.GetContainedBundle() != null);
 
             if (s_Variant == null)
             {

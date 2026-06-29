@@ -61,11 +61,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            IResourceVariant? s_Variant;
-            if (s_BundleContext.Cas())
-                s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.Cas && p_Resource.GetContainedBundle() != null);
-            else
-                s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.GetContainedBundle() != null);
+            // Accept any bundle-contained variant (inline or catalog-backed). The old cas
+            // branch required a `.Cas` (CatalogReadable) variant, excluding inlined resources.
+            var s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.GetContainedBundle() != null);
 
             if (s_Variant == null)
             {

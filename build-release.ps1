@@ -27,6 +27,7 @@ $projects = @(
     "RimeLib.Shader.Frostbite2_0\RimeLib.Shader.Frostbite2_0.csproj"
     "RimeLib.Havok.Frostbite2_0\RimeLib.Havok.Frostbite2_0.csproj"
     "RimeLib.Mesh.Frostbite2_0\RimeLib.Mesh.Frostbite2_0.csproj"
+    "RimeLib.Terrain.Frostbite2_0\RimeLib.Terrain.Frostbite2_0.csproj"
     "RimeLib.Toolkit.Frostbite2_0\RimeLib.Toolkit.Frostbite2_0.csproj"
 )
 
