@@ -7,6 +7,7 @@ using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.Terrain.Resources;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -24,6 +25,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
         [CommandArgument(Description = "The path to the JSON file containing the new TerrainDecals data.")]
         public FileInfo? FilePath { get; set; }
+
+        [CommandArgument(Description = "Optional: raise/lower the WATER geometry to this absolute Y height (flat sea). Edits each water block's bbox Y and each water vertex's packed half-float Y in-engine, so you don't have to touch the JSON. Omit to keep the JSON's water as-is.", Optional = true)]
+        public float WaterHeight { get; set; } = float.NaN;
 
         // Wraps the original resource variant (type/meta/id) but serves NEW bytes from memory.
         private class DecalsResource : IResourceObject
@@ -119,6 +123,35 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             {
                 p_Writer.WriteLine("Failed to parse the TerrainDecals JSON.");
                 return false;
+            }
+
+            // Optional in-engine WATER-height raise: set the flat sea to an absolute Y.
+            // The water geom's positions are packed half-floats (Position[1] = Y), and each
+            // block carries float bboxes (Y at index 1 = min, 4 = max). Done here in C# so the
+            // caller can feed the unmodified dump JSON and just pass --WaterHeight.
+            if (!float.IsNaN(WaterHeight))
+            {
+                var s_Water = s_Decals.GeometryWater;
+                var s_YBits = BitConverter.HalfToUInt16Bits((Half)WaterHeight);
+                var s_BlockCount = 0;
+                foreach (var s_Block in s_Water.Blocks)
+                {
+                    s_Block.BoundingBox[1] = WaterHeight;
+                    s_Block.BoundingBox[4] = WaterHeight;
+                    s_Block.BoundingBox2[1] = WaterHeight;
+                    s_Block.BoundingBox2[4] = WaterHeight;
+                    s_BlockCount++;
+                }
+                var s_VertCount = 0;
+                if (s_Water.WaterVertices != null)
+                {
+                    foreach (var s_Vertex in s_Water.WaterVertices)
+                    {
+                        s_Vertex.Position[1] = s_YBits;
+                        s_VertCount++;
+                    }
+                }
+                p_Writer.WriteLine($"Raised WATER geometry to Y={WaterHeight} ({s_BlockCount} blocks, {s_VertCount} vertices).");
             }
 
             var s_Converter = EngineInterfaceRegistry.Create<ITerrainDecalsConverter>(s_ContextEngineType);
