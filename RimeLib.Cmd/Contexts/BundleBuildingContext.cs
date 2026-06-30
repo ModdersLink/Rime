@@ -148,7 +148,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<AddPartitionCommand>();
             RegisterCommand<AddExistingPartitionCommand>();
             RegisterCommand<AddRawPartitionCommand>();
-            
+            RegisterCommand<RaiseWaterPhysicsCommand>();
+
             var s_EngineType = ((SbBuildingContext)p_Parent).EngineType;
 
             if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType) && 
