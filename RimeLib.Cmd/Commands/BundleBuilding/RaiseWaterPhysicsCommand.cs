@@ -28,6 +28,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "Optional: publish the raised resource under a DIFFERENT name (like replace_resource_as), keeping the original's type/meta. Use this with add_raw_partition of a fresh WaterAsset + a runtime WaterEntityData.asset redirect to move the GLOBAL water (vehicle buoyancy / level reconciliation), not just the soldier swim. Omit to replace in place.", Optional = true)]
         public string? NewName { get; set; }
 
+        [CommandArgument(Description = "Optional: on a COMBINED Havok that serves several water bodies at different Ys (e.g. one ocean + many pools share one MOPP), do NOT shift the global hkpMoppCode m_info.offset (which would orphan the other bodies' broad-phase and kill their swim). Only the targeted body's vertex run + its AABB are raised. Set true for ocean-only raises on multi-body maps; leave false for a single-body water.", Optional = true)]
+        public bool KeepMoppOffset { get; set; } = false;
+
         // Serves the raised bytes from memory, keeping the original variant's type/meta (and an
         // optional new name for the resource id).
         private class RawResource : IResourceObject
@@ -76,9 +79,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            IResourceVariant? s_Variant = s_BundleContext.Cas()
-                ? s_Resource.Variants.FirstOrDefault(p_R => p_R.Cas && p_R.GetContainedBundle() != null)
-                : s_Resource.Variants.FirstOrDefault(p_R => p_R.GetContainedBundle() != null);
+            // Accept any bundle-contained variant (inline or catalog) so DLC resources, which are
+            // often non-cas-only, work in a cas build too.
+            IResourceVariant? s_Variant = s_Resource.Variants.FirstOrDefault(p_R => p_R.GetContainedBundle() != null);
             if (s_Variant == null)
             {
                 p_Writer.Write($"Could not find a valid variant of ({Name}).");
@@ -91,7 +94,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             try
             {
-                RaiseHavokY(s_Bytes, DeltaY, p_Writer);
+                RaiseHavokY(s_Bytes, DeltaY, KeepMoppOffset, p_Writer);
             }
             catch (Exception s_Ex)
             {
@@ -124,7 +127,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             return Encoding.ASCII.GetString(d, o, e - o);
         }
 
-        public static void RaiseHavokY(byte[] d, float dy, TextWriter log)
+        public static void RaiseHavokY(byte[] d, float dy, bool keepMoppOffset, TextWriter log)
         {
             // Locate the two .hkx instances by the Havok packfile magic.
             var s_Instances = new List<int>();
@@ -135,10 +138,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 throw new Exception("no Havok .hkx instance found (not a HavokPhysicsData?)");
 
             foreach (var s_Inst in s_Instances)
-                RaiseInstance(d, s_Inst, dy, log);
+                RaiseInstance(d, s_Inst, dy, keepMoppOffset, log);
         }
 
-        private static void RaiseInstance(byte[] d, int inst, float dy, TextWriter log)
+        private static void RaiseInstance(byte[] d, int inst, float dy, bool keepMoppOffset, TextWriter log)
         {
             int s_PtrSize = d[inst + 16]; // packfile layout: byte 0 = pointer size (4 or 8)
             int s_NumSec = I32(d, inst + 20);
@@ -216,14 +219,18 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             }
 
             // Apply the shifts (verts.y, m_info.offset.y, AABB centre.y) by the same delta.
+            // On a combined multi-body Havok, KeepMoppOffset leaves the GLOBAL m_info.offset alone
+            // (shifting it would orphan the other bodies' broad-phase) and raises only this body's
+            // vertex run + its (body-local) AABB.
             for (int k = 0; k < s_VbCount; k++)
                 SetF(d, s_VbStart + k * 16 + 4, F32(d, s_VbStart + k * 16 + 4) + dy);
-            SetF(d, s_MinfoOff + 4, F32(d, s_MinfoOff + 4) + dy);
+            if (!keepMoppOffset)
+                SetF(d, s_MinfoOff + 4, F32(d, s_MinfoOff + 4) + dy);
             if (s_AabbCentreY >= 0)
                 SetF(d, s_AabbCentreY, F32(d, s_AabbCentreY) + dy);
 
             log.WriteLine($"  inst@{inst} (ptr{s_PtrSize}): waterY={s_WaterY:0.##} verts={s_VbCount} " +
-                          $"mInfo=ok aabb={(s_AabbCentreY >= 0 ? "ok" : "NOT FOUND")}");
+                          $"mInfo={(keepMoppOffset ? "kept" : "ok")} aabb={(s_AabbCentreY >= 0 ? "ok" : "NOT FOUND")}");
         }
 
         private static bool IsVertex(byte[] d, int o, out float y)
