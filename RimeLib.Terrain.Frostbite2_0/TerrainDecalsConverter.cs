@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using RimeLib.Frostbite;
 using RimeLib.IO;
+using RimeLib.IO.Conversion;
 using RimeLib.Terrain.Resources;
 
 namespace RimeLib.Terrain.Frostbite2_0
@@ -32,6 +34,11 @@ namespace RimeLib.Terrain.Frostbite2_0
 
         public TerrainDecalsResource Read(RimeReader p_Reader)
         {
+            // The .decals format is always little-endian on PC. Some resource variants (e.g. DLC)
+            // hand back a reader configured big-endian, which mis-reads every count -> garbage ->
+            // unbounded alloc. Pin LE so the read is correct regardless of the variant's default.
+            p_Reader.Endianness = Endianness.LittleEndian;
+
             var s_Decals = new TerrainDecalsResource
             {
                 Decal3dFarDrawDistance = p_Reader.ReadSingle(),
@@ -48,6 +55,7 @@ namespace RimeLib.Terrain.Frostbite2_0
 
         public void Write(RimeWriter p_Writer, TerrainDecalsResource p_Decals)
         {
+            p_Writer.Endianness = Endianness.LittleEndian;
             p_Writer.Write(p_Decals.Decal3dFarDrawDistance);
             p_Writer.Write(p_Decals.Decal2dNearDrawDistance);
             p_Writer.Write(p_Decals.DecalCellsPerHeightfieldTileSide);
@@ -58,17 +66,37 @@ namespace RimeLib.Terrain.Frostbite2_0
             WriteGeometry(p_Writer, p_Decals.GeometryWater, DecalGeometryKind.Water);
         }
 
+        // Smallest possible on-disk Block (two empty null-terminated strings + the fixed fields):
+        // 1 + 1 + uint StartIndex + uint PrimitiveCount + 6 floats bbox + 6 floats bbox2 +
+        // float DrawDistance + uint VertexBegin + uint VertexEnd = 70 bytes.
+        private const long MinBlockBytes = 70;
+
         private static DecalGeometry ReadGeometry(RimeReader p_Reader, DecalGeometryKind p_Kind)
         {
             var s_Geometry = new DecalGeometry { BlockCount = p_Reader.ReadUInt32() };
             if (s_Geometry.BlockCount == 0)
                 return s_Geometry;
 
+            // Sanity-bound the counts against the bytes left in the stream. A mis-read resource
+            // (e.g. a DLC variant read without decompression) yields garbage counts; without this
+            // guard `new List(count)` + the read loop allocate unbounded (observed: 25 GB / hang).
+            var s_Remaining = p_Reader.Length - p_Reader.Position;
+            if (s_Geometry.BlockCount > s_Remaining / MinBlockBytes)
+                throw new InvalidDataException(
+                    $"TerrainDecals {p_Kind} blockCount={s_Geometry.BlockCount} exceeds the {s_Remaining} bytes left " +
+                    "(corrupt/mis-read .decals resource).");
+
             for (var i = 0u; i < s_Geometry.BlockCount; ++i)
                 s_Geometry.Blocks.Add(ReadBlock(p_Reader));
 
             var s_VerticesByteCount = p_Reader.ReadUInt32();
             var s_IndicesByteCount = p_Reader.ReadUInt32();
+
+            s_Remaining = p_Reader.Length - p_Reader.Position;
+            if ((long) s_VerticesByteCount + s_IndicesByteCount > s_Remaining)
+                throw new InvalidDataException(
+                    $"TerrainDecals {p_Kind} vertex/index byte counts ({s_VerticesByteCount}+{s_IndicesByteCount}) " +
+                    $"exceed the {s_Remaining} bytes left (corrupt/mis-read .decals resource).");
 
             var s_VertexCount = s_VerticesByteCount / (uint) VertexSize(p_Kind);
 
