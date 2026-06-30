@@ -149,6 +149,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<AddExistingPartitionCommand>();
             RegisterCommand<AddRawPartitionCommand>();
             RegisterCommand<RaiseWaterPhysicsCommand>();
+            RegisterCommand<ClonePartitionFreshCommand>();
 
             var s_EngineType = ((SbBuildingContext)p_Parent).EngineType;
 
@@ -298,6 +299,11 @@ namespace RimeLib.Cmd.Contexts
             // Inject a raw EBX partition binary (from dump_partition) byte-for-byte, bypassing
             // the JSON converter — preserves the exact game-built structure (so it realizes).
             m_Builder.WithPartition(p_Name, new SbBuildingContext.MemoryReader(File.ReadAllBytes(p_File.FullName)));
+        }
+
+        internal void AddRawPartitionBytes(string p_Name, byte[] p_Data)
+        {
+            m_Builder.WithPartition(p_Name, new SbBuildingContext.MemoryReader(p_Data));
         }
 
         internal void RemovePartition(string p_Name)
