@@ -29,6 +29,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "Optional: raise/lower the WATER geometry to this absolute Y height (flat sea). Edits each water block's bbox Y and each water vertex's packed half-float Y in-engine, so you don't have to touch the JSON. Omit to keep the JSON's water as-is.", Optional = true)]
         public float WaterHeight { get; set; } = float.NaN;
 
+        [CommandArgument(Description = "Optional: only raise water blocks whose surfaceShaderName EQUALS this (case-insensitive, exact), e.g. the ocean shader, so pool/puddle blocks that share the .decals are left alone. Exact (not substring) so a shader that is a PREFIX of another (e.g. '.../Water' vs '.../WaterPool') doesn't bleed across. Omit to raise all water blocks.", Optional = true)]
+        public string? WaterShader { get; set; }
+
         // Wraps the original resource variant (type/meta/id) but serves NEW bytes from memory.
         private class DecalsResource : IResourceObject
         {
@@ -105,11 +108,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            IResourceVariant? s_Variant;
+            // Prefer a cas variant in a cas build, but fall back to ANY bundle-contained variant
+            // so DLC resources (often non-cas/inline) still resolve in a cas build.
+            IResourceVariant? s_Variant = null;
             if (s_BundleContext.Cas())
                 s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.Cas && p_Resource.GetContainedBundle() != null);
-            else
-                s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.GetContainedBundle() != null);
+            s_Variant ??= s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.GetContainedBundle() != null);
 
             if (s_Variant == null)
             {
@@ -133,25 +137,36 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             {
                 var s_Water = s_Decals.GeometryWater;
                 var s_YBits = BitConverter.HalfToUInt16Bits((Half)WaterHeight);
+                var s_Filter = string.IsNullOrWhiteSpace(WaterShader) ? null : WaterShader;
+                // When filtering by shader, only the vertices used by matching blocks are raised.
+                var s_RaiseVert = s_Water.WaterVertices != null ? new bool[s_Water.WaterVertices.Count] : null;
                 var s_BlockCount = 0;
                 foreach (var s_Block in s_Water.Blocks)
                 {
+                    if (s_Filter != null &&
+                        !string.Equals(s_Block.SurfaceShaderName, s_Filter, StringComparison.OrdinalIgnoreCase))
+                        continue;
                     s_Block.BoundingBox[1] = WaterHeight;
                     s_Block.BoundingBox[4] = WaterHeight;
                     s_Block.BoundingBox2[1] = WaterHeight;
                     s_Block.BoundingBox2[4] = WaterHeight;
                     s_BlockCount++;
+                    if (s_RaiseVert != null)
+                        for (var v = (int)s_Block.VertexBegin; v < (int)s_Block.VertexEnd && v < s_RaiseVert.Length; v++)
+                            s_RaiseVert[v] = true;
                 }
                 var s_VertCount = 0;
                 if (s_Water.WaterVertices != null)
                 {
-                    foreach (var s_Vertex in s_Water.WaterVertices)
+                    for (var v = 0; v < s_Water.WaterVertices.Count; v++)
                     {
-                        s_Vertex.Position[1] = s_YBits;
+                        if (s_Filter != null && (s_RaiseVert == null || !s_RaiseVert[v]))
+                            continue;
+                        s_Water.WaterVertices[v].Position[1] = s_YBits;
                         s_VertCount++;
                     }
                 }
-                p_Writer.WriteLine($"Raised WATER geometry to Y={WaterHeight} ({s_BlockCount} blocks, {s_VertCount} vertices).");
+                p_Writer.WriteLine($"Raised WATER geometry to Y={WaterHeight} ({s_BlockCount} blocks, {s_VertCount} vertices{(s_Filter != null ? $", shader~='{s_Filter}'" : "")}).");
             }
 
             var s_Converter = EngineInterfaceRegistry.Create<ITerrainDecalsConverter>(s_ContextEngineType);

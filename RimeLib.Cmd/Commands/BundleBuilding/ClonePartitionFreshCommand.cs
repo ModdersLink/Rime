@@ -65,9 +65,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            var s_Variant = s_BundleContext.Cas()
-                ? s_Mounted.Variants.FirstOrDefault(p_V => p_V.Cas && p_V.GetContainedBundle() != null)
-                : s_Mounted.FirstVariant;
+            // Accept any bundle-contained variant (inline or catalog) so DLC partitions, which are
+            // often non-cas-only, work in a cas build too.
+            var s_Variant = s_Mounted.Variants.FirstOrDefault(p_V => p_V.GetContainedBundle() != null)
+                            ?? s_Mounted.FirstVariant;
             if (s_Variant == null)
             {
                 p_Writer.WriteLine($"Could not find a valid variant of ({OrigName}).");
@@ -117,11 +118,23 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     p_Writer.WriteLine($"WARNING: internal string '{OldString}' not found (nothing rewritten).");
             }
 
-            // Optional float32 value rewrite (e.g. raise the LakeData Point Ys 67 -> 90).
+            // Optional float32 value rewrite (e.g. raise the OCEAN LakeData Point Ys). Matched
+            // APPROXIMATELY (4-aligned, within an epsilon) so it's robust to float precision and
+            // only the ocean level is hit (pools sit at other Ys, far outside the epsilon).
             if (!float.IsNaN(OldFloat) && !float.IsNaN(NewFloat))
             {
-                var s_FloatReplaced = ReplaceAll(s_Bytes, BitConverter.GetBytes(OldFloat), BitConverter.GetBytes(NewFloat));
-                p_Writer.WriteLine($"Replaced {s_FloatReplaced} float(s) {OldFloat} -> {NewFloat}.");
+                var s_NewBytes = BitConverter.GetBytes(NewFloat);
+                var s_FloatReplaced = 0;
+                for (var i = 0; i + 4 <= s_Bytes.Length; i += 4)
+                {
+                    var s_F = BitConverter.ToSingle(s_Bytes, i);
+                    if (!float.IsNaN(s_F) && System.Math.Abs(s_F - OldFloat) <= 0.05f)
+                    {
+                        Array.Copy(s_NewBytes, 0, s_Bytes, i, 4);
+                        s_FloatReplaced++;
+                    }
+                }
+                p_Writer.WriteLine($"Replaced {s_FloatReplaced} float(s) ~{OldFloat} -> {NewFloat}.");
             }
 
             s_BundleContext.AddRawPartitionBytes(NewName!, s_Bytes);
