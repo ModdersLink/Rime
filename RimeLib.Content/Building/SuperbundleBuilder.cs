@@ -30,6 +30,12 @@ namespace RimeLib.Content.Building
             return this;
         }
 
+        public SuperbundleBuilder WithCasTocChunk(GUID p_Id, Sha1 p_Sha1)
+        {
+            m_Descriptor.CasTocChunks[p_Id] = p_Sha1;
+            return this;
+        }
+
         public SuperbundleBuilder WithBundle(BundleDescriptor p_Bundle)
         {
             m_Descriptor.Bundles[p_Bundle.BundleName.ToLowerInvariant()] = p_Bundle;

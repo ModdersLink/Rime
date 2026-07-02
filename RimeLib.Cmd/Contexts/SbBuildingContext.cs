@@ -130,9 +130,15 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<RemoveChunkCommand>();
             RegisterCommand<ListChunksCommand>();
             RegisterCommand<BuildBundleCommand>();
+            RegisterCommand<CloneSbChunksCommand>();
             RegisterCommand<RemoveBundleCommand>();
             RegisterCommand<ListBundlesCommand>();
             RegisterCommand<BuildCommand>();
+        }
+
+        internal void AddCasTocChunk(RimeLib.Frostbite.Core.GUID p_Id, RimeLib.Frostbite.Core.Sha1 p_Sha1)
+        {
+            m_Builder.WithCasTocChunk(p_Id, p_Sha1);
         }
 
         public override string GetShortDescription()

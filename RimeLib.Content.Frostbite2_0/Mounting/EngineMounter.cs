@@ -108,6 +108,43 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return m_MountedSuperbundles;
         }
 
+        // Level-sb override support: enumerate a superbundle's TOC as parsed (Patch layered first).
+        // Bundle ids + toc-level chunk refs are what a COMPLETE clone of a level sb must reproduce —
+        // a clone missing either hangs the server (terrain streaming chunks live at toc level).
+        public IEnumerable<string> GetSuperbundleBundleIds(string p_Superbundle)
+        {
+            var s_Sb = m_Superbundles.FirstOrDefault(p_S =>
+                p_S.Name.Equals(p_Superbundle, StringComparison.OrdinalIgnoreCase));
+            if (s_Sb == null)
+                yield break;
+            var s_Seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var s_Toc in new[] { s_Sb.PatchToc, s_Sb.Toc })
+            {
+                if (s_Toc?.Layout?.Bundles == null)
+                    continue;
+                foreach (var s_B in s_Toc.Layout.Bundles)
+                    if (!string.IsNullOrEmpty(s_B.Id) && s_Seen.Add(s_B.Id))
+                        yield return s_B.Id;
+            }
+        }
+
+        public IEnumerable<(GUID Id, Sha1? Sha1)> GetSuperbundleTocChunks(string p_Superbundle)
+        {
+            var s_Sb = m_Superbundles.FirstOrDefault(p_S =>
+                p_S.Name.Equals(p_Superbundle, StringComparison.OrdinalIgnoreCase));
+            if (s_Sb == null)
+                yield break;
+            var s_Seen = new HashSet<GUID>();
+            foreach (var s_Toc in new[] { s_Sb.PatchToc, s_Sb.Toc })
+            {
+                if (s_Toc?.Layout?.Chunks == null)
+                    continue;
+                foreach (var s_C in s_Toc.Layout.Chunks)
+                    if (s_Seen.Add(s_C.Id))
+                        yield return (s_C.Id, s_C.Sha1);
+            }
+        }
+
         public IEnumerable<string> GetAvailableBundles()
         {
             var s_Keys = new HashSet<string>();

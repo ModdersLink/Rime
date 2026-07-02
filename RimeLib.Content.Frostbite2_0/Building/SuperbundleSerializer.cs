@@ -55,6 +55,12 @@ namespace RimeLib.Content.Frostbite2_0.Building
             foreach (var s_Pair in p_Descriptor.Chunks)
                 SerializeChunk(s_Pair.Key, s_Pair.Value, s_SbWriter);
 
+            // CAS toc chunks: pure { id, sha1 } refs in the toc chunk list, NO payload written —
+            // the engine fetches them from cas.cat by hash (vanilla CAS level sbs carry their
+            // sb-level streaming chunks this way; a level-sb override needs them or terrain hangs).
+            foreach (var s_Pair in p_Descriptor.CasTocChunks)
+                m_Chunks.Add(new ChunkInfo { Id = s_Pair.Key, Sha1 = s_Pair.Value });
+
             // Assign final chunk and bundle info.
             m_Toc.Layout.Chunks = m_Chunks.ToArray();
             m_Toc.Layout.Bundles = m_Bundles.ToArray();
