@@ -156,6 +156,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<CheckChunksCommand>();
             RegisterCommand<CheckCasRefsCommand>();
             RegisterCommand<StripSbLevelChunksCommand>();
+            RegisterCommand<StripTargetDupsCommand>();
             RegisterCommand<BundleStatsCommand>();
 
             var s_EngineType = ((SbBuildingContext)p_Parent).EngineType;
