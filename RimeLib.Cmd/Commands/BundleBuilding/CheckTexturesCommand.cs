@@ -32,19 +32,19 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 // Parse the DxTexture header (little-endian) per DxTexture.Serialize layout:
                 // version u32, type u32, format u32, flags u32, w i16, h i16, depth i16, slice i16,
                 // unused0 i16, mipCount u8, mipBase u8, chunkGuid[16], mipSizes[15] u32, mipChainSize u32 ...
-                uint s_Flags; short s_W, s_H; int s_MipCount, s_MipBase; uint s_MipChain;
+                uint s_Flags, s_Type, s_Format; short s_W, s_H, s_Slice; int s_MipCount, s_MipBase; uint s_MipChain;
                 try
                 {
                     using var s_R = s_Res.GetReader();
                     s_R.Endianness = RimeLib.IO.Conversion.Endianness.LittleEndian;   // DxTexture is little-endian
                     s_R.ReadUInt32();                 // version
-                    s_R.ReadUInt32();                 // type
-                    s_R.ReadUInt32();                 // format
+                    s_Type = s_R.ReadUInt32();        // type (2D/Cube/3D/Array)
+                    s_Format = s_R.ReadUInt32();      // format
                     s_Flags = s_R.ReadUInt32();       // flags
                     s_W = s_R.ReadInt16();
                     s_H = s_R.ReadInt16();
                     s_R.ReadInt16();                  // depth
-                    s_R.ReadInt16();                  // sliceCount
+                    s_Slice = s_R.ReadInt16();        // sliceCount
                     s_R.ReadInt16();                  // unused0
                     s_MipCount = s_R.ReadByte();
                     s_MipBase = s_R.ReadByte();
@@ -59,16 +59,18 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     continue;
                 }
 
-                bool s_Streaming = (s_Flags & 0x1) != 0;   // TextureFlags.Streaming
+                bool s_Streaming = (s_Flags & 0x1) != 0;      // TextureFlags.Streaming
                 bool s_HasBase = s_MipBase != 0;
+                bool s_Mutable = (s_Flags & 0x10) != 0;       // Mutable (render-target-ish)
+                bool s_OnDemand = (s_Flags & 0x8) != 0;       // OnDemandLoaded
                 bool s_Bad2 = s_Streaming || s_HasBase;
-                if (s_Bad2)
-                {
-                    s_Bad++;
-                    p_Writer.WriteLine(
-                        $"TEX-BAD  {s_Name}  {s_W}x{s_H} mips={s_MipCount} base={s_MipBase} " +
-                        $"flags=0x{s_Flags:X}{(s_Streaming ? " STREAMING" : "")}{(s_HasBase ? " MIPBASE>0" : "")} chain={s_MipChain}");
-                }
+                if (s_Bad2) s_Bad++;
+                // VERBOSE: print EVERY texture with full detail so we can spot render-target/optics ones
+                // (chain==0 or Mutable = engine-created render target that must NOT be delivered with data).
+                p_Writer.WriteLine(
+                    $"TEX{(s_Bad2 ? "-BAD" : "    ")} {s_Name}  {s_W}x{s_H} type={s_Type} fmt={s_Format} " +
+                    $"mips={s_MipCount} base={s_MipBase} chain={s_MipChain} slice={s_Slice} flags=0x{s_Flags:X}" +
+                    $"{(s_Streaming ? " STREAMING" : "")}{(s_HasBase ? " MIPBASE" : "")}{(s_Mutable ? " MUTABLE" : "")}{(s_OnDemand ? " ONDEMAND" : "")}{(s_MipChain == 0 ? " NODATA" : "")}");
             }
 
             p_Writer.WriteLine($"check_textures: {s_Total} DxTexture resource(s), {s_Bad} will FAIL standalone CreateTexture2D (streaming/mipbase). Fix = make these fully resident (regen via add_dds from a full dump, or clear streaming + full mip chain).");
