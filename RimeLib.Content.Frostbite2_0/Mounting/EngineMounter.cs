@@ -483,6 +483,78 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return false;
         }
 
+        /// <summary>
+        /// CENSUS: does retail BF3 EVER deliver RESOURCE payloads as cas-bundle InlineData (idata)?
+        /// Generated (file-backed) resources in our mod bundles ship as idata and render BLACK on the
+        /// MVDB path — if retail never uses resource-idata, the engine likely fetches resource payloads
+        /// by SHA1 from cas.cat only, and mods must deliver generated textures another way (noncas annex).
+        /// </summary>
+        public string ResourceIdataCensus(int p_MaxSamples = 25)
+        {
+            int s_TotalVariants = 0, s_Idata = 0, s_IdataTex = 0, s_Catalog = 0, s_NonCas = 0, s_IdataRaw = 0, s_IdataCompressed = 0;
+            var s_Samples = new System.Collections.Generic.List<string>();
+            foreach (var s_Kv in m_MountedResources)
+            {
+                foreach (var s_V in s_Kv.Value.Variants)
+                {
+                    s_TotalVariants++;
+                    if (s_V is not ResourceVariant s_RV)
+                        continue;
+                    var s_R = s_RV.GetReadable();
+                    if (s_R is InlineReadable s_IR)
+                    {
+                        s_Idata++;
+                        if (s_IR.Compressed) s_IdataCompressed++; else s_IdataRaw++;
+                        if (s_RV.GetResourceType() == RimeLib.Content.Frostbite.ResourceType.DxTexture)
+                            s_IdataTex++;
+                        if (s_Samples.Count < p_MaxSamples)
+                            s_Samples.Add($"{s_Kv.Key} [{s_RV.GetResourceType()}] bundle={s_RV.GetContainedBundle() ?? "-"} sb={s_RV.GetContainedSuperbundle()}");
+                    }
+                    else if (s_R is CatalogReadable) s_Catalog++;
+                    else s_NonCas++;
+                }
+            }
+            var s_Sb = new System.Text.StringBuilder();
+            s_Sb.AppendLine($"resource variants total={s_TotalVariants}  CAS-IDATA={s_Idata} (DxTexture={s_IdataTex}, RAW={s_IdataRaw}, COMPRESSED={s_IdataCompressed})  catalog-ref={s_Catalog}  noncas-bundle={s_NonCas}");
+            foreach (var s_S in s_Samples) s_Sb.AppendLine("  IDATA-RES " + s_S);
+            return s_Sb.ToString();
+        }
+
+        /// <summary>Full manifest-field dump of every variant of a resource (black-hunt: diff a
+        /// RETAIL idata texture entry vs OUR generated one — the differing field is the bug).</summary>
+        public string DumpResourceEntry(string p_Name)
+        {
+            var s_Sb = new System.Text.StringBuilder();
+            if (!TryGetResource(p_Name, out var s_Res))
+                return $"resource not found: {p_Name}";
+            int s_I = 0;
+            foreach (var s_V in s_Res.Variants)
+            {
+                if (s_V is not ResourceVariant s_RV) continue;
+                var s_R = s_RV.GetReadable();
+                long s_CompSize = -1, s_OrigSize = -1;
+                string s_Kind = s_R.GetType().Name, s_Hash = "?", s_Idata = "-";
+                try { s_OrigSize = s_R.GetSize(); } catch { }
+                byte[]? s_Meta = null; s_RV.TryGetMeta(out s_Meta);
+                if (s_R is InlineReadable s_IR)
+                {
+                    s_CompSize = s_IR.GetCompressedSize();
+                    s_Hash = s_IR.GetCompressedHash()?.ToString() ?? "?";
+                    var s_D = s_IR.GetCompressedData();
+                    s_Idata = $"len={s_D.Length} head={System.BitConverter.ToString(s_D, 0, System.Math.Min(24, s_D.Length))}";
+                }
+                else if (s_R is CatalogReadable s_CR)
+                {
+                    s_CompSize = s_CR.GetCompressedSize();
+                    s_Hash = s_CR.GetCompressedHash()?.ToString() ?? "?";
+                }
+                s_Sb.AppendLine($"v[{s_I++}] kind={s_Kind} type={s_RV.GetResourceType()} size={s_CompSize} origSize={s_OrigSize} hash={s_Hash}");
+                s_Sb.AppendLine($"      meta={(s_Meta == null ? "null" : System.BitConverter.ToString(s_Meta))} idata: {s_Idata}");
+                s_Sb.AppendLine($"      sb={s_RV.GetContainedSuperbundle()} bundle={s_RV.GetContainedBundle() ?? "-"}");
+            }
+            return s_Sb.ToString();
+        }
+
         protected void ParseCatalogs()
         {
             // Parse the main catalog.

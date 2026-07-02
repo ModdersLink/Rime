@@ -12,6 +12,8 @@ internal class InlineReadable : IReadableObjectWithHash
 	protected Sha1 m_Hash;
 	protected bool m_Compressed;
 
+	public bool Compressed => m_Compressed;
+
     protected long m_CompressedSize;
     protected Sha1? m_CompressedHash;
 
