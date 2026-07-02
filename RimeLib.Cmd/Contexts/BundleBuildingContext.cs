@@ -153,6 +153,9 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<MvdbAddEntryCommand>();
             RegisterCommand<MvdbAddAllCommand>();
             RegisterCommand<CheckTexturesCommand>();
+            RegisterCommand<CheckChunksCommand>();
+            RegisterCommand<CheckCasRefsCommand>();
+            RegisterCommand<StripSbLevelChunksCommand>();
             RegisterCommand<BundleStatsCommand>();
 
             var s_EngineType = ((SbBuildingContext)p_Parent).EngineType;

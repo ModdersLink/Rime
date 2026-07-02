@@ -444,6 +444,20 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             }
         }
 
+        /// <summary>
+        /// Whether the game's cas catalog(s) contain a payload with this hash — i.e. whether a
+        /// bundle entry could be delivered as a pure SHA1 reference (InlineData = null) instead
+        /// of embedding its bytes. Checks the authoritative (patch) catalog first, then the base.
+        /// </summary>
+        public bool CatalogContainsEntry(RimeLib.Frostbite.Core.Sha1 p_Hash)
+        {
+            if (m_Catalog == null)
+                return false;
+            if (m_Catalog.AuthoritativeCatalog != null && m_Catalog.AuthoritativeCatalog.ContainsEntry(p_Hash))
+                return true;
+            return m_Catalog.ContainsEntry(p_Hash);
+        }
+
         protected void ParseCatalogs()
         {
             // Parse the main catalog.
