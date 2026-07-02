@@ -211,8 +211,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
                 AddResourceByNameFromProperty(p_Instance, "Name", "/shaderdb", ResourceType.IShaderDatabase, p_Context, p_Mounter, p_Writer);
             }
-            // Sound
-            else if (s_TypeName == "SoundDataAsset")
+            // Sound (SoundWaveAsset = the actual audio; same Chunks[] shape as SoundDataAsset — vehicles
+            // reference these for engine/idle/passby sounds; without them the audio component null-derefs).
+            else if (s_TypeName == "SoundDataAsset" || s_TypeName == "SoundWaveAsset")
             {
                 var s_Chunks = s_Type.GetProperty("Chunks")?.GetValue(p_Instance) as System.Collections.IEnumerable;
                 if (s_Chunks != null)

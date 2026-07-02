@@ -150,6 +150,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<AddRawPartitionCommand>();
             RegisterCommand<RaiseWaterPhysicsCommand>();
             RegisterCommand<ClonePartitionFreshCommand>();
+            RegisterCommand<MvdbAddEntryCommand>();
+            RegisterCommand<MvdbAddAllCommand>();
 
             var s_EngineType = ((SbBuildingContext)p_Parent).EngineType;
 

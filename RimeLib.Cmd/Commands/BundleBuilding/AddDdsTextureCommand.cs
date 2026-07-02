@@ -17,6 +17,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "Whether this texture should use sRGB gamma. Defaults to 'false'.", Optional = true)]
         public bool SrgbGamma { get; set; } = false;
 
+        [CommandArgument(Description = "Whether the texture is streamable. Defaults to 'true'. Set 'false' for a fully-resident texture delivered self-contained in a mod bundle (else only small mips load -> pale/black).", Optional = true)]
+        public bool Streaming { get; set; } = true;
+
+        [CommandArgument(Description = "Whether this is a normal map (uses NormalDXT1/DXN formats). Defaults to 'false'.", Optional = true)]
+        public bool NormalMap { get; set; } = false;
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             if (!FilePath!.Exists)
@@ -30,6 +36,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 Name = AssetName!,
                 TextureGroup = "Default",
                 SrgbGamma = SrgbGamma,
+                Streaming = Streaming,
+                IsNormalMap = NormalMap,
             };
 
             ((BundleBuildingContext) p_Context).AddDDSTexture(FilePath, s_Attributes);

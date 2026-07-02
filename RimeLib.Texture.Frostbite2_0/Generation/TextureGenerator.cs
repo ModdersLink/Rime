@@ -113,9 +113,11 @@ public class TextureGenerator : ITextureGenerator
  
     private static TextureFlags TextureFlagsFromDDSHeader(DDSHeader p_Header, TextureAttributes p_Attributes)
     {
-        // Default to all textures being streamable
-        var s_Flags = TextureFlags.Streaming;
-        
+        // Streaming by default, but a self-contained bundle texture must be FULLY RESIDENT (all mips in
+        // its own chunk) — otherwise the engine looks for the high-res mips in the streaming pool (which a
+        // mod bundle doesn't populate) and only the small resident mips load (pale) or none (black).
+        var s_Flags = p_Attributes.Streaming ? TextureFlags.Streaming : (TextureFlags)0;
+
         if (p_Attributes.SrgbGamma)
             s_Flags |= TextureFlags.SrgbGamma;
 
@@ -147,7 +149,7 @@ public class TextureGenerator : ITextureGenerator
         {
             // TODO: Make this user settable and handle accordingly
             Type = TextureTypeFromDDSHeader(p_Header),
-            Format = TextureFormatFromDDSHeader(p_Header),
+            Format = TextureFormatFromDDSHeader(p_Header, p_Attributes.IsNormalMap),
             Flags = TextureFlagsFromDDSHeader(p_Header, p_Attributes),
             Width = (short)p_Header.Width,
             Height = (short)p_Header.Height,
