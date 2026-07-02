@@ -83,7 +83,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     {
                         if (s_Mounter.TryGetChunk(s_ChunkId, out var s_ChunkObj))
                         {
-                            var s_Variant = s_ChunkObj.Variants.FirstOrDefault(v => v.GetContainedBundle() != null) ?? s_ChunkObj.FirstVariant;
+                            // Prefer the CAS variant (SHA1 reference into the game's shared cas -> the built
+                            // bundle references it instead of inlining the bytes = tiny, DICE's way). Fall back
+                            // to a bundle-contained (inline) variant only if no cas variant exists.
+                            var s_Variant = s_ChunkObj.Variants.FirstOrDefault(v => v.Cas)
+                                         ?? s_ChunkObj.Variants.FirstOrDefault(v => v.GetContainedBundle() != null)
+                                         ?? s_ChunkObj.FirstVariant;
 
                             s_BundleContext.AddChunk(s_ChunkId, s_Variant);
                             p_Writer.WriteLine($"Added missing texture chunk: {s_ChunkId} for resource {s_Res.Key}");
