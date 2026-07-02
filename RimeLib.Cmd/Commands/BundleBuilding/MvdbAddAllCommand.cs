@@ -23,6 +23,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "Id returned by mount_game.")]
         public int Id { get; set; }
 
+        [CommandArgument(Description = "true = ALSO add entries for destruction meshes (cluster/wreck/debris). Only safe when the object's FULL destruction chain is in the bundle; else their realize null-vtables.")]
+        public string? IncludeDestruction { get; set; }
+
+        [CommandArgument(Description = "Comma-separated TARGET bundle names (base + played gamemode), or '-'. Entries whose mesh is CONTAINED in these bundles are skipped: the level loads its own copy + its own MVDB entry, and a SECOND registration for the same mesh freezes the client (the m1a2_screen_mesh hang).")]
+        public string? ExcludeBundles { get; set; }
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             if (string.IsNullOrWhiteSpace(SourceName) || string.IsNullOrWhiteSpace(TargetName))
@@ -61,6 +67,24 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_SrcVariant = s_SrcMounted.Variants.FirstOrDefault(p_V => p_V.GetContainedBundle() != null) ?? s_SrcMounted.FirstVariant;
             var s_SrcDb = s_Converter.FromPartitionObject(SourceName!, s_SrcVariant!);
 
+            bool s_WithDestruction = string.Equals(IncludeDestruction, "true", StringComparison.OrdinalIgnoreCase);
+            var s_Excluded = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            if (!string.IsNullOrWhiteSpace(ExcludeBundles) && ExcludeBundles != "-")
+            {
+                foreach (var s_B in ExcludeBundles.Split(','))
+                {
+                    try
+                    {
+                        foreach (var s_N in s_EngineMounter.GetPartitionsInBundle(s_B.Trim()))
+                            s_Excluded.Add(s_N);
+                    }
+                    catch
+                    {
+                        p_Writer.WriteLine($"WARN: could not enumerate exclude bundle '{s_B}'");
+                    }
+                }
+            }
+
             // keep every entry whose MESH partition is present in this bundle
             var s_Keep = new List<fb.MeshVariationDatabaseEntry>();
             var s_KeptMeshes = new List<string>();
@@ -71,12 +95,18 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 if (!s_EngineMounter.TryGetPartitionByGuid(s_E.Mesh.PartitionGuid, out var s_MName, out _) || s_MName == null)
                     continue;
                 if (!s_InBundle.Contains(s_MName)) continue;
-                // Skip DESTRUCTION meshes (cluster / wreck / debris): their MVDB entry triggers the
-                // destruction setup (DebrisClusterData chain) which, if not fully brought, realizes a null
-                // vtable -> server crash. Not all objects are destructible, and full destruction is a
-                // separate chain to bring; the main render meshes still get their entries here.
+                // NEVER double-register a mesh the target level itself loads: it has its own copy + its
+                // own MVDB entry; a second variation registration for the same mesh FREEZES the client.
+                if (s_Excluded.Contains(s_MName))
+                {
+                    p_Writer.WriteLine($"MVDB-SKIP (target-provided): {s_MName}");
+                    continue;
+                }
+                // Destruction meshes (cluster / wreck / debris): their MVDB entry triggers the destruction
+                // setup (DebrisClusterData chain) — only add them when the object's full destruction chain
+                // ships in the bundle (include_destruction=true), else their realize null-vtables.
                 var s_MLower = s_MName.ToLowerInvariant();
-                if (s_MLower.Contains("cluster") || s_MLower.Contains("wreck") || s_MLower.Contains("debris"))
+                if (!s_WithDestruction && (s_MLower.Contains("cluster") || s_MLower.Contains("wreck") || s_MLower.Contains("debris")))
                 {
                     p_Writer.WriteLine($"MVDB-SKIP (destruction): {s_MName}");
                     continue;
