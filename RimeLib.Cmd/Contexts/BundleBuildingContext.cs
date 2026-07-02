@@ -152,6 +152,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ClonePartitionFreshCommand>();
             RegisterCommand<MvdbAddEntryCommand>();
             RegisterCommand<MvdbAddAllCommand>();
+            RegisterCommand<CheckTexturesCommand>();
 
             var s_EngineType = ((SbBuildingContext)p_Parent).EngineType;
 
