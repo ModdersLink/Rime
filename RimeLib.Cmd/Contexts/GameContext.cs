@@ -29,6 +29,8 @@ namespace RimeLib.Cmd.Contexts
         // Frostbite engine mounter interface (this can be different implementations based on Frostbite revision)
         protected IEngineMounter m_Mounter;
 
+        internal IEngineMounter GetMounter() => m_Mounter;
+
         /// <summary>
         /// GameContext constructor
         /// </summary>
@@ -60,6 +62,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListBundlePartitionsCommand>();
             RegisterCommand<DumpChunkCommand>();
             RegisterCommand<DumpResourceCommand>();
+            RegisterCommand<DumpResourceMetaCommand>();
             RegisterCommand<DumpResourceWithChunksCommand>();
             RegisterCommand<DumpSwfJsonCommand>();
             RegisterCommand<DumpPartitionCommand>();

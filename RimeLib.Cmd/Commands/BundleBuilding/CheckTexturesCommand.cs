@@ -33,6 +33,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 // version u32, type u32, format u32, flags u32, w i16, h i16, depth i16, slice i16,
                 // unused0 i16, mipCount u8, mipBase u8, chunkGuid[16], mipSizes[15] u32, mipChainSize u32 ...
                 uint s_Flags, s_Type, s_Format; short s_W, s_H, s_Slice; int s_MipCount, s_MipBase; uint s_MipChain;
+                string s_Group = "?";
                 try
                 {
                     using var s_R = s_Res.GetReader();
@@ -51,6 +52,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     s_R.ReadBytes(16);                // streamingChunkId
                     for (int i = 0; i < 15; i++) s_R.ReadUInt32();
                     s_MipChain = s_R.ReadUInt32();
+                    s_R.ReadUInt32();                 // assetNameHash
+                    var s_GroupBytes = s_R.ReadBytes(16);   // TextureGroup char[16]
+                    var s_End = System.Array.IndexOf(s_GroupBytes, (byte)0);
+                    s_Group = System.Text.Encoding.ASCII.GetString(s_GroupBytes, 0, s_End < 0 ? 16 : s_End);
                 }
                 catch (System.Exception e)
                 {
@@ -69,7 +74,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 // (chain==0 or Mutable = engine-created render target that must NOT be delivered with data).
                 p_Writer.WriteLine(
                     $"TEX{(s_Bad2 ? "-BAD" : "    ")} {s_Name}  {s_W}x{s_H} type={s_Type} fmt={s_Format} " +
-                    $"mips={s_MipCount} base={s_MipBase} chain={s_MipChain} slice={s_Slice} flags=0x{s_Flags:X}" +
+                    $"mips={s_MipCount} base={s_MipBase} chain={s_MipChain} slice={s_Slice} flags=0x{s_Flags:X} group={s_Group}" +
                     $"{(s_Streaming ? " STREAMING" : "")}{(s_HasBase ? " MIPBASE" : "")}{(s_Mutable ? " MUTABLE" : "")}{(s_OnDemand ? " ONDEMAND" : "")}{(s_MipChain == 0 ? " NODATA" : "")}");
             }
 

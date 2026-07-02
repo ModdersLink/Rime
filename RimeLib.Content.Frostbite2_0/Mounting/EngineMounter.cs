@@ -458,6 +458,31 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return m_Catalog.ContainsEntry(p_Hash);
         }
 
+        /// <summary>
+        /// Builds a FULL-RANGE, catalog-backed variant of a mounted cas chunk (rangeStart 0, no meta).
+        /// Used to deliver a streaming texture's COMPLETE payload as a pure SHA1 reference: the game's
+        /// bundle entries for streaming textures are RANGED slices; copying them into a standalone mod
+        /// bundle ships partial data (CreateTexture2D E_INVALIDARG / black). The catalog holds the whole
+        /// payload, so a 0..size entry with the same hash delivers every mip, byte-exact, for free.
+        /// </summary>
+        public bool TryGetFullRangeCasChunkVariant(RimeLib.Frostbite.Core.GUID p_Id, [NotNullWhen(true)] out IChunkVariant? p_Variant)
+        {
+            p_Variant = null;
+            if (!TryGetChunk(p_Id, out var s_Obj))
+                return false;
+            foreach (var s_V in s_Obj.Variants)
+            {
+                if (s_V is not ChunkVariant s_CV)
+                    continue;
+                if (s_CV.GetReadable() is not CatalogReadable s_Cat)
+                    continue;
+                p_Variant = new ChunkVariant(s_Cat, 0, (uint)s_Cat.GetCompressedSize(), 0, null,
+                    s_CV.GetContainedSuperbundle(), s_CV.GetContainedBundle());
+                return true;
+            }
+            return false;
+        }
+
         protected void ParseCatalogs()
         {
             // Parse the main catalog.
