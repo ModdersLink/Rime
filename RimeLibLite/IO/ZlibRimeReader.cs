@@ -74,11 +74,61 @@ namespace RimeLib.IO
         protected void LoadSizes()
         {
             m_StartPosition = BaseStream.Position;
-            m_CompressedSize = m_OriginalSize = 0;
 
-            // Keep parsing segments until we have filled up our length requirement.
+            // Retail Frostbite 2 payloads are a chain of (u32 BE originalSize, u32 BE compressedSize,
+            // data) segments. The BF3 alpha (Sep 2011 pre-release) prepends a u32 BE TOTAL
+            // uncompressed size before the same chain, and some of its payloads carry no container
+            // at all (the guid compression-flag convention doesn't exist there yet). Detect by
+            // validated walk: retail first (so retail data always behaves exactly as before), then
+            // the alpha-prefixed variant, then fall back to a raw passthrough segment.
+            if (TryWalkSegments(0))
+                return;
+
+            if (TryWalkSegments(4))
+                return;
+
+            // Raw passthrough: expose the whole payload as a single stored segment. Offset is set
+            // 8 bytes back because GetStreamForSegment always seeks Offset + 8 (the header size).
+            m_Segments.Clear();
+            m_CompressedSize = m_OriginalSize = BaseStream.Length;
+            m_Segments.Add(new ZlibSegment
+            {
+                Offset = m_StartPosition - 8,
+                OriginalSize = BaseStream.Length,
+                CompressedSize = BaseStream.Length,
+                LeftData = BaseStream.Length,
+            });
+        }
+
+        /// <summary>
+        /// Walks the segment chain assuming <paramref name="p_PrefixSize"/> bytes of payload prefix
+        /// (0 = retail layout, 4 = BF3-alpha total-size prefix) and only commits the parsed segment
+        /// list when the chain lands exactly on the stream end (and, for the prefixed variant, the
+        /// original sizes add up to the declared total).
+        /// </summary>
+        protected bool TryWalkSegments(int p_PrefixSize)
+        {
+            m_Segments.Clear();
+            m_CompressedSize = m_OriginalSize = 0;
+            BaseStream.Seek(m_StartPosition, SeekOrigin.Begin);
+
+            long s_DeclaredTotal = -1;
+
+            if (p_PrefixSize == 4)
+            {
+                if (BaseStream.Length < 12)
+                    return false;
+
+                s_DeclaredTotal = EndianBitConverter.Big.ToUInt32(((RimeReader)BaseStream).ReadBytes(4), 0);
+                m_CompressedSize = 4;
+            }
+
             while (m_CompressedSize != BaseStream.Length)
             {
+                // A segment header no longer fits — not this layout.
+                if (BaseStream.Length - m_CompressedSize < 8)
+                    return false;
+
                 // Zlib segment sizes are always encoded in big-endian.
                 var s_Segment = new ZlibSegment
                 {
@@ -86,6 +136,11 @@ namespace RimeLib.IO
                     OriginalSize = EndianBitConverter.Big.ToInt32(((RimeReader)BaseStream).ReadBytes(4), 0),
                     CompressedSize = EndianBitConverter.Big.ToInt32(((RimeReader)BaseStream).ReadBytes(4), 0),
                 };
+
+                // Sanity: sizes must be non-negative and the data must fit in what's left.
+                if (s_Segment.OriginalSize < 0 || s_Segment.CompressedSize < 0 ||
+                    s_Segment.CompressedSize > BaseStream.Length - m_CompressedSize - 8)
+                    return false;
 
                 s_Segment.LeftData = s_Segment.CompressedSize;
 
@@ -97,6 +152,15 @@ namespace RimeLib.IO
                 // Seek to the beginning of the next segment.
                 BaseStream.Seek(s_Segment.CompressedSize, SeekOrigin.Current);
             }
+
+            if (m_Segments.Count == 0)
+                return false;
+
+            // The alpha prefix must match the accumulated uncompressed size.
+            if (s_DeclaredTotal >= 0 && m_OriginalSize != s_DeclaredTotal)
+                return false;
+
+            return true;
         }
 
         public override long Seek(long p_Offset, SeekOrigin p_Origin)

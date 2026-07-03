@@ -14,6 +14,7 @@ namespace ant
 {
 
 	[AntBinding(0xce300c47)]
+	[AntBinding(0x75abaa2d)] // BF3 alpha schema (adds EnumTrue/FalseConditions)
 	public class StateFlowTransitionAsset
 		: AntObject
 	{
@@ -49,6 +50,13 @@ namespace ant
 
 		[AntField(10)]
 		public bool BranchInAny { get; set; }
+
+		// BF3-alpha-only fields (dropped in retail; slots per the alpha reflection table).
+		[AntField(7)]
+		public IdRefArray<AntObject> EnumTrueConditions { get; set; } = new();
+
+		[AntField(8)]
+		public IdRefArray<AntObject> EnumFalseConditions { get; set; } = new();
 
 	}
 }

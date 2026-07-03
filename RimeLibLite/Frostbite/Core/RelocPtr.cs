@@ -53,8 +53,9 @@ namespace RimeLib.Frostbite.Core
 
         public T DeserializeObject(RimeReader p_Reader)
         {
-            BaseAddress = p_Reader.ReadUInt32();
-            p_Reader.ReadUInt32();
+            // Ptr64 slot: read as a full 64-bit value so both little- and big-endian data
+            // (e.g. BF3-alpha/console GenericData banks) resolve the pointer correctly.
+            BaseAddress = p_Reader.ReadUInt64();
 
             if (BaseAddress == 0)
             {

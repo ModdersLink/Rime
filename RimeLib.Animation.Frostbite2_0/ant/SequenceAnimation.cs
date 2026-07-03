@@ -14,9 +14,15 @@ namespace ant
 {
 
 	[AntBinding(0x4896fb08)]
+	[AntBinding(0xa3d7b18c)] // BF3 alpha schema (adds Flags + Start/EndHoldTime)
 	public class SequenceAnimation
 		: AntObject
 	{
+		// BF3-alpha-only fields (dropped in retail; slots per the alpha reflection table).
+		public int Flags { get; set; }
+		public short StartHoldTime { get; set; }
+		public short EndHoldTime { get; set; }
+
 		[AntField(0)]
 		public IdRef<ClipControllerAsset> Asset { get; set; } = new(); // ClipControllerAsset
 

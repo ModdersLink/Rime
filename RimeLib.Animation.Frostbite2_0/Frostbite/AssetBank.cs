@@ -80,7 +80,7 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
 
         public  AntObject ParseClass(RimeReader p_Reader, RimeLib.Animation.EA.GenericData.Data p_Data, long p_Offset = 0)
         {
-            var s_Layout = Archive.Reflection?.Layouts.Where(x => x.Hash == p_Data.LayoutHash).First();
+            var s_Layout = Archive.Reflection?.Layouts.Where(x => x.Hash == p_Data.LayoutHash).FirstOrDefault();
 
             if (s_Layout == null)
                 throw new InvalidDataException($"Couldnt not find layout for type hash {p_Data.LayoutHash:X08}.");
@@ -135,7 +135,7 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
                     if (!p_Instance.ContainsHash(s_Data.LayoutHash))
                         throw new Exception("Base class invalid!");
 
-                    var s_BaseLayout = Archive.Reflection?.Layouts.Where(x => x.Hash == s_Data.LayoutHash).First();
+                    var s_BaseLayout = Archive.Reflection?.Layouts.Where(x => x.Hash == s_Data.LayoutHash).FirstOrDefault();
 
                     if (s_BaseLayout == null)
                         throw new InvalidDataException($"Couldnt not find layout for base class type hash {s_Data.LayoutHash:X08}.");
@@ -163,7 +163,9 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
 
                 var s_Capacity = p_Reader.ReadUInt32();
                 var s_Count = p_Reader.ReadUInt32();
-                var s_Offset = p_Reader.ReadUInt32();
+                // container header is {u32 capacity, u32 count, u64 ptr} (String layout size 0x10)
+                // — read the pointer as 64-bit so big-endian banks (BF3 alpha) resolve it too.
+                var s_Offset = (long)p_Reader.ReadUInt64();
                 p_Reader.Seek(s_Offset, SeekOrigin.Begin);
 
                 // strings should ne null terminated as game doesnt check length on strings
@@ -235,7 +237,8 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
                         {
                             var s_Capacity = p_Reader.ReadUInt32();
                             var s_Count = p_Reader.ReadUInt32();
-                            var s_Offset = p_Reader.ReadUInt32();
+                            // {u32,u32,u64} header — 64-bit read for endian correctness (see __name).
+                            var s_Offset = (long)p_Reader.ReadUInt64();
                             p_Reader.Seek(s_Offset, SeekOrigin.Begin);
 
                             // strings should ne null terminated as game doesnt check length on strings
@@ -382,7 +385,13 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
 
             var s_Capacity = p_Reader.ReadUInt32();
             var s_Count = p_Reader.ReadUInt32();
-            var s_Offset = p_Reader.ReadUInt32();
+            // {u32,u32,u64} header — 64-bit read for endian correctness (see __name).
+            var s_Offset = (long)p_Reader.ReadUInt64();
+
+            // Sanity: a corrupt/misparsed header would otherwise loop for minutes before an
+            // allocation failure (seen with drifted BF3-alpha layouts). Fail fast instead.
+            if (s_Count > p_Reader.Length || s_Offset > p_Reader.Length)
+                throw new InvalidDataException($"Array header out of bounds (count={s_Count}, offset=0x{s_Offset:X}, blob=0x{p_Reader.Length:X}).");
 
             var s_AlignedSize = (s_Layout.DataSize + (s_Layout.Alignment - 1)) & ~(s_Layout.Alignment - 1);
 

@@ -14,6 +14,7 @@ namespace ant
 {
 
 	[AntBinding(0xbd52af4)]
+	[AntBinding(0xe026ce44)] // BF3 alpha schema (adds EnumTrue/FalseConditions)
 	public class StateFlowNodeControllerAsset
 		: ControllerAsset
 	{
@@ -46,6 +47,13 @@ namespace ant
 
 		[AntField(9)]
 		public bool IsTransparent { get; set; }
+
+		// BF3-alpha-only fields (dropped in retail; slots per the alpha reflection table).
+		[AntField(8)]
+		public IdRefArray<AntObject> EnumTrueConditions { get; set; } = new();
+
+		[AntField(9)]
+		public IdRefArray<AntObject> EnumFalseConditions { get; set; } = new();
 
 	}
 }

@@ -14,6 +14,7 @@ namespace ant
 {
 
 	[AntBinding(0x4d2a8375)]
+	[AntBinding(0x0580f425)] // BF3 alpha schema (lacks UseFalseAsCondition)
 	public class FloatEventWindowTagAsset
 		: FloatGameStateTag
 	{

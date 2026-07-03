@@ -30,10 +30,10 @@ namespace RimeLib.Animation.EA.Types
 
                 s_IteratorType = s_IteratorType.BaseType;
 
-                var s_BindingAttribute = s_Type.GetCustomAttribute<AntBindingAttribute>()!;
-
-                if (s_BindingAttribute.Hash == p_Hash)
-                    return true;
+                // A class can carry several bindings (retail + drifted-schema hashes, e.g. BF3 alpha).
+                foreach (var s_BindingAttribute in s_Type.GetCustomAttributes<AntBindingAttribute>(false))
+                    if (s_BindingAttribute.Hash == p_Hash)
+                        return true;
 
             }
 

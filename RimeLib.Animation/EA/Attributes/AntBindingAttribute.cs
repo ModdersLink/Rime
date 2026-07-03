@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 namespace RimeLib.Animation.EA.Attributes
 {
 
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct)]
+    // AllowMultiple: a class can bind several layout hashes — the hash is schema-derived, so
+    // builds with a drifted schema for the same type (e.g. the BF3 alpha) carry a second hash.
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct, AllowMultiple = true)]
     public class AntBindingAttribute
         : Attribute
     {
