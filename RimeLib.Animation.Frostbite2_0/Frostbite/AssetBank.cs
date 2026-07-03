@@ -23,6 +23,10 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
     {
         private IAssetResolver? LocalResolver { get; set; } = null;
 
+        /// <summary>Give this bank its own resolver so several banks can be loaded side by side
+        /// (the default AssetResolver.Instance keeps process-wide maps — see LocalAssetResolver).</summary>
+        public void SetLocalResolver(IAssetResolver p_Resolver) => LocalResolver = p_Resolver;
+
 
         public PackageMeta? Meta { get; set; } = null;
         public RimeLib.Animation.EA.GenericData.Archive Archive { get; set; } = new();
