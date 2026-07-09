@@ -225,7 +225,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
                         if (p_Mounter.TryGetChunk(s_ChunkId, out var s_Chunk))
                         {
-                            p_Context.AddChunk(s_ChunkId, s_Chunk.FirstVariant);
+                            // Prefer a variant that carries chunk meta (asset-name-hash). Some bundles
+                            // reference the same sound chunk WITHOUT meta (FirstVariant), which then
+                            // fails final serialization ("chunk with no asset name hash"). The chunk
+                            // data is identical across variants (same GUID), so the metad one is safe.
+                            var s_Variant = s_Chunk.Variants.FirstOrDefault(v => v.GetAssetNameHash() != null) ?? s_Chunk.FirstVariant;
+                            p_Context.AddChunk(s_ChunkId, s_Variant);
                             p_Writer.WriteLine($"Added SoundData chunk: {s_ChunkId}");
                         }
                     }

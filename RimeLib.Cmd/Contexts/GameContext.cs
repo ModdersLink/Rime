@@ -55,6 +55,9 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListDuplicateChunksCommand>();
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<ListResourcesOfTypeCommand>();
+            RegisterCommand<DumpShaderDbCommand>();
+            RegisterCommand<DumpShaderSolutionsCommand>();
+            RegisterCommand<DumpMvdbVariationsCommand>();
             RegisterCommand<ListPartitionsCommand>();
             RegisterCommand<ListSbChunksCommand>();
             RegisterCommand<ListBundleChunksCommand>();

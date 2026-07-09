@@ -17,6 +17,11 @@ namespace RimeLib.Animation.EA.Types
 
         public string ObjectName { get; set; } = string.Empty;
 
+        /// <summary>Whether the parsed blob carried a __base Data chain. Frostbite leaves the
+        /// base pointer NULL when the base instance holds no data (e.g. DeltaTrajLayoutAsset's
+        /// empty LayoutAsset base) — writers must mirror that to stay byte-faithful.</summary>
+        public bool HasBaseData { get; set; } = false;
+
 
         public bool ContainsHash(uint p_Hash)
         {

@@ -68,19 +68,35 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_SrcDb = s_Converter.FromPartitionObject(SourceName!, s_SrcVariant!);
 
             bool s_WithDestruction = string.Equals(IncludeDestruction, "true", StringComparison.OrdinalIgnoreCase);
+            // "keepbase" DISABLES the hardcoded base-universal mesh skip below (diagnostic 2026-07-05:
+            // that skip fixed the vanilla double-register but may have greyed the foreign vehicle's camo).
+            // ExcludeBundles is a comma list: a "keepbase" token DISABLES the hardcoded base-universal mesh
+            // skip; every OTHER token is a TARGET bundle whose meshes are excluded (dedup). COMPOSABLE
+            // (2026-07-05): "keepbase,<bundle1>,<bundle2>" = ship base-universal meshes the map LACKS while
+            // still deduping the ones it provides. Fixes the turret-view crash on infantry maps: a base-
+            // universal cockpit mesh (e.g. vehicles/common/cockpits/tankhudholder_mesh) the map does NOT
+            // have was base-universal-skipped → no MVDB entry → null-variation crash entering the gunner seat.
+            bool s_KeepBase = false;
             var s_Excluded = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             if (!string.IsNullOrWhiteSpace(ExcludeBundles) && ExcludeBundles != "-")
             {
                 foreach (var s_B in ExcludeBundles.Split(','))
                 {
+                    var s_Bt = s_B.Trim();
+                    if (s_Bt.Length == 0) continue;
+                    if (string.Equals(s_Bt, "keepbase", StringComparison.OrdinalIgnoreCase))
+                    {
+                        s_KeepBase = true;
+                        continue;
+                    }
                     try
                     {
-                        foreach (var s_N in s_EngineMounter.GetPartitionsInBundle(s_B.Trim()))
+                        foreach (var s_N in s_EngineMounter.GetPartitionsInBundle(s_Bt))
                             s_Excluded.Add(s_N);
                     }
                     catch
                     {
-                        p_Writer.WriteLine($"WARN: could not enumerate exclude bundle '{s_B}'");
+                        p_Writer.WriteLine($"WARN: could not enumerate exclude bundle '{s_Bt}'");
                     }
                 }
             }
@@ -109,6 +125,19 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 if (!s_WithDestruction && (s_MLower.Contains("cluster") || s_MLower.Contains("wreck") || s_MLower.Contains("debris")))
                 {
                     p_Writer.WriteLine($"MVDB-SKIP (destruction): {s_MName}");
+                    continue;
+                }
+                // BASE-UNIVERSAL meshes (2026-07-04): a vehicle's resolved closure pulls SHARED meshes —
+                // pilots/arms (characters/), HUD, projectiles (weapons/, objects/projectiles), particles
+                // (fx/), and vehicles/common/*. EVERY map already ships these + their own MVDB entry, so
+                // registering OUR variation for them is a DOUBLE registration that corrupts the map's
+                // native binding (white pilot, low-res vanilla). Skip them — the map binds them; our
+                // mini-MVDB carries ONLY the vehicle's UNIQUE meshes (body/interior).
+                if (!s_KeepBase && (s_MLower.StartsWith("characters/") || s_MLower.StartsWith("weapons/")
+                    || s_MLower.StartsWith("fx/") || s_MLower.StartsWith("objects/projectiles")
+                    || s_MLower.Contains("/common/")))
+                {
+                    p_Writer.WriteLine($"MVDB-SKIP (base-universal): {s_MName}");
                     continue;
                 }
                 s_Keep.Add(s_E);
@@ -157,6 +186,13 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             foreach (var s_T in s_TexNames)
                 p_Writer.WriteLine($"MVDB-TEX: {s_T}");
+            // The generated MVDB keeps the SOURCE partition's guids (it is a sliced clone) — expose them so
+            // the caller can reference the MVDB in a SubWorldData.registryContainer.AssetRegistry (the
+            // AllModes AddRegistry index-feed): MVDB-GUID <partitionGuid> <primaryInstanceGuid>.
+            p_Writer.WriteLine($"MVDB-GUID: {s_SrcConcrete.PartitionGuid} {s_PrimG}");
+            // Stash for emit_subworld_registry: the raw-added MVDB partition can't be parsed by
+            // generate_registry_container, so hand it the ref directly (goes into SubWorld AssetRegistry).
+            s_BundleContext.AddMvdbRegistryRef(s_SrcConcrete.PartitionGuid, s_PrimG);
             p_Writer.WriteLine($"Built MVDB '{TargetName}' with {s_Keep.Count} entr(ies) for bundle meshes ({s_Bytes.Length} bytes):");
             foreach (var s_M in s_KeptMeshes.Distinct())
                 p_Writer.WriteLine($"  MVDB-MESH: {s_M}");

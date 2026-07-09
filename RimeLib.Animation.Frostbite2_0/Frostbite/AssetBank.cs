@@ -132,6 +132,8 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
 
                 if (s_BaseOffset != 0)
                 {
+                    p_Instance.HasBaseData = true;
+
                     p_Reader.Seek(s_BaseOffset, SeekOrigin.Begin);
 
                     var s_Data = new Data(p_Reader);

@@ -201,6 +201,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ExportBundleContentsCommand>();
             RegisterCommand<GenerateRegistryContainerCommand>();
             RegisterCommand<CompareRegistryContainersCommand>();
+            RegisterCommand<EmitSubworldRegistryCommand>();
+            RegisterCommand<KeepOnlyPartitionCommand>();
         }
 
         public bool Cas()
@@ -331,6 +333,23 @@ namespace RimeLib.Cmd.Contexts
         internal fb.RegistryContainer? GetGeneratedRegistry()
         {
             return m_GeneratedRegistry;
+        }
+
+        // MVDB registry refs (2026-07-05): a mini-MVDB is injected via AddRawPartitionBytes (raw bytes),
+        // so generate_registry_container can't parse it (MemoryReader is not an IObjectVariant) and never
+        // collects it. mvdb_add_all stashes the sliced MVDB's {partitionGuid, primaryInstanceGuid} here so
+        // emit_subworld_registry can add it to the SubWorld's AssetRegistry (= the load-time mesh-variation
+        // index feed / camo binding).
+        private readonly System.Collections.Generic.List<(RimeLib.Frostbite.Core.GUID Part, RimeLib.Frostbite.Core.GUID Inst)> m_MvdbRegistryRefs = new();
+
+        internal void AddMvdbRegistryRef(RimeLib.Frostbite.Core.GUID p_Part, RimeLib.Frostbite.Core.GUID p_Inst)
+        {
+            m_MvdbRegistryRefs.Add((p_Part, p_Inst));
+        }
+
+        internal System.Collections.Generic.IReadOnlyList<(RimeLib.Frostbite.Core.GUID Part, RimeLib.Frostbite.Core.GUID Inst)> GetMvdbRegistryRefs()
+        {
+            return m_MvdbRegistryRefs;
         }
 
         internal IReadOnlyDictionary<string, IReadableObject> GetPartitions()
