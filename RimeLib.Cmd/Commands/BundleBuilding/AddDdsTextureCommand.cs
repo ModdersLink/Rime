@@ -23,6 +23,13 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "Whether this is a normal map (uses NormalDXT1/DXN formats). Defaults to 'false'.", Optional = true)]
         public bool NormalMap { get; set; } = false;
 
+        // The engine's texture pools gate on the 16-char group at header offset 112 ("Vehicle",
+        // "AtlasTextureGro", ...). A generated texture under a NEW name has no mounted original to
+        // copy the group from, and "Default" is not a valid BF3 group -> the pool never uploads it
+        // (black vehicles; purple/garbage emitter atlas). This argument sets it explicitly.
+        [CommandArgument(Description = "TextureGroup override (16-char engine pool group, e.g. 'AtlasTextureGro'). Defaults to the mounted original's group (same-name lookup) or 'Default'.", Optional = true)]
+        public string? TextureGroup { get; set; }
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             if (!FilePath!.Exists)
@@ -34,7 +41,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_Attributes = new TextureAttributes()
             {
                 Name = AssetName!,
-                TextureGroup = "Default",
+                TextureGroup = TextureGroup ?? "Default",
                 SrgbGamma = SrgbGamma,
                 Streaming = Streaming,
                 IsNormalMap = NormalMap,
