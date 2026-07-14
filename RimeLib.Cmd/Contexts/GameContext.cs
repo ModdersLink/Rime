@@ -68,6 +68,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpResourceMetaCommand>();
             RegisterCommand<ResourceIdataCensusCommand>();
             RegisterCommand<DumpResEntryCommand>();
+            RegisterCommand<DumpBundleChunkMetaCommand>();
             RegisterCommand<ListSbBundlesCommand>();
             RegisterCommand<DumpResourceWithChunksCommand>();
             RegisterCommand<DumpSwfJsonCommand>();
