@@ -2,7 +2,16 @@
 
 Working Python used to RE/build BF3 content during the material-grid / EbxWriter-fidelity work
 (2026-07). Per Bree's directive these belong in Rime as commands — this drop is the reference
-implementation set for porting. Roughly ordered by port value:
+implementation set for porting. Roughly ordered by port value.
+
+## VU gotcha worth knowing (cost ~6 in-game test cycles)
+
+A bundle injected into a level's bundle set via the `ResourceManager:LoadBundles` hook must be
+passed **without the `win32/` prefix** (`vehpack/veh_x_tex`), even though the superbundle toc
+declares the id **with** it (`win32/vehpack/veh_x_tex`). Passing the prefixed id makes the level
+load hang forever at "creating level" instead of erroring — it silently resolves to no mounted
+superbundle. An error (or at least a warning) there would have saved a lot of debugging; the same
+bundles realize fine via `SubWorldReferenceObjectData` either way.
 
 ## Shader DB (the agreed first port target)
 - **shaderdb_merge.py** — the v182 shaderdb toolset: parse, `has`, `appendshader`, `swapentry`,

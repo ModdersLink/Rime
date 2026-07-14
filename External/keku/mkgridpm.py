@@ -22,12 +22,24 @@ STUB_TEMPLATE = r"C:\Users\keku\Documents\Battlefield 3\Server\Admin\Mods\Terrai
 OUT = r"F:\tmp\gridpm"
 os.makedirs(OUT, exist_ok=True)
 
-MAPS = {   # key -> ordered base dump
+MAPS = {   # key -> ordered base dump (v29: subway joins the unified pipeline)
+    "mp_subway":   "F:/tmp/subwaygrid_ordered.json",
     "xp2_factory": "F:/tmp/xp2factory_ordered.json",
     "xp2_office":  "F:/tmp/xp2office_ordered.json",
     "xp2_palace":  "F:/tmp/xp2palace_ordered.json",
     "xp2_skybar":  "F:/tmp/xp2skybar_ordered.json",
 }
+
+# ★ v29 ADD-DONOR CHAIN (measured 2026-07-14): mp_017 FIRST (its rows are the CONFIRMED crater —
+# never replace what works), then xp3_desert for the 11 materials mp_017 lacks (Gunship_165,
+# JetDamage_45, Bomber_46, Mud_19, Forest_136, Rocket_HIMARS_174, WaterPuddle, NoGrenades, BoltHE,
+# Weapon, Passthrough — real rows instead of MatUniv analogies), then mp_001 (base-game, rain:
+# Marble_67 = real vehicle×marble pairs for CQ, Tarmac_Wet_140, Tree_Branch_103, Destructible_23).
+# DLC exposure of the xp3 rows is small (measured: 8 DLC meshparticle meshes) — their MeshSet res
+# get embedded in the build (the gridu3 fix) or the client crashes at deferred mesh creation.
+ADD_DONORS = [("mp_017", "F:/tmp/mp017grid_ordered.json"),
+              ("xp3_desert", "F:/tmp/allgrids/xp3_desert.json"),
+              ("mp_001", "F:/tmp/allgrids/mp_001.json")]
 
 def grid_of(d):
     return next(o for o in d['Instances'].values() if o.get('$type') == 'MaterialGridData')
@@ -66,21 +78,33 @@ def make_stub(key, nsmap):
 def build_map(key, base_path):
     nsmap = uuid.uuid5(NS, key)
     base = json.load(open(base_path))
-    src = json.load(open('F:/tmp/mp017grid_ordered.json'))
-    bg, sg = grid_of(base), grid_of(src)
-    bim, sim = bg['MaterialIndexMap'], sg['MaterialIndexMap']
-    add = [g for g in range(180) if bim[g] == 0 and sim[g] > 0]
-    missing = [g for g in range(180) if bim[g] > 0 and sim[g] == 0]   # map surfaces absent from mp_017
-    print('[%s] base locals=%d | add from mp_017: %d | surfaces absent from mp_017: %s'
-          % (key, len(bg['InteractionGrid']), len(add), missing))
+    bg = grid_of(base)
+    bim = bg['MaterialIndexMap']
+    print('[%s] base locals=%d' % (key, len(bg['InteractionGrid'])))
 
-    # pass 1: gridmerge (mp_017 donor)
-    merged = os.path.join(OUT, key + '_p1.json')
-    r = subprocess.run([sys.executable, os.path.join(SP, 'gridmerge.py'), base_path,
-                        'F:/tmp/mp017grid_ordered.json', merged] + [str(g) for g in add],
-                       capture_output=True, text=True)
-    if r.returncode != 0:
-        print(r.stderr[-800:]); sys.exit(1)
+    # ── pass 1 (v29): CHAINED multi-donor ADD — each donor contributes only the materials still
+    # absent after the previous ones (mp_017's confirmed rows stay authoritative).
+    cur_in = base_path
+    add = []                       # every material added (any donor) — pass-2/3 iterate these
+    have = set(g for g in range(180) if bim[g] > 0)
+    for di, (dname, dpath) in enumerate(ADD_DONORS):
+        dgrid = grid_of(json.load(open(dpath)))
+        dim = dgrid['MaterialIndexMap']
+        todo = [g for g in range(180) if g not in have and dim[g] > 0]
+        if not todo:
+            print('   donor %-12s: nothing new' % dname); continue
+        out_p = os.path.join(OUT, '%s_p1_%d.json' % (key, di))
+        r = subprocess.run([sys.executable, os.path.join(SP, 'gridmerge.py'), cur_in, dpath, out_p]
+                           + [str(g) for g in todo], capture_output=True, text=True)
+        if r.returncode != 0:
+            print(r.stderr[-800:]); sys.exit(1)
+        print('   donor %-12s: +%d materials %s' % (dname, len(todo), todo))
+        have |= set(todo); add += todo; cur_in = out_p
+    merged = cur_in
+
+    # surfaces of the map that mp_017 lacks (the empty-cell set pass 2/3 must fill)
+    src017 = grid_of(json.load(open('F:/tmp/mp017grid_ordered.json')))
+    missing = [g for g in range(180) if bim[g] > 0 and src017['MaterialIndexMap'][g] == 0]
 
     # pass 2: donor fill of empty (added-mat x missing-surface) cells
     d = json.load(open(merged))
