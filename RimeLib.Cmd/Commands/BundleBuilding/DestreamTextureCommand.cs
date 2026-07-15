@@ -26,9 +26,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
             var s_Mode = (Mode ?? "").ToLowerInvariant();
-            if (s_Mode != "" && s_Mode != "chunkonly" && s_Mode != "headeronly")
+            if (s_Mode != "" && s_Mode != "chunkonly" && s_Mode != "headeronly" && s_Mode != "keepmips")
             {
-                p_Writer.WriteLine($"destream_texture: unknown mode '{Mode}' (use chunkonly|headeronly|<empty>).");
+                p_Writer.WriteLine($"destream_texture: unknown mode '{Mode}' (use chunkonly|headeronly|keepmips|<empty>).");
                 return false;
             }
 
@@ -58,12 +58,18 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 s_Header = s_R.ReadBytes(128);
             }
 
-            // patch: flags u32 @12 &= ~Streaming(0x1); mipBase byte @27 = 0. Everything else original.
+            // patch: flags u32 @12 &= ~Streaming(0x1). Default modes also zero MipmapBaseIndex @27
+            // (all mips resident, pair with the FULL chunk). 'keepmips' KEEPS mipBase and pairs with
+            // the RETAIL-RANGED chunk: resident-from-mipBase, byte-coherent with the header, and the
+            // texture never registers with the streaming system (no worker requests). Needed for
+            // TEXTURE ARRAYS (dust_d): the full-resident frankenstein (mipBase 1->0 + full chunk)
+            // crashes the streaming worker when aircraft canopies sample it, a shape retail never ships.
             var s_Flags = System.BitConverter.ToUInt32(s_Header, 12);
             var s_NewFlags = s_Flags & ~0x1u;
             System.BitConverter.GetBytes(s_NewFlags).CopyTo(s_Header, 12);
             var s_MipBase = s_Header[27];
-            s_Header[27] = 0;
+            if (s_Mode != "keepmips")
+                s_Header[27] = 0;
 
             if (s_Mode == "headeronly")
             {
@@ -83,6 +89,23 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             {
                 p_Writer.WriteLine($"destream_texture: {Name} has no streaming chunk id.");
                 return false;
+            }
+
+            if (s_Mode == "keepmips")
+            {
+                // RETAIL-RANGED chunk (persistent mips + logicalOffset + chunkMeta {h32, firstMip}),
+                // matched by h32 — byte-coherent with the KEPT mipBase.
+                if (!s_Mounter.TryGetTextureChunkRetailVariant(s_ChunkId, Name!, out var s_Retail))
+                {
+                    p_Writer.WriteLine($"destream_texture: {Name} chunk {s_ChunkId} has no retail h32 variant — keepmips unavailable.");
+                    return false;
+                }
+                try { s_Ctx.RemoveResource(Name!); } catch { }
+                try { s_Ctx.RemoveChunk(s_ChunkId); } catch { }
+                s_Ctx.AddGeneratedResource(Name!, s_Header, ResourceType.DxTexture, new byte[16]);
+                s_Ctx.AddChunk(s_ChunkId, s_Retail);
+                p_Writer.WriteLine($"destream-keepmips {Name}: flags 0x{s_Flags:X}->0x{s_NewFlags:X}, mipBase {s_MipBase} KEPT, retail-ranged chunk {s_ChunkId}.");
+                return true;
             }
 
             // carry the asset name so the manifest writes a DICE-style chunkMeta { h32: fnv(name) } —
