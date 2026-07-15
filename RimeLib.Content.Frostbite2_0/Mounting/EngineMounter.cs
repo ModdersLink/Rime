@@ -496,13 +496,16 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         }
 
         /// <summary>
-        /// Builds a FULL-RANGE, catalog-backed variant of a mounted cas chunk (rangeStart 0, no meta).
+        /// Builds a FULL-RANGE, catalog-backed variant of a mounted cas chunk (rangeStart 0).
         /// Used to deliver a streaming texture's COMPLETE payload as a pure SHA1 reference: the game's
         /// bundle entries for streaming textures are RANGED slices; copying them into a standalone mod
         /// bundle ships partial data (CreateTexture2D E_INVALIDARG / black). The catalog holds the whole
         /// payload, so a 0..size entry with the same hash delivers every mip, byte-exact, for free.
+        /// When <paramref name="p_AssetName"/> is given, the variant carries a DICE-style chunkMeta
+        /// { h32: fnv(assetName), meta: {} } — without the h32 the manifest writes an EMPTY chunkMeta
+        /// entry and the engine cannot associate the chunk with its texture resource at bundle load.
         /// </summary>
-        public bool TryGetFullRangeCasChunkVariant(RimeLib.Frostbite.Core.GUID p_Id, [NotNullWhen(true)] out IChunkVariant? p_Variant)
+        public bool TryGetFullRangeCasChunkVariant(RimeLib.Frostbite.Core.GUID p_Id, [NotNullWhen(true)] out IChunkVariant? p_Variant, string? p_AssetName = null)
         {
             p_Variant = null;
             if (!TryGetChunk(p_Id, out var s_Obj))
@@ -513,7 +516,14 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     continue;
                 if (s_CV.GetReadable() is not CatalogReadable s_Cat)
                     continue;
-                p_Variant = new ChunkVariant(s_Cat, 0, (uint)s_Cat.GetCompressedSize(), 0, null,
+                DbObject? s_Meta = null;
+                if (!string.IsNullOrEmpty(p_AssetName))
+                {
+                    s_Meta = new DbObject();
+                    s_Meta.AddElement(new DbObjectElement("h32", (int)RimeLib.Frostbite.Utils.HashQuick(p_AssetName)));
+                    s_Meta.AddElement(new DbObjectElement("meta", new DbObject(), false));
+                }
+                p_Variant = new ChunkVariant(s_Cat, 0, (uint)s_Cat.GetCompressedSize(), 0, s_Meta,
                     s_CV.GetContainedSuperbundle(), s_CV.GetContainedBundle());
                 return true;
             }

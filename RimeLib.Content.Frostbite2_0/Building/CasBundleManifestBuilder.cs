@@ -250,7 +250,16 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     m_Header.ChunkMeta![s_ChunkIndex] = s_DbObject;
                 }
                 else
-                    m_Header.ChunkMeta![s_ChunkIndex] = new ChunkEntry.ChunkMetaEntry(); // TODO: Fix this
+                {
+                    // No stored meta: fall back to the chunk's asset-name hash (mirrors the noncas
+                    // BundleManifestBuilder). h32=0 breaks the chunk<->texture association for
+                    // texture chunks (BLACK body); non-texture chunks tolerate it.
+                    var s_Entry = new ChunkEntry.ChunkMetaEntry();
+                    var s_NameHash = s_ChunkObject.GetAssetNameHash();
+                    if (s_NameHash.HasValue)
+                        s_Entry.AssetNameHash = s_NameHash.Value;
+                    m_Header.ChunkMeta![s_ChunkIndex] = s_Entry;
+                }
 
                 /*
                  * NOTE FOR FUTURE ME:
