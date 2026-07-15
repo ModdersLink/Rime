@@ -496,6 +496,52 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         }
 
         /// <summary>
+        /// DICE-parity resource variant: prefers the variant whose payload is INLINE (idata).
+        /// Retail texture headers ship as idata in EVERY cas bundle (74k+ DxTexture idata variants);
+        /// re-emitting FirstVariant when it is catalog/noncas-backed writes a bare SHA1 ref that may
+        /// not be catalog-backed at all (headers never get cataloged) — the engine then has no
+        /// payload for the header (the invisible/black/E_INVALIDARG family).
+        /// </summary>
+        public bool TryGetInlineResourceVariant(string p_Name, [NotNullWhen(true)] out IResourceVariant? p_Variant)
+        {
+            p_Variant = null;
+            if (!TryGetResource(p_Name, out var s_Res))
+                return false;
+            foreach (var s_V in s_Res.Variants)
+            {
+                if (s_V is ResourceVariant s_RV && s_RV.GetReadable() is InlineReadable)
+                {
+                    p_Variant = s_V;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// DICE-parity texture chunk variant: the pixel chunk EXACTLY as a retail bundle carries it
+        /// (possibly TAIL-RANGED with logicalOffset + chunkMeta { h32, firstMip } — the retail mip
+        /// streaming formula: small mips persistent in-bundle, top mips streamed from the catalog).
+        /// Matched by h32 == fb::hashQuick(resource name), the association retail bundles use.
+        /// </summary>
+        public bool TryGetTextureChunkRetailVariant(RimeLib.Frostbite.Core.GUID p_Id, string p_ResName, [NotNullWhen(true)] out IChunkVariant? p_Variant)
+        {
+            p_Variant = null;
+            if (!TryGetChunk(p_Id, out var s_Obj))
+                return false;
+            var s_Hash = (int)RimeLib.Frostbite.Utils.HashQuick(p_ResName);
+            foreach (var s_V in s_Obj.Variants)
+            {
+                if (s_V.GetAssetNameHash() == s_Hash)
+                {
+                    p_Variant = s_V;
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         /// Builds a FULL-RANGE, catalog-backed variant of a mounted cas chunk (rangeStart 0).
         /// Used to deliver a streaming texture's COMPLETE payload as a pure SHA1 reference: the game's
         /// bundle entries for streaming textures are RANGED slices; copying them into a standalone mod

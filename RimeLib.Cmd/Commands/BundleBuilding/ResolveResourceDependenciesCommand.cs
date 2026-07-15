@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using RimeLib;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content;
@@ -11,6 +12,7 @@ using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization;
 using RimeLib.Content.Frostbite;
+using RimeLib.Texture;
 
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
@@ -71,6 +73,11 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             if (s_TypeName == "TextureAsset" || s_TypeName == "NoiseTextureAsset" || s_TypeName == "RenderTextureAsset" || s_TypeName == "TextureAssetBase")
             {
                 AddResourceByNameFromProperty(p_Instance, "Name", ResourceType.DxTexture, p_Context, p_Mounter, p_Writer);
+                // DICE-parity (2026-07-15): a retail bundle ALWAYS pairs the texture header with its
+                // pixel chunk in the SAME bundle — possibly TAIL-RANGED (small mips persistent,
+                // logicalOffset + chunkMeta { h32, firstMip }; the top mips stream from the catalog).
+                // Without this the bundle carries the header but no pixel data at all.
+                AddTextureChunkFromProperty(p_Instance, p_Context, p_Mounter, p_Writer);
             }
             // Mesh
             else if (s_TypeName == "MeshAsset" || s_TypeName == "CompositeMeshAsset" || s_TypeName == "RigidMeshAsset" || s_TypeName == "SkinnedMeshAsset")
@@ -273,12 +280,61 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             if (p_Mounter.TryGetResource(p_Name, out var s_Resource))
             {
-                //if (s_Resource.FirstVariant.GetResourceType() == p_Type)
-                //{
-                    p_Context.AddResource(p_Name, s_Resource.FirstVariant);
-                    p_Writer.WriteLine($"Added resource: {p_Name} (Type: {s_Resource.FirstVariant.GetResourceType()})");
-                    m_ResolvedKeys.Add(s_Key);
-                //}
+                var s_Variant = s_Resource.FirstVariant;
+                // DICE-parity (2026-07-15): texture headers must re-emit as IDATA like every retail
+                // cas bundle does (74k+ DxTexture idata variants). FirstVariant may be catalog/
+                // noncas-backed and re-emits as a bare SHA1 ref that may not be catalog-backed at
+                // all (headers never get cataloged) -> the engine has no payload for the header.
+                if (p_Type == ResourceType.DxTexture
+                    && p_Mounter is RimeLib.Content.Frostbite2_0.Mounting.EngineMounter s_EM
+                    && s_EM.TryGetInlineResourceVariant(p_Name, out var s_Inline))
+                    s_Variant = s_Inline;
+                p_Context.AddResource(p_Name, s_Variant);
+                p_Writer.WriteLine($"Added resource: {p_Name} (Type: {s_Variant.GetResourceType()})");
+                m_ResolvedKeys.Add(s_Key);
+            }
+        }
+
+        private readonly HashSet<string> m_TexChunksDone = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>DICE-parity: add the texture's pixel chunk exactly as the retail source bundle
+        /// carries it (ranged persistent mips + chunkMeta {h32, firstMip}); the top mips stream from
+        /// the catalog like retail. Chunk id read from the mounted 128-byte DxTexture header.</summary>
+        private void AddTextureChunkFromProperty(object p_Instance, BundleBuildingContext p_Context, IEngineMounter p_Mounter, TextWriter p_Writer)
+        {
+            var s_Name = p_Instance.GetType().GetProperty("Name")?.GetValue(p_Instance) as string;
+            if (string.IsNullOrEmpty(s_Name)) return;
+            s_Name = s_Name.ToLowerInvariant();
+            if (m_TexChunksDone.Contains(s_Name)) return;
+            m_TexChunksDone.Add(s_Name);
+
+            if (p_Mounter is not RimeLib.Content.Frostbite2_0.Mounting.EngineMounter s_EM) return;
+            if (!p_Mounter.TryGetResource(s_Name, out var s_Res)) return;
+
+            byte[] s_Header;
+            try
+            {
+                using var s_R = s_Res.FirstVariant.GetReader();
+                if (s_R.Length < 128) return;
+                s_Header = s_R.ReadBytes(128);
+            }
+            catch { return; }
+
+            var s_SbCtx = (SbBuildingContext)p_Context.Parent!;
+            var s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(s_SbCtx.EngineType);
+            var s_Probe = new BundleBuildingContext.ResourceMemoryReader(s_Header, ResourceType.DxTexture, s_Name);
+            var s_ChunkId = s_Converter.GetTextureChunkId(s_Probe);
+            if (s_ChunkId == GUID.Empty) return;   // non-chunked texture (payload fully in the resource)
+
+            if (s_EM.TryGetTextureChunkRetailVariant(s_ChunkId, s_Name, out var s_ChunkVariant))
+            {
+                p_Context.AddChunk(s_ChunkId, s_ChunkVariant);
+                p_Writer.WriteLine($"Added texture chunk (retail-ranged): {s_Name} -> {s_ChunkId}");
+            }
+            else if (p_Mounter.TryGetChunk(s_ChunkId, out var s_ChunkObj))
+            {
+                p_Context.AddChunk(s_ChunkId, s_ChunkObj.FirstVariant);
+                p_Writer.WriteLine($"Added texture chunk (no h32 variant, FirstVariant): {s_Name} -> {s_ChunkId}");
             }
         }
     }
