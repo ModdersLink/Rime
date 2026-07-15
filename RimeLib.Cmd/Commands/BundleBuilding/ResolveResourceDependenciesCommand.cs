@@ -17,9 +17,17 @@ using RimeLib.Texture;
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
     // TODO: rename command to something like ResolveTypeDependenciesCommand
-    [CommandDescription("Adds all referenced resources that are not in the current bundle.")]
+    [CommandDescription("Adds all referenced resources that are not in the current bundle. Optional 2nd arg = comma-separated name PREFIXES whose TEXTURE resources/chunks are skipped (e.g. 'characters/' — BF3 character textures are TextureArrays consumed via the CHARACTER streaming pool, whose per-source installer mod bundles never register: shipping them = null-deref in the streaming worker the moment the mesh draws; leaving them out = the mesh draws textureless/invisible, harmless).")]
     public class ResolveResourceDependenciesCommand : Command
     {
+        [CommandArgument(Description = "Id returned by mount_game.")]
+        public int Id { get; set; } = 1;
+
+        [CommandArgument(Description = "Optional comma-separated name prefixes: skip TEXTURE resource/chunk adds for matching names (e.g. characters/).", Optional = true)]
+        public string? SkipPrefixes { get; set; }
+
+        private string[] m_Skip = System.Array.Empty<string>();
+
         private HashSet<string> m_ResolvedKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
@@ -35,6 +43,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
             var s_Mounter = s_Mounters.Values.First();
+
+            m_Skip = string.IsNullOrWhiteSpace(SkipPrefixes)
+                ? System.Array.Empty<string>()
+                : SkipPrefixes!.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
             m_ResolvedKeys.Clear();
             var s_Resources = s_BundleContext.GetResources();
@@ -74,6 +86,22 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             // never shipped → null SRV (+0x29bdb1) the moment a cockpit glass shader sampled it.
             if (s_TypeName == "TextureAsset" || s_TypeName == "NoiseTextureAsset" || s_TypeName == "RenderTextureAsset" || s_TypeName == "TextureAssetBase" || s_TypeName == "TextureArrayAsset")
             {
+                if (m_Skip.Length > 0)
+                {
+                    var s_TexName = s_Type.GetProperty("Name")?.GetValue(p_Instance) as string;
+                    if (!string.IsNullOrEmpty(s_TexName))
+                    {
+                        var s_Low = s_TexName.ToLowerInvariant();
+                        foreach (var s_P in m_Skip)
+                        {
+                            if (s_Low.StartsWith(s_P, StringComparison.OrdinalIgnoreCase))
+                            {
+                                p_Writer.WriteLine($"Skipped texture (prefix {s_P}): {s_Low}");
+                                return;
+                            }
+                        }
+                    }
+                }
                 AddResourceByNameFromProperty(p_Instance, "Name", ResourceType.DxTexture, p_Context, p_Mounter, p_Writer);
                 // DICE-parity (2026-07-15): a retail bundle ALWAYS pairs the texture header with its
                 // pixel chunk in the SAME bundle — possibly TAIL-RANGED (small mips persistent,
