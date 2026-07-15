@@ -323,7 +323,17 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             catch { return; }
 
             var s_SbCtx = (SbBuildingContext)p_Context.Parent!;
-            var s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(s_SbCtx.EngineType);
+            ITextureConverter s_Converter;
+            try
+            {
+                s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(s_SbCtx.EngineType);
+            }
+            catch (Exception s_Ex)
+            {
+                // Missing texture support assembly must NOT kill the whole REPL/session — warn once.
+                p_Writer.WriteLine($"WARN: texture chunk resolve unavailable ({s_Ex.Message}) — is RimeLib.Texture.Frostbite2_0.dll next to RimeREPL.exe?");
+                return;
+            }
             var s_Probe = new BundleBuildingContext.ResourceMemoryReader(s_Header, ResourceType.DxTexture, s_Name);
             var s_ChunkId = s_Converter.GetTextureChunkId(s_Probe);
             if (s_ChunkId == GUID.Empty) return;   // non-chunked texture (payload fully in the resource)
