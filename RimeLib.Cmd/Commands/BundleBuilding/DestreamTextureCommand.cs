@@ -14,7 +14,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "The exact resource/asset name, e.g. vehicles/m1a2/m1a2_d.")]
         public string? Name { get; set; }
 
-        [CommandArgument(Description = "Optional mode: 'chunkonly' (CAS pack: full-range chunk + remove resource) or 'headeronly' (NONCAS annex: patched header resource only). Default: both in this bundle.")]
+        [CommandArgument(Description = "Optional mode: 'chunkonly' (CAS pack: full-range chunk + remove resource) or 'headeronly' (NONCAS annex: patched header resource only). Default: both in this bundle.", Optional = true)]
         public string? Mode { get; set; }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
