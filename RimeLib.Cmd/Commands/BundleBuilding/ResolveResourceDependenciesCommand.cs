@@ -69,8 +69,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_Type = p_Instance.GetType();
             var s_TypeName = s_Type.Name;
 
-            // Texture
-            if (s_TypeName == "TextureAsset" || s_TypeName == "NoiseTextureAsset" || s_TypeName == "RenderTextureAsset" || s_TypeName == "TextureAssetBase")
+            // Texture. TextureArrayAsset (e.g. Vehicles/Common/Textures/Dust_D — the vehicle glass/
+            // optics dust array) subclasses TextureAsset and was silently SKIPPED here → its resource
+            // never shipped → null SRV (+0x29bdb1) the moment a cockpit glass shader sampled it.
+            if (s_TypeName == "TextureAsset" || s_TypeName == "NoiseTextureAsset" || s_TypeName == "RenderTextureAsset" || s_TypeName == "TextureAssetBase" || s_TypeName == "TextureArrayAsset")
             {
                 AddResourceByNameFromProperty(p_Instance, "Name", ResourceType.DxTexture, p_Context, p_Mounter, p_Writer);
                 // DICE-parity (2026-07-15): a retail bundle ALWAYS pairs the texture header with its
