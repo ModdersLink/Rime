@@ -577,6 +577,48 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         }
 
         /// <summary>
+        /// Builds a catalog-backed chunk variant DIRECTLY from an {id, sha1} pair copied from another
+        /// bundle's MANIFEST — no mounted-chunk index lookup. The mounter's chunk index only covers
+        /// TOC-LISTED chunks, so bundle-manifest chunks (level sound/ambient/gamemode stream payloads)
+        /// are invisible to add_existing_chunk ("Could not find chunk"); this delivers them as pure
+        /// cas refs anyway (the add_cas_chunk command — the exact-manifest bundle-clone missing piece).
+        /// </summary>
+        public bool TryMakeCasChunkVariant(RimeLib.Frostbite.Core.GUID p_Id, string p_Sha1Hex,
+            [NotNullWhen(true)] out IChunkVariant? p_Variant, int? p_H32 = null, int? p_FirstMip = null,
+            uint? p_RangeStart = null, uint? p_RangeEnd = null, uint? p_LogicalOffset = null)
+        {
+            p_Variant = null;
+            if (m_Catalog == null)
+                return false;
+            Sha1 s_Hash;
+            try { s_Hash = new Sha1(p_Sha1Hex); }
+            catch { return false; }
+            var s_Contained = (m_Catalog.AuthoritativeCatalog != null && m_Catalog.AuthoritativeCatalog.ContainsEntry(s_Hash))
+                              || m_Catalog.ContainsEntry(s_Hash);
+            if (!s_Contained)
+                return false;
+            var s_Entry = new CasChunkEntry(p_Id, s_Hash, m_Catalog);
+            DbObject? s_Meta = null;
+            if (p_H32.HasValue)
+            {
+                s_Meta = new DbObject();
+                s_Meta.AddElement(new DbObjectElement("h32", p_H32.Value));
+                var s_M = new DbObject();
+                if (p_FirstMip.HasValue)
+                    s_M.AddElement(new DbObjectElement("firstMip", p_FirstMip.Value));
+                s_Meta.AddElement(new DbObjectElement("meta", s_M, false));
+            }
+            // RANGED pass-through: a DICE manifest entry that is a SLICE (streaming texture persistent
+            // mips etc.) must stay a slice — full-ranging it breaks header↔chunk coherence and the
+            // texture CREATE at bundle load dies with CreateTexture2D E_INVALIDARG (proven in-game).
+            var s_Start = p_RangeStart ?? 0;
+            var s_End = p_RangeEnd ?? (uint)s_Entry.GetSize();
+            var s_LogOff = p_LogicalOffset ?? 0;
+            p_Variant = new ChunkVariant(s_Entry, s_Start, s_End, s_LogOff, s_Meta, "manifest", null);
+            return true;
+        }
+
+        /// <summary>
         /// CENSUS: does retail BF3 EVER deliver RESOURCE payloads as cas-bundle InlineData (idata)?
         /// Generated (file-backed) resources in our mod bundles ship as idata and render BLACK on the
         /// MVDB path — if retail never uses resource-idata, the engine likely fetches resource payloads

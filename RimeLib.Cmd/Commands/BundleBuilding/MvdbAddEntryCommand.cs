@@ -25,6 +25,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "Mesh asset name of the entry to copy, e.g. levels/mp_017/terrain/mp_017_waves_01_mesh.")]
         public string? MeshName { get; set; }
 
+        [CommandArgument(Description = "Optional: 'all' copies EVERY entry for the mesh (base + all VariationAssetNameHash entries — appearance/camo variations realize with hash=fnv(variation name) and an absent entry = invisible mesh). Default: first entry only.", Optional = true)]
+        public string? Mode { get; set; }
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             if (string.IsNullOrWhiteSpace(SourceName) || string.IsNullOrWhiteSpace(TargetName) || string.IsNullOrWhiteSpace(MeshName))
@@ -64,7 +67,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             // resolving the entry's Mesh CtrRef PARTITION GUID back to a name via the mounter — this
             // avoids .Get() (needs the PartitionRegistry) and avoids re-parsing the mesh partition
             // (a 2nd/3rd FromPartitionObject closes a shared stream -> ObjectDisposedException).
-            fb.MeshVariationDatabaseEntry? s_Entry = null;
+            var s_All = string.Equals(Mode, "all", StringComparison.OrdinalIgnoreCase);
+            var s_Matches = new System.Collections.Generic.List<fb.MeshVariationDatabaseEntry>();
             int s_EntryCount = 0;
             foreach (var s_Inst in s_SrcDb.Instances)
             {
@@ -73,37 +77,63 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 if (s_EngineMounter.TryGetPartitionByGuid(s_E.Mesh.PartitionGuid, out var s_MName, out _)
                     && string.Equals(s_MName, MeshName, StringComparison.OrdinalIgnoreCase))
                 {
-                    s_Entry = s_E;
-                    break;
+                    s_Matches.Add(s_E);
+                    if (!s_All)
+                        break;
                 }
             }
-            if (s_Entry == null)
+            if (s_Matches.Count == 0)
             {
                 p_Writer.WriteLine($"No MVDB entry found for mesh '{MeshName}' in '{SourceName}'. ({s_EntryCount} entry instance(s) scanned).");
                 return false;
             }
+            var s_Entry = s_Matches[0];
 
             // REPORT the textures this entry binds (materials' TextureParameters). The mesh's own material
             // params are often empty — the texture->slot binding lives here — so the caller must bring these
             // texture partitions into the bundle or the entry's imports dangle. Just reads guids (no Get()).
             var s_TexNames = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var s_Mat in s_Entry.Materials)
-                foreach (var s_Tp in s_Mat.TextureParameters)
+            // partitions the copied entries' materials IMPORT beyond the mesh itself (the ObjectVariation
+            // partitions carrying MeshMaterialVariation for hash!=0 entries) — the caller must bring these
+            // into the SAME bundle or the mini's imports dangle at realize (MVDB-VAR lines, like MVDB-TEX).
+            var s_VarNames = new System.Collections.Generic.HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var s_M in s_Matches)
+                foreach (var s_Mat in s_M.Materials)
                 {
-                    if (s_Tp?.Value == null) continue;
-                    if (s_EngineMounter.TryGetPartitionByGuid(s_Tp.Value.PartitionGuid, out var s_TexName, out _)
-                        && !string.IsNullOrWhiteSpace(s_TexName))
-                        s_TexNames.Add(s_TexName);
+                    foreach (var s_Tp in s_Mat.TextureParameters)
+                    {
+                        if (s_Tp?.Value == null) continue;
+                        if (s_EngineMounter.TryGetPartitionByGuid(s_Tp.Value.PartitionGuid, out var s_TexName, out _)
+                            && !string.IsNullOrWhiteSpace(s_TexName))
+                            s_TexNames.Add(s_TexName);
+                    }
+                    if (s_Mat.MaterialVariation?.PartitionGuid is { } s_MvG && s_MvG != GUID.Empty
+                        && s_EngineMounter.TryGetPartitionByGuid(s_MvG, out var s_MvName, out _)
+                        && !string.IsNullOrWhiteSpace(s_MvName)
+                        && !string.Equals(s_MvName, MeshName, StringComparison.OrdinalIgnoreCase))
+                        s_VarNames.Add(s_MvName);
                 }
             foreach (var s_T in s_TexNames)
                 p_Writer.WriteLine($"MVDB-TEX: {s_T}");
+            foreach (var s_V in s_VarNames)
+                p_Writer.WriteLine($"MVDB-VAR: {s_V}");
 
             // --- build a MINIMAL standalone MVDB = the source STRIPPED to only this one entry ------
             // Regenerating the target level's huge (595-entry) MVDB isn't byte-faithful -> it crashed
             // XP1_002 at load. Instead we strip the SOURCE MVDB down to just the wave-mesh entry and
             // add it as a NEW partition (TargetName): the level's own MVDB stays UNTOUCHED, and the
             // game consults this extra MVDB for the mesh's variation entry. The tiny regen is faithful.
-            if (s_Entry.InstanceId is not DataContainerId.Guid s_EntryIdGuid)
+            var s_KeepIds = new System.Collections.Generic.List<(fb.MeshVariationDatabaseEntry Entry, GUID Id)>();
+            foreach (var s_M in s_Matches)
+            {
+                if (s_M.InstanceId is not DataContainerId.Guid s_IdG)
+                {
+                    p_Writer.WriteLine($"Entry (hash={s_M.VariationAssetNameHash}) has a non-guid instance id — skipped.");
+                    continue;
+                }
+                s_KeepIds.Add((s_M, s_IdG.Id));
+            }
+            if (s_KeepIds.Count == 0)
             {
                 p_Writer.WriteLine("Entry has a non-guid instance id.");
                 return false;
@@ -111,18 +141,18 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_SrcConcrete = (RimeLib.Serialization.Frostbite2_0.Ebx.DatabasePartition)s_SrcDb;
             var s_SrcMvdb = (fb.MeshVariationDatabase)s_SrcConcrete.PrimaryInstance;
 
-            // keep ONLY the primary MVDB instance + the one entry; drop every other instance
+            // keep ONLY the primary MVDB instance + the matched entries; drop every other instance
             var s_PrimG = s_SrcConcrete.PrimaryInstanceGuid;
-            var s_EntryG = s_EntryIdGuid.Id;
             var s_ToRemove = s_SrcConcrete.InstanceMap.Keys
-                .Where(p_K => p_K.CompareTo(s_PrimG) != 0 && p_K.CompareTo(s_EntryG) != 0)
+                .Where(p_K => p_K.CompareTo(s_PrimG) != 0 && !s_KeepIds.Any(p_E => p_K.CompareTo(p_E.Id) == 0))
                 .ToList();
             foreach (var s_K in s_ToRemove)
                 s_SrcConcrete.InstanceMap.Remove(s_K);
 
-            // the MVDB now lists only our entry
+            // the MVDB now lists only our entries
             s_SrcMvdb.Entries.Clear();
-            s_SrcMvdb.Entries.AddRef(new CtrRef<fb.MeshVariationDatabaseEntry>(s_SrcConcrete.PartitionGuid, s_Entry.InstanceId));
+            foreach (var s_E in s_KeepIds)
+                s_SrcMvdb.Entries.AddRef(new CtrRef<fb.MeshVariationDatabaseEntry>(s_SrcConcrete.PartitionGuid, s_E.Entry.InstanceId));
             s_SrcMvdb.RedirectEntries.Clear();
 
             var s_Stream = new MemoryStream();
@@ -132,7 +162,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             s_BundleContext.AddRawPartitionBytes(TargetName!, s_Bytes);
 
-            p_Writer.WriteLine($"Built minimal MVDB '{TargetName}' with the '{MeshName}' entry (variationAssetNameHash={s_Entry.VariationAssetNameHash}, {s_Entry.Materials.Count} material(s), {s_Bytes.Length} bytes).");
+            var s_Hashes = string.Join(",", s_KeepIds.Select(p_E => p_E.Entry.VariationAssetNameHash));
+            p_Writer.WriteLine($"Built minimal MVDB '{TargetName}' with {s_KeepIds.Count} '{MeshName}' entr(ies) (variationAssetNameHash={s_Hashes}, {s_Bytes.Length} bytes).");
             return true;
         }
     }

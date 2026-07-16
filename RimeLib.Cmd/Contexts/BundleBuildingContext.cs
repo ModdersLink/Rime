@@ -134,6 +134,7 @@ namespace RimeLib.Cmd.Contexts
 
             RegisterCommand<AddChunkCommand>();
             RegisterCommand<AddExistingChunkCommand>();
+            RegisterCommand<Commands.BundleBuilding.AddCasChunkCommand>();
             RegisterCommand<RemoveChunkCommand>();
             RegisterCommand<ListChunksCommand>();
             RegisterCommand<AddResourceCommand>();
