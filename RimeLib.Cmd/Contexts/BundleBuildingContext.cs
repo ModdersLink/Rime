@@ -162,6 +162,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<StripSbLevelChunksCommand>();
             RegisterCommand<StripTargetDupsCommand>();
             RegisterCommand<DestreamTextureCommand>();
+            RegisterCommand<CapTextureCommand>();
             RegisterCommand<BundleStatsCommand>();
 
             var s_EngineType = ((SbBuildingContext)p_Parent).EngineType;
