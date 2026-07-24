@@ -205,6 +205,21 @@ namespace RimeLib.Cmd.Contexts
 
         internal void Build()
         {
+            // CAS builds: hand the serializer a catalog-membership probe so embedded noncas
+            // sources can ship as pure sha1 refs when the player's cas.cat (base or patch —
+            // byte-identical on every install) already holds the identical stored frame.
+            if (m_Builder.Cas() && Parent is BaseContext s_BaseCtx)
+            {
+                foreach (var s_MounterEntry in s_BaseCtx.GetMounters())
+                {
+                    if (s_MounterEntry.Value is RimeLib.Content.Frostbite2_0.Mounting.EngineMounter s_Fb2Mounter)
+                    {
+                        m_Builder.WithCatalogProbe(s_Fb2Mounter.CatalogContainsEntry);
+                        break;
+                    }
+                }
+            }
+
             var s_OutPath = Path.Join(m_OutPath, m_SbName);
             Directory.CreateDirectory(Path.GetDirectoryName(s_OutPath)!);
 

@@ -133,7 +133,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             foreach (var s_Pair in p_Descriptor.Bundles)
             {
-                var s_Builder = new CasBundleManifestBuilder(s_Pair.Value);
+                var s_Builder = new CasBundleManifestBuilder(s_Pair.Value, p_Descriptor.CatalogProbe);
                 var s_Object = s_Builder.GetDbObject();
 
                 // Has the Object | Anon

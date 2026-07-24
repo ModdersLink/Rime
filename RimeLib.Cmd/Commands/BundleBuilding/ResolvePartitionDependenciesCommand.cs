@@ -95,12 +95,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                                         IObjectVariant? s_NewVariant = null;
                                         if (s_BundleContext.Cas())
                                         {
-                                            s_NewVariant = s_MountedPart.Variants.FirstOrDefault(v => v.Cas);
-                                            if (s_NewVariant == null)
-                                            {
-                                                p_Writer.WriteLine($"Warning: Could not find a CAS variant of '{s_ResolvedPart.Name}'. Skipping.");
-                                                continue;
-                                            }
+                                            // Prefer catalog-backed; fall back to the noncas
+                                            // variant — the cas builder content-addresses its
+                                            // stored frame (ref when catalog-hit, else idata),
+                                            // so DLC closures no longer leave silent holes.
+                                            s_NewVariant = s_MountedPart.Variants.FirstOrDefault(v => v.Cas)
+                                                ?? s_MountedPart.FirstVariant;
                                         }
                                         else
                                         {

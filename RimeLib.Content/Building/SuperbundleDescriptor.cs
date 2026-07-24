@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 
@@ -7,6 +8,12 @@ namespace RimeLib.Content.Building
     public class SuperbundleDescriptor
     {
         public string SuperbundleName { get; }
+
+        // CAS builds only: catalog-membership probe (sha1 of a STORED payload frame -> is it
+        // already in the player's cas.cat, base or patch). Lets the serializer emit embedded
+        // noncas sources as pure sha1 refs instead of inline copies. Null = never assume a
+        // payload is catalog-backed (everything not already a catalog ref ships as idata).
+        public Func<Sha1, bool>? CatalogProbe { get; set; }
 
         public Dictionary<GUID, IChunkObject> Chunks { get; }
 

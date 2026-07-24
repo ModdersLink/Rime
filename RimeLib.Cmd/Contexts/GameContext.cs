@@ -74,6 +74,12 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpSwfJsonCommand>();
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<DumpPartitionByGuidCommand>();
+            RegisterCommand<HashMountedPayloadsCommand>();
+            RegisterCommand<VerifyCatalogHashesCommand>();
+            RegisterCommand<ClassifyTexturesCommand>();
+            RegisterCommand<BuildCasCatalogCommand>();
+            RegisterCommand<ProbeCatalogCommand>();
+            RegisterCommand<MountExternalCatCommand>();
 
             var s_EngineType = m_Mounter.GetEngineType();
 

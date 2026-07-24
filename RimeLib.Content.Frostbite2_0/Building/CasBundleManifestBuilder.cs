@@ -5,6 +5,7 @@ using RimeLib.Content.Frostbite2_0.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
+using RimeLib.IO;
 using RimeLib.IO.Conversion;
 using System;
 using System.Collections.Generic;
@@ -21,9 +22,15 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
         protected BundleDescriptor m_Descriptor;
 
-        public CasBundleManifestBuilder(BundleDescriptor p_Descriptor) 
+        // Optional catalog-membership probe (SuperbundleDescriptor.CatalogProbe). When set,
+        // embedded noncas sources whose STORED frame already exists in the player's cas.cat
+        // are emitted as pure sha1 refs; otherwise their frame ships verbatim as idata.
+        private readonly Func<Sha1, bool>? m_CatalogProbe;
+
+        public CasBundleManifestBuilder(BundleDescriptor p_Descriptor, Func<Sha1, bool>? p_CatalogProbe = null)
         {
             m_Descriptor = p_Descriptor;
+            m_CatalogProbe = p_CatalogProbe;
             m_Header = new CasBundle
             {
                 Path = p_Descriptor.BundleName,
@@ -62,7 +69,51 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 && p_Object is not ResourceEntry
                 && p_Object is not EbxEntry
                 && p_Object is not BundleChunkEntry
-                && p_Object is not CasChunkEntry;
+                && p_Object is not CasChunkEntry
+                && p_Object is not SbChunkEntry;
+        }
+
+        // A source whose payload sits embedded in a mounted noncas .sb (or a noncas toc chunk).
+        // These are the entries whose manifest sha1 is NOT a usable catalog key (null/uncataloged
+        // for compressed payloads) — the old code emitted them as bare refs, which the engine
+        // could never fetch. They are handled by content-addressing the stored frame instead.
+        private static bool IsNoncasMounted(IReadableObject p_Object)
+        {
+            return p_Object is ResourceEntry
+                || p_Object is EbxEntry
+                || p_Object is BundleChunkEntry
+                || p_Object is SbChunkEntry;
+        }
+
+        // Cache of STORED frames for noncas-mounted sources: the original compressed blocks
+        // (ZlibRimeReader.GetRawBytes — same accessor the noncas writer's verbatim fast-path
+        // uses) or the raw window when uncompressed. Content-addressed by sha1 of those exact
+        // bytes — the same identity a cas.cat uses (retail cat key == sha1(stored bytes),
+        // verified 800/800 against the base and patch catalogs).
+        private readonly Dictionary<IReadableObject, (byte[] Stored, Sha1 Hash)> m_StoredFrameCache = new();
+
+        private (byte[] Stored, Sha1 Hash) GetStoredFrame(IReadableObject p_Object)
+        {
+            if (m_StoredFrameCache.TryGetValue(p_Object, out var s_Cached))
+                return s_Cached;
+
+            byte[] s_Stored;
+            using (var s_Reader = p_Object.GetReader())
+            {
+                if (s_Reader is ZlibRimeReader s_SelfZlib)
+                    s_Stored = s_SelfZlib.GetRawBytes();
+                else if (s_Reader.BaseStream is ZlibRimeReader s_Zlib)
+                    s_Stored = s_Zlib.GetRawBytes();
+                else
+                {
+                    var s_Length = (int)(s_Reader.Length - s_Reader.Position);
+                    s_Stored = s_Length > 0 ? s_Reader.ReadBytes(s_Length) : Array.Empty<byte>();
+                }
+            }
+
+            var s_Result = (s_Stored, Sha1.FromData(s_Stored));
+            m_StoredFrameCache[p_Object] = s_Result;
+            return s_Result;
         }
 
         private (byte[] Compressed, Sha1 Hash) GetFileBackedCompressed(IReadableObject p_Object)
@@ -194,17 +245,34 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     s_ResourceMetadata = s_MetaData;
                 }
 
-                var s_CompressedSize = GetCompressedSize(s_Readable);
+                long s_CompressedSize;
+                Sha1 s_ResourceHash;
+                byte[]? s_ResourceInline;
+
+                if (IsNoncasMounted(s_Readable))
+                {
+                    // Embedded noncas payload: catalog-hit -> pure ref, miss -> frame verbatim.
+                    var (s_Stored, s_StoredHash) = GetStoredFrame(s_Readable);
+                    s_CompressedSize = s_Stored.Length;
+                    s_ResourceHash = s_StoredHash;
+                    s_ResourceInline = m_CatalogProbe != null && m_CatalogProbe(s_StoredHash) ? null : s_Stored;
+                }
+                else
+                {
+                    s_CompressedSize = GetCompressedSize(s_Readable);
+                    s_ResourceHash = GetCompressedHash(s_Readable);
+                    s_ResourceInline = GetInlineData(s_Readable);
+                }
 
                 m_Header.ResourceEntries[s_ResourceIndex] = new CasBundle.Resource
                 {
                     Name = s_ResourceName,
                     ResourceType = (int)s_ResourceObject.GetResourceType(),
-                    Hash = GetCompressedHash(s_Readable),
+                    Hash = s_ResourceHash,
                     Meta = s_ResourceMetadata,
                     Size = s_CompressedSize,
                     OriginalSize = s_Readable.GetSize(),
-                    InlineData = GetInlineData(s_Readable)
+                    InlineData = s_ResourceInline
                 };
 
                 // Update the total size
@@ -221,23 +289,57 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 var s_Readable = ResolveReadable(s_ChunkObject);
 
-                var s_ReadableSize = GetCompressedSize(s_Readable);
-
                 var s_RangeStart = (int)s_ChunkObject.GetRangeStart();
                 var s_RangeEnd = (int)s_ChunkObject.GetRangeEnd();
                 var s_LogicalOffset = (int)s_ChunkObject.GetLogicalOffset();
-                var s_ShouldWriteEntry = s_RangeStart != 0 || s_Readable is InlineReadable || GetInlineData(s_Readable) != null;
 
+                long s_ReadableSize;
+                Sha1 s_ChunkHash;
+                byte[]? s_ChunkInline;
+
+                if (IsNoncasMounted(s_Readable))
+                {
+                    var (s_Stored, s_StoredHash) = GetStoredFrame(s_Readable);
+                    s_ReadableSize = s_Stored.Length;
+                    s_ChunkHash = s_StoredHash;
+                    // SLICED sources (rangeStart/logicalOffset != 0) keep their slice semantics
+                    // only as idata — a ref would re-base the range against a slice-sized blob,
+                    // which is untested range territory. Full chunks ref when catalog-hit.
+                    var s_Sliced = s_RangeStart != 0 || s_LogicalOffset != 0;
+                    var s_CanRef = !s_Sliced && m_CatalogProbe != null && m_CatalogProbe(s_StoredHash);
+                    s_ChunkInline = s_CanRef ? null : s_Stored;
+                }
+                else if (IsFileBacked(s_Readable) && !s_ChunkId.HasCompressionFlag())
+                {
+                    // File-backed chunk WITHOUT the guid compression flag: must ship RAW.
+                    // Chunk compression is signaled ONLY by the guid flag bit (no
+                    // size/originalSize pair like resources), so a compressed frame here
+                    // gets consumed as raw bytes -> corrupted payload (caught on the XP5
+                    // weapdeploy wave chunks). Mirrors the noncas BundleManifestBuilder,
+                    // which compresses chunks only when the guid is flagged.
+                    var (s_Raw, s_RawHash) = GetFileBackedRaw(s_Readable);
+                    s_ReadableSize = s_Raw.Length;
+                    s_ChunkHash = s_RawHash;
+                    s_ChunkInline = s_Raw;
+                }
+                else
+                {
+                    s_ReadableSize = GetCompressedSize(s_Readable);
+                    s_ChunkHash = GetCompressedHash(s_Readable);
+                    s_ChunkInline = GetInlineData(s_Readable);
+                }
+
+                var s_ShouldWriteEntry = s_RangeStart != 0 || s_Readable is InlineReadable || s_ChunkInline != null;
 
                 m_Header.ChunkEntries![s_ChunkIndex] = new CasBundle.Chunk
                 {
                     Id = s_ChunkId,
-                    Hash = GetCompressedHash(s_Readable),
+                    Hash = s_ChunkHash,
                     Size = s_ReadableSize,
                     RangeStart = s_ShouldWriteEntry ? s_RangeStart : null,
                     RangeEnd = s_ShouldWriteEntry ? s_RangeEnd : null,
                     LogicalOffset = s_ShouldWriteEntry ? s_LogicalOffset : null,
-                    InlineData = GetInlineData(s_Readable)
+                    InlineData = s_ChunkInline
                 };
 
                 // Update totalSize
@@ -302,6 +404,16 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     s_PartitionSize = s_Raw.Length;
                     s_PartitionOriginalSize = s_Raw.Length;
                     s_PartitionHash = s_RawHash;
+                }
+                else if (IsNoncasMounted(s_Readable))
+                {
+                    // Embedded noncas EBX (DLC partitions): BF3 EBX is stored raw, so the
+                    // stored frame IS the raw partition. Catalog-hit -> ref, miss -> raw idata.
+                    var (s_Stored, s_StoredHash) = GetStoredFrame(s_Readable);
+                    s_PartitionSize = s_Stored.Length;
+                    s_PartitionOriginalSize = s_Readable.GetSize();
+                    s_PartitionHash = s_StoredHash;
+                    s_PartitionInline = m_CatalogProbe != null && m_CatalogProbe(s_StoredHash) ? null : s_Stored;
                 }
                 else
                 {
