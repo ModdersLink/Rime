@@ -14,9 +14,13 @@ namespace ant
 {
 
 	[AntBinding(0x6298211d)]
+	[AntBinding(0xe67a7291)] // BF3 alpha schema (adds Target)
 	public class SequenceAnimTrack
 		: AntObject
 	{
+		// BF3-alpha-only field (dropped in retail; slot 0 in the alpha reflection table).
+		public IdRef<AntObject> Target { get; set; } = new();
+
 		[AntField(0)]
 		public int NumWarpers { get; set; }
 

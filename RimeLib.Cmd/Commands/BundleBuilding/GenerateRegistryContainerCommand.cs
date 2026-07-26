@@ -81,6 +81,40 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                                 s_Registry.AssetRegistry.Add(s_Ref);
                         }
 
+                        // AssetRegistry: the MeshVariationDatabase (2026-07-05). A SubWorld's
+                        // registryContainer.AssetRegistry must carry the MVDB so the AllModes AddRegistry
+                        // (Level:RegisterEntityResources) feeds it into the mesh-variation INDEX at load —
+                        // this is what makes a runtime-injected foreign vehicle realize its interior/UI/camo
+                        // exactly like a native asset (prepended MVDBs bind at runtime but are NOT in the
+                        // load-time index). The sliced mini-MVDB from mvdb_add_all lands here automatically.
+                        if (s_DataContainer is MeshVariationDatabase)
+                        {
+                            var s_Ref = new CtrRef<DataContainer>(s_Partition.PartitionGuid, ((DataContainerId.Guid)s_DataContainer.InstanceId).Id);
+                            if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
+                                s_Registry.AssetRegistry.Add(s_Ref);
+                        }
+
+                        // AssetRegistry: vehicle UI resources (2026-07-05). A foreign vehicle's interior HUD/
+                        // screens/FLIR come from UIScreenAsset / UIGraphAsset / UIWidgetAsset (+ UI*CompData /
+                        // UI*Asset) and the HUD LogicPrefabBlueprint — on a vehicle-less map these are LOADED
+                        // (in our pack) but nothing activates them. MP_Lake's foreign RHIB gets its HUD by
+                        // AddRegistry'ing the WHOLE source gamemode registryContainer; we mirror that self-
+                        // contained by collecting the UI closure into OUR registry. Match by TypeName so we
+                        // don't need every concrete class. LogicPrefabBlueprint (the HUD prefab, NeedNetworkId
+                        // false → skipped by the BlueprintRegistry rule above) goes here too.
+                        {
+                            var s_Tn = s_DataContainer.TypeName;
+                            bool s_IsUiAsset = s_Tn.StartsWith("UI", StringComparison.Ordinal)
+                                && (s_Tn.EndsWith("Asset", StringComparison.Ordinal) || s_Tn.EndsWith("CompData", StringComparison.Ordinal));
+                            bool s_IsUiPrefab = s_DataContainer is LogicPrefabBlueprint;
+                            if (s_IsUiAsset || s_IsUiPrefab)
+                            {
+                                var s_Ref = new CtrRef<DataContainer>(s_Partition.PartitionGuid, ((DataContainerId.Guid)s_DataContainer.InstanceId).Id);
+                                if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
+                                    s_Registry.AssetRegistry.Add(s_Ref);
+                            }
+                        }
+
                         // AssetRegistry
                         if (s_DataContainer is UnlockAsset s_Unlock)
                         {

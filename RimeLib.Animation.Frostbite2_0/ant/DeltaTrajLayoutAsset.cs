@@ -14,8 +14,10 @@ namespace ant
 {
 
 	[AntBinding(0xb2932a71)]
+	// Real schema: derives LayoutAsset (the blob carries a __base chain to it); needed so
+	// IdRef<LayoutAsset> resolution casts — rig hierarchies' 'Trajectory' group references one.
 	public class DeltaTrajLayoutAsset
-		: AntObject
+		: LayoutAsset
 	{
 	}
 }

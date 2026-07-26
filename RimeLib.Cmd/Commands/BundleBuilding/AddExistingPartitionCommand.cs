@@ -63,8 +63,14 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             var s_Variant = s_Partition.FirstVariant;
             if (s_BundleContext.Cas())
-                s_Variant = s_Partition.Variants.FirstOrDefault(p_Partition => p_Partition.Cas && p_Partition.GetContainedBundle() != null);
-            
+            {
+                // Prefer a catalog-backed variant (pure ref), but a noncas variant is valid
+                // too: the cas builder content-addresses its stored frame and emits a ref
+                // when the catalog already has it, else embeds the frame as idata.
+                s_Variant = s_Partition.Variants.FirstOrDefault(p_Partition => p_Partition.Cas && p_Partition.GetContainedBundle() != null)
+                    ?? s_Partition.FirstVariant;
+            }
+
             if (s_Variant == null)
             {
                 p_Writer.Write($"Could not find a valid variant of ({Name}).");

@@ -7,6 +7,7 @@ using System.Reflection;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Mounting;
+using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Attributes;
@@ -58,20 +59,29 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                         continue;
 
                     var s_PartitionObj = s_CurrentPartitions[s_Name];
-                    if (s_PartitionObj is not IObjectVariant s_Variant)
-                    {
-                        s_ProcessedPartitions.Add(s_Name);
-                        continue;
-                    }
 
                     try
                     {
-                        var s_Partition = s_Converter.FromPartitionObject(s_Name, s_Variant);
                         var s_ReferencedGuids = new HashSet<GUID>();
 
-                        foreach (var s_Instance in s_Partition.Instances)
+                        if (s_PartitionObj is IObjectVariant s_Variant)
                         {
-                            CollectReferences(s_Instance, s_ReferencedGuids);
+                            var s_Partition = s_Converter.FromPartitionObject(s_Name, s_Variant);
+
+                            foreach (var s_Instance in s_Partition.Instances)
+                            {
+                                CollectReferences(s_Instance, s_ReferencedGuids);
+                            }
+                        }
+                        else
+                        {
+                            // Generated/raw partitions (add_json_partition / add_raw_partition are
+                            // memory/file readers, not mounted variants) used to be skipped entirely
+                            // ("0 new partitions"). Their authoritative dependency list is the EBX
+                            // IMPORT TABLE - parse it straight from the bytes. Shipping them without
+                            // their closure left dangling imports, which the native NONCAS loader
+                            // resolves eagerly -> the "creating level" hang.
+                            CollectImportPartitionGuids(s_PartitionObj, s_ReferencedGuids);
                         }
 
                         foreach (var s_Guid in s_ReferencedGuids)
@@ -85,12 +95,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                                         IObjectVariant? s_NewVariant = null;
                                         if (s_BundleContext.Cas())
                                         {
-                                            s_NewVariant = s_MountedPart.Variants.FirstOrDefault(v => v.Cas);
-                                            if (s_NewVariant == null)
-                                            {
-                                                p_Writer.WriteLine($"Warning: Could not find a CAS variant of '{s_ResolvedPart.Name}'. Skipping.");
-                                                continue;
-                                            }
+                                            // Prefer catalog-backed; fall back to the noncas
+                                            // variant — the cas builder content-addresses its
+                                            // stored frame (ref when catalog-hit, else idata),
+                                            // so DLC closures no longer leave silent holes.
+                                            s_NewVariant = s_MountedPart.Variants.FirstOrDefault(v => v.Cas)
+                                                ?? s_MountedPart.FirstVariant;
                                         }
                                         else
                                         {
@@ -120,6 +130,32 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             p_Writer.WriteLine($"Successfully added {s_AddedCount} new partitions.");
             return true;
+        }
+
+        // Reads the partition guids out of a raw EBX blob's import table (StreamingPartitionHeader:
+        // dword[3] = import count; imports start at 0x50, 32 bytes each = partition + instance guid).
+        private static void CollectImportPartitionGuids(IReadableObject p_Object, HashSet<GUID> p_Guids)
+        {
+            using var s_Reader = p_Object.GetReader();
+
+            if (s_Reader.Length < 80)
+                return;
+
+            var s_Magic = s_Reader.ReadUInt32();
+
+            if (s_Magic != 0x0FB2D1CE)
+                return;   // not a little-endian Frostbite2_0 EBX partition
+
+            s_Reader.Seek(12, SeekOrigin.Begin);
+            var s_ImportCount = s_Reader.ReadUInt32();
+
+            s_Reader.Seek(80, SeekOrigin.Begin);
+
+            for (var i = 0; i < s_ImportCount; ++i)
+            {
+                p_Guids.Add(new GUID(s_Reader));            // partition guid
+                s_Reader.Seek(16, SeekOrigin.Current);      // skip the instance guid
+            }
         }
 
         private void CollectReferences(object? p_Object, HashSet<GUID> p_Guids)

@@ -14,11 +14,16 @@ namespace ant
 {
 
 	[AntBinding(0xeae58e8d)]
+	[AntBinding(0xe7b923f5)] // BF3 alpha schema (adds TrackSelectionGameStateEnum)
 	public class SequenceContainerAsset
 		: ControllerAsset
 	{
 		[AntField(0)]
 		public IdRefArray<ActorControllerAsset> ActorAssets { get; set; } = new();
+
+		// BF3-alpha-only field (dropped in retail; slot per the alpha reflection table).
+		[AntField(1)]
+		public IdRef<AntObject> TrackSelectionGameStateEnum { get; set; } = new();
 
 	}
 }

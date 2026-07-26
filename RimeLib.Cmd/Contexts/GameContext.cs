@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using RimeLib.Cmd.Commands.Game;
+using RimeLib.Terrain.Resources;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Content.Scaleform;
@@ -27,6 +28,8 @@ namespace RimeLib.Cmd.Contexts
 
         // Frostbite engine mounter interface (this can be different implementations based on Frostbite revision)
         protected IEngineMounter m_Mounter;
+
+        internal IEngineMounter GetMounter() => m_Mounter;
 
         /// <summary>
         /// GameContext constructor
@@ -52,6 +55,9 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListDuplicateChunksCommand>();
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<ListResourcesOfTypeCommand>();
+            RegisterCommand<DumpShaderDbCommand>();
+            RegisterCommand<DumpShaderSolutionsCommand>();
+            RegisterCommand<DumpMvdbVariationsCommand>();
             RegisterCommand<ListPartitionsCommand>();
             RegisterCommand<ListSbChunksCommand>();
             RegisterCommand<ListBundleChunksCommand>();
@@ -59,10 +65,21 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListBundlePartitionsCommand>();
             RegisterCommand<DumpChunkCommand>();
             RegisterCommand<DumpResourceCommand>();
+            RegisterCommand<DumpResourceMetaCommand>();
+            RegisterCommand<ResourceIdataCensusCommand>();
+            RegisterCommand<DumpResEntryCommand>();
+            RegisterCommand<DumpBundleChunkMetaCommand>();
+            RegisterCommand<ListSbBundlesCommand>();
             RegisterCommand<DumpResourceWithChunksCommand>();
             RegisterCommand<DumpSwfJsonCommand>();
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<DumpPartitionByGuidCommand>();
+            RegisterCommand<HashMountedPayloadsCommand>();
+            RegisterCommand<VerifyCatalogHashesCommand>();
+            RegisterCommand<ClassifyTexturesCommand>();
+            RegisterCommand<BuildCasCatalogCommand>();
+            RegisterCommand<ProbeCatalogCommand>();
+            RegisterCommand<MountExternalCatCommand>();
 
             var s_EngineType = m_Mounter.GetEngineType();
 
@@ -76,6 +93,11 @@ namespace RimeLib.Cmd.Contexts
             if (EngineInterfaceRegistry.IsSupported<ITextureConverter>(s_EngineType))
             {
                 RegisterCommand<DumpTextureCommand>();
+            }
+
+            if (EngineInterfaceRegistry.IsSupported<ITerrainDecalsConverter>(s_EngineType))
+            {
+                RegisterCommand<DumpTerrainDecalsJsonCommand>();
             }
 
             if (EngineInterfaceRegistry.IsSupported<IMeshConverter>(s_EngineType))
@@ -268,6 +290,35 @@ namespace RimeLib.Cmd.Contexts
                 Directory.CreateDirectory(p_Destination.Directory.FullName);
 
             File.WriteAllText(p_Destination.FullName, JsonConvert.SerializeObject(s_Doc, Formatting.Indented));
+        }
+
+        /// <summary>
+        /// Dumps a TerrainDecals (.decals) resource's full structure as JSON: header,
+        /// the three geometries (2d/3d/water) with their blocks, decoded vertices and
+        /// indices. Reading the resource and writing it back is byte-identical to vanilla.
+        /// </summary>
+        /// <param name="p_Name">Name of the TerrainDecals resource.</param>
+        /// <param name="p_Destination">Destination .json file to write.</param>
+        /// <param name="p_Formatting">JSON formatting (whitespace only; does not affect rebuild).</param>
+        /// <exception cref="Exception">If the resource is missing or not a TerrainDecals.</exception>
+        internal void DumpTerrainDecalsJson(string p_Name, FileInfo p_Destination, Formatting p_Formatting)
+        {
+            if (!m_Mounter.TryGetResource(p_Name, out var s_Resource))
+                throw new Exception($"Could not find resource with name '{p_Name}'.");
+
+            var s_Variant = s_Resource.FirstVariant;
+            if (s_Variant.GetResourceType() != ResourceType.TerrainDecals)
+                throw new Exception($"Resource '{p_Name}' is not a TerrainDecals (it is {s_Variant.GetResourceType()}).");
+
+            using var s_Reader = s_Variant.GetReader();
+            var s_Converter = EngineInterfaceRegistry.Create<ITerrainDecalsConverter>(m_Mounter.GetEngineType());
+            var s_Decals = s_Converter.Read(s_Reader);
+
+            if (p_Destination.Directory != null && !Directory.Exists(p_Destination.Directory.FullName))
+                Directory.CreateDirectory(p_Destination.Directory.FullName);
+
+            File.WriteAllText(p_Destination.FullName, JsonConvert.SerializeObject(
+                s_Decals, p_Formatting, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
         }
 
         /// <summary>

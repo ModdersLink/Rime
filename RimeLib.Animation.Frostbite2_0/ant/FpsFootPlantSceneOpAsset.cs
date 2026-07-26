@@ -14,6 +14,7 @@ namespace ant
 {
 
 	[AntBinding(0x4f1512e7)]
+	[AntBinding(0x31fd667f)] // BF3 alpha schema (lacks WaypointGameState)
 	public class FpsFootPlantSceneOpAsset
 		: AntObject
 	{

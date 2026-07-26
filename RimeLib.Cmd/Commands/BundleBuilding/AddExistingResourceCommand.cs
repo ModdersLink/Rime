@@ -61,11 +61,18 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            IResourceVariant? s_Variant;
-            if (s_BundleContext.Cas())
-                s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.Cas && p_Resource.GetContainedBundle() != null);
-            else
-                s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.GetContainedBundle() != null);
+            // DICE-parity variant preference (2026-07-16, mirrors the resolve fix 3ef779b6): prefer the
+            // INLINE (idata) variant when one exists — retail texture HEADERS ship as idata in every cas
+            // bundle and their sha1 is NEVER catalog-backed; picking an arbitrary catalog-ref variant for
+            // a DxTexture ships a header the engine can't fetch → CreateTexture2D E_INVALIDARG at load
+            // (bit the exact-manifest clone: explicit add_existing_resource bypassed resolve's fixed path).
+            RimeLib.Content.Mounting.IResourceVariant? s_Variant = null;
+            if (s_EngineMounter is RimeLib.Content.Frostbite2_0.Mounting.EngineMounter s_Fb2
+                && s_Fb2.TryGetInlineResourceVariant(Name!, out var s_Inline))
+            {
+                s_Variant = s_Inline;
+            }
+            s_Variant ??= s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.GetContainedBundle() != null);
 
             if (s_Variant == null)
             {

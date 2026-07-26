@@ -63,8 +63,8 @@ struct __declspec(align(2)) EA::GD::LayoutData
 
             */
 
-            var s_Magic = p_Reader.ReadUInt32();
-            p_Reader.Seek(0x4, SeekOrigin.Current);
+            // vtable slot: 64-bit, magic in the low bits — read as u64 so big-endian banks work too.
+            var s_Magic = (uint)p_Reader.ReadUInt64();
 
 
             if (s_Magic != c_kIID)
@@ -74,9 +74,9 @@ struct __declspec(align(2)) EA::GD::LayoutData
             //0x0008 - EA::GD::Ptr64<EA::Allocator::ICoreAllocator> mAllocator;
             p_Reader.Seek(0x8, SeekOrigin.Current);
 
-            //0x0010
-            LayoutHash = p_Reader.ReadUInt32();
-            p_Reader.Seek(0x4, SeekOrigin.Current);
+            //0x0010 - Ptr64 slot holding the layout hash: read as a full 64-bit value so both
+            // little- and big-endian banks (BF3-alpha/console) yield the hash from the low bits.
+            LayoutHash = (uint)p_Reader.ReadUInt64();
 
             //0x0018
             p_Reader.Seek(0x4, SeekOrigin.Current);

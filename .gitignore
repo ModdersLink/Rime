@@ -269,3 +269,9 @@ launchSettings.json
 
 # release output (build-release.ps1)
 dist/
+RimeREPL*.zip
+
+# scratch build/test output (not part of the project)
+_ebxfix_out/
+_cattest/
+distalpha/

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
@@ -27,6 +28,18 @@ namespace RimeLib.Content.Building
         public SuperbundleBuilder WithChunk(GUID p_Id, IChunkObject p_Chunk)
         {
             m_Descriptor.Chunks[p_Id] = p_Chunk;
+            return this;
+        }
+
+        public SuperbundleBuilder WithCasTocChunk(GUID p_Id, Sha1 p_Sha1)
+        {
+            m_Descriptor.CasTocChunks[p_Id] = p_Sha1;
+            return this;
+        }
+
+        public SuperbundleBuilder WithCatalogProbe(Func<Sha1, bool> p_Probe)
+        {
+            m_Descriptor.CatalogProbe = p_Probe;
             return this;
         }
 

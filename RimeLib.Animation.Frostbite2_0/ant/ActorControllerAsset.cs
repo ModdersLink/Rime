@@ -14,6 +14,7 @@ namespace ant
 {
 
 	[AntBinding(0xbffc183)]
+	[AntBinding(0x14984cd9)] // BF3 alpha schema (adds PassTagsToChildren + TrackSelectionEnumValue)
 	public class ActorControllerAsset
 		: ControllerAsset
 	{
@@ -34,6 +35,13 @@ namespace ant
 
 		[AntField(5)]
 		public uint ActorContentFlags { get; set; }
+
+		// BF3-alpha-only fields (dropped in retail; slots per the alpha reflection table).
+		[AntField(1)]
+		public bool PassTagsToChildren { get; set; }
+
+		[AntField(6)]
+		public IdRef<AntObject> TrackSelectionEnumValue { get; set; } = new();
 
 	}
 }

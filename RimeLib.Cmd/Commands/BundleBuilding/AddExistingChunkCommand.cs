@@ -60,7 +60,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             IChunkVariant? s_Variant;
             if (s_BundleContext.Cas())
-                s_Variant = s_Chunk.Variants.FirstOrDefault(p_Chunk => p_Chunk.Cas && p_Chunk.GetContainedBundle() != null);
+                // Prefer catalog-backed, then any bundle-contained, then a toc-level chunk —
+                // the cas builder content-addresses noncas frames (ref when catalog-hit,
+                // idata otherwise), so noncas fallbacks are valid now.
+                s_Variant = s_Chunk.Variants.FirstOrDefault(p_Chunk => p_Chunk.Cas && p_Chunk.GetContainedBundle() != null)
+                    ?? s_Chunk.Variants.FirstOrDefault(p_Chunk => p_Chunk.GetContainedBundle() != null)
+                    ?? s_Chunk.FirstVariant;
             else
                 s_Variant = s_Chunk.Variants.FirstOrDefault(p_Chunk => p_Chunk.GetContainedBundle() != null);
 

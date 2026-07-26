@@ -21,6 +21,16 @@ namespace Rime.Utils.RimeREPL
 
         static void Main(string[] p_Args)
         {
+            // Plugin assemblies (e.g. RimeLib.Texture.Frostbite2_0 for add_dds_texture) are
+            // discovered via AppDomain scanning in EngineInterfaceRegistry — but nothing
+            // references them, so they never load and their commands vanish. Force-load
+            // every RimeLib.*.dll sitting next to the executable.
+            foreach (var s_Dll in Directory.GetFiles(AppContext.BaseDirectory, "RimeLib.*.dll"))
+            {
+                try { System.Reflection.Assembly.LoadFrom(s_Dll); }
+                catch { /* skip native/mismatched dlls */ }
+            }
+
             Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
             {
                 Quiet = p_Options.Quiet;

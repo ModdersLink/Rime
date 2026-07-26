@@ -316,7 +316,10 @@ namespace RimeLib.Cmd
             if (!p_Property.PropertyType.IsPrimitive)
                 throw new Exception($"Tried parsing command argument '{PascalCaseToSnakeCase(p_Property.Name)}' of unsupported type '{p_Property.PropertyType.Name}'.");
 
-            return Convert.ChangeType(p_Value, p_Property.PropertyType);
+            // Parse with the invariant culture so numeric args use '.' as the decimal separator
+            // regardless of the OS locale (on e.g. es-ES, the current culture treats '.' as a
+            // thousands separator -> "67.0" would become 670). Scripts always use '.'.
+            return Convert.ChangeType(p_Value, p_Property.PropertyType, System.Globalization.CultureInfo.InvariantCulture);
         }
     }
 }

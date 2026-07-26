@@ -36,7 +36,10 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Cas
         public Catalog(string p_Path)
         {
             Path = p_Path;
-            using var s_Reader = new RimeReader(File.Open(Path, FileMode.Open, FileAccess.Read));
+            // FileShare.Read: two RimeREPL processes may parse the same game catalog at once
+            // (a bake and a verify run) — without it the second mount_game dies with
+            // "cas.cat is being used by another process" and every later command cascades.
+            using var s_Reader = new RimeReader(File.Open(Path, FileMode.Open, FileAccess.Read, FileShare.Read));
             ParseHeader(s_Reader);
         }
 
