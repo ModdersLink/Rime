@@ -192,7 +192,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             p_Writer.WriteLine($"MVDB-GUID: {s_SrcConcrete.PartitionGuid} {s_PrimG}");
             // Stash for emit_subworld_registry: the raw-added MVDB partition can't be parsed by
             // generate_registry_container, so hand it the ref directly (goes into SubWorld AssetRegistry).
-            s_BundleContext.AddMvdbRegistryRef(s_SrcConcrete.PartitionGuid, s_PrimG);
+            s_BundleContext.AddMeshVariationDbRegistryRef(s_SrcConcrete.PartitionGuid, s_PrimG);
             p_Writer.WriteLine($"Built MVDB '{TargetName}' with {s_Keep.Count} entr(ies) for bundle meshes ({s_Bytes.Length} bytes):");
             foreach (var s_M in s_KeptMeshes.Distinct())
                 p_Writer.WriteLine($"  MVDB-MESH: {s_M}");

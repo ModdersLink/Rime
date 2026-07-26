@@ -13,7 +13,7 @@ namespace RimeLib.Cmd.Commands.Game
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             var s_Ctx = (GameContext)p_Context;
-            var s_Mounter = s_Ctx.GetMounter() as RimeLib.Content.Frostbite2_0.Mounting.EngineMounter;
+            var s_Mounter = s_Ctx.GetMounter() as RimeLib.Content.Frostbite2_0.Mounting.EngineMounter; // This will break for other frostbite versions
             if (s_Mounter == null)
             {
                 p_Writer.WriteLine("list_sb_bundles: no Frostbite2_0 mounter.");
@@ -21,7 +21,7 @@ namespace RimeLib.Cmd.Commands.Game
             }
 
             var s_Count = 0;
-            foreach (var s_Id in s_Mounter.GetSuperbundleBundleIds(Superbundle!))
+            foreach (var s_Id in s_Mounter.GetSuperbundleBundleIds(Superbundle!)) // TODO: Make this apart of the interface
             {
                 p_Writer.WriteLine($"SB-BUNDLE: {s_Id}");
                 s_Count++;

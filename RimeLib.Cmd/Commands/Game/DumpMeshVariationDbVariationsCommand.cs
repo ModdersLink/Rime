@@ -12,7 +12,7 @@ namespace RimeLib.Cmd.Commands.Game
                         "VariationAssetNameHash + material count. Use to find a vehicle's CAMO variation hash " +
                         "(0 = base/grey; a non-zero VariationAssetNameHash = a variation like camo) to pass as " +
                         "EntityCreationParams.variationNameHash at spawn.")]
-    public class DumpMvdbVariationsCommand : Command
+    public class DumpMeshVariationDbVariationsCommand : Command
     {
         [CommandArgument(Description = "The MVDB resource name, e.g. levels/mp_017/r/meshvariationdb_win32")]
         public string? Name { get; set; }

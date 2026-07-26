@@ -111,6 +111,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         // Level-sb override support: enumerate a superbundle's TOC as parsed (Patch layered first).
         // Bundle ids + toc-level chunk refs are what a COMPLETE clone of a level sb must reproduce —
         // a clone missing either hangs the server (terrain streaming chunks live at toc level).
+        // TODO: Clean this up, it seems duplicated
         public IEnumerable<string> GetSuperbundleBundleIds(string p_Superbundle)
         {
             var s_Sb = m_Superbundles.FirstOrDefault(p_S =>
@@ -128,6 +129,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             }
         }
 
+        // TODO: Clean this up, it seems duplicated
         public IEnumerable<(GUID Id, Sha1? Sha1)> GetSuperbundleTocChunks(string p_Superbundle)
         {
             var s_Sb = m_Superbundles.FirstOrDefault(p_S =>

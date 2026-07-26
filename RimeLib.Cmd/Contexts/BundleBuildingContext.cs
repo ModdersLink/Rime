@@ -20,6 +20,9 @@ namespace RimeLib.Cmd.Contexts
 {
     public class BundleBuildingContext : ExecutionContext
     {
+        /// <summary>
+        /// TODO: Move this
+        /// </summary>
         internal class ResourceFileReader : SbBuildingContext.FileReader, IResourceObject
         {
             private readonly ResourceType m_ResourceType;
@@ -48,6 +51,9 @@ namespace RimeLib.Cmd.Contexts
             }
         }
 
+        /// <summary>
+        /// TODO: Move this
+        /// </summary>
         internal class ResourceMemoryReader : SbBuildingContext.MemoryReader, IResourceObject
         {
             private readonly ResourceType m_ResourceType;
@@ -78,6 +84,9 @@ namespace RimeLib.Cmd.Contexts
             }
         }
 
+        /// <summary>
+        /// TODO: Move this
+        /// </summary>
         internal class ChunkMemoryReader : SbBuildingContext.MemoryReader, IChunkObject
         {
             private readonly string m_AssetName;
@@ -134,7 +143,7 @@ namespace RimeLib.Cmd.Contexts
 
             RegisterCommand<AddChunkCommand>();
             RegisterCommand<AddExistingChunkCommand>();
-            RegisterCommand<Commands.BundleBuilding.AddCasChunkCommand>();
+            RegisterCommand<AddCasChunkCommand>();
             RegisterCommand<RemoveChunkCommand>();
             RegisterCommand<ListChunksCommand>();
             RegisterCommand<AddResourceCommand>();
@@ -144,7 +153,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<RemoveResourceCommand>();
 
             if (EngineInterfaceRegistry.IsSupported<RimeLib.Terrain.Resources.ITerrainDecalsConverter>(
-                ((SbBuildingContext)p_Parent).EngineType))
+                p_Parent.EngineType))
             {
                 RegisterCommand<ReplaceTerrainDecalsCommand>();
             }
@@ -165,7 +174,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<CapTextureCommand>();
             RegisterCommand<BundleStatsCommand>();
 
-            var s_EngineType = ((SbBuildingContext)p_Parent).EngineType;
+            var s_EngineType = p_Parent.EngineType;
 
             if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType) && 
                 EngineInterfaceRegistry.IsSupported<IPartitionGenerator>(s_EngineType))
@@ -337,21 +346,25 @@ namespace RimeLib.Cmd.Contexts
             return m_GeneratedRegistry;
         }
 
-        // MVDB registry refs (2026-07-05): a mini-MVDB is injected via AddRawPartitionBytes (raw bytes),
-        // so generate_registry_container can't parse it (MemoryReader is not an IObjectVariant) and never
-        // collects it. mvdb_add_all stashes the sliced MVDB's {partitionGuid, primaryInstanceGuid} here so
-        // emit_subworld_registry can add it to the SubWorld's AssetRegistry (= the load-time mesh-variation
-        // index feed / camo binding).
-        private readonly System.Collections.Generic.List<(RimeLib.Frostbite.Core.GUID Part, RimeLib.Frostbite.Core.GUID Inst)> m_MvdbRegistryRefs = new();
+        /// <summary>
+        /// TODO: Move\
+        /// 
+        /// MVDB registry refs (2026-07-05): a mini-MVDB is injected via AddRawPartitionBytes (raw bytes),
+        /// so generate_registry_container can't parse it (MemoryReader is not an IObjectVariant) and never
+        /// collects it. mvdb_add_all stashes the sliced MVDB's {partitionGuid, primaryInstanceGuid} here so
+        /// emit_subworld_registry can add it to the SubWorld's AssetRegistry (= the load-time mesh-variation
+        /// index feed / camo binding).
+        /// </summary>
+        private readonly List<(GUID Part, GUID Inst)> m_MeshVariationDbRegistryRefs = [];
 
-        internal void AddMvdbRegistryRef(RimeLib.Frostbite.Core.GUID p_Part, RimeLib.Frostbite.Core.GUID p_Inst)
+        internal void AddMeshVariationDbRegistryRef(GUID p_Part, GUID p_Inst)
         {
-            m_MvdbRegistryRefs.Add((p_Part, p_Inst));
+            m_MeshVariationDbRegistryRefs.Add((p_Part, p_Inst));
         }
 
-        internal System.Collections.Generic.IReadOnlyList<(RimeLib.Frostbite.Core.GUID Part, RimeLib.Frostbite.Core.GUID Inst)> GetMvdbRegistryRefs()
+        internal IReadOnlyList<(GUID Part, GUID Inst)> GetMvdbRegistryRefs()
         {
-            return m_MvdbRegistryRefs;
+            return m_MeshVariationDbRegistryRefs;
         }
 
         internal IReadOnlyDictionary<string, IReadableObject> GetPartitions()
