@@ -12,7 +12,7 @@ using System.Linq;
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
     [CommandDescription("Builds ONE MeshVariationDatabase containing the entries for EVERY mesh currently in this bundle (whose entry exists in the SOURCE mvdb), and adds it as a new partition. This is the 'complete official-like bundle' MVDB step: after resolve_partition_dependencies pulls a blueprint's whole mesh closure (exterior, interior/screens, weapons, tracks, LODs), this gives each mesh its variation/material binding so the object renders + is enterable exactly like a native DICE asset — WITHOUT mounting the source level's whole MVDB (which drags in unrelated textures -> CreateTexture2D crash). Bring the entries' texture partitions too (reported as MVDB-TEX).")]
-    internal class MvdbAddAllCommand : Command
+    internal class MeshVariationDbAddAllCommand : Command
     {
         [CommandArgument(Description = "Source MVDB partition name that holds the entries, e.g. levels/xp1_002/cq_l/meshvariationdb_win32.")]
         public string? SourceName { get; set; }

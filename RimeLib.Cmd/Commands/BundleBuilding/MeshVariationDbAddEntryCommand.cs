@@ -11,7 +11,7 @@ using System.Linq;
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
     [CommandDescription("Copies ONE MeshVariationDatabase entry (the one for <mesh_name>) from a SOURCE mvdb partition into a TARGET mvdb partition, and adds the patched target partition to this bundle (override). Lets a standalone IMPORTED mesh render on another level WITHOUT mounting the whole source MVDB (which drags in every other mesh's textures -> CreateTexture2D crash). The entry keeps its CtrRefs (mesh / materials / TextureParameters) — bring those partitions into the same bundle so the imports resolve.")]
-    internal class MvdbAddEntryCommand : Command
+    internal class MeshVariationDbAddEntryCommand : Command
     {
         [CommandArgument(Description = "Source MVDB partition name (has the entry), e.g. levels/mp_017/mp_017/meshvariationdb_win32.")]
         public string? SourceName { get; set; }

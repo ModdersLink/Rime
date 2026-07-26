@@ -31,12 +31,15 @@ namespace RimeLib.Content.Building
             return this;
         }
 
+        // TODO: Implement this in interface
         public SuperbundleBuilder WithCasTocChunk(GUID p_Id, Sha1 p_Sha1)
         {
             m_Descriptor.CasTocChunks[p_Id] = p_Sha1;
             return this;
         }
 
+        // TODO: Implement this in interface
+        // TODO: Determine if this is needed
         public SuperbundleBuilder WithCatalogProbe(Func<Sha1, bool> p_Probe)
         {
             m_Descriptor.CatalogProbe = p_Probe;

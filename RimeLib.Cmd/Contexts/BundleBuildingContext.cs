@@ -163,8 +163,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<AddRawPartitionCommand>();
             RegisterCommand<RaiseWaterPhysicsCommand>();
             RegisterCommand<ClonePartitionFreshCommand>();
-            RegisterCommand<MvdbAddEntryCommand>();
-            RegisterCommand<MvdbAddAllCommand>();
+            RegisterCommand<MeshVariationDbAddEntryCommand>();
+            RegisterCommand<MeshVariationDbAddAllCommand>();
             RegisterCommand<CheckTexturesCommand>();
             RegisterCommand<CheckChunksCommand>();
             RegisterCommand<CheckCasRefsCommand>();
