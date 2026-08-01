@@ -113,9 +113,9 @@ public class TextureGenerator : ITextureGenerator
  
     private static TextureFlags TextureFlagsFromDDSHeader(DDSHeader p_Header, TextureAttributes p_Attributes)
     {
-        // Streaming by default, but a self-contained bundle texture must be FULLY RESIDENT (all mips in
-        // its own chunk) — otherwise the engine looks for the high-res mips in the streaming pool (which a
-        // mod bundle doesn't populate) and only the small resident mips load (pale) or none (black).
+        // Streaming by default. A texture delivered self-contained in a mod bundle has to be fully
+        // resident instead, since the engine would otherwise look for its high-res mips in a streaming
+        // pool that the bundle never populates.
         var s_Flags = p_Attributes.Streaming ? TextureFlags.Streaming : (TextureFlags)0;
 
         if (p_Attributes.SrgbGamma)

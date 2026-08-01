@@ -15,6 +15,9 @@ namespace RimeLib.Content.Frostbite2013_2.Building
         private List<ChunkInfo> m_Chunks = [];
         private List<BundleInfo> m_Bundles = [];
 
+        // This serializer aborts on a bad bundle rather than carrying on, so it has nothing to report.
+        public IReadOnlyList<string> Warnings => [];
+
         public void Serialize(SuperbundleDescriptor p_Descriptor, Stream p_OutputSbStream, Stream p_OutputTocStream)
         {
             // Re-initialize everything.

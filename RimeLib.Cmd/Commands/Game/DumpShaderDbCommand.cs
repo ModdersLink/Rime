@@ -1,5 +1,5 @@
+using System;
 using System.IO;
-using System.Linq;
 using RimeLib;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
@@ -7,11 +7,11 @@ using RimeLib.Shader;
 
 namespace RimeLib.Cmd.Commands.Game
 {
-    [CommandDescription("Dumps a mounted shaderdb (read-only): render paths, shader names, and per-shader " +
-                        "solution (permutation) + streamable-texture counts. Use to compare which shaders/" +
-                        "permutations a level's shaderdb carries (e.g. is a foreign vehicle's camo shader present?).")]
+    [CommandDescription("Dumps a mounted shaderdb: its render paths, shader names, and each shader's solution and streamable texture counts.")]
     public class DumpShaderDbCommand : Command
     {
+        // Read-only. Use it to compare which shaders and permutations two levels' shaderdbs carry, for
+        // instance whether a foreign vehicle's camo shader is present at all.
         [CommandArgument(Description = "The shaderdb resource name, e.g. levels/mp_017/mp_017/shaderdb")]
         public string? Name { get; set; }
 
@@ -22,7 +22,6 @@ namespace RimeLib.Cmd.Commands.Game
                 p_Writer.WriteLine("Usage: dump_shader_db <resource-name>");
                 return false;
             }
-            string? Filter = null;
 
             var s_Mounter = ((GameContext)p_Context).GetMounter();
 
@@ -42,8 +41,8 @@ namespace RimeLib.Cmd.Commands.Game
             var s_Resolver = EngineInterfaceRegistry.Create<IShaderResolver>(s_Mounter.GetEngineType());
             s_Resolver.Initialize(s_Variant, s_Mounter);
 
-            // ShaderResolver keeps the parsed container; reflect it out generically so we don't depend on
-            // a version-specific type. (Frostbite2_0 exposes ShaderDatabaseContainer.Databases -> ShaderDatabase.)
+            // The resolver keeps the parsed container, reached by reflection here so this command does
+            // not depend on a version-specific type.
             var s_ContainerProp = s_Resolver.GetType().GetProperty("ShaderDatabaseContainer");
             var s_Container = s_ContainerProp?.GetValue(s_Resolver);
             if (s_Container == null)
@@ -60,8 +59,7 @@ namespace RimeLib.Cmd.Commands.Game
                 return false;
             }
 
-            var s_Filter = string.IsNullOrWhiteSpace(Filter) ? null : Filter!.ToLowerInvariant();
-            int s_TotalShaders = 0, s_TotalMatched = 0;
+            var s_TotalShaders = 0;
 
             foreach (var s_Key in s_Databases.Keys)
             {
@@ -76,23 +74,19 @@ namespace RimeLib.Cmd.Commands.Game
                 foreach (var s_ShaderKey in s_Shaders.Keys)
                 {
                     var s_ShaderName = s_ShaderKey?.ToString() ?? "";
-                    if (s_Filter != null && !s_ShaderName.ToLowerInvariant().Contains(s_Filter))
-                        continue;
-                    s_TotalMatched++;
-
                     var s_Info = s_Shaders[s_ShaderKey];
-                    int s_Sols = 0, s_Tex = 0;
-                    var s_SolProp = s_Info!.GetType().GetProperty("Solutions");
-                    if (s_SolProp?.GetValue(s_Info) is System.Array s_Sol) s_Sols = s_Sol.Length;
-                    var s_TexProp = s_Info.GetType().GetProperty("StreamableTextures");
-                    if (s_TexProp?.GetValue(s_Info) is System.Array s_TexArr) s_Tex = s_TexArr.Length;
 
-                    p_Writer.WriteLine($"  SHADER: {s_ShaderName}  solutions={s_Sols} streamableTex={s_Tex}");
+                    int s_Solutions = 0, s_Textures = 0;
+                    if (s_Info!.GetType().GetProperty("Solutions")?.GetValue(s_Info) is Array s_SolutionArray)
+                        s_Solutions = s_SolutionArray.Length;
+                    if (s_Info.GetType().GetProperty("StreamableTextures")?.GetValue(s_Info) is Array s_TextureArray)
+                        s_Textures = s_TextureArray.Length;
+
+                    p_Writer.WriteLine($"  SHADER: {s_ShaderName}  solutions={s_Solutions} streamableTex={s_Textures}");
                 }
             }
 
-            p_Writer.WriteLine($"SHADERDB-DONE: {Name}  totalShaders={s_TotalShaders}"
-                + (s_Filter != null ? $"  matched='{Filter}'={s_TotalMatched}" : ""));
+            p_Writer.WriteLine($"SHADERDB-DONE: {Name}  totalShaders={s_TotalShaders}");
             return true;
         }
     }

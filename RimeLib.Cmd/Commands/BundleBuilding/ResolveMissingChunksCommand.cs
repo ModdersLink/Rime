@@ -51,10 +51,6 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                         var s_Data = s_Reader1.ReadBytes((int)s_Reader1.Length);
                         using var s_Reader = new RimeReader(new MemoryStream(s_Data));
 
-                        // NOTE: the real fix for the "Stream length ... 2^31 (offset)" crash that
-                        // dropped ~34 meshes (vehicle interiors/wrecks/projectiles) is in
-                        // RelocPtr.DeserializeObject — those layouts carry an out-of-buffer RelocPtr
-                        // that is now treated as null instead of aborting the parse.
                         var s_MeshSetLayout = new MeshSetLayout(s_Reader);
 
                         for (var i = 0; i < s_MeshSetLayout.LodCount; i++)

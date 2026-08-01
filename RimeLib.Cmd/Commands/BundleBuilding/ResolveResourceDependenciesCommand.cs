@@ -17,16 +17,18 @@ using RimeLib.Texture;
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
     // TODO: rename command to something like ResolveTypeDependenciesCommand
-    [CommandDescription("Adds all referenced resources that are not in the current bundle. Optional 2nd arg = comma-separated name PREFIXES whose TEXTURE resources/chunks are skipped (e.g. 'characters/' — BF3 character textures are TextureArrays consumed via the CHARACTER streaming pool, whose per-source installer mod bundles never register: shipping them = null-deref in the streaming worker the moment the mesh draws; leaving them out = the mesh draws textureless/invisible, harmless).")]
+    [CommandDescription("Adds all referenced resources that are not in the current bundle.")]
     public class ResolveResourceDependenciesCommand : Command
     {
         [CommandArgument(Description = "Id returned by mount_game.")]
         public int Id { get; set; } = 1;
 
-        [CommandArgument(Description = "Optional comma-separated name prefixes: skip TEXTURE resource/chunk adds for matching names (e.g. characters/).", Optional = true)]
+        [CommandArgument(Description = "Comma-separated name prefixes whose textures to skip, e.g. 'characters/'. Shipping those crashes the streaming worker; skipping them just leaves the mesh untextured.", Optional = true)]
         public string? SkipPrefixes { get; set; }
 
-        private string[] m_Skip = System.Array.Empty<string>();
+        private string[] m_SkipPrefixes = Array.Empty<string>();
+
+        private readonly HashSet<string> m_TextureChunksDone = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
         private HashSet<string> m_ResolvedKeys = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
@@ -44,8 +46,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             }
             var s_Mounter = s_Mounters.Values.First();
 
-            m_Skip = string.IsNullOrWhiteSpace(SkipPrefixes)
-                ? System.Array.Empty<string>()
+            m_SkipPrefixes = string.IsNullOrWhiteSpace(SkipPrefixes)
+                ? Array.Empty<string>()
                 : SkipPrefixes!.Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
 
             m_ResolvedKeys.Clear();
@@ -81,32 +83,31 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_Type = p_Instance.GetType();
             var s_TypeName = s_Type.Name;
 
-            // Texture. TextureArrayAsset (e.g. Vehicles/Common/Textures/Dust_D — the vehicle glass/
-            // optics dust array) subclasses TextureAsset and was silently SKIPPED here → its resource
-            // never shipped → null SRV (+0x29bdb1) the moment a cockpit glass shader sampled it.
+            // Texture. TextureArrayAsset subclasses TextureAsset, so without naming it here its
+            // resource never ships and the shader that samples it gets a null SRV.
             if (s_TypeName == "TextureAsset" || s_TypeName == "NoiseTextureAsset" || s_TypeName == "RenderTextureAsset" || s_TypeName == "TextureAssetBase" || s_TypeName == "TextureArrayAsset")
             {
-                if (m_Skip.Length > 0)
+                if (m_SkipPrefixes.Length > 0)
                 {
-                    var s_TexName = s_Type.GetProperty("Name")?.GetValue(p_Instance) as string;
-                    if (!string.IsNullOrEmpty(s_TexName))
+                    var s_TextureName = s_Type.GetProperty("Name")?.GetValue(p_Instance) as string;
+                    if (!string.IsNullOrEmpty(s_TextureName))
                     {
-                        var s_Low = s_TexName.ToLowerInvariant();
-                        foreach (var s_P in m_Skip)
+                        var s_Lower = s_TextureName.ToLowerInvariant();
+                        foreach (var s_Prefix in m_SkipPrefixes)
                         {
-                            if (s_Low.StartsWith(s_P, StringComparison.OrdinalIgnoreCase))
+                            if (s_Lower.StartsWith(s_Prefix, StringComparison.OrdinalIgnoreCase))
                             {
-                                p_Writer.WriteLine($"Skipped texture (prefix {s_P}): {s_Low}");
+                                p_Writer.WriteLine($"Skipped texture (prefix {s_Prefix}): {s_Lower}");
                                 return;
                             }
                         }
                     }
                 }
+
                 AddResourceByNameFromProperty(p_Instance, "Name", ResourceType.DxTexture, p_Context, p_Mounter, p_Writer);
-                // DICE-parity (2026-07-15): a retail bundle ALWAYS pairs the texture header with its
-                // pixel chunk in the SAME bundle — possibly TAIL-RANGED (small mips persistent,
-                // logicalOffset + chunkMeta { h32, firstMip }; the top mips stream from the catalog).
-                // Without this the bundle carries the header but no pixel data at all.
+
+                // A retail bundle always carries the texture's pixel chunk next to its header, so
+                // without this the bundle would ship the header and no pixel data at all.
                 AddTextureChunkFromProperty(p_Instance, p_Context, p_Mounter, p_Writer);
             }
             // Mesh
@@ -248,8 +249,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
                 AddResourceByNameFromProperty(p_Instance, "Name", "/shaderdb", ResourceType.IShaderDatabase, p_Context, p_Mounter, p_Writer);
             }
-            // Sound (SoundWaveAsset = the actual audio; same Chunks[] shape as SoundDataAsset — vehicles
-            // reference these for engine/idle/passby sounds; without them the audio component null-derefs).
+            // Sound. SoundWaveAsset holds the actual audio and has the same Chunks shape as
+            // SoundDataAsset; vehicles reference it for engine, idle and passby sounds, and without it
+            // the audio component null-derefs.
             else if (s_TypeName == "SoundDataAsset" || s_TypeName == "SoundWaveAsset")
             {
                 var s_Chunks = s_Type.GetProperty("Chunks")?.GetValue(p_Instance) as System.Collections.IEnumerable;
@@ -262,11 +264,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
                         if (p_Mounter.TryGetChunk(s_ChunkId, out var s_Chunk))
                         {
-                            // Prefer a variant that carries chunk meta (asset-name-hash). Some bundles
-                            // reference the same sound chunk WITHOUT meta (FirstVariant), which then
-                            // fails final serialization ("chunk with no asset name hash"). The chunk
-                            // data is identical across variants (same GUID), so the metad one is safe.
-                            var s_Variant = s_Chunk.Variants.FirstOrDefault(v => v.GetAssetNameHash() != null) ?? s_Chunk.FirstVariant;
+                            // Some bundles reference the same sound chunk without an asset name hash,
+                            // which then fails serialization. The data is identical across variants, so
+                            // preferring one that carries the hash is safe.
+                            var s_Variant = s_Chunk.Variants.FirstOrDefault(p_V => p_V.GetAssetNameHash() != null) ?? s_Chunk.FirstVariant;
                             p_Context.AddChunk(s_ChunkId, s_Variant);
                             p_Writer.WriteLine($"Added SoundData chunk: {s_ChunkId}");
                         }
@@ -310,63 +311,55 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             if (p_Mounter.TryGetResource(p_Name, out var s_Resource))
             {
-                var s_Variant = s_Resource.FirstVariant;
-                // DICE-parity (2026-07-15): texture headers must re-emit as IDATA like every retail
-                // cas bundle does (74k+ DxTexture idata variants). FirstVariant may be catalog/
-                // noncas-backed and re-emits as a bare SHA1 ref that may not be catalog-backed at
-                // all (headers never get cataloged) -> the engine has no payload for the header.
-                if (p_Type == ResourceType.DxTexture
-                    && p_Mounter is RimeLib.Content.Frostbite2_0.Mounting.EngineMounter s_EM
-                    && s_EM.TryGetInlineResourceVariant(p_Name, out var s_Inline))
-                    s_Variant = s_Inline;
-                p_Context.AddResource(p_Name, s_Variant);
-                p_Writer.WriteLine($"Added resource: {p_Name} (Type: {s_Variant.GetResourceType()})");
+                p_Context.AddResource(p_Name, s_Resource.FirstVariant);
+                p_Writer.WriteLine($"Added resource: {p_Name} (Type: {s_Resource.FirstVariant.GetResourceType()})");
                 m_ResolvedKeys.Add(s_Key);
             }
         }
 
-        private readonly HashSet<string> m_TexChunksDone = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-        /// <summary>DICE-parity: add the texture's pixel chunk exactly as the retail source bundle
-        /// carries it (ranged persistent mips + chunkMeta {h32, firstMip}); the top mips stream from
-        /// the catalog like retail. Chunk id read from the mounted 128-byte DxTexture header.</summary>
+        /// <summary>Adds the texture's pixel chunk the way the retail source bundle carries it, with the
+        /// persistent mips ranged in and the top mips left to stream from the catalog. The chunk id comes
+        /// from the mounted 128-byte DxTexture header.</summary>
         private void AddTextureChunkFromProperty(object p_Instance, BundleBuildingContext p_Context, IEngineMounter p_Mounter, TextWriter p_Writer)
         {
             var s_Name = p_Instance.GetType().GetProperty("Name")?.GetValue(p_Instance) as string;
             if (string.IsNullOrEmpty(s_Name)) return;
-            s_Name = s_Name.ToLowerInvariant();
-            if (m_TexChunksDone.Contains(s_Name)) return;
-            m_TexChunksDone.Add(s_Name);
 
-            if (p_Mounter is not RimeLib.Content.Frostbite2_0.Mounting.EngineMounter s_EM) return;
-            if (!p_Mounter.TryGetResource(s_Name, out var s_Res)) return;
+            s_Name = s_Name.ToLowerInvariant();
+            if (!m_TextureChunksDone.Add(s_Name)) return;
+
+            if (p_Mounter is not RimeLib.Content.Frostbite2_0.Mounting.EngineMounter s_EngineMounter) return;
+            if (!p_Mounter.TryGetResource(s_Name, out var s_Resource)) return;
 
             byte[] s_Header;
             try
             {
-                using var s_R = s_Res.FirstVariant.GetReader();
-                if (s_R.Length < 128) return;
-                s_Header = s_R.ReadBytes(128);
+                using var s_Reader = s_Resource.FirstVariant.GetReader();
+                if (s_Reader.Length < 128) return;
+                s_Header = s_Reader.ReadBytes(128);
             }
             catch { return; }
 
-            var s_SbCtx = (SbBuildingContext)p_Context.Parent!;
+            var s_SbBuildingContext = (SbBuildingContext)p_Context.Parent!;
             ITextureConverter s_Converter;
             try
             {
-                s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(s_SbCtx.EngineType);
+                s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(s_SbBuildingContext.EngineType);
             }
             catch (Exception s_Ex)
             {
-                // Missing texture support assembly must NOT kill the whole REPL/session — warn once.
-                p_Writer.WriteLine($"WARN: texture chunk resolve unavailable ({s_Ex.Message}) — is RimeLib.Texture.Frostbite2_0.dll next to RimeREPL.exe?");
+                // A missing texture assembly must not take down the whole session.
+                p_Writer.WriteLine($"WARN: texture chunk resolve unavailable ({s_Ex.Message}). Is RimeLib.Texture.Frostbite2_0.dll next to RimeREPL.exe?");
                 return;
             }
+
             var s_Probe = new BundleBuildingContext.ResourceMemoryReader(s_Header, ResourceType.DxTexture, s_Name);
             var s_ChunkId = s_Converter.GetTextureChunkId(s_Probe);
-            if (s_ChunkId == GUID.Empty) return;   // non-chunked texture (payload fully in the resource)
 
-            if (s_EM.TryGetTextureChunkRetailVariant(s_ChunkId, s_Name, out var s_ChunkVariant))
+            // A non-chunked texture keeps its whole payload in the resource.
+            if (s_ChunkId == GUID.Empty) return;
+
+            if (s_EngineMounter.TryGetTextureChunkRetailVariant(s_ChunkId, s_Name, out var s_ChunkVariant))
             {
                 p_Context.AddChunk(s_ChunkId, s_ChunkVariant);
                 p_Writer.WriteLine($"Added texture chunk (retail-ranged): {s_Name} -> {s_ChunkId}");

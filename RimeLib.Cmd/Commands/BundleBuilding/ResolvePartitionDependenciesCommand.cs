@@ -75,12 +75,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                         }
                         else
                         {
-                            // Generated/raw partitions (add_json_partition / add_raw_partition are
-                            // memory/file readers, not mounted variants) used to be skipped entirely
-                            // ("0 new partitions"). Their authoritative dependency list is the EBX
-                            // IMPORT TABLE - parse it straight from the bytes. Shipping them without
-                            // their closure left dangling imports, which the native NONCAS loader
-                            // resolves eagerly -> the "creating level" hang.
+                            // Partitions added by add_json_partition or add_raw_partition are memory or
+                            // file readers rather than mounted variants, so their dependencies come from
+                            // the EBX import table instead. Shipping them without their closure leaves
+                            // dangling imports, which the noncas loader resolves eagerly and hangs on.
                             CollectImportPartitionGuids(s_PartitionObj, s_ReferencedGuids);
                         }
 
@@ -95,10 +93,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                                         IObjectVariant? s_NewVariant = null;
                                         if (s_BundleContext.Cas())
                                         {
-                                            // Prefer catalog-backed; fall back to the noncas
-                                            // variant — the cas builder content-addresses its
-                                            // stored frame (ref when catalog-hit, else idata),
-                                            // so DLC closures no longer leave silent holes.
+                                            // A noncas variant works too: the cas builder
+                                            // content-addresses its stored frame, emitting a ref on a
+                                            // catalog hit and idata otherwise.
                                             s_NewVariant = s_MountedPart.Variants.FirstOrDefault(v => v.Cas)
                                                 ?? s_MountedPart.FirstVariant;
                                         }
@@ -132,8 +129,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             return true;
         }
 
-        // Reads the partition guids out of a raw EBX blob's import table (StreamingPartitionHeader:
-        // dword[3] = import count; imports start at 0x50, 32 bytes each = partition + instance guid).
+        // Reads the partition guids out of a raw EBX blob's import table. The import count is the
+        // fourth dword of the header, and the imports start at 0x50 as 32-byte partition/instance pairs.
         private static void CollectImportPartitionGuids(IReadableObject p_Object, HashSet<GUID> p_Guids)
         {
             using var s_Reader = p_Object.GetReader();

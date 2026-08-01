@@ -23,8 +23,8 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
     {
         private IAssetResolver? LocalResolver { get; set; } = null;
 
-        /// <summary>Give this bank its own resolver so several banks can be loaded side by side
-        /// (the default AssetResolver.Instance keeps process-wide maps — see LocalAssetResolver).</summary>
+        /// <summary>Gives this bank its own resolver so several banks can be loaded side by side. The
+        /// default AssetResolver.Instance keeps its maps process-wide, see LocalAssetResolver.</summary>
         public void SetLocalResolver(IAssetResolver p_Resolver) => LocalResolver = p_Resolver;
 
 
@@ -169,8 +169,8 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
 
                 var s_Capacity = p_Reader.ReadUInt32();
                 var s_Count = p_Reader.ReadUInt32();
-                // container header is {u32 capacity, u32 count, u64 ptr} (String layout size 0x10)
-                // — read the pointer as 64-bit so big-endian banks (BF3 alpha) resolve it too.
+                // The container header is a u32 capacity, a u32 count and a 64-bit pointer, so the
+                // pointer has to be read whole or big-endian banks resolve it wrong.
                 var s_Offset = (long)p_Reader.ReadUInt64();
                 p_Reader.Seek(s_Offset, SeekOrigin.Begin);
 
@@ -243,7 +243,7 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
                         {
                             var s_Capacity = p_Reader.ReadUInt32();
                             var s_Count = p_Reader.ReadUInt32();
-                            // {u32,u32,u64} header — 64-bit read for endian correctness (see __name).
+                            // 64-bit pointer in the container header, as in __name above.
                             var s_Offset = (long)p_Reader.ReadUInt64();
                             p_Reader.Seek(s_Offset, SeekOrigin.Begin);
 
@@ -391,11 +391,10 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
 
             var s_Capacity = p_Reader.ReadUInt32();
             var s_Count = p_Reader.ReadUInt32();
-            // {u32,u32,u64} header — 64-bit read for endian correctness (see __name).
+            // 64-bit pointer in the container header, as in __name above.
             var s_Offset = (long)p_Reader.ReadUInt64();
 
-            // Sanity: a corrupt/misparsed header would otherwise loop for minutes before an
-            // allocation failure (seen with drifted BF3-alpha layouts). Fail fast instead.
+            // A misparsed header would otherwise loop for minutes before failing to allocate.
             if (s_Count > p_Reader.Length || s_Offset > p_Reader.Length)
                 throw new InvalidDataException($"Array header out of bounds (count={s_Count}, offset=0x{s_Offset:X}, blob=0x{p_Reader.Length:X}).");
 

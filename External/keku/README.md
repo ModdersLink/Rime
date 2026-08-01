@@ -29,13 +29,6 @@ bundles realize fine via `SubWorldReferenceObjectData` either way.
   32B entries @0x50, partition guid first) and reports dangling imports. Dangling imports in an
   embedded-EBX noncas bundle wedge the native loader ("creating level" hang).
 
-## EBX / fidelity
-- **ebxdiff.py** — EBX partition header/descriptor parser + differ (the byte-fidelity harness).
-- **ebxprobe.py** — quick header probe.
-- **fidelity_mine.py** — mines per-type SecondaryOffset/flag values from retail EBX into
-  `fidelity_fb2.json` (consumed by the rewritten Frostbite2_0 EbxWriter; must sit next to
-  RimeREPL.exe).
-
 ## CAS superbundles
 - **sbdiff.py** — cas .sb/.toc parser + differ (obfuscation: magic 0x00/0x01CED100, hdr 0x22C,
   XOR 0x7B; DbObject TLV). Caught the stale-binary toc-offset bug.
@@ -63,26 +56,3 @@ bundles realize fine via `SubWorldReferenceObjectData` either way.
   particles but break map-ambient emitters" (skybar searchlight, subway tracers).
   Note: `add_dds_texture` generates only the RES — the engine binds it by name, so a Name-only
   TextureAsset EBX partition must ship alongside.
-
-## EBX descriptor fidelity: what fidelity_fb2.json is (and is not)
-
-`fidelity_fb2.json` (next to RimeREPL.exe) is a **small mined fallback with a tripwire**, not a claim
-of a global type map. The writer takes flags/offsets from the generated C# classes and only consults
-the JSON for types that are in it; when the two disagree it warns instead of silently emitting a
-wrong layout. It covers the types of the partitions actually byte-verified so far (21).
-
-Why it can't simply be "all types": **the primary field offset is not constant per type name.**
-`fidelity_bulk.py` scans the DLC (noncas) superbundles for raw EBX partitions — 215,468 partitions /
-1,559 types across XP1–XP5 — and the same type shows up with different primary offsets and sizes in
-different partitions, with identical field names, flags and *secondary* offsets, e.g.:
-
-    AIEntryData  size=36 : EquipmentType@12  Armament@16  Mobility@20  StrengthType@24  ...
-    AIEntryData  size=112: EquipmentType@12  Armament@48  Mobility@76  StrengthType@100 ...
-
-(both inside XP3_Desert.sb). Presumably that's exactly why EBX carries type descriptors per
-partition. Run: `fidelity_bulk.py out.json <sb-or-dir> [...]` to regenerate the full mined map.
-
-Related bug this uncovered: `fb/EmitterTextureAtlasInfo.cs` was generated with its *secondary*
-offsets (MinUv@0, MaxUv@8, TextureName@16) instead of the primary ones (TextureName@0, MinUv@4,
-MaxUv@12) — the engine memory-maps EBX, so the partition loaded fine and every native read of it was
-garbage, while VU-Lua reflection still showed correct-looking values.

@@ -60,6 +60,9 @@ namespace RimeLib.Content.Building
             return this;
         }
 
+        /// <summary>Problems met by the last <see cref="Build"/> that did not stop it.</summary>
+        public IReadOnlyList<string> Warnings => m_Serializer.Warnings;
+
         public void Build(Stream p_OutputSbStream, Stream p_OutputTocStream)
         {
             m_Serializer.Serialize(m_Descriptor, p_OutputSbStream, p_OutputTocStream);

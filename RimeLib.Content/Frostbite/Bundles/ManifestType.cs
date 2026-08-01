@@ -6,9 +6,9 @@ public enum ManifestType : uint
 	Dbx = 0xFE1FBEEF,
 	Ebx = 0xED1CEDB8,
 
-	// BF3 alpha/beta (Sep 2011, pre-release Frostbite 2): bundle manifests predate the Fb2
-	// magic obfuscation AND the retail Ebx magic's high nibble — raw 0x0D1CEDB8 on disk.
-	// Same header/record layout as Fb2Ebx otherwise (verified against the alpha's Globals.sb).
+	// The pre-release BF3 builds write their bundle manifests before the magic obfuscation and
+	// before the retail Ebx magic's high nibble, so the value on disk is a raw 0x0D1CEDB8. The
+	// header and record layout is otherwise the same as Ebx.
 	EbxAlpha = 0x0D1CEDB8,
 	
 	// this bundlemanifest seems completly dbobject based. probably what they use on backend/avalanche

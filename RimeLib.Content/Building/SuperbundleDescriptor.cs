@@ -9,17 +9,16 @@ namespace RimeLib.Content.Building
     {
         public string SuperbundleName { get; }
 
-        // CAS builds only: catalog-membership probe (sha1 of a STORED payload frame -> is it
-        // already in the player's cas.cat, base or patch). Lets the serializer emit embedded
-        // noncas sources as pure sha1 refs instead of inline copies. Null = never assume a
-        // payload is catalog-backed (everything not already a catalog ref ships as idata).
+        // Cas builds only. Answers whether the player's own catalog already holds the payload frame
+        // with this sha1, which lets the serializer emit an embedded noncas source as a bare ref
+        // instead of an inline copy. Left null, nothing is assumed to be catalog-backed.
         public Func<Sha1, bool>? CatalogProbe { get; set; }
 
         public Dictionary<GUID, IChunkObject> Chunks { get; }
 
-        // CAS toc chunks: emitted in the toc chunk list as { id, sha1 } refs (NO payload in the sb).
-        // This is how vanilla CAS superbundles carry their sb-level streaming chunks (terrain etc.) —
-        // needed to build a complete level-sb override (a clone missing these hangs 'Loading terrain').
+        // Emitted in the toc chunk list as bare id and sha1 refs, with no payload in the superbundle.
+        // This is how a vanilla cas superbundle carries its streaming chunks, such as the terrain, and
+        // a level superbundle override that lacks them hangs the game while it loads the terrain.
         public Dictionary<GUID, Sha1> CasTocChunks { get; }
 
         public Dictionary<string, BundleDescriptor> Bundles { get; }

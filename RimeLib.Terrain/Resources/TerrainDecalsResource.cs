@@ -39,7 +39,7 @@ namespace RimeLib.Terrain.Resources
         public ushort[] UserMasks { get; set; } = new ushort[4];
     }
 
-    /// <summary>Water render vertex: all fields are packed 16-bit (left raw — the baker never edits water).</summary>
+    /// <summary>Water render vertex. Every field is packed 16-bit and kept raw.</summary>
     public class DecalWaterVertex
     {
         public ushort[] Position { get; set; } = new ushort[4];

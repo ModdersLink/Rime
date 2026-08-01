@@ -400,10 +400,9 @@ public static class DDSUtils
         var s_Width = p_Header.Width;
         var s_Height = p_Header.Height;
         
-        // 8-byte blocks: BC1 (DXT1) and BC4 (DXT5A) store one 64-bit block per 4x4 texel tile.
-        // BC2/BC3/BC5 (DXT3/DXT5/DXN) are 16-byte blocks. Omitting DXT5A here made add_dds compute
-        // 2x the real chunk size for BC4 textures -> the client read past the resident chunk and
-        // hung the whole level load (VehicleMenu fmt3 masks, 2026-07-04).
+        // DXT1 and DXT5A store one 64-bit block per 4x4 texel tile; DXT3, DXT5 and DXN use 16-byte
+        // blocks. Leaving DXT5A out doubles the computed chunk size and the client then reads past
+        // the resident chunk.
         var s_BlockSize = (IsDXT1(p_Header) || IsDXT5A(p_Header))
             ? 8
             : 16;

@@ -5,10 +5,10 @@ using RimeLib.Animation.EA.Types;
 namespace RimeLib.Animation.Frostbite.Resolver
 {
     /// <summary>
-    /// Per-bank variant of <see cref="AssetResolver"/>: same static/bundle reference semantics,
-    /// but with instance-level maps so several banks can be loaded side by side without their
-    /// reference indices colliding (AssetResolver.Instance keeps CLASS-level maps where the
-    /// first registration wins — loading two banks through it cross-contaminates resolution).
+    /// Per-bank variant of <see cref="AssetResolver"/>, with the same static and bundle reference
+    /// semantics but instance-level maps, so several banks load side by side without their reference
+    /// indices colliding. AssetResolver.Instance keeps its maps on the class, where the first
+    /// registration wins and two banks cross-contaminate each other's resolution.
     /// </summary>
     public class LocalAssetResolver
         : IAssetResolver

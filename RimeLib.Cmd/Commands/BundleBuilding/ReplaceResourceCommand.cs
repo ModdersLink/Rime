@@ -107,10 +107,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            // Any variant contained in a bundle works: we only copy its type/meta/id and
-            // serve new data ourselves. (The old cas branch additionally required a
-            // CatalogReadable-backed `.Cas` variant, which wrongly excluded resources BF3
-            // stores INLINE — so cas builds could never override an inlined resource.)
+            // Any variant contained in a bundle works, since only its type, meta and id are copied and
+            // the data is served here. Requiring a catalog-backed one would exclude the resources the
+            // game stores inline, which a cas build could then never override.
             var s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.GetContainedBundle() != null);
 
             if (s_Variant == null)

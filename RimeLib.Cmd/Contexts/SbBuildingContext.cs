@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using RimeLib.Cmd.Commands.SbBuilding;
 using RimeLib.Content.Building;
+using RimeLib.Content.Frostbite2_0.Mounting;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
@@ -136,7 +137,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<BuildCommand>();
         }
 
-        internal void AddCasTocChunk(RimeLib.Frostbite.Core.GUID p_Id, RimeLib.Frostbite.Core.Sha1 p_Sha1)
+        internal void AddCasTocChunk(GUID p_Id, Sha1 p_Sha1)
         {
             m_Builder.WithCasTocChunk(p_Id, p_Sha1);
         }
@@ -203,16 +204,15 @@ namespace RimeLib.Cmd.Contexts
             return m_Builder.GetBundles();
         }
 
-        internal void Build()
+        internal void Build(TextWriter p_Writer)
         {
-            // CAS builds: hand the serializer a catalog-membership probe so embedded noncas
-            // sources can ship as pure sha1 refs when the player's cas.cat (base or patch —
-            // byte-identical on every install) already holds the identical stored frame.
-            if (m_Builder.Cas() && Parent is BaseContext s_BaseCtx)
+            // Give a cas build a catalog membership probe, so a noncas source can ship as a bare sha1
+            // ref whenever the player's own catalog already holds the identical stored frame.
+            if (m_Builder.Cas() && Parent is BaseContext s_BaseContext)
             {
-                foreach (var s_MounterEntry in s_BaseCtx.GetMounters())
+                foreach (var s_MounterEntry in s_BaseContext.GetMounters())
                 {
-                    if (s_MounterEntry.Value is RimeLib.Content.Frostbite2_0.Mounting.EngineMounter s_Fb2Mounter)
+                    if (s_MounterEntry.Value is EngineMounter s_Fb2Mounter)
                     {
                         m_Builder.WithCatalogProbe(s_Fb2Mounter.CatalogContainsEntry);
                         break;
@@ -227,6 +227,9 @@ namespace RimeLib.Cmd.Contexts
             using var s_SbStream = File.Open(s_OutPath + ".sb", FileMode.Create, FileAccess.ReadWrite);
 
             m_Builder.Build(s_SbStream, s_TocStream);
+
+            foreach (var s_Warning in m_Builder.Warnings)
+                p_Writer.WriteLine($"Warning: {s_Warning}");
         }
 
         internal bool Cas()

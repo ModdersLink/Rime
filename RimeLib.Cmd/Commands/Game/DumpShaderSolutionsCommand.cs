@@ -1,6 +1,6 @@
+using System;
 using System.Collections;
 using System.IO;
-using System.Linq;
 using RimeLib;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
@@ -8,11 +8,11 @@ using RimeLib.Shader;
 
 namespace RimeLib.Cmd.Commands.Game
 {
-    [CommandDescription("Dumps the per-SOLUTION state of a shader in a shaderdb: Technique / ColorScale / " +
-                        "BoolPermutation / Mode / StateHash for every solution. Use to check WHICH techniques " +
-                        "(e.g. camo vs grey) a level's shaderdb actually compiled for a given vehicle shader.")]
+    [CommandDescription("Dumps every solution of a shader in a shaderdb: its Technique, ColorScale, BoolPermutation, Mode and StateHash.")]
     public class DumpShaderSolutionsCommand : Command
     {
+        // Use it to check which techniques a level's shaderdb actually compiled for a given shader,
+        // camo against plain for instance.
         [CommandArgument(Description = "The shaderdb resource name, e.g. levels/mp_017/mp_017/shaderdb")]
         public string? Name { get; set; }
 
@@ -45,7 +45,7 @@ namespace RimeLib.Cmd.Commands.Game
             }
 
             var s_Needle = Shader!.ToLowerInvariant();
-            int s_Matched = 0;
+            var s_Matched = 0;
 
             foreach (var s_PathKey in s_Databases.Keys)
             {
@@ -53,26 +53,26 @@ namespace RimeLib.Cmd.Commands.Game
                 var s_Shaders = s_Db?.GetType().GetProperty("Shaders")?.GetValue(s_Db) as IDictionary;
                 if (s_Shaders == null) continue;
 
-                foreach (var s_ShKey in s_Shaders.Keys)
+                foreach (var s_ShaderKey in s_Shaders.Keys)
                 {
-                    var s_ShName = s_ShKey?.ToString() ?? "";
-                    if (!s_ShName.ToLowerInvariant().Contains(s_Needle)) continue;
+                    var s_ShaderName = s_ShaderKey?.ToString() ?? "";
+                    if (!s_ShaderName.ToLowerInvariant().Contains(s_Needle)) continue;
                     s_Matched++;
 
-                    var s_Info = s_Shaders[s_ShKey];
-                    var s_Sols = s_Info?.GetType().GetProperty("Solutions")?.GetValue(s_Info) as System.Array;
-                    p_Writer.WriteLine($"SHSOL-SHADER: [{s_PathKey}] {s_ShName}  solutions={(s_Sols?.Length ?? 0)}");
-                    if (s_Sols == null) continue;
+                    var s_Info = s_Shaders[s_ShaderKey];
+                    var s_Solutions = s_Info?.GetType().GetProperty("Solutions")?.GetValue(s_Info) as Array;
+                    p_Writer.WriteLine($"SHSOL-SHADER: [{s_PathKey}] {s_ShaderName}  solutions={(s_Solutions?.Length ?? 0)}");
+                    if (s_Solutions == null) continue;
 
-                    foreach (var s_Sol in s_Sols)
+                    foreach (var s_Solution in s_Solutions)
                     {
-                        var s_HashObj = s_Sol!.GetType().GetProperty("StateHash")?.GetValue(s_Sol);
-                        var s_State = s_Sol.GetType().GetProperty("State")?.GetValue(s_Sol);
-                        object? Get(string p_N) => s_State?.GetType().GetProperty(p_N)?.GetValue(s_State);
+                        var s_StateHash = s_Solution!.GetType().GetProperty("StateHash")?.GetValue(s_Solution);
+                        var s_State = s_Solution.GetType().GetProperty("State")?.GetValue(s_Solution);
+                        object? Get(string p_Name) => s_State?.GetType().GetProperty(p_Name)?.GetValue(s_State);
                         p_Writer.WriteLine(
                             $"  SHSOL: tech={Get("Technique")} colorScale={Get("ColorScale")} " +
                             $"boolPerm={Get("BoolPermutation")} mode={Get("Mode")} " +
-                            $"objLight={Get("ObjectLighting")} stateHash=0x{s_HashObj:X}");
+                            $"objLight={Get("ObjectLighting")} stateHash=0x{s_StateHash:X}");
                     }
                 }
             }

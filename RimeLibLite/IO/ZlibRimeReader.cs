@@ -75,20 +75,18 @@ namespace RimeLib.IO
         {
             m_StartPosition = BaseStream.Position;
 
-            // Retail Frostbite 2 payloads are a chain of (u32 BE originalSize, u32 BE compressedSize,
-            // data) segments. The BF3 alpha (Sep 2011 pre-release) prepends a u32 BE TOTAL
-            // uncompressed size before the same chain, and some of its payloads carry no container
-            // at all (the guid compression-flag convention doesn't exist there yet). Detect by
-            // validated walk: retail first (so retail data always behaves exactly as before), then
-            // the alpha-prefixed variant, then fall back to a raw passthrough segment.
+            // A retail payload is a chain of segments, each a big-endian original size, a big-endian
+            // compressed size and the data. The pre-release builds put the total uncompressed size in
+            // front of the same chain, and some of their payloads have no container at all. Try each
+            // layout in turn, retail first so retail data keeps behaving exactly as it did.
             if (TryWalkSegments(0))
                 return;
 
             if (TryWalkSegments(4))
                 return;
 
-            // Raw passthrough: expose the whole payload as a single stored segment. Offset is set
-            // 8 bytes back because GetStreamForSegment always seeks Offset + 8 (the header size).
+            // No container: expose the payload as one stored segment. The offset goes back 8 bytes
+            // because GetStreamForSegment always seeks past a segment header.
             m_Segments.Clear();
             m_CompressedSize = m_OriginalSize = BaseStream.Length;
             m_Segments.Add(new ZlibSegment
@@ -101,10 +99,10 @@ namespace RimeLib.IO
         }
 
         /// <summary>
-        /// Walks the segment chain assuming <paramref name="p_PrefixSize"/> bytes of payload prefix
-        /// (0 = retail layout, 4 = BF3-alpha total-size prefix) and only commits the parsed segment
-        /// list when the chain lands exactly on the stream end (and, for the prefixed variant, the
-        /// original sizes add up to the declared total).
+        /// Walks the segment chain assuming <paramref name="p_PrefixSize"/> bytes of payload prefix,
+        /// where 0 is the retail layout and 4 the pre-release total-size prefix. The parsed segments
+        /// only count when the chain lands exactly on the end of the stream, and, with a prefix, when
+        /// the original sizes add up to the declared total.
         /// </summary>
         protected bool TryWalkSegments(int p_PrefixSize)
         {
@@ -125,7 +123,7 @@ namespace RimeLib.IO
 
             while (m_CompressedSize != BaseStream.Length)
             {
-                // A segment header no longer fits — not this layout.
+                // A segment header no longer fits, so this is not the layout.
                 if (BaseStream.Length - m_CompressedSize < 8)
                     return false;
 
@@ -137,7 +135,7 @@ namespace RimeLib.IO
                     CompressedSize = EndianBitConverter.Big.ToInt32(((RimeReader)BaseStream).ReadBytes(4), 0),
                 };
 
-                // Sanity: sizes must be non-negative and the data must fit in what's left.
+                // The sizes have to be non-negative and the data has to fit in what is left.
                 if (s_Segment.OriginalSize < 0 || s_Segment.CompressedSize < 0 ||
                     s_Segment.CompressedSize > BaseStream.Length - m_CompressedSize - 8)
                     return false;

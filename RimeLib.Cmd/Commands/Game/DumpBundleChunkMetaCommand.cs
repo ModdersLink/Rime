@@ -5,7 +5,7 @@ using RimeLib.Cmd.Contexts;
 
 namespace RimeLib.Cmd.Commands.Game
 {
-    [CommandDescription("Dumps each chunk's guid + h32 (AssetNameHash) for a mounted bundle. Used to verify chunk-meta linkage (h32=0 = missing meta -> UI-flow spin).")]
+    [CommandDescription("Dumps the guid and h32 asset name hash of every chunk in a mounted bundle. An h32 of 0 means the meta is missing.")]
     public class DumpBundleChunkMetaCommand : Command
     {
         [CommandArgument(Description = "The name of the bundle.")]

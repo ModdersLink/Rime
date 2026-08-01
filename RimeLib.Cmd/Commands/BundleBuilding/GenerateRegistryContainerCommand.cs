@@ -81,12 +81,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                                 s_Registry.AssetRegistry.Add(s_Ref);
                         }
 
-                        // AssetRegistry: the MeshVariationDatabase (2026-07-05). A SubWorld's
-                        // registryContainer.AssetRegistry must carry the MVDB so the AllModes AddRegistry
-                        // (Level:RegisterEntityResources) feeds it into the mesh-variation INDEX at load —
-                        // this is what makes a runtime-injected foreign vehicle realize its interior/UI/camo
-                        // exactly like a native asset (prepended MVDBs bind at runtime but are NOT in the
-                        // load-time index). The sliced mini-MVDB from mvdb_add_all lands here automatically.
+                        // AssetRegistry: a SubWorld's registry has to carry the MeshVariationDatabase so
+                        // Level:RegisterEntityResources feeds it into the mesh-variation index at load. A
+                        // prepended MVDB binds at runtime but never reaches that index.
                         if (s_DataContainer is MeshVariationDatabase)
                         {
                             var s_Ref = new CtrRef<DataContainer>(s_Partition.PartitionGuid, ((DataContainerId.Guid)s_DataContainer.InstanceId).Id);
@@ -94,25 +91,19 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                                 s_Registry.AssetRegistry.Add(s_Ref);
                         }
 
-                        // AssetRegistry: vehicle UI resources (2026-07-05). A foreign vehicle's interior HUD/
-                        // screens/FLIR come from UIScreenAsset / UIGraphAsset / UIWidgetAsset (+ UI*CompData /
-                        // UI*Asset) and the HUD LogicPrefabBlueprint — on a vehicle-less map these are LOADED
-                        // (in our pack) but nothing activates them. MP_Lake's foreign RHIB gets its HUD by
-                        // AddRegistry'ing the WHOLE source gamemode registryContainer; we mirror that self-
-                        // contained by collecting the UI closure into OUR registry. Match by TypeName so we
-                        // don't need every concrete class. LogicPrefabBlueprint (the HUD prefab, NeedNetworkId
-                        // false → skipped by the BlueprintRegistry rule above) goes here too.
+                        // AssetRegistry: a vehicle's interior HUD, screens and FLIR come from the UI assets
+                        // and the HUD LogicPrefabBlueprint. On a map that has no such vehicle these load but
+                        // nothing activates them unless the registry carries them. Matching on TypeName
+                        // avoids naming every concrete UI class. LogicPrefabBlueprint has NeedNetworkId
+                        // false, so the BlueprintRegistry rule above skips it.
+                        var s_TypeName = s_DataContainer.TypeName;
+                        var s_IsUiAsset = s_TypeName.StartsWith("UI", StringComparison.Ordinal)
+                            && (s_TypeName.EndsWith("Asset", StringComparison.Ordinal) || s_TypeName.EndsWith("CompData", StringComparison.Ordinal));
+                        if (s_IsUiAsset || s_DataContainer is LogicPrefabBlueprint)
                         {
-                            var s_Tn = s_DataContainer.TypeName;
-                            bool s_IsUiAsset = s_Tn.StartsWith("UI", StringComparison.Ordinal)
-                                && (s_Tn.EndsWith("Asset", StringComparison.Ordinal) || s_Tn.EndsWith("CompData", StringComparison.Ordinal));
-                            bool s_IsUiPrefab = s_DataContainer is LogicPrefabBlueprint;
-                            if (s_IsUiAsset || s_IsUiPrefab)
-                            {
-                                var s_Ref = new CtrRef<DataContainer>(s_Partition.PartitionGuid, ((DataContainerId.Guid)s_DataContainer.InstanceId).Id);
-                                if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_Ref.InstanceId))
-                                    s_Registry.AssetRegistry.Add(s_Ref);
-                            }
+                            var s_UiRef = new CtrRef<DataContainer>(s_Partition.PartitionGuid, ((DataContainerId.Guid)s_DataContainer.InstanceId).Id);
+                            if (!s_Registry.AssetRegistry.Any(x => x.InstanceId == s_UiRef.InstanceId))
+                                s_Registry.AssetRegistry.Add(s_UiRef);
                         }
 
                         // AssetRegistry

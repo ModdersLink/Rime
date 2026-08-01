@@ -22,9 +22,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
         protected BundleDescriptor m_Descriptor;
 
-        // Optional catalog-membership probe (SuperbundleDescriptor.CatalogProbe). When set,
-        // embedded noncas sources whose STORED frame already exists in the player's cas.cat
-        // are emitted as pure sha1 refs; otherwise their frame ships verbatim as idata.
+        // When set, a noncas source whose stored frame the player's catalog already holds is emitted
+        // as a bare sha1 ref. Everything else ships its frame verbatim as inline data.
         private readonly Func<Sha1, bool>? m_CatalogProbe;
 
         public CasBundleManifestBuilder(BundleDescriptor p_Descriptor, Func<Sha1, bool>? p_CatalogProbe = null)
@@ -36,31 +35,23 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 Path = p_Descriptor.BundleName,
                 ResourceEntries = new CasBundle.Resource[p_Descriptor.Resources.Count],
                 EbxEntries = new CasBundle.Ebx[p_Descriptor.Partitions.Count],
-                // DICE's manifest schema ALWAYS carries chunks + chunkMeta, even as empty arrays
-                // (verified on retail mp_subway_loading_music: res[0], chunks[1]... all keys present).
-                // Omitting them (the old null-when-0 behavior) produced bundles VU could parse but
-                // whose content the ENGINE's native loader never consumed (2026-07-14 grid saga).
+                // A retail manifest always carries the chunks and chunkMeta keys, even when they are
+                // empty arrays. Omitting them yields a bundle Rime can parse but the game's own loader
+                // never reads the content of.
                 ChunkEntries = new CasBundle.Chunk[p_Descriptor.Chunks.Count],
                 ChunkMeta = new ChunkEntry.ChunkMetaEntry[p_Descriptor.Chunks.Count], // NOTE: This matches the amount of chunk entries
             };
         }
 
-        // Cache of compressed (Frostbite zlib-block format) payloads for file/memory-backed
-        // objects, keyed by the readable. Real BF3 cas-bundle payloads (incl. inline `idata`)
-        // are ALWAYS stored in the compressed-block format and content-addressed by the SHA1
-        // of the COMPRESSED bytes. Rime used to inline RAW bytes with Size==OriginalSize
-        // (compression flag off) which BF3 misparses -> crash. We now compress + hash the
-        // compressed payload so both Rime's reader and BF3 decompress it correctly.
-        private readonly Dictionary<IReadableObject, (byte[] Compressed, Sha1 Hash)> m_FileBackedCache = new();
+        // A real cas bundle payload, inline data included, is stored in the compressed block format
+        // and content-addressed by the sha1 of the compressed bytes. Inlining raw bytes with the
+        // compression flag off makes the game misparse them.
+        private readonly Dictionary<IReadableObject, (byte[] Data, Sha1 Hash)> m_CompressedCache = new();
 
-        // Cache of RAW (uncompressed) payloads for file/memory-backed EBX partitions.
-        // Unlike resources/chunks, EBX partitions are NEVER zlib-compressed in BF3 cas
-        // bundles: every real EBX entry across the whole BF3 install has size == originalSize,
-        // and the non-cas BundleManifestBuilder also writes EBX raw. Compressing inline EBX
-        // (size != originalSize) makes BF3 treat it as compressed and reject it ("your game
-        // data is corrupt"). So new/modified EBX delivered via cas idata must be stored raw,
-        // content-addressed by the SHA1 of the RAW bytes.
-        private readonly Dictionary<IReadableObject, (byte[] Raw, Sha1 Hash)> m_FileBackedRawCache = new();
+        // EBX partitions are the exception: they are never zlib-compressed in a cas bundle, every real
+        // EBX entry in the game has size == originalSize, and the noncas builder writes them raw too.
+        // A compressed inline EBX makes the game treat the data as corrupt and refuse to start.
+        private readonly Dictionary<IReadableObject, (byte[] Data, Sha1 Hash)> m_RawCache = new();
 
         private static bool IsFileBacked(IReadableObject p_Object)
         {
@@ -73,10 +64,9 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 && p_Object is not SbChunkEntry;
         }
 
-        // A source whose payload sits embedded in a mounted noncas .sb (or a noncas toc chunk).
-        // These are the entries whose manifest sha1 is NOT a usable catalog key (null/uncataloged
-        // for compressed payloads) — the old code emitted them as bare refs, which the engine
-        // could never fetch. They are handled by content-addressing the stored frame instead.
+        // A source whose payload sits embedded in a mounted noncas superbundle or toc chunk. Their
+        // manifest sha1 is not a usable catalog key, so they are content-addressed by their stored
+        // frame instead. Emitting them as bare refs gives the engine something it can never fetch.
         private static bool IsNoncasMounted(IReadableObject p_Object)
         {
             return p_Object is ResourceEntry
@@ -85,74 +75,63 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 || p_Object is SbChunkEntry;
         }
 
-        // Cache of STORED frames for noncas-mounted sources: the original compressed blocks
-        // (ZlibRimeReader.GetRawBytes — same accessor the noncas writer's verbatim fast-path
-        // uses) or the raw window when uncompressed. Content-addressed by sha1 of those exact
-        // bytes — the same identity a cas.cat uses (retail cat key == sha1(stored bytes),
-        // verified 800/800 against the base and patch catalogs).
-        private readonly Dictionary<IReadableObject, (byte[] Stored, Sha1 Hash)> m_StoredFrameCache = new();
+        // The stored frame of a noncas source: the original compressed blocks, or the raw window when
+        // the source is uncompressed. Its sha1 is the same identity a catalog keys entries by.
+        private readonly Dictionary<IReadableObject, (byte[] Data, Sha1 Hash)> m_StoredFrameCache = new();
 
-        private (byte[] Stored, Sha1 Hash) GetStoredFrame(IReadableObject p_Object)
+        private static (byte[] Data, Sha1 Hash) GetCached(
+            Dictionary<IReadableObject, (byte[] Data, Sha1 Hash)> p_Cache,
+            IReadableObject p_Object,
+            Func<IReadableObject, byte[]> p_Read)
         {
-            if (m_StoredFrameCache.TryGetValue(p_Object, out var s_Cached))
+            if (p_Cache.TryGetValue(p_Object, out var s_Cached))
                 return s_Cached;
 
-            byte[] s_Stored;
-            using (var s_Reader = p_Object.GetReader())
+            var s_Data = p_Read(p_Object);
+            var s_Result = (s_Data, Sha1.FromData(s_Data));
+
+            p_Cache[p_Object] = s_Result;
+            return s_Result;
+        }
+
+        private (byte[] Data, Sha1 Hash) GetStoredFrame(IReadableObject p_Object)
+        {
+            return GetCached(m_StoredFrameCache, p_Object, p_Source =>
             {
+                using var s_Reader = p_Source.GetReader();
+
                 if (s_Reader is ZlibRimeReader s_SelfZlib)
-                    s_Stored = s_SelfZlib.GetRawBytes();
-                else if (s_Reader.BaseStream is ZlibRimeReader s_Zlib)
-                    s_Stored = s_Zlib.GetRawBytes();
-                else
-                {
-                    var s_Length = (int)(s_Reader.Length - s_Reader.Position);
-                    s_Stored = s_Length > 0 ? s_Reader.ReadBytes(s_Length) : Array.Empty<byte>();
-                }
-            }
+                    return s_SelfZlib.GetRawBytes();
+                if (s_Reader.BaseStream is ZlibRimeReader s_Zlib)
+                    return s_Zlib.GetRawBytes();
 
-            var s_Result = (s_Stored, Sha1.FromData(s_Stored));
-            m_StoredFrameCache[p_Object] = s_Result;
-            return s_Result;
+                var s_Length = (int)(s_Reader.Length - s_Reader.Position);
+                return s_Length > 0 ? s_Reader.ReadBytes(s_Length) : Array.Empty<byte>();
+            });
         }
 
-        private (byte[] Compressed, Sha1 Hash) GetFileBackedCompressed(IReadableObject p_Object)
+        private (byte[] Data, Sha1 Hash) GetFileBackedCompressed(IReadableObject p_Object)
         {
-            if (m_FileBackedCache.TryGetValue(p_Object, out var s_Cached))
-                return s_Cached;
-
-            byte[] s_Raw;
-            using (var s_Reader = p_Object.GetReader())
-                s_Raw = s_Reader.ReadBytes((int)s_Reader.Length);
-
-            var s_Compressed = CompressBlocks(s_Raw);
-            var s_Result = (s_Compressed, Sha1.FromData(s_Compressed));
-
-            m_FileBackedCache[p_Object] = s_Result;
-            return s_Result;
+            return GetCached(m_CompressedCache, p_Object, p_Source =>
+            {
+                using var s_Reader = p_Source.GetReader();
+                return CompressBlocks(s_Reader.ReadBytes((int)s_Reader.Length));
+            });
         }
 
-        // Reads a file/memory-backed object's RAW bytes (no compression) and content-addresses
-        // them by SHA1 of the raw payload. Used for EBX partitions, which BF3 stores raw.
-        private (byte[] Raw, Sha1 Hash) GetFileBackedRaw(IReadableObject p_Object)
+        private (byte[] Data, Sha1 Hash) GetFileBackedRaw(IReadableObject p_Object)
         {
-            if (m_FileBackedRawCache.TryGetValue(p_Object, out var s_Cached))
-                return s_Cached;
-
-            byte[] s_Raw;
-            using (var s_Reader = p_Object.GetReader())
-                s_Raw = s_Reader.ReadBytes((int)s_Reader.Length);
-
-            var s_Result = (s_Raw, Sha1.FromData(s_Raw));
-
-            m_FileBackedRawCache[p_Object] = s_Result;
-            return s_Result;
+            return GetCached(m_RawCache, p_Object, p_Source =>
+            {
+                using var s_Reader = p_Source.GetReader();
+                return s_Reader.ReadBytes((int)s_Reader.Length);
+            });
         }
 
-        // Compresses raw bytes into the Frostbite zlib-block payload format: a sequence of
-        // segments, each = uint32 originalSize (BE) + uint32 compressedSize (BE) + deflate
-        // data; uncompressed segments are at most 0x10000 bytes. Mirrors the non-cas
-        // BundleManifestBuilder.WriteCompressed so ZlibRimeReader (and BF3) reads it back.
+        // Compresses raw bytes into the zlib block payload format: a run of segments, each one a
+        // big-endian uint32 original size, a big-endian uint32 compressed size and the deflate data,
+        // with each segment covering at most 0x10000 uncompressed bytes. Mirrors the noncas
+        // BundleManifestBuilder so ZlibRimeReader and the game read it back.
         private static byte[] CompressBlocks(byte[] p_Raw)
         {
             using var s_Output = new MemoryStream();
@@ -190,8 +169,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
             if (p_Object is EbxEntry s_Ebx) return s_Ebx.PayloadSize;
             if (p_Object is BundleChunkEntry s_Chunk) return s_Chunk.PayloadSize;
             if (p_Object is CasChunkEntry s_CasChunk) return s_CasChunk.PayloadSize;
-            // File/memory-backed: size is the COMPRESSED payload size (block format).
-            return GetFileBackedCompressed(p_Object).Compressed.Length;
+            // File/memory-backed: the size is that of the compressed block payload.
+            return GetFileBackedCompressed(p_Object).Data.Length;
         }
 
         Sha1 GetCompressedHash(IReadableObject p_Object)
@@ -202,17 +181,17 @@ namespace RimeLib.Content.Frostbite2_0.Building
             if (p_Object is EbxEntry s_Ebx) return s_Ebx.Hash;
             if (p_Object is BundleChunkEntry s_Chunk) return s_Chunk.Hash;
             if (p_Object is CasChunkEntry s_CasChunk) return s_CasChunk.Hash;
-            // File/memory-backed: hash of the COMPRESSED payload (content address).
+            // File/memory-backed: the content address is the hash of the compressed payload.
             return GetFileBackedCompressed(p_Object).Hash;
         }
 
         byte[]? GetInlineData(IReadableObject p_Object)
         {
             if (p_Object is InlineReadable s_Inline) return s_Inline.GetCompressedData();
-            // File-backed / memory-backed objects: embed the COMPRESSED (block-format) payload
-            // as inline data, so BF3 (and Rime's reader) decompress it instead of misparsing raw.
+            // File-backed and memory-backed objects inline the compressed block payload, so the game
+            // and Rime's own reader decompress it instead of misparsing it as raw.
             if (IsFileBacked(p_Object))
-                return GetFileBackedCompressed(p_Object).Compressed;
+                return GetFileBackedCompressed(p_Object).Data;
             return null;
         }
 
@@ -251,7 +230,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 if (IsNoncasMounted(s_Readable))
                 {
-                    // Embedded noncas payload: catalog-hit -> pure ref, miss -> frame verbatim.
+                    // A catalog hit becomes a bare ref, a miss ships the frame verbatim.
                     var (s_Stored, s_StoredHash) = GetStoredFrame(s_Readable);
                     s_CompressedSize = s_Stored.Length;
                     s_ResourceHash = s_StoredHash;
@@ -302,21 +281,18 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     var (s_Stored, s_StoredHash) = GetStoredFrame(s_Readable);
                     s_ReadableSize = s_Stored.Length;
                     s_ChunkHash = s_StoredHash;
-                    // SLICED sources (rangeStart/logicalOffset != 0) keep their slice semantics
-                    // only as idata — a ref would re-base the range against a slice-sized blob,
-                    // which is untested range territory. Full chunks ref when catalog-hit.
+                    // A sliced source only keeps its slice semantics as inline data, since a ref would
+                    // re-base the range against a slice-sized blob. Only whole chunks become refs.
                     var s_Sliced = s_RangeStart != 0 || s_LogicalOffset != 0;
                     var s_CanRef = !s_Sliced && m_CatalogProbe != null && m_CatalogProbe(s_StoredHash);
                     s_ChunkInline = s_CanRef ? null : s_Stored;
                 }
                 else if (IsFileBacked(s_Readable) && !s_ChunkId.HasCompressionFlag())
                 {
-                    // File-backed chunk WITHOUT the guid compression flag: must ship RAW.
-                    // Chunk compression is signaled ONLY by the guid flag bit (no
-                    // size/originalSize pair like resources), so a compressed frame here
-                    // gets consumed as raw bytes -> corrupted payload (caught on the XP5
-                    // weapdeploy wave chunks). Mirrors the noncas BundleManifestBuilder,
-                    // which compresses chunks only when the guid is flagged.
+                    // A chunk signals compression only through the flag bit in its guid, with no
+                    // size and originalSize pair like a resource has, so a compressed frame under an
+                    // unflagged guid is consumed as raw bytes and the payload comes out corrupt. The
+                    // noncas builder likewise compresses a chunk only when its guid is flagged.
                     var (s_Raw, s_RawHash) = GetFileBackedRaw(s_Readable);
                     s_ReadableSize = s_Raw.Length;
                     s_ChunkHash = s_RawHash;
@@ -353,9 +329,9 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 }
                 else
                 {
-                    // No stored meta: fall back to the chunk's asset-name hash (mirrors the noncas
-                    // BundleManifestBuilder). h32=0 breaks the chunk<->texture association for
-                    // texture chunks (BLACK body); non-texture chunks tolerate it.
+                    // With no stored meta, fall back to the chunk's asset name hash the way the noncas
+                    // builder does. A texture chunk left with h32=0 loses its association with the
+                    // texture and never renders; other chunk kinds tolerate it.
                     var s_Entry = new ChunkEntry.ChunkMetaEntry();
                     var s_NameHash = s_ChunkObject.GetAssetNameHash();
                     if (s_NameHash.HasValue)
@@ -396,9 +372,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 if (IsFileBacked(s_Readable))
                 {
-                    // New/modified EBX (add_raw_partition / add_json_partition): store RAW,
-                    // with size == originalSize (BF3 never zlib-compresses EBX). Compressing
-                    // it here is what corrupted inline EBX in cas before.
+                    // New or modified EBX is stored raw with size == originalSize, since the game
+                    // never zlib-compresses EBX.
                     var (s_Raw, s_RawHash) = GetFileBackedRaw(s_Readable);
                     s_PartitionInline = s_Raw;
                     s_PartitionSize = s_Raw.Length;
@@ -407,8 +382,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 }
                 else if (IsNoncasMounted(s_Readable))
                 {
-                    // Embedded noncas EBX (DLC partitions): BF3 EBX is stored raw, so the
-                    // stored frame IS the raw partition. Catalog-hit -> ref, miss -> raw idata.
+                    // Since EBX is stored raw, the stored frame of an embedded noncas partition is
+                    // the raw partition itself.
                     var (s_Stored, s_StoredHash) = GetStoredFrame(s_Readable);
                     s_PartitionSize = s_Stored.Length;
                     s_PartitionOriginalSize = s_Readable.GetSize();
@@ -417,8 +392,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 }
                 else
                 {
-                    // Unchanged EBX (mounted catalog/inline variant): keep its existing
-                    // catalog reference (idata == null) or already-present inline data.
+                    // Unchanged EBX keeps its existing catalog reference or inline data.
                     s_PartitionSize = GetCompressedSize(s_Readable);
                     s_PartitionOriginalSize = s_Readable.GetSize();
                     s_PartitionHash = GetCompressedHash(s_Readable);

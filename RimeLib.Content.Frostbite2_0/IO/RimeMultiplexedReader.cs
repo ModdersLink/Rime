@@ -123,9 +123,9 @@ namespace RimeLib.Content.Frostbite2_0.IO
 
             var s_Remaining = p_Count;
 
-            // Capture the starting position ONCE: m_CurrentPosition advances as we read below,
-            // so it must not also be re-added via (p_Count - s_Remaining) or the absolute offset
-            // double-counts the bytes already read (broke multi-run single reads).
+            // m_CurrentPosition advances as the loop below reads, so the absolute offset has to be
+            // built from where this read started. Using the live position double-counts the bytes
+            // already read once a single read spans more than one run.
             var s_StartPosition = m_CurrentPosition;
 
             //Debug.WriteLine($"Multiplexed reader reading {p_Count} bytes.");

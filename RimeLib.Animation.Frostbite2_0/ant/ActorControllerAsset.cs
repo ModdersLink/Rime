@@ -36,7 +36,8 @@ namespace ant
 		[AntField(5)]
 		public uint ActorContentFlags { get; set; }
 
-		// BF3-alpha-only fields (dropped in retail; slots per the alpha reflection table).
+		// Present only in the pre-release schema and dropped in retail. The parser binds a layout
+		// member to the property of the same name, so these have to exist for that schema to parse.
 		[AntField(1)]
 		public bool PassTagsToChildren { get; set; }
 

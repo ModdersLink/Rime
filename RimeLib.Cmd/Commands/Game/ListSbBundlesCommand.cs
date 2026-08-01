@@ -4,9 +4,11 @@ using RimeLib.Cmd.Contexts;
 
 namespace RimeLib.Cmd.Commands.Game
 {
-    [CommandDescription("Lists the bundle ids in a superbundle's TOC (Patch layered), one 'SB-BUNDLE: <id>' line each. Used to enumerate what a COMPLETE level-sb override clone must contain (base + every gamemode bundle).")]
+    [CommandDescription("Lists the bundle ids in a superbundle's toc, patch layered on top, one per line.")]
     public class ListSbBundlesCommand : Command
     {
+        // Use it to enumerate what a complete level superbundle override has to contain: the base
+        // bundle plus every gamemode bundle.
         [CommandArgument(Description = "The superbundle name, e.g. win32/levels/mp_017/mp_017.")]
         public string? Superbundle { get; set; }
 

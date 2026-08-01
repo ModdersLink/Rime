@@ -18,7 +18,8 @@ namespace ant
 	public class SequenceAnimation
 		: AntObject
 	{
-		// BF3-alpha-only fields (dropped in retail; slots per the alpha reflection table).
+		// Present only in the pre-release schema and dropped in retail. The parser binds a layout
+		// member to the property of the same name, so these have to exist for that schema to parse.
 		public int Flags { get; set; }
 		public short StartHoldTime { get; set; }
 		public short EndHoldTime { get; set; }

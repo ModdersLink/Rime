@@ -6,7 +6,7 @@ using RimeLib.Cmd.Contexts;
 
 namespace RimeLib.Cmd.Commands.Game
 {
-    [CommandDescription("Dumps a TerrainDecals (.decals) resource's full structure as JSON (header + 2d/3d/water geometries with blocks, decoded vertices and indices). Round-trips byte-identical via build_terraindecals.")]
+    [CommandDescription("Dumps a TerrainDecals resource's structure as JSON: the header and the 2d, 3d and water geometries. Round-trips byte-identical via replace_terrain_decals.")]
     public class DumpTerrainDecalsJsonCommand : Command
     {
         [CommandArgument(Description = "The name of the TerrainDecals resource to dump.")]

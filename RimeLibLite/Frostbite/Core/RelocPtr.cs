@@ -53,8 +53,8 @@ namespace RimeLib.Frostbite.Core
 
         public T DeserializeObject(RimeReader p_Reader)
         {
-            // Ptr64 slot: read as a full 64-bit value so both little- and big-endian data
-            // (e.g. BF3-alpha/console GenericData banks) resolve the pointer correctly.
+            // The slot is 64 bits wide, so read it whole rather than as two 32-bit halves, or the
+            // pointer comes out wrong on big-endian data.
             BaseAddress = p_Reader.ReadUInt64();
 
             if (BaseAddress == 0)
@@ -62,13 +62,9 @@ namespace RimeLib.Frostbite.Core
                 return default(T);
             }
 
-            // GUARD (2026-07-04): some resource variants (e.g. certain BF3 vehicle interior/wreck/
-            // projectile MeshSet layouts) store a RelocPtr whose BaseAddress is a runtime or
-            // placeholder value rather than an in-buffer file offset. Seeking to it threw
-            // "Stream length must be non-negative and less than 2^31 - 1 - origin (offset)" and
-            // aborted the whole resource parse (-> the mesh was dropped, cockpit/wreck vanished).
-            // A pointer that lands outside the readable buffer can't be a valid in-file target, so
-            // treat it as null (same as BaseAddress == 0) instead of crashing.
+            // Some MeshSet layouts store a RelocPtr holding a runtime or placeholder value instead of
+            // an offset into the file. Such a pointer cannot be a valid in-file target, so treat it as
+            // null rather than seeking out of bounds and aborting the whole resource parse.
             if (p_Reader.CanSeek && (BaseAddress > (ulong)long.MaxValue || (long)BaseAddress >= p_Reader.Length))
             {
                 return default(T);

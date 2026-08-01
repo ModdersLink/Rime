@@ -24,6 +24,11 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
         public Sha1 Checksum { get; private set; }
 
+        private readonly List<string> m_Warnings = new();
+
+        /// <summary>Problems met while building that did not stop the build.</summary>
+        public IReadOnlyList<string> Warnings => m_Warnings;
+
         private long m_ResourceEntriesOffset = 0;
         private long m_ChunkEntriesOffset = 0;
 
@@ -138,13 +143,12 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     {
                         var s_AssetNameHash = s_ChunkObject.GetAssetNameHash();
 
-                        // SAFETY NET (2026-07-04): a chunk pulled from a bundle that stored no meta for
-                        // it has a null asset-name-hash. Rather than aborting the whole superbundle build
-                        // (the self-contained DLC-vehicle annex hit this on shared sound chunks), ship it
-                        // with h32=0 — the chunk data + GUID still resolve; only the name->chunk reverse
-                        // map is absent, which sound/aux chunks don't rely on.
+                        // A chunk pulled from a bundle that stored no meta for it has no asset name hash.
+                        // Ship it with h32=0 rather than aborting the whole build: the chunk data and its
+                        // guid still resolve, only the name to chunk reverse map is missing, and the
+                        // chunks this happens to do not rely on it.
                         if (s_AssetNameHash == null)
-                            Console.WriteLine($"Warning: chunk '{s_GUID}' has no asset name hash; writing h32=0.");
+                            m_Warnings.Add($"Chunk '{s_GUID}' has no asset name hash, writing h32=0.");
 
                         var s_Meta = new DbObject(); // TODO: what about firstMip?
                         s_MetaObject.AddElement(new DbObjectElement("h32", s_AssetNameHash ?? 0));

@@ -14,10 +14,10 @@ using System.Linq;
 
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
-    [CommandDescription("Replaces a TerrainDecals (.decals) resource's data straight from a JSON file (as produced by dump_terrain_decals_json), serializing it through the engine's converter while building the bundle. Keeps the original resource type, meta and id.")]
+    [CommandDescription("Replaces a TerrainDecals resource's data from a JSON file, as produced by dump_terrain_decals_json. Keeps the original type, meta and id.")]
     internal class ReplaceTerrainDecalsCommand : Command
     {
-        [CommandArgument(Description = "The name of the TerrainDecals resource to replace (must exist in a mounted game).")]
+        [CommandArgument(Description = "The TerrainDecals resource to replace. Must exist in a mounted game.")]
         public string? Name { get; set; }
 
         [CommandArgument(Description = "Id returned by mount_game.")]
@@ -26,13 +26,15 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "The path to the JSON file containing the new TerrainDecals data.")]
         public FileInfo? FilePath { get; set; }
 
-        [CommandArgument(Description = "Optional: raise/lower the WATER geometry to this absolute Y height (flat sea). Edits each water block's bbox Y and each water vertex's packed half-float Y in-engine, so you don't have to touch the JSON. Omit to keep the JSON's water as-is.", Optional = true)]
+        [CommandArgument(Description = "Move the water geometry to this absolute Y height. Omit to keep the JSON's water as it is.", Optional = true)]
         public float WaterHeight { get; set; } = float.NaN;
 
-        [CommandArgument(Description = "Optional: only raise water blocks whose surfaceShaderName EQUALS this (case-insensitive, exact), e.g. the ocean shader, so pool/puddle blocks that share the .decals are left alone. Exact (not substring) so a shader that is a PREFIX of another (e.g. '.../Water' vs '.../WaterPool') doesn't bleed across. Omit to raise all water blocks.", Optional = true)]
+        // The match is exact rather than a prefix, so a shader that is a prefix of another does not
+        // bleed across, e.g. '.../Water' will not also pick up '.../WaterPool'.
+        [CommandArgument(Description = "Only move water blocks whose surfaceShaderName is exactly this, so pools sharing the .decals stay put. Omit to move all of them.", Optional = true)]
         public string? WaterShader { get; set; }
 
-        // Wraps the original resource variant (type/meta/id) but serves NEW bytes from memory.
+        // Wraps the original resource variant's type, meta and id but serves new bytes from memory.
         private class DecalsResource : IResourceObject
         {
             private readonly IResourceVariant m_Original;
@@ -108,8 +110,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            // Prefer a cas variant in a cas build, but fall back to ANY bundle-contained variant
-            // so DLC resources (often non-cas/inline) still resolve in a cas build.
+            // Prefer a cas variant in a cas build, but fall back to any bundle-contained variant so the
+            // often inline DLC resources still resolve.
             IResourceVariant? s_Variant = null;
             if (s_BundleContext.Cas())
                 s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.Cas && p_Resource.GetContainedBundle() != null);
@@ -129,54 +131,58 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            // Optional in-engine WATER-height raise: set the flat sea to an absolute Y.
-            // The water geom's positions are packed half-floats (Position[1] = Y), and each
-            // block carries float bboxes (Y at index 1 = min, 4 = max). Done here in C# so the
-            // caller can feed the unmodified dump JSON and just pass --WaterHeight.
+            // A block's bounding boxes hold Y at index 1 (min) and 4 (max), and a water vertex's
+            // position is packed half-floats with Y at index 1.
             if (!float.IsNaN(WaterHeight))
             {
                 var s_Water = s_Decals.GeometryWater;
                 var s_YBits = BitConverter.HalfToUInt16Bits((Half)WaterHeight);
                 var s_Filter = string.IsNullOrWhiteSpace(WaterShader) ? null : WaterShader;
-                // When filtering by shader, only the vertices used by matching blocks are raised.
-                var s_RaiseVert = s_Water.WaterVertices != null ? new bool[s_Water.WaterVertices.Count] : null;
+
+                // When filtering by shader, only the vertices used by matching blocks move.
+                var s_MoveVertex = s_Water.WaterVertices != null ? new bool[s_Water.WaterVertices.Count] : null;
                 var s_BlockCount = 0;
                 foreach (var s_Block in s_Water.Blocks)
                 {
                     if (s_Filter != null &&
                         !string.Equals(s_Block.SurfaceShaderName, s_Filter, StringComparison.OrdinalIgnoreCase))
                         continue;
+
                     s_Block.BoundingBox[1] = WaterHeight;
                     s_Block.BoundingBox[4] = WaterHeight;
                     s_Block.BoundingBox2[1] = WaterHeight;
                     s_Block.BoundingBox2[4] = WaterHeight;
                     s_BlockCount++;
-                    if (s_RaiseVert != null)
-                        for (var v = (int)s_Block.VertexBegin; v < (int)s_Block.VertexEnd && v < s_RaiseVert.Length; v++)
-                            s_RaiseVert[v] = true;
+
+                    if (s_MoveVertex != null)
+                        for (var i = (int)s_Block.VertexBegin; i < (int)s_Block.VertexEnd && i < s_MoveVertex.Length; i++)
+                            s_MoveVertex[i] = true;
                 }
-                var s_VertCount = 0;
+
+                var s_VertexCount = 0;
                 if (s_Water.WaterVertices != null)
                 {
-                    for (var v = 0; v < s_Water.WaterVertices.Count; v++)
+                    for (var i = 0; i < s_Water.WaterVertices.Count; i++)
                     {
-                        if (s_Filter != null && (s_RaiseVert == null || !s_RaiseVert[v]))
+                        if (s_Filter != null && (s_MoveVertex == null || !s_MoveVertex[i]))
                             continue;
-                        s_Water.WaterVertices[v].Position[1] = s_YBits;
-                        s_VertCount++;
+
+                        s_Water.WaterVertices[i].Position[1] = s_YBits;
+                        s_VertexCount++;
                     }
                 }
-                p_Writer.WriteLine($"Raised WATER geometry to Y={WaterHeight} ({s_BlockCount} blocks, {s_VertCount} vertices{(s_Filter != null ? $", shader~='{s_Filter}'" : "")}).");
+
+                p_Writer.WriteLine($"Moved water geometry to Y={WaterHeight} ({s_BlockCount} blocks, {s_VertexCount} vertices{(s_Filter != null ? $", shader='{s_Filter}'" : "")}).");
             }
 
             var s_Converter = EngineInterfaceRegistry.Create<ITerrainDecalsConverter>(s_ContextEngineType);
 
             byte[] s_Bytes;
-            using (var s_Ms = new MemoryStream())
+            using (var s_Stream = new MemoryStream())
             {
-                using (var s_W = new RimeWriter(s_Ms, p_ShouldDispose: false))
-                    s_Converter.Write(s_W, s_Decals);
-                s_Bytes = s_Ms.ToArray();
+                using (var s_Writer = new RimeWriter(s_Stream, p_ShouldDispose: false))
+                    s_Converter.Write(s_Writer, s_Decals);
+                s_Bytes = s_Stream.ToArray();
             }
 
             var s_HasMeta = s_Variant.TryGetMeta(out var s_MetaBytes);

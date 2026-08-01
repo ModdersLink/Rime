@@ -6,7 +6,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Frostbite2_0.Json;
-using RimeLib.Utils;
 
 namespace RimeLib.Serialization.Frostbite2_0.Ebx;
 
@@ -14,11 +13,8 @@ public class DatabasePartition : DatabasePartitionBase
 {
     public GUID PrimaryInstanceGuid { get; set; } = GUID.Empty;
 
-    // Insertion-ordered: preserves the original DICE instance order through read -> JSON -> write,
-    // which is required for byte-identical (engine-valid) regeneration. Was a SortedDictionary,
-    // which silently re-sorted instances by guid and scrambled the payload/import order.
     [JsonProperty("Instances")]
-    public OrderedDictionary<GUID, DataContainer> InstanceMap { get; set; } = new();
+    public SortedDictionary<GUID, DataContainer> InstanceMap { get; set; } = new();
 
     [JsonIgnore]
     public override IEnumerable<DataContainerBase> Instances => InstanceMap.Values;

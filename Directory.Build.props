@@ -1,0 +1,15 @@
+<Project>
+
+  <PropertyGroup>
+    <!--
+      Every project writes its output to $(SolutionDir)bin\$(Configuration), but MSBuild only
+      defines SolutionDir when the build is driven by a solution. Building or testing a single
+      project directly left it empty, so the path resolved to an absolute /bin on a filesystem
+      with a root directory, which is not writable. Default it to this file's directory, which is
+      the repository root. A solution build passes SolutionDir as a global property and that still
+      wins, so this only fills the gap.
+    -->
+    <SolutionDir Condition="'$(SolutionDir)' == ''">$(MSBuildThisFileDirectory)</SolutionDir>
+  </PropertyGroup>
+
+</Project>

@@ -18,6 +18,9 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
         private List<ChunkInfo> m_Chunks = new List<ChunkInfo>();
         private List<BundleInfo> m_Bundles = new List<BundleInfo>();
+        private List<string> m_Warnings = new List<string>();
+
+        public IReadOnlyList<string> Warnings => m_Warnings;
 
         public void Serialize(SuperbundleDescriptor p_Descriptor, Stream p_OutputSbStream, Stream p_OutputTocStream)
         {
@@ -25,6 +28,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             m_Toc = new TableOfContents<SuperbundleLayout>(new SuperbundleLayout());
             m_Chunks = new List<ChunkInfo>();
             m_Bundles = new List<BundleInfo>();
+            m_Warnings = new List<string>();
 
             // Set up an sb writer to use.
             using var s_SbWriter = new RimeWriter(p_OutputSbStream, Endianness.BigEndian, false);
@@ -55,9 +59,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
             foreach (var s_Pair in p_Descriptor.Chunks)
                 SerializeChunk(s_Pair.Key, s_Pair.Value, s_SbWriter);
 
-            // CAS toc chunks: pure { id, sha1 } refs in the toc chunk list, NO payload written —
-            // the engine fetches them from cas.cat by hash (vanilla CAS level sbs carry their
-            // sb-level streaming chunks this way; a level-sb override needs them or terrain hangs).
+            // Toc chunks are bare id and sha1 refs with no payload written; the engine fetches them
+            // from the catalog by hash.
             foreach (var s_Pair in p_Descriptor.CasTocChunks)
                 m_Chunks.Add(new ChunkInfo { Id = s_Pair.Key, Sha1 = s_Pair.Value });
 
@@ -107,6 +110,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             var s_Builder = new BundleManifestBuilder(p_Descriptor);
             s_Builder.Serialize(p_SbWriter);
+            m_Warnings.AddRange(s_Builder.Warnings);
 
             // Calculate size.
             s_BundleInfo.Size = p_SbWriter.Position - s_BundleInfo.Offset;
@@ -121,15 +125,12 @@ namespace RimeLib.Content.Frostbite2_0.Building
             // Bundles
             var s_BundlesListObject = new DbObject();
 
-            // The toc references each cas bundle manifest by its byte offset within the .sb.
-            // That offset is NOT a fixed constant: the preamble before the first manifest
-            // (the wrapping `{ bundles: [...] }` object) uses DbObject size-varints whose
-            // length grows with the total size (2 bytes for a small mod sb, 4 bytes for a
-            // full game sb). The old code hardcoded 18 (correct only for 4-byte varints), so
-            // small custom cas superbundles pointed past the real manifest -> BF3 read garbage
-            // and crashed at level load. We instead serialize the whole sb and locate each
-            // manifest's real offset by its (unique, path-bearing) serialized bytes.
-            var s_BundleData = new System.Collections.Generic.List<(string Id, byte[] Data)>();
+            // The toc references each bundle manifest by its byte offset within the .sb, and that
+            // offset is not a constant: the preamble before the first manifest is sized by DbObject
+            // varints that grow with the total size, taking 2 bytes in a small mod superbundle and 4
+            // in a full game one. So serialize the whole thing first and find each manifest's real
+            // offset by its serialized bytes, which are unique because they carry its path.
+            var s_BundleData = new List<(string Id, byte[] Data)>();
 
             foreach (var s_Pair in p_Descriptor.Bundles)
             {
@@ -141,8 +142,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 s_BundlesListObject.AddElement(s_AnonDbObjectElement);
 
-                // Serialize the SAME anon element on its own to get the exact bytes that will
-                // appear (identically) inside the bundles list.
+                // Serialize the same element on its own to get the exact bytes it will contribute to
+                // the bundles list.
                 var s_FullObject = new DbObject();
                 s_FullObject.AddElement(s_AnonDbObjectElement);
 
@@ -162,7 +163,6 @@ namespace RimeLib.Content.Frostbite2_0.Building
             var s_CasDbObject = new DbObject();
             s_CasDbObject.AddElement(s_Anon);
 
-            // Serialize the whole superbundle, then resolve each bundle's REAL offset/size.
             var s_AllBytes = s_CasDbObject.Serialize();
 
             var s_SearchStart = 0;

@@ -14,7 +14,7 @@ namespace RimeLib.Cmd.Commands.SbBuilding
             {
                 p_Writer.WriteLine("Building superbundle. Please wait...");
 
-                ((SbBuildingContext)p_Context).Build();
+                ((SbBuildingContext)p_Context).Build(p_Writer);
 
                 p_Writer.WriteLine("Superbundle successfully built!");
 

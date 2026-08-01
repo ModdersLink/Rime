@@ -4,9 +4,11 @@ using RimeLib.Cmd.Contexts;
 
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
-    [CommandDescription("Adds a partition to this bundle from a RAW EBX binary file (as produced by dump_partition), byte-for-byte — bypassing the JSON converter. Use this to inject a faithfully-patched real partition.")]
+    [CommandDescription("Adds a partition byte for byte from a raw EBX file, as produced by dump_partition, bypassing the JSON converter.")]
     public class AddRawPartitionCommand : Command
     {
+        // Going in byte for byte preserves the exact structure the game built, which is what a
+        // patched copy of a real partition needs in order to still realize.
         [CommandArgument(Description = "The name of the partition.")]
         public string? Name { get; set; }
 

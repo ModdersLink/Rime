@@ -34,9 +34,8 @@ namespace RimeLib.Terrain.Frostbite2_0
 
         public TerrainDecalsResource Read(RimeReader p_Reader)
         {
-            // The .decals format is always little-endian on PC. Some resource variants (e.g. DLC)
-            // hand back a reader configured big-endian, which mis-reads every count -> garbage ->
-            // unbounded alloc. Pin LE so the read is correct regardless of the variant's default.
+            // The format is always little-endian on PC, but some resource variants hand back a reader
+            // configured big-endian, which misreads every count and ends in an unbounded allocation.
             p_Reader.Endianness = Endianness.LittleEndian;
 
             var s_Decals = new TerrainDecalsResource

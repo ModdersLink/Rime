@@ -8,15 +8,14 @@ using System.Linq;
 
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
-    [CommandDescription("Strips the bundle down to a SINGLE EBX partition: removes EVERY other partition plus " +
-        "ALL resources and chunks. Use to turn a fully-resolved closure bundle (needed so generate_registry_container " +
-        "could enumerate the guids) into a tiny sidecar carrying ONLY the emitted SubWorldData partition, which " +
-        "references the real mesh/MVDB/blueprint partitions BY GUID (they live in a separate bundle that is loaded/" +
-        "prepended alongside). A SubWorld that references-by-guid needs no chunks/resources of its own, so dropping " +
-        "them yields a self-contained sub-level bundle the engine can unambiguously SWROD-realize (feeding its " +
-        "registryContainer -> the load-time mesh-variation index).")]
+    [CommandDescription("Strips the bundle down to one EBX partition, dropping every other partition plus all resources and chunks. Turns a resolved closure bundle into a small sidecar.")]
     public class KeepOnlyPartitionCommand : Command
     {
+        // The closure had to be resolved for generate_registry_container to enumerate the guids, but
+        // the emitted SubWorldData references the real mesh, MVDB and blueprint partitions by guid,
+        // and those ship in a separate bundle that loads alongside this one. Referencing by guid means
+        // the sidecar needs no chunks or resources of its own, so dropping them leaves a bundle the
+        // engine can realize on its own terms.
         [CommandArgument(Description = "The one partition name to keep, e.g. levels/vehmenu/m1abrams.")]
         public string? Name { get; set; }
 
@@ -31,34 +30,30 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_BundleContext = (BundleBuildingContext)p_Context;
 
             var s_Keep = Name!.Trim();
-            var s_PartNames = s_BundleContext.GetPartitions().Select(p_P => p_P.Key).ToList();
-            if (!s_PartNames.Any(p_N => string.Equals(p_N, s_Keep, StringComparison.OrdinalIgnoreCase)))
+            var s_PartitionNames = s_BundleContext.GetPartitions().Select(p_P => p_P.Key).ToList();
+            if (!s_PartitionNames.Any(p_N => string.Equals(p_N, s_Keep, StringComparison.OrdinalIgnoreCase)))
             {
-                p_Writer.WriteLine($"keep_only_partition: partition '{s_Keep}' is not in this bundle (nothing kept). Aborting.");
+                p_Writer.WriteLine($"keep_only_partition: partition '{s_Keep}' is not in this bundle. Aborting.");
                 return false;
             }
 
-            int s_RemovedP = 0, s_RemovedR = 0, s_RemovedC = 0;
-            foreach (var s_N in s_PartNames)
+            var s_Partitions = 0;
+            foreach (var s_Name in s_PartitionNames)
             {
-                if (string.Equals(s_N, s_Keep, StringComparison.OrdinalIgnoreCase)) continue;
-                s_BundleContext.RemovePartition(s_N);
-                s_RemovedP++;
+                if (string.Equals(s_Name, s_Keep, StringComparison.OrdinalIgnoreCase)) continue;
+                s_BundleContext.RemovePartition(s_Name);
+                s_Partitions++;
             }
 
-            foreach (var s_R in s_BundleContext.GetResources().Select(p_R => p_R.Key).ToList())
-            {
-                s_BundleContext.RemoveResource(s_R);
-                s_RemovedR++;
-            }
+            var s_Resources = s_BundleContext.GetResources().Select(p_R => p_R.Key).ToList();
+            foreach (var s_Name in s_Resources)
+                s_BundleContext.RemoveResource(s_Name);
 
-            foreach (var s_C in s_BundleContext.GetChunks().Select(p_C => p_C.Key).ToList())
-            {
-                s_BundleContext.RemoveChunk(s_C);
-                s_RemovedC++;
-            }
+            var s_Chunks = s_BundleContext.GetChunks().Select(p_C => p_C.Key).ToList();
+            foreach (var s_Id in s_Chunks)
+                s_BundleContext.RemoveChunk(s_Id);
 
-            p_Writer.WriteLine($"keep_only_partition '{s_Keep}': removed {s_RemovedP} partition(s), {s_RemovedR} resource(s), {s_RemovedC} chunk(s). Bundle now holds 1 partition.");
+            p_Writer.WriteLine($"keep_only_partition '{s_Keep}': removed {s_Partitions} partition(s), {s_Resources.Count} resource(s), {s_Chunks.Count} chunk(s).");
             return true;
         }
     }

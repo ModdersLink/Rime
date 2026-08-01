@@ -299,7 +299,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
             public int ChunkMetaSize { get; set; } // 28
 
             public bool IsDbx => Magic == ManifestType.Fb2Dbx;
-            // EbxAlpha = the BF3 alpha's pre-release magic; same manifest layout, read-only support.
+            // EbxAlpha is the pre-release magic for the same manifest layout, supported for reading.
             public bool IsEbx => Magic == ManifestType.Fb2Ebx || Magic == ManifestType.EbxAlpha;
 
             public Header(RimeReader p_Reader)
@@ -464,8 +464,8 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Bundles
 
                 if (s_ChunkMeta.ChunkMeta.Length != m_Header.ChunkCount)
                 {
-                    // BF3-alpha bundles can carry MORE meta entries than chunks (e.g. MP_Subway
-                    // 42 vs 35); the meta is unused downstream, so tolerate it there only.
+                    // A pre-release bundle can carry more meta entries than it has chunks. Nothing
+                    // downstream uses the meta, so tolerate the mismatch for those bundles only.
                     if (m_Header.Magic != ManifestType.EbxAlpha)
                         throw new Exception($"Bundle missing chunk meta. Expected {m_Header.ChunkCount}, found {s_ChunkMeta.ChunkMeta.Length}.");
                 }

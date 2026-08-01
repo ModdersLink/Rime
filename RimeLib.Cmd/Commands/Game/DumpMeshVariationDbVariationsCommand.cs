@@ -8,12 +8,11 @@ using RimeLib.Serialization;
 
 namespace RimeLib.Cmd.Commands.Game
 {
-    [CommandDescription("Dumps the MeshVariationDatabase entries for meshes matching a filter: mesh name + " +
-                        "VariationAssetNameHash + material count. Use to find a vehicle's CAMO variation hash " +
-                        "(0 = base/grey; a non-zero VariationAssetNameHash = a variation like camo) to pass as " +
-                        "EntityCreationParams.variationNameHash at spawn.")]
+    [CommandDescription("Dumps the MVDB entries for meshes matching a filter: mesh name, VariationAssetNameHash and material count. Hash 0 is the base appearance.")]
     public class DumpMeshVariationDbVariationsCommand : Command
     {
+        // A non-zero VariationAssetNameHash names an appearance such as a camo. Pass the one you want
+        // as EntityCreationParams.variationNameHash when spawning the vehicle.
         [CommandArgument(Description = "The MVDB resource name, e.g. levels/mp_017/r/meshvariationdb_win32")]
         public string? Name { get; set; }
 
@@ -37,20 +36,21 @@ namespace RimeLib.Cmd.Commands.Game
                 return false;
             }
 
-            var s_Variant = s_SrcMounted.Variants.FirstOrDefault(v => v.GetContainedBundle() != null) ?? s_SrcMounted.FirstVariant;
+            var s_Variant = s_SrcMounted.Variants.FirstOrDefault(p_V => p_V.GetContainedBundle() != null) ?? s_SrcMounted.FirstVariant;
             var s_Db = s_Converter.FromPartitionObject(Name!, s_Variant!);
 
             var s_Needle = Mesh!.ToLowerInvariant();
-            int s_Matched = 0;
+            var s_Matched = 0;
 
-            foreach (var s_Inst in s_Db.Instances)
+            foreach (var s_Instance in s_Db.Instances)
             {
-                if (s_Inst is not MeshVariationDatabaseEntry s_E) continue;
-                if (!s_Mounter.TryGetPartitionByGuid(s_E.Mesh.PartitionGuid, out var s_MName, out _) || s_MName == null) continue;
-                if (!s_MName.ToLowerInvariant().Contains(s_Needle)) continue;
+                if (s_Instance is not MeshVariationDatabaseEntry s_Entry) continue;
+                if (!s_Mounter.TryGetPartitionByGuid(s_Entry.Mesh.PartitionGuid, out var s_MeshName, out _) || s_MeshName == null) continue;
+                if (!s_MeshName.ToLowerInvariant().Contains(s_Needle)) continue;
+
                 s_Matched++;
-                p_Writer.WriteLine($"MVDBVAR: mesh={s_MName} variationHash={s_E.VariationAssetNameHash} " +
-                                   $"(0x{s_E.VariationAssetNameHash:X8}) materials={s_E.Materials.Count}");
+                p_Writer.WriteLine($"MVDBVAR: mesh={s_MeshName} variationHash={s_Entry.VariationAssetNameHash} " +
+                                   $"(0x{s_Entry.VariationAssetNameHash:X8}) materials={s_Entry.Materials.Count}");
             }
 
             p_Writer.WriteLine($"MVDBVAR-DONE: {Name} '{Mesh}' matched={s_Matched}");

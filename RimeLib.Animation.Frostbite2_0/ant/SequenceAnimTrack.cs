@@ -18,7 +18,8 @@ namespace ant
 	public class SequenceAnimTrack
 		: AntObject
 	{
-		// BF3-alpha-only field (dropped in retail; slot 0 in the alpha reflection table).
+		// Present only in the pre-release schema and dropped in retail. The parser binds a layout
+		// member to the property of the same name, so these have to exist for that schema to parse.
 		public IdRef<AntObject> Target { get; set; } = new();
 
 		[AntField(0)]

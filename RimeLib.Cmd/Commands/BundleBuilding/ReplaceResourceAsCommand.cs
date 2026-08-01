@@ -4,32 +4,36 @@ using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
-    [CommandDescription("Adds a NEW resource under <new_name> that reuses an EXISTING resource's type+meta (<orig_name>) but serves data from a file. Unlike replace_resource (same name -> override), this gives a uniquely-named copy, so it does NOT collide with the vanilla resource. Use to add a modified physics/havok resource under a fresh name and redirect a reference to it at runtime.")]
+    [CommandDescription("Adds a resource under a new name, reusing an existing one's type and meta but serving data from a file. Unlike replace_resource, it does not override the original.")]
     internal class ReplaceResourceAsCommand : Command
     {
-        [CommandArgument(Description = "The name of the EXISTING resource to copy type+meta from (must exist in a mounted game).")]
+        // replace_resource keeps the name and so overrides the vanilla resource. This produces a
+        // uniquely named copy that does not collide with it, which is what a runtime reference
+        // redirect needs to point at.
+        [CommandArgument(Description = "The existing resource to copy the type and meta from. Must exist in a mounted game.")]
         public string? OrigName { get; set; }
 
-        [CommandArgument(Description = "The NEW resource name to create.")]
+        [CommandArgument(Description = "The resource name to create.")]
         public string? NewName { get; set; }
 
         [CommandArgument(Description = "Id returned by mount_game.")]
         public int Id { get; set; }
 
-        [CommandArgument(Description = "The path to the file containing the NEW resource data.")]
+        [CommandArgument(Description = "The path to the file containing the new resource data.")]
         public FileInfo? FilePath { get; set; }
 
-        [CommandArgument(Description = "Optional META override as a hex string (e.g. for a resized HavokPhysicsData whose section sizes changed). If omitted, the original resource's meta is reused.", Optional = true)]
+        [CommandArgument(Description = "Meta override as a hex string, for a resource whose section sizes changed. Defaults to the original's meta.", Optional = true)]
         public string? MetaHex { get; set; }
 
-        // Wraps an original resource variant (type/meta) but serves NEW data from a file,
-        // published under a DIFFERENT name (no override of the original).
+        // Wraps the original resource variant's type and meta but serves new data from a file, under a
+        // different name so the original is not overridden.
         private class RenamedResource : IResourceObject
         {
             private readonly IResourceVariant m_Original;
@@ -135,11 +139,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             byte[]? s_MetaOverride = null;
             if (!string.IsNullOrWhiteSpace(MetaHex))
             {
-                var s_Hex = MetaHex!.Replace(" ", "");
-                s_MetaOverride = new byte[s_Hex.Length / 2];
-                for (var s_I = 0; s_I < s_MetaOverride.Length; s_I++)
-                    s_MetaOverride[s_I] = System.Convert.ToByte(s_Hex.Substring(s_I * 2, 2), 16);
-                p_Writer.WriteLine($"  META OVERRIDE -> {MetaHex}");
+                s_MetaOverride = Convert.FromHexString(MetaHex!.Replace(" ", ""));
+                p_Writer.WriteLine($"  Meta override: {MetaHex}");
             }
 
             p_Writer.WriteLine($"Adding '{NewName}' (type {s_Variant.GetResourceType()}, meta {s_MetaHex} from '{OrigName}') with {FilePath.Length} bytes from {FilePath.Name}.");

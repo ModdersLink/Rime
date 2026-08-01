@@ -1,32 +1,30 @@
 using fb;
+using Newtonsoft.Json;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.Serialization;
 using System;
+using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
-    [CommandDescription("Emits a NEW SubWorldData partition whose registryContainer = the registry produced by " +
-        "the preceding generate_registry_container (all networked entities, projectiles, blueprints, reference " +
-        "objects, assets AND the MeshVariationDatabase). This is the AllModes AddRegistry sidecar built in-process: " +
-        "the mod loader SearchForDataContainer(<subWorldName>) -> SubWorldData.registryContainer -> AddRegistry at " +
-        "Level:RegisterEntityResources feeds the WHOLE closure into the load-time index, so a runtime-injected " +
-        "foreign vehicle realizes its interior UI / projectiles / camo exactly like a native asset (a bare MVDB-only " +
-        "registry only binds meshes). Replaces the hand-built _vehmenu_sw/<vk>_sw.json. Run AFTER " +
-        "generate_registry_container, in the SAME bundle.")]
+    [CommandDescription("Emits a SubWorldData partition whose registryContainer holds the registry from generate_registry_container plus any mvdb_add_all refs. Run it after those, in the same bundle.")]
     public class EmitSubworldRegistryCommand : Command
     {
-        [CommandArgument(Description = "Partition name to create, e.g. levels/vehmenu/m1abrams (what the loader SearchForDataContainer's).")]
+        // The mod loader finds the partition by name and hands its registryContainer to AddRegistry at
+        // Level:RegisterEntityResources, which feeds the whole closure into the load-time index. That
+        // is what lets a runtime-injected foreign vehicle realize its interior UI, projectiles and camo
+        // the way a native asset does; a registry carrying only the MVDB binds meshes and nothing else.
+        [CommandArgument(Description = "Partition name to create, e.g. levels/vehmenu/m1abrams. This is what the loader looks up.")]
         public string? PartitionName { get; set; }
 
         [CommandArgument(Description = "SubWorldData.Name, e.g. Levels/VehMenu/m1abrams (cosmetic; the loader keys off PartitionName).")]
         public string? SubWorldName { get; set; }
 
-        [CommandArgument(Description = "'mvdbonly' = emit ONLY the MVDB in assetRegistry (empty entity/blueprint/refobj registries). Use when the SubWorld is SWROD-REALIZED (a realize instantiates the entity/blueprint registries → the vehicle closure realizing at load null-derefs; only the MVDB is needed to feed the load-time mesh-variation index). Omit/'-' = full closure (for AddRegistry).")]
+        [CommandArgument(Description = "'mvdbonly' emits only the MVDB and leaves the other registries empty, for a SubWorld realized through SWROD. Omit or '-' for the full closure.")]
         public string? Mode { get; set; }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
@@ -47,83 +45,80 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            // fresh, unique guids: the loader resolves the SubWorld by NAME, so these are internal-only, but
-            // they MUST be unique across the level's loaded partitions (a fixed guid would collide when several
-            // vehicle sidecars load at once).
+            // The loader resolves the SubWorld by name, so these guids are internal only, but they still
+            // have to be unique across the level's loaded partitions or two sidecars collide.
             var s_PartGuid = new GUID(Guid.NewGuid());
             var s_SubWorldGuid = new GUID(Guid.NewGuid());
             var s_DescriptorGuid = new GUID(Guid.NewGuid());
             var s_RegistryGuid = new GUID(Guid.NewGuid());
 
-            var s_Sb = new StringBuilder();
-            s_Sb.Append("{\n");
-            s_Sb.Append($"  \"PartitionGuid\": \"{s_PartGuid}\",\n");
-            s_Sb.Append($"  \"PrimaryInstanceGuid\": \"{s_SubWorldGuid}\",\n");
-            s_Sb.Append($"  \"Name\": \"{PartitionName}\",\n");
-            s_Sb.Append("  \"Instances\": {\n");
-
-            // SubWorldData (primary instance)
-            s_Sb.Append($"    \"{s_SubWorldGuid}\": {{\n");
-            s_Sb.Append("      \"$type\": \"SubWorldData\",\n");
-            s_Sb.Append($"      \"Name\": \"{SubWorldName}\",\n");
-            s_Sb.Append("      \"PropertyConnections\": [],\n");
-            s_Sb.Append("      \"LinkConnections\": [],\n");
-            s_Sb.Append("      \"EventConnections\": [],\n");
-            s_Sb.Append("      \"Descriptor\": {\n");
-            s_Sb.Append($"        \"PartitionGuid\": \"{s_PartGuid}\",\n");
-            s_Sb.Append($"        \"InstanceGuid\": \"{s_DescriptorGuid}\"\n");
-            s_Sb.Append("      },\n");
-            s_Sb.Append("      \"NeedNetworkId\": false,\n");
-            s_Sb.Append("      \"InterfaceHasConnections\": false,\n");
-            s_Sb.Append("      \"AlwaysCreateEntityBusClient\": false,\n");
-            s_Sb.Append("      \"AlwaysCreateEntityBusServer\": false,\n");
-            s_Sb.Append("      \"Objects\": [],\n");
-            s_Sb.Append("      \"RegistryContainer\": {\n");
-            s_Sb.Append($"        \"PartitionGuid\": \"{s_PartGuid}\",\n");
-            s_Sb.Append($"        \"InstanceGuid\": \"{s_RegistryGuid}\"\n");
-            s_Sb.Append("      },\n");
-            s_Sb.Append("      \"IsWin32SubLevel\": true,\n");
-            s_Sb.Append("      \"IsXenonSubLevel\": true,\n");
-            s_Sb.Append("      \"IsPs3SubLevel\": true,\n");
-            s_Sb.Append("      \"RememberStateOnStreamOut\": false\n");
-            s_Sb.Append("    },\n");
-
-            // InterfaceDescriptorData
-            s_Sb.Append($"    \"{s_DescriptorGuid}\": {{\n");
-            s_Sb.Append("      \"$type\": \"InterfaceDescriptorData\",\n");
-            s_Sb.Append("      \"Fields\": [],\n");
-            s_Sb.Append("      \"InputEvents\": [],\n");
-            s_Sb.Append("      \"OutputEvents\": [],\n");
-            s_Sb.Append("      \"InputLinks\": [],\n");
-            s_Sb.Append("      \"OutputLinks\": []\n");
-            s_Sb.Append("    },\n");
-
-            // MVDB refs from mvdb_add_all (raw-added partition generate_registry_container can't parse) get
-            // merged into the AssetRegistry — the load-time mesh-variation index feed / camo binding.
             var s_MvdbRefs = s_BundleContext.GetMvdbRegistryRefs();
-            bool s_MvdbOnly = string.Equals(Mode, "mvdbonly", StringComparison.OrdinalIgnoreCase);
-
-            // RegistryContainer. mvdbonly (for a SWROD-REALIZED SubWorld) = ONLY the MVDB in assetRegistry;
-            // the entity/blueprint/refobj registries are EMPTY so the realize doesn't try to instantiate the
-            // vehicle closure at load (that null-derefs, vu+0xda117a). Full (for AddRegistry) = the whole closure.
+            var s_MvdbOnly = string.Equals(Mode, "mvdbonly", StringComparison.OrdinalIgnoreCase);
             var s_Empty = new RefArray<DataContainer>();
-            s_Sb.Append($"    \"{s_RegistryGuid}\": {{\n");
-            s_Sb.Append("      \"$type\": \"RegistryContainer\",\n");
-            int s_E = AppendRegistryArray(s_Sb, "EntityRegistry", s_MvdbOnly ? s_Empty : s_Registry.EntityRegistry, null, true);
-            int s_A = AppendRegistryArray(s_Sb, "AssetRegistry", s_MvdbOnly ? s_Empty : s_Registry.AssetRegistry, s_MvdbRefs, true);
-            int s_B = AppendRegistryArray(s_Sb, "BlueprintRegistry", s_MvdbOnly ? s_Empty : s_Registry.BlueprintRegistry, null, true);
-            int s_R = AppendRegistryArray(s_Sb, "ReferenceObjectRegistry", s_MvdbOnly ? s_Empty : s_Registry.ReferenceObjectRegistry, null, false);
-            s_Sb.Append("    }\n");
 
-            s_Sb.Append("  }\n");
-            s_Sb.Append("}\n");
+            var s_Entities = BuildRegistryArray(s_MvdbOnly ? s_Empty : s_Registry.EntityRegistry, null);
+            var s_Assets = BuildRegistryArray(s_MvdbOnly ? s_Empty : s_Registry.AssetRegistry, s_MvdbRefs);
+            var s_Blueprints = BuildRegistryArray(s_MvdbOnly ? s_Empty : s_Registry.BlueprintRegistry, null);
+            var s_RefObjects = BuildRegistryArray(s_MvdbOnly ? s_Empty : s_Registry.ReferenceObjectRegistry, null);
+
+            var s_SubWorld = new Dictionary<string, object?>
+            {
+                ["$type"] = "SubWorldData",
+                ["Name"] = SubWorldName,
+                ["PropertyConnections"] = Array.Empty<object>(),
+                ["LinkConnections"] = Array.Empty<object>(),
+                ["EventConnections"] = Array.Empty<object>(),
+                ["Descriptor"] = MakeRef(s_PartGuid, s_DescriptorGuid),
+                ["NeedNetworkId"] = false,
+                ["InterfaceHasConnections"] = false,
+                ["AlwaysCreateEntityBusClient"] = false,
+                ["AlwaysCreateEntityBusServer"] = false,
+                ["Objects"] = Array.Empty<object>(),
+                ["RegistryContainer"] = MakeRef(s_PartGuid, s_RegistryGuid),
+                ["IsWin32SubLevel"] = true,
+                ["IsXenonSubLevel"] = true,
+                ["IsPs3SubLevel"] = true,
+                ["RememberStateOnStreamOut"] = false,
+            };
+
+            var s_Descriptor = new Dictionary<string, object?>
+            {
+                ["$type"] = "InterfaceDescriptorData",
+                ["Fields"] = Array.Empty<object>(),
+                ["InputEvents"] = Array.Empty<object>(),
+                ["OutputEvents"] = Array.Empty<object>(),
+                ["InputLinks"] = Array.Empty<object>(),
+                ["OutputLinks"] = Array.Empty<object>(),
+            };
+
+            var s_RegistryContainer = new Dictionary<string, object?>
+            {
+                ["$type"] = "RegistryContainer",
+                ["EntityRegistry"] = s_Entities,
+                ["AssetRegistry"] = s_Assets,
+                ["BlueprintRegistry"] = s_Blueprints,
+                ["ReferenceObjectRegistry"] = s_RefObjects,
+            };
+
+            var s_Json = JsonConvert.SerializeObject(new
+            {
+                PartitionGuid = s_PartGuid.ToString(),
+                PrimaryInstanceGuid = s_SubWorldGuid.ToString(),
+                Name = PartitionName,
+                Instances = new Dictionary<string, object?>
+                {
+                    [s_SubWorldGuid.ToString()] = s_SubWorld,
+                    [s_DescriptorGuid.ToString()] = s_Descriptor,
+                    [s_RegistryGuid.ToString()] = s_RegistryContainer,
+                },
+            }, Formatting.Indented);
 
             var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(s_SbContext.EngineType);
             var s_Generator = EngineInterfaceRegistry.Create<IPartitionGenerator>(s_SbContext.EngineType);
 
             try
             {
-                using var s_JsonReader = new StringReader(s_Sb.ToString());
+                using var s_JsonReader = new StringReader(s_Json);
                 var s_Partition = s_Converter.FromJsonStream(s_JsonReader);
 
                 var s_Stream = new MemoryStream();
@@ -137,35 +132,37 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            p_Writer.WriteLine($"SUBWORLD-REG: '{PartitionName}' entities={s_E} assets={s_A} blueprints={s_B} refobjs={s_R} (mvdb={s_MvdbRefs.Count})");
+            p_Writer.WriteLine($"SUBWORLD-REG: '{PartitionName}' entities={s_Entities.Count} assets={s_Assets.Count} " +
+                               $"blueprints={s_Blueprints.Count} refobjs={s_RefObjects.Count} (mvdb={s_MvdbRefs.Count})");
             return true;
         }
 
-        private static int AppendRegistryArray(StringBuilder p_Sb, string p_Field, RefArray<DataContainer> p_Arr,
-            System.Collections.Generic.IReadOnlyList<(GUID Part, GUID Inst)>? p_Extra, bool p_TrailingComma)
+        private static object MakeRef(GUID p_Partition, GUID p_Instance) => new
         {
-            p_Sb.Append($"      \"{p_Field}\": [");
-            int s_Count = 0;
-            var s_Seen = new System.Collections.Generic.HashSet<string>();
-            foreach (var s_Ref in p_Arr)
+            PartitionGuid = p_Partition.ToString(),
+            InstanceGuid = p_Instance.ToString(),
+        };
+
+        private static List<object> BuildRegistryArray(RefArray<DataContainer> p_Refs, IReadOnlyList<(GUID Part, GUID Inst)>? p_Extra)
+        {
+            var s_Entries = new List<object>();
+            var s_Seen = new HashSet<string>();
+
+            foreach (var s_Ref in p_Refs)
             {
                 if (s_Ref.InstanceId is not DataContainerId.Guid s_G) continue;
                 if (!s_Seen.Add($"{s_Ref.PartitionGuid}|{s_G.Id}")) continue;
-                p_Sb.Append(s_Count == 0 ? "\n" : ",\n");
-                p_Sb.Append($"        {{ \"PartitionGuid\": \"{s_Ref.PartitionGuid}\", \"InstanceGuid\": \"{s_G.Id}\" }}");
-                s_Count++;
+                s_Entries.Add(MakeRef(s_Ref.PartitionGuid, s_G.Id));
             }
+
             if (p_Extra != null)
                 foreach (var s_X in p_Extra)
                 {
                     if (!s_Seen.Add($"{s_X.Part}|{s_X.Inst}")) continue;
-                    p_Sb.Append(s_Count == 0 ? "\n" : ",\n");
-                    p_Sb.Append($"        {{ \"PartitionGuid\": \"{s_X.Part}\", \"InstanceGuid\": \"{s_X.Inst}\" }}");
-                    s_Count++;
+                    s_Entries.Add(MakeRef(s_X.Part, s_X.Inst));
                 }
-            p_Sb.Append(s_Count == 0 ? "]" : "\n      ]");
-            p_Sb.Append(p_TrailingComma ? ",\n" : "\n");
-            return s_Count;
+
+            return s_Entries;
         }
     }
 }
