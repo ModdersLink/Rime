@@ -160,23 +160,25 @@ namespace RimeLib.Cmd.Contexts
 
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<AddPartitionCommand>();
-            RegisterCommand<AddExistingPartitionCommand>();
             RegisterCommand<AddRawPartitionCommand>();
             RegisterCommand<RaiseWaterPhysicsCommand>();
             RegisterCommand<ClonePartitionFreshCommand>();
             RegisterCommand<MeshVariationDbAddEntryCommand>();
             RegisterCommand<MeshVariationDbAddAllCommand>();
             RegisterCommand<StripSbLevelChunksCommand>();
-            RegisterCommand<StripTargetDupsCommand>();
-            RegisterCommand<DestreamTextureCommand>();
             RegisterCommand<CapTextureCommand>();
 
             var s_EngineType = p_Parent.EngineType;
 
-            if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType) && 
+            if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType) &&
                 EngineInterfaceRegistry.IsSupported<IPartitionGenerator>(s_EngineType))
             {
                 RegisterCommand<AddJsonPartitionCommand>();
+            }
+
+            if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))
+            {
+                RegisterCommand<ReferenceExistingPartitionCommand>();
             }
 
             RegisterCommand<RemovePartitionCommand>();
@@ -191,21 +193,13 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<CloneBundleCommand>();
             RegisterCommand<AddDependencyBundleCommand>();
             RegisterCommand<AddDependencySuperbundleCommand>();
-
-            if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))
-            {
-                RegisterCommand<ResolvePartitionDependenciesCommand>();
-            }
-
-            RegisterCommand<ResolveResourceDependenciesCommand>();
+            RegisterCommand<AddScenarioBundleCommand>();
 
             if (EngineInterfaceRegistry.IsSupported<IShaderResolver>(s_EngineType))
             {
                 RegisterCommand<ResolveShaderTexturesCommand>();
             }
 
-            RegisterCommand<RemoveDuplicateBundleItemsCommand>();
-            RegisterCommand<ResolveMissingChunksCommand>();
             RegisterCommand<ExportBundleContentsCommand>();
             RegisterCommand<GenerateRegistryContainerCommand>();
             RegisterCommand<CompareRegistryContainersCommand>();
@@ -376,6 +370,23 @@ namespace RimeLib.Cmd.Contexts
         internal IEnumerable<string> GetDependencyBundles()
         {
             return m_Builder.Build().DependencyBundles;
+        }
+
+        // Scenarios never reach the builder. They only bound the closure, so they live here rather
+        // than in the bundle being emitted.
+        private readonly Dictionary<string, HashSet<string>> m_Scenarios = new(StringComparer.OrdinalIgnoreCase);
+
+        internal void AddScenarioBundle(string p_Scenario, string p_BundleName)
+        {
+            if (!m_Scenarios.TryGetValue(p_Scenario, out var s_Bundles))
+                m_Scenarios[p_Scenario] = s_Bundles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            s_Bundles.Add(p_BundleName);
+        }
+
+        internal IReadOnlyDictionary<string, HashSet<string>> GetScenarios()
+        {
+            return m_Scenarios;
         }
 
         internal void AddDependencySuperbundle(string p_SuperbundleName)
