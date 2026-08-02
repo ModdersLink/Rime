@@ -150,9 +150,18 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
                 var s_Block = s_DeflateOutput.ToArray();
 
+                // A full block that deflating did not shrink is written verbatim, as the game's own
+                // builder does. That is also the only shape read back as stored, so a deflated full
+                // block of exactly that length would be misread.
+                var s_Stored = s_BlockSize == ZlibRimeReader.c_MaxSegmentSize && s_Block.Length >= s_BlockSize;
+
                 s_Output.Write(EndianBitConverter.Big.GetBytes((uint)s_BlockSize));
-                s_Output.Write(EndianBitConverter.Big.GetBytes((uint)s_Block.Length));
-                s_Output.Write(s_Block);
+                s_Output.Write(EndianBitConverter.Big.GetBytes((uint)(s_Stored ? s_BlockSize : s_Block.Length)));
+
+                if (s_Stored)
+                    s_Output.Write(p_Raw, s_Offset, s_BlockSize);
+                else
+                    s_Output.Write(s_Block);
 
                 s_Offset += s_BlockSize;
             }

@@ -354,25 +354,34 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 var s_BytesToCompress = (uint) System.Math.Min(0x10000, s_LeftBytes);
                 s_LeftBytes -= s_BytesToCompress;
 
+                var s_ByteBuffer = new byte[s_BytesToCompress];
+                var s_BytesRead = p_InputStream.Read(s_ByteBuffer);
+
+                if (s_BytesRead != s_BytesToCompress)
+                {
+                    throw new Exception(
+                        $"An error occurred while reading the data of a texture chunk. Tried reading {s_BytesToCompress} bytes but read {s_BytesRead}."
+                    );
+                }
+
                 var s_CompressionMemoryStream = new MemoryStream();
                 using (var s_CompressionStream = new DeflaterOutputStream(s_CompressionMemoryStream, new Deflater(Deflater.BEST_COMPRESSION), 4096))
                 {
-                    var s_ByteBuffer = new byte[s_BytesToCompress];
-                    var s_BytesRead = p_InputStream.Read(s_ByteBuffer);
-
-                    if (s_BytesRead != s_BytesToCompress)
-                    {
-                        throw new Exception(
-                            $"An error occurred while reading the data of a texture chunk. Tried reading {s_BytesToCompress} bytes but read {s_BytesRead}."
-                        );
-                    }
-
                     s_CompressionStream.Write(s_ByteBuffer);
                     s_CompressionStream.Finish();
                     s_CompressionStream.Dispose();
-                    
+
                 }
-                s_CompressedSegments.Add(Tuple.Create(s_CompressionMemoryStream.ToArray(), s_BytesToCompress));
+
+                var s_Segment = s_CompressionMemoryStream.ToArray();
+
+                // A full block that deflating did not shrink is written verbatim, as the game's own
+                // builder does. That is also the only shape read back as stored, so a deflated full
+                // block of exactly that length would be misread.
+                if (s_BytesToCompress == ZlibRimeReader.c_MaxSegmentSize && s_Segment.Length >= s_BytesToCompress)
+                    s_Segment = s_ByteBuffer;
+
+                s_CompressedSegments.Add(Tuple.Create(s_Segment, s_BytesToCompress));
             }
             
             // Now write the final compressed data.

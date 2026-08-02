@@ -15,6 +15,7 @@ namespace RimeLib.IO
             public long OriginalSize { get; set; }
             public long CompressedSize { get; set; }
             public long LeftData { get; set; }
+            public bool Stored { get; set; }
         }
 
         public override bool CanSeek => false;
@@ -22,6 +23,9 @@ namespace RimeLib.IO
         public override long Position => m_CurrentPosition;
 
         public override long Length => m_OriginalSize;
+
+        // A payload is cut into blocks of at most this many bytes before each block is deflated.
+        public const long c_MaxSegmentSize = 0x10000;
 
         protected long m_OriginalSize;
         protected long m_CompressedSize;
@@ -55,12 +59,23 @@ namespace RimeLib.IO
 
             Stream s_Stream = new LimitedRimeReader((RimeReader)BaseStream, p_Segment.CompressedSize, false);
 
-            // If the original size is not equal to the compressed size then we need to wrap in an inflater stream.
-            // Otherwise, we just return as-is.
-            if (p_Segment.CompressedSize != p_Segment.OriginalSize)
+            // Only a stored segment is passed through as-is. Equal sizes alone do not mean stored:
+            // a deflated segment may end up larger, smaller or exactly as large as the block it holds.
+            if (!IsStored(p_Segment))
                 s_Stream = new InflaterInputStream(s_Stream, new Inflater(), (int)p_Segment.OriginalSize);
 
             return s_Stream;
+        }
+
+        /// <summary>
+        /// A whole block that deflating did not shrink is written out uncompressed, so a segment is
+        /// stored when it is a full block that gained nothing. Smaller segments are always deflated,
+        /// even the ones that come out no smaller than they went in.
+        /// </summary>
+        protected static bool IsStored(ZlibSegment p_Segment)
+        {
+            return p_Segment.Stored ||
+                   (p_Segment.CompressedSize == p_Segment.OriginalSize && p_Segment.CompressedSize >= c_MaxSegmentSize);
         }
 
         public byte[] GetRawBytes()
@@ -95,6 +110,7 @@ namespace RimeLib.IO
                 OriginalSize = BaseStream.Length,
                 CompressedSize = BaseStream.Length,
                 LeftData = BaseStream.Length,
+                Stored = true,
             });
         }
 

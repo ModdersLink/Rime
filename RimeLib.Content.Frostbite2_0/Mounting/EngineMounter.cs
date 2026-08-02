@@ -768,7 +768,13 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
 
         protected void ParseSuperbundles()
         {
-            Parallel.ForEach(m_Superbundles, p_Superbundle => ParseSuperbundle(p_Superbundle, true));
+            Parallel.ForEach(m_Superbundles, p_Superbundle =>
+            {
+                ParseSuperbundle(p_Superbundle, true);
+
+                lock (m_MountedSuperbundles)
+                    m_MountedSuperbundles.Add(p_Superbundle.Name.ToLowerInvariant());
+            });
         }
 
         protected void ParseSuperbundle(SuperbundleEntry p_Superbundle, bool p_AutoMount)
