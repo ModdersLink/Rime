@@ -55,15 +55,20 @@ public class EbxReader : IDisposable
 
     public static GUID GetPartitionGuid(IObjectVariant p_Variant)
     {
-        var s_Reader = p_Variant.GetReader();
+        // The source owns a file handle, and the endian wrapper below is built with p_ShouldDispose
+        // false. Without this using, the handle outlives the call. Mounting calls this once per
+        // partition, so the leak exhausts the process descriptors before the game is fully mounted.
+        using var s_Source = p_Variant.GetReader();
 
-        var s_Magic = s_Reader.ReadBytes(4);
-        s_Reader.Seek(-4, SeekOrigin.Current);
+        var s_Magic = s_Source.ReadBytes(4);
+        s_Source.Seek(-4, SeekOrigin.Current);
+
+        RimeReader s_Reader;
 
         if (IsLittleEndian(s_Magic))
-            s_Reader = new RimeReader(s_Reader, Endianness.LittleEndian, false);
+            s_Reader = new RimeReader(s_Source, Endianness.LittleEndian, false);
         else if (IsBigEndian(s_Magic))
-            s_Reader = new RimeReader(s_Reader, Endianness.BigEndian, false);
+            s_Reader = new RimeReader(s_Source, Endianness.BigEndian, false);
         else
             throw new Exception("The supplied file has an invalid magic header.");
 

@@ -675,8 +675,10 @@ public class EngineMounter : IEngineMounter
         p_BaseReader.Seek(p_BaseBundle.Offset, SeekOrigin.Begin);
         p_PatchReader.Seek(p_PatchBundle.Offset, SeekOrigin.Begin);
         
-        using var s_BaseReaderLimited = new LimitedRimeReader(p_BaseReader, p_BaseBundle.Size);
-        using var s_PatchReaderLimited = new LimitedRimeReader(p_PatchReader, p_PatchBundle.Size);
+        // ParseBundles owns the superbundle readers and reuses them for every bundle in the
+        // superbundle, so these limited views must not own them.
+        using var s_BaseReaderLimited = new LimitedRimeReader(p_BaseReader, p_BaseBundle.Size, false);
+        using var s_PatchReaderLimited = new LimitedRimeReader(p_PatchReader, p_PatchBundle.Size, false);
 
         // Use a multiplexed reader to parse this manifest.
         using var s_PatchedReader = new RimePatchReader(s_BaseReaderLimited, s_PatchReaderLimited, Endianness.BigEndian, false);
@@ -706,10 +708,10 @@ public class EngineMounter : IEngineMounter
 
         // Open up our superbundle readers.  
         using var s_Reader = new RimeReader(File.Open(p_Superbundle.Path + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
-        RimeReader? s_PatchReader = null;
-
-        if (p_Superbundle.PatchPath != null)
-            s_PatchReader = new RimeReader(File.Open(p_Superbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+        // Anything below can throw, so the patch reader is scoped instead of disposed at the end.
+        using var s_PatchReader = p_Superbundle.PatchPath != null
+            ? new RimeReader(File.Open(p_Superbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness)
+            : null;
 
         var s_ParsedBundles = new HashSet<string>();
 
@@ -794,9 +796,6 @@ public class EngineMounter : IEngineMounter
                 ParseBundle(s_PatchReader!, s_Bundle, p_Superbundle, p_AutoMount, true);
             }
         }
-
-        // Dispose of the patch reader.
-        s_PatchReader?.Dispose();
     }
 
     protected bool MountCasBundle(CasBundleEntry p_Bundle)

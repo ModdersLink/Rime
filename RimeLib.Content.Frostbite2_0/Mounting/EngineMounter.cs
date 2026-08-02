@@ -503,71 +503,6 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         }
 
         /// <summary>
-        /// The pixel chunk exactly as a retail bundle carries it, which may be a tail range with a
-        /// logicalOffset and a chunkMeta of h32 and firstMip: the small mips stay resident in the
-        /// bundle and the top mips stream from the catalog. Matched on the h32, which is the hash of
-        /// the resource name and the association retail bundles use.
-        /// </summary>
-        public bool TryGetTextureChunkRetailVariant(GUID p_Id, string p_ResourceName, [NotNullWhen(true)] out IChunkVariant? p_Variant)
-        {
-            p_Variant = null;
-            if (!TryGetChunk(p_Id, out var s_Chunk))
-                return false;
-
-            var s_Hash = (int)RimeLib.Frostbite.Utils.HashQuick(p_ResourceName);
-            foreach (var s_Variant in s_Chunk.Variants)
-            {
-                if (s_Variant.GetAssetNameHash() == s_Hash)
-                {
-                    p_Variant = s_Variant;
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Builds a catalog-backed variant of a mounted cas chunk covering its whole range. The
-        /// game's own bundle entries for a streaming texture are ranged slices, so copying one into
-        /// a standalone mod bundle ships only part of the payload and the texture fails to create.
-        /// The catalog holds the whole thing, so an entry spanning 0 to size with the same hash
-        /// delivers every mip byte-exact without shipping anything.
-        ///
-        /// Given <paramref name="p_AssetName"/>, the variant also carries a chunkMeta holding the
-        /// hash of that name. Without it the manifest writes an empty chunkMeta and the engine cannot
-        /// tie the chunk to its texture resource at bundle load.
-        /// </summary>
-        public bool TryGetFullRangeCasChunkVariant(GUID p_Id, [NotNullWhen(true)] out IChunkVariant? p_Variant, string? p_AssetName = null)
-        {
-            p_Variant = null;
-            if (!TryGetChunk(p_Id, out var s_Chunk))
-                return false;
-
-            foreach (var s_Variant in s_Chunk.Variants)
-            {
-                if (s_Variant is not ChunkVariant s_ChunkVariant)
-                    continue;
-                if (s_ChunkVariant.GetReadable() is not CatalogReadable s_Catalog)
-                    continue;
-
-                DbObject? s_Meta = null;
-                if (!string.IsNullOrEmpty(p_AssetName))
-                {
-                    s_Meta = new DbObject();
-                    s_Meta.AddElement(new DbObjectElement("h32", (int)RimeLib.Frostbite.Utils.HashQuick(p_AssetName)));
-                    s_Meta.AddElement(new DbObjectElement("meta", new DbObject(), false));
-                }
-
-                p_Variant = new ChunkVariant(s_Catalog, 0, (uint)s_Catalog.GetCompressedSize(), 0, s_Meta,
-                    s_ChunkVariant.GetContainedSuperbundle(), s_ChunkVariant.GetContainedBundle());
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Builds a catalog-backed chunk variant from an id and sha1 alone, with its range and
         /// chunkMeta supplied by the caller rather than copied from a mounted source. Fails when no
         /// mounted catalog holds the hash, since the engine could then never fetch the payload.
@@ -925,10 +860,11 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
 
             // Open up our superbundle readers.
             using var s_Reader = new RimeReader(File.Open(p_Superbundle.Path + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
-            RimeReader? s_PatchReader = null;
 
-            if (p_Superbundle.PatchPath != null)
-                s_PatchReader = new RimeReader(File.Open(p_Superbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+            // Anything below can throw, so the patch reader is scoped instead of disposed at the end.
+            using var s_PatchReader = p_Superbundle.PatchPath != null
+                ? new RimeReader(File.Open(p_Superbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness)
+                : null;
 
             var s_ParsedBundles = new HashSet<string>();
 
@@ -996,9 +932,6 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     ParseBundle(s_PatchReader!, s_Bundle, p_Superbundle, p_AutoMount, true);
                 }
             }
-
-            // Dispose of the patch reader.
-            s_PatchReader?.Dispose();
         }
 
         protected bool MountCasBundle(CasBundleEntry p_Bundle)

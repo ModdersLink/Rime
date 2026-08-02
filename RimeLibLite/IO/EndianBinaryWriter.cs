@@ -254,17 +254,38 @@ namespace RimeLib.IO
         /// <summary>
         /// Disposes of the underlying stream.
         /// </summary>
-        public new void Dispose()
+        public new virtual void Dispose()
         {
-            base.Dispose();
+            // Entered twice: Dispose(bool) below calls back here, and base.Dispose() reaches it
+            // again through Stream.Close.
+            if (m_Disposed)
+                return;
 
-            CheckDisposed();
-
+            // Flush before the flag is set, because Flush goes through CheckDisposed.
             Flush();
+
             m_Disposed = true;
+
+            base.Dispose();
 
             if (m_ShouldDispose)
                 BaseStream.Dispose();
+        }
+
+        /// <summary>
+        /// Stream.Dispose is not virtual, so a writer that disposes its BaseStream, typed as Stream,
+        /// lands here and not on the Dispose above. Without the call back, a chain of writers neither
+        /// flushes nor closes below its outermost wrapper. That truncates the output, so it is worse
+        /// than the leaked handle the reader gets.
+        /// </summary>
+        protected override void Dispose(bool p_Disposing)
+        {
+            base.Dispose(p_Disposing);
+
+            if (!p_Disposing || m_Disposed)
+                return;
+
+            Dispose();
         }
 
         public override int Read(byte[] p_Buffer, int p_Offset, int p_Count)

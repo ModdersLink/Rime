@@ -44,7 +44,8 @@ public class ShaderDatabase
 
             var s_CurrentPosition = p_Reader.Position;
 
-            using (var s_ConstantsReader = new LimitedRimeReader(p_Reader, s_Size))
+            // The loop keeps reading from p_Reader afterwards, so the limited view must not own it.
+            using (var s_ConstantsReader = new LimitedRimeReader(p_Reader, s_Size, false))
                 Constants[i] = new ShaderConstant(s_ConstantsReader);
 
             p_Reader.Seek(s_CurrentPosition + s_Size, SeekOrigin.Begin);

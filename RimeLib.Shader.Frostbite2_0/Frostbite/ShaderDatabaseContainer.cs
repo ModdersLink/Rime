@@ -29,7 +29,8 @@ public class ShaderDatabaseContainer
 
             var s_CurrentPosition = p_Reader.BaseStream.Position;
 
-            using (var s_LimitedStream = new LimitedRimeReader(p_Reader, s_ShaderDbSize))
+            // The loop keeps reading from p_Reader afterwards, so the limited view must not own it.
+            using (var s_LimitedStream = new LimitedRimeReader(p_Reader, s_ShaderDbSize, false))
                 Databases.Add((ShaderRenderPath) s_ShaderPath, new ShaderDatabase(s_LimitedStream, p_Mounter));
 
             p_Reader.Seek(s_CurrentPosition + s_ShaderDbSize, SeekOrigin.Begin);

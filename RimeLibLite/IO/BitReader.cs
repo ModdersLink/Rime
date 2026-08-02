@@ -227,21 +227,6 @@ namespace RimeLib.IO
 			throw new NotImplementedException();
 		}
 
-		/// <summary>
-		/// Disposes of the underlying stream.
-		/// </summary>
-		public new virtual void Dispose()
-		{
-			base.Dispose();
-
-			CheckDisposed();
-
-			m_Disposed = true;
-
-			if (m_ShouldDispose)
-				BaseStream.Dispose();
-		}
-
 		public override void Flush()
 		{
 			CheckDisposed();
