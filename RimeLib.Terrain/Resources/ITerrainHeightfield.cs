@@ -23,6 +23,14 @@ public class TerrainHeightfieldNode
 
 public class TerrainHeightfield
 {
+    /// <summary>Material indices the level's terrain uses, and the one covering everything else.</summary>
+    public List<uint> MaterialPairIndices { get; set; } = new();
+    public uint BackgroundMaterialIndex { get; set; }
+    public bool HasMaterialTree { get; set; }
+
+    /// <summary>type:size for every raster tree the stream declared.</summary>
+    public List<string> RasterTrees { get; set; } = new();
+
     public uint SamplesPerSide { get; set; }
     public float WorldSizeY { get; set; }
     public float WorldScaleY { get; set; }

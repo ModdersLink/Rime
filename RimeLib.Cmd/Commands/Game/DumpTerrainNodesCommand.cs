@@ -74,6 +74,10 @@ namespace RimeLib.Cmd.Commands.Game
                 samplesPerSide = s_Heightfield.SamplesPerSide,
                 worldSizeY = s_Heightfield.WorldSizeY,
                 worldScaleY = s_Heightfield.WorldScaleY,
+                hasMaterialTree = s_Heightfield.HasMaterialTree,
+                rasterTrees = s_Heightfield.RasterTrees,
+                materialPairIndices = s_Heightfield.MaterialPairIndices,
+                backgroundMaterialIndex = s_Heightfield.BackgroundMaterialIndex,
                 nodes = s_Nodes
             }));
 

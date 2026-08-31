@@ -74,6 +74,10 @@ namespace RimeLib.Terrain.Frostbite2_0
             throw new System.NotImplementedException();
         }
 
+        /// <summary>Every raster tree the stream announced, as (type, byte size). Diagnostic: it is
+        /// the only way to tell "this level has no material tree" from "the parse lost it".</summary>
+        public List<(int Type, uint Size)> SeenRasterTrees { get; } = new();
+
         public void Deserialize(RimeReader p_Reader)
         {
             var s_StartPosition = p_Reader.Position;
@@ -100,6 +104,8 @@ namespace RimeLib.Terrain.Frostbite2_0
                     break;
 
                 var s_RasterTreeLoadSize = p_Reader.ReadUInt32();
+
+                SeenRasterTrees.Add(((int)s_RasterTreeType, s_RasterTreeLoadSize));
 
                 Debug.WriteLine("Parsing '{0}' raster tree with size '{1}'.", s_RasterTreeType, s_RasterTreeLoadSize);
 
@@ -130,6 +136,23 @@ namespace RimeLib.Terrain.Frostbite2_0
                 }
 
                 Debug.WriteLine("Read '{0}' bytes.", p_Reader.Position - s_InitialPosition);
+
+                // Resync on the size the stream declared, whatever the sub-parser consumed.
+                //
+                // Each raster tree announces its length, and only the UNKNOWN branch above was
+                // using it. A tree whose parser reads a byte too few or too many therefore
+                // misaligned everything after it -- which is why a level's material tree came back
+                // missing: the heightfield before it left the cursor in the wrong place, and its
+                // type byte was then read out of the middle of somebody else's data.
+                var s_Expected = s_InitialPosition + s_RasterTreeLoadSize;
+
+                if (p_Reader.Position != s_Expected)
+                {
+                    Debug.WriteLine("Raster tree '{0}' read {1} of {2} bytes; resyncing.",
+                        s_RasterTreeType, p_Reader.Position - s_InitialPosition, s_RasterTreeLoadSize);
+
+                    p_Reader.Seek(s_Expected, SeekOrigin.Begin);
+                }
             }
 
             var s_RootNode = new QuadtreeNodeId()

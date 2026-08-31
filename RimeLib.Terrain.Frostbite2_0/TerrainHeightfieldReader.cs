@@ -4,6 +4,7 @@ using RimeLib.Frostbite;
 using RimeLib.IO;
 using RimeLib.Terrain.Frostbite;
 using RimeLib.Terrain.Frostbite.Heightfield;
+using RimeLib.Terrain.Frostbite.TerrainMaterial;
 using RimeLib.Terrain.Resources;
 
 namespace RimeLib.Terrain.Frostbite2_0;
