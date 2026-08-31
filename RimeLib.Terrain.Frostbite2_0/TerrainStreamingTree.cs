@@ -86,7 +86,12 @@ namespace RimeLib.Terrain.Frostbite2_0
             NodeCount = p_Reader.ReadUInt32();
             FreeStreamingEnabled = p_Reader.ReadBool();
 
+            // Capacity is not size: the loop below assigns BY INDEX, so the list has to hold the
+            // slots up front or deserialising any streaming tree throws before it reads a tree.
             RasterTrees = new List<RasterTree>((int)RasterTree.RasterTreeTypes.RasterTreeTypeCount);
+
+            for (var i = 0; i < (int)RasterTree.RasterTreeTypes.RasterTreeTypeCount; ++i)
+                RasterTrees.Add(null!);
 
             for (; ; )
             {

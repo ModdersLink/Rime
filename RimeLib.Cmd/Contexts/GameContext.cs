@@ -95,6 +95,7 @@ namespace RimeLib.Cmd.Contexts
             if (EngineInterfaceRegistry.IsSupported<ITerrainDecalsConverter>(s_EngineType))
             {
                 RegisterCommand<DumpTerrainDecalsJsonCommand>();
+                RegisterCommand<DumpTerrainNodesCommand>();
             }
 
             if (EngineInterfaceRegistry.IsSupported<IMeshConverter>(s_EngineType))
