@@ -50,18 +50,30 @@ namespace RimeLib.Cmd.Commands.Game
 
             // mesh -> material index -> parameter -> texture resource
             var s_Meshes = new Dictionary<string, List<Dictionary<string, string>>>();
+            var s_Base = new HashSet<string>();
 
             foreach (var s_Instance in s_Db.Instances)
             {
                 if (s_Instance is not MeshVariationDatabaseEntry s_Entry)
                     continue;
 
-                // Hash 0 is the base appearance; anything else is a variation such as a camo.
-                if (s_Entry.VariationAssetNameHash != 0)
-                    continue;
-
                 if (!s_Mounter.TryGetPartitionByGuid(s_Entry.Mesh.PartitionGuid, out var s_MeshName, out _) || s_MeshName == null)
                     continue;
+
+                // Hash 0 is the base appearance and is what we want when it exists -- but plenty of
+                // meshes (the destruction variants especially) appear ONLY under a variation hash,
+                // and dropping those left them with no textures at all. Take a variation when the
+                // base is absent, and let the base overwrite it if it turns up later.
+                var s_IsBase = s_Entry.VariationAssetNameHash == 0;
+
+                if (!s_IsBase && s_Meshes.ContainsKey(s_MeshName))
+                    continue;
+
+                if (s_IsBase && s_Base.Contains(s_MeshName))
+                    continue;
+
+                if (s_IsBase)
+                    s_Base.Add(s_MeshName);
 
                 var s_Materials = new List<Dictionary<string, string>>();
 
