@@ -98,6 +98,11 @@ namespace RimeLib.Cmd.Contexts
                 RegisterCommand<DumpTerrainNodesCommand>();
             }
 
+            if (EngineInterfaceRegistry.IsSupported<IVisualTerrain>(s_EngineType))
+            {
+                RegisterCommand<DumpVisualTerrainCommand>();
+            }
+
             if (EngineInterfaceRegistry.IsSupported<IMeshConverter>(s_EngineType))
             {
                 RegisterCommand<DumpMeshCommand>();
