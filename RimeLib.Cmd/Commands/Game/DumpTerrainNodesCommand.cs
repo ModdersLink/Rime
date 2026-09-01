@@ -58,6 +58,9 @@ namespace RimeLib.Cmd.Commands.Game
                 s_Nodes.Add(new
                 {
                     depth = s_Node.Depth,
+                    indexX = s_Node.IndexX,
+                    indexY = s_Node.IndexY,
+                    leaf = s_Node.Leaf,
                     min = s_Node.Min,
                     max = s_Node.Max,
                     samplesPerMeter = s_Node.SamplesPerMeter,

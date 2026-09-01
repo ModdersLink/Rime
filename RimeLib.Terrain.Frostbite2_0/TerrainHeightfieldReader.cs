@@ -122,6 +122,9 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
         p_Out.Add(new TerrainHeightfieldNode
         {
             Depth = p_Depth,
+            IndexX = p_Node.ID.IndexX,
+            IndexY = p_Node.ID.IndexY,
+            Leaf = p_Node.Children == null || p_Node.Children.Length == 0,
             Min = [p_Node.BoundingBox.min.x, p_Node.BoundingBox.min.y, p_Node.BoundingBox.min.z],
             Max = [p_Node.BoundingBox.max.x, p_Node.BoundingBox.max.y, p_Node.BoundingBox.max.z],
             SamplesPerMeter = p_Node.SamplesPerMeter,
