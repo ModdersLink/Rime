@@ -57,8 +57,11 @@ namespace RimeLib.Cmd.Commands.Game
                 if (s_Instance is not MeshVariationDatabaseEntry s_Entry)
                     continue;
 
+                // An entry whose mesh partition does not resolve was being dropped silently. Keep
+                // it under its guid instead: anything not backed by a mesh partition -- terrain
+                // among the candidates -- would otherwise be invisible in this dump.
                 if (!s_Mounter.TryGetPartitionByGuid(s_Entry.Mesh.PartitionGuid, out var s_MeshName, out _) || s_MeshName == null)
-                    continue;
+                    s_MeshName = "unresolved:" + s_Entry.Mesh.PartitionGuid;
 
                 // Hash 0 is the base appearance and is what we want when it exists -- but plenty of
                 // meshes (the destruction variants especially) appear ONLY under a variation hash,
