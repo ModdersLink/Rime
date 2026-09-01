@@ -73,6 +73,34 @@ namespace RimeLib.Cmd.Commands.Game
                 {
                     var s_Textures = new Dictionary<string, string>();
 
+                    // An entry with no texture parameters is not an untextured surface: the
+                    // binding can sit on the MESH MATERIAL, whose own shader instance carries the
+                    // parameters. That material is frequently a shared partition rather than the
+                    // mesh's own, which is why nothing in the mesh's EBX shows it.
+                    // Where the material lives, whether or not it resolves here. A material that
+                    // does not load in this context still names its partition, and that is the only
+                    // thread left to pull when an entry carries no parameters of its own.
+                    if (s_Mounter.TryGetPartitionByGuid(s_Material.Material.PartitionGuid, out var s_MatPartition, out _) &&
+                        s_MatPartition != null)
+                        s_Textures["$material"] = s_MatPartition;
+
+                    var s_MeshMaterial = s_Material.Material.Get();
+
+                    if (s_MeshMaterial == null)
+                        s_Textures["$materialUnresolved"] = "1";
+
+                    if (s_MeshMaterial != null)
+                    {
+                        foreach (var s_Parameter in s_MeshMaterial.Shader.TextureParameters)
+                        {
+                            if (!s_Mounter.TryGetPartitionByGuid(s_Parameter.Value.PartitionGuid,
+                                    out var s_OwnName, out _) || s_OwnName == null)
+                                continue;
+
+                            s_Textures[s_Parameter.ParameterName] = s_OwnName;
+                        }
+                    }
+
                     foreach (var s_Parameter in s_Material.TextureParameters)
                     {
                         if (!s_Mounter.TryGetPartitionByGuid(s_Parameter.Value.PartitionGuid, out var s_TextureName, out _) ||

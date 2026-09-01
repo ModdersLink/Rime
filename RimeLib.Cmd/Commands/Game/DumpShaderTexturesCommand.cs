@@ -82,6 +82,21 @@ namespace RimeLib.Cmd.Commands.Game
                             s_Names.Add(s_TextureName!);
                     }
 
+                    // The EXTERNAL slots too: a shader that streams nothing of its own can still
+                    // declare parameters something else is expected to fill, and their names say
+                    // what the surface actually wants ("external:Diffuse"). Without them a shader
+                    // with no streamables looks like a shader with no textures.
+                    if (s_Info.GetType().GetProperty("StreamableExternalTextures")?.GetValue(s_Info) is System.Array s_External)
+                    {
+                        foreach (var s_Slot in s_External)
+                        {
+                            var s_Parameter = s_Slot?.GetType().GetProperty("ParameterName")?.GetValue(s_Slot)?.ToString();
+
+                            if (!string.IsNullOrWhiteSpace(s_Parameter))
+                                s_Names.Add("external:" + s_Parameter);
+                        }
+                    }
+
                     // A render path can repeat a shader; the first list seen is enough.
                     if (s_Names.Count > 0 && !s_Shaders.ContainsKey(s_ShaderName))
                         s_Shaders[s_ShaderName] = s_Names;
