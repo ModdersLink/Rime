@@ -37,6 +37,23 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
             WorldScaleY = s_Heightfield.WorldScaleY
         };
 
+        // What the stream actually declared, and which slots got filled. Without this the caller
+        // cannot tell "this level ships no material tree" from "the parse never looked".
+        p_Heightfield.RasterTrees.Add($"slots={s_Tree.RasterTrees.Count}");
+
+        for (var i = 0; i < s_Tree.RasterTrees.Count; i++)
+            p_Heightfield.RasterTrees.Add($"slot{i}={(s_Tree.RasterTrees[i]?.GetType().Name ?? "null")}");
+
+        foreach (var s_Seen in s_Tree.SeenRasterTrees)
+            p_Heightfield.RasterTrees.Add($"declared={(RasterTree.RasterTreeTypes)s_Seen.Type}:{s_Seen.Size}");
+
+        if (s_Tree.RasterTrees[(int)RasterTree.RasterTreeTypes.TerrainMaterialTreeType] is TerrainMaterialTree s_Materials)
+        {
+            p_Heightfield.HasMaterialTree = true;
+            p_Heightfield.MaterialPairIndices = s_Materials.MaterialPairIndices;
+            p_Heightfield.BackgroundMaterialIndex = s_Materials.BackgroundMaterialIndex;
+        }
+
         if (s_Heightfield.RootNode is HeightfieldTreeNode s_Root)
             Walk(s_Root, 0, p_Heightfield.Nodes);
 
