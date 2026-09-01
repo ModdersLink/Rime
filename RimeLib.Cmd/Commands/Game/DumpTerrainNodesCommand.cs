@@ -78,6 +78,20 @@ namespace RimeLib.Cmd.Commands.Game
                 rasterTrees = s_Heightfield.RasterTrees,
                 materialPairIndices = s_Heightfield.MaterialPairIndices,
                 backgroundMaterialIndex = s_Heightfield.BackgroundMaterialIndex,
+                materialSamplesPerSide = s_Heightfield.MaterialSamplesPerSide,
+                materialNodes = s_Heightfield.MaterialNodes.ConvertAll(p_Node => (object)new
+                {
+                    level = p_Node.Level,
+                    indexX = p_Node.IndexX,
+                    indexY = p_Node.IndexY,
+                    min = p_Node.Min,
+                    max = p_Node.Max,
+                    lineSizes = p_Node.LineSizes,
+                    // Run-length encoded, decoded by the consumer: two equal bytes are a run and
+                    // the byte after them says how many more follow; everything else is one
+                    // sample. Each sample byte holds two 4-bit material indices.
+                    rle = System.Convert.ToBase64String(p_Node.Rle)
+                }),
                 nodes = s_Nodes
             }));
 

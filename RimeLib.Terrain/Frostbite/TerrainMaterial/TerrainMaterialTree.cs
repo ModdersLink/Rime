@@ -18,6 +18,9 @@ public class TerrainMaterialTree : RasterTree
     public List<uint> MaterialPairIndices { get; set; } = new List<uint>();
     public uint BackgroundMaterialIndex { get; set; }
 
+    /// <summary>Every node that carries material samples, in tree order.</summary>
+    public List<TerrainMaterialNode> Nodes { get; } = new List<TerrainMaterialNode>();
+
     public Vec2 CoverageMin { get; set; } = new Vec2();
     public uint NodeGridCellsPerSide { get; set; }
     public float VirtualSamplesPerMeter { get; set; }
@@ -39,15 +42,31 @@ public class TerrainMaterialTree : RasterTree
 
         if (s_NodeHasData && s_NodeHasPersistent)
         {
-            // TODO: Proper node parsing.
-
+            // The samples are run-length encoded, one run of lines per node, with the length of
+            // each line following the payload. Kept rather than skipped: this is the only record
+            // of which material covers which part of the terrain.
             var s_RleDataSize = p_Reader.ReadUInt32();
             var s_RleData = p_Reader.ReadBytes((int)s_RleDataSize);
 
+            var s_LineSizes = new ushort[NodeSamplesPerSide];
+
             for (var i = 0; i < NodeSamplesPerSide; ++i)
+                s_LineSizes[i] = p_Reader.ReadUInt16();
+
+            var s_MaterialNode = new TerrainMaterialNode
             {
-                var s_LineSize = p_Reader.ReadUInt16();
-            }
+                Level = p_NodeId.Level,
+                IndexX = p_NodeId.IndexX,
+                IndexY = p_NodeId.IndexY,
+                MinX = p_NodeCoverage.min.x,
+                MinY = p_NodeCoverage.min.y,
+                MaxX = p_NodeCoverage.max.x,
+                MaxY = p_NodeCoverage.max.y,
+                RleData = s_RleData,
+                LineSizes = s_LineSizes
+            };
+
+            Nodes.Add(s_MaterialNode);
         }
 
         var s_HasChildren = p_Reader.ReadBool();

@@ -45,13 +45,28 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
             p_Heightfield.RasterTrees.Add($"slot{i}={(s_Tree.RasterTrees[i]?.GetType().Name ?? "null")}");
 
         foreach (var s_Seen in s_Tree.SeenRasterTrees)
-            p_Heightfield.RasterTrees.Add($"declared={(RasterTree.RasterTreeTypes)s_Seen.Type}:{s_Seen.Size}");
+            p_Heightfield.RasterTrees.Add($"declared={(RasterTree.RasterTreeTypes)s_Seen.Type}:{s_Seen.Size} read={s_Seen.Consumed}");
 
         if (s_Tree.RasterTrees[(int)RasterTree.RasterTreeTypes.TerrainMaterialTreeType] is TerrainMaterialTree s_Materials)
         {
             p_Heightfield.HasMaterialTree = true;
             p_Heightfield.MaterialPairIndices = s_Materials.MaterialPairIndices;
             p_Heightfield.BackgroundMaterialIndex = s_Materials.BackgroundMaterialIndex;
+            p_Heightfield.MaterialSamplesPerSide = s_Materials.NodeSamplesPerSide;
+
+            foreach (var s_Node in s_Materials.Nodes)
+            {
+                p_Heightfield.MaterialNodes.Add(new TerrainMaterialSamples
+                {
+                    Level = s_Node.Level,
+                    IndexX = s_Node.IndexX,
+                    IndexY = s_Node.IndexY,
+                    Min = new[] { s_Node.MinX, s_Node.MinY },
+                    Max = new[] { s_Node.MaxX, s_Node.MaxY },
+                    Rle = s_Node.RleData,
+                    LineSizes = s_Node.LineSizes
+                });
+            }
         }
 
         if (s_Heightfield.RootNode is HeightfieldTreeNode s_Root)

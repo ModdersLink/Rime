@@ -26,7 +26,12 @@ namespace RimeLib.Terrain.Frostbite2_0
             s_Node.ID = p_NodeId;
             s_Node.Lod0ChunkSize = p_Reader.ReadUInt32();
             s_Node.Lod0ChunkID = new GUID(p_Reader);
-            s_Node.TreeNode = (HeightfieldTree as HeightfieldTree)!.FindNode(p_NodeId);
+            // Optional: see HeightfieldTree.TryFindNode. A streaming node without a heightfield
+            // node still carries the chunk its heights come from.
+            var s_TreeNode = (HeightfieldTree as HeightfieldTree)?.TryFindNode(p_NodeId);
+
+            if (s_TreeNode != null)
+                s_Node.TreeNode = s_TreeNode;
 
             var s_Lod1Enabled = p_Reader.ReadBool();
 
@@ -76,7 +81,7 @@ namespace RimeLib.Terrain.Frostbite2_0
 
         /// <summary>Every raster tree the stream announced, as (type, byte size). Diagnostic: it is
         /// the only way to tell "this level has no material tree" from "the parse lost it".</summary>
-        public List<(int Type, uint Size)> SeenRasterTrees { get; } = new();
+        public List<(int Type, uint Size, long Consumed)> SeenRasterTrees { get; } = new();
 
         public void Deserialize(RimeReader p_Reader)
         {
@@ -105,7 +110,6 @@ namespace RimeLib.Terrain.Frostbite2_0
 
                 var s_RasterTreeLoadSize = p_Reader.ReadUInt32();
 
-                SeenRasterTrees.Add(((int)s_RasterTreeType, s_RasterTreeLoadSize));
 
                 Debug.WriteLine("Parsing '{0}' raster tree with size '{1}'.", s_RasterTreeType, s_RasterTreeLoadSize);
 
@@ -144,6 +148,11 @@ namespace RimeLib.Terrain.Frostbite2_0
                 // misaligned everything after it -- which is why a level's material tree came back
                 // missing: the heightfield before it left the cursor in the wrong place, and its
                 // type byte was then read out of the middle of somebody else's data.
+                // Recorded after parsing so the caller can see a sub-parser that read the wrong
+                // number of bytes -- silent misalignment is how the material tree came back empty.
+                SeenRasterTrees.Add(((int)s_RasterTreeType, s_RasterTreeLoadSize,
+                    p_Reader.Position - s_InitialPosition));
+
                 var s_Expected = s_InitialPosition + s_RasterTreeLoadSize;
 
                 if (p_Reader.Position != s_Expected)

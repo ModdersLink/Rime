@@ -93,6 +93,22 @@ namespace RimeLib.Terrain.Frostbite2_0
             return s_Node;
         }
 
+        /// <summary>
+        /// The heightfield node for an id, or null where the tree has none.
+        /// </summary>
+        /// <remarks>
+        /// A streaming tree may be deeper than the heightfield tree it accompanies: its nodes name
+        /// the chunk their heights stream from, so one can exist with no heightfield node behind
+        /// it. MP_017 is such a level, and demanding the node there aborts the whole read.
+        /// </remarks>
+        public HeightfieldTreeNode? TryFindNode(QuadtreeNodeId p_ID)
+        {
+            if (HeightfieldRootNode == null)
+                return null;
+
+            return FindNodeInternal(p_ID, HeightfieldRootNode, out var s_Node) ? s_Node : null;
+        }
+
         private bool FindNodeInternal(QuadtreeNodeId p_ID, HeightfieldTreeNode p_Current, [NotNullWhen(true)] out HeightfieldTreeNode? p_Result)
         {
             p_Result = null;

@@ -21,12 +21,32 @@ public class TerrainHeightfieldNode
     public uint Flags { get; set; }
 }
 
+/// <summary>
+/// One node of the material tree: which material covers which sample, still run-length encoded.
+/// </summary>
+public class TerrainMaterialSamples
+{
+    public int Level { get; set; }
+    public int IndexX { get; set; }
+    public int IndexY { get; set; }
+    /// <summary>World-space coverage of the node: x, y (the terrain plane).</summary>
+    public float[] Min { get; set; } = new float[2];
+    public float[] Max { get; set; } = new float[2];
+    /// <summary>The encoded samples, decoded a line at a time against <see cref="LineSizes"/>.</summary>
+    public byte[] Rle { get; set; } = System.Array.Empty<byte>();
+    public ushort[] LineSizes { get; set; } = System.Array.Empty<ushort>();
+}
+
 public class TerrainHeightfield
 {
     /// <summary>Material indices the level's terrain uses, and the one covering everything else.</summary>
     public List<uint> MaterialPairIndices { get; set; } = new();
     public uint BackgroundMaterialIndex { get; set; }
     public bool HasMaterialTree { get; set; }
+    /// <summary>How many samples a material-tree node holds along one side.</summary>
+    public uint MaterialSamplesPerSide { get; set; }
+    /// <summary>The material tree's nodes, where it carries any.</summary>
+    public List<TerrainMaterialSamples> MaterialNodes { get; set; } = new();
 
     /// <summary>type:size for every raster tree the stream declared.</summary>
     public List<string> RasterTrees { get; set; } = new();
