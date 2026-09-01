@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using RimeLib.Terrain.Frostbite;
 using RimeLib.Terrain.Frostbite.Destruction;
 using RimeLib.Terrain.Frostbite.Heightfield;
+using RimeLib.Terrain.Frostbite.TerrainMask;
 using RimeLib.Terrain.Frostbite.TerrainMaterial;
 
 namespace RimeLib.Terrain.Frostbite2_0
@@ -122,6 +123,16 @@ namespace RimeLib.Terrain.Frostbite2_0
                 {
                     RasterTrees[(int)s_RasterTreeType] = new HeightfieldTree();
                     RasterTrees[(int)s_RasterTreeType].Deserialize(p_Reader);
+                }
+                else if (s_RasterTreeType == RasterTree.RasterTreeTypes.TerrainMaskTreeType)
+                {
+                    // Read the block whole first: the mask tree's layout is still being worked out,
+                    // and keeping the bytes lets a caller see what a partial parse left behind.
+                    var s_MaskBytes = p_Reader.ReadBytes((int)s_RasterTreeLoadSize);
+                    var s_Mask = new TerrainMaskTree { Raw = s_MaskBytes };
+
+                    s_Mask.Deserialize(s_MaskBytes);
+                    RasterTrees[(int)s_RasterTreeType] = s_Mask;
                 }
                 else if (s_RasterTreeType == RasterTree.RasterTreeTypes.TerrainMaterialTreeType)
                 {

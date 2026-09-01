@@ -36,9 +36,9 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
         public string StreamingTreeResourceName = string.Empty;
         public string DecalsResourceName = string.Empty;
 
-        VisualTerrainLayer[] Layers = new VisualTerrainLayer[0];
+        public VisualTerrainLayer[] Layers { get; set; } = new VisualTerrainLayer[0];
 
-        TerrainLayerCombinationDraw[] TerrainLayerCombinationDraws = new TerrainLayerCombinationDraw[0];
+        public TerrainLayerCombinationDraw[] TerrainLayerCombinationDraws { get; set; } = new TerrainLayerCombinationDraw[0];
 
         public VisualTerrain(RimeReader p_Reader)
         {
@@ -84,7 +84,7 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
 
             var s_LayerCombinationDrawCount = p_Reader.ReadUInt32();
             TerrainLayerCombinationDraws = new TerrainLayerCombinationDraw[s_LayerCombinationDrawCount];
-            for (var i = 0; i < s_LayerCount; i++)
+            for (var i = 0; i < s_LayerCombinationDrawCount; i++)
                 TerrainLayerCombinationDraws[i] = new TerrainLayerCombinationDraw(p_Reader);
         }
 

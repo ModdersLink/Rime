@@ -79,6 +79,21 @@ namespace RimeLib.Cmd.Commands.Game
                 materialPairIndices = s_Heightfield.MaterialPairIndices,
                 backgroundMaterialIndex = s_Heightfield.BackgroundMaterialIndex,
                 materialSamplesPerSide = s_Heightfield.MaterialSamplesPerSide,
+                maskSamplesPerSide = s_Heightfield.MaskSamplesPerSide,
+                maskConsumed = s_Heightfield.MaskConsumed,
+                streamNodes = s_Heightfield.StreamNodes.ConvertAll(p_Node => (object)new
+                {
+                    depth = p_Node.Depth,
+                    indexX = p_Node.IndexX,
+                    indexY = p_Node.IndexY,
+                    lod0Chunk = p_Node.Lod0Chunk,
+                    lod0Size = p_Node.Lod0Size,
+                    lod1Chunk = p_Node.Lod1Chunk,
+                    lod1Size = p_Node.Lod1Size,
+                    leaf = p_Node.Leaf,
+                    min = p_Node.Min,
+                    max = p_Node.Max
+                }),
                 materialNodes = s_Heightfield.MaterialNodes.ConvertAll(p_Node => (object)new
                 {
                     level = p_Node.Level,

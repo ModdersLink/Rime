@@ -15,11 +15,11 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
         public uint MaskedTerrainLayerIndexCount;
         public byte[] MaskedTerrainLayerIndices { get; set; } = new byte[0];
 
-        string ShaderName { get; set; } = string.Empty;
+        public string ShaderName { get; set; } = string.Empty;
 
-        bool DestructionMaskEnable;
-        byte Level;
-        byte DrawDirectLayerCount;
+        public bool DestructionMaskEnable;
+        public byte Level;
+        public byte DrawDirectLayerCount;
 
         public Surface3dDrawMethod(RimeReader p_Reader)
         {
@@ -34,6 +34,7 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
         public void Deserialize(RimeReader p_Reader)
         {
             MaskedTerrainLayerIndexCount = p_Reader.ReadUInt32();
+            MaskedTerrainLayerIndices = new byte[MaskedTerrainLayerIndexCount];
             for (var i = 0; i < MaskedTerrainLayerIndexCount; i++)
                 MaskedTerrainLayerIndices[i] = p_Reader.ReadUByte();
 

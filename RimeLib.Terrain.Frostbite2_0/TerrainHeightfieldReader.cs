@@ -4,6 +4,7 @@ using RimeLib.Frostbite;
 using RimeLib.IO;
 using RimeLib.Terrain.Frostbite;
 using RimeLib.Terrain.Frostbite.Heightfield;
+using RimeLib.Terrain.Frostbite.TerrainMask;
 using RimeLib.Terrain.Frostbite.TerrainMaterial;
 using RimeLib.Terrain.Resources;
 
@@ -47,6 +48,13 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
         foreach (var s_Seen in s_Tree.SeenRasterTrees)
             p_Heightfield.RasterTrees.Add($"declared={(RasterTree.RasterTreeTypes)s_Seen.Type}:{s_Seen.Size} read={s_Seen.Consumed}");
 
+        if (s_Tree.RasterTrees[(int)RasterTree.RasterTreeTypes.TerrainMaskTreeType] is TerrainMaskTree s_Mask)
+        {
+            p_Heightfield.MaskRaw = s_Mask.Raw;
+            p_Heightfield.MaskConsumed = s_Mask.Consumed;
+            p_Heightfield.MaskSamplesPerSide = s_Mask.NodeSamplesPerSide;
+        }
+
         if (s_Tree.RasterTrees[(int)RasterTree.RasterTreeTypes.TerrainMaterialTreeType] is TerrainMaterialTree s_Materials)
         {
             p_Heightfield.HasMaterialTree = true;
@@ -72,7 +80,41 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
         if (s_Heightfield.RootNode is HeightfieldTreeNode s_Root)
             Walk(s_Root, 0, p_Heightfield.Nodes);
 
+        // The streaming tree's own nodes. A level whose heightfield tree carries no samples --
+        // MP_017 embeds only its root -- streams them from the chunks these name, so without this
+        // there is no surface to build at all.
+        WalkStream(s_Tree.RootNode, 0, p_Heightfield.StreamNodes);
+
         return true;
+    }
+
+    private static void WalkStream(HeightfieldNode? p_Node, int p_Depth, List<TerrainStreamNode> p_Out)
+    {
+        if (p_Node == null)
+            return;
+
+        var s_Entry = new TerrainStreamNode
+        {
+            Depth = p_Depth,
+            IndexX = p_Node.ID.IndexX,
+            IndexY = p_Node.ID.IndexY,
+            Lod0Chunk = p_Node.Lod0ChunkID.ToString(),
+            Lod0Size = p_Node.Lod0ChunkSize,
+            Lod1Chunk = p_Node.Lod1ChunkID.ToString(),
+            Lod1Size = p_Node.Lod1ChunkSize,
+            Leaf = p_Node.Children.Length == 0
+        };
+
+        if (p_Node.TreeNode is HeightfieldTreeNode s_Tree)
+        {
+            s_Entry.Min = new[] { s_Tree.BoundingBox.min.x, s_Tree.BoundingBox.min.y, s_Tree.BoundingBox.min.z };
+            s_Entry.Max = new[] { s_Tree.BoundingBox.max.x, s_Tree.BoundingBox.max.y, s_Tree.BoundingBox.max.z };
+        }
+
+        p_Out.Add(s_Entry);
+
+        foreach (var l_Child in p_Node.Children)
+            WalkStream(l_Child, p_Depth + 1, p_Out);
     }
 
     private static void Walk(HeightfieldTreeNode p_Node, int p_Depth, List<TerrainHeightfieldNode> p_Out)

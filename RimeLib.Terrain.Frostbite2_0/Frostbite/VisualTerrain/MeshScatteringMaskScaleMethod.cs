@@ -36,10 +36,12 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
         public void Deserialize(RimeReader p_Reader)
         {
             MaskedTerrainLayerIndexCount = p_Reader.ReadUInt32();
+            MaskedTerrainLayerIndices = new byte[MaskedTerrainLayerIndexCount];
             for (var i = 0; i < MaskedTerrainLayerIndexCount; i++)
                 MaskedTerrainLayerIndices[i] = p_Reader.ReadUByte();
 
             OutputLayerOrderCount = p_Reader.ReadUInt32();
+            OutputLayerOrder = new byte[OutputLayerOrderCount];
             for (var i = 0; i < OutputLayerOrderCount; i++)
                 OutputLayerOrder[i] = p_Reader.ReadUByte();
 
