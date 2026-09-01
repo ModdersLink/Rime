@@ -48,9 +48,12 @@ namespace RimeLib.Cmd.Commands.Game
             var s_Variant = s_SrcMounted.Variants.FirstOrDefault(p_V => p_V.GetContainedBundle() != null) ?? s_SrcMounted.FirstVariant;
             var s_Db = s_Converter.FromPartitionObject(Name!, s_Variant!);
 
-            // mesh -> material index -> parameter -> texture resource
-            var s_Meshes = new Dictionary<string, List<Dictionary<string, string>>>();
-            var s_Base = new HashSet<string>();
+            // mesh -> variation hash -> material index -> parameter -> texture resource.
+            //
+            // Every variation is kept, not just the base. An object placed with a variation (a
+            // camo, a dirty version, a damaged one) is painted from THAT entry's textures, and
+            // collapsing them to the base both loses those textures and paints the object wrong.
+            var s_Meshes = new Dictionary<string, Dictionary<string, List<Dictionary<string, string>>>>();
 
             foreach (var s_Instance in s_Db.Instances)
             {
@@ -63,20 +66,6 @@ namespace RimeLib.Cmd.Commands.Game
                 if (!s_Mounter.TryGetPartitionByGuid(s_Entry.Mesh.PartitionGuid, out var s_MeshName, out _) || s_MeshName == null)
                     s_MeshName = "unresolved:" + s_Entry.Mesh.PartitionGuid;
 
-                // Hash 0 is the base appearance and is what we want when it exists -- but plenty of
-                // meshes (the destruction variants especially) appear ONLY under a variation hash,
-                // and dropping those left them with no textures at all. Take a variation when the
-                // base is absent, and let the base overwrite it if it turns up later.
-                var s_IsBase = s_Entry.VariationAssetNameHash == 0;
-
-                if (!s_IsBase && s_Meshes.ContainsKey(s_MeshName))
-                    continue;
-
-                if (s_IsBase && s_Base.Contains(s_MeshName))
-                    continue;
-
-                if (s_IsBase)
-                    s_Base.Add(s_MeshName);
 
                 var s_Materials = new List<Dictionary<string, string>>();
 
@@ -96,7 +85,13 @@ namespace RimeLib.Cmd.Commands.Game
                     s_Materials.Add(s_Textures);
                 }
 
-                s_Meshes[s_MeshName] = s_Materials;
+                if (!s_Meshes.TryGetValue(s_MeshName, out var s_Variations))
+                {
+                    s_Variations = new Dictionary<string, List<Dictionary<string, string>>>();
+                    s_Meshes[s_MeshName] = s_Variations;
+                }
+
+                s_Variations[s_Entry.VariationAssetNameHash.ToString()] = s_Materials;
             }
 
             File.WriteAllText(Destination.FullName, JsonConvert.SerializeObject(new { meshes = s_Meshes }));
