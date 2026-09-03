@@ -48,6 +48,36 @@ public class TerrainMaskTree : RasterTree
     public long Consumed { get; set; }
 
 
+    /// <summary>Whether a chunk header starts here, without consuming it.</summary>
+    private bool LooksLikeChunk(RimeReader p_Reader, long p_End)
+    {
+        var s_Start = p_Reader.Position;
+        var s_Ok = false;
+
+        if (s_Start + 8 <= p_End)
+        {
+            var s_Records = (ushort)((p_Reader.ReadUByte() << 8) | p_Reader.ReadUByte());
+            var s_Nodes = (ushort)((p_Reader.ReadUByte() << 8) | p_Reader.ReadUByte());
+            p_Reader.ReadUInt32();
+
+            var s_SampleBytes = (long)NodeSamplesPerSide * NodeSamplesPerSide;
+            var s_DataAt = s_Start + 8 + s_Records * 32L;
+
+            // Every chunk measured carries four container records beyond its node count, so a
+            // header with fewer than four records is not one.
+            if (s_Records >= 4 && s_DataAt + 4 <= p_End)
+            {
+                p_Reader.Seek(s_DataAt - p_Reader.Position, SeekOrigin.Current);
+
+                var s_Size = p_Reader.ReadUInt32();
+                s_Ok = s_Size == s_Nodes * s_SampleBytes && s_DataAt + 4 + s_Size <= p_End;
+            }
+        }
+
+        p_Reader.Seek(s_Start - p_Reader.Position, SeekOrigin.Current);
+        return s_Ok;
+    }
+
     /// <summary>
     /// One run of node records followed by their samples.
     ///
@@ -159,13 +189,32 @@ public class TerrainMaskTree : RasterTree
 
         var s_End = Raw.Length > 0 ? Raw.Length : p_Reader.Length;
 
-        // Chunks run until one does not check out. Every level measured carries all DataNodeCount
-        // of its nodes in the first, bar MP_001, which continues into further chunks this does not
-        // yet follow -- so stopping is a partial read, not a failure, and the nodes already taken
-        // are good.
+        // Chunks run to the end of the block. Between them sits a flag byte and then padding,
+        // whose length varies -- MP_001 uses 0, 7, 14 and 21 bytes of it. The padding is always
+        // zero and a chunk header always opens with a non-zero record count, so skipping the flag
+        // and then any zeros lands on the next header without having to know the rule behind the
+        // length.
         while (p_Reader.Position < s_End && ReadChunk(p_Reader, s_End))
         {
-            if (p_Reader.Position >= s_End || p_Reader.ReadUByte() != 1)
+            if (p_Reader.Position >= s_End)
+                break;
+
+            p_Reader.ReadUByte();
+
+            // Then padding, in whole 7-byte units -- MP_001 uses none, one, two and three of them
+            // between chunks. Skipping zero bytes instead does not work: a chunk's counts are
+            // big-endian, so a count under 256 opens with a zero byte of its own and gets eaten.
+            var s_Landed = false;
+
+            for (var i = 0; i < 8 && !s_Landed; ++i)
+            {
+                if (LooksLikeChunk(p_Reader, s_End))
+                    s_Landed = true;
+                else
+                    p_Reader.Seek(7, SeekOrigin.Current);
+            }
+
+            if (!s_Landed)
                 break;
         }
 
