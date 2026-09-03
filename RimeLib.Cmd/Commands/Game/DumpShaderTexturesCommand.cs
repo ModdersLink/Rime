@@ -57,6 +57,14 @@ namespace RimeLib.Cmd.Commands.Game
 
             var s_Shaders = new Dictionary<string, List<string>>();
 
+            // register -> texture, per shader.
+            //
+            // A shader that bakes its own textures binds them to sampler registers, and the
+            // register is the only thing in this format that says WHICH texture plays which role.
+            // Emitted so the mapping can be VALIDATED against meshes whose diffuse is already
+            // known from their material, instead of guessed at from filenames.
+            var s_Registers = new Dictionary<string, Dictionary<string, string>>();
+
             foreach (var s_Key in s_Databases.Keys)
             {
                 var s_Db = s_Databases[s_Key];
@@ -97,13 +105,47 @@ namespace RimeLib.Cmd.Commands.Game
                         }
                     }
 
+                    var s_ByRegister = new Dictionary<string, string>();
+
+                    if (s_Info.GetType().GetProperty("Solutions")?.GetValue(s_Info) is System.Array s_Solutions)
+                    {
+                        foreach (var s_Solution in s_Solutions)
+                        {
+                            foreach (var s_Which in new[] { "PixelConstants", "VertexConstants" })
+                            {
+                                var s_Constants = s_Solution?.GetType().GetProperty(s_Which)?.GetValue(s_Solution);
+
+                                if (s_Constants?.GetType().GetProperty("Textures")?.GetValue(s_Constants)
+                                        is not System.Array s_Constant)
+                                    continue;
+
+                                foreach (var s_Entry in s_Constant)
+                                {
+                                    var s_TexName = s_Entry?.GetType().GetProperty("Name")?.GetValue(s_Entry)?.ToString();
+                                    var s_Reg = s_Entry?.GetType().GetProperty("Index")?.GetValue(s_Entry);
+
+                                    if (string.IsNullOrWhiteSpace(s_TexName) || s_Reg == null)
+                                        continue;
+
+                                    var s_RegKey = System.Convert.ToInt32(s_Reg).ToString();
+
+                                    if (!s_ByRegister.ContainsKey(s_RegKey))
+                                        s_ByRegister[s_RegKey] = s_TexName!;
+                                }
+                            }
+                        }
+                    }
+
+                    if (s_ByRegister.Count > 0 && !s_Registers.ContainsKey(s_ShaderName))
+                        s_Registers[s_ShaderName] = s_ByRegister;
+
                     // A render path can repeat a shader; the first list seen is enough.
                     if (s_Names.Count > 0 && !s_Shaders.ContainsKey(s_ShaderName))
                         s_Shaders[s_ShaderName] = s_Names;
                 }
             }
 
-            File.WriteAllText(Destination.FullName, JsonConvert.SerializeObject(new { shaders = s_Shaders }));
+            File.WriteAllText(Destination.FullName, JsonConvert.SerializeObject(new { shaders = s_Shaders, registers = s_Registers }));
             p_Writer.WriteLine($"Shader textures for {Name} written to {Destination.FullName} ({s_Shaders.Count} shaders).");
 
             return true;

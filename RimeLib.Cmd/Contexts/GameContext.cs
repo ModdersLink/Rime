@@ -59,6 +59,10 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListResourcesOfTypeCommand>();
             RegisterCommand<DumpShaderDbCommand>();
                 RegisterCommand<DumpShaderTexturesCommand>();
+                RegisterCommand<WhereIsCommand>();
+                RegisterCommand<DumpShaderBytecodeCommand>();
+                RegisterCommand<DumpEbxLayoutCommand>();
+                RegisterCommand<ListResourcesOfTypeJsonCommand>();
             RegisterCommand<DumpShaderSolutionsCommand>();
             RegisterCommand<DumpMeshVariationDbVariationsCommand>();
                 RegisterCommand<DumpMeshTexturesCommand>();

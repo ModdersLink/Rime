@@ -28,6 +28,55 @@ public class EbxReader : IDisposable
 
     private DatabasePartition m_Partition = new();
 
+    /// <summary>
+    /// The type and field layout this EBX file declares, as JSON.
+    ///
+    /// The generated C# classes for Frostbite2_0 are stubs for some types -- TerrainData has no
+    /// declared fields at all -- and ParseTypeInstance looks its properties up BY NAME, so those
+    /// fields are silently skipped and the instance decodes to nothing but its Asset base. The
+    /// names, offsets and types are right here in the file's own descriptor tables, which is what
+    /// this exposes: enough to declare the missing properties without guessing at offsets.
+    /// </summary>
+    public string DumpLayout()
+    {
+        var s_Types = new List<object>();
+
+        foreach (var s_Type in m_TypeDescriptors)
+        {
+            var s_Fields = new List<object>();
+            var s_First = (int)s_Type.LayoutDescriptor;
+
+            for (var i = 0; i < s_Type.FieldCount; ++i)
+            {
+                var s_Index = s_First + i;
+
+                if (s_Index < 0 || s_Index >= m_FieldDescriptors.Count)
+                    continue;
+
+                var s_Field = m_FieldDescriptors[s_Index];
+                s_Fields.Add(new
+                {
+                    name = s_Field.Name,
+                    offset = s_Field.Offset,
+                    type = s_Field.Flags.Type.ToString(),
+                    fieldType = s_Field.FieldType,
+                    secondaryOffset = s_Field.SecondaryOffset,
+                });
+            }
+
+            s_Types.Add(new
+            {
+                name = s_Type.Name,
+                size = s_Type.Size,
+                alignment = s_Type.Alignment,
+                fieldCount = (int)s_Type.FieldCount,
+                fields = s_Fields,
+            });
+        }
+
+        return Newtonsoft.Json.JsonConvert.SerializeObject(new { types = s_Types }, Newtonsoft.Json.Formatting.Indented);
+    }
+
     public DatabasePartition ParsePartition(string p_Name, IObjectVariant p_Variant)
     {
         using var s_Reader = p_Variant.GetReader();
