@@ -118,8 +118,9 @@ namespace RimeLib.Cmd.Commands.Game
                     // Decoded here rather than handed over encoded: every consumer wanted the
                     // samples, and each was reimplementing the same run-length walk to get them.
                     // One material index per sample, indexing materialPairIndices.
+                    var s_MatSide = (int)s_Heightfield.MaterialSamplesPerSide;
                     var s_Packed = TerrainRle.Decode(p_Node.Rle, p_Node.LineSizes,
-                        (int)s_Heightfield.MaterialSamplesPerSide / 2);
+                        TerrainRle.BytesPerLine(s_MatSide));
 
                     return (object)new
                     {
@@ -134,7 +135,29 @@ namespace RimeLib.Cmd.Commands.Game
                         // buffer that is quietly wrong.
                         samples = s_Packed == null
                             ? null
-                            : System.Convert.ToBase64String(TerrainRle.Unpack(s_Packed))
+                            : System.Convert.ToBase64String(
+                                TerrainRle.UnpackRows(s_Packed, s_MatSide, p_Node.LineSizes.Length))
+                    };
+                }),
+                destructionSamplesPerSide = s_Heightfield.DestructionSamplesPerSide,
+                destructionNodes = s_Heightfield.DestructionNodes.ConvertAll(p_Node =>
+                {
+                    var s_Side = (int)s_Heightfield.DestructionSamplesPerSide;
+                    var s_Depths = TerrainRle.Decode(p_Node.Rle, p_Node.LineSizes,
+                        TerrainRle.BytesPerLine(s_Side));
+
+                    return (object)new
+                    {
+                        level = p_Node.Level,
+                        indexX = p_Node.IndexX,
+                        indexY = p_Node.IndexY,
+                        min = p_Node.Min,
+                        max = p_Node.Max,
+                        samplesPerSide = s_Side,
+                        samples = s_Depths == null
+                            ? null
+                            : System.Convert.ToBase64String(
+                                TerrainRle.UnpackRows(s_Depths, s_Side, p_Node.LineSizes.Length))
                     };
                 }),
                 nodes = s_Nodes

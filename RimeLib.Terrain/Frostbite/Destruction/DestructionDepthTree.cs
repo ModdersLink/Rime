@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 ﻿
 using fb;
 using RimeLib.IO;
@@ -19,6 +20,9 @@ public class DestructionDepthTree : RasterTree
 
     public uint NodeSamplesPerSidePot { get; set; }
 
+    /// <summary>Every node that carries destruction depths, in tree order.</summary>
+    public List<DestructionDepthTreeNode> Nodes { get; } = new List<DestructionDepthTreeNode>();
+
     private DestructionDepthTreeNode LoadNodes(RimeReader p_Reader, uint p_NodeIndex, ref uint p_FirstFreeNodeIndex, QuadtreeNodeId p_NodeId, AxisAlignedBox p_NodeCoverage)
     {
         var s_Node = new DestructionDepthTreeNode()
@@ -37,15 +41,18 @@ public class DestructionDepthTree : RasterTree
 
         if (s_NodeHasData && s_NodeHasPersistent)
         {
-            // TODO: Proper node parsing.
-
+            // Run-length encoded exactly as the material tree's samples are, so TerrainRle decodes
+            // them. They were being read and dropped, which left the tree walk correct and the
+            // depths -- how deep the ground has been blown out at each sample -- unreachable.
             var s_RleDataSize = p_Reader.ReadUInt32();
-            var s_RleData = p_Reader.ReadBytes((int)s_RleDataSize);
+
+            s_Node.RleData = p_Reader.ReadBytes((int)s_RleDataSize);
+            s_Node.LineSizes = new ushort[NodeSamplesPerSide];
 
             for (var i = 0; i < NodeSamplesPerSide; ++i)
-            {
-                var s_LineSize = p_Reader.ReadUInt16();
-            }
+                s_Node.LineSizes[i] = p_Reader.ReadUInt16();
+
+            Nodes.Add(s_Node);
         }
 
         var s_HasChildren = p_Reader.ReadBool();

@@ -72,6 +72,37 @@ public static class TerrainRle
     }
 
     /// <summary>
+    /// How many bytes a line of <paramref name="p_SamplesPerLine"/> nibble-packed samples takes.
+    /// An odd sample count still needs the whole byte: the destruction tree's 133 samples are 67
+    /// bytes, not 66, and reading them as 66 makes every line come up short.
+    /// </summary>
+    public static int BytesPerLine(int p_SamplesPerLine)
+    {
+        return (p_SamplesPerLine + 1) / 2;
+    }
+
+    /// <summary>
+    /// Unpack nibble-packed rows, dropping the half-sample an odd row width leaves at its end.
+    /// </summary>
+    public static byte[] UnpackRows(byte[] p_Packed, int p_SamplesPerLine, int p_Lines)
+    {
+        var s_Stride = BytesPerLine(p_SamplesPerLine);
+        var s_Out = new byte[p_SamplesPerLine * p_Lines];
+
+        for (var s_Line = 0; s_Line < p_Lines; ++s_Line)
+        {
+            for (var i = 0; i < p_SamplesPerLine; ++i)
+            {
+                var s_Byte = p_Packed[s_Line * s_Stride + i / 2];
+                s_Out[s_Line * p_SamplesPerLine + i] =
+                    (byte)(i % 2 == 0 ? s_Byte & 0xF : s_Byte >> 4);
+            }
+        }
+
+        return s_Out;
+    }
+
+    /// <summary>
     /// Samples packed two per byte, as the material tree stores them: the low nibble first.
     /// </summary>
     public static byte[] Unpack(byte[] p_Packed)

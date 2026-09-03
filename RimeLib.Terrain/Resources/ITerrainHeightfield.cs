@@ -87,6 +87,11 @@ public class TerrainHeightfield
     /// <summary>The material tree's nodes, where it carries any.</summary>
     public List<TerrainMaterialSamples> MaterialNodes { get; set; } = new();
 
+    /// <summary>How deep the ground has been destroyed, per sample, where the tree carries it.</summary>
+    public List<TerrainMaterialSamples> DestructionNodes { get; set; } = new();
+
+    public uint DestructionSamplesPerSide { get; set; }
+
     /// <summary>
     /// The mask tree's nodes, in the same shape as the material ones.
     ///

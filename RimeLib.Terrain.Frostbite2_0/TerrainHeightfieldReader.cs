@@ -1,3 +1,4 @@
+using RimeLib.Terrain.Frostbite.Destruction;
 using System.Collections.Generic;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
@@ -96,6 +97,26 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
 
         if (s_Heightfield.RootNode is HeightfieldTreeNode s_Root)
             Walk(s_Root, 0, p_Heightfield.Nodes);
+
+        if (s_Tree.RasterTrees[(int)RasterTree.RasterTreeTypes.DestructionDepthTreeType]
+                is DestructionDepthTree s_Destruction)
+        {
+            p_Heightfield.DestructionSamplesPerSide = s_Destruction.NodeSamplesPerSide;
+
+            foreach (var s_Node in s_Destruction.Nodes)
+            {
+                p_Heightfield.DestructionNodes.Add(new TerrainMaterialSamples
+                {
+                    Level = s_Node.ID.Level,
+                    IndexX = s_Node.ID.IndexX,
+                    IndexY = s_Node.ID.IndexY,
+                    Min = new[] { s_Node.WorldCoverage!.min.x, s_Node.WorldCoverage!.min.y },
+                    Max = new[] { s_Node.WorldCoverage!.max.x, s_Node.WorldCoverage!.max.y },
+                    Rle = s_Node.RleData,
+                    LineSizes = s_Node.LineSizes
+                });
+            }
+        }
 
         // The streaming tree's own nodes. A level whose heightfield tree carries no samples --
         // MP_017 embeds only its root -- streams them from the chunks these name, so without this
