@@ -86,6 +86,15 @@ public class TerrainHeightfield
     public uint MaterialSamplesPerSide { get; set; }
     /// <summary>The material tree's nodes, where it carries any.</summary>
     public List<TerrainMaterialSamples> MaterialNodes { get; set; } = new();
+
+    /// <summary>
+    /// The mask tree's nodes, in the same shape as the material ones.
+    ///
+    /// The material tree says WHICH two materials meet at a texel; this says HOW MUCH of each.
+    /// Without it a consumer can only pick one material per texel, which draws hard mosaic edges
+    /// where the engine draws a blend. Read all along -- only Raw was ever carried out.
+    /// </summary>
+    public List<TerrainMaterialSamples> MaskNodes { get; set; } = new();
     /// <summary>The mask tree's block as stored, while its layout is being worked out.</summary>
     public byte[] MaskRaw { get; set; } = System.Array.Empty<byte>();
     public long MaskConsumed { get; set; }

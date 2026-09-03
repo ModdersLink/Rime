@@ -53,6 +53,20 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
             p_Heightfield.MaskRaw = s_Mask.Raw;
             p_Heightfield.MaskConsumed = s_Mask.Consumed;
             p_Heightfield.MaskSamplesPerSide = s_Mask.NodeSamplesPerSide;
+
+            foreach (var s_Node in s_Mask.Nodes)
+            {
+                p_Heightfield.MaskNodes.Add(new TerrainMaterialSamples
+                {
+                    Level = s_Node.Level,
+                    IndexX = s_Node.IndexX,
+                    IndexY = s_Node.IndexY,
+                    Min = new[] { s_Node.MinX, s_Node.MinY },
+                    Max = new[] { s_Node.MaxX, s_Node.MaxY },
+                    Rle = s_Node.RleData,
+                    LineSizes = s_Node.LineSizes
+                });
+            }
         }
 
         if (s_Tree.RasterTrees[(int)RasterTree.RasterTreeTypes.TerrainMaterialTreeType] is TerrainMaterialTree s_Materials)

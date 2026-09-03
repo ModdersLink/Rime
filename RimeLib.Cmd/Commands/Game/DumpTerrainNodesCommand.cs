@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.IO;
+using RimeLib.Terrain.Frostbite;
 using Newtonsoft.Json;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
@@ -83,6 +84,10 @@ namespace RimeLib.Cmd.Commands.Game
                 backgroundMaterialIndex = s_Heightfield.BackgroundMaterialIndex,
                 materialSamplesPerSide = s_Heightfield.MaterialSamplesPerSide,
                 maskSamplesPerSide = s_Heightfield.MaskSamplesPerSide,
+                // The head of the mask tree's own bytes. Its node parse consumes 39 of ~1.35 MB,
+                // so the header layout it assumes is wrong; this is the evidence needed to fix it.
+                maskRawLength = s_Heightfield.MaskRaw.Length,
+                maskRawHead = System.Convert.ToBase64String(s_Heightfield.MaskRaw),
                 maskConsumed = s_Heightfield.MaskConsumed,
                 streamNodes = s_Heightfield.StreamNodes.ConvertAll(p_Node => (object)new
                 {
@@ -97,7 +102,7 @@ namespace RimeLib.Cmd.Commands.Game
                     min = p_Node.Min,
                     max = p_Node.Max
                 }),
-                materialNodes = s_Heightfield.MaterialNodes.ConvertAll(p_Node => (object)new
+                maskNodes = s_Heightfield.MaskNodes.ConvertAll(p_Node => (object)new
                 {
                     level = p_Node.Level,
                     indexX = p_Node.IndexX,
@@ -105,10 +110,31 @@ namespace RimeLib.Cmd.Commands.Game
                     min = p_Node.Min,
                     max = p_Node.Max,
                     lineSizes = p_Node.LineSizes,
-                    // Run-length encoded, decoded by the consumer: two equal bytes are a run and
-                    // the byte after them says how many more follow; everything else is one
-                    // sample. Each sample byte holds two 4-bit material indices.
                     rle = System.Convert.ToBase64String(p_Node.Rle)
+                }),
+                materialNodes = s_Heightfield.MaterialNodes.ConvertAll(p_Node =>
+                {
+                    // Decoded here rather than handed over encoded: every consumer wanted the
+                    // samples, and each was reimplementing the same run-length walk to get them.
+                    // One material index per sample, indexing materialPairIndices.
+                    var s_Packed = TerrainRle.Decode(p_Node.Rle, p_Node.LineSizes,
+                        (int)s_Heightfield.MaterialSamplesPerSide / 2);
+
+                    return (object)new
+                    {
+                        level = p_Node.Level,
+                        indexX = p_Node.IndexX,
+                        indexY = p_Node.IndexY,
+                        min = p_Node.Min,
+                        max = p_Node.Max,
+                        samplesPerSide = s_Heightfield.MaterialSamplesPerSide,
+                        // Null when the run-length walk did not land exactly on a line boundary,
+                        // so a caller sees "this did not decode" instead of a plausible-looking
+                        // buffer that is quietly wrong.
+                        samples = s_Packed == null
+                            ? null
+                            : System.Convert.ToBase64String(TerrainRle.Unpack(s_Packed))
+                    };
                 }),
                 nodes = s_Nodes
             }));
