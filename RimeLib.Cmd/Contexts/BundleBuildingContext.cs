@@ -30,11 +30,13 @@ namespace RimeLib.Cmd.Contexts
         {
             private readonly ResourceType m_ResourceType;
             private readonly ResourceRef m_ResourceId;
+            private readonly byte[]? m_Meta;
 
-            public ResourceFileReader(string p_Path, ResourceType p_ResourceType, string p_Name) : base(p_Path)
+            public ResourceFileReader(string p_Path, ResourceType p_ResourceType, string p_Name, byte[]? p_Meta = null) : base(p_Path)
             {
                 m_ResourceType = p_ResourceType;
                 m_ResourceId = new ResourceRef(p_Name, this);
+                m_Meta = p_Meta;
             }
 
             public ResourceType GetResourceType()
@@ -44,8 +46,11 @@ namespace RimeLib.Cmd.Contexts
 
             public bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta)
             {
-                p_Meta = null;
-                return false;
+                // A MeshSet keeps the length of its relocation table in meta field f2. Returning
+                // nothing here makes the engine relocate no pointers at all, which is a crash at
+                // load rather than a missing detail.
+                p_Meta = m_Meta;
+                return m_Meta != null;
             }
 
             public ResourceRef GetId(string? p_Name = null)
@@ -240,14 +245,14 @@ namespace RimeLib.Cmd.Contexts
             return s_Text;
         }
 
-        internal void AddChunk(GUID p_Guid, FileInfo p_File, string p_AssetName)
+        internal void AddChunk(GUID p_Guid, FileInfo p_File, string p_AssetName, int? p_FirstMip = null)
         {
-            m_Builder.WithChunk(p_Guid, new SbBuildingContext.ChunkFileReader(p_File.FullName, p_AssetName));
+            m_Builder.WithChunk(p_Guid, new SbBuildingContext.ChunkFileReader(p_File.FullName, p_AssetName, p_FirstMip));
         }
 
-        internal void AddChunk(GUID p_Guid, FileInfo p_File, int p_AssetHash)
+        internal void AddChunk(GUID p_Guid, FileInfo p_File, int p_AssetHash, int? p_FirstMip = null)
         {
-            m_Builder.WithChunk(p_Guid, new SbBuildingContext.ChunkFileReader(p_File.FullName, p_AssetHash));
+            m_Builder.WithChunk(p_Guid, new SbBuildingContext.ChunkFileReader(p_File.FullName, p_AssetHash, p_FirstMip));
         }
 
         internal void AddChunk(GUID p_Guid, IChunkObject p_Object)
@@ -265,9 +270,9 @@ namespace RimeLib.Cmd.Contexts
             return m_Builder.GetChunks();
         }
 
-        internal void AddResource(string p_Name, ResourceType p_Type, FileInfo p_File)
+        internal void AddResource(string p_Name, ResourceType p_Type, FileInfo p_File, byte[]? p_Meta = null)
         {
-            m_Builder.WithResource(p_Name, new ResourceFileReader(p_File.FullName, p_Type, p_Name));
+            m_Builder.WithResource(p_Name, new ResourceFileReader(p_File.FullName, p_Type, p_Name, p_Meta));
         }
 
         internal void AddResource(string p_Name, IResourceObject p_Object)

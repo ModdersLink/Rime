@@ -3,6 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using RimeLib.Cmd.Commands.SbBuilding;
 using RimeLib.Content.Building;
+using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
 using RimeLib.Content.Frostbite2_0.Mounting;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
@@ -60,23 +61,48 @@ namespace RimeLib.Cmd.Contexts
         {
             private readonly string? m_AssetName;
             private readonly int? m_AssetHash;
+            private readonly int? m_FirstMip;
 
-            public ChunkFileReader(string p_Path, string? p_AssetName) :
+            public ChunkFileReader(string p_Path, string? p_AssetName, int? p_FirstMip = null) :
                 base(p_Path)
             {
                 m_AssetName = p_AssetName;
+                m_FirstMip = p_FirstMip;
             }
 
-            public ChunkFileReader(string p_Path, int? p_AssetHash) :
+            public ChunkFileReader(string p_Path, int? p_AssetHash, int? p_FirstMip = null) :
                 base(p_Path)
             {
                 m_AssetHash = p_AssetHash;
+                m_FirstMip = p_FirstMip;
             }
 
+            /// <summary>
+            /// A texture chunk's meta, when one was supplied.
+            ///
+            /// `firstMip` is how the engine slices a texture chunk into D3D subresources: it says
+            /// which mip the chunk's data starts at. Returning nothing leaves the mip chain
+            /// undescribed, and CreateTexture2D then rejects the subresource array outright with
+            /// E_INVALIDARG -- which is a malformed descriptor, not an allocation failure, and is
+            /// exactly the error a rebuilt DDS produces. Chunks pulled from an existing bundle keep
+            /// their own meta because the closure passes the mounted variant through; this is the
+            /// path for a chunk added from a FILE, which had no way to carry one.
+            /// </summary>
             public bool TryGetMeta([NotNullWhen(true)] out DbObject? p_Meta)
             {
                 p_Meta = null;
-                return false;
+
+                if (m_FirstMip == null)
+                    return false;
+
+                var s_Entry = new ChunkEntry.ChunkMetaEntry();
+
+                if (m_AssetHash.HasValue)
+                    s_Entry.AssetNameHash = m_AssetHash.Value;
+
+                s_Entry.Payload.FirstMip = m_FirstMip;
+                p_Meta = DbObjectConverter.ToDbObject(s_Entry);
+                return true;
             }
 
             public uint GetRangeStart()
