@@ -76,6 +76,7 @@ namespace RimeLib.Cmd.Commands.Game
             {
                 resource = Name,
                 samplesPerSide = s_Heightfield.SamplesPerSide,
+                nodeBorderWidth = s_Heightfield.NodeBorderWidth,
                 worldSizeY = s_Heightfield.WorldSizeY,
                 worldScaleY = s_Heightfield.WorldScaleY,
                 hasMaterialTree = s_Heightfield.HasMaterialTree,

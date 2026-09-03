@@ -34,6 +34,7 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
         p_Heightfield = new TerrainHeightfield
         {
             SamplesPerSide = s_Heightfield.NodeSamplesPerSide,
+            NodeBorderWidth = s_Heightfield.NodeBorderWidth,
             WorldSizeY = s_Heightfield.WorldSizeY,
             WorldScaleY = s_Heightfield.WorldScaleY
         };

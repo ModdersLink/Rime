@@ -104,6 +104,14 @@ public class TerrainHeightfield
     public List<string> RasterTrees { get; set; } = new();
 
     public uint SamplesPerSide { get; set; }
+
+        /// <summary>
+        /// How many rows of stitching skirt sit around each node's samples. The interior is
+        /// SamplesPerSide - 2 * NodeBorderWidth wide, and it is the interior alone that covers the
+        /// node's box -- treating every sample as terrain stretches the field and draws the skirt
+        /// as ground, which shows up as nodes disagreeing by metres along their shared edges.
+        /// </summary>
+        public uint NodeBorderWidth { get; set; }
     public float WorldSizeY { get; set; }
     public float WorldScaleY { get; set; }
     public List<TerrainHeightfieldNode> Nodes { get; set; } = new();
