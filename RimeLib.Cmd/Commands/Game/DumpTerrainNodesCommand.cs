@@ -109,8 +109,8 @@ namespace RimeLib.Cmd.Commands.Game
                     indexY = p_Node.IndexY,
                     min = p_Node.Min,
                     max = p_Node.Max,
-                    lineSizes = p_Node.LineSizes,
-                    rle = System.Convert.ToBase64String(p_Node.Rle)
+                    samplesPerSide = s_Heightfield.MaskSamplesPerSide,
+                    samples = System.Convert.ToBase64String(p_Node.Rle)
                 }),
                 materialNodes = s_Heightfield.MaterialNodes.ConvertAll(p_Node =>
                 {

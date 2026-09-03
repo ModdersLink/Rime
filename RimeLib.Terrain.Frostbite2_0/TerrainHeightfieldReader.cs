@@ -63,8 +63,10 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
                     IndexY = s_Node.IndexY,
                     Min = new[] { s_Node.MinX, s_Node.MinY },
                     Max = new[] { s_Node.MaxX, s_Node.MaxY },
-                    Rle = s_Node.RleData,
-                    LineSizes = s_Node.LineSizes
+                    // Mask samples are stored flat, not run-length encoded like the material
+                    // tree's, so they travel in the same field without a line-size table.
+                    Rle = s_Node.Samples,
+                    LineSizes = System.Array.Empty<ushort>()
                 });
             }
         }

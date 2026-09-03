@@ -1,7 +1,7 @@
 namespace RimeLib.Terrain.Frostbite.TerrainMask;
 
 /// <summary>
-/// One node of a terrain mask tree: how strongly each layer covers each sample, run-length encoded.
+/// One node of a terrain mask tree: how strongly each layer covers each sample of its patch.
 /// </summary>
 public class TerrainMaskNode
 {
@@ -14,9 +14,18 @@ public class TerrainMaskNode
     public float MaxX { get; set; }
     public float MaxY { get; set; }
 
-    /// <summary>The encoded samples, decoded a line at a time against <see cref="LineSizes"/>.</summary>
-    public byte[] RleData { get; set; } = System.Array.Empty<byte>();
+    /// <summary>
+    /// Which of this node's descendants carry samples, one bit each in quadtree order. Eleven
+    /// bytes covers the 85 nodes of a four-level quadtree (1 + 4 + 16 + 64).
+    /// </summary>
+    public byte[] PresenceMask { get; set; } = System.Array.Empty<byte>();
 
-    /// <summary>How many encoded bytes each line of the node occupies.</summary>
-    public ushort[] LineSizes { get; set; } = System.Array.Empty<ushort>();
+    /// <summary>Flags stored alongside the presence mask; the low bytes are its length.</summary>
+    public uint Flags { get; set; }
+
+    /// <summary>
+    /// The node's samples, NodeSamplesPerSide squared of them. Unlike the material tree these are
+    /// not run-length encoded -- they are stored flat, one byte per sample.
+    /// </summary>
+    public byte[] Samples { get; set; } = System.Array.Empty<byte>();
 }
