@@ -53,6 +53,34 @@ public class TerrainMaskTree : RasterTree
     /// <summary>Every node that carries mask samples, in tree order.</summary>
     public List<TerrainMaskNode> Nodes { get; } = new List<TerrainMaskNode>();
 
+    /// <summary>
+    /// One group of the block: its records, the u32 that follows the counts, how many 7-byte zero
+    /// blocks preceded it, and whether it carries samples. Kept so the block can be WRITTEN from
+    /// fields rather than copied.
+    /// </summary>
+    public sealed class Group
+    {
+        public List<TerrainMaskNode> Records { get; } = new List<TerrainMaskNode>();
+        public ushort NodeCount { get; set; }
+        public uint Unknown { get; set; }
+        public byte Flag { get; set; }
+        public int ZeroBlocks { get; set; }
+        public bool HasSamples { get; set; }
+    }
+
+    /// <summary>The block's groups, in order.</summary>
+    public List<Group> Groups { get; } = new List<Group>();
+
+    /// <summary>The header exactly as read -- 48 bytes, written back unchanged.</summary>
+    public byte[] HeaderRaw { get; set; } = System.Array.Empty<byte>();
+
+    private byte m_PendingFlag;
+    private int m_PendingZeroBlocks;
+
+    /// Where the last group ENDED. Not the same as Consumed: the seek that looks for the next group
+    /// eats the trailing separator before it gives up, so Consumed sits past the block's real tail.
+    private long m_LastGroupEnd;
+
     /// <summary>Whatever follows the nodes, kept so an unknown tail is visible rather than silent.</summary>
     public byte[] Trailing { get; set; } = System.Array.Empty<byte>();
 
@@ -106,12 +134,15 @@ public class TerrainMaskTree : RasterTree
 
         var s_RecordCount = (ushort)((p_Reader.ReadUByte() << 8) | p_Reader.ReadUByte());
         var s_NodeCount = (ushort)((p_Reader.ReadUByte() << 8) | p_Reader.ReadUByte());
-        p_Reader.ReadUInt32();
+        var s_Unknown = p_Reader.ReadUInt32();
 
         if (s_RecordCount == 0 || p_Reader.Position + s_RecordCount * 32 + 4 > p_End)
             return false;
 
-        var s_Records = new List<TerrainMaskNode>();
+        var s_Group = new Group { NodeCount = s_NodeCount, Unknown = s_Unknown,
+                                  Flag = m_PendingFlag, ZeroBlocks = m_PendingZeroBlocks };
+        Groups.Add(s_Group);
+        var s_Records = s_Group.Records;
 
         for (var i = 0; i < s_RecordCount; ++i)
         {
@@ -136,7 +167,10 @@ public class TerrainMaskTree : RasterTree
         // this u32 is already the next group's separator, so it must be put back rather than
         // consumed. Reading every group as if it had samples is what stopped the walk one group in.
         if (p_Reader.Position + 4 > p_End)
+        {
+            m_LastGroupEnd = p_Reader.Position;
             return true;
+        }
 
         var s_Mark = p_Reader.Position;
         var s_DataSize = p_Reader.ReadUInt32();
@@ -145,12 +179,14 @@ public class TerrainMaskTree : RasterTree
             || p_Reader.Position + s_DataSize > p_End)
         {
             p_Reader.Seek(s_Mark - p_Reader.Position, SeekOrigin.Current);
+            m_LastGroupEnd = p_Reader.Position;
             return true;
         }
 
         // The leading records are the containers the tree descends through -- four of them, one
         // per root quadrant, on every level measured bar one. The trailing records are the ones
         // that own samples, in the order the blocks follow.
+        s_Group.HasSamples = true;
         var s_First = s_Records.Count - s_NodeCount;
 
         for (var i = 0; i < s_NodeCount; ++i)
@@ -161,43 +197,84 @@ public class TerrainMaskTree : RasterTree
             Nodes.Add(s_Node);
         }
 
+        m_LastGroupEnd = p_Reader.Position;
         return true;
     }
 
     /// <summary>
-    /// Write the tree back: the block as it was read, with each node's CURRENT samples in place.
+    /// Write the whole block from parsed fields: header, then every group in order -- separator,
+    /// counts, the u32 that follows them, the records, and the samples for the groups that carry
+    /// any.
     ///
-    /// This edits rather than rebuilds, and that is deliberate. A node's sample block is a fixed
-    /// NodeSamplesPerSide^2 bytes, so replacing one moves nothing after it and every offset, count
-    /// and padding run in the container stays valid -- including the inter-chunk padding, which
-    /// comes in 7-byte units the reader has to probe for and which nothing here can currently
-    /// reproduce from scratch. Rebuilding the container would mean inventing that layout; editing
-    /// in place does not.
+    /// Nothing is copied from the source block except the 48-byte header, which is written back
+    /// verbatim because two of its fields are surveyed rather than understood (see UnknownA).
+    /// Everything else is reconstructed, which is what makes this a writer rather than an edit --
+    /// a terrain can be given different samples, or a different set of nodes, and still come out
+    /// as a block the reader accepts.
     ///
-    /// An untouched tree therefore serialises to the bytes it was read from, exactly.
+    /// The separator's zero-block count is carried per group. It has no length field and the
+    /// reader simply eats zero blocks, so a NEW group can use none; keeping the observed count is
+    /// what lets an unmodified tree come back byte for byte.
     /// </summary>
     public override bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
     {
         p_Data = null;
 
-        if (Raw.Length == 0)
+        if (HeaderRaw.Length == 0 || Groups.Count == 0)
             return false;
 
-        var s_Out = (byte[])Raw.Clone();
+        var s_Out = new List<byte>(Raw.Length > 0 ? Raw.Length : 4096);
+        s_Out.AddRange(HeaderRaw);
 
-        foreach (var s_Node in Nodes)
+        for (var s_Index = 0; s_Index < Groups.Count; ++s_Index)
         {
-            if (s_Node.SampleOffset < 0 || s_Node.Samples.Length == 0)
+            var s_Group = Groups[s_Index];
+
+            if (s_Index > 0)
+            {
+                s_Out.Add(s_Group.Flag);
+
+                for (var i = 0; i < s_Group.ZeroBlocks; ++i)
+                    s_Out.AddRange(new byte[7]);
+            }
+
+            var s_Records = s_Group.Records;
+            s_Out.Add((byte)(s_Records.Count >> 8));         // counts are BIG-endian u16
+            s_Out.Add((byte)(s_Records.Count & 0xFF));
+            s_Out.Add((byte)(s_Group.NodeCount >> 8));
+            s_Out.Add((byte)(s_Group.NodeCount & 0xFF));
+            s_Out.AddRange(System.BitConverter.GetBytes(s_Group.Unknown));
+
+            foreach (var s_Node in s_Records)
+            {
+                s_Out.AddRange(System.BitConverter.GetBytes(s_Node.MinX));
+                s_Out.AddRange(System.BitConverter.GetBytes(s_Node.MinY));
+                s_Out.AddRange(System.BitConverter.GetBytes(s_Node.MaxX));
+                s_Out.AddRange(System.BitConverter.GetBytes(s_Node.MaxY));
+                s_Out.AddRange(System.BitConverter.GetBytes(s_Node.Flags));
+                s_Out.AddRange(s_Node.PresenceMask);
+                s_Out.Add((byte)s_Node.Level);
+            }
+
+            if (!s_Group.HasSamples)
                 continue;
 
-            if (s_Node.SampleOffset + s_Node.Samples.Length > s_Out.Length)
-                return false;
+            var s_Sampled = s_Records.GetRange(s_Records.Count - s_Group.NodeCount,
+                s_Group.NodeCount);
+            var s_Size = 0;
 
-            System.Array.Copy(s_Node.Samples, 0, s_Out, s_Node.SampleOffset,
-                s_Node.Samples.Length);
+            foreach (var s_Node in s_Sampled)
+                s_Size += s_Node.Samples.Length;
+
+            s_Out.AddRange(System.BitConverter.GetBytes((uint)s_Size));
+
+            foreach (var s_Node in s_Sampled)
+                s_Out.AddRange(s_Node.Samples);
         }
 
-        p_Data = s_Out;
+        s_Out.AddRange(Trailing);
+
+        p_Data = s_Out.ToArray();
         return true;
     }
 
@@ -286,7 +363,8 @@ public class TerrainMaskTree : RasterTree
     /// </summary>
     private bool SeekNextChunk(RimeReader p_Reader, long p_End)
     {
-        p_Reader.ReadUByte();                       // the flag byte, 0 or 1
+        m_PendingFlag = p_Reader.ReadUByte();       // the flag byte, 0 or 1
+        m_PendingZeroBlocks = 0;
 
         // Eat 7-byte ALL-ZERO blocks. This is a rule, not a search: the padding is only ever zeros,
         // and a group header never opens with seven of them, because its record count occupies the
@@ -307,7 +385,10 @@ public class TerrainMaskTree : RasterTree
             }
 
             if (s_Zero)
+            {
+                ++m_PendingZeroBlocks;
                 continue;
+            }
 
             p_Reader.Seek(s_At - p_Reader.Position, SeekOrigin.Current);
             break;
@@ -318,7 +399,11 @@ public class TerrainMaskTree : RasterTree
 
     public override void Deserialize(RimeReader p_Reader)
     {
+        var s_Start = p_Reader.Position;
         ReadHeader(p_Reader);
+        var s_HeaderEnd = p_Reader.Position;
+        p_Reader.Seek(s_Start - p_Reader.Position, SeekOrigin.Current);
+        HeaderRaw = p_Reader.ReadBytes((int)(s_HeaderEnd - s_Start));
 
         var s_End = Raw.Length > 0 ? Raw.Length : p_Reader.Length;
 
@@ -329,6 +414,14 @@ public class TerrainMaskTree : RasterTree
         }
 
         Consumed = p_Reader.Position;
+
+        // A block ends with a separator that opens a group which never arrives -- a flag byte and
+        // up to a few 7-byte zero blocks. Keep it so the tree writes back complete.
+        if (Raw.Length > 0 && m_LastGroupEnd > 0 && m_LastGroupEnd < Raw.Length)
+        {
+            Trailing = new byte[Raw.Length - m_LastGroupEnd];
+            System.Array.Copy(Raw, m_LastGroupEnd, Trailing, 0, Trailing.Length);
+        }
     }
 
     public override void Deserialize(byte[] p_Data)

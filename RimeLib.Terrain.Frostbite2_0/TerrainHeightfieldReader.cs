@@ -58,6 +58,9 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
 
             // Whether writing the tree straight back reproduces the block it was read from. A
             // writer that cannot do that for an UNEDITED tree cannot be trusted with an edited one.
+            p_Heightfield.MaskRewriteInfo = string.Format("groups={0} header={1} trailing={2} raw={3} built={4}",
+                s_Mask.Groups.Count, s_Mask.HeaderRaw.Length, s_Mask.Trailing.Length, s_Mask.Raw.Length,
+                s_Mask.Serialize(out var s_Probe) ? s_Probe!.Length : -1);
             p_Heightfield.MaskRewritesExactly = s_Mask.Serialize(out var s_Rewritten)
                 && s_Rewritten!.Length == s_Mask.Raw.Length
                 && System.Linq.Enumerable.SequenceEqual(s_Rewritten, s_Mask.Raw);

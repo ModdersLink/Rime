@@ -112,6 +112,7 @@ namespace RimeLib.Cmd.Commands.Game
                 maskRawLength = s_Heightfield.MaskRaw.Length,
                 maskRawHead = System.Convert.ToBase64String(s_Heightfield.MaskRaw),
                 maskRewritesExactly = s_Heightfield.MaskRewritesExactly,
+                maskRewriteInfo = s_Heightfield.MaskRewriteInfo,
                 maskConsumed = s_Heightfield.MaskConsumed,
                 streamNodes = s_Heightfield.StreamNodes.ConvertAll(p_Node => (object)new
                 {

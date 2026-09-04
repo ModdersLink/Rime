@@ -105,6 +105,9 @@ public class TerrainHeightfield
 
     /// <summary>Whether the mask tree serialises back to exactly the bytes it was read from.</summary>
     public bool MaskRewritesExactly { get; set; }
+
+    /// <summary>Diagnostic for the rewrite: group/header/trailing sizes against the source block.</summary>
+    public string MaskRewriteInfo { get; set; } = string.Empty;
     public long MaskConsumed { get; set; }
     public uint MaskSamplesPerSide { get; set; }
 
