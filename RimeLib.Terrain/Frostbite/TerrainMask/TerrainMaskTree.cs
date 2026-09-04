@@ -146,75 +146,72 @@ public class TerrainMaskTree : RasterTree
         throw new System.NotImplementedException();
     }
 
-    public override void Deserialize(RimeReader p_Reader)
+    /// <summary>
+    /// The 48-byte header. Three fields sit between the blurriness and the coverage box that an
+    /// earlier read skipped, which put coverage at the wrong offset and turned every field after
+    /// it into garbage -- a node count of 3.2 billion, and a sample length that ran off the end.
+    /// </summary>
+    private AxisAlignedBox ReadHeader(RimeReader p_Reader)
     {
-        // The header is 48 bytes, not 36: three fields sit between the blurriness and the coverage
-        // box that were not being read, which put coverage at the wrong offset and turned every
-        // field after it into garbage -- a node count of 3.2 billion, and a sample length that ran
-        // off the end of the stream and took the whole terrain read down with it.
         NodeSamplesPerSide = p_Reader.ReadUInt32();
-
-        var s_Blurriness = p_Reader.ReadInt32();
-        BlurrinessFactor = (uint)(1 << s_Blurriness);
+        BlurrinessFactor = (uint)(1 << p_Reader.ReadInt32());
 
         // The mask raster's own resolution, which is not the terrain's: MP_001 covers 1 km at 2048
-        // samples (0.5 m each) where the 4 km sp_bank uses 1024 (4 m each). Bigger map, coarser
-        // mask.
+        // samples, 0.5 m each, where the 4 km sp_bank uses 1024 at 4 m each.
         RasterSamplesPerSide = p_Reader.ReadUInt32();
         UnknownA = p_Reader.ReadUInt32();
         UnknownB = p_Reader.ReadUInt32();
 
-        var s_TreeCoverage = new AxisAlignedBox();
-        s_TreeCoverage.DeserializeVec2(p_Reader);
+        var s_Coverage = new AxisAlignedBox();
+        s_Coverage.DeserializeVec2(p_Reader);
 
         NodeCount = p_Reader.ReadUInt32();
         PersistentNodeCount = p_Reader.ReadUInt32();
         DataNodeCount = p_Reader.ReadUInt32();
 
-        CoverageMin = new Vec2
-        {
-            x = s_TreeCoverage.min.x,
-            y = s_TreeCoverage.min.y
-        };
+        CoverageMin = new Vec2 { x = s_Coverage.min.x, y = s_Coverage.min.y };
 
-        var s_CellsPerSide = NodeSamplesPerSide > 2
-            ? RasterSamplesPerSide / (NodeSamplesPerSide - 2)
-            : 1;
+        var s_Cells = NodeSamplesPerSide > 2 ? RasterSamplesPerSide / (NodeSamplesPerSide - 2) : 1;
 
-        NodeGridCellsPerSide = s_CellsPerSide == 0 ? 1 : s_CellsPerSide;
+        NodeGridCellsPerSide = s_Cells == 0 ? 1 : s_Cells;
         LevelMax = 0;
 
-        for (var s_Cells = NodeGridCellsPerSide; s_Cells > 1; s_Cells >>= 1)
+        for (var s_Remaining = NodeGridCellsPerSide; s_Remaining > 1; s_Remaining >>= 1)
             ++LevelMax;
+
+        return s_Coverage;
+    }
+
+    /// <summary>
+    /// Step over the flag byte and padding that separate one chunk from the next, landing on a
+    /// header. The padding comes in whole 7-byte units -- MP_001 uses none, one, two and three of
+    /// them. Skipping zero bytes instead does not work and quietly loses a chunk: the counts are
+    /// big-endian, so any below 256 opens with a zero byte of its own.
+    /// </summary>
+    private bool SeekNextChunk(RimeReader p_Reader, long p_End)
+    {
+        p_Reader.ReadUByte();
+
+        for (var i = 0; i < 8; ++i)
+        {
+            if (LooksLikeChunk(p_Reader, p_End))
+                return true;
+
+            p_Reader.Seek(7, SeekOrigin.Current);
+        }
+
+        return false;
+    }
+
+    public override void Deserialize(RimeReader p_Reader)
+    {
+        ReadHeader(p_Reader);
 
         var s_End = Raw.Length > 0 ? Raw.Length : p_Reader.Length;
 
-        // Chunks run to the end of the block. Between them sits a flag byte and then padding,
-        // whose length varies -- MP_001 uses 0, 7, 14 and 21 bytes of it. The padding is always
-        // zero and a chunk header always opens with a non-zero record count, so skipping the flag
-        // and then any zeros lands on the next header without having to know the rule behind the
-        // length.
         while (p_Reader.Position < s_End && ReadChunk(p_Reader, s_End))
         {
-            if (p_Reader.Position >= s_End)
-                break;
-
-            p_Reader.ReadUByte();
-
-            // Then padding, in whole 7-byte units -- MP_001 uses none, one, two and three of them
-            // between chunks. Skipping zero bytes instead does not work: a chunk's counts are
-            // big-endian, so a count under 256 opens with a zero byte of its own and gets eaten.
-            var s_Landed = false;
-
-            for (var i = 0; i < 8 && !s_Landed; ++i)
-            {
-                if (LooksLikeChunk(p_Reader, s_End))
-                    s_Landed = true;
-                else
-                    p_Reader.Seek(7, SeekOrigin.Current);
-            }
-
-            if (!s_Landed)
+            if (p_Reader.Position >= s_End || !SeekNextChunk(p_Reader, s_End))
                 break;
         }
 
