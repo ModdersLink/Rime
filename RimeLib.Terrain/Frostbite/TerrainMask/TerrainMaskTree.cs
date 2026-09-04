@@ -25,7 +25,22 @@ public class TerrainMaskTree : RasterTree
     /// <summary>How many nodes carry samples. The node list should end up this long.</summary>
     public uint DataNodeCount { get; set; }
 
+    /// <summary>
+    /// Two header fields whose meaning is not established, kept verbatim so a writer can carry
+    /// them rather than invent them.
+    ///
+    /// SURVEYED across all 33 shipped BF3 terrains: <c>UnknownB</c> is 1 everywhere, and
+    /// <c>UnknownA</c> is only ever 1024 (6 terrains) or 2048 (27). Neither correlates with the
+    /// raster size, the node size, the world extent or any node count -- and sp_tank_terrain_02
+    /// ships TWICE with different values of A, which is what rules out its being derived from the
+    /// terrain at all. It reads as an authoring or streaming setting.
+    ///
+    /// So a writer does not need to understand them: preserve them when rewriting an existing
+    /// terrain, and use the shipped majority (A = 2048, B = 1) for a new one.
+    /// </summary>
     public uint UnknownA { get; set; }
+
+    /// <inheritdoc cref="UnknownA"/>
     public uint UnknownB { get; set; }
     public uint BlurrinessFactor { get; set; }
     public uint NodeCount { get; set; }
