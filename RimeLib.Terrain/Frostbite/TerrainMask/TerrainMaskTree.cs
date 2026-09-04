@@ -252,11 +252,20 @@ public class TerrainMaskTree : RasterTree
     /// the next group. That is why LooksLikeChunk stops after the first chunk and 25-190 KB goes
     /// unread.
     ///
-    /// The separator is a flag byte then padding in 7-byte units, which is what the probe below
-    /// steps over. It is not yet exact: the group walk lands perfectly on most terrains and stops
-    /// early on a few (sp_villa, xp5_004, mp_018), so the padding rule still needs pinning down
-    /// before a container can be written from nothing. Reading, and rewriting samples in place,
-    /// do not depend on it.
+    /// The separator is a 0-or-1 flag byte followed by ZERO bytes in 7-byte units -- 0, 7 or 14 of
+    /// them, occasionally more. What decides how many is the one thing still open, and it is not
+    /// any of the obvious candidates. RULED OUT by measurement, so as not to be re-tried: the
+    /// preceding group's record or node count (2 nodes takes 0, 7 AND 14 across different groups),
+    /// the following group's counts, records-minus-nodes, the tree level of the previous group's
+    /// records, and record-count modulo 8. Relaxing the walk to admit empty groups is not it
+    /// either -- it consumes more terrains but triples the group count and breaks the
+    /// records-sum-to-PersistentNodeCount identity that says the strict reading is right.
+    ///
+    /// The likeliest remaining explanation is that it encodes traversal state -- which quadrants
+    /// were skipped -- rather than a length. Until it is settled the group walk lands exactly on
+    /// most terrains and stops early on a few (sp_villa, xp5_004, mp_018), which is enough to read
+    /// a terrain and to rewrite its samples in place, and not enough to write a container from
+    /// nothing.
     /// </summary>
     private bool SeekNextChunk(RimeReader p_Reader, long p_End)
     {
