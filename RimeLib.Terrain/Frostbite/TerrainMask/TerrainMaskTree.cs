@@ -257,12 +257,14 @@ public class TerrainMaskTree : RasterTree
     /// any of the obvious candidates. RULED OUT by measurement, so as not to be re-tried: the
     /// preceding group's record or node count (2 nodes takes 0, 7 AND 14 across different groups),
     /// the following group's counts, records-minus-nodes, the tree level of the previous group's
-    /// records, and record-count modulo 8. Relaxing the walk to admit empty groups is not it
-    /// either -- it consumes more terrains but triples the group count and breaks the
-    /// records-sum-to-PersistentNodeCount identity that says the strict reading is right.
+    /// records, record-count modulo 8, the popcount of the previous group's presence masks (last
+    /// record or all of them), and alignment of the group start to any power of two. Relaxing the
+    /// walk to admit empty groups is not it either -- it consumes more terrains but triples the
+    /// group count and breaks the records-sum-to-PersistentNodeCount identity that says the strict
+    /// reading is right.
     ///
-    /// The likeliest remaining explanation is that it encodes traversal state -- which quadrants
-    /// were skipped -- rather than a length. Until it is settled the group walk lands exactly on
+    /// The presence-mask test is worth singling out because it was the strongest remaining idea --
+    /// that the gap encodes skipped subtrees -- and it does not hold either. Until it is settled the group walk lands exactly on
     /// most terrains and stops early on a few (sp_villa, xp5_004, mp_018), which is enough to read
     /// a terrain and to rewrite its samples in place, and not enough to write a container from
     /// nothing.
