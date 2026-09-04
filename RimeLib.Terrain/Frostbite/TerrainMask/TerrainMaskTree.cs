@@ -234,10 +234,18 @@ public class TerrainMaskTree : RasterTree
     }
 
     /// <summary>
-    /// Step over the flag byte and padding that separate one chunk from the next, landing on a
-    /// header. The padding comes in whole 7-byte units -- MP_001 uses none, one, two and three of
-    /// them. Skipping zero bytes instead does not work and quietly loses a chunk: the counts are
+    /// Step over the flag byte and whatever separates one chunk from the next, landing on a header.
+    /// Skipping zero bytes instead does not work and quietly loses a chunk: the counts are
     /// big-endian, so any below 256 opens with a zero byte of its own.
+    ///
+    /// The 7-byte step is a PROBE, not the format. Measured across all 33 shipped terrains the gap
+    /// is 1 + 7k bytes for k from 0 to 34, and a strict 1-byte gap fails on the second chunk of
+    /// every one of them -- so the gap carries real content this does not model. Probing finds 1039
+    /// mask nodes where assuming a fixed gap finds 761, which is why it stays.
+    ///
+    /// It also means the walk stops early: 25 KB to 190 KB of each block is left unparsed. Enough
+    /// for reading and for rewriting samples in place, NOT enough to build a container from
+    /// nothing. Whatever lives in those gaps is the thing to decode next.
     /// </summary>
     private bool SeekNextChunk(RimeReader p_Reader, long p_End)
     {
