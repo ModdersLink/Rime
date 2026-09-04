@@ -238,20 +238,25 @@ public class TerrainMaskTree : RasterTree
     /// Skipping zero bytes instead does not work and quietly loses a chunk: the counts are
     /// big-endian, so any below 256 opens with a zero byte of its own.
     ///
-    /// The 7-byte step is a PROBE, not the format, and what it steps over is not padding.
+    /// What follows the first chunk is RECORD GROUPS WITHOUT SAMPLES, and that is the whole tail.
     ///
-    /// MEASURED: one byte after a chunk's samples the bytes read as a perfectly plausible header --
-    /// on xp5_002 they say 22 records and 18 nodes, exactly like the chunk before, and the records
-    /// that follow decode as sane bounding boxes. But the size field never lands: the value those
-    /// counts require (nodes * NodeSamplesPerSide^2) appears NOWHERE in the next 4 KB, at any record
-    /// stride. So the region after the first chunk is a DIFFERENT structure that merely looks like a
-    /// chunk -- not more sample chunks, whatever it is.
+    /// MEASURED across the shipped terrains. A block is: the 48-byte header; ONE chunk carrying
+    /// records AND samples, holding exactly DataNodeCount nodes (verified equal on every terrain);
+    /// then a run of groups shaped `separator, counts, u32, recs * 32 bytes of records` and NO
+    /// sample payload. Parsing them that way consumes the block to its last byte, and their records
+    /// sum to PersistentNodeCount exactly -- 1326, 2123, 4109, 2309, 4496 and 911 on the nose for
+    /// six terrains measured.
     ///
-    /// That is why 25 KB to 190 KB of each block is left unparsed, and why the probe is doing
-    /// pattern-matching rather than parsing. Enough for reading a terrain and for rewriting its
-    /// samples in place; NOT enough to build a container from nothing. Do not start from the
-    /// assumption that the tail is more chunks -- that is the dead end this comment exists to
-    /// document.
+    /// Reading them as more sample chunks is the trap: the counts and bounding boxes look right and
+    /// the size field never lands, because there is no size field -- the u32 read as one belongs to
+    /// the next group. That is why LooksLikeChunk stops after the first chunk and 25-190 KB goes
+    /// unread.
+    ///
+    /// The separator is a flag byte then padding in 7-byte units, which is what the probe below
+    /// steps over. It is not yet exact: the group walk lands perfectly on most terrains and stops
+    /// early on a few (sp_villa, xp5_004, mp_018), so the padding rule still needs pinning down
+    /// before a container can be written from nothing. Reading, and rewriting samples in place,
+    /// do not depend on it.
     /// </summary>
     private bool SeekNextChunk(RimeReader p_Reader, long p_End)
     {
