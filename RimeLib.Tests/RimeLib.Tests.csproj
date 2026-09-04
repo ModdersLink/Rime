@@ -19,6 +19,7 @@
   <ItemGroup>
     <ProjectReference Include="..\RimeLib.Serialization\RimeLib.Serialization.csproj" />
     <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
+    <ProjectReference Include="..\RimeLib.Terrain\RimeLib.Terrain.csproj" />
   </ItemGroup>
 
 </Project>
