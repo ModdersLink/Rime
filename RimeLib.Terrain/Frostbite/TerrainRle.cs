@@ -21,6 +21,40 @@ public static class TerrainRle
     /// <returns>The decoded samples, or null if a line does not decode to exactly its width --
     /// which means the encoding is not what this understands, and a caller should say so rather
     /// than carry on with a half-filled buffer.</returns>
+    /// <summary>Decode one line into <paramref name="p_Out"/>. -1 if it does not fit exactly.</summary>
+    private static int DecodeLine(byte[] p_Rle, int p_Src, int p_End, byte[] p_Out, int p_Dst,
+        int p_LineEnd)
+    {
+        while (p_Src < p_End)
+        {
+            var s_Value = p_Rle[p_Src++];
+            var s_Count = 1;
+
+            // Two equal bytes open a run: the second is a marker, and the byte after it says how
+            // many MORE copies follow.
+            if (p_Src < p_End && p_Rle[p_Src] == s_Value)
+            {
+                ++p_Src;                        // the marker, not a sample
+                s_Count += p_Rle[p_Src++];      // how many MORE copies follow
+            }
+
+            if (p_Dst + s_Count > p_LineEnd)
+                return -1;
+
+            for (var i = 0; i < s_Count; ++i)
+                p_Out[p_Dst++] = s_Value;
+        }
+
+        return p_Dst == p_LineEnd ? p_Src : -1;
+    }
+
+    /// <summary>
+    /// Decode one node's samples: <paramref name="p_LineSizes"/> lines of
+    /// <paramref name="p_BytesPerLine"/> bytes each.
+    /// </summary>
+    /// <returns>The decoded samples, or null if a line does not decode to exactly its width --
+    /// which means the encoding is not what this understands, and a caller should say so rather
+    /// than carry on with a half-filled buffer.</returns>
     public static byte[]? Decode(byte[] p_Rle, ushort[] p_LineSizes, int p_BytesPerLine)
     {
         if (p_BytesPerLine <= 0)
@@ -32,40 +66,16 @@ public static class TerrainRle
 
         foreach (var s_LineSize in p_LineSizes)
         {
-            var s_End = s_Src + s_LineSize;
-            var s_LineEnd = s_Dst + p_BytesPerLine;
-
-            if (s_End > p_Rle.Length)
+            if (s_Src + s_LineSize > p_Rle.Length)
                 return null;
 
-            while (s_Src < s_End)
-            {
-                var s_Value = p_Rle[s_Src++];
+            s_Src = DecodeLine(p_Rle, s_Src, s_Src + s_LineSize, s_Out, s_Dst,
+                s_Dst + p_BytesPerLine);
 
-                if (s_Src < s_End && p_Rle[s_Src] == s_Value)
-                {
-                    ++s_Src;                                  // the marker, not a sample
-                    var s_Extra = p_Rle[s_Src++];
+            if (s_Src < 0)
+                return null;
 
-                    for (var i = 0; i <= s_Extra; ++i)
-                    {
-                        if (s_Dst >= s_LineEnd)
-                            return null;                      // the run overruns its line
-
-                        s_Out[s_Dst++] = s_Value;
-                    }
-                }
-                else
-                {
-                    if (s_Dst >= s_LineEnd)
-                        return null;
-
-                    s_Out[s_Dst++] = s_Value;
-                }
-            }
-
-            if (s_Dst != s_LineEnd)
-                return null;                                  // the line came up short
+            s_Dst += p_BytesPerLine;
         }
 
         return s_Out;
