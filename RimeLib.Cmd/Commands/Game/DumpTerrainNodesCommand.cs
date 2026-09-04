@@ -28,7 +28,29 @@ namespace RimeLib.Cmd.Commands.Game
         [CommandArgument(Description = "The output .json file")]
         public FileInfo? Destination { get; set; }
 
-        public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
+        /// <summary>
+    /// Does encoding <paramref name="p_Payload"/> give back exactly the bytes it was decoded from?
+    /// </summary>
+    private static bool ReEncodes(byte[] p_Payload, byte[] p_Original, int p_BytesPerLine,
+        int p_Lines)
+    {
+        var s_Coded = TerrainRle.Encode(p_Payload, p_BytesPerLine, p_Lines, out _);
+
+        if (s_Coded.Length > p_Original.Length)
+            return false;
+
+        // The node's bytes may be followed by padding the tree does not hand back, so compare the
+        // prefix the encoder claims rather than the whole buffer.
+        for (var i = 0; i < s_Coded.Length; ++i)
+        {
+            if (s_Coded[i] != p_Original[i])
+                return false;
+        }
+
+        return true;
+    }
+
+    public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             if (string.IsNullOrWhiteSpace(Name) || Destination is null)
             {
@@ -136,7 +158,13 @@ namespace RimeLib.Cmd.Commands.Game
                         samples = s_Packed == null
                             ? null
                             : System.Convert.ToBase64String(
-                                TerrainRle.UnpackRows(s_Packed, s_MatSide, p_Node.LineSizes.Length))
+                                TerrainRle.UnpackRows(s_Packed, s_MatSide, p_Node.LineSizes.Length)),
+                        // Whether the ENCODER reproduces the shipped bytes for this node. A writer
+                        // that cannot round-trip the game's own data byte for byte is a writer that
+                        // is guessing, so measure it here where the original bytes are still in
+                        // hand rather than asserting it from the decoded samples alone.
+                        reencodesExactly = s_Packed != null && ReEncodes(s_Packed, p_Node.Rle,
+                            TerrainRle.BytesPerLine(s_MatSide), p_Node.LineSizes.Length)
                     };
                 }),
                 destructionSamplesPerSide = s_Heightfield.DestructionSamplesPerSide,

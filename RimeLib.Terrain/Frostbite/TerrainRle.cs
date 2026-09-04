@@ -162,9 +162,10 @@ public static class TerrainRle
     /// coded on its own. Returns the coded bytes and, through
     /// <paramref name="p_LineSizes"/>, how many each line took -- the table the decoder needs.
     ///
-    /// MEASURED against MP_001's material tree: 3386 of its 4096 packed lines come back out as
-    /// <c>00 00 7F</c>, which is the encoding those nodes ship, and all 4096 decode to exactly the
-    /// samples they went in as.
+    /// MEASURED against MP_001's material tree: re-encoding what the decoder produced gives back
+    /// the shipped bytes EXACTLY, for all 16 nodes -- so this is not merely a lossless coding of
+    /// the same samples, it is the coding the game's own data uses. (dump_terrain_nodes reports
+    /// this per node as `reencodesExactly`, which is where that number comes from.)
     /// </summary>
     public static byte[] Encode(byte[] p_Samples, int p_BytesPerLine, int p_Lines,
         out ushort[] p_LineSizes)
