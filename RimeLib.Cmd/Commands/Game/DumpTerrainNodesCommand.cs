@@ -111,6 +111,7 @@ namespace RimeLib.Cmd.Commands.Game
                 // so the header layout it assumes is wrong; this is the evidence needed to fix it.
                 maskRawLength = s_Heightfield.MaskRaw.Length,
                 maskRawHead = System.Convert.ToBase64String(s_Heightfield.MaskRaw),
+                maskRewritesExactly = s_Heightfield.MaskRewritesExactly,
                 maskConsumed = s_Heightfield.MaskConsumed,
                 streamNodes = s_Heightfield.StreamNodes.ConvertAll(p_Node => (object)new
                 {

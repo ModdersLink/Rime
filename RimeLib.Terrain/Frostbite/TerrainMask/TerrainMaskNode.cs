@@ -24,6 +24,13 @@ public class TerrainMaskNode
     public uint Flags { get; set; }
 
     /// <summary>
+    /// Where this node's samples sit in the block it was read from, so they can be written back
+    /// without rebuilding the container around them. A node's sample block is a fixed
+    /// NodeSamplesPerSide^2 bytes, so editing it never moves anything after it.
+    /// </summary>
+    public long SampleOffset { get; set; } = -1;
+
+    /// <summary>
     /// The node's samples, NodeSamplesPerSide squared of them. Unlike the material tree these are
     /// not run-length encoded -- they are stored flat, one byte per sample.
     /// </summary>

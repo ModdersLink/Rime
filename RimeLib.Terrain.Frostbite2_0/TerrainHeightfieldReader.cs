@@ -56,6 +56,12 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
             p_Heightfield.MaskConsumed = s_Mask.Consumed;
             p_Heightfield.MaskSamplesPerSide = s_Mask.NodeSamplesPerSide;
 
+            // Whether writing the tree straight back reproduces the block it was read from. A
+            // writer that cannot do that for an UNEDITED tree cannot be trusted with an edited one.
+            p_Heightfield.MaskRewritesExactly = s_Mask.Serialize(out var s_Rewritten)
+                && s_Rewritten!.Length == s_Mask.Raw.Length
+                && System.Linq.Enumerable.SequenceEqual(s_Rewritten, s_Mask.Raw);
+
             foreach (var s_Node in s_Mask.Nodes)
             {
                 p_Heightfield.MaskNodes.Add(new TerrainMaterialSamples

@@ -102,6 +102,9 @@ public class TerrainHeightfield
     public List<TerrainMaterialSamples> MaskNodes { get; set; } = new();
     /// <summary>The mask tree's block as stored, while its layout is being worked out.</summary>
     public byte[] MaskRaw { get; set; } = System.Array.Empty<byte>();
+
+    /// <summary>Whether the mask tree serialises back to exactly the bytes it was read from.</summary>
+    public bool MaskRewritesExactly { get; set; }
     public long MaskConsumed { get; set; }
     public uint MaskSamplesPerSide { get; set; }
 

@@ -143,6 +143,7 @@ public class TerrainMaskTree : RasterTree
         for (var i = 0; i < s_NodeCount; ++i)
         {
             var s_Node = s_Records[s_First + i];
+            s_Node.SampleOffset = p_Reader.Position;
             s_Node.Samples = p_Reader.ReadBytes((int)s_SampleBytes);
             Nodes.Add(s_Node);
         }
@@ -150,15 +151,50 @@ public class TerrainMaskTree : RasterTree
         return true;
     }
 
-    public override bool Serialize(RimeWriter p_Writer)
-    {
-        throw new System.NotImplementedException();
-    }
-
+    /// <summary>
+    /// Write the tree back: the block as it was read, with each node's CURRENT samples in place.
+    ///
+    /// This edits rather than rebuilds, and that is deliberate. A node's sample block is a fixed
+    /// NodeSamplesPerSide^2 bytes, so replacing one moves nothing after it and every offset, count
+    /// and padding run in the container stays valid -- including the inter-chunk padding, which
+    /// comes in 7-byte units the reader has to probe for and which nothing here can currently
+    /// reproduce from scratch. Rebuilding the container would mean inventing that layout; editing
+    /// in place does not.
+    ///
+    /// An untouched tree therefore serialises to the bytes it was read from, exactly.
+    /// </summary>
     public override bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
     {
         p_Data = null;
-        throw new System.NotImplementedException();
+
+        if (Raw.Length == 0)
+            return false;
+
+        var s_Out = (byte[])Raw.Clone();
+
+        foreach (var s_Node in Nodes)
+        {
+            if (s_Node.SampleOffset < 0 || s_Node.Samples.Length == 0)
+                continue;
+
+            if (s_Node.SampleOffset + s_Node.Samples.Length > s_Out.Length)
+                return false;
+
+            System.Array.Copy(s_Node.Samples, 0, s_Out, s_Node.SampleOffset,
+                s_Node.Samples.Length);
+        }
+
+        p_Data = s_Out;
+        return true;
+    }
+
+    public override bool Serialize(RimeWriter p_Writer)
+    {
+        if (!Serialize(out var s_Data))
+            return false;
+
+        p_Writer.Write(s_Data!);
+        return true;
     }
 
     /// <summary>
