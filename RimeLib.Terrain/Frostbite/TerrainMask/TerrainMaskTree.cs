@@ -238,14 +238,20 @@ public class TerrainMaskTree : RasterTree
     /// Skipping zero bytes instead does not work and quietly loses a chunk: the counts are
     /// big-endian, so any below 256 opens with a zero byte of its own.
     ///
-    /// The 7-byte step is a PROBE, not the format. Measured across all 33 shipped terrains the gap
-    /// is 1 + 7k bytes for k from 0 to 34, and a strict 1-byte gap fails on the second chunk of
-    /// every one of them -- so the gap carries real content this does not model. Probing finds 1039
-    /// mask nodes where assuming a fixed gap finds 761, which is why it stays.
+    /// The 7-byte step is a PROBE, not the format, and what it steps over is not padding.
     ///
-    /// It also means the walk stops early: 25 KB to 190 KB of each block is left unparsed. Enough
-    /// for reading and for rewriting samples in place, NOT enough to build a container from
-    /// nothing. Whatever lives in those gaps is the thing to decode next.
+    /// MEASURED: one byte after a chunk's samples the bytes read as a perfectly plausible header --
+    /// on xp5_002 they say 22 records and 18 nodes, exactly like the chunk before, and the records
+    /// that follow decode as sane bounding boxes. But the size field never lands: the value those
+    /// counts require (nodes * NodeSamplesPerSide^2) appears NOWHERE in the next 4 KB, at any record
+    /// stride. So the region after the first chunk is a DIFFERENT structure that merely looks like a
+    /// chunk -- not more sample chunks, whatever it is.
+    ///
+    /// That is why 25 KB to 190 KB of each block is left unparsed, and why the probe is doing
+    /// pattern-matching rather than parsing. Enough for reading a terrain and for rewriting its
+    /// samples in place; NOT enough to build a container from nothing. Do not start from the
+    /// assumption that the tail is more chunks -- that is the dead end this comment exists to
+    /// document.
     /// </summary>
     private bool SeekNextChunk(RimeReader p_Reader, long p_End)
     {
