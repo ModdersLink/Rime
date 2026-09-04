@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
@@ -34,6 +35,11 @@ namespace RimeLib.Cmd.Commands.Game
             var s_Resources = ((GameContext)p_Context).GetMountedResourceVariations();
             var s_Names = new List<string>();
 
+            // A resource's 16-byte meta says things its payload does not -- a MeshSet keeps its
+            // relocation-table length there -- so rebuilding one needs to know what the shipped
+            // equivalent carries.
+            var s_Meta = new Dictionary<string, string>();
+
             foreach (var s_Resource in s_Resources)
             {
                 var s_Variant = s_Resource.Value.FirstVariant;
@@ -42,10 +48,13 @@ namespace RimeLib.Cmd.Commands.Game
                     continue;
 
                 s_Names.Add(s_Resource.Key);
+
+                if (s_Variant.TryGetMeta(out var s_Bytes) && s_Bytes.Length > 0)
+                    s_Meta[s_Resource.Key] = Convert.ToHexString(s_Bytes);
             }
 
             File.WriteAllText(Destination.FullName,
-                JsonConvert.SerializeObject(new { type = Type, resources = s_Names }));
+                JsonConvert.SerializeObject(new { type = Type, resources = s_Names, meta = s_Meta }));
             p_Writer.WriteLine($"{s_Names.Count} resource(s) of type {Type} written to {Destination.FullName}.");
 
             return true;
