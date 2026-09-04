@@ -130,10 +130,23 @@ public class TerrainMaskTree : RasterTree
         }
 
         var s_SampleBytes = NodeSamplesPerSide * NodeSamplesPerSide;
+
+        // A group carries samples only if the u32 after its records is exactly the size they would
+        // occupy. Most groups carry none -- they are the tree's interior nodes -- and for those
+        // this u32 is already the next group's separator, so it must be put back rather than
+        // consumed. Reading every group as if it had samples is what stopped the walk one group in.
+        if (p_Reader.Position + 4 > p_End)
+            return true;
+
+        var s_Mark = p_Reader.Position;
         var s_DataSize = p_Reader.ReadUInt32();
 
-        if (s_DataSize != s_NodeCount * s_SampleBytes || p_Reader.Position + s_DataSize > p_End)
-            return false;
+        if (s_NodeCount == 0 || s_DataSize != s_NodeCount * s_SampleBytes
+            || p_Reader.Position + s_DataSize > p_End)
+        {
+            p_Reader.Seek(s_Mark - p_Reader.Position, SeekOrigin.Current);
+            return true;
+        }
 
         // The leading records are the containers the tree descends through -- four of them, one
         // per root quadrant, on every level measured bar one. The trailing records are the ones
@@ -262,9 +275,11 @@ public class TerrainMaskTree : RasterTree
     /// record count modulo 8, presence-mask popcount and start alignment, and it correlates with
     /// none of them -- because there is nothing to correlate with.
     ///
-    /// VERIFIED on 32 of the 33 shipped terrains: the walk lands on the block's last byte, and the
-    /// records across every group INCLUDING the sample chunk sum to PersistentNodeCount exactly.
-    /// MP_001 is the one that does not follow it and is worth a look before trusting this blindly. Until it is settled the group walk lands exactly on
+    /// VERIFIED on ALL 33 shipped terrains, three ways: the walk lands on the block's last byte,
+    /// the records across every group sum to PersistentNodeCount exactly, and the groups that carry
+    /// samples hold exactly DataNodeCount nodes between them. MP_001 looked like an exception only
+    /// while groups were assumed to carry samples -- it spreads its 307 data nodes over several
+    /// groups where the other 32 put them all in the first. Until it is settled the group walk lands exactly on
     /// most terrains and stops early on a few (sp_villa, xp5_004, mp_018), which is enough to read
     /// a terrain and to rewrite its samples in place, and not enough to write a container from
     /// nothing.
@@ -298,7 +313,7 @@ public class TerrainMaskTree : RasterTree
             break;
         }
 
-        return LooksLikeChunk(p_Reader, p_End);
+        return p_Reader.Position + 8 <= p_End;
     }
 
     public override void Deserialize(RimeReader p_Reader)
