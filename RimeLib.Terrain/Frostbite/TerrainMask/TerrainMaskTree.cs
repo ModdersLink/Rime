@@ -252,36 +252,53 @@ public class TerrainMaskTree : RasterTree
     /// the next group. That is why LooksLikeChunk stops after the first chunk and 25-190 KB goes
     /// unread.
     ///
-    /// The separator is a 0-or-1 flag byte followed by ZERO bytes in 7-byte units -- 0, 7 or 14 of
-    /// them, occasionally more. What decides how many is the one thing still open, and it is not
-    /// any of the obvious candidates. RULED OUT by measurement, so as not to be re-tried: the
-    /// preceding group's record or node count (2 nodes takes 0, 7 AND 14 across different groups),
-    /// the following group's counts, records-minus-nodes, the tree level of the previous group's
-    /// records, record-count modulo 8, the popcount of the previous group's presence masks (last
-    /// record or all of them), and alignment of the group start to any power of two. Relaxing the
-    /// walk to admit empty groups is not it either -- it consumes more terrains but triples the
-    /// group count and breaks the records-sum-to-PersistentNodeCount identity that says the strict
-    /// reading is right.
+    /// The separator is a 0-or-1 flag byte followed by ZERO bytes in 7-byte units, and the count is
+    /// NOT stored anywhere: you eat 7-byte all-zero blocks until one is not all zero. A group
+    /// header can never be mistaken for padding because its record count sits in the second byte,
+    /// so seven zeros in a row is unambiguous.
     ///
-    /// The presence-mask test is worth singling out because it was the strongest remaining idea --
-    /// that the gap encodes skipped subtrees -- and it does not hold either. Until it is settled the group walk lands exactly on
+    /// Which is why hunting for a length field was wasted: it was measured against the previous
+    /// group's record and node counts, the next group's counts, records-minus-nodes, tree level,
+    /// record count modulo 8, presence-mask popcount and start alignment, and it correlates with
+    /// none of them -- because there is nothing to correlate with.
+    ///
+    /// VERIFIED on 32 of the 33 shipped terrains: the walk lands on the block's last byte, and the
+    /// records across every group INCLUDING the sample chunk sum to PersistentNodeCount exactly.
+    /// MP_001 is the one that does not follow it and is worth a look before trusting this blindly. Until it is settled the group walk lands exactly on
     /// most terrains and stops early on a few (sp_villa, xp5_004, mp_018), which is enough to read
     /// a terrain and to rewrite its samples in place, and not enough to write a container from
     /// nothing.
     /// </summary>
     private bool SeekNextChunk(RimeReader p_Reader, long p_End)
     {
-        p_Reader.ReadUByte();
+        p_Reader.ReadUByte();                       // the flag byte, 0 or 1
 
-        for (var i = 0; i < 8; ++i)
+        // Eat 7-byte ALL-ZERO blocks. This is a rule, not a search: the padding is only ever zeros,
+        // and a group header never opens with seven of them, because its record count occupies the
+        // second byte. So the walk is decided by the bytes rather than by trying offsets until one
+        // parses.
+        while (p_Reader.Position + 7 <= p_End)
         {
-            if (LooksLikeChunk(p_Reader, p_End))
-                return true;
+            var s_At = p_Reader.Position;
+            var s_Zero = true;
 
-            p_Reader.Seek(7, SeekOrigin.Current);
+            for (var i = 0; i < 7; ++i)
+            {
+                if (p_Reader.ReadUByte() != 0)
+                {
+                    s_Zero = false;
+                    break;
+                }
+            }
+
+            if (s_Zero)
+                continue;
+
+            p_Reader.Seek(s_At - p_Reader.Position, SeekOrigin.Current);
+            break;
         }
 
-        return false;
+        return LooksLikeChunk(p_Reader, p_End);
     }
 
     public override void Deserialize(RimeReader p_Reader)
