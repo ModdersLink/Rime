@@ -22,6 +22,46 @@ public class VisualTerrainDraw
     public int Level { get; set; }
 }
 
+/// <summary>
+/// One mesh scattering type on a terrain layer: what the ground grows, and how thickly.
+///
+/// This is what puts grass, bushes and rubble on a level without placing a single object by hand.
+/// Nothing in EBX carries it -- `TerrainMeshScatteringType` there is a bare DataContainer with no
+/// fields at all -- so a level exported without this loses its ground cover entirely while
+/// appearing to round trip.
+/// </summary>
+public class VisualTerrainScattering
+{
+    /// <summary>Which terrain layer grows this.</summary>
+    public int Layer { get; set; }
+    public string MeshName { get; set; } = string.Empty;
+    public uint VariationAssetNameHash { get; set; }
+    public float Density { get; set; }
+    public bool LockDensity { get; set; }
+    public float RandomPositionOffset { get; set; }
+    public float MinMask { get; set; }
+    public float MaxMask { get; set; }
+    public float MinScaleX { get; set; }
+    public float MinScaleY { get; set; }
+    public float MaxScaleX { get; set; }
+    public float MaxScaleY { get; set; }
+    public float MinMaskScaleFactorX { get; set; }
+    public float MinMaskScaleFactorY { get; set; }
+    public float ScaleRandomess { get; set; }
+    public float WindScale { get; set; }
+    public sbyte FirstSpawnLevel { get; set; }
+    public sbyte SpawnLevelCount { get; set; }
+    public sbyte RotationMode { get; set; }
+    public sbyte OrientationMode { get; set; }
+    public float RotateTowardSlopeWeight { get; set; }
+    public bool CastShadowsEnable { get; set; }
+    public float ShadowViewDistance { get; set; }
+    public bool BillboardingEnable { get; set; }
+    public bool BillboardingGpuAccelleration { get; set; }
+    public sbyte InstanceType { get; set; }
+    public bool GroundClampBoundingBoxEnable { get; set; }
+}
+
 /// <summary>What a level's terrain is painted with.</summary>
 public class VisualTerrainInfo
 {
@@ -35,6 +75,8 @@ public class VisualTerrainInfo
     public uint TextureAtlasWidth { get; set; }
     public uint TextureAtlasHeight { get; set; }
     public float TextureSamplesPerMeterMax { get; set; }
+    /// <summary>Every layer's mesh scattering types, flattened, each naming its own layer.</summary>
+    public List<VisualTerrainScattering> Scattering { get; set; } = new();
 }
 
 /// <summary>
