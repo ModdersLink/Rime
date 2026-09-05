@@ -121,8 +121,14 @@ namespace RimeLib.Terrain.Frostbite2_0
 
                 if (s_RasterTreeType == RasterTree.RasterTreeTypes.HeightfieldTreeType)
                 {
-                    RasterTrees[(int)s_RasterTreeType] = new HeightfieldTree();
-                    RasterTrees[(int)s_RasterTreeType].Deserialize(p_Reader);
+                    // Read the block whole, as the mask tree below is. The heightfield parser stops
+                    // at the root node and keeps the remainder as Trailing, which is only the
+                    // heightfield's own remainder if it cannot see past the end of its block.
+                    var s_HeightfieldBytes = p_Reader.ReadBytes((int)s_RasterTreeLoadSize);
+                    var s_Heightfield = new HeightfieldTree();
+
+                    s_Heightfield.Deserialize(s_HeightfieldBytes);
+                    RasterTrees[(int)s_RasterTreeType] = s_Heightfield;
                 }
                 else if (s_RasterTreeType == RasterTree.RasterTreeTypes.TerrainMaskTreeType)
                 {
@@ -136,13 +142,19 @@ namespace RimeLib.Terrain.Frostbite2_0
                 }
                 else if (s_RasterTreeType == RasterTree.RasterTreeTypes.TerrainMaterialTreeType)
                 {
-                    RasterTrees[(int)s_RasterTreeType] = new TerrainMaterialTree();
-                    RasterTrees[(int)s_RasterTreeType].Deserialize(p_Reader);
+                    var s_MaterialBytes = p_Reader.ReadBytes((int)s_RasterTreeLoadSize);
+                    var s_Material = new TerrainMaterialTree();
+
+                    s_Material.Deserialize(s_MaterialBytes);
+                    RasterTrees[(int)s_RasterTreeType] = s_Material;
                 }
                 else if (s_RasterTreeType == RasterTree.RasterTreeTypes.DestructionDepthTreeType)
                 {
-                    RasterTrees[(int)s_RasterTreeType] = new DestructionDepthTree();
-                    RasterTrees[(int)s_RasterTreeType].Deserialize(p_Reader);
+                    var s_DestructionBytes = p_Reader.ReadBytes((int)s_RasterTreeLoadSize);
+                    var s_Destruction = new DestructionDepthTree();
+
+                    s_Destruction.Deserialize(s_DestructionBytes);
+                    RasterTrees[(int)s_RasterTreeType] = s_Destruction;
                 }
                 else
                 {

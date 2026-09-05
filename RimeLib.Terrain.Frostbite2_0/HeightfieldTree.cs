@@ -23,41 +23,35 @@ namespace RimeLib.Terrain.Frostbite2_0
 
             LevelMax = System.Math.Max(p_NodeId.Level, LevelMax);
 
-            var s_NodeDisabled = p_Reader.ReadBool();
-            if (s_NodeDisabled)
+            s_Node.Disabled = p_Reader.ReadBool();
+            if (s_Node.Disabled)
             {
-                s_Node.Flags |= 8; // What the fuck is this shit
+                s_Node.Flags |= 8; // the node is not in the terrain at all
                 return s_Node;
             }
 
-            var s_HasData1 = p_Reader.ReadBool();
-            var s_NodeHasData = p_Reader.ReadBool();
+            s_Node.HasData1 = p_Reader.ReadBool();
+            s_Node.HasData = p_Reader.ReadBool();
 
-            if (s_NodeHasData)
+            if (s_Node.HasData)
                 s_Node.Flags |= 16;
-            else if (s_HasData1)
+            else if (s_Node.HasData1)
                 s_Node.Flags |= 256;
             else
                 return s_Node;
 
-            var s_NodeHasPersistent = p_Reader.ReadBool();
-            if (s_NodeHasData && s_NodeHasPersistent)
+            s_Node.HasPersistent = p_Reader.ReadBool();
+            if (s_Node.HasData && s_Node.HasPersistent)
             {
-                Debug.WriteLine("Has HeightfieldTree Data!");
-
-                // TODO: Properly read data because this is just nonsense.
-
                 s_Node.EmbeddedData = p_Reader.ReadBytes((int)(NodeSamplesPerSide * NodeSamplesPerSide * 2));
 
+                // Read rather than stepped over. These are the node's own bytes, and a writer that
+                // does not have them cannot put the node back.
                 if (MinMaxStackSize > 0)
-                {
-                    p_Reader.ReadBytes((int)(MinMaxStackSize * 2));
-                }
+                    s_Node.MinMaxData = p_Reader.ReadBytes((int)(MinMaxStackSize * 2));
 
-                if (true) // if (m_LoadOccluderGridEnable)
-                {
-                    p_Reader.ReadBytes((int)(OccluderGridStackSize * 2));
-                }
+                // if (m_LoadOccluderGridEnable)
+                s_Node.OccluderGridData = p_Reader.ReadBytes((int)(OccluderGridStackSize * 2));
             }
 
             var s_HasChildren = p_Reader.ReadBool();
@@ -131,15 +125,92 @@ namespace RimeLib.Terrain.Frostbite2_0
             return false;
         }
 
+        /// <summary>
+        /// The exact inverse of <see cref="Deserialize(RimeReader)"/>.
+        ///
+        /// PersistentNodeCount is written back MINUS the dedicated-server count, because the reader
+        /// folded the two together. Writing the field as it stands would add that count again on
+        /// every round trip.
+        /// </summary>
         public override bool Serialize(RimeWriter p_Writer)
         {
-            throw new System.NotImplementedException();
+            p_Writer.Write(NodeSamplesPerSide);
+            p_Writer.Write(ResourceAtlasSampleCountX);
+            p_Writer.Write(ResourceAtlasSampleCountY);
+            p_Writer.Write(ResourceBlurrinessFactorExponent);
+            p_Writer.Write(WorldSizeY);
+            p_Writer.Write(PhysicsMetersPerSample);
+            p_Writer.Write(PhysicsCropWidth);
+            p_Writer.Write(Ps3RsxHeightfieldEnable);
+            p_Writer.Write(Ps3RsxHeightfieldCacheFraction);
+            p_Writer.Write(MinMaxStackDepth);
+            p_Writer.Write(OccluderGridStackDepth);
+            p_Writer.Write(NodeCount);
+            p_Writer.Write(PersistentNodeCount - PersistentDedicatedServerNodeCount);
+            p_Writer.Write(PersistentDedicatedServerNodeCount);
+            p_Writer.Write(NodeBorderWidth);
+
+            if (RootNode is HeightfieldTreeNode s_Root)
+                SaveNodes(p_Writer, s_Root);
+
+            p_Writer.Write(Trailing);
+
+            return true;
+        }
+
+        private static void SaveNodes(RimeWriter p_Writer, HeightfieldTreeNode p_Node)
+        {
+            p_Writer.Write(p_Node.BoundingBox.min.x);
+            p_Writer.Write(p_Node.BoundingBox.min.y);
+            p_Writer.Write(p_Node.BoundingBox.min.z);
+
+            p_Writer.Write(p_Node.BoundingBox.max.x);
+            p_Writer.Write(p_Node.BoundingBox.max.y);
+            p_Writer.Write(p_Node.BoundingBox.max.z);
+
+            p_Writer.Write(p_Node.Disabled);
+
+            if (p_Node.Disabled)
+                return;
+
+            p_Writer.Write(p_Node.HasData1);
+            p_Writer.Write(p_Node.HasData);
+
+            if (!p_Node.HasData && !p_Node.HasData1)
+                return;
+
+            p_Writer.Write(p_Node.HasPersistent);
+
+            if (p_Node.HasData && p_Node.HasPersistent)
+            {
+                p_Writer.Write(p_Node.EmbeddedData);
+                p_Writer.Write(p_Node.MinMaxData);
+                p_Writer.Write(p_Node.OccluderGridData);
+            }
+
+            var s_HasChildren = p_Node.Children != null && p_Node.Children.Length > 0;
+            p_Writer.Write(s_HasChildren);
+
+            if (!s_HasChildren)
+                return;
+
+            foreach (var s_Child in p_Node.Children!)
+                SaveNodes(p_Writer, (HeightfieldTreeNode)s_Child);
         }
 
         public override bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            var s_Stream = new System.IO.MemoryStream();
+            using var s_Writer = new RimeWriter(s_Stream);
+
+            if (Serialize(s_Writer))
+            {
+                p_Data = s_Stream.ToArray();
+                return true;
+            }
+
             p_Data = null;
-            throw new System.NotImplementedException();
+            return false;
         }
 
         public override void Deserialize(RimeReader p_Reader)
@@ -147,22 +218,23 @@ namespace RimeLib.Terrain.Frostbite2_0
             NodeSamplesPerSide = p_Reader.ReadUInt32();
             ResourceAtlasSampleCountX = p_Reader.ReadUInt32();
             ResourceAtlasSampleCountY = p_Reader.ReadUInt32();
-            ResourceBlurrinessFactor = (uint)(1 << p_Reader.ReadInt32());
+            ResourceBlurrinessFactorExponent = p_Reader.ReadInt32();
+            ResourceBlurrinessFactor = (uint)(1 << ResourceBlurrinessFactorExponent);
             WorldSizeY = p_Reader.ReadSingle();
             WorldScaleY = WorldSizeY / (float)65535.0;
-            var s_PhysicsMetersPerSample = p_Reader.ReadSingle();
-            var s_PhysicsCropWidth = p_Reader.ReadSingle();
+            PhysicsMetersPerSample = p_Reader.ReadSingle();
+            PhysicsCropWidth = p_Reader.ReadSingle();
             Ps3RsxHeightfieldEnable = p_Reader.ReadBool();
             Ps3RsxHeightfieldCacheFraction = p_Reader.ReadSingle();
             MinMaxStackDepth = p_Reader.ReadUInt32();
             OccluderGridStackDepth = p_Reader.ReadUInt32();
             NodeCount = p_Reader.ReadUInt32();
             PersistentNodeCount = p_Reader.ReadUInt32();
-            var s_PersistentDedicatedServerNodeCount = p_Reader.ReadUInt32();
+            PersistentDedicatedServerNodeCount = p_Reader.ReadUInt32();
 
             // if ( v4->m_dedicatedServerEnable )
             {
-                PersistentNodeCount += s_PersistentDedicatedServerNodeCount;
+                PersistentNodeCount += PersistentDedicatedServerNodeCount;
             }
 
             NodeBorderWidth = p_Reader.ReadUInt32();
@@ -192,14 +264,20 @@ namespace RimeLib.Terrain.Frostbite2_0
 
             uint s_FirstIndex = 1;
             RootNode = LoadNodes(p_Reader, ref s_FirstIndex, s_NodeId);
-            
-            
-            //TODO: rest of heightfield tree
+
+            // Whatever the block still holds past the root node. Nothing here claims to know what
+            // it is; keeping it is what lets the tree be written back unchanged, and its length is
+            // the honest measure of how much of the format is still unread.
+            if (p_Reader.CanSeek && p_Reader.Length > p_Reader.Position)
+                Trailing = p_Reader.ReadBytes((int)(p_Reader.Length - p_Reader.Position));
         }
 
         public override void Deserialize(byte[] p_Data)
         {
-            throw new System.NotImplementedException();
+            Raw = p_Data;
+
+            using var s_Reader = new RimeReader(new System.IO.MemoryStream(p_Data));
+            Deserialize(s_Reader);
         }
     }
 

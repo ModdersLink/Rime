@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 
@@ -105,6 +105,19 @@ public class TerrainHeightfield
 
     /// <summary>Whether the mask tree serialises back to exactly the bytes it was read from.</summary>
     public bool MaskRewritesExactly { get; set; }
+
+    /// <summary>
+    /// Whether the heightfield tree re-serialises to the bytes it was read from, and how much of
+    /// its block the parse does not model. The heightfield is the tree the terrain surface itself
+    /// lives in, so a writer that cannot reproduce it is a writer that cannot ship a terrain edit.
+    /// </summary>
+    public bool HeightfieldRewritesExactly { get; set; }
+    public int HeightfieldRawLength { get; set; }
+    public int HeightfieldTrailing { get; set; }
+
+    /// <summary>Whether the material and destruction trees re-serialise to their shipped bytes.</summary>
+    public bool MaterialRewritesExactly { get; set; }
+    public bool DestructionRewritesExactly { get; set; }
 
     /// <summary>Diagnostic for the rewrite: group/header/trailing sizes against the source block.</summary>
     public string MaskRewriteInfo { get; set; } = string.Empty;

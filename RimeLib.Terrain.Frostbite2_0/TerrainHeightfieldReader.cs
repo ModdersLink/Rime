@@ -1,4 +1,4 @@
-using RimeLib.Terrain.Frostbite.Destruction;
+﻿using RimeLib.Terrain.Frostbite.Destruction;
 using System.Collections.Generic;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
@@ -37,7 +37,12 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
             SamplesPerSide = s_Heightfield.NodeSamplesPerSide,
             NodeBorderWidth = s_Heightfield.NodeBorderWidth,
             WorldSizeY = s_Heightfield.WorldSizeY,
-            WorldScaleY = s_Heightfield.WorldScaleY
+            WorldScaleY = s_Heightfield.WorldScaleY,
+            HeightfieldRawLength = s_Heightfield.Raw.Length,
+            HeightfieldTrailing = s_Heightfield.Trailing.Length,
+            HeightfieldRewritesExactly = s_Heightfield.Serialize(out var s_HeightfieldBytes)
+                && s_HeightfieldBytes!.Length == s_Heightfield.Raw.Length
+                && System.Linq.Enumerable.SequenceEqual(s_HeightfieldBytes, s_Heightfield.Raw)
         };
 
         // What the stream actually declared, and which slots got filled. Without this the caller
@@ -88,6 +93,9 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
             p_Heightfield.MaterialPairIndices = s_Materials.MaterialPairIndices;
             p_Heightfield.BackgroundMaterialIndex = s_Materials.BackgroundMaterialIndex;
             p_Heightfield.MaterialSamplesPerSide = s_Materials.NodeSamplesPerSide;
+            p_Heightfield.MaterialRewritesExactly = s_Materials.Serialize(out var s_MaterialBytes)
+                && s_MaterialBytes!.Length == s_Materials.Raw.Length
+                && System.Linq.Enumerable.SequenceEqual(s_MaterialBytes, s_Materials.Raw);
 
             foreach (var s_Node in s_Materials.Nodes)
             {
@@ -111,6 +119,9 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
                 is DestructionDepthTree s_Destruction)
         {
             p_Heightfield.DestructionSamplesPerSide = s_Destruction.NodeSamplesPerSide;
+            p_Heightfield.DestructionRewritesExactly = s_Destruction.Serialize(out var s_DestructionBytes)
+                && s_DestructionBytes!.Length == s_Destruction.Raw.Length
+                && System.Linq.Enumerable.SequenceEqual(s_DestructionBytes, s_Destruction.Raw);
 
             foreach (var s_Node in s_Destruction.Nodes)
             {

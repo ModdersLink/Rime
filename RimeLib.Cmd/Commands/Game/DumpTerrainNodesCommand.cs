@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using RimeLib.Terrain.Frostbite;
 using Newtonsoft.Json;
@@ -111,7 +111,12 @@ namespace RimeLib.Cmd.Commands.Game
                 // so the header layout it assumes is wrong; this is the evidence needed to fix it.
                 maskRawLength = s_Heightfield.MaskRaw.Length,
                 maskRawHead = System.Convert.ToBase64String(s_Heightfield.MaskRaw),
+                heightfieldRewritesExactly = s_Heightfield.HeightfieldRewritesExactly,
+                heightfieldRawLength = s_Heightfield.HeightfieldRawLength,
+                heightfieldTrailing = s_Heightfield.HeightfieldTrailing,
                 maskRewritesExactly = s_Heightfield.MaskRewritesExactly,
+                materialRewritesExactly = s_Heightfield.MaterialRewritesExactly,
+                destructionRewritesExactly = s_Heightfield.DestructionRewritesExactly,
                 maskRewriteInfo = s_Heightfield.MaskRewriteInfo,
                 maskConsumed = s_Heightfield.MaskConsumed,
                 streamNodes = s_Heightfield.StreamNodes.ConvertAll(p_Node => (object)new
