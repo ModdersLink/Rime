@@ -101,6 +101,8 @@ namespace RimeLib.Cmd.Contexts
                 RegisterCommand<DumpTerrainDecalsJsonCommand>();
                 RegisterCommand<DumpTerrainNodesCommand>();
                 RegisterCommand<DumpEnlightenCommand>();
+                RegisterCommand<CompareResourceCommand>();
+                RegisterCommand<CompareResourcesCommand>();
             }
 
             if (EngineInterfaceRegistry.IsSupported<IVisualTerrain>(s_EngineType))
