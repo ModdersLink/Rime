@@ -119,6 +119,16 @@ public class TerrainHeightfield
     public bool MaterialRewritesExactly { get; set; }
     public bool DestructionRewritesExactly { get; set; }
 
+    /// <summary>
+    /// Whether the WHOLE streaming tree -- header, every raster tree, and the stream nodes --
+    /// re-serialises to its shipped bytes. The per-tree flags say the pieces survive; this says the
+    /// container that holds them does, which is what shipping an edited terrain actually needs.
+    /// </summary>
+    public bool StreamingTreeRewritesExactly { get; set; }
+    public int StreamingTreeRawLength { get; set; }
+    public int StreamingTreeWrittenLength { get; set; }
+    public int StreamingTreeFirstDiff { get; set; }
+
     /// <summary>Diagnostic for the rewrite: group/header/trailing sizes against the source block.</summary>
     public string MaskRewriteInfo { get; set; } = string.Empty;
     public long MaskConsumed { get; set; }

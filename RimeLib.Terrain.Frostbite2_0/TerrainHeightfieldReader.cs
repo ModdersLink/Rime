@@ -18,13 +18,36 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
         return [EngineType.Frostbite2_0];
     }
 
+    /// <summary>Index of the first differing byte, or -1 when they match to the shorter length.</summary>
+    private static int FirstDiff(byte[] p_A, byte[]? p_B)
+    {
+        if (p_B == null)
+            return -2;
+
+        var s_N = System.Math.Min(p_A.Length, p_B.Length);
+
+        for (var i = 0; i < s_N; ++i)
+        {
+            if (p_A[i] != p_B[i])
+                return i;
+        }
+
+        return -1;
+    }
+
     public bool ReadHeightfield(IResourceObject p_Resource, IEngineMounter p_Mounter, out TerrainHeightfield? p_Heightfield)
     {
         p_Heightfield = null;
 
         var s_Tree = new TerrainStreamingTree();
 
-        using (var s_Stream = p_Resource.GetReader())
+        // Read the resource whole and deserialise from that, so the tree keeps its own bytes to
+        // measure a rewrite against. Deserialising straight off the stream leaves Raw empty and
+        // every rewrite check silently compares against nothing.
+        using (var s_Source = p_Resource.GetReader())
+            s_Tree.Raw = s_Source.ReadBytes((int)s_Source.Length);
+
+        using (var s_Stream = new System.IO.MemoryStream(s_Tree.Raw))
         using (var s_Reader = new RimeReader(s_Stream))
             s_Tree.Deserialize(s_Reader);
 
@@ -39,6 +62,12 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
             WorldSizeY = s_Heightfield.WorldSizeY,
             WorldScaleY = s_Heightfield.WorldScaleY,
             HeightfieldRawLength = s_Heightfield.Raw.Length,
+            StreamingTreeRewritesExactly = s_Tree.Serialize(out var s_TreeBytes)
+                && s_TreeBytes!.Length == s_Tree.Raw.Length
+                && System.Linq.Enumerable.SequenceEqual(s_TreeBytes, s_Tree.Raw),
+            StreamingTreeRawLength = s_Tree.Raw.Length,
+            StreamingTreeWrittenLength = s_Tree.Serialize(out var s_TreeBytes2) ? s_TreeBytes2!.Length : -1,
+            StreamingTreeFirstDiff = FirstDiff(s_Tree.Raw, s_Tree.Serialize(out var s_TreeBytes3) ? s_TreeBytes3 : null),
             HeightfieldTrailing = s_Heightfield.Trailing.Length,
             HeightfieldRewritesExactly = s_Heightfield.Serialize(out var s_HeightfieldBytes)
                 && s_HeightfieldBytes!.Length == s_Heightfield.Raw.Length
