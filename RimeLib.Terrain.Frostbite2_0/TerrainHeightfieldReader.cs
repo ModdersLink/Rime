@@ -35,6 +35,64 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
         return -1;
     }
 
+    /// <summary>
+    /// Rebuild the streaming tree with edited heightfield samples.
+    ///
+    /// This is only safe because the whole tree re-serialises to its shipped bytes exactly -- all
+    /// 33 of BF3's terrains, container and all four raster trees. That is what makes a diff against
+    /// the original equal to the edit: everything untouched comes back identical.
+    /// </summary>
+    public bool WriteHeightfield(IResourceObject p_Resource, IReadOnlyList<TerrainNodeEdit> p_Edits,
+        out byte[]? p_Payload, out string? p_Error)
+    {
+        p_Payload = null;
+        p_Error = null;
+
+        var s_Tree = new TerrainStreamingTree();
+
+        using (var s_Source = p_Resource.GetReader())
+            s_Tree.Raw = s_Source.ReadBytes((int)s_Source.Length);
+
+        s_Tree.Deserialize(s_Tree.Raw);
+
+        if (s_Tree.HeightfieldTree is not HeightfieldTree s_Heightfield)
+        {
+            p_Error = "this streaming tree carries no heightfield";
+            return false;
+        }
+
+        foreach (var s_Edit in p_Edits)
+        {
+            var s_Node = s_Heightfield.TryFindNode(new QuadtreeNodeId
+            {
+                Level = (byte)s_Edit.Level, IndexX = s_Edit.IndexX, IndexY = s_Edit.IndexY,
+            });
+
+            if (s_Node == null)
+            {
+                p_Error = $"no node at level={s_Edit.Level} x={s_Edit.IndexX} y={s_Edit.IndexY}";
+                return false;
+            }
+
+            if (s_Edit.Samples.Length != s_Node.EmbeddedData.Length)
+            {
+                p_Error = $"node level={s_Edit.Level} x={s_Edit.IndexX} y={s_Edit.IndexY} takes " +
+                    $"{s_Node.EmbeddedData.Length} bytes, got {s_Edit.Samples.Length}";
+                return false;
+            }
+
+            s_Node.EmbeddedData = s_Edit.Samples;
+        }
+
+        if (!s_Tree.Serialize(out p_Payload) || p_Payload == null)
+        {
+            p_Error = "the streaming tree could not be written back";
+            return false;
+        }
+
+        return true;
+    }
+
     public bool ReadHeightfield(IResourceObject p_Resource, IEngineMounter p_Mounter, out TerrainHeightfield? p_Heightfield)
     {
         p_Heightfield = null;

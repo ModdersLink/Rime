@@ -162,6 +162,7 @@ namespace RimeLib.Cmd.Contexts
 
             if (EngineInterfaceRegistry.IsSupported<ITerrainDecalsConverter>(p_Parent.EngineType))
                 RegisterCommand<ReplaceTerrainDecalsCommand>();
+                RegisterCommand<ReplaceTerrainHeightsCommand>();
 
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<AddPartitionCommand>();
