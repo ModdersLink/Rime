@@ -23,8 +23,30 @@ public class EnlightenTerrainLightmap : IFbSerializable
         Deserialize(p_Reader);
     }
 
+    /// <summary>
+    /// The exact inverse of <see cref="Deserialize(RimeReader)"/>: 48 bytes, being the bounding
+    /// box (two Vec3), the uv transform (Vec4) and the uv translation (Vec2). That size is what
+    /// the containing database strides over per lightmap, so a writer that emits anything else
+    /// silently shifts every field after it.
+    /// </summary>
     public bool Serialize(RimeWriter p_Writer)
     {
+        p_Writer.Write(WorldBoundingBox.min.x);
+        p_Writer.Write(WorldBoundingBox.min.y);
+        p_Writer.Write(WorldBoundingBox.min.z);
+
+        p_Writer.Write(WorldBoundingBox.max.x);
+        p_Writer.Write(WorldBoundingBox.max.y);
+        p_Writer.Write(WorldBoundingBox.max.z);
+
+        p_Writer.Write(UVTransform.x);
+        p_Writer.Write(UVTransform.y);
+        p_Writer.Write(UVTransform.z);
+        p_Writer.Write(UVTransform.w);
+
+        p_Writer.Write(UVTranslation.x);
+        p_Writer.Write(UVTranslation.y);
+
         return true;
     }
 
