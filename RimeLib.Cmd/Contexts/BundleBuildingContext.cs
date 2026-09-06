@@ -156,6 +156,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListChunksCommand>();
             RegisterCommand<AddResourceCommand>();
             RegisterCommand<AddExistingResourceCommand>();
+            RegisterCommand<AddExistingResourceWithChunksCommand>();
             RegisterCommand<ReplaceResourceCommand>();
             RegisterCommand<ReplaceResourceAsCommand>();
             RegisterCommand<RemoveResourceCommand>();

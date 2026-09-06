@@ -1,0 +1,269 @@
+﻿using RimeLib.Cmd.Attributes;
+using RimeLib.Cmd.Contexts;
+using RimeLib.Content.Frostbite;
+using RimeLib.Content.Mounting;
+using RimeLib.Frostbite.Core;
+using RimeLib.Mesh;
+using RimeLib.Texture;
+using RimeLib.Toolkit;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace RimeLib.Cmd.Commands.BundleBuilding
+{
+    /// <summary>
+    /// Adds an existing resource AND the chunks its payload streams from.
+    ///
+    /// `add_existing_resource` adds the resource header only. For a MeshSet or a texture the actual
+    /// payload -- vertex/index data, texture mips -- lives in a CHUNK referenced by guid from inside
+    /// that header, and the chunk is not carried along. In vanilla that is fine: the chunk is in the
+    /// level superbundle the resource shipped in, and the engine finds it there.
+    ///
+    /// A mod bundle that references game resources from a DIFFERENT level has no such superbundle,
+    /// and the failure is brutal to diagnose: the dedicated server never fetches render payloads and
+    /// loads happily, while the client hangs forever. BF3's chunk lookup (vu.com+0xC1CAC) is an open
+    /// addressed GUID probe whose miss path reads the 0xFFFF "empty" bucket sentinel and indexes the
+    /// entry array with it instead of terminating -- so a chunk that is not resident is not an error,
+    /// it is an infinite loop, and the player sees a black screen.
+    ///
+    /// This command closes that gap at build time so the bundle is self-contained.
+    /// </summary>
+    [CommandDescription("Adds an existing resource and the chunks its payload references to this bundle.")]
+    internal class AddExistingResourceWithChunksCommand : Command
+    {
+        [CommandArgument(Description = "The name of the resource.")]
+        public string? Name { get; set; }
+
+        [CommandArgument(Description = "Id returned by mount_game.")]
+        public int Id { get; set; }
+
+        public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
+        {
+            if (string.IsNullOrWhiteSpace(Name))
+            {
+                p_Writer.WriteLine("The specified resource could not be found.");
+                return false;
+            }
+
+            var s_BundleContext = (BundleBuildingContext)p_Context;
+            var s_SbBuildingContext = (SbBuildingContext?)s_BundleContext.Parent;
+
+            if (s_SbBuildingContext == null)
+            {
+                p_Writer.WriteLine("Parent context is invalid.");
+                return false;
+            }
+
+            if (s_SbBuildingContext.Parent is not BaseContext s_BaseContext)
+            {
+                p_Writer.WriteLine("SbBuildingContext parent is invalid.");
+                return false;
+            }
+
+            var s_Mounters = s_BaseContext.GetMounters();
+
+            if (!s_Mounters.TryGetValue(Id, out var s_EngineMounter))
+            {
+                p_Writer.WriteLine($"Id ({Id}) is not valid, ensure you mounted a game first");
+                return false;
+            }
+
+            var s_ContextEngineType = s_SbBuildingContext.EngineType;
+
+            if (s_EngineMounter.GetEngineType() != s_ContextEngineType)
+            {
+                p_Writer.WriteLine($"Cross-engine support has not been added, ({s_EngineMounter.GetEngineType()} != {s_ContextEngineType})");
+                return false;
+            }
+
+            if (!s_EngineMounter.TryGetResource(Name!, out var s_Resource))
+            {
+                p_Writer.WriteLine($"Could not find resource ({Name}).");
+                return false;
+            }
+
+            IResourceVariant? s_Variant;
+
+            if (s_BundleContext.Cas())
+                s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.Cas && p_Resource.GetContainedBundle() != null);
+            else
+                s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.GetContainedBundle() != null);
+
+            if (s_Variant == null)
+            {
+                p_Writer.WriteLine($"Could not find a valid variant of ({Name}).");
+                return false;
+            }
+
+            s_BundleContext.AddResource(Name!, s_Variant);
+
+            // The resource itself is in. Now carry whatever its payload streams from.
+            //
+            // A payload that cannot be parsed must NOT abort the build: these are shipped game
+            // resources of every vintage, and one malformed or unexpected header killed a whole
+            // 145-resource build with an unhandled "offset out of bounds" after four of them. The
+            // resource is already added; missing its chunks degrades that one asset, not the level.
+            IEnumerable<GUID> s_ChunkIds;
+
+            try
+            {
+                // Read the payload from FirstVariant, NOT the cas-selected variant used to ADD the
+                // resource. They are different objects: the add path wants a variant contained in a
+                // bundle, while the read path wants one whose stream is the whole resource. Reading
+                // the cas variant threw "offset out of bounds" on 25 of 145 meshes -- all readable
+                // through FirstVariant, which is what Rime's own DumpResourceWithChunks uses.
+                s_ChunkIds = GetPayloadChunkIds(s_EngineMounter, s_Resource.FirstVariant, p_Writer);
+            }
+            catch (System.Exception s_Exception)
+            {
+                // Fall THROUGH to the name-hash fallback below -- a parse failure is exactly the case
+                // it exists for. Returning here skipped it for all 26 meshes that need it most.
+                p_Writer.WriteLine($"Could not read payload dependencies of ({Name}): {s_Exception.Message}");
+                s_ChunkIds = System.Array.Empty<GUID>();
+            }
+            var s_Added = 0;
+
+            foreach (var s_ChunkId in s_ChunkIds)
+            {
+                if (s_ChunkId == null || s_ChunkId.Equals(GUID.Empty))
+                    continue;
+
+                if (AddChunk(s_BundleContext, s_EngineMounter, s_ChunkId, Name!, p_Writer))
+                    s_Added++;
+            }
+
+            // Fallback: find the chunk by the resource's NAME HASH instead of by parsing its payload.
+            //
+            // Every chunk carries the h32 hash of the asset that owns it, and the mounter indexes it
+            // (dump_bundle_chunk_meta reports 3705 chunks for mp_001 with none missing). That makes
+            // the payload parse optional: 25 of 145 meshes fail MeshSetLayout with "offset out of
+            // bounds" -- Rime's own dump_resource_with_chunks fails on them identically, so it is a
+            // reader bug, not a data problem -- and every one of them resolves through this path.
+            // Verified: architecture/footbridge_01/footbridge_01_stairs_Mesh hashes to the chunk
+            // 9fc9aa2a-d58b-e709-eaee-90f5eb1350e1, which is exactly the id a hung client was
+            // searching for.
+            if (s_Added == 0)
+            {
+                var s_Hash = unchecked((int)RimeLib.Frostbite.Utils.HashQuickLowerCase(Name!));
+
+                // Search EVERY bundle this resource appears in, not just the cas-selected variant's.
+                // A resource is commonly shipped in several bundles and the chunk meta lives with the
+                // one that owns the payload: searching only one bundle recovered footbridge's
+                // stairs_rails but not its stairs, from the same object, in the same level.
+                var s_Bundles = s_Resource.Variants
+                    .Select(p_V => p_V.GetContainedBundle())
+                    .Where(p_B => !string.IsNullOrEmpty(p_B))
+                    .Distinct();
+
+                foreach (var s_Bundle in s_Bundles)
+                {
+                    foreach (var s_Entry in s_EngineMounter.GetChunksWithHashInBundle(s_Bundle!))
+                    {
+                        if (s_Entry.AssetNameHash != s_Hash)
+                            continue;
+
+                        if (AddChunk(s_BundleContext, s_EngineMounter, s_Entry.Guid, Name!, p_Writer))
+                            s_Added++;
+                    }
+
+                    if (s_Added > 0)
+                        break;
+                }
+            }
+
+            if (s_Added > 0)
+                p_Writer.WriteLine($"Added resource ({Name}) with {s_Added} chunk(s).");
+
+            return true;
+        }
+
+        /// <summary>
+        /// The chunk guids a resource's payload names. Resource types with no streamed payload
+        /// return nothing, which is not an error -- most resources are self-contained.
+        /// </summary>
+        private static IEnumerable<GUID> GetPayloadChunkIds(IEngineMounter p_Mounter, IResourceVariant p_Variant,
+            TextWriter p_Writer)
+        {
+            var s_Type = p_Variant.GetResourceType();
+            var s_Engine = p_Mounter.GetEngineType();
+
+            switch (s_Type)
+            {
+                case ResourceType.MeshSet:
+                    if (!EngineInterfaceRegistry.IsSupported<IMeshConverter>(s_Engine))
+                    {
+                        p_Writer.WriteLine($"No mesh converter for engine '{s_Engine}'; chunks not carried.");
+                        return System.Array.Empty<GUID>();
+                    }
+
+                    // One chunk per LOD. A mesh whose LODs are not all resident renders some
+                    // detail levels and hangs on the others, which looks like a distance bug.
+                    // Materialised inside the try: a lazy sequence would throw at enumeration
+                    // time, outside the guard that is meant to contain it.
+                    return EngineInterfaceRegistry.Create<IMeshConverter>(s_Engine)
+                        .GetChunkGuids(p_Variant).Values.ToList();
+
+                case ResourceType.DxTexture:
+                case ResourceType.Ps3Texture:
+                case ResourceType.ITexture:
+                    if (!EngineInterfaceRegistry.IsSupported<ITextureConverter>(s_Engine))
+                    {
+                        p_Writer.WriteLine($"No texture converter for engine '{s_Engine}'; chunks not carried.");
+                        return System.Array.Empty<GUID>();
+                    }
+
+                    return new[]
+                    {
+                        EngineInterfaceRegistry.Create<ITextureConverter>(s_Engine).GetTextureChunkId(p_Variant),
+                    };
+
+                default:
+                    return System.Array.Empty<GUID>();
+            }
+        }
+
+        /// <summary>Same variant selection as add_existing_chunk, so both routes agree.</summary>
+        private static bool AddChunk(BundleBuildingContext p_BundleContext, IEngineMounter p_Mounter, GUID p_Guid,
+            string p_AssetName, TextWriter p_Writer)
+        {
+            if (!p_Mounter.TryGetChunk(p_Guid, out var s_Chunk))
+            {
+                p_Writer.WriteLine($"Could not find chunk ({p_Guid}).");
+                return false;
+            }
+
+            // Prefer the variant carrying THIS asset's name hash. A chunk can hold several variants
+            // that are different slices of the same payload; the one the owning bundle ships is
+            // ranged to exactly the slice this resource asks for, and any other reads wrong bytes.
+            // Same rule reference_existing_partition already follows.
+            var s_NameHash = unchecked((int)RimeLib.Frostbite.Utils.HashQuickLowerCase(p_AssetName));
+            IChunkVariant? s_Variant = s_Chunk.Variants.FirstOrDefault(p_V => p_V.GetAssetNameHash() == s_NameHash);
+
+            if (s_Variant != null)
+            {
+                p_BundleContext.AddChunk(p_Guid, s_Variant);
+                return true;
+            }
+
+            if (p_BundleContext.Cas())
+            {
+                s_Variant = s_Chunk.Variants.FirstOrDefault(p_Chunk => p_Chunk.Cas && p_Chunk.GetContainedBundle() != null)
+                    ?? s_Chunk.Variants.FirstOrDefault(p_Chunk => p_Chunk.GetContainedBundle() != null)
+                    ?? s_Chunk.FirstVariant;
+            }
+            else
+                s_Variant = s_Chunk.Variants.FirstOrDefault(p_Chunk => p_Chunk.GetContainedBundle() != null);
+
+            if (s_Variant == null)
+            {
+                p_Writer.WriteLine($"Could not find a valid variant of chunk ({p_Guid}).");
+                return false;
+            }
+
+            p_BundleContext.AddChunk(p_Guid, s_Variant);
+
+            return true;
+        }
+    }
+}
