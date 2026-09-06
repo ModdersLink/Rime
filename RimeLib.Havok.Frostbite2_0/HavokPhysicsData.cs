@@ -194,7 +194,11 @@ public class HavokPhysicsData : IFbSerializable
         p_Reader.Seek(s_MaterialFlagsAndIndicesOffset, SeekOrigin.Begin);
         for (var i = 0; i < s_MaterialFlagsAndIndicesCount; ++i)
         {
-            MaterialFlagsAndIndices.Add(p_Reader.ReadUInt16());
+            // UInt32, not UInt16: the stride this very method computes is count * 4, and the list
+            // is List<uint>. Reading 2 bytes at a time walked half the array and shifted every
+            // value -- MEHouse01Large holds [0, 1164, 0] at offset 1104 and came back
+            // [0, 0, 1164], which is exactly those 12 bytes read as six shorts.
+            MaterialFlagsAndIndices.Add(p_Reader.ReadUInt32());
         }
 
         var s_HavokOffset = RoundUp(s_PartTranslationsSize + s_LocalAabbsSize + s_MaterialIndicesSize + s_MaterialFlagsAndIndicesSize + 60, 16);
