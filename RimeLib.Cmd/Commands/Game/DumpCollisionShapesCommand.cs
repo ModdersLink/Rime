@@ -1,4 +1,4 @@
-using System.IO;
+﻿using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using RimeLib.Cmd.Attributes;
@@ -61,18 +61,36 @@ namespace RimeLib.Cmd.Commands.Game
                 {
                     s.Kind,
                     s.Offset,
+                    s.PlacementOffset,
                     s.Radius,
+                    s.CylinderRadius,
                     Centre = new[] { s.Centre.X, s.Centre.Y, s.Centre.Z },
+                    // Three COLUMNS, the way Havok stores a rotation. Identity for an unrotated
+                    // placement, which is what 46,941 of BF3's 68,436 placements are.
+                    Rotation = new[]
+                    {
+                        new[] { s.Placement.Column0.X, s.Placement.Column0.Y, s.Placement.Column0.Z },
+                        new[] { s.Placement.Column1.X, s.Placement.Column1.Y, s.Placement.Column1.Z },
+                        new[] { s.Placement.Column2.X, s.Placement.Column2.Y, s.Placement.Column2.Z }
+                    },
                     HalfExtents = new[] { s.HalfExtents.X, s.HalfExtents.Y, s.HalfExtents.Z },
+                    VertexA = new[] { s.VertexA.X, s.VertexA.Y, s.VertexA.Z },
+                    VertexB = new[] { s.VertexB.X, s.VertexB.Y, s.VertexB.Z },
                     Vertices = s.Vertices.Select(v => new[] { v.X, v.Y, v.Z }),
+                    s.Indices,
                     Planes = s.Planes.Select(v => new[] { v.X, v.Y, v.Z, v.W })
                 })
             }));
 
-            p_Writer.WriteLine($"{s_Shapes.Count} shape(s) " +
-                               $"({s_Shapes.Count(s => s.Kind == "box")} box, " +
-                               $"{s_Shapes.Count(s => s.Kind == "convex")} convex) " +
-                               $"written to {Destination.FullName}.");
+            // Placements, not distinct shapes: BF3 instances a shape behind several wrappers --
+            // BigRadioTower places 26 boxes 69 times -- and reporting the shapes would undercount
+            // the geometry by two thirds on exactly the resources that need editing most.
+            p_Writer.WriteLine($"{s_Shapes.Count} placement(s) of " +
+                               $"{s_Shapes.Select(s => s.Offset).Distinct().Count()} distinct shape(s) (" +
+                               string.Join(", ", s_Shapes.GroupBy(s => s.Kind)
+                                                         .OrderByDescending(g => g.Count())
+                                                         .Select(g => $"{g.Count()} {g.Key}")) +
+                               $") written to {Destination.FullName}.");
 
             return true;
         }

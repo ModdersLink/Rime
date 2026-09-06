@@ -32,8 +32,32 @@ public class HavokPhysicsData : IFbSerializable
     public long MaterialFlagsAndIndicesOffset { get; private set; }
 
     /// <summary>
-    /// The four trailing relocations: the file offsets of the four 64-bit array pointers in the
-    /// header, so the engine can fix them up on load. Read back and written back.
+    /// How many (count, offset) array slots the header carries: four, or five for water.
+    ///
+    /// MEASURED across all 7,617 HavokPhysicsData resources BF3 ships -- 7,593 carry four slots and
+    /// 24 carry five, and the 24 are exactly the `.water.mesh` resources that this reader used to
+    /// reject as "Big endian Havok data". They are not big endian. A four-slot reader computes a
+    /// packfile offset 16 bytes short, lands on the tail of MaterialFlagsAndIndices, reads it as an
+    /// hkPackfileHeader and finds a zero in the layout-rule byte that says EndianType 0.
+    /// </summary>
+    public int ArraySlotCount { get; private set; } = 4;
+
+    /// <summary>
+    /// The fifth array, present only in the five-slot header.
+    ///
+    /// Kept as a count and an offset and nothing more, because every one of BF3's 24 instances
+    /// declares ZERO elements -- so its element type is unobservable and inventing a stride for it
+    /// would be assuming what cannot be checked. That is enough to write the header back exactly;
+    /// Deserialize throws rather than guess if a resource ever ships a non-empty one.
+    /// </summary>
+    public int ExtraArrayCount { get; private set; }
+
+    public long ExtraArrayOffset { get; private set; }
+
+    /// <summary>
+    /// The trailing relocations: the file offsets of the 64-bit array pointers in the header, so
+    /// the engine can fix them up on load. One per array slot -- four normally, five for water --
+    /// read back and written back.
     /// </summary>
     public int[] Relocations { get; private set; } = new int[4];
 
@@ -243,6 +267,29 @@ public class HavokPhysicsData : IFbSerializable
         return (p_Position + (p_Alignment - 1)) & ~(p_Alignment - 1);
     }
 
+    /// <summary>Bytes of header for a given number of array slots: 0x40 for four, 0x50 for five.</summary>
+    static long HeaderSizeFor(int p_SlotCount)
+    {
+        // PartCount, then slot_count * (int32 count + int64 offset), then Scale and the two
+        // material bytes, padded to 16.
+        return RoundUp(4 + p_SlotCount * 12 + 6, 16);
+    }
+
+    /// <summary>
+    /// How many array slots the header carries, read off where the FIRST array starts -- which is
+    /// the end of the header, so the resource names its own shape instead of being sniffed for.
+    /// </summary>
+    static int SlotCountFrom(long p_FirstArrayOffset)
+    {
+        for (var s_Slots = 4; s_Slots <= 5; ++s_Slots)
+            if (HeaderSizeFor(s_Slots) == p_FirstArrayOffset)
+                return s_Slots;
+
+        throw new NotSupportedException(
+            $"HavokPhysicsData header ends at 0x{p_FirstArrayOffset:X}, which is neither the " +
+            "four-slot (0x40) nor the five-slot (0x50) layout.");
+    }
+
     public void Deserialize(byte[] p_Data)
     {
         using var s_Reader = new RimeReader(new MemoryStream(p_Data));
@@ -260,6 +307,8 @@ public class HavokPhysicsData : IFbSerializable
         var s_PartTranslationsCount = p_Reader.ReadInt32();
         var s_PartTranslationsOffset = PartTranslationsOffset = p_Reader.ReadInt64();
 
+        ArraySlotCount = SlotCountFrom(s_PartTranslationsOffset);
+
         var s_LocalAabbsCount = p_Reader.ReadInt32();
         var s_LocalAabbsOffset = LocalAabbsOffset = p_Reader.ReadInt64();
 
@@ -268,6 +317,19 @@ public class HavokPhysicsData : IFbSerializable
 
         var s_MaterialFlagsAndIndicesCount = p_Reader.ReadInt32();
         var s_MaterialFlagsAndIndicesOffset = MaterialFlagsAndIndicesOffset = p_Reader.ReadInt64();
+
+        if (ArraySlotCount > 4)
+        {
+            ExtraArrayCount = p_Reader.ReadInt32();
+            ExtraArrayOffset = p_Reader.ReadInt64();
+
+            // All 24 shipped five-slot resources declare zero, so a non-zero one would need a
+            // stride nothing has ever shown. Refuse loudly rather than mislay the packfile.
+            if (ExtraArrayCount != 0)
+                throw new NotSupportedException(
+                    $"HavokPhysicsData's fifth array declares {ExtraArrayCount} element(s); every " +
+                    "resource BF3 ships declares zero, so its element size is unknown.");
+        }
 
         var s_PartTranslationsSize = RoundUp(s_PartTranslationsCount * 16, 16);
         var s_LocalAabbsSize = RoundUp(s_LocalAabbsCount * 32, 16);
@@ -313,7 +375,12 @@ public class HavokPhysicsData : IFbSerializable
             MaterialFlagsAndIndices.Add(p_Reader.ReadUInt32());
         }
 
-        var s_HavokOffset = RoundUp(s_PartTranslationsSize + s_LocalAabbsSize + s_MaterialIndicesSize + s_MaterialFlagsAndIndicesSize + 60, 16);
+        // Header first, then the arrays. This used to add a literal 60 and round; every array size
+        // above is already a multiple of 16, so `+ 60` and `+ HeaderSizeFor(4)` land on the same
+        // byte for the four-slot layout -- but only the header form follows the five-slot one.
+        var s_HavokOffset = RoundUp(HeaderSizeFor(ArraySlotCount)
+                                    + s_PartTranslationsSize + s_LocalAabbsSize
+                                    + s_MaterialIndicesSize + s_MaterialFlagsAndIndicesSize, 16);
         p_Reader.Seek(s_HavokOffset, SeekOrigin.Begin);
         HavokInstance32 = new HavokInstance(p_Reader);
         p_Reader.Align(16);
@@ -326,11 +393,12 @@ public class HavokPhysicsData : IFbSerializable
         SetOffsets(p_Reader, HavokInstance32, fixupSize32);
         SetOffsets(p_Reader, HavokInstance64, fixupSize64);
 
-        // 0x10 bytes remaining. Relocations for the HavokPhysicsData.
-        Relocations[0] = p_Reader.ReadInt32(); // 0x08. Offset of PartTranslationsOffset.
-        Relocations[1] = p_Reader.ReadInt32(); // 0x14. Offset of LocalAabbsOffset.
-        Relocations[2] = p_Reader.ReadInt32(); // 0x20. Offset of MaterialIndiciesOffset.
-        Relocations[3] = p_Reader.ReadInt32(); // 0x2C. Offset of MaterialFlagsAndIndicesSize.
+        // One relocation per array slot: the file offset of that slot's 64-bit pointer -- 0x08,
+        // 0x14, 0x20, 0x2C and, in the five-slot layout, 0x38.
+        Relocations = new int[ArraySlotCount];
+
+        for (var i = 0; i < ArraySlotCount; ++i)
+            Relocations[i] = p_Reader.ReadInt32();
 
         p_Reader.Endianness = s_PrevEndianness;
     }
@@ -345,7 +413,16 @@ public class HavokPhysicsData : IFbSerializable
         p_Instance.FixupData = p_Reader.ReadBytes(p_FixupSize);
         p_Reader.Seek(s_StartPos, SeekOrigin.Begin);
 
-        var endPos = p_Reader.Position + p_Instance.DataSection.GlobalFixupsOffset;
+        // The two fixup regions are located from the SECTION HEADER, not from wherever the previous
+        // loop stopped reading.
+        //
+        // MEASURED: 3,335 of BF3's 7,617 physics resources terminate the first region with -1 well
+        // before its declared end. Resuming the second loop from that terminator made it read the
+        // -1 and stop immediately, so ObjectOffsets came back EMPTY -- and ObjectOffsets is every
+        // pointer the shape graph is made of. 1,238,946 object pointers were being lost that way,
+        // silently, because an empty dictionary reads exactly like a resource with no children.
+        var endPos = s_StartPos + p_Instance.DataSection.GlobalFixupsOffset;
+
         while (p_Reader.Position < endPos)
         {
             int offset = p_Reader.ReadInt32();
@@ -357,13 +434,14 @@ public class HavokPhysicsData : IFbSerializable
             }
             else
             {
-                p_Reader.Seek(-4, SeekOrigin.Current);
                 break;
             }
         }
-        
-        endPos = p_Reader.Position + p_Instance.DataSection.LocalFixupsOffset - p_Instance.DataSection.GlobalFixupsOffset;
-        
+
+        p_Reader.Seek(s_StartPos + p_Instance.DataSection.GlobalFixupsOffset, SeekOrigin.Begin);
+
+        endPos = s_StartPos + p_Instance.DataSection.LocalFixupsOffset;
+
         while (p_Reader.Position < endPos)
         {
             int offset = p_Reader.ReadInt32();
@@ -376,7 +454,6 @@ public class HavokPhysicsData : IFbSerializable
             }
             else
             {
-                p_Reader.Seek(-4, SeekOrigin.Current);
                 break;
             }
         }
@@ -411,58 +488,235 @@ public class HavokPhysicsData : IFbSerializable
     }
 
     /// <summary>
-    /// Every box and convex hull in the 32-bit packfile, with the translation its wrapper gives it.
+    /// Every leaf shape in the 32-bit packfile, ONCE PER PLACE THE GAME PUTS IT.
     ///
-    /// Shapes are reached through hkpConvexTranslateShape where there is one, because that wrapper
-    /// carries the placement -- the child alone knows its size and not where it sits. A shape with
-    /// no wrapper is still reported, at the origin.
+    /// This walks the object graph the fixup table describes rather than sweeping the virtual
+    /// fixups for shape classes, and the difference is not cosmetic. BigRadioTower places 89 shapes
+    /// through an hkpListShape: 67 of them behind an hkpConvexTransformShape (rotation AND
+    /// translation), 2 behind an hkpConvexTranslateShape, 11 cylinders and 9 hulls directly. The
+    /// old sweep read the 26 distinct hkpBoxShape objects and the 9 hulls -- 35 shapes -- gave 24
+    /// of the boxes no position at all because only the 2 translate wrappers were understood, and
+    /// collapsed the tower's 69 girder placements onto the 26 boxes they share. Corpus-wide the
+    /// wrapper split is 102,842 hkpConvexTranslateShape against 52,448 hkpConvexTransformShape, so
+    /// a third of BF3's placements were being dropped along with their rotation.
+    ///
+    /// The GRAPH IS THE FIXUP TABLE: a pointer slot inside object A that resolves to object B is an
+    /// edge A -> B, and that is read out of the global fixups instead of decoding each class's
+    /// array counts. It costs nothing in fidelity -- the fixups are how the engine itself finds the
+    /// children -- and it means a list with a disabled or null child is walked correctly without
+    /// this having to know what "disabled" looks like.
     /// </summary>
     public List<hkpCollisionShape> GetShapes()
+    {
+        return GetShapes(out _);
+    }
+
+    /// <summary>
+    /// <inheritdoc cref="GetShapes()"/>
+    /// </summary>
+    /// <param name="p_Unread">
+    /// Classes the walk reached and could not turn into geometry, by name and count. Reported
+    /// rather than swallowed: a shape count with nothing to compare it against cannot say whether
+    /// it is all of them, and the honest answer for hkpMoppCode or hkpCompressedMeshShape is that
+    /// they are baked by the Havok SDK and are not modelled here.
+    /// </param>
+    public List<hkpCollisionShape> GetShapes(out Dictionary<string, int> p_Unread)
     {
         var s_Shapes = new List<hkpCollisionShape>();
         var s_Instance = HavokInstance32;
         var s_DataStart = s_Instance.DataSection.AbsoluteDataStart;
-        var s_Placed = new Dictionary<long, (System.Numerics.Vector3 Centre, float Radius)>();
 
-        string? NameOf(hkDescriptorInfo p_Info)
+        var s_Unread = new Dictionary<string, int>();
+        p_Unread = s_Unread;
+
+        var s_ClassOf = BuildObjectIndex(s_Instance, out var s_ObjectStarts);
+
+        if (s_ObjectStarts.Length == 0)
+            return s_Shapes;
+
+        // Sources of the global fixups, sorted, so the children of an object are the slice that
+        // falls inside it.
+        var s_FixupSources = s_Instance.ObjectOffsets.Keys.ToArray();
+        Array.Sort(s_FixupSources);
+
+        List<long> ChildrenOf(long p_Offset)
         {
-            return s_Instance.Descriptors.FirstOrDefault(d => d.Key == p_Info.Key)?.Name;
+            var s_Children = new List<long>();
+            var s_Index = Array.BinarySearch(s_ObjectStarts, p_Offset);
+
+            // The end of this object is where the next one begins.
+            var s_End = s_Index >= 0 && s_Index + 1 < s_ObjectStarts.Length
+                ? s_ObjectStarts[s_Index + 1]
+                : long.MaxValue;
+
+            var s_At = Array.BinarySearch(s_FixupSources, p_Offset);
+
+            if (s_At < 0)
+                s_At = ~s_At;
+
+            for (; s_At < s_FixupSources.Length && s_FixupSources[s_At] < s_End; ++s_At)
+                s_Children.Add(s_Instance.ObjectOffsets[s_FixupSources[s_At]]);
+
+            return s_Children;
         }
 
-        // Wrappers first: a child has to know where it was placed before it is read.
-        foreach (var l_Info in s_Instance.DescriptorInfos)
+        void Note(string p_Name)
         {
-            if (NameOf(l_Info) != "hkpConvexTranslateShape")
-                continue;
-
-            var s_Placement = hkpShapeReader.ReadTranslate(s_Instance.Reader, s_DataStart,
-                                                           l_Info.Offset, s_Instance.ObjectOffsets);
-
-            if (s_Placement != null)
-                s_Placed[s_Placement.Value.Child] = (s_Placement.Value.Centre, s_Placement.Value.Radius);
+            s_Unread[p_Name] = s_Unread.TryGetValue(p_Name, out var s_Count) ? s_Count + 1 : 1;
         }
 
-        foreach (var l_Info in s_Instance.DescriptorInfos)
+        // Depth is bounded because a list can hold a list -- 325 of BF3's do -- and a malformed
+        // fixup could otherwise loop forever.
+        void Visit(long p_Offset, hkpPlacement p_Placement, long p_PlacedBy, int p_Depth)
         {
-            var s_Name = NameOf(l_Info);
-            hkpCollisionShape? s_Shape = null;
+            if (p_Depth > 32)
+                return;
 
-            if (s_Name == "hkpBoxShape")
-                s_Shape = hkpShapeReader.ReadBox(s_Instance.Reader, s_DataStart, l_Info.Offset);
-            else if (s_Name == "hkpConvexVerticesShape")
-                s_Shape = hkpShapeReader.ReadConvex(s_Instance.Reader, s_DataStart, l_Info.Offset,
-                                                    s_Instance.ArrayOffsets);
+            if (!s_ClassOf.TryGetValue(p_Offset, out var s_Name))
+            {
+                Note("<no class name>");
+                return;
+            }
 
-            if (s_Shape == null)
-                continue;
+            hkpCollisionShape? s_Leaf = null;
 
-            if (s_Placed.TryGetValue(l_Info.Offset, out var s_Placement))
-                s_Shape.Centre = s_Placement.Centre;
+            switch (s_Name)
+            {
+                case "hkpMoppBvTreeShape":
+                case "hkpListShape":
+                // The storage mesh's geometry lives in a child subpart storage, and any wrappers it
+                // holds are ordinary placements. hkpExtendedMeshShape is deliberately NOT here: its
+                // subparts hold 819,307 pointer slots onto a few hundred shared wrappers, so
+                // walking it would emit the same shape thousands of times.
+                case "hkpStorageExtendedMeshShape":
+                    foreach (var l_Child in ChildrenOf(p_Offset))
+                        Visit(l_Child, p_Placement, p_PlacedBy, p_Depth + 1);
 
-            s_Shapes.Add(s_Shape);
+                    return;
+
+                // The MOPP acceleration blob hangs off the bv-tree beside the real shape. It is not
+                // geometry, so it is skipped rather than counted as something unread.
+                case "hkpMoppCode":
+                    return;
+
+                case "hkpConvexTranslateShape":
+                {
+                    var s_Wrapper = hkpShapeReader.ReadTranslate(s_Instance.Reader, s_DataStart,
+                                                                 p_Offset, s_Instance.ObjectOffsets);
+
+                    if (s_Wrapper == null)
+                    {
+                        Note(s_Name);
+                        return;
+                    }
+
+                    Visit(s_Wrapper.Value.Child,
+                          p_Placement.Compose(hkpPlacement.FromTranslation(s_Wrapper.Value.Centre)),
+                          p_Offset, p_Depth + 1);
+
+                    return;
+                }
+
+                case "hkpConvexTransformShape":
+                {
+                    var s_Wrapper = hkpShapeReader.ReadTransform(s_Instance.Reader, s_DataStart,
+                                                                 p_Offset, s_Instance.ObjectOffsets);
+
+                    if (s_Wrapper == null)
+                    {
+                        Note(s_Name);
+                        return;
+                    }
+
+                    Visit(s_Wrapper.Value.Child, p_Placement.Compose(s_Wrapper.Value.Placement),
+                          p_Offset, p_Depth + 1);
+
+                    return;
+                }
+
+                case "hkpBoxShape":
+                    s_Leaf = hkpShapeReader.ReadBox(s_Instance.Reader, s_DataStart, p_Offset);
+                    break;
+
+                case "hkpConvexVerticesShape":
+                    s_Leaf = hkpShapeReader.ReadConvex(s_Instance.Reader, s_DataStart, p_Offset,
+                                                       s_Instance.ArrayOffsets);
+                    break;
+
+                case "hkpCylinderShape":
+                    s_Leaf = hkpShapeReader.ReadCylinder(s_Instance.Reader, s_DataStart, p_Offset);
+                    break;
+
+                case "hkpCapsuleShape":
+                    s_Leaf = hkpShapeReader.ReadCapsule(s_Instance.Reader, s_DataStart, p_Offset);
+                    break;
+
+                case "hkpSphereShape":
+                    s_Leaf = hkpShapeReader.ReadSphere(s_Instance.Reader, s_DataStart, p_Offset);
+                    break;
+
+                case "hkpStorageExtendedMeshShapeMeshSubpartStorage":
+                {
+                    var s_At = Array.BinarySearch(s_ObjectStarts, p_Offset);
+                    var s_End = s_At >= 0 && s_At + 1 < s_ObjectStarts.Length
+                        ? s_ObjectStarts[s_At + 1]
+                        : s_Instance.DataSection.VirtualFixupsOffset;
+
+                    s_Leaf = hkpShapeReader.ReadStorageMesh(s_Instance.Reader, s_DataStart, p_Offset,
+                                                            s_End, s_Instance.ArrayOffsets);
+
+                    if (s_Leaf == null)
+                    {
+                        Note(s_Name);
+                        return;
+                    }
+
+                    break;
+                }
+
+                default:
+                    Note(s_Name);
+                    return;
+            }
+
+            s_Leaf.Centre = p_Placement.Translation;
+            s_Leaf.Placement = p_Placement;
+            s_Leaf.PlacementOffset = p_PlacedBy;
+
+            s_Shapes.Add(s_Leaf);
+        }
+
+        // The roots are whatever HavokPhysicsContainer points at. Its shape slots start at +32 and
+        // BF3 uses one, two or three of them (7,617 resources: 4,485 at +32 alone, 3,626 with a
+        // second at +36, 24 with a third at +40), so they are taken from the fixup table rather
+        // than from an assumed count.
+        foreach (var l_Object in s_ObjectStarts)
+        {
+            if (s_ClassOf.TryGetValue(l_Object, out var l_Name) && l_Name == "HavokPhysicsContainer")
+                foreach (var l_Root in ChildrenOf(l_Object))
+                    Visit(l_Root, hkpPlacement.Identity, l_Root, 0);
         }
 
         return s_Shapes;
+    }
+
+    /// <summary>Class name per object offset, plus those offsets sorted.</summary>
+    static Dictionary<long, string> BuildObjectIndex(HavokInstance p_Instance, out long[] p_Starts)
+    {
+        var s_NameOf = new Dictionary<long, string>();
+
+        foreach (var l_Descriptor in p_Instance.Descriptors)
+            s_NameOf[l_Descriptor.Key] = l_Descriptor.Name;
+
+        var s_ClassOf = new Dictionary<long, string>();
+
+        foreach (var l_Info in p_Instance.DescriptorInfos)
+            if (s_NameOf.TryGetValue(l_Info.Key, out var l_Name))
+                s_ClassOf[l_Info.Offset] = l_Name;
+
+        p_Starts = p_Instance.DescriptorInfos.Select(i => i.Offset).Distinct().OrderBy(o => o).ToArray();
+
+        return s_ClassOf;
     }
 
     /// <summary>
@@ -499,6 +753,12 @@ public class HavokPhysicsData : IFbSerializable
         p_Writer.Write(MaterialFlagsAndIndices.Count);
         p_Writer.Write(MaterialFlagsAndIndicesOffset);
 
+        if (ArraySlotCount > 4)
+        {
+            p_Writer.Write(ExtraArrayCount);
+            p_Writer.Write(ExtraArrayOffset);
+        }
+
         var s_PartTranslationsSize = RoundUp(PartTranslations.Count * 16, 16);
         var s_LocalAabbsSize = RoundUp(LocalAabbs.Count * 32, 16);
         var s_MaterialIndicesSize = RoundUp(MaterialIndices.Count * 1, 16);
@@ -525,7 +785,9 @@ public class HavokPhysicsData : IFbSerializable
         foreach (var l_Value in MaterialFlagsAndIndices)
             p_Writer.Write(l_Value);
 
-        var s_HavokOffset = RoundUp(s_PartTranslationsSize + s_LocalAabbsSize + s_MaterialIndicesSize + s_MaterialFlagsAndIndicesSize + 60, 16);
+        var s_HavokOffset = RoundUp(HeaderSizeFor(ArraySlotCount)
+                                    + s_PartTranslationsSize + s_LocalAabbsSize
+                                    + s_MaterialIndicesSize + s_MaterialFlagsAndIndicesSize, 16);
         p_Writer.Seek(s_Start + s_HavokOffset, SeekOrigin.Begin);
 
         HavokInstance32.Serialize(p_Writer);

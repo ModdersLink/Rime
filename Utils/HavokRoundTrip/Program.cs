@@ -1,3 +1,4 @@
+﻿using System.Numerics;
 using RimeLib.Havok.Frostbite2_0;
 using RimeLib.IO;
 
@@ -14,6 +15,10 @@ if (args.Length < 1)
 
 var s_Files = Directory.GetFiles(args[0], "*.bin").OrderBy(p => p).ToArray();
 var s_ListLimit = args.Length > 1 ? int.Parse(args[1]) : 10;
+
+// Optional substring: print the shape breakdown for the resources whose name contains it. Named
+// resources are how the claims in the docs are checked against something a person can picture.
+var s_Detail = args.Length > 2 ? args[2] : null;
 
 var s_Parsed = 0;
 var s_Unparseable = 0;
@@ -36,14 +41,53 @@ var s_Probed = 0;
 var s_Unprobed = 0;
 var s_ProbeFailed = 0;
 
+// SHAPE COVERAGE. Byte round-tripping says nothing about whether the geometry can be READ, and
+// until now it could not: the reader swept the virtual fixups for shape classes instead of walking
+// the graph, so an instanced shape came back once and a rotated placement came back at the origin.
+var s_Placements = 0;
+var s_MeshVertices = 0;
+var s_MeshTriangles = 0;
+var s_ByKind = new Dictionary<string, int>();
+var s_UnreadByClass = new Dictionary<string, int>();
+var s_FullyRead = 0;
+var s_PartlyRead = 0;
+
+// Guard A: the flat virtual-fixup census counts the wrapper objects; the walk reaches them. The two
+// are computed by completely different routes, so agreement is evidence the walk missed no subtree.
+var s_Wrappers = 0;
+var s_WrappersReached = 0;
+var s_WrapperShort = new List<string>();
+
+// The same two numbers over the WHOLE corpus, undecodable classes included. This is the honest
+// coverage figure; the pair above is the one held to equality, because a resource whose graph runs
+// through an SDK-baked mesh legitimately hides placements inside it.
+var s_WrappersAll = 0;
+var s_WrappersReachedAll = 0;
+
+// For the wrappers the walk never stands on, WHO points at them. Without this, "reached n of m" is
+// a number with no explanation and no way to tell a missed subtree from a shape the format keeps
+// somewhere this deliberately does not go.
+var s_MissedOwners = new Dictionary<string, int>();
+
+// Guard B: a Havok placement is rigid, so its rotation determinant is 1. A column read at the wrong
+// offset still produces confident-looking geometry; this is what would catch it.
+var s_Rotations = 0;
+var s_Rotated = 0;
+var s_BadDeterminant = 0;
+var s_WorstDeterminant = 0.0;
+
 foreach (var l_File in s_Files)
 {
     var s_Original = File.ReadAllBytes(l_File);
     HavokPhysicsData s_Data;
 
+    // The reader outlives the parse on purpose: HavokInstance keeps a LimitedRimeReader over it and
+    // GetShapes reads the object bodies through that, so disposing it at the end of the parse would
+    // make every shape read throw. `using var` in a loop body still releases it per iteration.
+    using var s_Reader = new RimeReader(new MemoryStream(s_Original));
+
     try
     {
-        using var s_Reader = new RimeReader(new MemoryStream(s_Original));
         s_Data = new HavokPhysicsData(s_Reader);
     }
     catch (Exception s_Exception)
@@ -124,6 +168,8 @@ foreach (var l_File in s_Files)
         if (s_Probe is { Length: > 0 })
             ++s_ProbeFailed;
 
+        Cover(s_Data, Path.GetFileName(l_File));
+
         continue;
     }
 
@@ -147,6 +193,28 @@ Console.WriteLine($"content      {s_Descriptors} class descriptor(s), {s_Descrip
                   $"{s_Translations} part translation(s), {s_Aabbs} local aabb(s)");
 Console.WriteLine($"edit probe   {s_Probed} moved exactly the edited bytes, {s_ProbeFailed} did not, " +
                   $"{s_Unprobed} had no array to edit");
+Console.WriteLine();
+Console.WriteLine($"SHAPES       {s_Placements} placement(s) read across {s_Identical} resource(s); " +
+                  $"{s_FullyRead} resource(s) fully read, {s_PartlyRead} hold at least one class this cannot decode");
+Console.WriteLine($"  meshes     {s_MeshVertices} vertices, {s_MeshTriangles} triangles from storage subparts");
+Console.WriteLine("  by kind    " + string.Join(", ", s_ByKind.OrderByDescending(p => p.Value)
+                                                              .Select(p => $"{p.Key} {p.Value}")));
+Console.WriteLine($"  wrappers   {s_WrappersReachedAll} of {s_WrappersAll} placement wrappers reached corpus-wide; " +
+                  $"{s_WrappersReached} of {s_Wrappers} in resources with no undecodable class " +
+                  "(flat virtual-fixup census vs traversal)");
+Console.WriteLine($"  rotations  {s_Rotations} rigid placement(s), of which {s_Rotated} carry a rotation; " +
+                  $"{s_BadDeterminant} with a non-unit determinant " +
+                  $"(worst |det - 1| = {s_WorstDeterminant:E2})");
+Console.WriteLine("  unreached  " + (s_MissedOwners.Count == 0
+    ? "none"
+    : "held only by " + string.Join(", ", s_MissedOwners.OrderByDescending(p => p.Value)
+                                                        .Select(p => $"{p.Key} ({p.Value} pointer slot(s))"))));
+Console.WriteLine("  NOT READ   " + (s_UnreadByClass.Count == 0
+    ? "nothing"
+    : string.Join(", ", s_UnreadByClass.OrderByDescending(p => p.Value).Select(p => $"{p.Key} {p.Value}"))));
+
+foreach (var l_Short in s_WrapperShort.Take(s_ListLimit))
+    Console.WriteLine($"  WRAPPERS MISSED {l_Short}");
 
 foreach (var l_Failure in s_Failures)
     Console.WriteLine($"  FAIL {l_Failure}");
@@ -154,17 +222,136 @@ foreach (var l_Failure in s_Failures)
 foreach (var l_Unparsed in s_Unparsed)
     Console.WriteLine($"  UNPARSED {l_Unparsed}");
 
-if (s_Parsed == 0 || s_Descriptors == 0 || s_Translations == 0 || s_Probed == 0)
+if (s_Parsed == 0 || s_Descriptors == 0 || s_Translations == 0 || s_Probed == 0 || s_Placements == 0)
 {
-    Console.WriteLine("RESULT       NOTHING TESTED -- parsed, decoded or probed nothing, so no verdict is available.");
+    Console.WriteLine("RESULT       NOTHING TESTED -- parsed, decoded, probed or read nothing, so no verdict is available.");
     return 1;
 }
 
-var s_Pass = s_Identical == s_Parsed && s_ProbeFailed == 0;
+var s_Pass = s_Identical == s_Parsed && s_ProbeFailed == 0
+             && s_WrappersReached == s_Wrappers && s_BadDeterminant == 0;
 
 Console.WriteLine(s_Pass ? "RESULT       PASS" : "RESULT       FAIL");
 
 return s_Pass ? 0 : 1;
+
+// Walks the shapes and folds the coverage numbers in. Declared as a local function so it can reach
+// the counters above; everything it touches is measured, nothing is assumed.
+void Cover(HavokPhysicsData p_Data, string p_Name)
+{
+    var s_Shapes = p_Data.GetShapes(out var s_Unread);
+
+    s_Placements += s_Shapes.Count;
+    s_MeshVertices += s_Shapes.Sum(p => p.Kind == "mesh" ? p.Vertices.Count : 0);
+    s_MeshTriangles += s_Shapes.Sum(p => p.Kind == "mesh" ? p.Indices.Count / 3 : 0);
+
+    foreach (var l_Shape in s_Shapes)
+    {
+        s_ByKind[l_Shape.Kind] = s_ByKind.TryGetValue(l_Shape.Kind, out var l_Kind) ? l_Kind + 1 : 1;
+
+        ++s_Rotations;
+
+        // Placements the previous reader could not have expressed at all: it carried a centre and
+        // no orientation, so a rotated shape came back axis-aligned.
+        if (Vector3.Distance(l_Shape.Placement.Column0, Vector3.UnitX) > 1e-6f
+            || Vector3.Distance(l_Shape.Placement.Column1, Vector3.UnitY) > 1e-6f
+            || Vector3.Distance(l_Shape.Placement.Column2, Vector3.UnitZ) > 1e-6f)
+            ++s_Rotated;
+
+        var l_Off = Math.Abs(l_Shape.Placement.Determinant() - 1.0);
+
+        if (l_Off > s_WorstDeterminant)
+            s_WorstDeterminant = l_Off;
+
+        if (l_Off > 1e-3)
+            ++s_BadDeterminant;
+    }
+
+    if (s_Detail != null && p_Name.Contains(s_Detail, StringComparison.OrdinalIgnoreCase))
+    {
+        var s_Kinds = s_Shapes.GroupBy(p => p.Kind).OrderByDescending(g => g.Count());
+        var s_Rot = s_Shapes.Count(p => Vector3.Distance(p.Placement.Column0, Vector3.UnitX) > 1e-6f
+                                        || Vector3.Distance(p.Placement.Column1, Vector3.UnitY) > 1e-6f
+                                        || Vector3.Distance(p.Placement.Column2, Vector3.UnitZ) > 1e-6f);
+
+        Console.WriteLine($"DETAIL {p_Name}: {s_Shapes.Count} placement(s) of " +
+                          $"{s_Shapes.Select(p => p.Offset).Distinct().Count()} distinct shape(s) -- " +
+                          string.Join(", ", s_Kinds.Select(g => $"{g.Count()} {g.Key}")) +
+                          $"; {s_Rot} rotated; " +
+                          $"{s_Shapes.Sum(q => q.Vertices.Count)} vertices, " +
+                          $"{s_Shapes.Sum(q => q.Indices.Count) / 3} triangle(s); unread " +
+                          (s_Unread.Count == 0 ? "nothing"
+                           : string.Join(", ", s_Unread.Select(q => $"{q.Key} {q.Value}"))));
+    }
+
+    foreach (var l_Pair in s_Unread)
+        s_UnreadByClass[l_Pair.Key] = s_UnreadByClass.TryGetValue(l_Pair.Key, out var l_Count)
+            ? l_Count + l_Pair.Value : l_Pair.Value;
+
+    if (s_Unread.Count == 0)
+        ++s_FullyRead;
+    else
+        ++s_PartlyRead;
+
+    // The independent half: name every wrapper object from the FLAT virtual-fixup table, then ask
+    // which of them the traversal actually stood on.
+    var s_Instance = p_Data.HavokInstance32;
+    var s_NameOf = new Dictionary<long, string>();
+
+    foreach (var l_Descriptor in s_Instance.Descriptors)
+        s_NameOf[l_Descriptor.Key] = l_Descriptor.Name;
+
+    var s_WrapperOffsets = new HashSet<long>();
+
+    foreach (var l_Info in s_Instance.DescriptorInfos)
+    {
+        if (!s_NameOf.TryGetValue(l_Info.Key, out var l_Name))
+            continue;
+
+        if (l_Name == "hkpConvexTranslateShape" || l_Name == "hkpConvexTransformShape")
+            s_WrapperOffsets.Add(l_Info.Offset);
+    }
+
+    var s_Reached = new HashSet<long>(s_Shapes.Select(p => p.PlacementOffset)
+                                              .Where(s_WrapperOffsets.Contains));
+
+    s_WrappersAll += s_WrapperOffsets.Count;
+    s_WrappersReachedAll += s_Reached.Count;
+
+    if (s_Reached.Count != s_WrapperOffsets.Count)
+    {
+        var s_Starts = s_Instance.DescriptorInfos.Select(i => i.Offset).Distinct().OrderBy(o => o).ToArray();
+
+        foreach (var l_Pair in s_Instance.ObjectOffsets)
+        {
+            if (s_Reached.Contains(l_Pair.Value) || !s_WrapperOffsets.Contains(l_Pair.Value))
+                continue;
+
+            // The owner of a pointer slot is the last object that starts at or before it.
+            var l_At = Array.BinarySearch(s_Starts, l_Pair.Key);
+
+            if (l_At < 0)
+                l_At = ~l_At - 1;
+
+            var l_Owner = l_At >= 0 && s_NameOf.TryGetValue(
+                s_Instance.DescriptorInfos.First(i => i.Offset == s_Starts[l_At]).Key, out var l_Name)
+                ? l_Name : "<unknown>";
+
+            s_MissedOwners[l_Owner] = s_MissedOwners.TryGetValue(l_Owner, out var l_Count) ? l_Count + 1 : 1;
+        }
+    }
+
+    // A resource that holds a class this cannot decode may legitimately hide wrappers inside it --
+    // hkpExtendedMeshShape carries its own -- so only the fully-read ones are held to equality.
+    if (s_Unread.Count > 0)
+        return;
+
+    s_Wrappers += s_WrapperOffsets.Count;
+    s_WrappersReached += s_Reached.Count;
+
+    if (s_Reached.Count != s_WrapperOffsets.Count)
+        s_WrapperShort.Add($"{p_Name}: reached {s_Reached.Count} of {s_WrapperOffsets.Count}");
+}
 
 // Mutates one decoded value and reports whether re-serializing moved exactly the bytes behind it.
 // Returns null when the resource carries no array to edit, an empty string on success, and a
