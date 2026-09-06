@@ -98,6 +98,7 @@ namespace RimeLib.Cmd.Contexts
                 RegisterCommand<CheckAnimationCodecCommand>();
                 RegisterCommand<PatchAnimationBankCommand>();
                 RegisterCommand<DumpSoundWaveCommand>();
+                RegisterCommand<DumpNameSourcesCommand>();
             }
 
             if (EngineInterfaceRegistry.IsSupported<ITextureConverter>(s_EngineType))
