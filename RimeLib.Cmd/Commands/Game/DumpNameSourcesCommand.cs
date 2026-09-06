@@ -349,6 +349,9 @@ namespace RimeLib.Cmd.Commands.Game
 
             // ---- 5. MVDB: a hash pointing at a name that lives somewhere else -------------------
             var s_MvdbHashes = new HashSet<uint>();
+            // The hash WITH the mesh it sits beside. A hash that no name in the game resolves can
+            // only be attacked with context, and the mesh is the only context BF3 gives.
+            var s_MvdbRows = new List<string>();
             var s_MvdbFailed = 0;
 
             foreach (var s_Name in s_MvdbPartitions)
@@ -367,8 +370,13 @@ namespace RimeLib.Cmd.Commands.Game
                         if (s_Instance is not fb.MeshVariationDatabaseEntry s_Row)
                             continue;
 
-                        if (s_Row.VariationAssetNameHash != 0)
-                            s_MvdbHashes.Add(s_Row.VariationAssetNameHash);
+                        if (s_Row.VariationAssetNameHash == 0)
+                            continue;
+
+                        s_MvdbHashes.Add(s_Row.VariationAssetNameHash);
+
+                        s_Mounter.TryGetPartitionByGuid(s_Row.Mesh.PartitionGuid, out var s_MeshName, out _);
+                        s_MvdbRows.Add($"{s_Row.VariationAssetNameHash:X8}\t{Escape(s_MeshName ?? "?")}\t{Escape(s_Name)}");
                     }
                 }
                 catch (Exception)
@@ -379,6 +387,7 @@ namespace RimeLib.Cmd.Commands.Game
 
             WriteLines(Path.Combine(Destination.FullName, "gt_mvdb_variation_hashes.txt"),
                        s_MvdbHashes.Select(p_H => p_H.ToString("X8")));
+            WriteRaw(Path.Combine(Destination.FullName, "gt_mvdb_entries.tsv"), s_MvdbRows);
             s_Counts["gt_mvdb_partitions"] = s_MvdbPartitions.Count;
             s_Counts["gt_mvdb_partitions_failed"] = s_MvdbFailed;
             s_Counts["gt_mvdb_variation_hashes"] = s_MvdbHashes.Count;

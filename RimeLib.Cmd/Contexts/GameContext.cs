@@ -100,6 +100,7 @@ namespace RimeLib.Cmd.Contexts
                 RegisterCommand<DumpAnimCodecClipsCommand>();
                 RegisterCommand<DumpSoundWaveCommand>();
                 RegisterCommand<DumpNameSourcesCommand>();
+                RegisterCommand<DumpIntFieldsCommand>();
             }
 
             if (EngineInterfaceRegistry.IsSupported<ITextureConverter>(s_EngineType))
