@@ -107,6 +107,7 @@ namespace RimeLib.Cmd.Contexts
                 RegisterCommand<DumpTerrainDecalsJsonCommand>();
                 RegisterCommand<DumpTerrainNodesCommand>();
                 RegisterCommand<DumpEnlightenCommand>();
+                RegisterCommand<DumpLevelEnlightenCommand>();
                 RegisterCommand<CompareResourceCommand>();
                 RegisterCommand<CompareResourcesCommand>();
             }

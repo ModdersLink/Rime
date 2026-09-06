@@ -58,29 +58,12 @@ namespace RimeLib.Cmd.Commands.Game
             using (var s_Source = s_Variant.GetReader())
                 s_Data = s_Source.ReadBytes((int)s_Source.Length);
 
-            object s_Dump;
+            var s_Dump = Parse(s_Type, s_Data);
 
-            switch (s_Type)
+            if (s_Dump is null)
             {
-                case ResourceType.EnlightenDatabase:
-                    s_Dump = DumpDatabase(s_Data);
-                    break;
-
-                case ResourceType.EnlightenProbeSet:
-                    s_Dump = DumpProbeSet(s_Data);
-                    break;
-
-                case ResourceType.EnlightenShaderDatabase:
-                    s_Dump = DumpShaderDatabase(s_Data);
-                    break;
-
-                case ResourceType.StaticEnlightenDatabase:
-                    s_Dump = DumpStaticDatabase(s_Data);
-                    break;
-
-                default:
-                    p_Writer.WriteLine($"{Name} is a {s_Type}, which is not an Enlighten resource this reads.");
-                    return false;
+                p_Writer.WriteLine($"{Name} is a {s_Type}, which is not an Enlighten resource this reads.");
+                return false;
             }
 
             File.WriteAllText(Destination.FullName, JsonConvert.SerializeObject(s_Dump));
@@ -109,7 +92,36 @@ namespace RimeLib.Cmd.Commands.Game
             return true;
         }
 
-        private static object DumpDatabase(byte[] p_Data)
+        /// <summary>
+        /// The structured read for one Enlighten resource, or null if this is not a type that is
+        /// parsed.
+        ///
+        /// Null is not a failure everywhere it is seen: <see cref="ResourceType.EnlightenSystem"/>
+        /// is Enlighten's own radiosity data and nothing here decodes it. A caller carrying the
+        /// bytes verbatim can still carry one; a caller wanting fields cannot.
+        /// </summary>
+        internal static object? Parse(ResourceType p_Type, byte[] p_Data)
+        {
+            switch (p_Type)
+            {
+                case ResourceType.EnlightenDatabase:
+                    return DumpDatabase(p_Data);
+
+                case ResourceType.EnlightenProbeSet:
+                    return DumpProbeSet(p_Data);
+
+                case ResourceType.EnlightenShaderDatabase:
+                    return DumpShaderDatabase(p_Data);
+
+                case ResourceType.StaticEnlightenDatabase:
+                    return DumpStaticDatabase(p_Data);
+
+                default:
+                    return null;
+            }
+        }
+
+        internal static object DumpDatabase(byte[] p_Data)
         {
             var s_Database = new EnlightenDatabase();
             s_Database.Deserialize(p_Data);
@@ -148,7 +160,7 @@ namespace RimeLib.Cmd.Commands.Game
             };
         }
 
-        private static object DumpProbeSet(byte[] p_Data)
+        internal static object DumpProbeSet(byte[] p_Data)
         {
             var s_ProbeSet = new EnlightenProbeSet();
             s_ProbeSet.Deserialize(p_Data);
@@ -174,7 +186,7 @@ namespace RimeLib.Cmd.Commands.Game
             };
         }
 
-        private static object DumpStaticDatabase(byte[] p_Data)
+        internal static object DumpStaticDatabase(byte[] p_Data)
         {
             var s_Static = new StaticEnlightenDatabase();
             s_Static.Deserialize(p_Data);
@@ -193,7 +205,7 @@ namespace RimeLib.Cmd.Commands.Game
             };
         }
 
-        private static object DumpShaderDatabase(byte[] p_Data)
+        internal static object DumpShaderDatabase(byte[] p_Data)
         {
             var s_Shaders = new EnlightenShaderDatabase();
             s_Shaders.Deserialize(p_Data);
