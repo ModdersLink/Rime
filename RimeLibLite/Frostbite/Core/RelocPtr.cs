@@ -35,15 +35,34 @@ namespace RimeLib.Frostbite.Core
             BaseAddress = 0;
         }
 
+        /// <summary>
+        /// Writes the pointer slot: the same 64 bits <see cref="DeserializeObject"/> reads.
+        ///
+        /// A RelocPtr is an OFFSET, so this writes the slot and nothing else -- the pointee lives
+        /// elsewhere in the file and is placed by whoever owns the layout, which is also who has to
+        /// set <see cref="BaseAddress"/> and emit the relocation table entry for it. Following the
+        /// pointer here and writing the object inline would corrupt the struct it sits in.
+        /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            p_Writer.Write(BaseAddress);
+
+            return true;
         }
 
         public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            var s_Stream = new System.IO.MemoryStream();
+            using var s_Writer = new RimeWriter(s_Stream);
+
+            if (Serialize(s_Writer))
+            {
+                p_Data = s_Stream.ToArray();
+                return true;
+            }
+
             p_Data = null;
-            throw new NotImplementedException();
+            return false;
         }
 
         public void Deserialize(RimeReader p_Reader)

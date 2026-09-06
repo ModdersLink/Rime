@@ -145,7 +145,9 @@ namespace RimeLib.Frostbite.Core
         }
 
         /// <summary>
-        /// 
+        /// Writes the array slot: the count and the pointer, the same 12 bytes the constructor
+        /// reads. As with <see cref="RelocPtr{T}"/> the ELEMENTS are not written here -- they live
+        /// at <see cref="BaseAddress"/> and belong to the owning layout.
         /// </summary>
         /// <param name="p_Writer"></param>
         public bool Serialize(RimeWriter p_Writer)
@@ -158,13 +160,28 @@ namespace RimeLib.Frostbite.Core
 
         public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            var s_Stream = new System.IO.MemoryStream();
+            using var s_Writer = new RimeWriter(s_Stream);
+
+            if (Serialize(s_Writer))
+            {
+                p_Data = s_Stream.ToArray();
+                return true;
+            }
+
             p_Data = null;
-            throw new NotImplementedException();
+            return false;
         }
 
+        /// <summary>
+        /// Reads the array slot in place. The constructor is what reads the ELEMENTS too; this is
+        /// the interface entry point and reads only the slot, so that it mirrors
+        /// <see cref="Serialize(RimeWriter)"/> exactly.
+        /// </summary>
         public void Deserialize(RimeReader p_Reader)
         {
-            throw new NotImplementedException();
+            Count = p_Reader.ReadUInt32();
+            BaseAddress = p_Reader.ReadUInt64();
         }
 
         public void Deserialize(byte[] p_Data)

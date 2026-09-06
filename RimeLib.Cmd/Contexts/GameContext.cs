@@ -83,6 +83,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpAnimTrackDataCommand>();
             RegisterCommand<BuildCasCatalogCommand>();
             RegisterCommand<MountExternalCatCommand>();
+            RegisterCommand<RoundTripWritersCommand>();
 
             var s_EngineType = m_Mounter.GetEngineType();
 

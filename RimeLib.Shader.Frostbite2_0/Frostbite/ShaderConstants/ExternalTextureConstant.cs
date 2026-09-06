@@ -2,6 +2,7 @@
 using RimeLib.IO;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using System.Text;
 using fb;
 
@@ -26,18 +27,21 @@ public class ExternalTextureConstant : IFbSerializable
         Deserialize(p_Reader);
     }
 
+    /// <summary>
+    /// Mirrors <see cref="Deserialize(RimeReader)"/> field for field, in its order: 0x28 bytes.
+    /// </summary>
     public bool Serialize(RimeWriter p_Writer)
     {
-        throw new NotImplementedException();
+        p_Writer.WriteFixedLengthString(Name, 0x20);
 
-        /*p_Writer.Write(Encoding.ASCII.GetBytes(m_Name).Take(0x20).ToArray());
+        p_Writer.Write(Handle);
 
-        p_Writer.Write(m_Handle);
-        p_Writer.Write(m_Index);
-        p_Writer.Write(m_TextureType);
-        p_Writer.Write(m_Required);
+        p_Writer.Write(Index);
 
-        return true;*/
+        p_Writer.Write((byte) TextureType);
+        p_Writer.Write(Required);
+
+        return true;
     }
         
     public void Deserialize(RimeReader p_Reader)
@@ -55,14 +59,25 @@ public class ExternalTextureConstant : IFbSerializable
 
     public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
     {
+        var s_Stream = new MemoryStream();
+        using var s_Writer = new RimeWriter(s_Stream);
+
+        if (Serialize(s_Writer))
+        {
+            p_Data = s_Stream.ToArray();
+            return true;
+        }
+
         p_Data = null;
-        throw new System.NotImplementedException();
+        return false;
     }
 
 
     public void Deserialize(byte[] p_Data)
     {
-        throw new System.NotImplementedException();
+        using var s_Reader = new RimeReader(new MemoryStream(p_Data));
+
+        Deserialize(s_Reader);
     }
 
 }

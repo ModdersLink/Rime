@@ -1,4 +1,4 @@
-using RimeLib.IO;
+﻿using RimeLib.IO;
 
 namespace RimeLib.Havok;
 
@@ -31,5 +31,18 @@ public class hkDescriptor
         Version = p_Reader.ReadUByte();
         Key = p_Reader.Position;
         Name = p_Reader.ReadNullTerminatedString();
+    }
+
+    /// <summary>
+    /// Mirrors <see cref="Deserialize"/> field for field, in its order.
+    ///
+    /// Key is deliberately not written: it is the source POSITION the name was read from, an index
+    /// the descriptor infos point at, not a field of the record.
+    /// </summary>
+    public void Serialize(RimeWriter p_Writer)
+    {
+        p_Writer.Write(Signature);
+        p_Writer.Write(Version);
+        p_Writer.WriteNullTerminatedString(Name);
     }
 }

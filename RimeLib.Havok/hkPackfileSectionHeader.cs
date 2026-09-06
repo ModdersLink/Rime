@@ -1,4 +1,4 @@
-using RimeLib.IO;
+﻿using RimeLib.IO;
 
 namespace RimeLib.Havok;
 
@@ -34,5 +34,26 @@ public class hkPackfileSectionHeader
         ExportsOffset = p_Reader.ReadInt32();
         ImportsOffset = p_Reader.ReadInt32();
         EndOffset = p_Reader.ReadInt32();
+    }
+
+    /// <summary>
+    /// Mirrors <see cref="Deserialize"/> field for field, in its order: 0x30 bytes.
+    ///
+    /// The tag is written from SectionTagData, the raw 19 chars, and not from the trimmed
+    /// SectionTag -- trimming loses whatever follows the first null, which the file still carries.
+    /// </summary>
+    public void Serialize(RimeWriter p_Writer)
+    {
+        for (var s_Index = 0; s_Index < c_SectionTagLength; s_Index++)
+            p_Writer.Write((byte) SectionTagData[s_Index]);
+
+        p_Writer.Write(NullByte);
+        p_Writer.Write(AbsoluteDataStart);
+        p_Writer.Write(LocalFixupsOffset);
+        p_Writer.Write(GlobalFixupsOffset);
+        p_Writer.Write(VirtualFixupsOffset);
+        p_Writer.Write(ExportsOffset);
+        p_Writer.Write(ImportsOffset);
+        p_Writer.Write(EndOffset);
     }
 }

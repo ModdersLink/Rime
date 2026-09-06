@@ -120,15 +120,37 @@ namespace RimeLib.Frostbite.Core
             Deserialize(p_Reader);
         }
 
+        /// <summary>
+        /// Mirrors <see cref="Deserialize(RimeReader)"/>: X, Y, Z then W, four floats each, 64 bytes.
+        /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            // Written component by component rather than through Vector4, which has a reader
+            // constructor but no writer of its own.
+            foreach (var l_Vector in new[] { X, Y, Z, W })
+            {
+                p_Writer.Write(l_Vector.X);
+                p_Writer.Write(l_Vector.Y);
+                p_Writer.Write(l_Vector.Z);
+                p_Writer.Write(l_Vector.W);
+            }
+
+            return true;
         }
 
         public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            var s_Stream = new System.IO.MemoryStream();
+            using var s_Writer = new RimeWriter(s_Stream);
+
+            if (Serialize(s_Writer))
+            {
+                p_Data = s_Stream.ToArray();
+                return true;
+            }
+
             p_Data = null;
-            throw new NotImplementedException();
+            return false;
         }
 
         public void Deserialize(RimeReader p_Reader)
@@ -141,7 +163,9 @@ namespace RimeLib.Frostbite.Core
 
         public void Deserialize(byte[] p_Data)
         {
-            throw new NotImplementedException();
+            using var s_Reader = new RimeReader(new System.IO.MemoryStream(p_Data));
+
+            Deserialize(s_Reader);
         }
     }
 }

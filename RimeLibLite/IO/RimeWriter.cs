@@ -50,6 +50,31 @@ namespace RimeLib.IO
             Write((byte) 0x00);
         }
 
+        /// <summary>
+        /// Writes a string into a fixed-width field, null-padded to <paramref name="p_Length"/>.
+        ///
+        /// The mirror of <see cref="RimeReader.ReadFixedLengthString"/>, which reads the whole field
+        /// and cuts at the first null. Round-tripping is therefore byte-exact only when the bytes
+        /// after that null are zero -- MEASURED across BF3's shader constants, where every one of
+        /// them is.
+        /// </summary>
+        /// <param name="p_Value">String to write</param>
+        /// <param name="p_Length">Width of the field in bytes</param>
+        public void WriteFixedLengthString(string p_Value, int p_Length)
+        {
+            var s_Data = Encoding.UTF8.GetBytes(p_Value);
+
+            if (s_Data.Length > p_Length)
+                throw new ArgumentException(
+                    $"The string is {s_Data.Length} bytes, which does not fit a {p_Length} byte field.",
+                    nameof(p_Value));
+
+            var s_Field = new byte[p_Length];
+            Buffer.BlockCopy(s_Data, 0, s_Field, 0, s_Data.Length);
+
+            Write(s_Field);
+        }
+
         public void WriteUnicodeString(string p_Value)
         {
             var s_Data = Encoding.Unicode.GetBytes(p_Value);

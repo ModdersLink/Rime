@@ -20,6 +20,23 @@ public class HavokPhysicsData : IFbSerializable
     public HavokInstance HavokInstance32 { get; private set; } = new();
     public HavokInstance HavokInstance64 { get; private set; } = new();
 
+    /// <summary>
+    /// Where each array sits in the file. These are stored rather than recomputed because they are
+    /// what the four relocation entries at the end of the resource point at, and a writer that
+    /// derived them instead would silently disagree with those entries the moment an array changed
+    /// size.
+    /// </summary>
+    public long PartTranslationsOffset { get; private set; }
+    public long LocalAabbsOffset { get; private set; }
+    public long MaterialIndicesOffset { get; private set; }
+    public long MaterialFlagsAndIndicesOffset { get; private set; }
+
+    /// <summary>
+    /// The four trailing relocations: the file offsets of the four 64-bit array pointers in the
+    /// header, so the engine can fix them up on load. Read back and written back.
+    /// </summary>
+    public int[] Relocations { get; private set; } = new int[4];
+
     public HavokPhysicsData(RimeReader p_Reader)
     {
         Deserialize(p_Reader);
@@ -38,6 +55,26 @@ public class HavokPhysicsData : IFbSerializable
         public LimitedRimeReader Reader { get; private set; }
         public Dictionary<long, long> ArrayOffsets { get; internal set; } = [];
         public Dictionary<long, long> ObjectOffsets { get; internal set; } = [];
+
+        /// <summary>
+        /// The body of the __data__ section: every Havok object, byte for byte.
+        ///
+        /// NOT MODELLED. Deserialize decodes only the virtual fixups that index into this span --
+        /// where each object starts and which class it is -- and never the objects themselves. So
+        /// there are no fields to write it back from, and it is carried verbatim. Anything that
+        /// edits a shape has to rebuild this span itself; that is what the Python builder in
+        /// MapEditor's tools/havok/build_collision.py does.
+        /// </summary>
+        public byte[] ObjectData { get; internal set; } = [];
+
+        /// <summary>
+        /// This instance's Frostbite-level fixup blob, which sits after both packfiles.
+        ///
+        /// NOT MODELLED for writing. SetOffsets decodes it into ArrayOffsets and ObjectOffsets, but
+        /// those are unordered lookup tables that drop the -1 terminators and the padding out to
+        /// the declared blob size, so they cannot reproduce the bytes. Carried verbatim.
+        /// </summary>
+        public byte[] FixupData { get; internal set; } = [];
 
 
         public HavokInstance()
@@ -71,6 +108,15 @@ public class HavokPhysicsData : IFbSerializable
             DeserializeClassNames(Reader);
             // Skip section 2 because it is always empty.
             DeserializeData(Reader);
+
+            // The object bytes, kept so that Serialize has something to write for the span it does
+            // not model. Read AFTER the fixups so the reader is left where DeserializeData left it.
+            var s_Resume = Reader.Position;
+
+            Reader.Seek(DataSection.AbsoluteDataStart, SeekOrigin.Begin);
+            ObjectData = Reader.ReadBytes(DataSection.VirtualFixupsOffset);
+
+            Reader.Seek(s_Resume, SeekOrigin.Begin);
         }
 
         private void DeserializeClassNames(RimeReader p_Reader)
@@ -115,14 +161,80 @@ public class HavokPhysicsData : IFbSerializable
             Deserialize(s_Reader);
         }
 
+        /// <summary>
+        /// Mirrors <see cref="Deserialize(RimeReader)"/> section by section, in its order.
+        ///
+        /// Modelled and written from fields: the packfile header, the three section headers, the
+        /// class-name descriptors and the virtual fixups. Carried verbatim: the __data__ objects
+        /// (see <see cref="ObjectData"/>), which the reader never decodes.
+        /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            var s_Start = p_Writer.Position;
+
+            HkPackfile.Serialize(p_Writer);
+
+            ClassNamesSection.Serialize(p_Writer);
+            TypesSection.Serialize(p_Writer);
+            DataSection.Serialize(p_Writer);
+
+            // SECTION 1: CLASS NAMES.
+            p_Writer.Seek(s_Start + ClassNamesSection.AbsoluteDataStart, SeekOrigin.Begin);
+
+            foreach (var l_Descriptor in Descriptors)
+                l_Descriptor.Serialize(p_Writer);
+
+            // The reader stops on the first 0xFF, so the leftover of the section is 0xFF and not
+            // zero -- padding it with zero would produce a section that reads back as more,
+            // empty-named descriptors.
+            var s_ClassNamesEnd = s_Start + ClassNamesSection.AbsoluteDataStart + ClassNamesSection.EndOffset;
+
+            while (p_Writer.Position < s_ClassNamesEnd)
+                p_Writer.Write((byte) 0xFF);
+
+            // SECTION 2: TYPES. Always empty, so there is nothing to write.
+
+            // SECTION 3: DATA. The objects, then the virtual fixups that index them.
+            p_Writer.Seek(s_Start + DataSection.AbsoluteDataStart, SeekOrigin.Begin);
+            p_Writer.Write(ObjectData);
+
+            p_Writer.Seek(s_Start + DataSection.AbsoluteDataStart + DataSection.VirtualFixupsOffset,
+                          SeekOrigin.Begin);
+
+            foreach (var l_Info in DescriptorInfos)
+            {
+                p_Writer.Write(l_Info.Offset);
+                p_Writer.Write(l_Info.Key);
+            }
+
+            // The section rarely ends on a whole 12-byte fixup -- DeserializeData divides the region
+            // by the record size and drops the remainder -- and that remainder is 0xFF, not zero.
+            // MEASURED: writing zero there was the only difference in 2,887 of BF3's 7,593 physics
+            // resources, at 0x2288 of MEHouse01Large (8 leftover bytes) and 0x59C of the canals
+            // bridge pillar (4).
+            var s_DataEnd = s_Start + DataSection.AbsoluteDataStart + DataSection.EndOffset;
+
+            while (p_Writer.Position < s_DataEnd)
+                p_Writer.Write((byte) 0xFF);
+
+            p_Writer.Seek(s_DataEnd, SeekOrigin.Begin);
+
+            return true;
         }
 
         public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
-            throw new NotImplementedException();
+            var s_Stream = new MemoryStream();
+            using var s_Writer = new RimeWriter(s_Stream);
+
+            if (Serialize(s_Writer))
+            {
+                p_Data = s_Stream.ToArray();
+                return true;
+            }
+
+            p_Data = null;
+            return false;
         }
     }
 
@@ -146,16 +258,16 @@ public class HavokPhysicsData : IFbSerializable
         PartCount = p_Reader.ReadUInt32();
 
         var s_PartTranslationsCount = p_Reader.ReadInt32();
-        var s_PartTranslationsOffset = p_Reader.ReadInt64();
+        var s_PartTranslationsOffset = PartTranslationsOffset = p_Reader.ReadInt64();
 
         var s_LocalAabbsCount = p_Reader.ReadInt32();
-        var s_LocalAabbsOffset = p_Reader.ReadInt64();
+        var s_LocalAabbsOffset = LocalAabbsOffset = p_Reader.ReadInt64();
 
         var s_MaterialIndicesCount = p_Reader.ReadInt32();
-        var s_MaterialIndiciesOffset = p_Reader.ReadInt64();
+        var s_MaterialIndiciesOffset = MaterialIndicesOffset = p_Reader.ReadInt64();
 
         var s_MaterialFlagsAndIndicesCount = p_Reader.ReadInt32();
-        var s_MaterialFlagsAndIndicesOffset = p_Reader.ReadInt64();
+        var s_MaterialFlagsAndIndicesOffset = MaterialFlagsAndIndicesOffset = p_Reader.ReadInt64();
 
         var s_PartTranslationsSize = RoundUp(s_PartTranslationsCount * 16, 16);
         var s_LocalAabbsSize = RoundUp(s_LocalAabbsCount * 32, 16);
@@ -215,17 +327,23 @@ public class HavokPhysicsData : IFbSerializable
         SetOffsets(p_Reader, HavokInstance64, fixupSize64);
 
         // 0x10 bytes remaining. Relocations for the HavokPhysicsData.
-        p_Reader.ReadInt32(); // 0x08. Offset of PartTranslationsOffset.
-        p_Reader.ReadInt32(); // 0x14. Offset of LocalAabbsOffset.
-        p_Reader.ReadInt32(); // 0x20. Offset of MaterialIndiciesOffset.
-        p_Reader.ReadInt32(); // 0x2C. Offset of MaterialFlagsAndIndicesSize.
+        Relocations[0] = p_Reader.ReadInt32(); // 0x08. Offset of PartTranslationsOffset.
+        Relocations[1] = p_Reader.ReadInt32(); // 0x14. Offset of LocalAabbsOffset.
+        Relocations[2] = p_Reader.ReadInt32(); // 0x20. Offset of MaterialIndiciesOffset.
+        Relocations[3] = p_Reader.ReadInt32(); // 0x2C. Offset of MaterialFlagsAndIndicesSize.
 
         p_Reader.Endianness = s_PrevEndianness;
     }
 
     private void SetOffsets(RimeReader p_Reader, HavokInstance p_Instance, int p_FixupSize)
     {
-        var s_ExpectedEndPos = p_Reader.Position + p_FixupSize;
+        var s_StartPos = p_Reader.Position;
+        var s_ExpectedEndPos = s_StartPos + p_FixupSize;
+
+        // Kept whole before it is decoded: the decode below drops the -1 terminators and whatever
+        // pads the blob out to p_FixupSize, so the dictionaries it builds cannot write it back.
+        p_Instance.FixupData = p_Reader.ReadBytes(p_FixupSize);
+        p_Reader.Seek(s_StartPos, SeekOrigin.Begin);
 
         var endPos = p_Reader.Position + p_Instance.DataSection.GlobalFixupsOffset;
         while (p_Reader.Position < endPos)
@@ -347,14 +465,101 @@ public class HavokPhysicsData : IFbSerializable
         return s_Shapes;
     }
 
+    /// <summary>
+    /// Mirrors <see cref="Deserialize(RimeReader)"/> field for field, in its order.
+    ///
+    /// Everything the reader decodes is written from a field: the header, the four arrays at the
+    /// offsets they were read from, both packfiles' headers, class names and virtual fixups, and
+    /// the four trailing relocations. The two spans the reader never decodes -- the Havok object
+    /// data and the Frostbite fixup blobs -- are carried verbatim and say so at their declarations.
+    ///
+    /// The layout is offset-driven, so this seeks rather than streams: the header stores where each
+    /// array lives, and writing them in sequence instead would silently move them.
+    /// </summary>
     public bool Serialize(RimeWriter p_Writer)
     {
-        throw new NotImplementedException();
+        var s_PrevEndianness = p_Writer.Endianness;
+        p_Writer.Endianness = Endianness.LittleEndian;
+
+        // Deserialize seeks from Begin, so it assumes the resource starts at position 0. This keeps
+        // the same assumption but anchors it to wherever the writer actually is.
+        var s_Start = p_Writer.Position;
+
+        p_Writer.Write(PartCount);
+
+        p_Writer.Write(PartTranslations.Count);
+        p_Writer.Write(PartTranslationsOffset);
+
+        p_Writer.Write(LocalAabbs.Count);
+        p_Writer.Write(LocalAabbsOffset);
+
+        p_Writer.Write(MaterialIndices.Count);
+        p_Writer.Write(MaterialIndicesOffset);
+
+        p_Writer.Write(MaterialFlagsAndIndices.Count);
+        p_Writer.Write(MaterialFlagsAndIndicesOffset);
+
+        var s_PartTranslationsSize = RoundUp(PartTranslations.Count * 16, 16);
+        var s_LocalAabbsSize = RoundUp(LocalAabbs.Count * 32, 16);
+        var s_MaterialIndicesSize = RoundUp(MaterialIndices.Count * 1, 16);
+        var s_MaterialFlagsAndIndicesSize = RoundUp(MaterialFlagsAndIndices.Count * 4, 16);
+
+        p_Writer.Write(Scale);
+        p_Writer.Write(MaterialCountUsed);
+        p_Writer.Write(HighestMaterialIndex);
+        p_Writer.Align(16);
+
+        p_Writer.Seek(s_Start + PartTranslationsOffset, SeekOrigin.Begin);
+        foreach (var l_Translation in PartTranslations)
+            l_Translation.Serialize(p_Writer);
+
+        p_Writer.Seek(s_Start + LocalAabbsOffset, SeekOrigin.Begin);
+        foreach (var l_Aabb in LocalAabbs)
+            l_Aabb.Serialize(p_Writer);
+
+        p_Writer.Seek(s_Start + MaterialIndicesOffset, SeekOrigin.Begin);
+        foreach (var l_Index in MaterialIndices)
+            p_Writer.Write(l_Index);
+
+        p_Writer.Seek(s_Start + MaterialFlagsAndIndicesOffset, SeekOrigin.Begin);
+        foreach (var l_Value in MaterialFlagsAndIndices)
+            p_Writer.Write(l_Value);
+
+        var s_HavokOffset = RoundUp(s_PartTranslationsSize + s_LocalAabbsSize + s_MaterialIndicesSize + s_MaterialFlagsAndIndicesSize + 60, 16);
+        p_Writer.Seek(s_Start + s_HavokOffset, SeekOrigin.Begin);
+
+        HavokInstance32.Serialize(p_Writer);
+        p_Writer.Align(16);
+        HavokInstance64.Serialize(p_Writer);
+        p_Writer.Align(16);
+
+        p_Writer.Write(HavokInstance32.FixupData.Length);
+        p_Writer.Write(HavokInstance64.FixupData.Length);
+
+        p_Writer.Write(HavokInstance32.FixupData);
+        p_Writer.Write(HavokInstance64.FixupData);
+
+        foreach (var l_Relocation in Relocations)
+            p_Writer.Write(l_Relocation);
+
+        p_Writer.Endianness = s_PrevEndianness;
+
+        return true;
     }
 
     public bool Serialize(out byte[]? p_Data)
     {
-        throw new NotImplementedException();
+        var s_Stream = new MemoryStream();
+        using var s_Writer = new RimeWriter(s_Stream);
+
+        if (Serialize(s_Writer))
+        {
+            p_Data = s_Stream.ToArray();
+            return true;
+        }
+
+        p_Data = null;
+        return false;
     }
 
 }
