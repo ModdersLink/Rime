@@ -640,7 +640,8 @@ public class HavokPhysicsData : IFbSerializable
 
                 case "hkpConvexVerticesShape":
                     s_Leaf = hkpShapeReader.ReadConvex(s_Instance.Reader, s_DataStart, p_Offset,
-                                                       s_Instance.ArrayOffsets);
+                                                       s_Instance.ArrayOffsets,
+                                                       s_Instance.ObjectOffsets);
                     break;
 
                 case "hkpCylinderShape":

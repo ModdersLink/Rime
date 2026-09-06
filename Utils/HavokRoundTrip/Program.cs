@@ -13,6 +13,13 @@ if (args.Length < 1)
     return 2;
 }
 
+// A single FILE instead of a directory: decode it and print what is in it as JSON. That is how a
+// resource the builder just wrote gets checked against the reader without a game mount -- byte
+// equality cannot be had for a resource whose bake includes a MOPP, but "does it decode back to the
+// same placements" can.
+if (File.Exists(args[0]) && !Directory.Exists(args[0]))
+    return DumpOne(args[0], args.Length > 1 ? args[1] : null);
+
 var s_Files = Directory.GetFiles(args[0], "*.bin").OrderBy(p => p).ToArray();
 var s_ListLimit = args.Length > 1 ? int.Parse(args[1]) : 10;
 
@@ -234,6 +241,85 @@ var s_Pass = s_Identical == s_Parsed && s_ProbeFailed == 0
 Console.WriteLine(s_Pass ? "RESULT       PASS" : "RESULT       FAIL");
 
 return s_Pass ? 0 : 1;
+
+static int DumpOne(string p_Path, string? p_Out)
+{
+    var s_Bytes = File.ReadAllBytes(p_Path);
+
+    using var s_Reader = new RimeReader(new MemoryStream(s_Bytes));
+    var s_Data = new HavokPhysicsData(s_Reader);
+    var s_Shapes = s_Data.GetShapes(out var s_Unread);
+    var s_Objects = s_Data.HavokInstance32.DescriptorInfos.Count;
+    var s_NameOf = new Dictionary<long, string>();
+
+    foreach (var l_Descriptor in s_Data.HavokInstance32.Descriptors)
+        s_NameOf[l_Descriptor.Key] = l_Descriptor.Name;
+
+    var s_Census = new Dictionary<string, int>();
+
+    foreach (var l_Info in s_Data.HavokInstance32.DescriptorInfos)
+    {
+        var l_Name = s_NameOf.TryGetValue(l_Info.Key, out var l_Found) ? l_Found : "<unnamed>";
+        s_Census[l_Name] = s_Census.TryGetValue(l_Name, out var l_Count) ? l_Count + 1 : 1;
+    }
+
+    var s_Text = new StringWriter();
+
+    s_Text.Write("{\"wrapper\":{");
+    s_Text.Write($"\"PartCount\":{s_Data.PartCount},\"Scale\":{F(s_Data.Scale)}," +
+                 $"\"MaterialCountUsed\":{s_Data.MaterialCountUsed}," +
+                 $"\"HighestMaterialIndex\":{s_Data.HighestMaterialIndex},\"PartTranslations\":[" +
+                 string.Join(",", s_Data.PartTranslations.Select(t => $"[{F(t.x)},{F(t.y)},{F(t.z)}]")) +
+                 "],\"LocalAabbs\":[" +
+                 string.Join(",", s_Data.LocalAabbs.Select(a =>
+                     $"[{F(a.min.x)},{F(a.min.y)},{F(a.min.z)},{F(a.max.x)},{F(a.max.y)},{F(a.max.z)}]")) +
+                 "],\"MaterialIndices\":[" + string.Join(",", s_Data.MaterialIndices) +
+                 "],\"MaterialFlagsAndIndices\":[" + string.Join(",", s_Data.MaterialFlagsAndIndices) +
+                 "]},");
+    s_Text.Write("\"objects32\":" + s_Objects + ",\"census\":{");
+    s_Text.Write(string.Join(",", s_Census.OrderBy(p => p.Key).Select(p => $"\"{p.Key}\":{p.Value}")));
+    s_Text.Write("},\"unread\":{");
+    s_Text.Write(string.Join(",", s_Unread.OrderBy(p => p.Key).Select(p => $"\"{p.Key}\":{p.Value}")));
+    s_Text.Write("},\"shapes\":[");
+
+    s_Text.Write(string.Join(",", s_Shapes.Select(p =>
+        $"{{\"kind\":\"{p.Kind}\",\"offset\":{p.Offset},\"placement\":{p.PlacementOffset}," +
+        $"\"radius\":{F(p.Radius)},\"cylinderRadius\":{F(p.CylinderRadius)}," +
+        $"\"connectivity\":{(p.HasConnectivity ? "true" : "false")}," +
+        $"\"centre\":[{F(p.Centre.X)},{F(p.Centre.Y)},{F(p.Centre.Z)}]," +
+        $"\"rotation\":[[{F(p.Placement.Column0.X)},{F(p.Placement.Column0.Y)},{F(p.Placement.Column0.Z)}]," +
+        $"[{F(p.Placement.Column1.X)},{F(p.Placement.Column1.Y)},{F(p.Placement.Column1.Z)}]," +
+        $"[{F(p.Placement.Column2.X)},{F(p.Placement.Column2.Y)},{F(p.Placement.Column2.Z)}]]," +
+        $"\"half\":[{F(p.HalfExtents.X)},{F(p.HalfExtents.Y)},{F(p.HalfExtents.Z)}]," +
+        $"\"vertexA\":[{F(p.VertexA.X)},{F(p.VertexA.Y)},{F(p.VertexA.Z)}]," +
+        $"\"vertexB\":[{F(p.VertexB.X)},{F(p.VertexB.Y)},{F(p.VertexB.Z)}]," +
+        $"\"verts\":{Vecs(p.Vertices)},\"planes\":[" +
+        string.Join(",", p.Planes.Select(v => $"[{F(v.X)},{F(v.Y)},{F(v.Z)},{F(v.W)}]")) +
+        $"],\"indices\":[{string.Join(",", p.Indices)}]}}")));
+
+    s_Text.Write("]}");
+
+    if (p_Out != null)
+        File.WriteAllText(p_Out, s_Text.ToString());
+    else
+        Console.WriteLine(s_Text.ToString());
+
+    Console.Error.WriteLine($"{Path.GetFileName(p_Path)}: {s_Objects} object(s) in the 32-bit packfile, " +
+                            $"{s_Shapes.Count} placement(s), unread " +
+                            (s_Unread.Count == 0 ? "nothing" : string.Join(", ", s_Unread.Select(p => $"{p.Key} {p.Value}"))));
+
+    return 0;
+
+    static string F(float p_Value)
+    {
+        return p_Value.ToString("R", System.Globalization.CultureInfo.InvariantCulture);
+    }
+
+    static string Vecs(List<Vector3> p_Vectors)
+    {
+        return "[" + string.Join(",", p_Vectors.Select(v => $"[{F(v.X)},{F(v.Y)},{F(v.Z)}]")) + "]";
+    }
+}
 
 // Walks the shapes and folds the coverage numbers in. Declared as a local function so it can reach
 // the counters above; everything it touches is measured, nothing is assumed.

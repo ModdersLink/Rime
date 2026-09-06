@@ -65,6 +65,15 @@ public class hkpCollisionShape
     /// </summary>
     public float CylinderRadius { get; set; }
 
+    /// <summary>
+    /// Convex only: whether the shape carries an hkpConvexVerticesConnectivity.
+    ///
+    /// MEASURED: BF3 attaches one to 5,330 of its 36,004 hulls and leaves the pointer null on the
+    /// rest, so a rebuild that always emits one adds objects the game does not have -- nine of
+    /// them on BigRadioTower alone.
+    /// </summary>
+    public bool HasConnectivity { get; set; }
+
     /// <summary>Section-relative offset of the shape itself, for matching against a rebuild.</summary>
     public long Offset { get; set; }
 

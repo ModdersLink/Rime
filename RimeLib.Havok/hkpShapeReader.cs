@@ -46,6 +46,7 @@ public static class hkpShapeReader
     private const int c_RotatedVerticesOffset = 64;
     private const int c_VertexCountOffset = 76;
     private const int c_PlanesOffset = 80;
+    private const int c_ConnectivityOffset = 92;
 
     // hkpStorageExtendedMeshShapeMeshSubpartStorage. Its hkArrays start at +8 with a 12-byte
     // stride (pointer, size, capacity), and the payloads sit inline after a 112-byte header.
@@ -93,13 +94,20 @@ public static class hkpShapeReader
 
     public static hkpCollisionShape ReadConvex(LimitedRimeReader p_Reader, long p_DataStart,
                                                long p_Offset,
-                                               IReadOnlyDictionary<long, long> p_ArrayOffsets)
+                                               IReadOnlyDictionary<long, long> p_ArrayOffsets,
+                                               IReadOnlyDictionary<long, long>? p_ObjectOffsets = null)
     {
         var s_Shape = new hkpCollisionShape
         {
             Kind = "convex",
             Offset = p_Offset,
-            Radius = ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_RadiusOffset)
+            Radius = ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_RadiusOffset),
+
+            // A null connectivity pointer has no fixup, so the fixup table is the record of whether
+            // there is one -- reading the slot itself would only ever see the zero the relocation
+            // has not been applied to.
+            HasConnectivity = p_ObjectOffsets != null
+                              && p_ObjectOffsets.ContainsKey(p_Offset + c_ConnectivityOffset)
         };
 
         // Planes first: hkArray is pointer then count, and the count lives one pointer in.

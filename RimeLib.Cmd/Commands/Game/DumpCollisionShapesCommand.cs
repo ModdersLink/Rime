@@ -64,6 +64,7 @@ namespace RimeLib.Cmd.Commands.Game
                     s.PlacementOffset,
                     s.Radius,
                     s.CylinderRadius,
+                    s.HasConnectivity,
                     Centre = new[] { s.Centre.X, s.Centre.Y, s.Centre.Z },
                     // Three COLUMNS, the way Havok stores a rotation. Identity for an unrotated
                     // placement, which is what 46,941 of BF3's 68,436 placements are.
