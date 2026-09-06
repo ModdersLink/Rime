@@ -33,9 +33,22 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
             Deserialize(p_Reader);
         }
 
+        /// <summary>
+        /// The exact mirror of <see cref="Deserialize(RimeReader)"/>. DrawPassType is stored as a
+        /// uint32, so it is cast back rather than written as the enum's own (int) storage.
+        /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            p_Writer.Write((uint) DrawPassType);
+
+            p_Writer.Write((uint) MaskedTerrainLayerIndices.Length);
+            foreach (var s_Index in MaskedTerrainLayerIndices)
+                p_Writer.Write(s_Index);
+
+            p_Writer.WriteNullTerminatedString(ShaderName);
+            p_Writer.Write(DestructionMaskEnable);
+
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)

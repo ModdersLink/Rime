@@ -45,9 +45,53 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
             Deserialize(p_Reader);
         }
 
+        /// <summary>
+        /// The exact mirror of <see cref="Deserialize(RimeReader)"/>, field for field and in its
+        /// order, so a resource that was read can be written back.
+        ///
+        /// Both counts are taken from the ARRAYS, not from a stored count field: the arrays are the
+        /// truth after an edit, and a caller that appends a layer should not also have to remember
+        /// to bump a separate counter. For an unedited resource the two agree, which is why this
+        /// round-trips the shipped bytes exactly.
+        /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            p_Writer.Write(MeshScatteringCellFov);
+            p_Writer.Write(MeshScatteringCellMaskSamplesPerSide);
+            p_Writer.Write(MeshScatteringInstancePoolSize);
+            p_Writer.Write(MeshScatteringInstanceDrawBufferSize);
+
+            p_Writer.Write(ResourcePatchFov);
+            p_Writer.Write(ResourceLodScale);
+            p_Writer.Write(ResourceTriangleSizeMin);
+
+            p_Writer.Write(TextureAtlasSampleCountX);
+            p_Writer.Write(TextureAtlasSampleCountY);
+
+            p_Writer.Write(TextureSamplesPerMeterMax);
+
+            p_Writer.Write(TextureDetailFalloffCurve);
+            p_Writer.Write(TextureDetailFalloffDistance);
+            p_Writer.Write(TextureDetailFalloffFactor);
+            p_Writer.Write(TextureInvisibleDetailReductionFactor);
+            p_Writer.Write(TextureOccludedDetailReductionFactor);
+
+            p_Writer.WriteNullTerminatedString(SurfaceShaderName);
+
+            p_Writer.Write((uint) Layers.Length);
+            foreach (var s_Layer in Layers)
+                if (!s_Layer.Serialize(p_Writer))
+                    return false;
+
+            p_Writer.WriteNullTerminatedString(StreamingTreeResourceName);
+            p_Writer.WriteNullTerminatedString(DecalsResourceName);
+
+            p_Writer.Write((uint) TerrainLayerCombinationDraws.Length);
+            foreach (var s_Draw in TerrainLayerCombinationDraws)
+                if (!s_Draw.Serialize(p_Writer))
+                    return false;
+
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)

@@ -26,9 +26,22 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
             Deserialize(p_Reader);
         }
 
+        /// <summary>
+        /// The exact mirror of <see cref="Deserialize(RimeReader)"/>. Level and
+        /// DrawDirectLayerCount are single bytes trailing the flag, not padding.
+        /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            p_Writer.Write((uint) MaskedTerrainLayerIndices.Length);
+            foreach (var s_Index in MaskedTerrainLayerIndices)
+                p_Writer.Write(s_Index);
+
+            p_Writer.WriteNullTerminatedString(ShaderName);
+            p_Writer.Write(DestructionMaskEnable);
+            p_Writer.Write(Level);
+            p_Writer.Write(DrawDirectLayerCount);
+
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)

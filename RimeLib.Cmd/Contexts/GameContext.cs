@@ -115,6 +115,8 @@ namespace RimeLib.Cmd.Contexts
             if (EngineInterfaceRegistry.IsSupported<IVisualTerrain>(s_EngineType))
             {
                 RegisterCommand<DumpVisualTerrainCommand>();
+                RegisterCommand<CheckVisualTerrainCommand>();
+                RegisterCommand<WriteVisualTerrainCommand>();
                 RegisterCommand<DumpCollisionShapesCommand>();
             }
 

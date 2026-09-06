@@ -28,9 +28,25 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
             Deserialize(p_Reader);
         }
 
+        /// <summary>
+        /// The exact mirror of <see cref="Deserialize(RimeReader)"/>. Two independent byte arrays,
+        /// each with its own leading uint32 count, then the shader and two trailing bytes.
+        /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            p_Writer.Write((uint) MaskedTerrainLayerIndices.Length);
+            foreach (var s_Index in MaskedTerrainLayerIndices)
+                p_Writer.Write(s_Index);
+
+            p_Writer.Write((uint) OutputLayerOrder.Length);
+            foreach (var s_Order in OutputLayerOrder)
+                p_Writer.Write(s_Order);
+
+            p_Writer.WriteNullTerminatedString(ShaderName);
+            p_Writer.Write(DestructionMaskEnable);
+            p_Writer.Write(Level);
+
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)
