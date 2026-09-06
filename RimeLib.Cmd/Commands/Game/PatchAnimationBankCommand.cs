@@ -4,7 +4,9 @@ using System.IO;
 using System.Numerics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using RimeLib.Animation.Frostbite2_0.EA.Compression.Curve;
 using RimeLib.Animation.Frostbite2_0.EA.Compression.DCT;
+using RimeLib.Animation.Frostbite2_0.EA.Compression.Vbr;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.IO;
@@ -73,6 +75,12 @@ namespace RimeLib.Cmd.Commands.Game
                 return false;
             }
 
+            if (!Edits.Exists)
+            {
+                p_Writer.WriteLine($"The edit file '{Edits.FullName}' does not exist.");
+                return false;
+            }
+
             var s_Bank = AntBankFile.Load(s_Data);
             var s_Doc = JObject.Parse(File.ReadAllText(Edits.FullName));
             var s_Clips = s_Doc["clips"] as JArray;
@@ -98,6 +106,8 @@ namespace RimeLib.Cmd.Commands.Game
             // mean what the caller wanted.
             var s_Wanted = new Dictionary<int, Vector4[][]>();
             var s_WantedFloats = new Dictionary<int, float[]>();
+            var s_WantedCurve = new Dictionary<int, CurveCodec.Clip>();
+            var s_WantedVbr = new Dictionary<int, float[]>();
 
             foreach (var s_Edit in s_Clips)
             {
@@ -112,18 +122,20 @@ namespace RimeLib.Cmd.Commands.Game
 
                 var s_Object = s_Bank.Objects[s_Index];
 
-                if (!s_Bank.ArrayLocations.TryGetValue(s_Object, out var s_Fields)
-                    || !s_Fields.TryGetValue("Data", out var s_Location))
-                {
-                    p_Writer.WriteLine($"Object {s_Index} ({s_Object.GetType().Name}) has no "
-                                       + "locatable Data array.");
-                    return false;
-                }
-
-                byte[] s_Payload;
+                // Every codec ends up as the same thing: a list of (array field, replacement
+                // bytes) writes. Keeping it in that shape is what let CURV and VBR join without
+                // a second copy of the anchor-and-write logic -- and CURV has no Data array at
+                // all, so the old "find Data or fail" opening could not have covered it.
+                var s_Writes = new List<KeyValuePair<string, byte[]>>();
 
                 if (s_Object is ant.DctAnimationAsset s_Dct)
                 {
+                    if (!s_Bank.ArrayLocations.TryGetValue(s_Object, out var s_DctFields))
+                    {
+                        p_Writer.WriteLine($"Object {s_Index} has no locatable arrays.");
+                        return false;
+                    }
+
                     var s_Frames = ReadFrames(s_Edit["frames"] as JArray);
 
                     if (s_Frames == null)
@@ -141,8 +153,9 @@ namespace RimeLib.Cmd.Commands.Game
                     }
 
                     s_Wanted[s_Index] = s_Frames;
-                    s_Payload = s_Compressor.Encode(s_Dct, s_Frames, out var s_Bases,
-                                                    out var s_Clamped);
+
+                    var s_Encoded = s_Compressor.Encode(s_Dct, s_Frames, out var s_Bases,
+                                                        out var s_Clamped);
 
                     if (s_Clamped > 0)
                         p_Writer.WriteLine($"Clip {s_Index}: {s_Clamped} coefficient(s) clamped to "
@@ -151,10 +164,83 @@ namespace RimeLib.Cmd.Commands.Game
                     // The delta bases move with the payload -- they ARE the first block's DC
                     // coefficients. Writing Data alone leaves every channel's first eight frames
                     // at the level the clip shipped with, which reads as "the edit did nothing".
-                    if (!PatchDeltaBases(s_Patched, s_Fields, s_Dct, s_Bases, p_Writer, s_Index,
+                    if (!PatchDeltaBases(s_Patched, s_DctFields, s_Dct, s_Bases, p_Writer, s_Index,
                                          ref s_BytesChanged))
                     {
                         return false;
+                    }
+
+                    s_Writes.Add(new KeyValuePair<string, byte[]>("Data", s_Encoded));
+                }
+                else if (s_Object is ant.CurveAnimationAsset s_Curve)
+                {
+                    // CURV stores raw float32 keys, so the edit is expressed the way the codec
+                    // holds them: per group, per key, per channel. Flattening it here rather than
+                    // accepting a flat array is deliberate -- the group/key/channel walk IS the
+                    // part of the format that could be wrong, and routing the edit through it
+                    // means a patch that lands proves the layout as well as the write.
+                    var s_Decoded = CurveCodec.Decode(s_Curve);
+
+                    if (!ApplyCurveEdit(s_Edit, s_Curve, s_Decoded, s_Index, p_Writer))
+                        return false;
+
+                    var s_Values = CurveCodec.EncodeValues(s_Curve, s_Decoded);
+                    var s_Consts = CurveCodec.EncodeConsts(s_Curve, s_Decoded);
+
+                    s_WantedCurve[s_Index] = s_Decoded;
+
+                    if (s_Values.Length > 0)
+                        s_Writes.Add(new KeyValuePair<string, byte[]>("Values",
+                            FloatBytes(s_Values, BigEndianOf(s_Bank, s_Object, "Values"))));
+
+                    if (s_Consts.Length > 0)
+                        s_Writes.Add(new KeyValuePair<string, byte[]>("Consts",
+                            FloatBytes(s_Consts, BigEndianOf(s_Bank, s_Object, "Consts"))));
+                }
+                else if (s_Object is ant.VbrAnimationAsset s_Vbr)
+                {
+                    // Only the constant channels. The per-frame blocks are not decoded, so an
+                    // edit that named an animated channel would have nowhere to go; saying so is
+                    // the point, and EncodeConstants rebuilds the index bytes from the VALUES
+                    // rather than copying them.
+                    var s_Constants = ReadFloats(s_Edit["constants"] as JArray);
+                    var s_Palette = ReadFloats(s_Edit["palette"] as JArray);
+
+                    if (s_Constants == null && s_Palette == null)
+                    {
+                        p_Writer.WriteLine($"Clip {s_Index} is VBR and needs a 'constants' array "
+                                           + "(one float per constant channel component) or a "
+                                           + "'palette' array. Its animated channels are not "
+                                           + "decodable -- see docs/usd-parity.md.");
+                        return false;
+                    }
+
+                    if (s_Constants != null)
+                    {
+                        var s_Data2 = VbrCodec.EncodeConstants(s_Vbr, s_Constants,
+                                                               out var s_Approx, out var s_Err);
+
+                        if (s_Approx > 0)
+                            p_Writer.WriteLine($"Clip {s_Index}: {s_Approx} constant(s) snapped to "
+                                               + $"the nearest palette entry, worst {s_Err:G6}. A "
+                                               + "value off the palette needs a 'palette' edit.");
+
+                        s_WantedVbr[s_Index] = s_Constants;
+                        s_Writes.Add(new KeyValuePair<string, byte[]>("Data", s_Data2));
+                    }
+
+                    if (s_Palette != null)
+                    {
+                        if (s_Palette.Length != s_Vbr.ConstantPalette.Count)
+                        {
+                            p_Writer.WriteLine($"Clip {s_Index} holds "
+                                               + $"{s_Vbr.ConstantPalette.Count} palette entry(s) "
+                                               + $"and the edit supplies {s_Palette.Length}.");
+                            return false;
+                        }
+
+                        s_Writes.Add(new KeyValuePair<string, byte[]>("ConstantPalette",
+                            FloatBytes(s_Palette, BigEndianOf(s_Bank, s_Object, "ConstantPalette"))));
                     }
                 }
                 else
@@ -168,76 +254,100 @@ namespace RimeLib.Cmd.Commands.Game
                         return false;
                     }
 
-                    if (s_Floats.Length != s_Location.Count)
+                    if (!s_Bank.ArrayLocations.TryGetValue(s_Object, out var s_RawFields)
+                        || !s_RawFields.TryGetValue("Data", out var s_RawLocation))
                     {
-                        p_Writer.WriteLine($"Clip {s_Index} holds {s_Location.Count} float(s) and "
-                                           + $"the edit supplies {s_Floats.Length}.");
+                        p_Writer.WriteLine($"Object {s_Index} ({s_Object.GetType().Name}) has no "
+                                           + "locatable Data array.");
+                        return false;
+                    }
+
+                    if (s_Floats.Length != s_RawLocation.Count)
+                    {
+                        p_Writer.WriteLine($"Clip {s_Index} holds {s_RawLocation.Count} float(s) "
+                                           + $"and the edit supplies {s_Floats.Length}.");
                         return false;
                     }
 
                     s_WantedFloats[s_Index] = s_Floats;
-                    s_Payload = FloatBytes(s_Floats, s_Location.BigEndian);
+                    s_Writes.Add(new KeyValuePair<string, byte[]>("Data",
+                        FloatBytes(s_Floats, s_RawLocation.BigEndian)));
                 }
 
-                var s_ByteLength = s_Object is ant.DctAnimationAsset
-                    ? s_Location.Count                  // List<byte>: one element, one byte
-                    : s_Location.Count * 4;             // List<float>
-
-                if (s_Payload.Length != s_ByteLength)
+                foreach (var s_Write in s_Writes)
                 {
-                    p_Writer.WriteLine($"Clip {s_Index} re-encoded to {s_Payload.Length} byte(s) "
-                                       + $"but occupies {s_ByteLength}. Refusing to write: an "
-                                       + "in-place patch cannot move anything.");
-                    return false;
-                }
+                    if (!s_Bank.ArrayLocations.TryGetValue(s_Object, out var s_Fields)
+                        || !s_Fields.TryGetValue(s_Write.Key, out var s_Location))
+                    {
+                        p_Writer.WriteLine($"Object {s_Index} ({s_Object.GetType().Name}) has no "
+                                           + $"locatable {s_Write.Key} array.");
+                        return false;
+                    }
 
-                if (s_Location.Offset + s_ByteLength > s_Patched.Length)
-                {
-                    p_Writer.WriteLine($"Clip {s_Index} payload runs past the end of the blob.");
-                    return false;
-                }
+                    var s_Current = CurrentBytes(s_Object, s_Write.Key, s_Location.BigEndian);
 
-                // Before writing a single byte: the bytes already there must BE this clip's
-                // current payload. An offset that is off by a blob header, or relative to the
-                // wrong base, produces a file of exactly the right length that decodes to
-                // nothing -- which is how this was found, and the only cheap way to catch it.
-                if (!AlreadyHolds(s_Patched, s_Location.Offset, s_Object, s_ByteLength,
-                                  s_Location.BigEndian))
-                {
-                    p_Writer.WriteLine($"Clip {s_Index}: the blob at offset {s_Location.Offset} is "
-                                       + "not this clip's payload. Refusing to write.");
-                    return false;
-                }
+                    if (s_Current == null || s_Current.Length != s_Write.Value.Length)
+                    {
+                        p_Writer.WriteLine($"Clip {s_Index}: {s_Write.Key} re-encoded to "
+                                           + $"{s_Write.Value.Length} byte(s) but occupies "
+                                           + $"{s_Current?.Length ?? -1}. Refusing to write: an "
+                                           + "in-place patch cannot move anything.");
+                        return false;
+                    }
 
-                var s_Changed = 0;
+                    if (s_Location.Offset < 0
+                        || s_Location.Offset + s_Current.Length > s_Patched.Length)
+                    {
+                        p_Writer.WriteLine($"Clip {s_Index}: {s_Write.Key} runs past the end of "
+                                           + "the blob.");
+                        return false;
+                    }
 
-                for (var i = 0; i < s_ByteLength; i++)
-                {
-                    if (s_Patched[s_Location.Offset + i] != s_Payload[i])
-                        s_Changed += 1;
+                    // Before writing a single byte: the bytes already there must BE this array's
+                    // current contents. An offset that is off by a blob header, or relative to the
+                    // wrong base, produces a file of exactly the right length that decodes to
+                    // nothing -- which is how this was found, and the only cheap way to catch it.
+                    if (!Holds(s_Patched, s_Location.Offset, s_Current))
+                    {
+                        p_Writer.WriteLine($"Clip {s_Index}: the blob at offset "
+                                           + $"{s_Location.Offset} is not this clip's "
+                                           + $"{s_Write.Key}. Refusing to write.");
+                        return false;
+                    }
 
-                    s_Patched[s_Location.Offset + i] = s_Payload[i];
+                    var s_Changed = 0;
+
+                    for (var i = 0; i < s_Current.Length; i++)
+                    {
+                        if (s_Patched[s_Location.Offset + i] != s_Write.Value[i])
+                            s_Changed += 1;
+
+                        s_Patched[s_Location.Offset + i] = s_Write.Value[i];
+                    }
+
+                    s_BytesChanged += s_Changed;
+
+                    s_Rows.Add(new
+                    {
+                        index = s_Index,
+                        type = s_Object.GetType().Name,
+                        name = s_Object.ObjectName,
+                        field = s_Write.Key,
+                        offset = s_Location.Offset,
+                        bytes = s_Current.Length,
+                        bytesChanged = s_Changed,
+                    });
                 }
 
                 s_Applied += 1;
-                s_BytesChanged += s_Changed;
-
-                s_Rows.Add(new
-                {
-                    index = s_Index,
-                    type = s_Object.GetType().Name,
-                    name = s_Object.ObjectName,
-                    offset = s_Location.Offset,
-                    bytes = s_ByteLength,
-                    bytesChanged = s_Changed,
-                });
             }
 
             File.WriteAllBytes(Destination.FullName, s_Patched);
 
             // Read the blob back the way the game would and check the edit is IN it. A patch that
             // wrote to the wrong offset would still produce a file of the right length.
-            var s_Verify = Verify(s_Patched, s_Data, s_Bank, s_Wanted, s_WantedFloats, p_Writer);
+            var s_Verify = Verify(s_Patched, s_Data, s_Bank, s_Wanted, s_WantedFloats,
+                                  s_WantedCurve, s_WantedVbr, p_Writer);
 
             if (Report)
             {
@@ -266,43 +376,192 @@ namespace RimeLib.Cmd.Commands.Game
         }
 
 
-        /// <summary>
-        /// Whether the blob already holds this object's payload at the given offset, byte for
-        /// byte. This is the anchor for the whole in-place scheme: if it holds, the offset is
-        /// right and the write is confined to bytes the clip already owns.
-        /// </summary>
-        private static bool AlreadyHolds(byte[] p_Blob, long p_Offset,
-                                         RimeLib.Animation.EA.Types.AntObject p_Object,
-                                         int p_Length, bool p_BigEndian)
+        /// <summary>Whether the blob already holds exactly these bytes at this offset. This is the
+        /// anchor for the whole in-place scheme: if it holds, the offset is right and the write is
+        /// confined to bytes the array already owns.</summary>
+        private static bool Holds(byte[] p_Blob, long p_Offset, byte[] p_Expected)
         {
-            if (p_Offset < 0 || p_Offset + p_Length > p_Blob.Length)
+            if (p_Offset < 0 || p_Offset + p_Expected.Length > p_Blob.Length)
                 return false;
 
-            if (p_Object is ant.DctAnimationAsset s_Dct)
+            for (var i = 0; i < p_Expected.Length; i++)
             {
-                for (var i = 0; i < p_Length; i++)
-                {
-                    if (p_Blob[p_Offset + i] != s_Dct.Data[i])
-                        return false;
-                }
-
-                return true;
+                if (p_Blob[p_Offset + i] != p_Expected[i])
+                    return false;
             }
 
-            var s_Property = p_Object.GetType().GetProperty("Data");
+            return true;
+        }
 
-            if (s_Property?.GetValue(p_Object) is not List<float> s_Floats)
-                return false;
 
-            var s_Current = FloatBytes(s_Floats.ToArray(), p_BigEndian);
+        /// <summary>
+        /// The bytes an object's array field currently holds, in the blob's own byte order.
+        ///
+        /// Reflected rather than switched on the codec because the four codecs between them write
+        /// byte, float and short arrays, and the anchor check has to be able to rebuild any of
+        /// them -- a Values array compared as bytes would pass on a clip whose floats were written
+        /// the wrong way round.
+        /// </summary>
+        private static byte[]? CurrentBytes(object p_Object, string p_Field, bool p_BigEndian)
+        {
+            var s_Value = p_Object.GetType().GetProperty(p_Field)?.GetValue(p_Object);
 
-            if (s_Current.Length != p_Length)
-                return false;
+            if (s_Value is List<byte> s_Bytes)
+                return s_Bytes.ToArray();
 
-            for (var i = 0; i < p_Length; i++)
+            if (s_Value is List<float> s_Floats)
+                return FloatBytes(s_Floats.ToArray(), p_BigEndian);
+
+            var s_Stream = new MemoryStream();
+            var s_Endianness = p_BigEndian ? IO.Conversion.Endianness.BigEndian
+                                           : IO.Conversion.Endianness.LittleEndian;
+
+            if (s_Value is List<ushort> s_UShorts)
             {
-                if (p_Blob[p_Offset + i] != s_Current[i])
+                using (var s_Writer = new RimeWriter(s_Stream, s_Endianness, false))
+                {
+                    foreach (var s_Item in s_UShorts)
+                        s_Writer.Write(s_Item);
+                }
+
+                return s_Stream.ToArray();
+            }
+
+            if (s_Value is List<short> s_Shorts)
+            {
+                using (var s_Writer = new RimeWriter(s_Stream, s_Endianness, false))
+                {
+                    foreach (var s_Item in s_Shorts)
+                        s_Writer.Write(s_Item);
+                }
+
+                return s_Stream.ToArray();
+            }
+
+            return null;
+        }
+
+
+        /// <summary>Byte order of one array as it was READ, defaulting to the bank's own big-endian
+        /// when the array has no recorded location (an empty array is never given one).</summary>
+        private static bool BigEndianOf(Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank p_Bank,
+                                        RimeLib.Animation.EA.Types.AntObject p_Object,
+                                        string p_Field)
+            => !p_Bank.ArrayLocations.TryGetValue(p_Object, out var s_Fields)
+               || !s_Fields.TryGetValue(p_Field, out var s_Location) || s_Location.BigEndian;
+
+
+        /// <summary>
+        /// Whether two parses of the same clip hold identical array contents, field for field.
+        /// Used on the clips an edit did NOT name: a writer that clobbered a neighbour would
+        /// produce a bank that loads perfectly and animates wrong, and only this catches it.
+        /// </summary>
+        private static bool ArraysEqual(RimeLib.Animation.EA.Types.AntObject p_Before,
+                                        RimeLib.Animation.EA.Types.AntObject p_After)
+        {
+            if (p_Before.GetType() != p_After.GetType())
+                return false;
+
+            foreach (var s_Property in p_Before.GetType().GetProperties())
+            {
+                if (s_Property.GetValue(p_Before) is not System.Collections.IList s_A
+                    || s_Property.GetValue(p_After) is not System.Collections.IList s_B)
+                {
+                    continue;
+                }
+
+                if (s_A.Count != s_B.Count)
                     return false;
+
+                for (var i = 0; i < s_A.Count; i++)
+                {
+                    // Value types only; a list of Ant structs compares by reference and would
+                    // report every clip changed, so those are skipped rather than mis-answered.
+                    if (s_A[i] is not IComparable s_Left || s_B[i] is not IComparable)
+                        break;
+
+                    if (s_Left.CompareTo(s_B[i]) != 0)
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+
+        /// <summary>
+        /// Applies a CURV edit onto a decoded clip. The edit names groups, keys and channels the
+        /// way the codec holds them, and anything the clip does not have is refused rather than
+        /// clipped -- a group count that moved is not an edit this codec can express.
+        /// </summary>
+        private static bool ApplyCurveEdit(JToken p_Edit, ant.CurveAnimationAsset p_Clip,
+                                           CurveCodec.Clip p_Decoded, int p_Index,
+                                           TextWriter p_Writer)
+        {
+            var s_Groups = p_Edit["groups"] as JArray;
+            var s_Consts = ReadFloats(p_Edit["consts"] as JArray);
+
+            if (s_Groups == null && s_Consts == null)
+            {
+                p_Writer.WriteLine($"Clip {p_Index} is CURV and needs a 'groups' array "
+                                   + "([group][key][channel] floats) or a 'consts' array.");
+                return false;
+            }
+
+            if (s_Groups != null)
+            {
+                if (s_Groups.Count != p_Decoded.Groups.Count)
+                {
+                    p_Writer.WriteLine($"Clip {p_Index} has {p_Decoded.Groups.Count} channel "
+                                       + $"group(s) and the edit supplies {s_Groups.Count}.");
+                    return false;
+                }
+
+                for (var g = 0; g < s_Groups.Count; g++)
+                {
+                    if (s_Groups[g] is not JArray s_Keys)
+                    {
+                        p_Writer.WriteLine($"Clip {p_Index} group {g} is not an array of keys.");
+                        return false;
+                    }
+
+                    var s_Group = p_Decoded.Groups[g];
+
+                    if (s_Keys.Count != s_Group.Values.Length)
+                    {
+                        p_Writer.WriteLine($"Clip {p_Index} group {g} has "
+                                           + $"{s_Group.Values.Length} key(s) and the edit "
+                                           + $"supplies {s_Keys.Count}.");
+                        return false;
+                    }
+
+                    for (var k = 0; k < s_Keys.Count; k++)
+                    {
+                        var s_Row = ReadFloats(s_Keys[k] as JArray);
+
+                        if (s_Row == null || s_Row.Length != s_Group.Values[k].Length)
+                        {
+                            p_Writer.WriteLine($"Clip {p_Index} group {g} key {k} has "
+                                               + $"{s_Group.Values[k].Length} channel(s) and the "
+                                               + $"edit supplies {s_Row?.Length ?? -1}.");
+                            return false;
+                        }
+
+                        s_Group.Values[k] = s_Row;
+                    }
+                }
+            }
+
+            if (s_Consts != null)
+            {
+                if (s_Consts.Length != p_Decoded.Consts.Length)
+                {
+                    p_Writer.WriteLine($"Clip {p_Index} holds {p_Decoded.Consts.Length} "
+                                       + $"constant(s) and the edit supplies {s_Consts.Length}.");
+                    return false;
+                }
+
+                p_Decoded.Consts = s_Consts;
             }
 
             return true;
@@ -413,6 +672,8 @@ namespace RimeLib.Cmd.Commands.Game
                                            Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank p_Before,
                                            Dictionary<int, Vector4[][]> p_Wanted,
                                            Dictionary<int, float[]> p_WantedFloats,
+                                           Dictionary<int, CurveCodec.Clip> p_WantedCurve,
+                                           Dictionary<int, float[]> p_WantedVbr,
                                            TextWriter p_Writer)
         {
             try
@@ -435,23 +696,24 @@ namespace RimeLib.Cmd.Commands.Game
 
                 for (var i = 0; i < s_After.Objects.Count; i++)
                 {
-                    if (p_Wanted.ContainsKey(i) || p_WantedFloats.ContainsKey(i))
-                        continue;
-
-                    if (s_After.Objects[i] is not ant.DctAnimationAsset s_New
-                        || p_Before.Objects[i] is not ant.DctAnimationAsset s_Old)
+                    if (p_Wanted.ContainsKey(i) || p_WantedFloats.ContainsKey(i)
+                        || p_WantedCurve.ContainsKey(i) || p_WantedVbr.ContainsKey(i))
                     {
                         continue;
                     }
 
+                    if (s_After.Objects[i] is not ant.AnimationAsset
+                        || p_Before.Objects[i] is not ant.AnimationAsset)
+                    {
+                        continue;
+                    }
+
+                    // Every array the clip owns, not only a field called Data -- a CURV clip has
+                    // no Data at all, and a writer that clobbered a neighbouring Values array
+                    // would otherwise pass this check by having nothing compared against it.
                     s_Compared += 1;
 
-                    var s_Same = s_New.Data.Count == s_Old.Data.Count;
-
-                    for (var j = 0; s_Same && j < s_New.Data.Count; j++)
-                        s_Same = s_New.Data[j] == s_Old.Data[j];
-
-                    if (s_Same)
+                    if (ArraysEqual(p_Before.Objects[i], s_After.Objects[i]))
                         s_Unchanged += 1;
                 }
 
@@ -513,6 +775,72 @@ namespace RimeLib.Cmd.Commands.Game
                     // Uncompressed keys are stored as the very float32 that was handed in, so this
                     // is an equality, not a tolerance.
                     if (s_Error == 0.0)
+                        s_Landed += 1;
+                }
+
+                // CURV: the decode of the reloaded clip has to hold the edited values EXACTLY.
+                // The codec quantises nothing, so a tolerance here would only hide a miss.
+                foreach (var s_Pair in p_WantedCurve)
+                {
+                    if (s_After.Objects[s_Pair.Key] is not ant.CurveAnimationAsset s_Clip)
+                        continue;
+
+                    s_Checked += 1;
+                    var s_Back = CurveCodec.Decode(s_Clip);
+                    var s_Error = 0.0;
+
+                    for (var g = 0; g < s_Pair.Value.Groups.Count && g < s_Back.Groups.Count; g++)
+                    {
+                        var s_A = s_Pair.Value.Groups[g];
+                        var s_B = s_Back.Groups[g];
+
+                        for (var k = 0; k < s_A.Values.Length && k < s_B.Values.Length; k++)
+                        {
+                            for (var ch = 0; ch < s_A.Values[k].Length
+                                             && ch < s_B.Values[k].Length; ch++)
+                            {
+                                s_Error = System.Math.Max(s_Error,
+                                    System.Math.Abs(s_A.Values[k][ch] - s_B.Values[k][ch]));
+                            }
+                        }
+                    }
+
+                    for (var c = 0; c < s_Pair.Value.Consts.Length && c < s_Back.Consts.Length; c++)
+                    {
+                        s_Error = System.Math.Max(s_Error,
+                            System.Math.Abs(s_Pair.Value.Consts[c] - s_Back.Consts[c]));
+                    }
+
+                    s_MaxError = System.Math.Max(s_MaxError, s_Error);
+
+                    if (s_Error == 0.0)
+                        s_Landed += 1;
+                }
+
+                // VBR: the constants come back through the palette, so the value that lands is
+                // the nearest palette entry, not necessarily the one asked for. Compared against
+                // a re-decode rather than against the request for exactly that reason.
+                foreach (var s_Pair in p_WantedVbr)
+                {
+                    if (s_After.Objects[s_Pair.Key] is not ant.VbrAnimationAsset s_Clip)
+                        continue;
+
+                    s_Checked += 1;
+                    var s_Back = VbrCodec.DecodeConstants(s_Clip);
+                    var s_Error = 0.0;
+
+                    for (var c = 0; c < s_Pair.Value.Length && c < s_Back.Length; c++)
+                    {
+                        if (float.IsNaN(s_Pair.Value[c]) && float.IsNaN(s_Back[c]))
+                            continue;
+
+                        s_Error = System.Math.Max(s_Error,
+                            System.Math.Abs(s_Pair.Value[c] - s_Back[c]));
+                    }
+
+                    s_MaxError = System.Math.Max(s_MaxError, s_Error);
+
+                    if (s_Error < 1e-3)
                         s_Landed += 1;
                 }
 

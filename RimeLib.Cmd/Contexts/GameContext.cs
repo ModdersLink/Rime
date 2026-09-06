@@ -97,6 +97,7 @@ namespace RimeLib.Cmd.Contexts
                 RegisterCommand<DumpAnimationBankCommand>();
                 RegisterCommand<CheckAnimationCodecCommand>();
                 RegisterCommand<PatchAnimationBankCommand>();
+                RegisterCommand<DumpAnimCodecClipsCommand>();
                 RegisterCommand<DumpSoundWaveCommand>();
                 RegisterCommand<DumpNameSourcesCommand>();
             }
