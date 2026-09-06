@@ -41,10 +41,22 @@ namespace RimeLib.Cmd.Commands.Game
 
             var s_Converter = EngineInterfaceRegistry.Create<IHavokConverter>(s_Mounter.GetEngineType());
             var s_Shapes = s_Converter.GetShapes(s_Resource.FirstVariant, s_Mounter).ToList();
+            var s_Wrapper = s_Converter.GetWrapper(s_Resource.FirstVariant, s_Mounter);
 
             File.WriteAllText(Destination.FullName, JsonConvert.SerializeObject(new
             {
                 Resource = Name,
+                Wrapper = new
+                {
+                    s_Wrapper.PartCount,
+                    s_Wrapper.Scale,
+                    s_Wrapper.MaterialCountUsed,
+                    s_Wrapper.HighestMaterialIndex,
+                    PartTranslations = s_Wrapper.PartTranslations.Select(t => new[] { t.X, t.Y, t.Z }),
+                    s_Wrapper.LocalAabbs,
+                    s_Wrapper.MaterialIndices,
+                    s_Wrapper.MaterialFlagsAndIndices
+                },
                 Shapes = s_Shapes.Select(s => new
                 {
                     s.Kind,
