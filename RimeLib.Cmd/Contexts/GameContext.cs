@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
+using RimeLib.Cmd.Commands.Emulator;
 using RimeLib.Cmd.Commands.Game;
 using RimeLib.Terrain.Resources;
 using RimeLib.Content.Frostbite;
@@ -79,6 +80,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpSwfJsonCommand>();
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<DumpPartitionByGuidCommand>();
+            RegisterCommand<DumpAnimTrackDataCommand>();
             RegisterCommand<BuildCasCatalogCommand>();
             RegisterCommand<MountExternalCatCommand>();
 
@@ -86,9 +88,13 @@ namespace RimeLib.Cmd.Contexts
 
             if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))
             {
+                RegisterCommand<EmulateLuaCommand>();
                 RegisterCommand<DumpPartitionJsonCommand>();
                 RegisterCommand<DumpPartitionJsonByGuidCommand>();
                 RegisterCommand<DumpMountedPartitionsJsonCommand>();
+                RegisterCommand<DumpSkeletonCommand>();
+                RegisterCommand<DumpAnimationBankCommand>();
+                RegisterCommand<DumpSoundWaveCommand>();
             }
 
             if (EngineInterfaceRegistry.IsSupported<ITextureConverter>(s_EngineType))
@@ -108,6 +114,7 @@ namespace RimeLib.Cmd.Contexts
             if (EngineInterfaceRegistry.IsSupported<IVisualTerrain>(s_EngineType))
             {
                 RegisterCommand<DumpVisualTerrainCommand>();
+                RegisterCommand<DumpCollisionShapesCommand>();
             }
 
             if (EngineInterfaceRegistry.IsSupported<IMeshConverter>(s_EngineType))

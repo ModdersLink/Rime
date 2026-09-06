@@ -288,6 +288,61 @@ public class HavokPhysicsData : IFbSerializable
         return s_Transforms;
     }
 
+    /// <summary>
+    /// Every box and convex hull in the 32-bit packfile, with the translation its wrapper gives it.
+    ///
+    /// Shapes are reached through hkpConvexTranslateShape where there is one, because that wrapper
+    /// carries the placement -- the child alone knows its size and not where it sits. A shape with
+    /// no wrapper is still reported, at the origin.
+    /// </summary>
+    public List<hkpCollisionShape> GetShapes()
+    {
+        var s_Shapes = new List<hkpCollisionShape>();
+        var s_Instance = HavokInstance32;
+        var s_DataStart = s_Instance.DataSection.AbsoluteDataStart;
+        var s_Placed = new Dictionary<long, (System.Numerics.Vector3 Centre, float Radius)>();
+
+        string? NameOf(hkDescriptorInfo p_Info)
+        {
+            return s_Instance.Descriptors.FirstOrDefault(d => d.Key == p_Info.Key)?.Name;
+        }
+
+        // Wrappers first: a child has to know where it was placed before it is read.
+        foreach (var l_Info in s_Instance.DescriptorInfos)
+        {
+            if (NameOf(l_Info) != "hkpConvexTranslateShape")
+                continue;
+
+            var s_Placement = hkpShapeReader.ReadTranslate(s_Instance.Reader, s_DataStart,
+                                                           l_Info.Offset, s_Instance.ObjectOffsets);
+
+            if (s_Placement != null)
+                s_Placed[s_Placement.Value.Child] = (s_Placement.Value.Centre, s_Placement.Value.Radius);
+        }
+
+        foreach (var l_Info in s_Instance.DescriptorInfos)
+        {
+            var s_Name = NameOf(l_Info);
+            hkpCollisionShape? s_Shape = null;
+
+            if (s_Name == "hkpBoxShape")
+                s_Shape = hkpShapeReader.ReadBox(s_Instance.Reader, s_DataStart, l_Info.Offset);
+            else if (s_Name == "hkpConvexVerticesShape")
+                s_Shape = hkpShapeReader.ReadConvex(s_Instance.Reader, s_DataStart, l_Info.Offset,
+                                                    s_Instance.ArrayOffsets);
+
+            if (s_Shape == null)
+                continue;
+
+            if (s_Placed.TryGetValue(l_Info.Offset, out var s_Placement))
+                s_Shape.Centre = s_Placement.Centre;
+
+            s_Shapes.Add(s_Shape);
+        }
+
+        return s_Shapes;
+    }
+
     public bool Serialize(RimeWriter p_Writer)
     {
         throw new NotImplementedException();

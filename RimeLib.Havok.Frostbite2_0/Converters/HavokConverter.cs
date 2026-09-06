@@ -18,4 +18,11 @@ public class HavokConverter : IHavokConverter
         var s_PhysicsData = new HavokPhysicsData(s_Reader);
         return s_PhysicsData.GetTransforms();
     }
+
+    public IEnumerable<hkpCollisionShape> GetShapes(IResourceObject p_Resource, IEngineMounter p_Mounter)
+    {
+        using var s_Reader = p_Resource.GetReader();
+        var s_PhysicsData = new HavokPhysicsData(s_Reader);
+        return s_PhysicsData.GetShapes();
+    }
 }
