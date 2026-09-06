@@ -29,6 +29,13 @@ namespace RimeLib.Animation.EA.GenericData
         public Reflection? Reflection { get; set; } = null;
         public List<RelocatableBlob> DataBlobs { get; set; } = new();
 
+        /// <summary>
+        /// Where the data blob currently being handed to the loader begins in the FILE, so a
+        /// consumer can turn the blob-relative offsets its parser sees into file offsets. Set
+        /// immediately before each ParseData callback.
+        /// </summary>
+        public long CurrentDataBlobOffset { get; private set; } = 0;
+
         public bool Serialize(RimeWriter p_Writer)
         {
             
@@ -91,6 +98,10 @@ namespace RimeLib.Animation.EA.GenericData
                 var s_Reader = s_DataHeader.GetReader();
 
                 var s_Data = new Data(s_Reader);
+
+                // The blob's payload sits at its own offset INSIDE the root stream, and the root
+                // stream is itself a copy taken from the file at s_RootHeader.DataOffset.
+                CurrentDataBlobOffset = s_RootHeader.DataOffset + s_DataHeader.DataOffset;
 
                 m_LoaderCallback?.ParseData(s_Reader, s_Data);
             }

@@ -22,6 +22,16 @@ namespace RimeLib.Animation.EA.GenericData
 
         public byte[] Data { get; set; } = new byte[0];
 
+        /// <summary>
+        /// Where <see cref="Data"/> began in the stream it was read from.
+        ///
+        /// A blob COPIES its payload out, so every offset the parser then reads inside it -- array
+        /// pointers, string pointers -- is relative to that copy and means nothing in the file.
+        /// Writing an edited array back where it came from needs the two added together, and
+        /// nothing recorded the first half.
+        /// </summary>
+        public long DataOffset { get; set; } = 0;
+
 
         public Blob()
         {
@@ -70,6 +80,7 @@ namespace RimeLib.Animation.EA.GenericData
             // 0xC is sizeof(EA::GD::Serialization::Header) which is "GenericDataBlob" in this case.
 
             var s_Size = p_Reader.ReadUInt32() - 0xC;
+            DataOffset = p_Reader.Position;
             Data = p_Reader.ReadBytes((int)s_Size);
 
 

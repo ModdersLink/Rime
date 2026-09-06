@@ -95,6 +95,8 @@ namespace RimeLib.Cmd.Contexts
                 RegisterCommand<DumpMountedPartitionsJsonCommand>();
                 RegisterCommand<DumpSkeletonCommand>();
                 RegisterCommand<DumpAnimationBankCommand>();
+                RegisterCommand<CheckAnimationCodecCommand>();
+                RegisterCommand<PatchAnimationBankCommand>();
                 RegisterCommand<DumpSoundWaveCommand>();
             }
 

@@ -29,15 +29,67 @@ namespace RimeLib.Animation.EA.Compression.DCT
         //public int GetBlockOffset(int p_Index) => (ColnumBitLength / 8) * p_Index;
 
 
+        /// <summary>An empty header, to be filled in and written. The reading constructor was the
+        /// only one, so a header could never be BUILT -- only parsed.</summary>
+        public Header()
+        {
+        }
+
         public Header(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
         }
 
 
+        /// <summary>
+        /// The exact mirror of <see cref="Deserialize"/>. Little-endian for the header, as the
+        /// reader is -- only the packed sample stream that follows is big-endian.
+        ///
+        /// The per-DOF descriptor byte carries the sub-block count in its HIGH nibble; the low
+        /// nibble is unused and is written as zero, which is what shipped banks hold.
+        /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            var s_DofCount = (uint)NumQuats + NumVec3s + NumFloatVecs;
+
+            if (Dof.Length != s_DofCount)
+                return false;
+
+            var s_LastEndianess = p_Writer.Endianness;
+            p_Writer.Endianness = IO.Conversion.Endianness.LittleEndian;
+
+            p_Writer.Write(NumFrames);
+            p_Writer.Write(NumQuats);
+            p_Writer.Write(NumVec3s);
+            p_Writer.Write(NumFloatVecs);
+
+            p_Writer.Write(QuantizeMult_Block);
+            p_Writer.Write(QuantizeMult_SubBlock);
+
+            p_Writer.Write(CatchAllBitCount);
+
+            for (var i = 0; i < s_DofCount; i++)
+            {
+                if (Dof[i].SubBlockCount > 0xF)
+                {
+                    p_Writer.Endianness = s_LastEndianess;
+                    return false;
+                }
+
+                p_Writer.Write((byte)((Dof[i].SubBlockCount & 0xF) << 4));
+            }
+
+            for (var i = 0; i < s_DofCount; i++)
+            {
+                if (!Dof[i].Serialize(p_Writer))
+                {
+                    p_Writer.Endianness = s_LastEndianess;
+                    return false;
+                }
+            }
+
+            p_Writer.Endianness = s_LastEndianess;
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)

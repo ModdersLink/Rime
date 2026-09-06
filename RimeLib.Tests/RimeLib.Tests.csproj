@@ -20,6 +20,7 @@
     <ProjectReference Include="..\RimeLib.Serialization\RimeLib.Serialization.csproj" />
     <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
     <ProjectReference Include="..\RimeLib.Terrain\RimeLib.Terrain.csproj" />
+    <ProjectReference Include="..\RimeLib.Animation.Frostbite2_0\RimeLib.Animation.Frostbite2_0.csproj" />
   </ItemGroup>
 
 </Project>

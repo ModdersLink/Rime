@@ -49,6 +49,7 @@ namespace RimeLib.Animation.EA.GenericData
 
             RelocationTableOffset = p_Reader.ReadUInt32();
 
+            DataOffset = p_Reader.Position;
             Data = p_Reader.ReadBytes((int)s_Size);
 
             p_Reader.Endianness = s_LastEndianess;
