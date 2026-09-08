@@ -1,4 +1,4 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -116,6 +116,30 @@ namespace RimeLib.Cmd.Commands.Game
 
                     if (s_MeshMaterial != null)
                     {
+                        // The SHADER this material instances, by name.
+                        //
+                        // MEASURED on MP_001: 566 of the 1372 material slots this database
+                        // declares carry no texture parameter anywhere in EBX -- not on the MVDB
+                        // entry, not on the mesh material, not on the variation. The crane, the
+                        // footbridges and whole residential blocks are in that set and they are
+                        // not untextured: their bindings are in the COMPILED shaderdb, as the
+                        // shader's StreamableTextures, which `dump_shader_textures` reads.
+                        //
+                        // Joining the two dumps therefore needs the shader NAME per material, and
+                        // it was the one thing neither of them reported. A consumer could recover
+                        // it by walking the mesh partition's own MeshMaterial instances, but that
+                        // costs a second source of EBX and assumes those instances are serialised
+                        // in Materials-array order -- true for every MP_001 mesh sampled, and an
+                        // assumption all the same. Reported here it is neither: this walk already
+                        // has the material, in the order a subset's material_index means.
+                        //
+                        // 425 of the 566 resolve against MP_001's own shaderdb; the rest name a
+                        // shader compiled into another level's, which is why the name matters more
+                        // than any texture list would.
+                        if (s_Mounter.TryGetPartitionByGuid(s_MeshMaterial.Shader.Shader.PartitionGuid,
+                                out var s_ShaderName, out _) && s_ShaderName != null)
+                            s_Textures["$shader"] = s_ShaderName;
+
                         foreach (var s_Parameter in s_MeshMaterial.Shader.TextureParameters)
                         {
                             if (!s_Mounter.TryGetPartitionByGuid(s_Parameter.Value.PartitionGuid,
@@ -166,6 +190,13 @@ namespace RimeLib.Cmd.Commands.Game
 
                     if (s_Variation != null)
                     {
+                        // Same join for the variation: a camo/dirty/damaged pass instances its own
+                        // shader, and where it binds no parameters that shader's StreamableTextures
+                        // are what the object is drawn with. Last, so it wins over the base.
+                        if (s_Mounter.TryGetPartitionByGuid(s_Variation.Shader.Shader.PartitionGuid,
+                                out var s_VarShaderName, out _) && s_VarShaderName != null)
+                            s_Textures["$shader"] = s_VarShaderName;
+
                         foreach (var s_Parameter in s_Variation.Shader.TextureParameters)
                         {
                             if (!s_Mounter.TryGetPartitionByGuid(s_Parameter.Value.PartitionGuid,
