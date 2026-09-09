@@ -109,23 +109,49 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             // resources of every vintage, and one malformed or unexpected header killed a whole
             // 145-resource build with an unhandled "offset out of bounds" after four of them. The
             // resource is already added; missing its chunks degrades that one asset, not the level.
-            IEnumerable<GUID> s_ChunkIds;
+            // TRY EVERY VARIANT, not just the first.
+            //
+            // The add path wants a variant contained in a bundle; the read path wants one whose
+            // stream is the whole resource, and they are different objects. Reading the cas variant
+            // threw "offset out of bounds" on 25 of 145 meshes and FirstVariant read all of them,
+            // so FirstVariant became the read path -- but that is the same mistake one step over.
+            // MEASURED on MP_001's full mesh set: FirstVariant alone throws for 348 of 1223
+            // resources, every one of which then falls back to searching by name hash.
+            //
+            // A resource can carry several variants and only some of them are complete; which one
+            // that is varies per resource, so ask each in turn and take the first that parses. The
+            // fallback stays for a resource where none of them do.
+            IEnumerable<GUID> s_ChunkIds = System.Array.Empty<GUID>();
+            System.Exception? s_LastError = null;
 
-            try
+            foreach (var s_ReadVariant in Enumerable.Repeat(s_Resource.FirstVariant, 1)
+                         .Concat(s_Resource.Variants.Where(p_V => p_V != s_Resource.FirstVariant)))
             {
-                // Read the payload from FirstVariant, NOT the cas-selected variant used to ADD the
-                // resource. They are different objects: the add path wants a variant contained in a
-                // bundle, while the read path wants one whose stream is the whole resource. Reading
-                // the cas variant threw "offset out of bounds" on 25 of 145 meshes -- all readable
-                // through FirstVariant, which is what Rime's own DumpResourceWithChunks uses.
-                s_ChunkIds = GetPayloadChunkIds(s_EngineMounter, s_Resource.FirstVariant, p_Writer);
+                if (s_ReadVariant == null)
+                    continue;
+
+                try
+                {
+                    var s_Candidate = GetPayloadChunkIds(s_EngineMounter, s_ReadVariant, p_Writer);
+
+                    if (s_Candidate.Any())
+                    {
+                        s_ChunkIds = s_Candidate;
+                        s_LastError = null;
+                        break;
+                    }
+                }
+                catch (System.Exception s_Exception)
+                {
+                    s_LastError = s_Exception;
+                }
             }
-            catch (System.Exception s_Exception)
+
+            if (s_LastError != null)
             {
                 // Fall THROUGH to the name-hash fallback below -- a parse failure is exactly the case
                 // it exists for. Returning here skipped it for all 26 meshes that need it most.
-                p_Writer.WriteLine($"Could not read payload dependencies of ({Name}): {s_Exception.Message}");
-                s_ChunkIds = System.Array.Empty<GUID>();
+                p_Writer.WriteLine($"Could not read payload dependencies of ({Name}): {s_LastError.Message}");
             }
             var s_Added = 0;
 
