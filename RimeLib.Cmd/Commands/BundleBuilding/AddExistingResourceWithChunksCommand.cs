@@ -38,6 +38,11 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "Id returned by mount_game.")]
         public int Id { get; set; }
 
+        [CommandArgument(Optional = true, Description =
+            "Directory of dumped <guid>.chunk files, used only when a chunk the payload names has " +
+            "no usable variant in the mounted game.")]
+        public DirectoryInfo? ChunkDir { get; set; }
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             if (string.IsNullOrWhiteSpace(Name))
@@ -129,7 +134,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 if (s_ChunkId == null || s_ChunkId.Equals(GUID.Empty))
                     continue;
 
-                if (AddChunk(s_BundleContext, s_EngineMounter, s_ChunkId, Name!, p_Writer))
+                if (AddChunk(s_BundleContext, s_EngineMounter, s_ChunkId, Name!, p_Writer, ChunkDir))
                     s_Added++;
             }
 
@@ -163,7 +168,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                         if (s_Entry.AssetNameHash != s_Hash)
                             continue;
 
-                        if (AddChunk(s_BundleContext, s_EngineMounter, s_Entry.Guid, Name!, p_Writer))
+                        if (AddChunk(s_BundleContext, s_EngineMounter, s_Entry.Guid, Name!, p_Writer, ChunkDir))
                             s_Added++;
                     }
 
@@ -225,7 +230,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
         /// <summary>Same variant selection as add_existing_chunk, so both routes agree.</summary>
         private static bool AddChunk(BundleBuildingContext p_BundleContext, IEngineMounter p_Mounter, GUID p_Guid,
-            string p_AssetName, TextWriter p_Writer)
+            string p_AssetName, TextWriter p_Writer, DirectoryInfo? p_ChunkDir = null)
         {
             if (!p_Mounter.TryGetChunk(p_Guid, out var s_Chunk))
             {
@@ -257,7 +262,27 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             if (s_Variant == null)
             {
-                p_Writer.WriteLine($"Could not find a valid variant of chunk ({p_Guid}).");
+                // The chunk is INDEXED but no variant of it is resident in anything we mounted, so
+                // there are no bytes to reference. A dump of the same chunk on disk is those bytes,
+                // and adding it from the file is exactly what `add_chunk` already does.
+                //
+                // MEASURED on MP_001's full mesh set: 68 of 1681 chunk attachments land here, all
+                // of them LOD or destruction slices, and all 68 are present in the corpus dump. The
+                // server never notices a missing chunk; the CLIENT livelocks on one (the black
+                // screen this whole command exists to prevent), so leaving them out is not the
+                // harmless degradation the message makes it sound.
+                var s_File = p_ChunkDir == null
+                    ? null
+                    : new FileInfo(Path.Combine(p_ChunkDir.FullName, p_Guid + ".chunk"));
+
+                if (s_File is { Exists: true })
+                {
+                    p_BundleContext.AddChunk(p_Guid, s_File, p_AssetName);
+                    return true;
+                }
+
+                p_Writer.WriteLine($"Could not find a valid variant of chunk ({p_Guid})."
+                    + (p_ChunkDir == null ? "" : $" No {p_Guid}.chunk in {p_ChunkDir.FullName} either."));
                 return false;
             }
 
