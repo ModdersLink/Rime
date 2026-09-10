@@ -284,7 +284,14 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     ?? s_Chunk.FirstVariant;
             }
             else
-                s_Variant = s_Chunk.Variants.FirstOrDefault(p_Chunk => p_Chunk.GetContainedBundle() != null);
+                // Same last-resort fallback the cas branch already has. A chunk that ships ONLY in a
+                // chunk superbundle (win32/mpchunks and friends) has no variant contained in a
+                // bundle at all, so requiring one dropped it -- while dump_chunk, which takes the
+                // first variant with no such requirement, writes those very bytes without complaint.
+                // MEASURED on MP_001's team_deathmatch bundle: 25 of 340 resources lost a mesh LOD
+                // chunk this way, and the load then hangs rather than reporting anything.
+                s_Variant = s_Chunk.Variants.FirstOrDefault(p_Chunk => p_Chunk.GetContainedBundle() != null)
+                    ?? s_Chunk.FirstVariant;
 
             if (s_Variant == null)
             {
