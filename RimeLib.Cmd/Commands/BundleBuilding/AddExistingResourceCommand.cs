@@ -62,8 +62,22 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             }
 
             IResourceVariant? s_Variant;
+
             if (s_BundleContext.Cas())
-                s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.Cas && p_Resource.GetContainedBundle() != null);
+            {
+                // Prefer a cas-backed variant, but do NOT require one. BF3 ships plenty of resources
+                // only in noncas bundles, and the cas manifest builder already content-addresses a
+                // noncas frame -- emitting a bare sha1 ref on a catalog hit and idata otherwise -- so
+                // there is nothing a cas variant gives us here that a noncas one does not.
+                //
+                // Requiring it silently dropped 640 of 1192 resources on a level build, and with them
+                // the 621 chunks their payloads name: the superbundle built without error, listed the
+                // same partitions as the noncas build, and the level then would not load. Same
+                // fallback chain add_existing_chunk and reference_existing_partition already use.
+                s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.Cas && p_Resource.GetContainedBundle() != null)
+                    ?? s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.GetContainedBundle() != null)
+                    ?? s_Resource.FirstVariant;
+            }
             else
                 s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.GetContainedBundle() != null);
 
