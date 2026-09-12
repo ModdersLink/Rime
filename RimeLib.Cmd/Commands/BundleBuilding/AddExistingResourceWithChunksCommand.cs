@@ -194,8 +194,14 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 }
             }
 
-            if (s_Added > 0)
-                p_Writer.WriteLine($"Added resource ({Name}) with {s_Added} chunk(s).");
+            // SAY SO EITHER WAY. Printing only when a chunk came along makes a resource that is
+            // genuinely in the bundle look exactly like one that was silently skipped, and a build
+            // log is the only record of what a recipe actually did. Most resource types have no
+            // streamed payload at all -- an EnlightenProbeSet is one -- so silence was the common
+            // case, and reading it as failure cost a wrong diagnosis of a client crash.
+            p_Writer.WriteLine(s_Added > 0
+                ? $"Added resource ({Name}) with {s_Added} chunk(s)."
+                : $"Added resource ({Name}), no streamed payload.");
 
             return true;
         }
