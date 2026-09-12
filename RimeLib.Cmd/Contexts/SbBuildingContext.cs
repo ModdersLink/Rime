@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using RimeLib.Cmd.Commands.SbBuilding;
@@ -232,18 +233,18 @@ namespace RimeLib.Cmd.Contexts
 
         internal void Build(TextWriter p_Writer)
         {
-            // Give a cas build a catalog membership probe, so a noncas source can ship as a bare sha1
-            // ref whenever the player's own catalog already holds the identical stored frame.
             // RIME_CAS_NO_REFS=1 builds a cas superbundle that embeds every payload instead of
             // ref'ing catalogued ones. The output is as large as a noncas build, so it is a
             // diagnostic, not a shipping mode: it separates "the cas manifest format is wrong" from
             // "the sha1 refs do not resolve" when a cas build will not load.
-            if (m_Builder.Cas() && System.Environment.GetEnvironmentVariable("RIME_CAS_NO_REFS") == "1")
+            if (m_Builder.Cas() && Environment.GetEnvironmentVariable("RIME_CAS_NO_REFS") == "1")
             {
                 p_Writer.WriteLine("RIME_CAS_NO_REFS=1: embedding every payload, emitting no refs.");
             }
             else if (m_Builder.Cas() && Parent is BaseContext s_BaseContext)
             {
+                // Give a cas build a catalog membership probe, so a noncas source can ship as a bare
+                // sha1 ref whenever the player's own catalog already holds the identical stored frame.
                 foreach (var s_MounterEntry in s_BaseContext.GetMounters())
                 {
                     if (s_MounterEntry.Value is EngineMounter s_Fb2Mounter)

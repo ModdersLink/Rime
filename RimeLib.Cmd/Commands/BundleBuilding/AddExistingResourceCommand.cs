@@ -65,15 +65,13 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             if (s_BundleContext.Cas())
             {
-                // Prefer a cas-backed variant, but do NOT require one. BF3 ships plenty of resources
-                // only in noncas bundles, and the cas manifest builder already content-addresses a
-                // noncas frame -- emitting a bare sha1 ref on a catalog hit and idata otherwise -- so
-                // there is nothing a cas variant gives us here that a noncas one does not.
-                //
-                // Requiring it silently dropped 640 of 1192 resources on a level build, and with them
-                // the 621 chunks their payloads name: the superbundle built without error, listed the
-                // same partitions as the noncas build, and the level then would not load. Same
-                // fallback chain add_existing_chunk and reference_existing_partition already use.
+                // Prefer a cas-backed variant, but do not require one. BF3 ships plenty of resources
+                // only in noncas bundles, and the cas manifest builder content-addresses a noncas
+                // frame anyway -- bare sha1 ref on a catalog hit, idata otherwise. Requiring one
+                // dropped 640 of 1192 resources on a level build and the 621 chunks their payloads
+                // name with them, while the superbundle still built without error and listed the
+                // same partitions as the noncas one. Same fallback chain add_existing_chunk and
+                // reference_existing_partition already use.
                 s_Variant = s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.Cas && p_Resource.GetContainedBundle() != null)
                     ?? s_Resource.Variants.FirstOrDefault(p_Resource => p_Resource.GetContainedBundle() != null)
                     ?? s_Resource.FirstVariant;

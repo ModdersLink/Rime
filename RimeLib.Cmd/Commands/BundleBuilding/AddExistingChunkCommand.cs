@@ -70,14 +70,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             else
                 s_Variant = s_Chunk.Variants.FirstOrDefault(p_Chunk => p_Chunk.GetContainedBundle() != null);
 
-            // PREFER A VARIANT THAT STILL CARRIES ITS ASSET NAME HASH.
-            //
-            // The same chunk lives in several bundles and only some of them stored meta for it.
-            // Picking one that did not ships the chunk with h32=0, which drops it out of the name
-            // to chunk reverse map -- so a mesh's LOD data is in the bundle and the streamer cannot
-            // find it, and the object comes in wrong or not at all. MEASURED on an exported MP_001:
-            // 566 of 607 chunks added this way lost their hash, and cars and buildings did not load
-            // in correctly. ReferenceExistingPartitionCommand already picks this way.
+            // Prefer a variant that still carries its asset name hash. The same chunk lives in
+            // several bundles and only some of them stored meta for it; one that did not ships the
+            // chunk with h32=0, which drops it out of the name-to-chunk reverse map -- a mesh's LOD
+            // data is then in the bundle and the streamer cannot find it, so the object comes in
+            // wrong or not at all. MEASURED on an exported MP_001: 566 of 607 chunks added this way
+            // lost their hash. Same rule reference_existing_partition already follows.
             if (s_Variant != null && s_Variant.GetAssetNameHash() == null)
                 s_Variant = s_Chunk.Variants.FirstOrDefault(
                         p_Chunk => p_Chunk.GetAssetNameHash() != null && p_Chunk.GetContainedBundle() != null)
