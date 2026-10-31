@@ -157,6 +157,12 @@ public class EngineMounter : IEngineMounter
         return m_MountedBundles;
     }
 
+    private void MarkBundleMounted(string p_Bundle)
+    {
+        lock (m_MountedBundles)
+            m_MountedBundles.Add(p_Bundle.ToLowerInvariant());
+    }
+
     public IEnumerable<(string Name, ResourceType ResourceType)> GetResourcesInBundle(string p_Bundle)
     {
         if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
@@ -682,7 +688,13 @@ public class EngineMounter : IEngineMounter
     {
         // TODO: Re-enable parallel processing once we've made sure everything is working as intended.
         //Parallel.ForEach(m_Superbundles, p_Superbundle => ParseSuperbundle(p_Superbundle, true));
-        m_Superbundles.ForEach(p_Superbundle => ParseSuperbundle(p_Superbundle, true));
+        m_Superbundles.ForEach(p_Superbundle =>
+        {
+            ParseSuperbundle(p_Superbundle, true);
+
+            lock (m_MountedSuperbundles)
+                m_MountedSuperbundles.Add(p_Superbundle.Name.ToLowerInvariant());
+        });
     }
 
     protected void ParseSuperbundle(SuperbundleEntry p_Superbundle, bool p_AutoMount)
@@ -720,6 +732,8 @@ public class EngineMounter : IEngineMounter
         // Don't do if automount isn't on.
         if (p_AutoMount && !MountCasBundle(s_BundleEntry)) 
             throw new Exception($"Failed to mount bundle '{s_Bundle.Path}'.");
+        if (p_AutoMount)
+            MarkBundleMounted(p_BundleInfo.Id);
     }
     
     protected void ParseDeltaCasBundle(RimeReader p_BaseReader, RimeReader p_PatchReader, 
@@ -743,6 +757,8 @@ public class EngineMounter : IEngineMounter
         // Don't do if automount isn't on.
         if (p_AutoMount && !MountCasBundle(s_BundleEntry)) 
             throw new Exception($"Failed to mount bundle '{s_BaseBundleDb.Path} | {s_PatchBundleDb.Path}'.");
+        if (p_AutoMount)
+            MarkBundleMounted(p_BaseBundle.Id);
         
     }
     
@@ -765,6 +781,8 @@ public class EngineMounter : IEngineMounter
         // Don't do if automount isn't on.
         if (p_AutoMount && !MountEmbeddedBundle(s_Manifest)) 
             throw new Exception($"Failed to mount embedded bundle '{p_BundleInfo.Id}'.");
+        if (p_AutoMount)
+            MarkBundleMounted(p_BundleInfo.Id);
     }
 
     protected void ParseDeltaBundle(RimeReader p_BaseReader, RimeReader p_PatchReader, 
@@ -797,6 +815,8 @@ public class EngineMounter : IEngineMounter
         // Don't do if automount isn't on.
         if (p_AutoMount && !MountEmbeddedBundle(s_Manifest)) 
             throw new Exception($"Failed to mount embedded delta bundle '{p_BaseBundle.Id}'.");
+        if (p_AutoMount)
+            MarkBundleMounted(p_BaseBundle.Id);
             */
     }
 
@@ -896,7 +916,7 @@ public class EngineMounter : IEngineMounter
                 }
 
                 // If all is good, parse as we normally would.
-                ParseBundle(s_PatchReader!, s_Bundle, p_Superbundle, p_AutoMount, true);
+                ParseBundle(s_PatchReader!, s_Bundle, p_Superbundle, true, p_AutoMount);
             }
         }
     }
