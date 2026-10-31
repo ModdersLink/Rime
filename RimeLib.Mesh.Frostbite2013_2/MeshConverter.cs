@@ -26,7 +26,7 @@ namespace RimeLib.Mesh.Frostbite2013_2
             Dictionary<string, GUID> keyValues = [];
 
             using var s_ResourceReader = p_Resource.GetReader();
-            var s_Layout = new MeshSetLayout(s_ResourceReader);
+            var s_Layout = new MeshSetLayout2013(s_ResourceReader);
 
             for (var i = 0; i < s_Layout.Lods.Length; i++)
             {
@@ -89,7 +89,7 @@ namespace RimeLib.Mesh.Frostbite2013_2
             using var s_ResourceReader = new RimeReader(new MemoryStream(s_Data));
 
             // Read the mesh set layout
-            var s_MeshSetLayout = new MeshSetLayout(s_ResourceReader);
+            var s_MeshSetLayout = new MeshSetLayout2013(s_ResourceReader);
 
 #if DEBUG
             // Extra debug information
