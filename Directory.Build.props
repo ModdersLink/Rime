@@ -10,6 +10,16 @@
       wins, so this only fills the gap.
     -->
     <SolutionDir Condition="'$(SolutionDir)' == ''">$(MSBuildThisFileDirectory)</SolutionDir>
+
+    <!--
+      Mounting a game allocates gigabytes of short-lived objects from all cores at once. With the
+      default workstation GC every collection stopped all of them: a full BF3/BF4 mount spent
+      60-70% of its time paused. Server GC removes most of that, and dynamic adaptation (DATAS)
+      keeps its memory at or below the workstation level. These only affect applications (they
+      end up in the runtimeconfig), so libraries are unaffected. A project can still override them.
+    -->
+    <ServerGarbageCollection Condition="'$(ServerGarbageCollection)' == ''">true</ServerGarbageCollection>
+    <GarbageCollectionAdaptationMode Condition="'$(GarbageCollectionAdaptationMode)' == ''">1</GarbageCollectionAdaptationMode>
   </PropertyGroup>
 
 </Project>
