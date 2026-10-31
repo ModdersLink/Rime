@@ -9,10 +9,12 @@ internal class ChunkVariant : ObjectVariant, IChunkVariant
 {
 	protected DbObject? m_Meta;
 	protected uint m_LogicalOffset;
-	protected uint m_LogicalSize;
+	// Null until asked for when the caller did not know it: working it out means decompressing the
+	// whole chunk, which mounting used to do for every superbundle-level chunk.
+	protected uint? m_LogicalSize;
 
 
-	public ChunkVariant(IReadableObjectWithHash p_Readable, uint p_LogicalOffset, uint p_LogicalSize, DbObject? p_Meta, string p_ContainedSuperbundle, string? p_ContainedBundle) 
+	public ChunkVariant(IReadableObjectWithHash p_Readable, uint p_LogicalOffset, uint? p_LogicalSize, DbObject? p_Meta, string p_ContainedSuperbundle, string? p_ContainedBundle) 
 		: base(p_Readable, p_ContainedSuperbundle, p_ContainedBundle)
 	{
 		m_Meta = p_Meta;
@@ -45,7 +47,7 @@ internal class ChunkVariant : ObjectVariant, IChunkVariant
 
 	public uint GetLogicalSize()
 	{
-		return m_LogicalSize;
+		return m_LogicalSize ??= (uint)m_Readable.GetSize();
 	}
 
 	public int? GetAssetNameHash()
