@@ -826,14 +826,20 @@ public class EngineMounter : IEngineMounter
                 return p_MountedObject;
             });
             
-            m_MountedResourcesRefs.AddOrUpdate(s_Resource.ResourceId, s_MountedObject, (p_ExistingId, p_ExistingObject) =>
+            // A resource without a resource id has ResourceId 0. Registering those would put every
+            // id-less resource under one key, and since this map shares mounted objects with the name
+            // map, the first such resource's variant list would collect all the others' variants.
+            if (s_Resource.ResourceIdInt != 0)
             {
-                // Both maps usually hold the same mounted object, which the name map already
-                // gave this variant; adding it again would list every bundle twice.
-                if (!ReferenceEquals(p_ExistingObject, s_NamedObject))
-                    p_ExistingObject.AddVariant(s_Variant);
-                return p_ExistingObject;
-            });
+                m_MountedResourcesRefs.AddOrUpdate(s_Resource.ResourceId, s_MountedObject, (p_ExistingId, p_ExistingObject) =>
+                {
+                    // Both maps usually hold the same mounted object, which the name map already
+                    // gave this variant; adding it again would list every bundle twice.
+                    if (!ReferenceEquals(p_ExistingObject, s_NamedObject))
+                        p_ExistingObject.AddVariant(s_Variant);
+                    return p_ExistingObject;
+                });
+            }
 
             m_MountedResourceLowerNameHashes.AddOrUpdate(
                 RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Resource.Name),
