@@ -29,17 +29,35 @@ public static class DataContainerTypeRegistry
 
     private static void RefreshTypes()
     {
-        var s_GuidTypes = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(a => a.GetTypes())
-            .Where(t => t.GetCustomAttribute<ContainerTypeAttribute>() != null);
-        
-        Type? s_FoundInterface = null;
+        // Types are looked up by their bare name, and other engines' serialization assemblies define
+        // the same names (Vec3, LinearTransform, EmittableType, ...). With those loaded too, as the
+        // REPL does, whichever assembly came first won, and Frostbite 2013.2 partitions were read
+        // with another engine's types or failed to parse. This assembly's own types are registered
+        // first, so they win; other assemblies only fill in names this one does not define.
+        var s_Own = typeof(DataContainerTypeRegistry).Assembly;
 
-        // From the above types, check the engine support method for each and register accordingly.
-        foreach (var s_InterfaceType in s_GuidTypes)
+        foreach (var s_Type in ContainerTypes(s_Own))
+            NameRegistry.TryAdd(s_Type.Name, s_Type);
+
+        foreach (var s_Assembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => a != s_Own))
         {
-            NameRegistry.TryAdd(s_InterfaceType.Name, s_InterfaceType);
+            foreach (var s_Type in ContainerTypes(s_Assembly))
+                NameRegistry.TryAdd(s_Type.Name, s_Type);
+        }
+    }
+
+    private static IEnumerable<Type> ContainerTypes(Assembly p_Assembly)
+    {
+        Type[] s_Types;
+        try
+        {
+            s_Types = p_Assembly.GetTypes();
+        }
+        catch (ReflectionTypeLoadException s_Ex)
+        {
+            s_Types = s_Ex.Types.Where(t => t != null).ToArray()!;
         }
 
+        return s_Types.Where(t => t.GetCustomAttribute<ContainerTypeAttribute>() != null);
     }
 }
