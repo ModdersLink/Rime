@@ -15,12 +15,12 @@ using RimeLib.Extensions;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
-using RimeLib.Mesh.Frostbite;
 using RimeLib.Serialization;
 using RimeLib.Shader.Frostbite2_0.Frostbite;
 using RimeLib.Texture;
 using RimeLib.Utils;
 using VertexElementUsage = fb.VertexElementUsage;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 
 namespace EbxExtractor
 {

@@ -4,7 +4,7 @@ using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
-namespace RimeLib.Mesh.Frostbite
+namespace RimeLib.Mesh.Frostbite2_0.Frostbite
 {
     /// <summary>
     /// Implementation of fb::MeshSubset

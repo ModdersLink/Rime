@@ -1,6 +1,6 @@
 ﻿using RimeLib.Content.Mounting;
-using RimeLib.Mesh.Frostbite;
 using System;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 
 namespace RimeLib.Mesh.Frostbite2_0
 {

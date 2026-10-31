@@ -1,11 +1,11 @@
-﻿using fb;
+﻿using fb.Core;
+using fb.Render;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.Math;
-using RimeLib.Mesh.Frostbite;
 using SharpGLTF.Geometry;
 using SharpGLTF.Geometry.VertexTypes;
 using SharpGLTF.Materials;
@@ -13,11 +13,32 @@ using SharpGLTF.Scenes;
 using SharpGLTF.Schema2;
 using SharpGLTF.Transforms;
 using System.Runtime.InteropServices;
+using RimeLib.Mesh.Frostbite2013_2.Frostbite;
 
 namespace RimeLib.Mesh.Frostbite2013_2
 {
     public class MeshConverter : IMeshConverter
     {
+        public IReadOnlyList<(int Lod, GUID ChunkId)> GetLodChunkIds(IResourceObject p_Resource)
+        {
+            using var s_Source = p_Resource.GetReader();
+            var s_Data = s_Source.ReadBytes((int)s_Source.Length);
+            using var s_Reader = new RimeReader(new MemoryStream(s_Data));
+
+            var s_Layout = new MeshSetLayout(s_Reader);
+            var s_Result = new List<(int Lod, GUID ChunkId)>();
+
+            // A LOD whose geometry is inline has no chunk id.
+            for (var i = 0; i < s_Layout.LodCount; ++i)
+            {
+                var s_Lod = s_Layout.Lods[i].Object;
+                if (s_Lod != null && s_Lod.DataChunkId != GUID.Empty)
+                    s_Result.Add((i, s_Lod.DataChunkId));
+            }
+
+            return s_Result;
+        }
+
         public Dictionary<string, GUID> GetChunkGuids(IResourceObject p_Resource)
         {
             if (p_Resource.GetResourceType() != ResourceType.MeshSet)
@@ -26,7 +47,7 @@ namespace RimeLib.Mesh.Frostbite2013_2
             Dictionary<string, GUID> keyValues = [];
 
             using var s_ResourceReader = p_Resource.GetReader();
-            var s_Layout = new MeshSetLayout2013(s_ResourceReader);
+            var s_Layout = new MeshSetLayout(s_ResourceReader);
 
             for (var i = 0; i < s_Layout.Lods.Length; i++)
             {
@@ -89,7 +110,7 @@ namespace RimeLib.Mesh.Frostbite2013_2
             using var s_ResourceReader = new RimeReader(new MemoryStream(s_Data));
 
             // Read the mesh set layout
-            var s_MeshSetLayout = new MeshSetLayout2013(s_ResourceReader);
+            var s_MeshSetLayout = new MeshSetLayout(s_ResourceReader);
 
 #if DEBUG
             // Extra debug information
@@ -363,7 +384,7 @@ namespace RimeLib.Mesh.Frostbite2013_2
                         switch (s_SubsetKey.PrimitiveType)
                         {
                             // If we are parsing a triangle list, then read out the X, Y, Z indices
-                            case RimeLib.Mesh.Frostbite.PrimitiveType.PrimitiveType_TriangleList:
+                            case fb.Render.PrimitiveType.PrimitiveType_TriangleList:
                                 s_IndexReader.Seek(s_SubsetStartOffset, SeekOrigin.Begin);
                                 for (var s_PrimitiveIndex = 0;
                                      s_PrimitiveIndex < s_SubsetKey.PrimitiveCount;

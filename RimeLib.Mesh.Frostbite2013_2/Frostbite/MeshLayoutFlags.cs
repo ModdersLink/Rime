@@ -1,6 +1,6 @@
-﻿using System;
+using System;
 
-namespace RimeLib.Mesh.Frostbite
+namespace RimeLib.Mesh.Frostbite2013_2.Frostbite
 {
     /// <summary>
     /// Flags for the mesh layout

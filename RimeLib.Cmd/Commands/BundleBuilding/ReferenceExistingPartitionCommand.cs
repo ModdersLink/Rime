@@ -10,7 +10,7 @@ using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
-using RimeLib.Mesh.Frostbite;
+using RimeLib.Mesh;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Attributes;
 using RimeLib.Texture;
@@ -84,6 +84,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         private IEngineMounter m_Mounter = null!;
         private IPartitionConverter m_PartitionConverter = null!;
         private ITextureConverter? m_TextureConverter;
+        private IMeshConverter? m_MeshConverter;
         private TextWriter m_Writer = null!;
 
         private int m_AddedPartitions;
@@ -130,6 +131,16 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 // Without it every texture ships its header and no pixels, so warn instead of
                 // quietly building a bundle of blank textures.
                 p_Writer.WriteLine($"WARN: no texture converter ({s_Ex.Message}). Texture chunks will not be resolved.");
+            }
+
+            try
+            {
+                m_MeshConverter = EngineInterfaceRegistry.Create<IMeshConverter>(s_SbBuildingContext.EngineType);
+            }
+            catch (Exception s_Ex)
+            {
+                // Same as textures: without it every mesh ships without its streamed geometry.
+                p_Writer.WriteLine($"WARN: no mesh converter ({s_Ex.Message}). Mesh chunks will not be resolved.");
             }
 
             m_SkipPrefixes = string.IsNullOrWhiteSpace(SkipPrefixes)
@@ -503,27 +514,11 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 {
                     m_AddedMeshes++;
 
-                    using var s_Source = p_Variant.GetReader();
-                    var s_Data = s_Source.ReadBytes((int)s_Source.Length);
-                    using var s_Reader = new RimeReader(new MemoryStream(s_Data));
-
-                    var s_Layout = new MeshSetLayout(s_Reader);
-
-                    // MeshSetLayout has its own flag set. Bit 0 is StreamingEnable here, but
-                    // IsBaseLod on a MeshLayout. With it clear there is no chunk and the geometry
-                    // sits inline.
-                    if (((uint)s_Layout.Flags & 1) == 0)
+                    if (m_MeshConverter == null)
                         return;
 
-                    // Every lod, not just the base one. IsBaseLod decides when a lod is pulled, not
-                    // whether. The streaming manager reads m_dataChunkId for arbitrary lods later,
-                    // so a missing non-base chunk fails at stream-in instead of at level load.
-                    for (var i = 0; i < s_Layout.LodCount; ++i)
-                    {
-                        var s_Lod = s_Layout.Lods[i].Object;
-                        if (s_Lod != null && s_Lod.DataChunkId != GUID.Empty)
-                            m_ChunkQueue.Enqueue((s_Lod.DataChunkId, p_Name, $"{p_Name} lod{i}"));
-                    }
+                    foreach (var (s_Lod, s_ChunkId) in m_MeshConverter.GetLodChunkIds(p_Variant))
+                        m_ChunkQueue.Enqueue((s_ChunkId, p_Name, $"{p_Name} lod{s_Lod}"));
                 }
             }
             catch (Exception s_Ex)

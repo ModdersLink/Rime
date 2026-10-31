@@ -8,6 +8,7 @@ using RimeLib;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Utils;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 
 namespace Rime
 {

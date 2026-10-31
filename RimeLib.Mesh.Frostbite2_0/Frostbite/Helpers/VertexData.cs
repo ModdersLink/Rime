@@ -1,7 +1,7 @@
 ﻿using RimeLib.IO;
 using RimeLib.Math;
 
-namespace RimeLib.Mesh.Frostbite.Helpers
+namespace RimeLib.Mesh.Frostbite2_0.Frostbite.Helpers
 {
     public class VertexData
     {
