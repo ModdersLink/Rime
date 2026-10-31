@@ -10,10 +10,12 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
     {
         protected DbObject? m_Meta;
         protected uint m_RangeStart;
-        protected uint m_RangeEnd;
+        // Null until asked for when the caller did not know it: working it out means decompressing
+        // the whole chunk, which mounting used to do for every superbundle-level chunk.
+        protected uint? m_RangeEnd;
         protected uint m_LogicalOffset;
 
-        public ChunkVariant(IReadableObjectWithHash p_Readable, uint p_RangeStart, uint p_RangeEnd, uint p_LogicalOffset, DbObject? p_Meta, string p_ContainedSuperbundle, string? p_ContainedBundle) :
+        public ChunkVariant(IReadableObjectWithHash p_Readable, uint p_RangeStart, uint? p_RangeEnd, uint p_LogicalOffset, DbObject? p_Meta, string p_ContainedSuperbundle, string? p_ContainedBundle) :
             base(p_Readable, p_ContainedSuperbundle, p_ContainedBundle)
         {
             m_Meta = p_Meta;
@@ -35,7 +37,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
 
         public uint GetRangeEnd()
         {
-            return m_RangeEnd;
+            return m_RangeEnd ??= (uint)m_Readable.GetSize();
         }
 
         public uint GetLogicalOffset()

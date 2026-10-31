@@ -44,6 +44,12 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         private readonly ConcurrentDictionary<uint, string> m_MountedPartitionsLowerNameHashes = new();
         private readonly ConcurrentDictionary<GUID, string> m_MountedPartitionsGuids = new();
 
+        // Partitions mounted since the GUID index was last brought up to date. Reading a partition's
+        // GUID means opening and decompressing its ebx, which mounting used to do for every partition;
+        // now it only happens the first time something looks a partition up by GUID.
+        private readonly ConcurrentQueue<(IObjectVariant Variant, string Name)> m_PendingPartitionGuids = new();
+        private readonly object m_PartitionGuidsLock = new();
+
         private readonly ConcurrentDictionary<GUID, MountedObject<IChunkVariant>> m_MountedChunks = new();
 
         private readonly HashSet<string> m_MountedSuperbundles = new HashSet<string>();
@@ -342,11 +348,37 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
 
         public bool TryGetPartitionByGuid(GUID p_GUID, [NotNullWhen(true)] out string? p_Name, [NotNullWhen(true)] out IMountedObject? p_Partition)
         {
+            IndexPendingPartitionGuids();
+
             if (m_MountedPartitionsGuids.TryGetValue(p_GUID, out p_Name))
                 return TryGetPartition(p_Name, out p_Partition);
 
             p_Partition = null;
             return false;
+        }
+
+        /// <summary>
+        /// Reads the GUIDs of partitions mounted since the last call into the GUID index.
+        /// </summary>
+        private void IndexPendingPartitionGuids()
+        {
+            if (m_PendingPartitionGuids.IsEmpty)
+                return;
+
+            lock (m_PartitionGuidsLock)
+            {
+                var s_Pending = new List<(IObjectVariant Variant, string Name)>();
+                while (m_PendingPartitionGuids.TryDequeue(out var s_Entry))
+                    s_Pending.Add(s_Entry);
+
+                // Read in parallel, then apply in mount order so a GUID shared by two partitions
+                // resolves the same way as when the index was filled while mounting.
+                var s_Guids = new GUID[s_Pending.Count];
+                Parallel.For(0, s_Pending.Count, i => s_Guids[i] = EbxReader.GetPartitionGuid(s_Pending[i].Variant));
+
+                for (var i = 0; i < s_Pending.Count; i++)
+                    m_MountedPartitionsGuids[s_Guids[i]] = s_Pending[i].Name;
+            }
         }
 
         public IReadOnlyDictionary<string, IMountedObject<IResourceVariant>> GetResources()
@@ -539,7 +571,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                 s_Meta.AddElement(new DbObjectElement("meta", s_Inner, false));
             }
 
-            p_Variant = new ChunkVariant(s_Entry, p_RangeStart ?? 0, p_RangeEnd ?? (uint)s_Entry.GetSize(),
+            p_Variant = new ChunkVariant(s_Entry, p_RangeStart ?? 0, p_RangeEnd,
                 p_LogicalOffset ?? 0, s_Meta, "manifest", null);
             return true;
         }
@@ -756,7 +788,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             m_Chunks.AddOrUpdate(s_ChunkEntry.Id, s_ChunkEntry, (p_Key, p_Old) => s_ChunkEntry);
 
             // Mount.
-            var s_Variant = new ChunkVariant(s_ChunkEntry, 0, (uint)s_ChunkEntry.GetSize(), 0, null, p_SbEntry.Name, null);
+            var s_Variant = new ChunkVariant(s_ChunkEntry, 0, null, 0, null, p_SbEntry.Name, null);
             var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant, s_ChunkEntry.Id.ToString());
 
             m_MountedChunks.AddOrUpdate(s_ChunkEntry.Id, s_MountedObject, (p_GUID, p_MountedObject) =>
@@ -1036,11 +1068,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     (_, _) => s_Partition.Name.ToLowerInvariant()
                 );
 
-                m_MountedPartitionsGuids.AddOrUpdate(
-                    EbxReader.GetPartitionGuid(s_Variant),
-                    s_Partition.Name.ToLowerInvariant(),
-                    (_, _) => s_Partition.Name.ToLowerInvariant()
-                );
+                m_PendingPartitionGuids.Enqueue((s_Variant, s_Partition.Name.ToLowerInvariant()));
             }
 
             
@@ -1113,11 +1141,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     (_, _) => s_Partition.Name.ToLowerInvariant()
                 );
 
-                m_MountedPartitionsGuids.AddOrUpdate(
-                    EbxReader.GetPartitionGuid(s_Variant),
-                    s_Partition.Name.ToLowerInvariant(),
-                    (_, _) => s_Partition.Name.ToLowerInvariant()
-                );
+                m_PendingPartitionGuids.Enqueue((s_Variant, s_Partition.Name.ToLowerInvariant()));
             }
 
             return true;
