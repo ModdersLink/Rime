@@ -12,7 +12,7 @@ namespace RimeLib.Mesh.Frostbite2013_2.Frostbite;
 /// </summary>
 /// <remarks>
 /// Ordered differently from the Frostbite 2 header: bounding box and six LOD pointers first,
-/// counts last. Matches Frosty's MeshSet reader for its Battlefield 4 profile.
+/// counts last.
 /// </remarks>
 public class MeshSetLayout : IFbSerializable
 {
