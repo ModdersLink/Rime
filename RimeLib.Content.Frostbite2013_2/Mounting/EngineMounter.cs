@@ -158,7 +158,7 @@ public class EngineMounter : IEngineMounter
     {
         if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
         {
-            foreach (var s_Resource in s_CasBundle.Bundle.ResourceEntries)
+            foreach (var s_Resource in s_CasBundle.Current.ResourceEntries)
                 yield return (s_Resource.Name, (ResourceType)s_Resource.ResourceType);
         }
         else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
@@ -192,10 +192,10 @@ public class EngineMounter : IEngineMounter
     {
         if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
         {
-            if (s_CasBundle.Bundle.ChunkEntries == null)
+            if (s_CasBundle.Current.ChunkEntries == null)
                 yield break;
 
-            foreach (var s_Chunk in s_CasBundle.Bundle.ChunkEntries)
+            foreach (var s_Chunk in s_CasBundle.Current.ChunkEntries)
                 yield return s_Chunk.Id;
         }
         else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
@@ -209,11 +209,11 @@ public class EngineMounter : IEngineMounter
     {
         if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
         {
-            if (s_CasBundle.Bundle.ChunkEntries == null || s_CasBundle.Bundle.ChunkMeta == null)
+            if (s_CasBundle.Current.ChunkEntries == null || s_CasBundle.Current.ChunkMeta == null)
                 yield break;
 
-            for (int i = 0; i < s_CasBundle.Bundle.ChunkEntries.Length; i++)
-                yield return (s_CasBundle.Bundle.ChunkEntries[i].Id, s_CasBundle.Bundle.ChunkMeta[i].AssetNameHash);
+            for (int i = 0; i < s_CasBundle.Current.ChunkEntries.Length; i++)
+                yield return (s_CasBundle.Current.ChunkEntries[i].Id, s_CasBundle.Current.ChunkMeta[i].AssetNameHash);
         }
         else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
         {
@@ -226,7 +226,7 @@ public class EngineMounter : IEngineMounter
     {
         if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
         {
-            foreach (var s_Partition in s_CasBundle.Bundle.EbxEntries)
+            foreach (var s_Partition in s_CasBundle.Current.EbxEntries)
                 yield return s_Partition.Name;
         }
         else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
@@ -800,10 +800,11 @@ public class EngineMounter : IEngineMounter
 
     protected bool MountCasBundle(CasBundleEntry p_Bundle)
     {
-        //TODO: Delta bundle, and patch reader
+        // A patched bundle is mounted from its patch listing only (see CasBundleEntry.Current);
+        // patched entries read through CatalogReadable, which applies the cas delta.
         
         // Mount all resources.
-        foreach (var s_Resource in p_Bundle.Bundle.ResourceEntries)
+        foreach (var s_Resource in p_Bundle.Current.ResourceEntries)
         {
             // Create variant.
             IReadableObjectWithHash? s_Readable = null;
@@ -813,12 +814,12 @@ public class EngineMounter : IEngineMounter
                 s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size, s_Resource);
 
             var s_Variant = new ResourceVariant(s_Readable, (ResourceType) s_Resource.ResourceType, s_Resource.Meta, (ulong) s_Resource.ResourceIdInt,
-                p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
+                p_Bundle.ContainedSuperbundle.Name, p_Bundle.Current.Path);
 
             // Mount.
             var s_MountedObject = new MountedObject<IResourceVariant>(s_Variant, s_Resource.Name);
 
-            m_MountedResources.AddOrUpdate(s_Resource.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
+            var s_NamedObject = m_MountedResources.AddOrUpdate(s_Resource.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
             {
                 // If this was already mounted, just add the variant.
                 p_MountedObject.AddVariant(s_Variant);
@@ -827,7 +828,10 @@ public class EngineMounter : IEngineMounter
             
             m_MountedResourcesRefs.AddOrUpdate(s_Resource.ResourceId, s_MountedObject, (p_ExistingId, p_ExistingObject) =>
             {
-                p_ExistingObject.AddVariant(s_Variant);
+                // Both maps usually hold the same mounted object, which the name map already
+                // gave this variant; adding it again would list every bundle twice.
+                if (!ReferenceEquals(p_ExistingObject, s_NamedObject))
+                    p_ExistingObject.AddVariant(s_Variant);
                 return p_ExistingObject;
             });
 
@@ -839,14 +843,14 @@ public class EngineMounter : IEngineMounter
         }
 
         // Mount all chunks.
-        for (var i = 0; i < p_Bundle.Bundle.ChunkEntries?.Length; i++)
+        for (var i = 0; i < p_Bundle.Current.ChunkEntries?.Length; i++)
         {
-            var s_Chunk = p_Bundle.Bundle.ChunkEntries[i];
+            var s_Chunk = p_Bundle.Current.ChunkEntries[i];
             DbObject? s_Meta = null;
 
             // If we have any meta, set it.
-            if (p_Bundle.Bundle.ChunkMeta?.Length > i)
-                s_Meta = DbObjectConverter.ToDbObject(p_Bundle.Bundle.ChunkMeta[i]);
+            if (p_Bundle.Current.ChunkMeta?.Length > i)
+                s_Meta = DbObjectConverter.ToDbObject(p_Bundle.Current.ChunkMeta[i]);
 
             // Create variant.
             IReadableObjectWithHash? s_Readable = null;
@@ -859,7 +863,7 @@ public class EngineMounter : IEngineMounter
             var s_RangeStart = s_Chunk.RangeStart is not null ? (uint)s_Chunk.RangeStart : 0;
             var s_RangeEnd = s_Chunk.RangeEnd is not null ? (uint)s_Chunk.RangeEnd : (uint)s_Chunk.Size;
             var s_Variant = new ChunkVariant(s_Readable, s_Chunk.LogicalOffset, s_Chunk.LogicalSize, s_Meta, p_Bundle.ContainedSuperbundle.Name,
-                p_Bundle.Bundle.Path);
+                p_Bundle.Current.Path);
 
             // Mount.
             var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant, s_Chunk.Id.ToString());
@@ -873,7 +877,7 @@ public class EngineMounter : IEngineMounter
         }
 
         // Mount all partitions.
-        foreach (var s_Partition in p_Bundle.Bundle.EbxEntries)
+        foreach (var s_Partition in p_Bundle.Current.EbxEntries)
         {
             // Create variant.
             IReadableObjectWithHash? s_Readable = null;
@@ -882,7 +886,7 @@ public class EngineMounter : IEngineMounter
             else
                 s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
             
-            var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
+            var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Current.Path);
 
             // Mount.
             var s_MountedObject = new MountedObject(s_Variant, s_Partition.Name);
@@ -908,9 +912,9 @@ public class EngineMounter : IEngineMounter
         }
 
         // Mount all partitions.
-        for (int i = 0; i < p_Bundle.Bundle.DbxEntries?.Length; i++)
+        for (int i = 0; i < p_Bundle.Current.DbxEntries?.Length; i++)
         {
-            CasBundle.Dbx? s_Partition = p_Bundle.Bundle.DbxEntries[i];
+            CasBundle.Dbx? s_Partition = p_Bundle.Current.DbxEntries[i];
 
             // Mount only available dbx
             if (m_Catalog is null ||!m_Catalog.ContainsEntry(s_Partition.Hash))
@@ -923,7 +927,7 @@ public class EngineMounter : IEngineMounter
             else
                 s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
             
-            var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
+            var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Current.Path);
 
             // Mount.
             var s_MountedObject = new MountedObject(s_Variant, s_Partition.Name);
@@ -940,142 +944,6 @@ public class EngineMounter : IEngineMounter
                 s_Partition.Name.ToLowerInvariant(),
                 (_, _) => s_Partition.Name.ToLowerInvariant()
             );
-        }
-
-
-        var s_DeltaBundle = p_Bundle.DeltaBundle;
-        
-        // override entries with patches if avalible
-        if (s_DeltaBundle != null)
-        {
-            foreach (var s_Resource in s_DeltaBundle.ResourceEntries)
-            {
-                // Create variant.
-                IReadableObjectWithHash? s_Readable = null;
-                if (s_Resource.InlineData != null)
-                    s_Readable = new InlineReadable(s_Resource.InlineData, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size);
-                else
-                    s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size, s_Resource);
-                
-                var s_Variant = new ResourceVariant(s_Readable, (ResourceType) s_Resource.ResourceType, s_Resource.Meta, (ulong) s_Resource.ResourceIdInt,
-                    p_Bundle.ContainedSuperbundle.Name, s_DeltaBundle.Path);
-
-                // Mount.
-                var s_MountedObject = new MountedObject<IResourceVariant>(s_Variant, s_Resource.Name);
-
-                m_MountedResources.AddOrUpdate(s_Resource.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
-                {
-                    // If this was already mounted, replace with patch
-                    return s_MountedObject;
-                });
-
-                m_MountedResourceLowerNameHashes.AddOrUpdate(
-                    RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Resource.Name),
-                    s_Resource.Name.ToLowerInvariant(),
-                    (_, _) => s_Resource.Name.ToLowerInvariant()
-                );
-            }
-
-            // Mount all chunks.
-            for (var i = 0; i < s_DeltaBundle.ChunkEntries?.Length; i++)
-            {
-                var s_Chunk = s_DeltaBundle.ChunkEntries[i];
-                DbObject? s_Meta = null;
-
-                // If we have any meta, set it.
-                if (s_DeltaBundle.ChunkMeta?.Length > i)
-                    s_Meta = DbObjectConverter.ToDbObject(s_DeltaBundle.ChunkMeta[i]);
-
-                // Create variant.
-                IReadableObjectWithHash? s_Readable = null;
-                if (s_Chunk.InlineData != null)
-                    s_Readable = new InlineReadable(s_Chunk.InlineData, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
-                else
-                    s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag(), s_Chunk);
-
-                // TODO: Pass RangeStart and RangeEnd to ChunkVariant constructor
-                var s_RangeStart = s_Chunk.RangeStart is not null ? (uint)s_Chunk.RangeStart : 0;
-                var s_RangeEnd = s_Chunk.RangeEnd is not null ? (uint)s_Chunk.RangeEnd : (uint)s_Chunk.Size;
-                var s_Variant = new ChunkVariant(s_Readable, s_Chunk.LogicalOffset, s_Chunk.LogicalSize, s_Meta, p_Bundle.ContainedSuperbundle.Name,
-                    s_DeltaBundle.Path);
-
-                // Mount.
-                var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant, s_Chunk.Id.ToString());
-
-                m_MountedChunks.AddOrUpdate(s_Chunk.Id, s_MountedObject, (p_GUID, p_MountedObject) =>
-                {
-                    // If this was already mounted, replace with patch
-                    return s_MountedObject;
-                });
-            }
-
-            // Mount all partitions.
-            foreach (var s_Partition in s_DeltaBundle.EbxEntries)
-            {
-                // Create variant.
-                IReadableObjectWithHash? s_Readable = null;
-                if (s_Partition.InlineData != null)
-                    s_Readable = new InlineReadable(s_Partition.InlineData, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size);
-                else
-                    s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
-                
-                var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, s_DeltaBundle.Path);
-
-                // Mount.
-                var s_MountedObject = new MountedObject(s_Variant, s_Partition.Name);
-
-                m_MountedEbxPartitions.AddOrUpdate(s_Partition.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
-                {
-                    // If this was already mounted, replace with patch
-                    return s_MountedObject;
-                });
-
-                m_MountedEbxPartitionsLowerNameHashes.AddOrUpdate(
-                    RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Partition.Name),
-                    s_Partition.Name.ToLowerInvariant(),
-                    (_, _) => s_Partition.Name.ToLowerInvariant()
-                );
-
-                //m_MountedEbxPartitionsGuids.AddOrUpdate(
-                //    EbxReader.GetPartitionGuid(s_Variant),
-                //    s_Partition.Name.ToLowerInvariant(),
-                //    (_, _) => s_Partition.Name.ToLowerInvariant()
-                //);
-            }
-
-            // Mount all partitions.
-            for (int i = 0; i < s_DeltaBundle.DbxEntries?.Length; i++)
-            {
-                CasBundle.Dbx? s_Partition = s_DeltaBundle.DbxEntries[i];
-
-                // Mount only available dbx
-                if (m_Catalog is null || !m_Catalog.ContainsEntry(s_Partition.Hash))
-                    continue;
-                
-                // Create variant.
-                IReadableObjectWithHash? s_Readable = null;
-                if (s_Partition.InlineData != null)
-                    s_Readable = new InlineReadable(s_Partition.InlineData, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size);
-                else
-                    s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
-                
-                var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, s_DeltaBundle.Path);
-
-                // Mount.
-                var s_MountedObject = new MountedObject(s_Variant, s_Partition.Name);
-
-                m_MountedDbxPartitions.AddOrUpdate(s_Partition.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
-                {
-                    // If this was already mounted, replace with patch
-                    return s_MountedObject;
-                });
-
-                m_MountedDbxPartitionsLowerNameHashes.AddOrUpdate(
-                    RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Partition.Name),
-                    s_Partition.Name.ToLowerInvariant(),
-                    (_, _) => s_Partition.Name.ToLowerInvariant()
-                );
-            }
         }
 
         return true;
