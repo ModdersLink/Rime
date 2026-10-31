@@ -5,7 +5,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
-using RimeLib.Cmd.Commands.Emulator;
 using RimeLib.Cmd.Commands.Game;
 using RimeLib.Terrain.Resources;
 using RimeLib.Content.Frostbite;
@@ -80,7 +79,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpSwfJsonCommand>();
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<DumpPartitionByGuidCommand>();
-            RegisterCommand<DumpAnimTrackDataCommand>();
+            // RegisterCommand<DumpAnimTrackDataCommand>(); // class not in repo
             RegisterCommand<BuildCasCatalogCommand>();
             RegisterCommand<MountExternalCatCommand>();
             RegisterCommand<RoundTripWritersCommand>();
@@ -89,16 +88,16 @@ namespace RimeLib.Cmd.Contexts
 
             if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))
             {
-                RegisterCommand<EmulateLuaCommand>();
+                // RegisterCommand<EmulateLuaCommand>(); // class not in repo
                 RegisterCommand<DumpPartitionJsonCommand>();
                 RegisterCommand<DumpPartitionJsonByGuidCommand>();
                 RegisterCommand<DumpMountedPartitionsJsonCommand>();
-                RegisterCommand<DumpSkeletonCommand>();
+                // RegisterCommand<DumpSkeletonCommand>(); // class not in repo
                 RegisterCommand<DumpAnimationBankCommand>();
                 RegisterCommand<CheckAnimationCodecCommand>();
                 RegisterCommand<PatchAnimationBankCommand>();
                 RegisterCommand<DumpAnimCodecClipsCommand>();
-                RegisterCommand<DumpSoundWaveCommand>();
+                // RegisterCommand<DumpSoundWaveCommand>(); // class not in repo
                 RegisterCommand<DumpNameSourcesCommand>();
                 RegisterCommand<DumpIntFieldsCommand>();
             }
