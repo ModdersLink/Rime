@@ -202,6 +202,7 @@ namespace RimeLib.Cmd.Contexts
 
             RegisterCommand<ExportBundleContentsCommand>();
             RegisterCommand<GenerateRegistryContainerCommand>();
+            RegisterCommand<DeriveRegistryContainerCommand>();
             RegisterCommand<CompareRegistryContainersCommand>();
             RegisterCommand<EmitSubworldRegistryCommand>();
             RegisterCommand<KeepOnlyPartitionCommand>();
@@ -334,7 +335,26 @@ namespace RimeLib.Cmd.Contexts
 
         internal fb.RegistryContainer? GetGeneratedRegistry()
         {
-            return m_GeneratedRegistry;
+            return m_GeneratedRegistry ?? m_DerivedRegistry as fb.RegistryContainer;
+        }
+
+        /// <summary>
+        /// The registry derive_registry_container built, as the engine's own registry object (a
+        /// RegistryContainer, or a NetworkRegistryAsset).
+        /// </summary>
+        private DataContainerBase? m_DerivedRegistry;
+
+        internal string BundleName => m_BundleName;
+
+        internal void SetDerivedRegistry(DataContainerBase p_Registry)
+        {
+            m_DerivedRegistry = p_Registry;
+            m_GeneratedRegistry = null;
+        }
+
+        internal DataContainerBase? GetDerivedRegistry()
+        {
+            return m_DerivedRegistry;
         }
 
         /// <summary>

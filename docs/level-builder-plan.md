@@ -99,15 +99,30 @@ sets, all four lists each. What remains:
   environment blueprint.
 - Order: the shipped order is not closure order; whether the engine needs a particular order is open.
 
-BF4 keeps one list per level and sub-world (`<partition>_networkregistry_win32`) and lists much
-less: `mp_siege` lists 60 entries (synced bools, a few prefabs and reference objects, 36 unlocks
-from outside its closure), `conquestlarge0` 326 (gamemode logic, map markers, vehicles, spawns,
-1 of 13 customizations, no weapons). Its rules still need measuring.
+### Registry rules (BF4)
+BF4 keeps one list per bundle, shared bundles included: the `NetworkRegistryAsset` of
+`<bundle>_networkregistry_win32`. A bundle's registry covers the networked content that bundle
+ships, whether the level reaches it or not (vehicle missiles and vehicle unlocks nothing in the level
+references are listed), and none of what other bundles ship: the vehicle spawner prefabs the
+gamemode uses are registered in their own blueprint bundles. So the closure doesn't matter here; the
+bundle's contents do.
+
+The types are BF3's, with these differences: bit 0 of `DataBusData.Flags` is `NeedNetworkId`; object
+variations and event syncs are not listed; soldier customizations, synced ints and floats, kill
+counters, commanders, track-player, get-player-name and play-animation data are; sub-world reference
+objects are listed when they name a bundle; the level's own `LevelData`/`SubWorldData` is not.
+
+Measured on 23 BF4 registries (all 11 MP main levels, 8 `conquestlarge0`, `teamdeathmatch0`,
+`rushlarge0`, `squaddeathmatch0`, `obliteration`, plus `mp_siege`'s `content`): all match exactly.
 
 `generate_registry_container` predates these rules: it scans only the partitions of the bundle being
 built and uses a fixed type list, so on cloned retail bundles it misses most entries (`rush`: 2056
-assets, 146 entities, 118 blueprints) and adds others. The bundle builder should derive the
-registries from the closure the way `derive_registry` does.
+assets, 146 entities, 118 blueprints) and adds others. `derive_registry_container [partition] [game]`
+applies the rules in bundle building instead: it reads the bundle's own partitions first and the
+mounted game for the rest, and stores the engine's registry object in the context. On cloned retail
+`rush` and `mp_subway`, `compare_registry_containers` reports all four lists identical.
+`emit_subworld_registry` consumes it for BF3; writing BF4's `_networkregistry_win32` partition is
+still to do.
 
 ### Things the engine finds by name (roots of their own)
 - `<bundle>/meshvariationdb_win32`, one per bundle, plus `weapon_shaderstateassets/*/meshvariationdb_win32`.
@@ -231,9 +246,10 @@ engine interfaces, so no version-specific code lives in the general projects.
 `reference_existing_partition` (closure, dependency and scenario bundles; its walk is
 `AssetReferenceScanner`), `generate_registry_container`, `emit_subworld_registry`,
 `mvdb_add_all` / `mvdb_add_entry`, `resolve_shader_textures`, `analyze_level`, `derive_registry`
-(BF3 registry derivation, compared with retail; not yet wired into bundle building).
+(registry derivation compared with retail, BF3 and BF4) and `derive_registry_container` (the same in
+bundle building).
 
-Missing: BF4 registry rules, registry derivation inside bundle building, a shader database builder (and for BF4 a full
+Missing: writing BF4's network registry partition, a shader database builder (and for BF4 a full
 shader database reader), the material grid derivation, `LevelData` sub-world reference generation, hoisting, the recipe and `build_level`.
 
 ### Templates

@@ -11,6 +11,12 @@ namespace RimeLib.Serialization;
 public interface IRegistryRules : IEngineInterface
 {
     /// <summary>
+    /// Whether a registry covers the networked content its bundle ships (every bundle has one,
+    /// shared bundles included) rather than the closure of its level partition.
+    /// </summary>
+    bool CoversBundle { get; }
+
+    /// <summary>
     /// The registry entries of a closure (without the registries themselves), as kind (named as
     /// <see cref="ILevelIndexes"/> names them) and entry, possibly repeated. <paramref name="p_Resolve"/>
     /// looks up the instance a reference points at.
@@ -34,4 +40,10 @@ public interface IRegistryRules : IEngineInterface
     /// The bundles loaded with a level (its own bundle and the like), by the level partition's name.
     /// </summary>
     IEnumerable<string> GetLevelBundles(string p_LevelPartition);
+
+    /// <summary>
+    /// The engine's registry object holding the given entries per kind (a RegistryContainer, or the
+    /// NetworkRegistryAsset of a registry partition).
+    /// </summary>
+    DataContainerBase CreateRegistry(IReadOnlyDictionary<string, List<CtrRefBase>> p_Entries);
 }

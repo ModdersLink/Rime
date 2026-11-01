@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimeLib.Frostbite;
+using RimeLib.Frostbite.Core;
 
 namespace RimeLib.Serialization.Frostbite2_0;
 
@@ -16,6 +17,8 @@ public class RegistryRules : IRegistryRules
     private const string c_Assets = "RegistryContainer.AssetRegistry";
     private const string c_Blueprints = "RegistryContainer.BlueprintRegistry";
     private const string c_ReferenceObjects = "RegistryContainer.ReferenceObjectRegistry";
+
+    public bool CoversBundle => false;
 
     public EngineType[] GetSupportedEngines()
     {
@@ -127,6 +130,26 @@ public class RegistryRules : IRegistryRules
     {
         if (p_Instance is fb.SubWorldReferenceObjectData s_SubWorld && !string.IsNullOrEmpty(s_SubWorld.BundleName))
             yield return s_SubWorld.BundleName;
+    }
+
+    public DataContainerBase CreateRegistry(IReadOnlyDictionary<string, List<CtrRefBase>> p_Entries)
+    {
+        RefArray<fb.DataContainer> List(string p_Kind)
+        {
+            var s_List = new RefArray<fb.DataContainer>();
+            foreach (var s_Entry in p_Entries.GetValueOrDefault(p_Kind) ?? new List<CtrRefBase>())
+                s_List.Add(new CtrRef<fb.DataContainer>(s_Entry.PartitionGuid, s_Entry.InstanceId));
+            return s_List;
+        }
+
+        return new fb.RegistryContainer
+        {
+            InstanceId = new DataContainerId.Guid(GUID.Empty),
+            EntityRegistry = List(c_Entities),
+            AssetRegistry = List(c_Assets),
+            BlueprintRegistry = List(c_Blueprints),
+            ReferenceObjectRegistry = List(c_ReferenceObjects),
+        };
     }
 
     public bool IsDescriptionOnly(DataContainerBase p_Instance)

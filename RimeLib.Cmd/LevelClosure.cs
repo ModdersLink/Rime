@@ -32,8 +32,10 @@ namespace RimeLib.Cmd
 
         public IEnumerable<DataContainerBase> Instances => Partitions.Values.SelectMany(p_P => p_P.Instances).Where(p_I => p_I != null);
 
-        public static LevelClosure Build(IEngineMounter p_Mounter, AssetReferenceScanner p_Scanner, ILevelIndexes p_Indexes,
-            Func<string, DatabasePartitionBase?> p_Parse, string p_Root, string? p_RegistryPartition = null)
+        /// <param name="p_GetPartition">Looks a partition up by lowercase name.</param>
+        /// <param name="p_Walk">False to read only the root and its registries, not what it references.</param>
+        public static LevelClosure Build(Func<string, IObjectVariant?> p_GetPartition, AssetReferenceScanner p_Scanner, ILevelIndexes p_Indexes,
+            Func<string, DatabasePartitionBase?> p_Parse, string p_Root, string? p_RegistryPartition = null, bool p_Walk = true)
         {
             var s_Closure = new LevelClosure(p_Root.ToLowerInvariant());
             var s_Seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { s_Closure.Root };
@@ -42,10 +44,10 @@ namespace RimeLib.Cmd
             while (s_Queue.Count > 0)
             {
                 var s_Name = s_Queue.Dequeue();
-                if (!p_Mounter.TryGetPartition(s_Name, out var s_Mounted))
+                if (p_GetPartition(s_Name) is not { } s_Variant)
                     continue;
 
-                var s_References = p_Scanner.ScanPartition(s_Name, s_Mounted.FirstVariant, p_I => p_Indexes.GetEmbeddedIndexes(p_I).Any());
+                var s_References = p_Scanner.ScanPartition(s_Name, s_Variant, p_I => p_Indexes.GetEmbeddedIndexes(p_I).Any());
                 if (s_References.Parsed == null)
                     continue;
 
@@ -58,7 +60,7 @@ namespace RimeLib.Cmd
                         s_Closure.Registries.Add((s_Kind, s_Entries.ToList()));
                 }
 
-                if (p_Indexes.GetPartitionIndexKind(s_References.Parsed.PrimaryInstance) != null)
+                if (!p_Walk || p_Indexes.GetPartitionIndexKind(s_References.Parsed.PrimaryInstance) != null)
                     continue;
 
                 foreach (var s_Next in s_References.Partitions)

@@ -61,7 +61,7 @@ namespace RimeLib.Cmd.Commands.Game
                 return false;
             }
 
-            var s_LevelClosure = LevelClosure.Build(m_Mounter, m_Scanner, s_Indexes, Parse, s_Root, RegistryPartition);
+            var s_LevelClosure = LevelClosure.Build(p_N => m_Mounter.TryGetPartition(p_N, out var s_P) ? s_P.FirstVariant : null, m_Scanner, s_Indexes, Parse, s_Root, RegistryPartition);
             var s_Closure = s_LevelClosure.Partitions.Keys.ToHashSet(StringComparer.OrdinalIgnoreCase);
             var s_Registries = s_LevelClosure.Registries;
             foreach (var (s_Name, s_Parsed) in s_LevelClosure.Partitions)
