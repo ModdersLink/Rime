@@ -178,7 +178,9 @@ namespace RimeLib.Cmd.Commands.Game
             var s_ShaderNames = ReadShaderDatabases(s_Engine, s_ShaderDatabases, p_Writer);
 
             // Who outside the level imports what nothing in the level refers to.
-            FindOutsideImporters(s_Engine, p_Writer);
+            // Shaders of a shader database that no content of the level uses are looked up too.
+            FindOutsideImporters(s_Engine, p_Writer, s_ShaderNames.SelectMany(p_D => p_D.Shaders)
+                .Select(p_S => $"ebx:{p_S.ToLowerInvariant()}").Where(p_K => !m_ContentRefs.ContainsKey(p_K)));
 
             // 3. The main bundle's items, by what needs them.
             var s_Origins = new List<ItemOrigin>();
@@ -604,20 +606,27 @@ namespace RimeLib.Cmd.Commands.Game
                 var s_Key = $"ebx:{s_Shader.ToLowerInvariant()}";
                 if (!m_Mounter.TryGetPartition(s_Shader.ToLowerInvariant(), out _))
                 {
-                    s_Breakdown.Count("generated (no shader asset of that name)");
+                    s_Breakdown.Count("generated (no shader asset of that name)", s_Shader);
                     continue;
                 }
 
                 var s_Users = UsersOf(m_ContentRefs.GetValueOrDefault(s_Key));
 
-                if (s_Users.Count == 0)
-                    s_Breakdown.Count(s_Shader.Contains("__") ? "generated permutation, used by no content (name <shader>__<permutation>)" : "used by no content found");
+                if (s_Users.Count == 0 && m_OutsideImporters.TryGetValue(s_Key, out var s_Importers))
+                {
+                    // Nothing the level loads uses it, but something elsewhere in the game imports it.
+                    var s_Types = s_Importers.Select(p_I => p_I[(p_I.IndexOf(" [", StringComparison.Ordinal) + 1)..p_I.LastIndexOf(" (", StringComparison.Ordinal)])
+                        .Distinct().OrderBy(p_T => p_T).ToList();
+                    s_Breakdown.Count($"no user in the level, imported {(ImportedByShared(s_Key) ? "by a shared superbundle" : "only by other levels")} ({string.Join(", ", s_Types.Take(3))})", s_Shader);
+                }
+                else if (s_Users.Count == 0)
+                    s_Breakdown.Count(s_Shader.Contains("__") ? "generated permutation, used by no content (name <shader>__<permutation>)" : "used by no content found", s_Shader);
                 else if (s_Users.Any(s_Owner.Contains))
-                    s_Breakdown.Count("used by the same bundle's content");
+                    s_Breakdown.Count("used by the same bundle's content", s_Shader);
                 else if (s_Users.All(p_U => p_U.StartsWith("outside: ")))
-                    s_Breakdown.Count("used only by content outside the level: " + string.Join(", ", s_Users.Select(p_U => p_U[9..]).Take(4)) + (s_Users.Count > 4 ? ", ..." : ""));
+                    s_Breakdown.Count("used only by content outside the level: " + string.Join(", ", s_Users.Select(p_U => p_U[9..]).Take(4)) + (s_Users.Count > 4 ? ", ..." : ""), s_Shader);
                 else
-                    s_Breakdown.Count("used only by: " + string.Join(", ", s_Users.Take(4)) + (s_Users.Count > 4 ? ", ..." : ""));
+                    s_Breakdown.Count("used only by: " + string.Join(", ", s_Users.Take(4)) + (s_Users.Count > 4 ? ", ..." : ""), s_Shader);
             }
 
             return s_Breakdown;
@@ -648,9 +657,10 @@ namespace RimeLib.Cmd.Commands.Game
         /// level that import it. Mount the whole game first, or importers in unmounted superbundles
         /// are missed.
         /// </summary>
-        private void FindOutsideImporters(EngineType p_Engine, TextWriter p_Writer)
+        private void FindOutsideImporters(EngineType p_Engine, TextWriter p_Writer, IEnumerable<string> p_MoreCandidates)
         {
             var s_Candidates = m_ItemBundles.Keys.Where(p_K => p_K.StartsWith("ebx:") && !m_ContentRefs.ContainsKey(p_K) && !m_IndexRefs.ContainsKey(p_K)).ToHashSet();
+            s_Candidates.UnionWith(p_MoreCandidates);
             if (s_Candidates.Count == 0)
                 return;
 
@@ -875,7 +885,20 @@ namespace RimeLib.Cmd.Commands.Game
             public List<string> OwnerBundles { get; set; } = new();
             public Dictionary<string, int> Entries { get; set; } = new();
 
-            public void Count(string p_Class) => Entries[p_Class] = Entries.GetValueOrDefault(p_Class) + 1;
+            public Dictionary<string, List<string>> Examples { get; set; } = new();
+
+            public void Count(string p_Class, string? p_Example = null)
+            {
+                Entries[p_Class] = Entries.GetValueOrDefault(p_Class) + 1;
+
+                if (p_Example == null)
+                    return;
+
+                if (!Examples.TryGetValue(p_Class, out var s_List))
+                    Examples[p_Class] = s_List = new List<string>();
+                if (s_List.Count < 20)
+                    s_List.Add(p_Example);
+            }
         }
     }
 }
