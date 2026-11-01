@@ -139,6 +139,9 @@ namespace RimeLib.Cmd.Contexts
         }
 
         public EngineType EngineType;
+
+        /// <summary>The shaders the bundles built so far draw with, for a shader database built after them.</summary>
+        internal HashSet<string> DrawnShaders { get; } = new(StringComparer.OrdinalIgnoreCase);
         protected string m_OutPath;
         protected string m_SbName;
 

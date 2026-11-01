@@ -10,6 +10,213 @@
   ],
   "bundles": [
     {
+      "name": "Win32/levels/mp_subway/conquest_small",
+      "level": "levels/mp_subway/conquest_small",
+      "dependsOn": [
+        "Win32/levels/mp_subway/mp_subway",
+        "Win32/levels/mp_subway/mp_subway_settings_win32",
+        "Win32/levels/mp_subway/mp_subway_gameconfiglight_win32",
+        "Win32/levels/mp_subway/common",
+        "Win32/levels/mp_subway/gameplayobjects",
+        "Win32/levels/mp_subway/mp_subway_uiplaying",
+        "Win32/levels/mp_subway/mp_subway_uiloadingmp",
+        "Win32/levels/mp_subway/mp_subway_uiendofround",
+        "Win32/levels/mp_subway/mp_subway_uipreendofround",
+        "Win32/levels/mp_subway/mp_subway_loading_music"
+      ],
+      "registry": false,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp_subway/mp_subway/shaderdb"
+    },
+    {
+      "name": "Win32/levels/mp_subway/gameplayobjects",
+      "level": "levels/mp_subway/gameplayobjects",
+      "dependsOn": [
+        "Win32/levels/mp_subway/mp_subway",
+        "Win32/levels/mp_subway/mp_subway_settings_win32",
+        "Win32/levels/mp_subway/mp_subway_gameconfiglight_win32",
+        "Win32/levels/mp_subway/common",
+        "Win32/levels/mp_subway/mp_subway_uiplaying",
+        "Win32/levels/mp_subway/mp_subway_uiloadingmp",
+        "Win32/levels/mp_subway/mp_subway_uiendofround",
+        "Win32/levels/mp_subway/mp_subway_uipreendofround",
+        "Win32/levels/mp_subway/mp_subway_loading_music"
+      ],
+      "registry": false,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp_subway/mp_subway/shaderdb"
+    },
+    {
+      "name": "Win32/levels/mp_subway/teams_large",
+      "level": "levels/mp_subway/teams_large",
+      "dependsOn": [
+        "Win32/levels/mp_subway/mp_subway",
+        "Win32/levels/mp_subway/mp_subway_settings_win32",
+        "Win32/levels/mp_subway/mp_subway_gameconfiglight_win32",
+        "Win32/levels/mp_subway/common",
+        "Win32/levels/mp_subway/gameplayobjects",
+        "Win32/levels/mp_subway/mp_subway_uiplaying",
+        "Win32/levels/mp_subway/mp_subway_uiloadingmp",
+        "Win32/levels/mp_subway/mp_subway_uiendofround",
+        "Win32/levels/mp_subway/mp_subway_uipreendofround",
+        "Win32/levels/mp_subway/mp_subway_loading_music"
+      ],
+      "registry": false,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp_subway/mp_subway/shaderdb"
+    },
+    {
+      "name": "Win32/levels/mp_subway/tdm1",
+      "level": "levels/mp_subway/tdm1",
+      "dependsOn": [
+        "Win32/levels/mp_subway/mp_subway",
+        "Win32/levels/mp_subway/mp_subway_settings_win32",
+        "Win32/levels/mp_subway/mp_subway_gameconfiglight_win32",
+        "Win32/levels/mp_subway/common",
+        "Win32/levels/mp_subway/gameplayobjects",
+        "Win32/levels/mp_subway/mp_subway_uiplaying",
+        "Win32/levels/mp_subway/mp_subway_uiloadingmp",
+        "Win32/levels/mp_subway/mp_subway_uiendofround",
+        "Win32/levels/mp_subway/mp_subway_uipreendofround",
+        "Win32/levels/mp_subway/mp_subway_loading_music"
+      ],
+      "registry": false,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp_subway/mp_subway/shaderdb"
+    },
+    {
+      "name": "Win32/levels/mp_subway/common",
+      "level": "levels/mp_subway/common",
+      "dependsOn": [
+        "Win32/levels/mp_subway/mp_subway",
+        "Win32/levels/mp_subway/mp_subway_settings_win32",
+        "Win32/levels/mp_subway/mp_subway_gameconfiglight_win32",
+        "Win32/levels/mp_subway/gameplayobjects",
+        "Win32/levels/mp_subway/mp_subway_uiplaying",
+        "Win32/levels/mp_subway/mp_subway_uiloadingmp",
+        "Win32/levels/mp_subway/mp_subway_uiendofround",
+        "Win32/levels/mp_subway/mp_subway_uipreendofround",
+        "Win32/levels/mp_subway/mp_subway_loading_music"
+      ],
+      "registry": false,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp_subway/mp_subway/shaderdb"
+    },
+    {
+      "name": "Win32/levels/mp_subway/teams_small",
+      "level": "levels/mp_subway/teams_small",
+      "dependsOn": [
+        "Win32/levels/mp_subway/mp_subway",
+        "Win32/levels/mp_subway/mp_subway_settings_win32",
+        "Win32/levels/mp_subway/mp_subway_gameconfiglight_win32",
+        "Win32/levels/mp_subway/common",
+        "Win32/levels/mp_subway/gameplayobjects",
+        "Win32/levels/mp_subway/mp_subway_uiplaying",
+        "Win32/levels/mp_subway/mp_subway_uiloadingmp",
+        "Win32/levels/mp_subway/mp_subway_uiendofround",
+        "Win32/levels/mp_subway/mp_subway_uipreendofround",
+        "Win32/levels/mp_subway/mp_subway_loading_music"
+      ],
+      "registry": false,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp_subway/mp_subway/shaderdb"
+    },
+    {
+      "name": "Win32/levels/mp_subway/tdm2",
+      "level": "levels/mp_subway/tdm2",
+      "dependsOn": [
+        "Win32/levels/mp_subway/mp_subway",
+        "Win32/levels/mp_subway/mp_subway_settings_win32",
+        "Win32/levels/mp_subway/mp_subway_gameconfiglight_win32",
+        "Win32/levels/mp_subway/common",
+        "Win32/levels/mp_subway/gameplayobjects",
+        "Win32/levels/mp_subway/mp_subway_uiplaying",
+        "Win32/levels/mp_subway/mp_subway_uiloadingmp",
+        "Win32/levels/mp_subway/mp_subway_uiendofround",
+        "Win32/levels/mp_subway/mp_subway_uipreendofround",
+        "Win32/levels/mp_subway/mp_subway_loading_music"
+      ],
+      "registry": false,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp_subway/mp_subway/shaderdb"
+    },
+    {
+      "name": "Win32/levels/mp_subway/teamdeathmatch",
+      "level": "levels/mp_subway/teamdeathmatch",
+      "dependsOn": [
+        "Win32/levels/mp_subway/mp_subway",
+        "Win32/levels/mp_subway/mp_subway_settings_win32",
+        "Win32/levels/mp_subway/mp_subway_gameconfiglight_win32",
+        "Win32/levels/mp_subway/common",
+        "Win32/levels/mp_subway/gameplayobjects",
+        "Win32/levels/mp_subway/mp_subway_uiplaying",
+        "Win32/levels/mp_subway/mp_subway_uiloadingmp",
+        "Win32/levels/mp_subway/mp_subway_uiendofround",
+        "Win32/levels/mp_subway/mp_subway_uipreendofround",
+        "Win32/levels/mp_subway/mp_subway_loading_music"
+      ],
+      "registry": false,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp_subway/mp_subway/shaderdb"
+    },
+    {
+      "name": "Win32/levels/mp_subway/rush",
+      "level": "levels/mp_subway/rush",
+      "dependsOn": [
+        "Win32/levels/mp_subway/mp_subway",
+        "Win32/levels/mp_subway/mp_subway_settings_win32",
+        "Win32/levels/mp_subway/mp_subway_gameconfiglight_win32",
+        "Win32/levels/mp_subway/common",
+        "Win32/levels/mp_subway/gameplayobjects",
+        "Win32/levels/mp_subway/mp_subway_uiplaying",
+        "Win32/levels/mp_subway/mp_subway_uiloadingmp",
+        "Win32/levels/mp_subway/mp_subway_uiendofround",
+        "Win32/levels/mp_subway/mp_subway_uipreendofround",
+        "Win32/levels/mp_subway/mp_subway_loading_music"
+      ],
+      "registry": false,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp_subway/mp_subway/shaderdb"
+    },
+    {
+      "name": "Win32/levels/mp_subway/squaddeathmatch",
+      "level": "levels/mp_subway/squaddeathmatch",
+      "dependsOn": [
+        "Win32/levels/mp_subway/mp_subway",
+        "Win32/levels/mp_subway/mp_subway_settings_win32",
+        "Win32/levels/mp_subway/mp_subway_gameconfiglight_win32",
+        "Win32/levels/mp_subway/common",
+        "Win32/levels/mp_subway/gameplayobjects",
+        "Win32/levels/mp_subway/mp_subway_uiplaying",
+        "Win32/levels/mp_subway/mp_subway_uiloadingmp",
+        "Win32/levels/mp_subway/mp_subway_uiendofround",
+        "Win32/levels/mp_subway/mp_subway_uipreendofround",
+        "Win32/levels/mp_subway/mp_subway_loading_music"
+      ],
+      "registry": false,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp_subway/mp_subway/shaderdb"
+    },
+    {
+      "name": "Win32/levels/mp_subway/squadrush",
+      "level": "levels/mp_subway/squadrush",
+      "dependsOn": [
+        "Win32/levels/mp_subway/mp_subway",
+        "Win32/levels/mp_subway/mp_subway_settings_win32",
+        "Win32/levels/mp_subway/mp_subway_gameconfiglight_win32",
+        "Win32/levels/mp_subway/common",
+        "Win32/levels/mp_subway/gameplayobjects",
+        "Win32/levels/mp_subway/mp_subway_uiplaying",
+        "Win32/levels/mp_subway/mp_subway_uiloadingmp",
+        "Win32/levels/mp_subway/mp_subway_uiendofround",
+        "Win32/levels/mp_subway/mp_subway_uipreendofround",
+        "Win32/levels/mp_subway/mp_subway_loading_music"
+      ],
+      "registry": false,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp_subway/mp_subway/shaderdb"
+    },
+    {
       "name": "Win32/levels/mp_subway/mp_subway",
       "level": "levels/mp_subway/mp_subway",
       "shaderDatabase": "levels/mp_subway/mp_subway/shaderdb",
@@ -471,26 +678,8 @@
           "EffectBlueprint",
           "ShaderGraph"
         ]
-      }
-    },
-    {
-      "name": "Win32/levels/mp_subway/rush",
-      "level": "levels/mp_subway/rush",
-      "dependsOn": [
-        "Win32/levels/mp_subway/mp_subway",
-        "Win32/levels/mp_subway/mp_subway_settings_win32",
-        "Win32/levels/mp_subway/mp_subway_gameconfiglight_win32",
-        "Win32/levels/mp_subway/common",
-        "Win32/levels/mp_subway/gameplayobjects",
-        "Win32/levels/mp_subway/mp_subway_uiplaying",
-        "Win32/levels/mp_subway/mp_subway_uiloadingmp",
-        "Win32/levels/mp_subway/mp_subway_uiendofround",
-        "Win32/levels/mp_subway/mp_subway_uipreendofround",
-        "Win32/levels/mp_subway/mp_subway_loading_music"
-      ],
-      "registry": true,
-      "meshVariationDb": true,
-      "shaderDatabase": "levels/mp_subway/mp_subway/shaderdb"
+      },
+      "buildShaderDatabase": true
     }
   ]
 }

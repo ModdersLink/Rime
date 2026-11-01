@@ -219,6 +219,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<BuildMeshVariationDbCommand>();
             RegisterCommand<AddShaderTexturesCommand>();
             RegisterCommand<HoistContentCommand>();
+            RegisterCommand<BuildShaderDatabaseCommand>();
+            RegisterCommand<CollectDrawnShadersCommand>();
             RegisterCommand<BuildMaterialGridCommand>();
             RegisterCommand<CompareRegistryContainersCommand>();
             RegisterCommand<EmitSubworldRegistryCommand>();

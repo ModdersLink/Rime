@@ -23,6 +23,9 @@ public interface IMeshVariationRules : IEngineInterface
     /// <summary>What an entry binds (materials, material variations, textures), as text, to compare entries of different databases.</summary>
     string Fingerprint(object p_Entry);
 
+    /// <summary>What each material of an entry draws with: its material variation if it has one, else the material.</summary>
+    IEnumerable<CtrRefBase> GetDrawnMaterials(object p_Entry);
+
     /// <summary>
     /// What an instance places with which variation: the meshes under each placed asset or entity
     /// are used with that variation hash (0 for none). Static model groups pick a variation per

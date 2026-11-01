@@ -210,6 +210,33 @@ Building one therefore means compiling or copying solutions per shader and per v
 meshes that use it. Copying from retail databases covers retail shaders with retail meshes; terrain
 permutations depend on the level's layer combinations and have to be generated.
 
+### Building one (BF3)
+`build_shader_database` copies shaders from the mounted databases. The format pools its records
+(constants, constant and texture functions, vertex, pixel and geometry permutations, solutions and
+their states, geometry declarations) and the shaders index into the pools; Rime keeps each record's
+bytes and renumbers only the indices, so all 33 retail databases read and write back byte-identical
+(`round_trip_shader_databases`), and identical records are stored once when shaders from several
+databases are combined. Each shader comes from the level's namesake database when there is one,
+else from the first that has it; with `all_solutions` it also gets the solutions only later
+databases have. Copying can't make solutions retail has never compiled: built from the other 32
+databases, `mp_subway` lacks 195 of its shaders and, even with all solutions, 4 % of the solutions of
+the rest.
+
+The shaders a level's database holds:
+- what its bundles' content draws with: shaders non-mesh partitions reference, and per mesh
+  variation database entry, each material's variation shader, or the material's when it has none
+  (a mesh's own materials count only where something draws it without the database, like mesh
+  particles). The gamemode bundles' shaders are collected while they are built
+  (`collect_drawn_shaders`), so the main bundle goes last;
+- the engine's own: shaders nearly every database holds that no partition imports, and for a level
+  with terrain, the terrain system's (shaders nearly every database with terrain shaders holds and
+  none without);
+- the generated ones, named after a partition of the bundle: the terrain's permutations
+  (`<terrain>__<layers>__<mode>__0`) and default surface shader.
+
+The shaders it lists ship in its bundle as partitions; the bundle also carries the textures they bind,
+except those another bundle of the superbundle carries.
+
 BF4 shader database format (version 194, two render paths, as in BF3's version 182): Rime reads only
 the shader table (a count, then 32-byte entries starting with the shader's lowercase name hash) and
 the texture name strings. A full reader or writer is still missing.
@@ -285,22 +312,25 @@ engine interfaces, so no version-specific code lives in the general projects.
 `mvdb_add_all` / `mvdb_add_entry`, `resolve_shader_textures`, `analyze_level`; derived from content
 and compared with retail: `derive_registry`, `derive_mesh_variation_db`; in bundle building:
 `derive_registry_container` (also writes BF4's `_networkregistry_win32`), `build_mesh_variation_db`,
-`build_material_grid`, `add_shader_textures`, `hoist_content`; and `build_level`, which runs them
+`build_material_grid`, `add_shader_textures`, `hoist_content`, `build_shader_database`,
+`collect_drawn_shaders`; and `build_level`, which runs them
 from a JSON recipe and compares each bundle with its retail namesake.
 
-Missing: material indices from mesh and Havok payloads, a shader database builder (and for BF4 a full
-shader database reader), `LevelData` sub-world reference generation.
+Missing: material indices from mesh and Havok payloads, a BF4 shader database reader and writer,
+`LevelData` sub-world reference generation.
 
 ### Measured on `mp_subway` (BF3)
-Recipe: [`recipes/mp_subway.json`](recipes/mp_subway.json).
-- `rush` against the retail main bundle: 1541 of 1542 partitions, nothing extra; all 993 mesh
-  variation entries.
-- Main bundle: 9918 of 10096 partitions, nothing extra; 1023 of 1025 mesh variation entries. The
-  recipe lists the by-name roots (UI assets, weapon mesh variation databases, ...) and hoists the
+Recipe: [`recipes/mp_subway.json`](recipes/mp_subway.json): the 11 gamemode and sub-world bundles,
+then the main bundle with its shader database.
+- Gamemode bundles, each against the retail main bundle: 6 of 11 exact, the others one or two
+  partitions short (`rush` 1541 of 1542); nothing extra.
+- Main bundle: 10087 of 10096 partitions, nothing extra; 1023 of 1025 mesh variation entries;
+  shader database 639 of 640 shaders, every solution of them identical.
+- The recipe lists the by-name roots (UI assets, weapon mesh variation databases, ...) and hoists the
   partitions of type `UI*`, `VeniceUI*`, `EffectBlueprint` and `ShaderGraph` that the gamemodes
   reach. `win32/ui` is not a dependency: the level carries its own copy of the in-game UI flow.
-  Missing are 171 items only the shader database lists (left for the shader database builder) and 7
-  textures and shaders.
+- Missing: two meshes only the retail mesh variation database lists (and the scattering shader and
+  texture one of them brings), and five textures of the frontend visual environment.
 - A mesh brings the textures of its mesh variation entries only once the bundle's own database is
   derived. Taking them from every retail database adds the camos of every level.
 

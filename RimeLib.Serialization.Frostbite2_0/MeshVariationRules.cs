@@ -94,6 +94,9 @@ public class MeshVariationRules : IMeshVariationRules
         }));
     }
 
+    public IEnumerable<CtrRefBase> GetDrawnMaterials(object p_Entry) =>
+        ((fb.MeshVariationDatabaseEntry)p_Entry).Materials.Select(p_M => p_M.MaterialVariation.IsNull() ? (CtrRefBase)p_M.Material : p_M.MaterialVariation).Where(p_R => !p_R.IsNull());
+
     private static string Ref(CtrRefBase p_Ref) => p_Ref.IsNull() ? "" : $"{p_Ref.PartitionGuid}/{p_Ref.InstanceId}";
 
     private static IEnumerable<fb.MeshVariationDatabaseEntry> Entries(DatabasePartitionBase p_Partition, IEnumerable<CtrRefBase> p_Refs)

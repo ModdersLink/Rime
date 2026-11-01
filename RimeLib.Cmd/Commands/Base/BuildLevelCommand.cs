@@ -58,6 +58,15 @@ namespace RimeLib.Cmd.Commands.Base
             /// <summary>Content of the sub-worlds that this bundle carries for them.</summary>
             public HoistRecipe? Hoist { get; set; }
 
+            /// <summary>
+            /// Build <see cref="ShaderDatabase"/> into this bundle rather than use the game's. It also
+            /// holds the shaders of the bundles before it in the recipe, so this bundle goes last.
+            /// </summary>
+            public bool BuildShaderDatabase { get; set; }
+
+            /// <summary>Give each shader the solutions of every mounted database that has it.</summary>
+            public bool AllShaderSolutions { get; set; }
+
             public bool Registry { get; set; } = true;
             public bool MeshVariationDb { get; set; } = true;
             public MaterialGridRecipe? MaterialGrid { get; set; }
@@ -127,8 +136,13 @@ namespace RimeLib.Cmd.Commands.Base
                     s_Steps.AddRange(s_Bundle.Hoist.From.Select(p_F => $"hoist_content {Quote(p_F)} {Quote(string.Join(",", s_Bundle.Hoist.Types))} {s_Recipe.Game}"));
                 if (s_Bundle.MeshVariationDb)
                     s_Steps.Add($"build_mesh_variation_db {Quote(s_Bundle.Level)} {s_Recipe.Game}");
+                // After the mesh variation database, whose entries say what meshes draw with.
+                if (s_Bundle.BuildShaderDatabase && s_Bundle.ShaderDatabase != null)
+                    s_Steps.Add($"build_shader_database {Quote(s_Bundle.ShaderDatabase)} {s_Bundle.AllShaderSolutions} {s_Recipe.Game}");
                 if (s_Bundle.ShaderDatabase != null)
-                    s_Steps.Add($"add_shader_textures {Quote(s_Bundle.ShaderDatabase)} {Quote(s_Bundle.Level)} {s_Recipe.Game}");
+                    s_Steps.Add($"add_shader_textures {Quote(s_Bundle.ShaderDatabase)} {(s_Bundle.BuildShaderDatabase ? "*" : Quote(s_Bundle.Level))} {s_Recipe.Game}");
+                if (s_Recipe.Bundles.Any(p_B => p_B.BuildShaderDatabase) && !s_Bundle.BuildShaderDatabase)
+                    s_Steps.Add($"collect_drawn_shaders {s_Recipe.Game}");
                 if (s_Bundle.Registry)
                     s_Steps.Add($"derive_registry_container {Quote(s_Bundle.Level)} {s_Recipe.Game}");
                 if (s_Bundle.MaterialGrid != null)

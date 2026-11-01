@@ -5,6 +5,7 @@ using System.Linq;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Commands.Game;
 using RimeLib.Cmd.Contexts;
+using RimeLib.Content.Mounting;
 using RimeLib.Serialization;
 using RimeLib.Shader;
 
@@ -22,7 +23,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "The shader database resource, e.g. levels/mp_subway/mp_subway/shaderdb.")]
         public string? Name { get; set; }
 
-        [CommandArgument(Description = "The level partition whose content's shaders count (LevelData or SubWorldData). Default: the bundle's own partitions.", Optional = true)]
+        [CommandArgument(Description = "The level partition whose content's shaders count (LevelData or SubWorldData), or * for every shader of the database. Default: the bundle's own partitions.", Optional = true)]
         public string? Partition { get; set; }
 
         [CommandArgument(Description = "The id of the mounted game.", Optional = true)]
@@ -39,21 +40,35 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            if (string.IsNullOrWhiteSpace(Name) || !s_Mounter.TryGetResource(Name!.ToLowerInvariant(), out var s_Resource) || s_Resource.FirstVariant == null)
+            // The bundle's own database when it built one, else the game's.
+            IResourceObject? s_Database = null;
+            if (!string.IsNullOrWhiteSpace(Name))
+            {
+                if (s_BundleContext.GetResources().TryGetValue(Name.ToLowerInvariant(), out var s_Built))
+                    s_Database = s_Built;
+                else if (s_Mounter.TryGetResource(Name.ToLowerInvariant(), out var s_Resource))
+                    s_Database = s_Resource.FirstVariant;
+            }
+
+            if (s_Database == null)
             {
                 p_Writer.WriteLine($"Could not find resource ({Name}).");
                 return false;
             }
 
             var s_Resolver = EngineInterfaceRegistry.Create<IShaderResolver>(s_SbContext.EngineType);
-            s_Resolver.Initialize(s_Resource.FirstVariant, s_Mounter);
+            s_Resolver.Initialize(s_Database, s_Mounter);
             var s_ByShader = s_Resolver.GetTexturesByShader();
 
             // The shaders the level's content uses: everything its partition reaches (meshes from
             // dependency bundles included), or the bundle's own partitions.
             var s_Partitions = BundlePartitionVariant.All(s_BundleContext);
             IEnumerable<DataContainerBase> s_Content;
-            if (Partition != null)
+            if (Partition == "*")
+            {
+                s_Content = Enumerable.Empty<DataContainerBase>();
+            }
+            else if (Partition != null)
             {
                 var s_Deriver = new RegistryDeriver(s_Mounter, p_N => s_Partitions.GetValueOrDefault(p_N), s_Partitions.Keys);
                 s_Content = s_Deriver.ReachedContent(Partition.ToLowerInvariant()).Content;
@@ -69,15 +84,28 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             }
 
             var s_Shaders = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var s_Instance in s_Content)
-            foreach (var (_, s_Ref) in AnalyzeRegistryCommand.References(s_Instance, s_Instance.GetType().Name, 0))
+            if (Partition == "*")
             {
-                if (s_Mounter.TryGetPartitionByGuid(s_Ref.PartitionGuid, out var s_Target, out _) && s_ByShader.ContainsKey(s_Target))
-                    s_Shaders.Add(s_Target);
+                s_Shaders.UnionWith(s_ByShader.Keys);
+            }
+            else
+            {
+                foreach (var s_Instance in s_Content)
+                foreach (var (_, s_Ref) in AnalyzeRegistryCommand.References(s_Instance, s_Instance.GetType().Name, 0))
+                {
+                    if (s_Mounter.TryGetPartitionByGuid(s_Ref.PartitionGuid, out var s_Target, out _) && s_ByShader.ContainsKey(s_Target))
+                        s_Shaders.Add(s_Target);
+                }
             }
 
+            // For every shader of the database, what the superbundle's other bundles carry is theirs:
+            // a gamemode's meshes bring the textures they bind.
+            var s_Siblings = Partition == "*"
+                ? s_SbContext.GetBundles().Values.SelectMany(p_B => p_B.Partitions.Keys).Select(p_N => p_N.ToLowerInvariant()).ToHashSet()
+                : new HashSet<string>();
+
             var s_Textures = s_Shaders.SelectMany(p_S => s_ByShader[p_S]).Select(p_T => p_T.ToLowerInvariant())
-                .Where(p_T => !s_BundleContext.GetPartitions().ContainsKey(p_T) && s_Mounter.TryGetPartition(p_T, out _))
+                .Where(p_T => !s_BundleContext.GetPartitions().ContainsKey(p_T) && !s_Siblings.Contains(p_T) && s_Mounter.TryGetPartition(p_T, out _))
                 .Distinct().OrderBy(p_T => p_T, StringComparer.Ordinal).ToList();
 
             foreach (var s_Texture in s_Textures)

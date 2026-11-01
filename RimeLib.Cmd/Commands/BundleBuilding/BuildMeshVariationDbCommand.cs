@@ -118,6 +118,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 var s_Shipped = s_Converter.FromPartitionObject(s_Name, s_Retail.FirstVariant);
                 var s_ShippedKeys = s_MeshDeriver.Rules.ReadEntries(s_Shipped).Select(p_E => (s_Deriver.Key(p_E.Mesh.PartitionGuid, p_E.Mesh.InstanceId), p_E.VariationHash)).ToHashSet();
                 p_Writer.WriteLine($"The game's '{s_Name}': {s_ShippedKeys.Count} entries, {s_ShippedKeys.Count(s_Result.Keys.Contains)} of them built, {s_Result.Keys.Count(p_K => !s_ShippedKeys.Contains(p_K))} built that it lacks.");
+                foreach (var (s_Key, s_Hash) in s_ShippedKeys.Where(p_K => !s_Result.Keys.Contains(p_K)))
+                    p_Writer.WriteLine($"  MISSING {s_Deriver.PartitionName(s_Key) ?? s_Key} variation {s_Hash}");
             }
             return true;
         }
