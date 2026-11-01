@@ -41,8 +41,8 @@ public class EngineMounter : IEngineMounter
     private readonly ConcurrentDictionary<GUID, string> m_MountedEbxPartitionsGuids = new();
 
     // Partitions mounted since the GUID index was last brought up to date. Reading a partition's GUID
-    // means opening and decompressing its ebx, which is far too slow to do for every partition while
-    // mounting; it only happens the first time something looks a partition up by GUID.
+    // means opening and decompressing its ebx, so it happens the first time something looks a
+    // partition up by GUID, not while mounting.
     private readonly ConcurrentQueue<(IObjectVariant Variant, string Name)> m_PendingPartitionGuids = new();
     private readonly object m_PartitionGuidsLock = new();
 
@@ -333,8 +333,8 @@ public class EngineMounter : IEngineMounter
             while (m_PendingPartitionGuids.TryDequeue(out var s_Entry))
                 s_Pending.Add(s_Entry);
 
-            // Read in parallel, then apply in mount order so a GUID shared by two partitions resolves
-            // to the one mounted last, as when the index was filled while mounting.
+            // Read in parallel, then apply in mount order, so a GUID shared by two partitions resolves
+            // to the one mounted last.
             var s_Guids = new GUID?[s_Pending.Count];
             Parallel.For(0, s_Pending.Count, i =>
             {
