@@ -79,6 +79,8 @@ namespace RimeLib.Cmd.Contexts
             if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))
             {
                 RegisterCommand<DumpPartitionJsonCommand>();
+                RegisterCommand<AnalyzeLevelCommand>();
+                RegisterCommand<FindPartitionByGuidCommand>();
                 RegisterCommand<DumpPartitionJsonByGuidCommand>();
                 RegisterCommand<DumpMountedPartitionsJsonCommand>();
             }
