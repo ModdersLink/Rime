@@ -1,22 +1,41 @@
 using System.IO;
+using RimeLib;
 using RimeLib.Content.Mounting;
 using RimeLib.IO;
 using RimeLib.Serialization;
 
-namespace RimeLib.Cmd.Commands.Game
+namespace Rimelib.Animation.Frostbite2_0.Frostbite
 {
     /// <summary>
-    /// Finding and loading the blob behind an <c>AntPackageAsset</c> partition.
-    ///
-    /// Extracted from <see cref="DumpAnimationBankCommand"/> because reading a bank and WRITING one
-    /// back have to agree byte for byte on which blob is the bank -- a writer that picked the chunk
-    /// where the reader picked the resource would emit a patch against the wrong bytes and look
-    /// like it worked.
+    /// Finding and loading the blob behind an <c>AntPackageAsset</c> partition. Reading a bank and
+    /// writing one back go through here, because they have to agree byte for byte on which blob is
+    /// the bank: a writer that picked the chunk where the reader picked the resource would emit a
+    /// patch against the wrong bytes and look like it worked.
     /// </summary>
     public static class AntBankFile
     {
+        /// <summary>Where a package's bank is, and the bank blob (null with <see cref="Error"/> when it can't be found).</summary>
+        public sealed class Location
+        {
+            public DatabasePartitionBase? Partition { get; init; }
+            public RimeLib.Frostbite.Core.GUID StreamingGuid { get; init; } = RimeLib.Frostbite.Core.GUID.Empty;
+            public string FileName { get; init; } = "";
+            public byte[]? Data { get; init; }
+            public string Source { get; init; } = "";
+            public string? Error { get; init; }
+        }
+
+        /// <summary>The bank blob for an AntPackageAsset partition, or null with a reason.</summary>
+        public static byte[]? Read(IEngineMounter p_Mounter, string p_Name, out string p_Source, out string? p_Error)
+        {
+            var s_Location = Locate(p_Mounter, p_Name);
+            p_Source = s_Location.Source;
+            p_Error = s_Location.Error;
+            return s_Location.Data;
+        }
+
         /// <summary>
-        /// The bank blob for an AntPackageAsset partition, or null with a reason.
+        /// The package of an AntPackageAsset partition and its bank blob.
         ///
         /// A package is stored one of two ways and both are in use. PackagingType_Chunk streams a
         /// chunk named by StreamingGuid; everything else ships the bank as an AssetBank RESOURCE
@@ -24,17 +43,10 @@ namespace RimeLib.Cmd.Commands.Game
         /// chunk path and 233 leave StreamingGuid all-zero, so a chunk-only reader sees barely a
         /// quarter of the game's animation.
         /// </summary>
-        public static byte[]? Read(IEngineMounter p_Mounter, string p_Name, out string p_Source,
-                                   out string? p_Error)
+        public static Location Locate(IEngineMounter p_Mounter, string p_Name)
         {
-            p_Source = "";
-            p_Error = null;
-
             if (!p_Mounter.TryGetPartition(p_Name, out var s_PartitionObject))
-            {
-                p_Error = $"Could not find partition '{p_Name}'.";
-                return null;
-            }
+                return new Location { Error = $"Could not find partition '{p_Name}'." };
 
             var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(p_Mounter.GetEngineType());
             var s_Partition = s_Converter.FromPartitionObject(p_Name, s_PartitionObject.FirstVariant);
@@ -51,10 +63,7 @@ namespace RimeLib.Cmd.Commands.Game
             }
 
             if (s_Package == null)
-            {
-                p_Error = $"Partition '{p_Name}' holds no AntPackageAsset.";
-                return null;
-            }
+                return new Location { Partition = s_Partition, Error = $"Partition '{p_Name}' holds no AntPackageAsset." };
 
             RimeLib.Frostbite.Core.GUID s_Guid = s_Package.StreamingGuid;
             string s_FileName = s_Package.Win32FileName;
@@ -62,8 +71,11 @@ namespace RimeLib.Cmd.Commands.Game
             if (p_Mounter.TryGetChunk(s_Guid, out var s_Chunk) && s_Chunk.FirstVariant != null)
             {
                 using var s_ChunkReader = s_Chunk.FirstVariant.GetReader();
-                p_Source = "chunk:" + s_Guid.ToString("D");
-                return s_ChunkReader.ReadBytes((int)s_ChunkReader.Length);
+                return new Location
+                {
+                    Partition = s_Partition, StreamingGuid = s_Guid, FileName = s_FileName,
+                    Data = s_ChunkReader.ReadBytes((int)s_ChunkReader.Length), Source = "chunk:" + s_Guid.ToString("D"),
+                };
             }
 
             // The AssetBank resource is named after the PARTITION, not after Win32FileName -- that
@@ -79,18 +91,24 @@ namespace RimeLib.Cmd.Commands.Game
                 }
 
                 using var s_ResReader = s_Res.FirstVariant.GetReader();
-                p_Source = "resource:" + s_Candidate;
-                return s_ResReader.ReadBytes((int)s_ResReader.Length);
+                return new Location
+                {
+                    Partition = s_Partition, StreamingGuid = s_Guid, FileName = s_FileName,
+                    Data = s_ResReader.ReadBytes((int)s_ResReader.Length), Source = "resource:" + s_Candidate,
+                };
             }
 
-            p_Error = $"'{p_Name}' streams neither chunk {s_Guid:D} nor resource '{s_FileName}'.";
-            return null;
+            return new Location
+            {
+                Partition = s_Partition, StreamingGuid = s_Guid, FileName = s_FileName,
+                Error = $"'{p_Name}' streams neither chunk {s_Guid:D} nor resource '{s_FileName}'.",
+            };
         }
 
         /// <summary>Parses a bank blob. Throws on a blob that is not a bank.</summary>
-        public static Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank Load(byte[] p_Data)
+        public static AssetBank Load(byte[] p_Data)
         {
-            var s_Bank = new Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank();
+            var s_Bank = new AssetBank();
             s_Bank.SetLocalResolver(new RimeLib.Animation.Frostbite.Resolver.LocalAssetResolver());
 
             using var s_Reader = new RimeReader(new MemoryStream(p_Data));

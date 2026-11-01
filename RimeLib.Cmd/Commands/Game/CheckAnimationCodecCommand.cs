@@ -7,6 +7,7 @@ using RimeLib.Animation.EA.Compression.DCT;
 using RimeLib.Animation.Frostbite2_0.EA.Compression.Curve;
 using RimeLib.Animation.Frostbite2_0.EA.Compression.DCT;
 using RimeLib.Animation.Frostbite2_0.EA.Compression.Vbr;
+using Rimelib.Animation.Frostbite2_0.Frostbite;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.IO;
