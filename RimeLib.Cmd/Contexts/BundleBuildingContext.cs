@@ -203,6 +203,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ExportBundleContentsCommand>();
             RegisterCommand<GenerateRegistryContainerCommand>();
             RegisterCommand<DeriveRegistryContainerCommand>();
+            RegisterCommand<BuildMeshVariationDbCommand>();
+            RegisterCommand<BuildMaterialGridCommand>();
             RegisterCommand<CompareRegistryContainersCommand>();
             RegisterCommand<EmitSubworldRegistryCommand>();
             RegisterCommand<KeepOnlyPartitionCommand>();

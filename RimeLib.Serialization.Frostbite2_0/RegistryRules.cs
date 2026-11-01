@@ -152,6 +152,13 @@ public class RegistryRules : IRegistryRules
         };
     }
 
+    public string? GetRegistryPartitionName(string p_LevelPartition) => null;
+
+    public void SetRegistry(DatabasePartitionBase p_Partition, IReadOnlyDictionary<string, List<CtrRefBase>> p_Entries)
+    {
+        throw new NotSupportedException("Frostbite 2 registries are embedded in the level partition.");
+    }
+
     public bool IsDescriptionOnly(DataContainerBase p_Instance)
     {
         return p_Instance is fb.InterfaceDescriptorData;

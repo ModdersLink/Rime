@@ -46,4 +46,13 @@ public interface IRegistryRules : IEngineInterface
     /// NetworkRegistryAsset of a registry partition).
     /// </summary>
     DataContainerBase CreateRegistry(IReadOnlyDictionary<string, List<CtrRefBase>> p_Entries);
+
+    /// <summary>
+    /// The partition a level partition's registry is a partition of its own in (Frostbite 2013.2:
+    /// <c>&lt;level&gt;_networkregistry_win32</c>), or null when the registry is embedded.
+    /// </summary>
+    string? GetRegistryPartitionName(string p_LevelPartition);
+
+    /// <summary>Puts the entries into a registry partition's registry, replacing what it lists.</summary>
+    void SetRegistry(DatabasePartitionBase p_Partition, IReadOnlyDictionary<string, List<CtrRefBase>> p_Entries);
 }

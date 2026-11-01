@@ -83,6 +83,7 @@ namespace RimeLib.Cmd.Contexts
                 RegisterCommand<FindPartitionByGuidCommand>();
                 RegisterCommand<AnalyzeRegistryCommand>();
                 RegisterCommand<DeriveRegistryCommand>();
+                RegisterCommand<DeriveMeshVariationDbCommand>();
                 RegisterCommand<DumpPartitionJsonByGuidCommand>();
                 RegisterCommand<DumpMountedPartitionsJsonCommand>();
             }

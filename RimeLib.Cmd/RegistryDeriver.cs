@@ -40,6 +40,13 @@ namespace RimeLib.Cmd
         private readonly IEnumerable<string>? m_OwnBundlePartitions;
         private readonly Dictionary<string, CtrRefBase> m_KeyReferences = new();
         private readonly Dictionary<string, List<string>> m_ReferencesOf = new();
+        private readonly Dictionary<string, List<string>> m_ReferrersOf = new();
+
+        /// <summary>The instances (by key) an instance references, from the closures read so far.</summary>
+        public IReadOnlyList<string> ReferencesOf(string p_Key) => m_ReferencesOf.GetValueOrDefault(p_Key) ?? (IReadOnlyList<string>)Array.Empty<string>();
+
+        /// <summary>The instances (by key) that reference an instance, from the closures read so far.</summary>
+        public IReadOnlyList<string> ReferrersOf(string p_Key) => m_ReferrersOf.GetValueOrDefault(p_Key) ?? (IReadOnlyList<string>)Array.Empty<string>();
 
         /// <param name="p_Override">Partitions to read instead of the mounted ones, by lowercase name.</param>
         /// <param name="p_OwnBundlePartitions">The partitions of the level's bundle, when not the mounted bundle.</param>
@@ -169,10 +176,17 @@ namespace RimeLib.Cmd
         {
             // Registries that cover their bundle need only the root and its registries.
             var s_Closure = LevelClosure.Build(GetVariant, m_Scanner, m_Indexes, Parse, p_Root, p_RegistryPartition, !Rules.CoversBundle);
-            foreach (var (s_To, s_From) in s_Closure.ReachedFrom)
+            Index(s_Closure);
+            return s_Closure;
+        }
+
+        /// <summary>Records a closure's instances and the references between them.</summary>
+        private void Index(LevelClosure p_Closure)
+        {
+            foreach (var (s_To, s_From) in p_Closure.ReachedFrom)
                 ReachedFrom.TryAdd(s_To, s_From);
 
-            foreach (var (s_Name, s_Parsed) in s_Closure.Partitions)
+            foreach (var (s_Name, s_Parsed) in p_Closure.Partitions)
             {
                 PartitionNames[s_Parsed.PartitionGuid] = s_Name;
                 foreach (var s_Instance in s_Parsed.Instances)
@@ -192,7 +206,12 @@ namespace RimeLib.Cmd
                     {
                         var s_Target = Key(s_Ref.PartitionGuid, s_Ref.InstanceId);
                         if (!Rules.IsDescriptionOnly(s_Instance))
+                        {
                             s_Targets.Add(s_Target);
+                            if (!m_ReferrersOf.TryGetValue(s_Target, out var s_Referrers))
+                                m_ReferrersOf[s_Target] = s_Referrers = new List<string>();
+                            s_Referrers.Add(s_Key);
+                        }
                         if (!ReferencedBy.TryGetValue(s_Target, out var s_By))
                             ReferencedBy[s_Target] = s_By = new HashSet<string>();
                         s_By.Add($"{s_Name} {s_Field}");
@@ -200,7 +219,6 @@ namespace RimeLib.Cmd
                 }
             }
 
-            return s_Closure;
         }
 
         /// <summary>The entries the rules give for everything the level's own bundle ships.</summary>
@@ -235,6 +253,34 @@ namespace RimeLib.Cmd
         /// <summary>The entries the rules give for the content a closure's root reaches, in closure order.</summary>
         private Dictionary<string, List<string>> DeriveFromClosure(LevelClosure p_Closure)
         {
+            return Collect(Rules.GetEntries(Reached(p_Closure), Resolve));
+        }
+
+        /// <summary>
+        /// The content a level partition reaches (see <see cref="Reached"/>), with the closure it was
+        /// found in.
+        /// </summary>
+        /// <param name="p_WholePartitions">Whether a partition whose primary instance is reached counts whole.</param>
+        /// <param name="p_DontFollow">Instances whose references are not followed.</param>
+        /// <param name="p_NotAsSibling">Instances not reached just for being in a partition that counts whole.</param>
+        public (LevelClosure Closure, List<DataContainerBase> Content) ReachedContent(string p_Root, bool p_WholePartitions = true,
+            Func<DataContainerBase, bool>? p_DontFollow = null, Func<string, bool>? p_NotAsSibling = null)
+        {
+            var s_Closure = LevelClosure.Build(GetVariant, m_Scanner, m_Indexes, Parse, p_Root.ToLowerInvariant());
+            Index(s_Closure);
+            return (s_Closure, Reached(s_Closure, p_WholePartitions, p_DontFollow, p_NotAsSibling));
+        }
+
+        /// <summary>The content reached from a closure already read, with other options.</summary>
+        public List<DataContainerBase> ReachedContent(LevelClosure p_Closure, bool p_WholePartitions, Func<DataContainerBase, bool>? p_DontFollow, Func<string, bool>? p_NotAsSibling)
+        {
+            return Reached(p_Closure, p_WholePartitions, p_DontFollow, p_NotAsSibling);
+        }
+
+        /// <summary>The instances a closure's root reaches, in closure order, without the registries.</summary>
+        private List<DataContainerBase> Reached(LevelClosure p_Closure, bool p_WholePartitions = true, Func<DataContainerBase, bool>? p_DontFollow = null,
+            Func<string, bool>? p_NotAsSibling = null)
+        {
             // Only what the level reaches: a partition can be in the closure for one instance (a
             // flattened copy of a prefab borrowing its tracks) while the rest of it is unused. A
             // partition whose primary instance is reached counts whole, since destruction prefabs
@@ -252,8 +298,13 @@ namespace RimeLib.Cmd
                     return;
 
                 s_Queue.Enqueue(p_Key);
+                if (!p_WholePartitions)
+                    return;
                 foreach (var s_Sibling in s_ByPartition.GetValueOrDefault(p_Key) ?? new List<string>())
-                    Reach(s_Sibling);
+                {
+                    if (p_NotAsSibling == null || !p_NotAsSibling(s_Sibling))
+                        Reach(s_Sibling);
+                }
             }
 
             if (p_Closure.Partitions.TryGetValue(p_Closure.Root, out var s_RootPartition) && s_RootPartition.PrimaryInstance != null)
@@ -261,15 +312,16 @@ namespace RimeLib.Cmd
 
             while (s_Queue.Count > 0)
             {
-                foreach (var s_Next in m_ReferencesOf.GetValueOrDefault(s_Queue.Dequeue()) ?? new List<string>())
+                var s_At = s_Queue.Dequeue();
+                if (p_DontFollow != null && Instances.TryGetValue(s_At, out var s_Instance) && p_DontFollow(s_Instance.Instance))
+                    continue;
+                foreach (var s_Next in m_ReferencesOf.GetValueOrDefault(s_At) ?? new List<string>())
                     Reach(s_Next);
             }
 
-            var s_Content = p_Closure.Partitions.Values
+            return p_Closure.Partitions.Values
                 .SelectMany(p_P => p_P.Instances.Where(p_I => p_I != null && s_Reached.Contains(Key(p_P.PartitionGuid, p_I.InstanceId))))
                 .Where(p_I => !m_Indexes.GetEmbeddedIndexes(p_I).Any()).ToList();
-
-            return Collect(Rules.GetEntries(s_Content, Resolve));
         }
 
         private Dictionary<string, List<string>> Collect(IEnumerable<(string Kind, CtrRefBase Entry)> p_Entries)

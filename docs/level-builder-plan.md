@@ -124,6 +124,35 @@ mounted game for the rest, and stores the engine's registry object in the contex
 `emit_subworld_registry` consumes it for BF3; writing BF4's `_networkregistry_win32` partition is
 still to do.
 
+### Mesh variation databases
+A database lists entries keyed by (mesh, variation name hash); an entry binds each of the mesh's
+materials to a material variation and textures. Shipped mesh materials carry no textures (the cook
+moved them into the databases), so an entry can't be built from the mesh. It doesn't have to be:
+across all 664 BF3 databases (8635 keys) and 2208 BF4 ones (11096 keys) every key binds exactly the
+same thing in every database that has it. The entries come from that pool; what has to be derived is
+which keys a database holds.
+
+`derive_mesh_variation_db <level partition>` derives them and compares with the shipped database:
+walk from the level partition carrying the variation that applies. A placement switches it: a
+reference object places its blueprint with its `ObjectVariation`, a static model group places each
+member with the per-instance hash in `InstanceObjectVariation`, an unlock pair places its asset with
+its variation; a placement without a variation of its own keeps the one around it (a destruction
+prefab's debris clusters take the trash bin's). Every mesh the walk reaches is used with the
+variation that applies there. Variations reached also pair with every mesh reached plainly (unlocks
+list variations and meshes side by side), as far as the pool has the pair. A mesh the level's own
+bundle ships that nothing gives a key, here or in a sub-world, gets its plain entry (the fallback that
+binds every shipped mesh somewhere). BF3 particle emitters use their meshes without the database; BF4
+lists them, and lists a mesh's plain entry whenever it lists a variation of it.
+
+Results: BF3 13 MP/XP1 main levels and 5 gamemode sub-worlds: 9 exact, the rest within 2 entries
+(a weapon socket's reticule mesh in every gamemode, terrain scattering meshes, a destruction mesh); BF4 15 databases
+(5 main levels, 5 content and 5 conquest sub-worlds): every shipped key derived except 1 to 2 per
+database (terrain scattering, shell casing particles), up to 3 % extra. Coop and singleplayer differ
+more (`coop_002` lists none of the weapons its bundle ships).
+
+`build_mesh_variation_db [partition] [game]` builds the database partition in bundle building and
+reads it back: on cloned retail `mp_subway` all 1025 entries, `rush` all 993 plus the reticule mesh.
+
 ### Things the engine finds by name (roots of their own)
 - `<bundle>/meshvariationdb_win32`, one per bundle, plus `weapon_shaderstateassets/*/meshvariationdb_win32`.
 - BF4 also: `<bundle>_networkregistry_win32` and `<bundle>_win32_antstate` (`AntStateAsset`), one
@@ -220,6 +249,14 @@ So the builder derives a grid instead of cooking one:
 The simplest version for a level cloned from a retail one: keep its grid, and add rows only for
 materials the new content brings in.
 
+Step 2 needs the material indices in mesh and Havok payloads, which Rime doesn't read yet.
+`build_material_grid <partition> <all|grid,...>` implements steps 1, 3 and 4 with the material set
+given as grids: rows for the materials of those grids, relations from every grid in the game, and a
+`GRID-REF` line for every partition the relations reference. Rebuilding `mp_subway`'s and `mp_001`'s
+grids from their own material sets reproduces every relation and property (10506 and 12432). `all`
+gives every material any BF3 grid has (138); 812 of those pairs never occur together in a retail
+level and take the default material's relation.
+
 ## Builder design
 
 ### Level recipe
@@ -245,12 +282,15 @@ engine interfaces, so no version-specific code lives in the general projects.
 ### Existing building blocks
 `reference_existing_partition` (closure, dependency and scenario bundles; its walk is
 `AssetReferenceScanner`), `generate_registry_container`, `emit_subworld_registry`,
-`mvdb_add_all` / `mvdb_add_entry`, `resolve_shader_textures`, `analyze_level`, `derive_registry`
-(registry derivation compared with retail, BF3 and BF4) and `derive_registry_container` (the same in
-bundle building).
+`mvdb_add_all` / `mvdb_add_entry`, `resolve_shader_textures`, `analyze_level`; derived from content
+and compared with retail: `derive_registry`, `derive_mesh_variation_db`; in bundle building:
+`derive_registry_container` (also writes BF4's `_networkregistry_win32`), `build_mesh_variation_db`,
+`build_material_grid`.
 
-Missing: writing BF4's network registry partition, a shader database builder (and for BF4 a full
-shader database reader), the material grid derivation, `LevelData` sub-world reference generation, hoisting, the recipe and `build_level`.
+Missing: a BF4 EBX writer (Rime's is commented out, so nothing can write a BF4 partition yet, derived
+or not), material indices from mesh and Havok payloads, a shader database builder (and for BF4 a full
+shader database reader), `LevelData` sub-world reference generation, hoisting, the recipe and
+`build_level`.
 
 ### Templates
 Recipe fragments that expand to a root list by querying the mounted game ("all weapons": every weapon

@@ -49,6 +49,16 @@ public class RegistryRules : IRegistryRules
         return s_Registry;
     }
 
+    public string? GetRegistryPartitionName(string p_LevelPartition) => $"{p_LevelPartition}_networkregistry_win32";
+
+    public void SetRegistry(DatabasePartitionBase p_Partition, IReadOnlyDictionary<string, List<CtrRefBase>> p_Entries)
+    {
+        var s_Registry = (fb.Entity.NetworkRegistryAsset)p_Partition.PrimaryInstance;
+        s_Registry.Objects.Clear();
+        foreach (var s_Entry in p_Entries.GetValueOrDefault(c_Registry) ?? new List<CtrRefBase>())
+            s_Registry.Objects.Add(new CtrRef<fb.Core.DataContainer>(s_Entry.PartitionGuid, s_Entry.InstanceId));
+    }
+
     public bool IsDescriptionOnly(DataContainerBase p_Instance)
     {
         return p_Instance is fb.Entity.InterfaceDescriptorData or fb.Core.DynamicDataContainer;

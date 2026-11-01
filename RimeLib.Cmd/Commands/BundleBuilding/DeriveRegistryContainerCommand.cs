@@ -47,9 +47,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_BundleName = s_BundleContext.BundleName.ToLowerInvariant();
             var s_Root = (Partition ?? (s_BundleName.StartsWith("win32/") ? s_BundleName["win32/".Length..] : s_BundleName)).ToLowerInvariant();
 
-            // The bundle's partitions as variants the partition converter can read.
-            var s_Partitions = s_BundleContext.GetPartitions()
-                .ToDictionary(p_P => p_P.Key.ToLowerInvariant(), p_P => p_P.Value as IObjectVariant ?? new BundlePartition(p_P.Value, s_BundleName), StringComparer.OrdinalIgnoreCase);
+            var s_Partitions = BundlePartitionVariant.All(s_BundleContext);
 
             var s_Deriver = new RegistryDeriver(s_Mounter, p_N => s_Partitions.GetValueOrDefault(p_N), s_Partitions.Keys);
             if (s_Deriver.GetVariant(s_Root) == null)
@@ -62,31 +60,41 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_Entries = s_Result.Entries.ToDictionary(p_P => p_P.Key, p_P => p_P.Value.Select(s_Deriver.ToReference).ToList());
             s_BundleContext.SetDerivedRegistry(s_Deriver.Rules.CreateRegistry(s_Entries));
 
+            // Registries that are partitions of their own get written into the bundle.
+            if (s_Deriver.Rules.GetRegistryPartitionName(s_Root) is { } s_RegistryName)
+            {
+                var s_Template = s_Deriver.Parse(s_RegistryName);
+                if (s_Template == null)
+                {
+                    var s_Any = s_Mounter.GetPartitions().Keys.FirstOrDefault(p_N => p_N.EndsWith("_networkregistry_win32", StringComparison.OrdinalIgnoreCase));
+                    if (s_Any == null || s_Deriver.Parse(s_Any.ToLowerInvariant()) is not { } s_Found)
+                    {
+                        p_Writer.WriteLine("No registry partition to start from in the mounted game.");
+                        return false;
+                    }
+                    s_Template = s_Found;
+                    s_Template.PartitionGuid = new GUID(Guid.NewGuid());
+                }
+
+                s_Template.Name = s_RegistryName;
+                s_Deriver.Rules.SetRegistry(s_Template, s_Entries);
+
+                var s_Generator = EngineInterfaceRegistry.Create<IPartitionGenerator>(s_SbContext.EngineType);
+                var s_Stream = new MemoryStream();
+                using (var s_Writer = new RimeWriter(s_Stream))
+                    s_Generator.Generate(s_Template, s_Writer);
+                var s_Bytes = s_Stream.ToArray();
+
+                s_BundleContext.RemovePartition(s_RegistryName);
+                s_BundleContext.AddRawPartitionBytes(s_RegistryName, s_Bytes);
+                p_Writer.WriteLine($"Wrote '{s_RegistryName}' ({s_Bytes.Length} bytes).");
+            }
+
             p_Writer.WriteLine("Registry derived and stored in context.");
             foreach (var (s_Kind, s_List) in s_Entries)
                 p_Writer.WriteLine($"- {s_Kind}: {s_List.Count}");
 
             return true;
-        }
-
-        /// <summary>A partition of the bundle being built, readable like a mounted one.</summary>
-        private class BundlePartition : IObjectVariant
-        {
-            private readonly IReadableObject m_Object;
-            private readonly string m_Bundle;
-
-            public BundlePartition(IReadableObject p_Object, string p_Bundle)
-            {
-                m_Object = p_Object;
-                m_Bundle = p_Bundle;
-            }
-
-            public bool Cas => false;
-            public RimeReader GetReader() => m_Object.GetReader();
-            public long GetSize() => m_Object.GetSize();
-            public Sha1? GetSha1() => (m_Object as IObjectWithHash)?.GetSha1();
-            public string GetContainedSuperbundle() => "";
-            public string? GetContainedBundle() => m_Bundle;
         }
     }
 }
