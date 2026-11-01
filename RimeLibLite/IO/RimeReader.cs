@@ -47,8 +47,8 @@ namespace RimeLib.IO
         /// <returns>String with the data inside</returns>
         public string ReadNullTerminatedString()
         {
-            // Each byte maps straight to a char, as before. Collect them in a buffer instead of
-            // growing a string one char at a time (every DbObject field name is read through here).
+            // Each byte maps straight to a char, collected in a buffer (every DbObject field name is
+            // read through here).
             Span<char> s_Stack = stackalloc char[128];
             var s_Chars = s_Stack;
             char[]? s_Rented = null;

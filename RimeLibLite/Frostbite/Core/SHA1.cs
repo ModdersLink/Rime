@@ -104,9 +104,8 @@ namespace RimeLib.Frostbite.Core
         /// <returns>Hash code</returns>
         public override int GetHashCode()
         {
-            // A SHA1 is already uniformly distributed, so its first four bytes make a good hash code.
-            // This used to sum the bytes, which only yields ~5100 distinct values, so catalog lookups
-            // (hundreds of thousands of entries keyed by Sha1) walked long collision chains.
+            // A SHA1 is already uniformly distributed, so its first four bytes make a good hash code for
+            // the catalog lookups (hundreds of thousands of entries keyed by Sha1).
             return Hash.Length >= 4 ? BinaryPrimitives.ReadInt32LittleEndian(Hash) : 0;
         }
 

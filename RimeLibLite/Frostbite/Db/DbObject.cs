@@ -51,8 +51,8 @@ namespace RimeLib.Frostbite.Db
         /// <returns>True if the key was found</returns>
         public bool TryGetElement(string p_Key, [NotNullWhen(true)] out DbObjectElement? p_Element)
         {
-            // Keys are ASCII, so an ordinal case-insensitive compare matches what the culture-invariant
-            // one did, without its cost; this runs for every field of every converted object.
+            // Keys are ASCII, so an ordinal case-insensitive compare is enough; this runs for every field
+            // of every converted object.
             foreach (var s_Element in m_Elements)
             {
                 if (string.Equals(s_Element.FieldName, p_Key, StringComparison.OrdinalIgnoreCase))

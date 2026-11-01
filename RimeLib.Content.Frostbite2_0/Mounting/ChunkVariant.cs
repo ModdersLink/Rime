@@ -11,7 +11,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         protected DbObject? m_Meta;
         protected uint m_RangeStart;
         // Null until asked for when the caller did not know it: working it out means decompressing
-        // the whole chunk, which mounting used to do for every superbundle-level chunk.
+        // the whole chunk.
         protected uint? m_RangeEnd;
         protected uint m_LogicalOffset;
 

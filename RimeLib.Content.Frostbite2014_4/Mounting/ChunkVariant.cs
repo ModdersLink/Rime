@@ -10,7 +10,7 @@ internal class ChunkVariant : ObjectVariant, IChunkVariant
 	protected DbObject? m_Meta;
 	protected uint m_LogicalOffset;
 	// Null until asked for when the caller did not know it: working it out means decompressing the
-	// whole chunk, which mounting used to do for every superbundle-level chunk.
+	// whole chunk.
 	protected uint? m_LogicalSize;
 
 	public ChunkVariant(IReadableObjectWithHash p_Readable, uint p_LogicalOffset, uint? p_LogicalSize, DbObject? p_Meta, string p_ContainedSuperbundle, string? p_ContainedBundle) 

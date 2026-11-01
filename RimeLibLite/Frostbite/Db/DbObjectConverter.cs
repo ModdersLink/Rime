@@ -46,9 +46,8 @@ namespace RimeLib.Frostbite.Db
     public class DbObjectConverter
     {
         /// <summary>
-        /// The reflection facts FromDbObject/ToDbObject need about one [DbObjectField] property.
-        /// Working these out (attributes, and especially nullability) per converted object was the
-        /// bulk of mount time, since every bundle entry goes through here.
+        /// The reflection facts FromDbObject/ToDbObject need about one [DbObjectField] property,
+        /// worked out once per property: every bundle entry goes through here.
         /// </summary>
         private sealed class DbFieldInfo
         {
@@ -299,8 +298,7 @@ namespace RimeLib.Frostbite.Db
                 // Ensure the element is of the right type.
                 EnsureElementType(p_Element, DbObjectType.Object);
 
-                // Convert with the property type (cached; this used to build and reflection-invoke
-                // FromDbObject<T> for every nested object).
+                // Convert with the property type (cached).
                 return FromDbObject(s_FieldType, (DbObject) p_Element.Value);
             }
 

@@ -45,8 +45,8 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         private readonly ConcurrentDictionary<GUID, string> m_MountedPartitionsGuids = new();
 
         // Partitions mounted since the GUID index was last brought up to date. Reading a partition's
-        // GUID means opening and decompressing its ebx, which mounting used to do for every partition;
-        // now it only happens the first time something looks a partition up by GUID.
+        // GUID means opening and decompressing its ebx, so it happens the first time something looks a
+        // partition up by GUID, not while mounting.
         private readonly ConcurrentQueue<(IObjectVariant Variant, string Name)> m_PendingPartitionGuids = new();
         private readonly object m_PartitionGuidsLock = new();
 
@@ -371,8 +371,8 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                 while (m_PendingPartitionGuids.TryDequeue(out var s_Entry))
                     s_Pending.Add(s_Entry);
 
-                // Read in parallel, then apply in mount order so a GUID shared by two partitions
-                // resolves the same way as when the index was filled while mounting.
+                // Read in parallel, then apply in mount order, so a GUID shared by two partitions
+                // resolves to the one mounted last.
                 var s_Guids = new GUID[s_Pending.Count];
                 Parallel.For(0, s_Pending.Count, i => s_Guids[i] = EbxReader.GetPartitionGuid(s_Pending[i].Variant));
 
