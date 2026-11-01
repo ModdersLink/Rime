@@ -29,11 +29,7 @@ public static class DataContainerTypeRegistry
 
     private static void RefreshTypes()
     {
-        // Types are looked up by their bare name, and other engines' serialization assemblies define
-        // the same names (Vec3, LinearTransform, EmittableType, ...). With those loaded too, as the
-        // REPL does, whichever assembly came first won, and Frostbite 2013.2 partitions were read
-        // with another engine's types or failed to parse. This assembly's own types are registered
-        // first, so they win; other assemblies only fill in names this one does not define.
+        // Other engines' assemblies define the same type names; this assembly's types take precedence.
         var s_Own = typeof(DataContainerTypeRegistry).Assembly;
 
         foreach (var s_Type in ContainerTypes(s_Own))
