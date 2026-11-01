@@ -235,6 +235,8 @@ public class EbxReader : IDisposable
         }
     }
         
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<(Type, string), byte> m_ReportedMissingFields = new();
+
     private void ParseTypeInstance(RimeReader p_Reader, TypeDescriptor p_Descriptor, object p_Instance, Type p_InstanceType)
     {
         var s_StartPosition = p_Reader.Position;
@@ -262,7 +264,9 @@ public class EbxReader : IDisposable
 
             if (s_PropertyType == null)
             {
-                Console.WriteLine($"Type {p_InstanceType.Name} has field {s_FieldDescriptor.Name} in data that no longer exists.");
+                // Once per type and field: a patched type repeats in thousands of partitions.
+                if (m_ReportedMissingFields.TryAdd((p_InstanceType, s_FieldDescriptor.Name), 0))
+                    Console.WriteLine($"Type {p_InstanceType.Name} has field {s_FieldDescriptor.Name} in data that no longer exists.");
                 continue;
             }
 
