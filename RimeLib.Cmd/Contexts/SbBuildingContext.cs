@@ -231,15 +231,17 @@ namespace RimeLib.Cmd.Contexts
             return m_Builder.GetBundles();
         }
 
-        internal void Build(TextWriter p_Writer)
+        /// <param name="p_NoCasRefs">
+        /// For a cas superbundle: embed every payload instead of ref'ing catalogued ones. The output
+        /// is as large as a noncas build, so it is a diagnostic, not a shipping mode: it separates
+        /// "the cas manifest format is wrong" from "the sha1 refs do not resolve" when a cas build
+        /// will not load.
+        /// </param>
+        internal void Build(TextWriter p_Writer, bool p_NoCasRefs = false)
         {
-            // RIME_CAS_NO_REFS=1 builds a cas superbundle that embeds every payload instead of
-            // ref'ing catalogued ones. The output is as large as a noncas build, so it is a
-            // diagnostic, not a shipping mode: it separates "the cas manifest format is wrong" from
-            // "the sha1 refs do not resolve" when a cas build will not load.
-            if (m_Builder.Cas() && Environment.GetEnvironmentVariable("RIME_CAS_NO_REFS") == "1")
+            if (m_Builder.Cas() && p_NoCasRefs)
             {
-                p_Writer.WriteLine("RIME_CAS_NO_REFS=1: embedding every payload, emitting no refs.");
+                p_Writer.WriteLine("Embedding every payload, emitting no refs.");
             }
             else if (m_Builder.Cas() && Parent is BaseContext s_BaseContext)
             {
