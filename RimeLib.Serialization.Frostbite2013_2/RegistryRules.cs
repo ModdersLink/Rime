@@ -49,7 +49,7 @@ public class RegistryRules : IRegistryRules
         return s_Registry;
     }
 
-    public string? GetRegistryPartitionName(string p_LevelPartition) => $"{p_LevelPartition}_networkregistry_win32";
+    public string GetRegistryPartitionName(string p_LevelPartition) => $"{p_LevelPartition}_networkregistry_win32";
 
     public void SetRegistry(DatabasePartitionBase p_Partition, IReadOnlyDictionary<string, List<CtrRefBase>> p_Entries)
     {

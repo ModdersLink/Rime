@@ -34,6 +34,9 @@ public class ShaderResolver : IShaderResolver
 
     public ISet<string> GetShaderNames() => m_ShaderNames;
 
+    // The shader table names shaders and the texture strings textures, but not which binds which.
+    public IReadOnlyDictionary<string, ISet<string>> GetTexturesByShader() => new Dictionary<string, ISet<string>>();
+
     public void Initialize(IResourceObject resource, IEngineMounter mounter)
     {
         m_ShaderNames.Clear();

@@ -287,8 +287,7 @@ and compared with retail: `derive_registry`, `derive_mesh_variation_db`; in bund
 `derive_registry_container` (also writes BF4's `_networkregistry_win32`), `build_mesh_variation_db`,
 `build_material_grid`.
 
-Missing: a BF4 EBX writer (Rime's is commented out, so nothing can write a BF4 partition yet, derived
-or not), material indices from mesh and Havok payloads, a shader database builder (and for BF4 a full
+Missing: material indices from mesh and Havok payloads, a shader database builder (and for BF4 a full
 shader database reader), `LevelData` sub-world reference generation, hoisting, the recipe and
 `build_level`.
 

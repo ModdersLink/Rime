@@ -93,6 +93,23 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             if (s_Template.PrimaryInstance.InstanceId is DataContainerId.Guid s_Primary)
                 s_BundleContext.AddMeshVariationDbRegistryRef(s_Template.PartitionGuid, s_Primary.Id);
 
+            // What the entries bind (textures above all) has to ship too, with its own closure;
+            // whatever the bundle or its dependencies already carry is skipped there.
+            var s_Needed = s_Entries
+                .SelectMany(p_E => Game.AnalyzeRegistryCommand.References(p_E, p_E.GetType().Name, 0))
+                .Select(p_R => p_R.Ref.PartitionGuid).Distinct()
+                .Select(p_G => s_Mounter.TryGetPartitionByGuid(p_G, out var s_N, out _) ? s_N.ToLowerInvariant() : null)
+                .Where(p_N => p_N != null && !s_BundleContext.GetPartitions().ContainsKey(p_N!))
+                .OrderBy(p_N => p_N, StringComparer.Ordinal).ToList();
+            foreach (var s_Partition in s_Needed)
+            {
+                var s_Reference = new ReferenceExistingPartitionCommand { Name = s_Partition, Id = Id, Strict = false };
+                var s_Context = p_Context;
+                s_Reference.Execute(ref s_Context, TextWriter.Null);
+            }
+            if (s_Needed.Count > 0)
+                p_Writer.WriteLine($"Added {s_Needed.Count} partition(s) the entries bind, with their closure.");
+
             p_Writer.WriteLine($"Built '{s_Name}' with {s_Entries.Count} entries ({s_Bytes.Length} bytes).");
 
             // Against the game's database of that name, when there is one.

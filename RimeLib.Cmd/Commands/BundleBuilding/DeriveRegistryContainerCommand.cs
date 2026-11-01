@@ -60,10 +60,17 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_Entries = s_Result.Entries.ToDictionary(p_P => p_P.Key, p_P => p_P.Value.Select(s_Deriver.ToReference).ToList());
             s_BundleContext.SetDerivedRegistry(s_Deriver.Rules.CreateRegistry(s_Entries));
 
-            // Registries that are partitions of their own get written into the bundle.
-            if (s_Deriver.Rules.GetRegistryPartitionName(s_Root) is { } s_RegistryName)
+            // The partition that holds the registry gets rewritten with it: the level partition
+            // itself, or the registry's own partition.
             {
+                var s_RegistryName = s_Deriver.Rules.GetRegistryPartitionName(s_Root).ToLowerInvariant();
                 var s_Template = s_Deriver.Parse(s_RegistryName);
+                if (s_Template == null && s_RegistryName == s_Root)
+                {
+                    p_Writer.WriteLine($"Could not read '{s_RegistryName}'.");
+                    return false;
+                }
+
                 if (s_Template == null)
                 {
                     var s_Any = s_Mounter.GetPartitions().Keys.FirstOrDefault(p_N => p_N.EndsWith("_networkregistry_win32", StringComparison.OrdinalIgnoreCase));
