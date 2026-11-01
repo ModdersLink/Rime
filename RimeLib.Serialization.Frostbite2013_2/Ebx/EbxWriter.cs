@@ -1,11 +1,12 @@
 ﻿using System;
-using System.Buffers.Binary;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using RimeLib.Frostbite.Core;
+using RimeLib.IO;
+using RimeLib.IO.Conversion;
 
 namespace RimeLib.Serialization.Frostbite2013_2.Ebx;
 
@@ -28,18 +29,22 @@ public class EbxWriter
     private readonly List<(GUID Partition, GUID Instance)> m_Imports = new();
     private readonly Dictionary<(Guid, Guid), int> m_ImportIndices = new();
 
-    private readonly MemoryStream m_Strings = new();
     private readonly Dictionary<string, uint> m_StringOffsets = new();
-
     private readonly List<(uint Offset, uint Count, string TypeKey)> m_Arrays = new();
-    private readonly MemoryStream m_ArrayData = new();
-
     private readonly Dictionary<DataContainerId, int> m_InstanceIndices = new();
+
+    private Endianness m_Endianness = Endianness.LittleEndian;
+    private RimeWriter m_Strings = null!;
+    private RimeWriter m_ArrayData = null!;
     private DatabasePartition m_Partition = new();
 
-    public byte[] Write(DatabasePartition p_Partition)
+    /// <summary>Writes the partition to <paramref name="p_Writer"/>, in that writer's byte order.</summary>
+    public void Write(RimeWriter p_Writer, DatabasePartition p_Partition)
     {
         m_Partition = p_Partition;
+        m_Endianness = p_Writer.Endianness;
+        m_Strings = NewWriter();
+        m_ArrayData = NewWriter();
 
         // Instances: the primary first, then those with a GUID (exported), then the others, each
         // group in partition order. Runs of one type form the ranges.
@@ -75,53 +80,53 @@ public class EbxWriter
             m_Arrays.Add((0, 0, ""));
 
         // Instances, field by field; strings, imports and arrays are numbered as they come up.
-        var s_Payload = new MemoryStream();
+        var s_Payload = NewWriter();
         foreach (var (s_Key, s_Exported, s_RangeInstances) in s_Ranges)
         {
             var s_Layout = Layout(s_Key);
-            Pad(s_Payload, s_Layout.Alignment);
+            s_Payload.Align(s_Layout.Alignment);
 
             foreach (var s_Instance in s_RangeInstances)
             {
                 if (s_Exported)
-                    s_Payload.Write(((DataContainerId.Guid)s_Instance.InstanceId).Id.Id);
+                    ((DataContainerId.Guid)s_Instance.InstanceId).Id.Serialize(s_Payload);
 
-                var s_Buffer = new byte[s_Layout.Size];
+                var s_Buffer = NewWriter();
+                s_Buffer.WriteNullBytes(s_Layout.Size);
                 WriteObject(s_Buffer, 0, s_Layout, s_Instance);
 
                 // Types aligned to 4 start 8 bytes before their data: the GUID covers them.
                 var s_Shift = s_Layout.Alignment == 4 ? 8 : 0;
-                s_Payload.Write(s_Buffer, s_Shift, s_Buffer.Length - s_Shift);
+                var s_Bytes = Bytes(s_Buffer);
+                s_Payload.Write(s_Bytes, s_Shift, s_Bytes.Length - s_Shift);
             }
         }
+
         // The instances are followed by at least 4 bytes of padding up to the next 16.
-        s_Payload.Write(new byte[4]);
-        Pad(s_Payload, 16);
-        var s_ArrayOffset = (uint)s_Payload.Length;
+        s_Payload.WriteNullBytes(4);
+        s_Payload.Align(16);
+        var s_ArrayOffset = (uint)s_Payload.Position;
 
-        Pad(m_ArrayData, 16);
-        s_Payload.Write(m_ArrayData.ToArray());
-        Pad(m_Strings, 16);
+        m_ArrayData.Align(16);
+        s_Payload.Write(m_ArrayData);
+        m_Strings.Align(16);
 
-        // Metadata.
-        var s_Meta = new MemoryStream();
-        s_Meta.Write(new byte[56]);
-        Pad(s_Meta, 16);
+        // Metadata, after room for the header.
+        var s_Meta = NewWriter();
+        s_Meta.WriteNullBytes((uint)StreamingPartitionHeader.SizeOf);
+        s_Meta.Align(16);
 
         foreach (var (s_Partition, s_Instance) in m_Imports)
         {
-            s_Meta.Write(s_Partition.Id);
-            s_Meta.Write(s_Instance.Id);
+            s_Partition.Serialize(s_Meta);
+            s_Instance.Serialize(s_Meta);
         }
 
-        var s_TypeStringStart = s_Meta.Length;
+        var s_TypeStringStart = s_Meta.Position;
         foreach (var s_String in m_TypeStrings)
-        {
-            s_Meta.Write(Encoding.UTF8.GetBytes(s_String));
-            s_Meta.WriteByte(0);
-        }
-        Pad(s_Meta, 16);
-        var s_TypeStringSize = s_Meta.Length - s_TypeStringStart;
+            s_Meta.WriteNullTerminatedString(s_String);
+        s_Meta.Align(16);
+        var s_TypeStringSize = s_Meta.Position - s_TypeStringStart;
 
         var s_FieldIndex = 0;
         var s_FieldStarts = new List<int>();
@@ -130,11 +135,11 @@ public class EbxWriter
             s_FieldStarts.Add(s_FieldIndex);
             foreach (var s_Field in s_Type.Fields)
             {
-                WriteUInt32(s_Meta, s_Field.NameHash);
-                WriteUInt16(s_Meta, s_Field.Flags);
-                WriteUInt16(s_Meta, (ushort)(s_Field.TypeKey != null ? m_TypeIndices[s_Field.TypeKey] : 0));
-                WriteUInt32(s_Meta, (uint)s_Field.Offset);
-                WriteUInt32(s_Meta, (uint)s_Field.SecondaryOffset);
+                s_Meta.Write(s_Field.NameHash);
+                s_Meta.Write(s_Field.Flags);
+                s_Meta.Write((ushort)(s_Field.TypeKey != null ? m_TypeIndices[s_Field.TypeKey] : 0));
+                s_Meta.Write(s_Field.Offset);
+                s_Meta.Write(s_Field.SecondaryOffset);
                 ++s_FieldIndex;
             }
         }
@@ -142,55 +147,61 @@ public class EbxWriter
         for (var i = 0; i < m_Types.Count; ++i)
         {
             var s_Type = m_Types[i];
-            WriteUInt32(s_Meta, s_Type.NameHash);
-            WriteUInt32(s_Meta, (uint)s_FieldStarts[i]);
-            s_Meta.WriteByte((byte)s_Type.Fields.Count);
-            s_Meta.WriteByte(s_Type.Alignment);
-            WriteUInt16(s_Meta, s_Type.Flags);
-            WriteUInt16(s_Meta, s_Type.Size);
-            WriteUInt16(s_Meta, s_Type.SecondarySize);
+            s_Meta.Write(s_Type.NameHash);
+            s_Meta.Write((uint)s_FieldStarts[i]);
+            s_Meta.Write((byte)s_Type.Fields.Count);
+            s_Meta.Write(s_Type.Alignment);
+            s_Meta.Write(s_Type.Flags);
+            s_Meta.Write(s_Type.Size);
+            s_Meta.Write(s_Type.SecondarySize);
         }
 
         foreach (var (s_Key, _, s_RangeInstances) in s_Ranges)
         {
-            WriteUInt16(s_Meta, (ushort)m_TypeIndices[s_Key]);
-            WriteUInt16(s_Meta, (ushort)s_RangeInstances.Count);
+            s_Meta.Write((ushort)m_TypeIndices[s_Key]);
+            s_Meta.Write((ushort)s_RangeInstances.Count);
         }
-        Pad(s_Meta, 16);
+        s_Meta.Align(16);
 
         foreach (var (s_Offset, s_Count, s_TypeKey) in m_Arrays)
         {
-            WriteUInt32(s_Meta, s_Offset);
-            WriteUInt32(s_Meta, s_Count);
-            WriteUInt32(s_Meta, (uint)m_TypeIndices[s_TypeKey]);
+            s_Meta.Write(s_Offset);
+            s_Meta.Write(s_Count);
+            s_Meta.Write((uint)m_TypeIndices[s_TypeKey]);
         }
-        Pad(s_Meta, 16);
+        s_Meta.Align(16);
 
-        var s_MetaSize = (uint)s_Meta.Length;
-        var s_Header = new MemoryStream();
-        WriteUInt32(s_Header, c_Magic);
-        WriteUInt32(s_Header, s_MetaSize);
-        WriteUInt32(s_Header, (uint)(m_Strings.Length + s_Payload.Length));
-        WriteUInt32(s_Header, (uint)m_Imports.Count);
-        WriteUInt16(s_Header, (ushort)s_Ranges.Count);
-        WriteUInt16(s_Header, (ushort)s_Ranges.Count(p_R => p_R.Exported));
-        WriteUInt16(s_Header, (ushort)s_Ranges.Select(p_R => p_R.TypeKey).Distinct().Count());
-        WriteUInt16(s_Header, (ushort)m_Types.Count);
-        WriteUInt16(s_Header, (ushort)s_FieldIndex);
-        WriteUInt16(s_Header, (ushort)s_TypeStringSize);
-        WriteUInt32(s_Header, (uint)m_Strings.Length);
-        WriteUInt32(s_Header, (uint)m_Arrays.Count);
-        WriteUInt32(s_Header, s_ArrayOffset);
-        s_Header.Write(p_Partition.PartitionGuid.Id);
+        var s_Header = new StreamingPartitionHeader
+        {
+            Magic = c_Magic,
+            MetaSize = (uint)s_Meta.Position,
+            PayloadSize = (uint)(m_Strings.Position + s_Payload.Position),
+            ImportCount = (uint)m_Imports.Count,
+            RangeCount = (ushort)s_Ranges.Count,
+            ExportedRangeCount = (ushort)s_Ranges.Count(p_R => p_R.Exported),
+            TypeCount = (ushort)s_Ranges.Select(p_R => p_R.TypeKey).Distinct().Count(),
+            TypeDescriptorCount = (ushort)m_Types.Count,
+            FieldDescriptorCount = (ushort)s_FieldIndex,
+            TypeStringTableSize = (ushort)s_TypeStringSize,
+            StringTableSize = (uint)m_Strings.Position,
+            ArrayCount = (uint)m_Arrays.Count,
+            ArrayOffset = s_ArrayOffset,
+            PartitionGuid = p_Partition.PartitionGuid,
+        };
+        s_Meta.Seek(0, SeekOrigin.Begin);
+        s_Header.Serialize(s_Meta);
 
-        var s_Result = s_Meta.ToArray();
-        Array.Copy(s_Header.ToArray(), s_Result, s_Header.Length);
+        p_Writer.Write(s_Meta);
+        p_Writer.Write(m_Strings);
+        p_Writer.Write(s_Payload);
+    }
 
-        var s_File = new MemoryStream();
-        s_File.Write(s_Result);
-        s_File.Write(m_Strings.ToArray());
-        s_File.Write(s_Payload.ToArray());
-        return s_File.ToArray();
+    private RimeWriter NewWriter() => new(new MemoryStream(), m_Endianness);
+
+    private static byte[] Bytes(RimeWriter p_Writer)
+    {
+        p_Writer.Flush();
+        return ((MemoryStream)p_Writer.BaseStream).ToArray();
     }
 
     private static EbxTypeLayout Layout(string p_Key)
@@ -248,14 +259,15 @@ public class EbxWriter
             m_TypeStrings.Add(p_String);
     }
 
-    private void WriteObject(byte[] p_Buffer, int p_Base, EbxTypeLayout p_Layout, object p_Object)
+    /// <summary>Writes an object's fields at <paramref name="p_Base"/> plus each field's offset.</summary>
+    private void WriteObject(RimeWriter p_Writer, long p_Base, EbxTypeLayout p_Layout, object p_Object)
     {
         foreach (var s_Field in p_Layout.Fields)
         {
             if (s_Field.Name == "$")
             {
                 if (s_Field.TypeKey != null)
-                    WriteObject(p_Buffer, p_Base, Layout(s_Field.TypeKey), p_Object);
+                    WriteObject(p_Writer, p_Base, Layout(s_Field.TypeKey), p_Object);
                 continue;
             }
 
@@ -268,19 +280,17 @@ public class EbxWriter
             switch (s_Field.Code)
             {
                 case FieldType.ValueType:
-                {
-                    var s_Struct = Layout(s_Field.TypeKey!);
-                    var s_Bytes = new byte[s_Struct.Size];
                     if (s_Value != null)
-                        WriteObject(s_Bytes, 0, s_Struct, s_Value);
-                    Array.Copy(s_Bytes, 0, p_Buffer, s_Position, s_Bytes.Length);
+                        WriteObject(p_Writer, s_Position, Layout(s_Field.TypeKey!), s_Value);
                     break;
-                }
                 case FieldType.Array:
-                    BinaryPrimitives.WriteUInt32LittleEndian(p_Buffer.AsSpan(s_Position), WriteArray(s_Field.TypeKey!, s_Value as IEnumerable));
+                    var s_Index = WriteArray(s_Field.TypeKey!, s_Value as IEnumerable);
+                    p_Writer.Seek(s_Position, SeekOrigin.Begin);
+                    p_Writer.Write(s_Index);
                     break;
                 default:
-                    WriteValue(p_Buffer, s_Position, s_Field.Code, s_Field.TypeKey, s_Value, false);
+                    p_Writer.Seek(s_Position, SeekOrigin.Begin);
+                    WriteValue(p_Writer, s_Field.Code, s_Field.TypeKey, s_Value, false);
                     break;
             }
         }
@@ -301,28 +311,31 @@ public class EbxWriter
 
         var s_Member = Layout(p_Key).Fields[0];
         var (s_Size, s_Alignment) = ElementSize(s_Member);
-        var s_Data = new byte[s_Values.Count * s_Size];
+        var s_Data = NewWriter();
+        s_Data.WriteNullBytes((uint)(s_Values.Count * s_Size));
         for (var i = 0; i < s_Values.Count; ++i)
         {
             if (s_Member.Code == FieldType.ValueType)
             {
                 if (s_Values[i] != null)
-                    WriteObject(s_Data, i * s_Size, Layout(s_Member.TypeKey!), s_Values[i]!);
+                    WriteObject(s_Data, (long)i * s_Size, Layout(s_Member.TypeKey!), s_Values[i]!);
             }
             else
             {
-                WriteValue(s_Data, i * s_Size, s_Member.Code, s_Member.TypeKey, s_Values[i], true);
+                s_Data.Seek((long)i * s_Size, SeekOrigin.Begin);
+                WriteValue(s_Data, s_Member.Code, s_Member.TypeKey, s_Values[i], true);
             }
         }
 
         // The count is 4-aligned and sits right before the data, which is aligned for its elements.
-        var s_Offset = Align(Align(m_ArrayData.Length, 4) + 4, s_Alignment);
-        while (m_ArrayData.Length < s_Offset - 4)
-            m_ArrayData.WriteByte(0);
-        WriteUInt32(m_ArrayData, (uint)s_Values.Count);
+        m_ArrayData.Align(4);
+        while ((m_ArrayData.Position + 4) % s_Alignment != 0)
+            m_ArrayData.Write((byte)0);
+        m_ArrayData.Write((uint)s_Values.Count);
+        var s_Offset = (uint)m_ArrayData.Position;
         m_ArrayData.Write(s_Data);
 
-        m_Arrays.Add(((uint)s_Offset, (uint)s_Values.Count, p_Key));
+        m_Arrays.Add((s_Offset, (uint)s_Values.Count, p_Key));
         return (uint)(m_Arrays.Count - 1);
     }
 
@@ -345,63 +358,61 @@ public class EbxWriter
         };
     }
 
-    private void WriteValue(byte[] p_Buffer, int p_Position, FieldType p_Code, string? p_TypeKey, object? p_Value, bool p_InArray)
+    private void WriteValue(RimeWriter p_Writer, FieldType p_Code, string? p_TypeKey, object? p_Value, bool p_InArray)
     {
-        var s_Span = p_Buffer.AsSpan(p_Position);
         switch (p_Code)
         {
             case FieldType.Class:
-                BinaryPrimitives.WriteUInt32LittleEndian(s_Span, Reference(p_Value as CtrRefBase));
+                p_Writer.Write(Reference(p_Value as CtrRefBase));
                 break;
             case FieldType.Enum:
-                BinaryPrimitives.WriteInt32LittleEndian(s_Span, EnumValue(p_TypeKey, p_Value, p_InArray));
+                p_Writer.Write(EnumValue(p_TypeKey, p_Value, p_InArray));
                 break;
             case FieldType.CString:
             case FieldType.FileRef:
-                BinaryPrimitives.WriteUInt32LittleEndian(s_Span, StringOffset(p_Value as string));
+                p_Writer.Write(StringOffset(p_Value as string));
                 break;
             case FieldType.Boolean:
-                p_Buffer[p_Position] = (byte)(p_Value is true ? 1 : 0);
+                p_Writer.Write(p_Value is true);
                 break;
             case FieldType.Int8:
-                p_Buffer[p_Position] = (byte)Convert.ToSByte(p_Value);
+                p_Writer.Write(Convert.ToSByte(p_Value));
                 break;
             case FieldType.UInt8:
-                p_Buffer[p_Position] = Convert.ToByte(p_Value);
+                p_Writer.Write(Convert.ToByte(p_Value));
                 break;
             case FieldType.Int16:
-                BinaryPrimitives.WriteInt16LittleEndian(s_Span, Convert.ToInt16(p_Value));
+                p_Writer.Write(Convert.ToInt16(p_Value));
                 break;
             case FieldType.UInt16:
-                BinaryPrimitives.WriteUInt16LittleEndian(s_Span, Convert.ToUInt16(p_Value));
+                p_Writer.Write(Convert.ToUInt16(p_Value));
                 break;
             case FieldType.Int32:
-                BinaryPrimitives.WriteInt32LittleEndian(s_Span, Convert.ToInt32(p_Value));
+                p_Writer.Write(Convert.ToInt32(p_Value));
                 break;
             case FieldType.UInt32:
-                BinaryPrimitives.WriteUInt32LittleEndian(s_Span, Convert.ToUInt32(p_Value));
+                p_Writer.Write(Convert.ToUInt32(p_Value));
                 break;
             case FieldType.Int64:
-                BinaryPrimitives.WriteInt64LittleEndian(s_Span, Convert.ToInt64(p_Value));
+                p_Writer.Write(Convert.ToInt64(p_Value));
                 break;
             case FieldType.UInt64:
-                BinaryPrimitives.WriteUInt64LittleEndian(s_Span, Convert.ToUInt64(p_Value));
+                p_Writer.Write(Convert.ToUInt64(p_Value));
                 break;
             case FieldType.Float32:
-                BinaryPrimitives.WriteSingleLittleEndian(s_Span, Convert.ToSingle(p_Value));
+                p_Writer.Write(Convert.ToSingle(p_Value));
                 break;
             case FieldType.Float64:
-                BinaryPrimitives.WriteDoubleLittleEndian(s_Span, Convert.ToDouble(p_Value));
+                p_Writer.Write(Convert.ToDouble(p_Value));
                 break;
             case FieldType.Guid:
-                ((p_Value as GUID) ?? GUID.Empty).Id.CopyTo(s_Span);
+                ((p_Value as GUID) ?? GUID.Empty).Serialize(p_Writer);
                 break;
             case FieldType.Sha1:
-                if (p_Value is Sha1 s_Sha1 && s_Sha1.Serialize(out byte[]? s_ShaBytes))
-                    s_ShaBytes.CopyTo(s_Span);
+                (p_Value as Sha1)?.Serialize(p_Writer);
                 break;
             case FieldType.ResourceRef:
-                BinaryPrimitives.WriteUInt64LittleEndian(s_Span, (p_Value as ResourceRef)?.Id ?? 0);
+                (p_Value as ResourceRef ?? new ResourceRef()).Serialize(p_Writer);
                 break;
             default:
                 throw new NotSupportedException($"Writing fields of type {p_Code} is not supported.");
@@ -455,32 +466,11 @@ public class EbxWriter
         if (m_StringOffsets.TryGetValue(p_String, out var s_Offset))
             return s_Offset;
 
-        s_Offset = (uint)m_Strings.Length;
+        // Byte for byte, the way the reader reads them (some are not UTF-8 text).
+        s_Offset = (uint)m_Strings.Position;
         m_Strings.Write(Encoding.Latin1.GetBytes(p_String));
-        m_Strings.WriteByte(0);
+        m_Strings.Write((byte)0);
         m_StringOffsets[p_String] = s_Offset;
         return s_Offset;
-    }
-
-    private static long Align(long p_Value, int p_Alignment) => p_Alignment <= 1 ? p_Value : (p_Value + p_Alignment - 1) / p_Alignment * p_Alignment;
-
-    private static void Pad(Stream p_Stream, int p_Alignment)
-    {
-        while (p_Stream.Length % p_Alignment != 0)
-            p_Stream.WriteByte(0);
-    }
-
-    private static void WriteUInt32(Stream p_Stream, uint p_Value)
-    {
-        Span<byte> s_Bytes = stackalloc byte[4];
-        BinaryPrimitives.WriteUInt32LittleEndian(s_Bytes, p_Value);
-        p_Stream.Write(s_Bytes);
-    }
-
-    private static void WriteUInt16(Stream p_Stream, ushort p_Value)
-    {
-        Span<byte> s_Bytes = stackalloc byte[2];
-        BinaryPrimitives.WriteUInt16LittleEndian(s_Bytes, p_Value);
-        p_Stream.Write(s_Bytes);
     }
 }

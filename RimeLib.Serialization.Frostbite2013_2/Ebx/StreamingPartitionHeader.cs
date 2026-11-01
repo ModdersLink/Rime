@@ -8,7 +8,7 @@ namespace RimeLib.Serialization.Frostbite2013_2.Ebx;
 
 public class StreamingPartitionHeader : IFbSerializable
 {
-    public static int SizeOf => 13*4 + GUID.SizeOf;
+    public static int SizeOf => 7 * 4 + 6 * 2 + GUID.SizeOf;
 
     public uint Magic { get; set; }
     public uint MetaSize { get; set; }
