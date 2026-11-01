@@ -40,6 +40,9 @@ public class FieldDescriptor
     /// </summary>
     public MemberInfoFlags Flags { get; set; }
 
+    /// <summary>The flag bits as stored, including bits <see cref="MemberInfoFlags"/> doesn't model.</summary>
+    public ushort RawFlags { get; set; }
+
     /// <summary>
     /// This is the TypeDescriptor index, not actual field type
     /// </summary>
@@ -70,7 +73,8 @@ public class FieldDescriptor
         NameHash = p_Reader.ReadUInt32();
         
         Flags = new MemberInfoFlags();
-        Flags.Deserialize(p_Reader);
+        RawFlags = p_Reader.ReadUInt16();
+        Flags.SetFromFlagBits(RawFlags);
         
         FieldType = p_Reader.ReadUInt16();
         Offset = p_Reader.ReadInt32();

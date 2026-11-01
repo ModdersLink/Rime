@@ -70,6 +70,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpResourceWithChunksCommand>();
             RegisterCommand<DumpSwfJsonCommand>();
             RegisterCommand<DumpPartitionCommand>();
+            RegisterCommand<RoundTripPartitionsCommand>();
             RegisterCommand<DumpPartitionByGuidCommand>();
             RegisterCommand<BuildCasCatalogCommand>();
             RegisterCommand<MountExternalCatCommand>();

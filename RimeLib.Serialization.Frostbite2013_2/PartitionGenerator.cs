@@ -17,8 +17,6 @@ public class PartitionGenerator : IPartitionGenerator
         if (p_Partition is not DatabasePartition s_Partition)
             throw new ArgumentException("Cannot generate a partition resource from a partition created for a different engine type.", nameof(p_Partition));
 
-        throw new NotImplementedException();
-        // var s_Writer = new EbxWriter();
-        // s_Writer.Serialize(p_ResourceWriter, s_Partition);
+        p_ResourceWriter.Write(new EbxWriter().Write(s_Partition));
     }
 }

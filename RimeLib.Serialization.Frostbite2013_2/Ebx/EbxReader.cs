@@ -117,6 +117,9 @@ public class EbxReader : IDisposable
         for (var i = 0; i < m_Header.TypeDescriptorCount; ++i)
             m_TypeDescriptors.Add(new TypeDescriptor(m_Reader, m_HashedTypeStrings));
 
+        // The layouts, so partitions of these types can be written later.
+        EbxLayoutLibrary.Register(m_TypeDescriptors, m_FieldDescriptors);
+
         // Parse instances.
         m_InstanceEntries = new List<InstanceEntry>((int)m_Header.RangeCount);
         for (var i = 0; i < m_Header.RangeCount; ++i)
@@ -534,7 +537,8 @@ public class EbxReader : IDisposable
             }
 
             s_TempStream.Flush();
-            s_String = Encoding.UTF8.GetString(((MemoryStream) s_TempStream.BaseStream).ToArray());
+            // Byte for byte: some strings are not UTF-8 text, and the writer has to give back the same bytes.
+            s_String = Encoding.Latin1.GetString(((MemoryStream) s_TempStream.BaseStream).ToArray());
                 
             m_Reader.Seek(s_CurrentOffset, SeekOrigin.Begin);
         }
