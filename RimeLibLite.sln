@@ -55,7 +55,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Shader.Frostbite2_0
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShaderInfo", "Utils\ShaderInfo\ShaderInfo.csproj", "{2853FEF7-3B3A-4581-8F0A-32F8A854097A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Terrain.Frostbite3", "RimeLib.Terrain.Frostbite3\RimeLib.Terrain.Frostbite3.csproj", "{8C398ED5-0C36-483D-951A-025A32D81437}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Terrain.Frostbite2013_2", "RimeLib.Terrain.Frostbite2013_2\RimeLib.Terrain.Frostbite2013_2.csproj", "{8C398ED5-0C36-483D-951A-025A32D81437}"
 	ProjectSection(ProjectDependencies) = postProject
 		{4D596497-B3A1-4143-BE4B-D3D9DE3AF340} = {4D596497-B3A1-4143-BE4B-D3D9DE3AF340}
 	EndProjectSection

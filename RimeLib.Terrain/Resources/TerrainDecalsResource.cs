@@ -22,6 +22,10 @@ namespace RimeLib.Terrain.Resources
     {
         public string SurfaceShaderName { get; set; } = "";
         public string ZOnlySurfaceShaderName { get; set; } = "";
+
+        /// <summary>Frostbite 2013.2: the texture that masks the decal, empty for none.</summary>
+        public string MaskTextureName { get; set; } = "";
+
         public uint StartIndex { get; set; }
         public uint PrimitiveCount { get; set; }
         public float[] BoundingBox { get; set; } = new float[6];  // minXYZ, maxXYZ (world space)
@@ -29,6 +33,9 @@ namespace RimeLib.Terrain.Resources
         public float DrawDistance { get; set; }
         public uint VertexBegin { get; set; }
         public uint VertexEnd { get; set; }
+
+        /// <summary>Frostbite 2013.2: a byte after the vertex range, meaning not established.</summary>
+        public byte Trailing { get; set; }
     }
 
     /// <summary>2d/3d render vertex. Positions are WORLD-space; userMasks are 4 raw 16-bit values (half-floats).</summary>
@@ -60,6 +67,13 @@ namespace RimeLib.Terrain.Resources
         public List<DecalBlock> Blocks { get; set; } = new();
         public List<DecalVertex>? Vertices { get; set; }
         public List<DecalWaterVertex>? WaterVertices { get; set; }
+
+        /// <summary>
+        /// The vertex buffer as bytes, for an engine whose blocks each have their own vertex layout
+        /// (Frostbite 2013.2: a block's VertexBegin and VertexEnd are a byte offset and size into it).
+        /// Set instead of <see cref="Vertices"/> and <see cref="WaterVertices"/>.
+        /// </summary>
+        public byte[]? VertexData { get; set; }
         public List<uint> Indices { get; set; } = new();
     }
 
