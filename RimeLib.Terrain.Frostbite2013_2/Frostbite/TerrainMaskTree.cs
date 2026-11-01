@@ -8,7 +8,7 @@ namespace RimeLib.Terrain.Frostbite2013_2.Frostbite;
 
 /// <summary>
 /// The terrain mask raster tree: which layer covers which part of the ground. Each node holds
-/// subtiles, one per layer present in it, each with a coverage grid and, unless trivial, a tile of
+/// subtiles, one per layer present in it, each with a coverage grid and, unless full, a tile of
 /// mask samples.
 /// </summary>
 public class TerrainMaskTree : RasterTree
@@ -22,12 +22,12 @@ public class TerrainMaskTree : RasterTree
 
         public bool IsLeaf { get; set; }
 
-        /// <summary>Fully covered or empty, so no mask samples are stored for it.</summary>
-        public bool IsTrivial { get; set; }
+        /// <summary>Fully covered, so no mask samples are stored for it.</summary>
+        public bool IsFull { get; set; }
 
         public byte[] HighResolutionCoverageGridStack { get; set; } = [];
 
-        /// <summary>TileSamplesPerSide² samples, for a non-trivial subtile of a persistent node.</summary>
+        /// <summary>TileSamplesPerSide² samples, for a subtile of a persistent node that is not full.</summary>
         public byte[] Samples { get; set; } = [];
     }
 
@@ -43,8 +43,7 @@ public class TerrainMaskTree : RasterTree
     public uint TileSamplesPerSide { get; set; }
     public uint TilesPerNodeSide { get; set; }
 
-    /// <summary>Between the tiles per node side and the atlas size; meaning not established.</summary>
-    public uint Unknown { get; set; }
+    public uint FirstValidLevel { get; set; }
 
     public uint ResourceAtlasSampleCountX { get; set; }
     public uint ResourceAtlasSampleCountY { get; set; }
@@ -74,7 +73,7 @@ public class TerrainMaskTree : RasterTree
     {
         TileSamplesPerSide = p_Reader.ReadUInt32();
         TilesPerNodeSide = p_Reader.ReadUInt32();
-        Unknown = p_Reader.ReadUInt32();
+        FirstValidLevel = p_Reader.ReadUInt32();
         ResourceAtlasSampleCountX = p_Reader.ReadUInt32();
         ResourceAtlasSampleCountY = p_Reader.ReadUInt32();
         BlurrinessFactorExponent = p_Reader.ReadInt32();
@@ -107,7 +106,7 @@ public class TerrainMaskTree : RasterTree
             for (var j = 0; j < 4; ++j)
                 s_Subtile.WorldCoverage[j] = p_Reader.ReadSingle();
             s_Subtile.IsLeaf = p_Reader.ReadBool();
-            s_Subtile.IsTrivial = p_Reader.ReadBool();
+            s_Subtile.IsFull = p_Reader.ReadBool();
             s_Subtile.HighResolutionCoverageGridStack = p_Reader.ReadBytes(p_Reader.ReadUInt16());
             s_Node.Subtiles.Add(s_Subtile);
         }
@@ -117,7 +116,7 @@ public class TerrainMaskTree : RasterTree
         {
             foreach (var s_Subtile in s_Node.Subtiles)
             {
-                if (!s_Subtile.IsTrivial)
+                if (!s_Subtile.IsFull)
                     s_Subtile.Samples = p_Reader.ReadBytes((int)(TileSamplesPerSide * TileSamplesPerSide));
             }
         }
@@ -142,7 +141,7 @@ public class TerrainMaskTree : RasterTree
     {
         p_Writer.Write(TileSamplesPerSide);
         p_Writer.Write(TilesPerNodeSide);
-        p_Writer.Write(Unknown);
+        p_Writer.Write(FirstValidLevel);
         p_Writer.Write(ResourceAtlasSampleCountX);
         p_Writer.Write(ResourceAtlasSampleCountY);
         p_Writer.Write(BlurrinessFactorExponent);
@@ -174,7 +173,7 @@ public class TerrainMaskTree : RasterTree
             foreach (var s_Value in s_Subtile.WorldCoverage)
                 p_Writer.Write(s_Value);
             p_Writer.Write(s_Subtile.IsLeaf);
-            p_Writer.Write(s_Subtile.IsTrivial);
+            p_Writer.Write(s_Subtile.IsFull);
             p_Writer.Write((ushort)s_Subtile.HighResolutionCoverageGridStack.Length);
             p_Writer.Write(s_Subtile.HighResolutionCoverageGridStack);
         }
@@ -184,7 +183,7 @@ public class TerrainMaskTree : RasterTree
         {
             foreach (var s_Subtile in p_Node.Subtiles)
             {
-                if (!s_Subtile.IsTrivial)
+                if (!s_Subtile.IsFull)
                     p_Writer.Write(s_Subtile.Samples);
             }
         }

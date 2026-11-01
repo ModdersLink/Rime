@@ -20,20 +20,18 @@ public class TerrainColorTree : RasterTree
     }
 
     public uint NodeSamplesPerSide { get; set; }
-    public int BlurrinessFactorExponent { get; set; }
+    public uint TileBorderWidth { get; set; }
     public uint ResourceAtlasSampleCountX { get; set; }
     public uint ResourceAtlasSampleCountY { get; set; }
+    public int BlurrinessFactorExponent { get; set; }
 
     /// <summary>Min x, min z, max x, max z.</summary>
     public float[] TreeCoverage { get; set; } = new float[4];
 
+    public uint AtlasTextureFormat { get; set; }
+    public uint SourceTexturesChannelCount { get; set; }
     public uint NodeCount { get; set; }
-
-    /// <summary>
-    /// The header values whose meaning is not established, in order: after the atlas size (0),
-    /// after the coverage (0 and 4), and after the node count (0).
-    /// </summary>
-    public uint[] Unknown { get; set; } = new uint[4];
+    public uint PersistentNodeCount { get; set; }
 
     /// <summary>The block as it was read, for measuring a rewrite against.</summary>
     public byte[] Raw { get; set; } = [];
@@ -49,16 +47,16 @@ public class TerrainColorTree : RasterTree
     public override void Deserialize(RimeReader p_Reader)
     {
         NodeSamplesPerSide = p_Reader.ReadUInt32();
-        BlurrinessFactorExponent = p_Reader.ReadInt32();
+        TileBorderWidth = p_Reader.ReadUInt32();
         ResourceAtlasSampleCountX = p_Reader.ReadUInt32();
         ResourceAtlasSampleCountY = p_Reader.ReadUInt32();
-        Unknown[0] = p_Reader.ReadUInt32();
+        BlurrinessFactorExponent = p_Reader.ReadInt32();
         for (var i = 0; i < 4; ++i)
             TreeCoverage[i] = p_Reader.ReadSingle();
-        Unknown[1] = p_Reader.ReadUInt32();
-        Unknown[2] = p_Reader.ReadUInt32();
+        AtlasTextureFormat = p_Reader.ReadUInt32();
+        SourceTexturesChannelCount = p_Reader.ReadUInt32();
         NodeCount = p_Reader.ReadUInt32();
-        Unknown[3] = p_Reader.ReadUInt32();
+        PersistentNodeCount = p_Reader.ReadUInt32();
 
         RootNode = LoadNode(p_Reader, new QuadtreeNodeId());
     }
@@ -99,16 +97,16 @@ public class TerrainColorTree : RasterTree
     public override bool Serialize(RimeWriter p_Writer)
     {
         p_Writer.Write(NodeSamplesPerSide);
-        p_Writer.Write(BlurrinessFactorExponent);
+        p_Writer.Write(TileBorderWidth);
         p_Writer.Write(ResourceAtlasSampleCountX);
         p_Writer.Write(ResourceAtlasSampleCountY);
-        p_Writer.Write(Unknown[0]);
+        p_Writer.Write(BlurrinessFactorExponent);
         foreach (var s_Value in TreeCoverage)
             p_Writer.Write(s_Value);
-        p_Writer.Write(Unknown[1]);
-        p_Writer.Write(Unknown[2]);
+        p_Writer.Write(AtlasTextureFormat);
+        p_Writer.Write(SourceTexturesChannelCount);
         p_Writer.Write(NodeCount);
-        p_Writer.Write(Unknown[3]);
+        p_Writer.Write(PersistentNodeCount);
 
         if (RootNode is Node s_Root)
             SaveNode(p_Writer, s_Root);

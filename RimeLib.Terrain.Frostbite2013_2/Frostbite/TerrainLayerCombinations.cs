@@ -8,7 +8,7 @@ namespace RimeLib.Terrain.Frostbite2013_2.Frostbite;
 /// <summary>
 /// A TerrainLayerCombinations resource: the terrain's default surface shader, and per combination
 /// of layers the shaders that draw it. These are Frostbite 2's VisualTerrain draws in a resource of
-/// their own; the draw methods end in one byte less each.
+/// their own; the destruction mask flag is the resource's, not each draw method's.
 /// </summary>
 public class TerrainLayerCombinations
 {
@@ -46,8 +46,7 @@ public class TerrainLayerCombinations
 
     public string DefaultSurfaceShaderName { get; set; } = string.Empty;
 
-    /// <summary>Between the shader name and the draw count, meaning not established.</summary>
-    public byte Unknown { get; set; }
+    public bool DestructionMaskEnable { get; set; }
 
     public List<Draw> Draws { get; set; } = new();
 
@@ -72,7 +71,7 @@ public class TerrainLayerCombinations
         var s_Combinations = new TerrainLayerCombinations
         {
             DefaultSurfaceShaderName = s_Reader.ReadNullTerminatedString(),
-            Unknown = s_Reader.ReadUByte(),
+            DestructionMaskEnable = s_Reader.ReadBool(),
         };
 
         var s_DrawCount = s_Reader.ReadUInt32();
@@ -131,7 +130,7 @@ public class TerrainLayerCombinations
         using (var s_Writer = new RimeWriter(s_Stream))
         {
             s_Writer.WriteNullTerminatedString(DefaultSurfaceShaderName);
-            s_Writer.Write(Unknown);
+            s_Writer.Write(DestructionMaskEnable);
             s_Writer.Write((uint)Draws.Count);
 
             foreach (var s_Draw in Draws)

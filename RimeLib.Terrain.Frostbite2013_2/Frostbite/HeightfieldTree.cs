@@ -8,13 +8,14 @@ namespace RimeLib.Terrain.Frostbite2013_2.Frostbite;
 
 /// <summary>
 /// The heightfield raster tree. Compared with Frostbite 2 the header adds the density map settings
-/// and a count, every node that is not disabled carries all four flags, a pruned node keeps a
+/// and the skipped node count, the second physics value is an integer, every node that is not disabled carries all four flags, a pruned node keeps a
 /// min/max stack, and a node's data ends with its density map.
 /// </summary>
 public class HeightfieldTree : HeightfieldTreeBase
 {
-    /// <summary>After the persistent dedicated server node count; 0, 3 or 5 in retail, meaning not established.</summary>
-    public uint UnknownCount { get; set; }
+    public uint SkippedNodeCount { get; set; }
+
+    public int PhysicsAdditionalLevelCount { get; set; }
 
     public uint DensityMapSize => DensityMapNodeSamplesPerSide * DensityMapNodeSamplesPerSide;
 
@@ -36,7 +37,7 @@ public class HeightfieldTree : HeightfieldTreeBase
         WorldSizeY = p_Reader.ReadSingle();
         WorldScaleY = WorldSizeY / 65535.0f;
         PhysicsMetersPerSample = p_Reader.ReadSingle();
-        PhysicsCropWidth = p_Reader.ReadSingle();
+        PhysicsAdditionalLevelCount = p_Reader.ReadInt32();
         Ps3RsxHeightfieldEnable = p_Reader.ReadBool();
         Ps3RsxHeightfieldCacheFraction = p_Reader.ReadSingle();
         MinMaxStackDepth = p_Reader.ReadUInt32();
@@ -48,7 +49,7 @@ public class HeightfieldTree : HeightfieldTreeBase
         NodeCount = p_Reader.ReadUInt32();
         PersistentNodeCount = p_Reader.ReadUInt32();
         PersistentDedicatedServerNodeCount = p_Reader.ReadUInt32();
-        UnknownCount = p_Reader.ReadUInt32();
+        SkippedNodeCount = p_Reader.ReadUInt32();
         NodeBorderWidth = p_Reader.ReadUInt32();
 
         MinMaxStackSize = 0;
@@ -149,7 +150,7 @@ public class HeightfieldTree : HeightfieldTreeBase
         p_Writer.Write(ResourceBlurrinessFactorExponent);
         p_Writer.Write(WorldSizeY);
         p_Writer.Write(PhysicsMetersPerSample);
-        p_Writer.Write(PhysicsCropWidth);
+        p_Writer.Write(PhysicsAdditionalLevelCount);
         p_Writer.Write(Ps3RsxHeightfieldEnable);
         p_Writer.Write(Ps3RsxHeightfieldCacheFraction);
         p_Writer.Write(MinMaxStackDepth);
@@ -161,7 +162,7 @@ public class HeightfieldTree : HeightfieldTreeBase
         p_Writer.Write(NodeCount);
         p_Writer.Write(PersistentNodeCount);
         p_Writer.Write(PersistentDedicatedServerNodeCount);
-        p_Writer.Write(UnknownCount);
+        p_Writer.Write(SkippedNodeCount);
         p_Writer.Write(NodeBorderWidth);
 
         if (RootNode is HeightfieldTreeNode s_Root)

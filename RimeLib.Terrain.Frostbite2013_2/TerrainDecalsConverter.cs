@@ -5,16 +5,16 @@ using RimeLib.Terrain.Resources;
 namespace RimeLib.Terrain.Frostbite2013_2
 {
     /// <summary>
-    /// Frostbite 2013.2 (BF4) TerrainDecals (.decals) blocks: Frostbite 2's block with a mask
-    /// texture name after the two shader names and a byte after the vertex range. A block's vertex
-    /// range is a byte offset and size, and blocks differ in vertex layout, so the vertices are
-    /// kept as bytes.
+    /// Frostbite 2013.2 (BF4) TerrainDecals (.decals) blocks: Frostbite 2's block with a mesh
+    /// scattering mask shader after the two shaders and a tangent space flag after the vertex range.
+    /// A block's vertex range is a byte offset and size into the vertex buffer, and blocks with
+    /// tangent space have another vertex layout, so the vertices are kept as bytes.
     /// </summary>
     public class TerrainDecalsConverter : TerrainDecalsConverterBase
     {
         public override EngineType[] GetSupportedEngines() => new[] { EngineType.Frostbite2013_2 };
 
-        // Three empty names, start index, primitive count, two bounding boxes, draw distance, vertex range, trailing byte.
+        // Three empty names, start index, primitive count, two bounding boxes, draw distance, vertex range, tangent space flag.
         protected override long MinBlockBytes => 72;
 
         protected override bool KeepsVertexBytes => true;
@@ -25,7 +25,7 @@ namespace RimeLib.Terrain.Frostbite2013_2
             {
                 SurfaceShaderName = p_Reader.ReadNullTerminatedString(),
                 ZOnlySurfaceShaderName = p_Reader.ReadNullTerminatedString(),
-                MaskTextureName = p_Reader.ReadNullTerminatedString(),
+                MeshScatteringMaskSurfaceShaderName = p_Reader.ReadNullTerminatedString(),
                 StartIndex = p_Reader.ReadUInt32(),
                 PrimitiveCount = p_Reader.ReadUInt32(),
             };
@@ -36,7 +36,7 @@ namespace RimeLib.Terrain.Frostbite2013_2
             s_Block.DrawDistance = p_Reader.ReadSingle();
             s_Block.VertexBegin = p_Reader.ReadUInt32();
             s_Block.VertexEnd = p_Reader.ReadUInt32();
-            s_Block.Trailing = p_Reader.ReadUByte();
+            s_Block.TangentSpaceEnable = p_Reader.ReadBool();
             return s_Block;
         }
 
@@ -44,7 +44,7 @@ namespace RimeLib.Terrain.Frostbite2013_2
         {
             p_Writer.WriteNullTerminatedString(p_Block.SurfaceShaderName);
             p_Writer.WriteNullTerminatedString(p_Block.ZOnlySurfaceShaderName);
-            p_Writer.WriteNullTerminatedString(p_Block.MaskTextureName);
+            p_Writer.WriteNullTerminatedString(p_Block.MeshScatteringMaskSurfaceShaderName);
             p_Writer.Write(p_Block.StartIndex);
             p_Writer.Write(p_Block.PrimitiveCount);
 
@@ -54,7 +54,7 @@ namespace RimeLib.Terrain.Frostbite2013_2
             p_Writer.Write(p_Block.DrawDistance);
             p_Writer.Write(p_Block.VertexBegin);
             p_Writer.Write(p_Block.VertexEnd);
-            p_Writer.Write(p_Block.Trailing);
+            p_Writer.Write(p_Block.TangentSpaceEnable);
         }
     }
 }

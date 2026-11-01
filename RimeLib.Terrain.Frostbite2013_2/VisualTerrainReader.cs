@@ -48,7 +48,8 @@ public class VisualTerrainReader : IVisualTerrain, ITerrainLayerCombinations
         return true;
     }
 
-    // The fields BF4's record shares with Frostbite 2's. Density is the ultra quality level's.
+    // The fields BF4's record shares with Frostbite 2's. Density is the ultra quality level's;
+    // InstanceType carries the instance data mode, which sits where Frostbite 2's instance type does.
     private static VisualTerrainScattering ToInfo(MeshScatteringType p_Type, int p_Layer, int p_Index) => new()
     {
         Layer = p_Layer,
@@ -67,7 +68,14 @@ public class VisualTerrainReader : IVisualTerrain, ITerrainLayerCombinations
         MinMaskScaleFactorY = p_Type.MinMaskScaleFactorY,
         ScaleRandomess = p_Type.ScaleRandomness,
         WindScale = p_Type.WindScale,
-        InstanceType = (sbyte)p_Type.InstanceType,
+        FirstSpawnLevel = (sbyte)p_Type.FirstSpawnLevel,
+        RotationMode = (sbyte)p_Type.RotationMode,
+        OrientationMode = (sbyte)p_Type.OrientationMode,
+        RotateTowardSlopeWeight = p_Type.RotateTowardsSlopeRandomWeight,
+        ShadowViewDistance = p_Type.ShadowViewDistance,
+        BillboardingEnable = p_Type.BillboardingEnable,
+        InstanceType = (sbyte)p_Type.InstanceDataMode,
+        GroundClampBoundingBoxEnable = p_Type.GroundClampBoundingBoxEnable,
     };
 
     public bool RoundTripVisualTerrain(IResourceObject p_Resource, out byte[]? p_Original, out byte[]? p_Rebuilt)
@@ -117,12 +125,6 @@ public class VisualTerrainReader : IVisualTerrain, ITerrainLayerCombinations
             }
 
             var s_Type = s_Types[s_Edit.Index];
-            if (s_Edit.InstanceType != (sbyte)s_Type.InstanceType)
-            {
-                p_Error = $"Layer {s_Edit.Layer} index {s_Edit.Index}: changing the instance type changes the record's layout, which is not supported.";
-                return false;
-            }
-
             s_Type.MeshName = s_Edit.MeshName;
             s_Type.VariationAssetNameHash = s_Edit.VariationAssetNameHash;
             if (s_Edit.Density != s_Type.Density[3])
@@ -138,6 +140,14 @@ public class VisualTerrainReader : IVisualTerrain, ITerrainLayerCombinations
             s_Type.MinMaskScaleFactorY = s_Edit.MinMaskScaleFactorY;
             s_Type.ScaleRandomness = s_Edit.ScaleRandomess;
             s_Type.WindScale = s_Edit.WindScale;
+            s_Type.FirstSpawnLevel = (byte)s_Edit.FirstSpawnLevel;
+            s_Type.RotationMode = (byte)s_Edit.RotationMode;
+            s_Type.OrientationMode = (byte)s_Edit.OrientationMode;
+            s_Type.RotateTowardsSlopeRandomWeight = s_Edit.RotateTowardSlopeWeight;
+            s_Type.ShadowViewDistance = s_Edit.ShadowViewDistance;
+            s_Type.BillboardingEnable = s_Edit.BillboardingEnable;
+            s_Type.InstanceDataMode = (byte)s_Edit.InstanceType;
+            s_Type.GroundClampBoundingBoxEnable = s_Edit.GroundClampBoundingBoxEnable;
         }
 
         return s_Terrain.Serialize(out p_Data);

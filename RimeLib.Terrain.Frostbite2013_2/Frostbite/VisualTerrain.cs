@@ -1,4 +1,3 @@
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using RimeLib.IO;
@@ -6,15 +5,14 @@ using RimeLib.IO;
 namespace RimeLib.Terrain.Frostbite2013_2.Frostbite;
 
 /// <summary>
-/// One mesh scattering type of a terrain layer. Field names follow the EBX
-/// <c>TerrainMeshScatteringType</c> and Frostbite 2's cooked record where the values line up;
-/// the rest is kept as read.
+/// One mesh scattering type of a terrain layer (the engine's MeshScatteringTypeBase), in stream
+/// order. A later engine version reads the same fields in the same order where both have them.
 /// </summary>
 public class MeshScatteringType
 {
     public string MeshName { get; set; } = string.Empty;
 
-    /// <summary>The same for every record of a mesh: the mesh resource's id.</summary>
+    /// <summary>The mesh resource's id.</summary>
     public ulong MeshResourceId { get; set; }
 
     /// <summary>0 for the mesh's own look.</summary>
@@ -23,7 +21,7 @@ public class MeshScatteringType
     /// <summary>Counts up across the whole resource.</summary>
     public uint Identifier { get; set; }
 
-    /// <summary>Per quality level: low, medium, high, ultra.</summary>
+    /// <summary>A QualityScalableFloat: low, medium, high, ultra.</summary>
     public float[] Density { get; set; } = new float[4];
 
     public float RandomPositionOffset { get; set; }
@@ -41,26 +39,41 @@ public class MeshScatteringType
     public float Damping { get; set; }
     public float Mass { get; set; }
     public float WindWiggle { get; set; }
+    public sbyte LastLodAndBillboard { get; set; }
+    public bool Enabled { get; set; }
 
-    /// <summary>Five flags after the wind settings, meaning not established.</summary>
-    public byte[] Flags { get; set; } = new byte[5];
+    /// <summary>Three flags; castShadowsEnable is one of them, which one is not established.</summary>
+    public byte[] Flags { get; set; } = new byte[3];
 
-    /// <summary>Five values after the flags (spawn levels and modes in Frostbite 2's order), meaning not established.</summary>
-    public uint[] Settings { get; set; } = new uint[5];
+    /// <summary>Per lod level.</summary>
+    public uint[] SpawnLevelCounts { get; set; } = new uint[4];
 
-    /// <summary>Four increasing distances, meaning not established.</summary>
-    public float[] Distances { get; set; } = new float[4];
+    public float ShadowViewDistance { get; set; }
 
-    public uint InstanceType { get; set; }
-    public uint InstanceValue { get; set; }
+    /// <summary>Per lod level.</summary>
+    public float[] LodDistances { get; set; } = new float[4];
 
-    /// <summary>Five more values, present for instance types other than 1.</summary>
-    public uint[] InstanceDistances { get; set; } = [];
+    public uint TextureAtlasSizeX { get; set; }
+    public uint TextureAtlasSizeY { get; set; }
 
-    /// <summary>Three bytes, a float and three bytes ending the record, meaning not established.</summary>
-    public byte[] TailBefore { get; set; } = new byte[3];
-    public float TailValue { get; set; }
-    public byte[] TailAfter { get; set; } = new byte[3];
+    /// <summary>One per atlas tile, present when the atlas has more than one tile.</summary>
+    public uint[] TextureAtlasCumulativeTileWeights { get; set; } = [];
+
+    /// <summary>Present when the atlas has more than one tile.</summary>
+    public uint TextureAtlasCumulativeTileWeightMax { get; set; }
+
+    public byte FirstSpawnLevel { get; set; }
+    public byte RotationMode { get; set; }
+    public byte OrientationMode { get; set; }
+    public float RotateTowardsSlopeRandomWeight { get; set; }
+    public bool BillboardingEnable { get; set; }
+
+    /// <summary>MeshScatteringInstanceDataMode: none, normal, normal and atlas index, normal and colour, wind and atlas index, wind.</summary>
+    public byte InstanceDataMode { get; set; }
+
+    public bool GroundClampBoundingBoxEnable { get; set; }
+
+    private uint TileCount => TextureAtlasSizeX * TextureAtlasSizeY;
 
     public static MeshScatteringType Read(RimeReader p_Reader)
     {
@@ -90,32 +103,44 @@ public class MeshScatteringType
         s_Type.Damping = p_Reader.ReadSingle();
         s_Type.Mass = p_Reader.ReadSingle();
         s_Type.WindWiggle = p_Reader.ReadSingle();
-        s_Type.Flags = p_Reader.ReadBytes(5);
+        s_Type.LastLodAndBillboard = p_Reader.ReadSByte();
+        s_Type.Enabled = p_Reader.ReadBool();
+        s_Type.Flags = p_Reader.ReadBytes(3);
 
-        for (var i = 0; i < 5; ++i)
-            s_Type.Settings[i] = p_Reader.ReadUInt32();
         for (var i = 0; i < 4; ++i)
-            s_Type.Distances[i] = p_Reader.ReadSingle();
+            s_Type.SpawnLevelCounts[i] = p_Reader.ReadUInt32();
+        s_Type.ShadowViewDistance = p_Reader.ReadSingle();
+        for (var i = 0; i < 4; ++i)
+            s_Type.LodDistances[i] = p_Reader.ReadSingle();
 
-        s_Type.InstanceType = p_Reader.ReadUInt32();
-        s_Type.InstanceValue = p_Reader.ReadUInt32();
-        if (s_Type.InstanceType > 1)
+        s_Type.TextureAtlasSizeX = p_Reader.ReadUInt32();
+        s_Type.TextureAtlasSizeY = p_Reader.ReadUInt32();
+        if (s_Type.TileCount > 1)
         {
-            s_Type.InstanceDistances = new uint[5];
-            for (var i = 0; i < 5; ++i)
-                s_Type.InstanceDistances[i] = p_Reader.ReadUInt32();
+            if (s_Type.TileCount > 0xFFFF)
+                throw new InvalidDataException($"A scattering texture atlas of {s_Type.TextureAtlasSizeX}x{s_Type.TextureAtlasSizeY} tiles; the walk is misaligned.");
+
+            s_Type.TextureAtlasCumulativeTileWeights = new uint[s_Type.TileCount];
+            for (var i = 0; i < s_Type.TileCount; ++i)
+                s_Type.TextureAtlasCumulativeTileWeights[i] = p_Reader.ReadUInt32();
+            s_Type.TextureAtlasCumulativeTileWeightMax = p_Reader.ReadUInt32();
         }
 
-        s_Type.TailBefore = p_Reader.ReadBytes(3);
-        s_Type.TailValue = p_Reader.ReadSingle();
-        s_Type.TailAfter = p_Reader.ReadBytes(3);
+        s_Type.FirstSpawnLevel = p_Reader.ReadUByte();
+        s_Type.RotationMode = p_Reader.ReadUByte();
+        s_Type.OrientationMode = p_Reader.ReadUByte();
+        s_Type.RotateTowardsSlopeRandomWeight = p_Reader.ReadSingle();
+        s_Type.BillboardingEnable = p_Reader.ReadBool();
+        s_Type.InstanceDataMode = p_Reader.ReadUByte();
+        s_Type.GroundClampBoundingBoxEnable = p_Reader.ReadBool();
         return s_Type;
     }
 
     public void Write(RimeWriter p_Writer)
     {
-        if (InstanceDistances.Length != (InstanceType > 1 ? 5 : 0))
-            throw new InvalidDataException($"Instance type {InstanceType} takes {(InstanceType > 1 ? 5 : 0)} instance distances, not {InstanceDistances.Length}.");
+        var s_Weights = TileCount > 1 ? (int)TileCount : 0;
+        if (TextureAtlasCumulativeTileWeights.Length != s_Weights)
+            throw new InvalidDataException($"A {TextureAtlasSizeX}x{TextureAtlasSizeY} texture atlas takes {s_Weights} tile weights, not {TextureAtlasCumulativeTileWeights.Length}.");
 
         p_Writer.WriteNullTerminatedString(MeshName);
         p_Writer.Write(MeshResourceId);
@@ -138,18 +163,30 @@ public class MeshScatteringType
         p_Writer.Write(Damping);
         p_Writer.Write(Mass);
         p_Writer.Write(WindWiggle);
+        p_Writer.Write(LastLodAndBillboard);
+        p_Writer.Write(Enabled);
         p_Writer.Write(Flags);
-        foreach (var s_Value in Settings)
+        foreach (var s_Value in SpawnLevelCounts)
             p_Writer.Write(s_Value);
-        foreach (var s_Value in Distances)
+        p_Writer.Write(ShadowViewDistance);
+        foreach (var s_Value in LodDistances)
             p_Writer.Write(s_Value);
-        p_Writer.Write(InstanceType);
-        p_Writer.Write(InstanceValue);
-        foreach (var s_Value in InstanceDistances)
-            p_Writer.Write(s_Value);
-        p_Writer.Write(TailBefore);
-        p_Writer.Write(TailValue);
-        p_Writer.Write(TailAfter);
+        p_Writer.Write(TextureAtlasSizeX);
+        p_Writer.Write(TextureAtlasSizeY);
+        if (s_Weights > 0)
+        {
+            foreach (var s_Value in TextureAtlasCumulativeTileWeights)
+                p_Writer.Write(s_Value);
+            p_Writer.Write(TextureAtlasCumulativeTileWeightMax);
+        }
+
+        p_Writer.Write(FirstSpawnLevel);
+        p_Writer.Write(RotationMode);
+        p_Writer.Write(OrientationMode);
+        p_Writer.Write(RotateTowardsSlopeRandomWeight);
+        p_Writer.Write(BillboardingEnable);
+        p_Writer.Write(InstanceDataMode);
+        p_Writer.Write(GroundClampBoundingBoxEnable);
     }
 }
 
@@ -159,30 +196,60 @@ public class VisualTerrainLayer
 }
 
 /// <summary>
-/// A VisualTerrain resource: the scattering of each terrain layer. Unlike Frostbite 2 it names no
-/// surface shader, streaming tree or decals (EBX references those by id) and holds no layer
-/// combination draws (those are their own resource, <see cref="TerrainLayerCombinations"/>).
+/// A VisualTerrain resource: the mesh scattering, patch and texture settings, and the scattering of
+/// each terrain layer. Unlike Frostbite 2 it names no surface shader, streaming tree or decals
+/// (EBX references those by id) and holds no layer combination draws (those are their own
+/// resource, <see cref="TerrainLayerCombinations"/>).
 /// </summary>
 public class VisualTerrain
 {
-    public const int HeaderSize = 0x54;
+    /// <summary>A QualityScalableFloat: low, medium, high, ultra.</summary>
+    public float[] MeshScatteringScaleFactors { get; set; } = new float[4];
 
-    /// <summary>The header as read: cell, patch, atlas and texture detail settings.</summary>
-    public byte[] Header { get; set; } = new byte[HeaderSize];
+    public float MeshScatteringCellFov { get; set; }
+    public uint MeshScatteringCellMaskSamplesPerSide { get; set; }
+    public uint MeshScatteringInstancePoolSize { get; set; }
+    public uint MeshScatteringInstanceDrawBufferSize { get; set; }
+    public int MeshScatteringVirtualTextureBlurriness { get; set; }
+    public float ResourcePatchFov { get; set; }
+    public float ResourceLodScale { get; set; }
+    public float ResourceTriangleSizeMin { get; set; }
+    public uint TextureAtlasSampleCountX { get; set; }
+    public uint TextureAtlasSampleCountY { get; set; }
+    public float TextureSamplesPerMeterMax { get; set; }
+    public float TextureDetailFalloffCurve { get; set; }
+    public float TextureDetailFalloffDistance { get; set; }
+    public float TextureDetailFalloffFactor { get; set; }
+    public float TextureInvisibleDetailReductionFactor { get; set; }
+    public float TextureOccludedDetailReductionFactor { get; set; }
+
+    /// <summary>-1 for none.</summary>
+    public int VirtualTextureDisableTerrainLayerIndex { get; set; }
 
     public VisualTerrainLayer[] Layers { get; set; } = [];
 
-    // Header fields whose place is established, by their Frostbite 2 counterparts.
-    public uint MeshScatteringCellMaskSamplesPerSide => BitConverter.ToUInt32(Header, 0x14);
-    public uint MeshScatteringInstancePoolSize => BitConverter.ToUInt32(Header, 0x18);
-    public uint MeshScatteringInstanceDrawBufferSize => BitConverter.ToUInt32(Header, 0x1C);
-    public uint TextureAtlasSampleCountX => BitConverter.ToUInt32(Header, 0x30);
-    public uint TextureAtlasSampleCountY => BitConverter.ToUInt32(Header, 0x34);
-    public float TextureSamplesPerMeterMax => BitConverter.ToSingle(Header, 0x38);
-
     public static VisualTerrain Read(RimeReader p_Reader)
     {
-        var s_Terrain = new VisualTerrain { Header = p_Reader.ReadBytes(HeaderSize) };
+        var s_Terrain = new VisualTerrain();
+        for (var i = 0; i < 4; ++i)
+            s_Terrain.MeshScatteringScaleFactors[i] = p_Reader.ReadSingle();
+        s_Terrain.MeshScatteringCellFov = p_Reader.ReadSingle();
+        s_Terrain.MeshScatteringCellMaskSamplesPerSide = p_Reader.ReadUInt32();
+        s_Terrain.MeshScatteringInstancePoolSize = p_Reader.ReadUInt32();
+        s_Terrain.MeshScatteringInstanceDrawBufferSize = p_Reader.ReadUInt32();
+        s_Terrain.MeshScatteringVirtualTextureBlurriness = p_Reader.ReadInt32();
+        s_Terrain.ResourcePatchFov = p_Reader.ReadSingle();
+        s_Terrain.ResourceLodScale = p_Reader.ReadSingle();
+        s_Terrain.ResourceTriangleSizeMin = p_Reader.ReadSingle();
+        s_Terrain.TextureAtlasSampleCountX = p_Reader.ReadUInt32();
+        s_Terrain.TextureAtlasSampleCountY = p_Reader.ReadUInt32();
+        s_Terrain.TextureSamplesPerMeterMax = p_Reader.ReadSingle();
+        s_Terrain.TextureDetailFalloffCurve = p_Reader.ReadSingle();
+        s_Terrain.TextureDetailFalloffDistance = p_Reader.ReadSingle();
+        s_Terrain.TextureDetailFalloffFactor = p_Reader.ReadSingle();
+        s_Terrain.TextureInvisibleDetailReductionFactor = p_Reader.ReadSingle();
+        s_Terrain.TextureOccludedDetailReductionFactor = p_Reader.ReadSingle();
+        s_Terrain.VirtualTextureDisableTerrainLayerIndex = p_Reader.ReadInt32();
 
         s_Terrain.Layers = new VisualTerrainLayer[p_Reader.ReadUInt32()];
         for (var i = 0; i < s_Terrain.Layers.Length; ++i)
@@ -210,7 +277,26 @@ public class VisualTerrain
         var s_Stream = new MemoryStream();
         using (var s_Writer = new RimeWriter(s_Stream))
         {
-            s_Writer.Write(Header);
+            foreach (var s_Value in MeshScatteringScaleFactors)
+                s_Writer.Write(s_Value);
+            s_Writer.Write(MeshScatteringCellFov);
+            s_Writer.Write(MeshScatteringCellMaskSamplesPerSide);
+            s_Writer.Write(MeshScatteringInstancePoolSize);
+            s_Writer.Write(MeshScatteringInstanceDrawBufferSize);
+            s_Writer.Write(MeshScatteringVirtualTextureBlurriness);
+            s_Writer.Write(ResourcePatchFov);
+            s_Writer.Write(ResourceLodScale);
+            s_Writer.Write(ResourceTriangleSizeMin);
+            s_Writer.Write(TextureAtlasSampleCountX);
+            s_Writer.Write(TextureAtlasSampleCountY);
+            s_Writer.Write(TextureSamplesPerMeterMax);
+            s_Writer.Write(TextureDetailFalloffCurve);
+            s_Writer.Write(TextureDetailFalloffDistance);
+            s_Writer.Write(TextureDetailFalloffFactor);
+            s_Writer.Write(TextureInvisibleDetailReductionFactor);
+            s_Writer.Write(TextureOccludedDetailReductionFactor);
+            s_Writer.Write(VirtualTextureDisableTerrainLayerIndex);
+
             s_Writer.Write((uint)Layers.Length);
             foreach (var s_Layer in Layers)
             {

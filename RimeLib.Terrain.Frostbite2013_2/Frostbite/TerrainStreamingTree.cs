@@ -15,14 +15,13 @@ namespace RimeLib.Terrain.Frostbite2013_2.Frostbite;
 /// <summary>
 /// A terrain streaming tree: a header, the raster trees (each a type byte and a length, 0xFF ends
 /// the list), then the streaming quadtree whose nodes name the chunks holding their tile data.
-/// Frostbite 2's layout with one more header field before the node count. The material and
+/// Frostbite 2's layout with the skip level count before the node count. The material and
 /// destruction depth trees are Frostbite 2's; the heightfield, mask and colour trees are this
 /// engine's own.
 /// </summary>
 public class TerrainStreamingTree : TerrainStreamingTreeBase, IFbSerializable
 {
-    /// <summary>Before the node count; 1 or 2 in retail, meaning not established.</summary>
-    public uint UnknownBeforeNodeCount { get; set; }
+    public uint SkipLevels { get; set; }
 
     public new HeightfieldTree? HeightfieldTree => RasterTrees[(int)RasterTree.RasterTreeTypes.HeightfieldTreeType] as HeightfieldTree;
 
@@ -41,7 +40,7 @@ public class TerrainStreamingTree : TerrainStreamingTreeBase, IFbSerializable
         InvisibleDetailReductionFactor = p_Reader.ReadSingle();
         OccludedDetailReductionFactor = p_Reader.ReadSingle();
         ResourceBlurriness = p_Reader.ReadUInt32();
-        UnknownBeforeNodeCount = p_Reader.ReadUInt32();
+        SkipLevels = p_Reader.ReadUInt32();
         NodeCount = p_Reader.ReadUInt32();
         FreeStreamingEnabled = p_Reader.ReadBool();
 
@@ -134,7 +133,7 @@ public class TerrainStreamingTree : TerrainStreamingTreeBase, IFbSerializable
         p_Writer.Write(InvisibleDetailReductionFactor);
         p_Writer.Write(OccludedDetailReductionFactor);
         p_Writer.Write(ResourceBlurriness);
-        p_Writer.Write(UnknownBeforeNodeCount);
+        p_Writer.Write(SkipLevels);
         p_Writer.Write(NodeCount);
         p_Writer.Write(FreeStreamingEnabled);
 
