@@ -142,6 +142,12 @@ namespace RimeLib.Cmd.Contexts
 
         protected fb.RegistryContainer? m_GeneratedRegistry;
 
+        /// <summary>
+        /// Whether added meshes bring the textures that any mounted mesh variation database binds
+        /// for them. Off when the bundle derives its own database, which adds what its entries bind.
+        /// </summary>
+        public bool BindMeshVariationTextures { get; set; } = true;
+
         public BundleBuildingContext(SbBuildingContext p_Parent, string p_BundleName)
         {
             Parent = p_Parent;
@@ -212,6 +218,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DeriveRegistryContainerCommand>();
             RegisterCommand<BuildMeshVariationDbCommand>();
             RegisterCommand<AddShaderTexturesCommand>();
+            RegisterCommand<HoistContentCommand>();
             RegisterCommand<BuildMaterialGridCommand>();
             RegisterCommand<CompareRegistryContainersCommand>();
             RegisterCommand<EmitSubworldRegistryCommand>();

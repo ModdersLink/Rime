@@ -55,9 +55,21 @@ namespace RimeLib.Cmd.Commands.Base
             /// </summary>
             public string? ShaderDatabase { get; set; }
 
+            /// <summary>Content of the sub-worlds that this bundle carries for them.</summary>
+            public HoistRecipe? Hoist { get; set; }
+
             public bool Registry { get; set; } = true;
             public bool MeshVariationDb { get; set; } = true;
             public MaterialGridRecipe? MaterialGrid { get; set; }
+        }
+
+        public class HoistRecipe
+        {
+            /// <summary>The sub-worlds' partitions.</summary>
+            public List<string> From { get; set; } = new();
+
+            /// <summary>Primary instance type names; a trailing * matches a prefix.</summary>
+            public List<string> Types { get; set; } = new();
         }
 
         public class MaterialGridRecipe
@@ -111,6 +123,8 @@ namespace RimeLib.Cmd.Commands.Base
                 var s_Steps = new List<string> { $"build_bundle {Quote(s_Bundle.Name)}" };
                 s_Steps.AddRange(s_Shared.Concat(s_Bundle.DependsOn).Distinct(StringComparer.OrdinalIgnoreCase).Select(p_B => $"add_dependency_bundle {Quote(p_B)}"));
                 s_Steps.AddRange(new[] { s_Bundle.Level }.Concat(s_Bundle.Roots).Select(p_R => $"reference_existing_partition {Quote(p_R)} {s_Recipe.Game}"));
+                if (s_Bundle.Hoist != null)
+                    s_Steps.AddRange(s_Bundle.Hoist.From.Select(p_F => $"hoist_content {Quote(p_F)} {Quote(string.Join(",", s_Bundle.Hoist.Types))} {s_Recipe.Game}"));
                 if (s_Bundle.MeshVariationDb)
                     s_Steps.Add($"build_mesh_variation_db {Quote(s_Bundle.Level)} {s_Recipe.Game}");
                 if (s_Bundle.ShaderDatabase != null)
@@ -122,6 +136,9 @@ namespace RimeLib.Cmd.Commands.Base
 
                 foreach (var s_Step in s_Steps)
                 {
+                    if (s_Context is BundleBuildingContext s_Building)
+                        s_Building.BindMeshVariationTextures = !s_Bundle.MeshVariationDb;
+
                     if (!Run(s_Step))
                     {
                         p_Writer.WriteLine($"build_level: '{s_Step}' failed; stopping.");

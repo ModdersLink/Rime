@@ -285,11 +285,24 @@ engine interfaces, so no version-specific code lives in the general projects.
 `mvdb_add_all` / `mvdb_add_entry`, `resolve_shader_textures`, `analyze_level`; derived from content
 and compared with retail: `derive_registry`, `derive_mesh_variation_db`; in bundle building:
 `derive_registry_container` (also writes BF4's `_networkregistry_win32`), `build_mesh_variation_db`,
-`build_material_grid`.
+`build_material_grid`, `add_shader_textures`, `hoist_content`; and `build_level`, which runs them
+from a JSON recipe and compares each bundle with its retail namesake.
 
 Missing: material indices from mesh and Havok payloads, a shader database builder (and for BF4 a full
-shader database reader), `LevelData` sub-world reference generation, hoisting, the recipe and
-`build_level`.
+shader database reader), `LevelData` sub-world reference generation.
+
+### Measured on `mp_subway` (BF3)
+Recipe: [`recipes/mp_subway.json`](recipes/mp_subway.json).
+- `rush` against the retail main bundle: 1541 of 1542 partitions, nothing extra; all 993 mesh
+  variation entries.
+- Main bundle: 9918 of 10096 partitions, nothing extra; 1023 of 1025 mesh variation entries. The
+  recipe lists the by-name roots (UI assets, weapon mesh variation databases, ...) and hoists the
+  partitions of type `UI*`, `VeniceUI*`, `EffectBlueprint` and `ShaderGraph` that the gamemodes
+  reach. `win32/ui` is not a dependency: the level carries its own copy of the in-game UI flow.
+  Missing are 171 items only the shader database lists (left for the shader database builder) and 7
+  textures and shaders.
+- A mesh brings the textures of its mesh variation entries only once the bundle's own database is
+  derived. Taking them from every retail database adds the camos of every level.
 
 ### Templates
 Recipe fragments that expand to a root list by querying the mounted game ("all weapons": every weapon

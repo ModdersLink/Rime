@@ -50,6 +50,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         private readonly Queue<(GUID Id, string? AssetName, string Origin)> m_ChunkQueue = new();
 
         private readonly HashSet<string> m_SeenPartitions = new(StringComparer.OrdinalIgnoreCase);
+        // The partition that first referenced each queued one, for the log.
+        private readonly Dictionary<string, string> m_ReferencedFrom = new(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<string> m_SeenResources = new(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<GUID> m_SeenChunks = new();
 
@@ -124,7 +126,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 p_Writer.WriteLine($"WARN: no mesh converter ({s_Ex.Message}). Mesh chunks will not be resolved.");
             }
 
-            m_Scanner = new AssetReferenceScanner(m_Mounter, m_PartitionConverter, m_TextureConverter, m_MeshConverter);
+            m_Scanner = new AssetReferenceScanner(m_Mounter, m_PartitionConverter, m_TextureConverter, m_MeshConverter)
+            {
+                BindMeshVariationTextures = m_Context.BindMeshVariationTextures,
+            };
 
             m_SkipPrefixes = string.IsNullOrWhiteSpace(SkipPrefixes)
                 ? Array.Empty<string>()
@@ -334,9 +339,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             m_Context.AddPartition(p_Name, s_Variant);
             m_AddedPartitions++;
-            m_Writer.WriteLine($"PART {p_Name}");
+            m_Writer.WriteLine(m_ReferencedFrom.TryGetValue(p_Name, out var s_From) ? $"PART {p_Name} <- {s_From}" : $"PART {p_Name}");
 
-            Enqueue(m_Scanner.ScanPartition(p_Name, s_Variant));
+            Enqueue(m_Scanner.ScanPartition(p_Name, s_Variant), p_Name);
         }
 
         private void ProcessResource(string p_Name)
@@ -375,7 +380,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             foreach (var s_PayloadResource in s_References.PayloadResources)
                 m_Writer.WriteLine($"PAY  {p_Name} -> res {s_PayloadResource}");
 
-            Enqueue(s_References);
+            Enqueue(s_References, $"res {p_Name}");
         }
 
         private void ProcessChunk(GUID p_Id, string? p_AssetName, string p_Origin)
@@ -407,10 +412,14 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         }
 
         /// <summary>Queues everything one scanned item references, and records what it could not scan.</summary>
-        private void Enqueue(AssetReferenceScanner.References p_References)
+        private void Enqueue(AssetReferenceScanner.References p_References, string? p_From)
         {
             foreach (var s_Partition in p_References.Partitions)
+            {
+                if (p_From != null)
+                    m_ReferencedFrom.TryAdd(s_Partition, p_From);
                 m_PartitionQueue.Enqueue(s_Partition);
+            }
 
             foreach (var s_Resource in p_References.Resources)
                 m_ResourceQueue.Enqueue(s_Resource);
