@@ -36,7 +36,34 @@ namespace RimeLib.Frostbite.Db
         /// <returns>Object element by string in this object</returns>
         public DbObjectElement this[string p_Key]
         {
-            get { return m_Elements.FirstOrDefault(p_T => StringComparer.InvariantCultureIgnoreCase.Equals(p_Key, p_T.FieldName)); }
+            get
+            {
+                TryGetElement(p_Key, out var s_Element);
+                return s_Element!;
+            }
+        }
+
+        /// <summary>
+        /// Finds the element with the given key (case-insensitive) in a single pass.
+        /// </summary>
+        /// <param name="p_Key">Element key to search for</param>
+        /// <param name="p_Element">The element, or null when there is none</param>
+        /// <returns>True if the key was found</returns>
+        public bool TryGetElement(string p_Key, [NotNullWhen(true)] out DbObjectElement? p_Element)
+        {
+            // Keys are ASCII, so an ordinal case-insensitive compare is enough; this runs for every field
+            // of every converted object.
+            foreach (var s_Element in m_Elements)
+            {
+                if (string.Equals(s_Element.FieldName, p_Key, StringComparison.OrdinalIgnoreCase))
+                {
+                    p_Element = s_Element;
+                    return true;
+                }
+            }
+
+            p_Element = null;
+            return false;
         }
 
         /// <summary>
@@ -107,7 +134,7 @@ namespace RimeLib.Frostbite.Db
         /// <returns>True if specified key is found, false otherwise</returns>
         public bool HasKey(string p_Key)
         {
-            return m_Elements.Any(p_Element => p_Element.FieldName.Equals(p_Key, StringComparison.InvariantCultureIgnoreCase));
+            return TryGetElement(p_Key, out _);
         }
 
         /// <summary>

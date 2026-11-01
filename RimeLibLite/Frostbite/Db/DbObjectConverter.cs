@@ -1,7 +1,10 @@
 ﻿using RimeLib.Frostbite.Core;
 using System;
 using System.Collections;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System.Reflection;
 using RimeLib.Extensions;
 using RimeLib.IO;
 
@@ -43,6 +46,54 @@ namespace RimeLib.Frostbite.Db
     public class DbObjectConverter
     {
         /// <summary>
+        /// The reflection facts FromDbObject/ToDbObject need about one [DbObjectField] property,
+        /// worked out once per property: every bundle entry goes through here.
+        /// </summary>
+        private sealed class DbFieldInfo
+        {
+            public PropertyInfo Property { get; }
+            public DbObjectFieldAttribute Attribute { get; }
+            public bool IsNullable { get; }
+            public bool IsArray { get; }
+
+            public DbFieldInfo(PropertyInfo p_Property, DbObjectFieldAttribute p_Attribute)
+            {
+                Property = p_Property;
+                Attribute = p_Attribute;
+                IsNullable = p_Property.IsNullable();
+                IsArray = p_Property.PropertyType.IsArray;
+            }
+        }
+
+        private sealed class DbTypeInfo
+        {
+            public bool IsDbObject { get; }
+            public DbFieldInfo[] Fields { get; }
+            public Func<object>? Create { get; }
+
+            public DbTypeInfo(Type p_Type)
+            {
+                IsDbObject = p_Type.GetCustomAttributes(typeof(DbObjectAttribute), true).Length > 0;
+
+                var s_Fields = new List<DbFieldInfo>();
+                foreach (var s_Property in p_Type.GetProperties())
+                {
+                    var s_Attributes = s_Property.GetCustomAttributes(typeof(DbObjectFieldAttribute), true);
+                    if (s_Attributes.Length > 0)
+                        s_Fields.Add(new DbFieldInfo(s_Property, (DbObjectFieldAttribute) s_Attributes[0]));
+                }
+                Fields = s_Fields.ToArray();
+
+                if (!p_Type.IsAbstract && p_Type.GetConstructor(Type.EmptyTypes) != null)
+                    Create = Expression.Lambda<Func<object>>(Expression.Convert(Expression.New(p_Type), typeof(object))).Compile();
+            }
+        }
+
+        private static readonly ConcurrentDictionary<Type, DbTypeInfo> s_TypeInfos = new();
+
+        private static DbTypeInfo GetTypeInfo(Type p_Type) => s_TypeInfos.GetOrAdd(p_Type, p_Key => new DbTypeInfo(p_Key));
+
+        /// <summary>
         /// Converts a managed object to a DbObject.
         /// </summary>
         /// <typeparam name="T">The type of the object to convert. Must derive from DbObjectSerializable.</typeparam>
@@ -51,27 +102,20 @@ namespace RimeLib.Frostbite.Db
         public static DbObject ToDbObject<T>(T p_Object) where T : DbObjectSerializable
         {
             // Check if we have the DbObject attribute.
-            var s_Type = p_Object.GetType();
-            var s_DbObjectAttributes = s_Type.GetCustomAttributes(typeof(DbObjectAttribute), true);
+            var s_TypeInfo = GetTypeInfo(p_Object.GetType());
 
-            if (s_DbObjectAttributes.Length == 0)
+            if (!s_TypeInfo.IsDbObject)
                 throw new ArgumentException("Provided object does not inherit from DbObjectSerializable.");
 
             var s_Object = new DbObject();
 
             // Map out all the fields that have the DbObjectField attribute.
-            foreach (var s_Property in s_Type.GetProperties())
+            foreach (var s_Field in s_TypeInfo.Fields)
             {
-                var s_PropertyAttributes = s_Property.GetCustomAttributes(typeof(DbObjectFieldAttribute), true);
+                var s_Value = s_Field.Property.GetValue(p_Object);
 
-                if (s_PropertyAttributes.Length == 0)
-                    continue;
-
-                var s_Attribute = (DbObjectFieldAttribute) s_PropertyAttributes[0];
-                var s_Value = s_Property.GetValue(p_Object);
-                
                 if (s_Value != null)
-                    s_Object.AddElement(ConvertObject(s_Value, s_Attribute.FieldName, s_Attribute.VariableLength));
+                    s_Object.AddElement(ConvertObject(s_Value, s_Field.Attribute.FieldName, s_Field.Attribute.VariableLength));
             }
 
             return s_Object;
@@ -85,29 +129,27 @@ namespace RimeLib.Frostbite.Db
         /// <returns>The converted managed object</returns>
         public static T FromDbObject<T>(DbObject p_Object) where T : DbObjectSerializable, new()
         {
-            var s_Type = typeof(T);
+            return (T) FromDbObject(typeof(T), p_Object, nameof(T));
+        }
 
-            var s_DbObjectAttributes = s_Type.GetCustomAttributes(typeof(DbObjectAttribute), true);
+        private static object FromDbObject(Type s_Type, DbObject p_Object, string p_ParamName = "p_Type")
+        {
+            var s_TypeInfo = GetTypeInfo(s_Type);
 
-            if (s_DbObjectAttributes.Length == 0)
-                throw new ArgumentException("Provided object does not inherit from DbObjectSerializable.", nameof(T));
+            if (!s_TypeInfo.IsDbObject)
+                throw new ArgumentException("Provided object does not inherit from DbObjectSerializable.", p_ParamName);
 
             // Create our managed object and map fields to it.
-            var s_ManagedObject = new T();
+            var s_ManagedObject = s_TypeInfo.Create != null ? s_TypeInfo.Create() : Activator.CreateInstance(s_Type)!;
 
-            foreach (var s_Property in s_Type.GetProperties())
+            foreach (var s_Field in s_TypeInfo.Fields)
             {
-                // Check if we have the DbObjectField attribute.
-                var s_PropertyAttributes = s_Property.GetCustomAttributes(typeof(DbObjectFieldAttribute), true);
+                var s_Property = s_Field.Property;
+                var s_Attribute = s_Field.Attribute;
+                var s_IsNullable = s_Field.IsNullable;
+                var s_IsArray = s_Field.IsArray;
+                var s_HasKey = p_Object.TryGetElement(s_Attribute.FieldName, out var s_Element);
 
-                if (s_PropertyAttributes.Length == 0)
-                    continue;
-
-                var s_Attribute = (DbObjectFieldAttribute) s_PropertyAttributes[0];
-                var s_IsNullable = s_Property.IsNullable();
-                var s_IsArray = s_Property.PropertyType.IsArray;
-                var s_HasKey = p_Object.HasKey(s_Attribute.FieldName);
-                
                 // If we don't have this field and the property is an array we can just ignore it.
                 if (!s_HasKey && s_IsArray)
                     continue;
@@ -131,7 +173,7 @@ namespace RimeLib.Frostbite.Db
                 }
 
                 // Otherwise parse normally.
-                var s_Value = ConvertField(p_Object[s_Attribute.FieldName], s_Property.PropertyType, s_IsNullable);
+                var s_Value = ConvertField(s_Element!, s_Property.PropertyType, s_IsNullable);
                 s_Property.SetValue(s_ManagedObject, s_Value);
             }
 
@@ -256,9 +298,8 @@ namespace RimeLib.Frostbite.Db
                 // Ensure the element is of the right type.
                 EnsureElementType(p_Element, DbObjectType.Object);
 
-                // Call ConvertFrom with the property type as the generic parameter.
-                var s_Method = typeof(DbObjectConverter).GetMethod("FromDbObject").MakeGenericMethod(s_FieldType);
-                return s_Method.Invoke(null, new[] { p_Element.Value });
+                // Convert with the property type (cached).
+                return FromDbObject(s_FieldType, (DbObject) p_Element.Value);
             }
 
             // Handle primitive types.

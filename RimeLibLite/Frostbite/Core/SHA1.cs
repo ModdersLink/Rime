@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Buffers.Binary;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,7 @@ namespace RimeLib.Frostbite.Core
     /// Implementation of fb::Sha1
     /// </summary>
     [Serializable]
-    public class Sha1 : ISerializable, IFbSerializable
+    public class Sha1 : ISerializable, IFbSerializable, IEquatable<Sha1>
     {
         /// <summary>
         /// Sha1 hash in byte array
@@ -81,10 +82,20 @@ namespace RimeLib.Frostbite.Core
         /// <returns>True if equal, false otherwise</returns>
         public override bool Equals(object? p_Obj)
         {
-            if (p_Obj is Sha1 s_Sha1)
-                return Hash.SequenceEqual(s_Sha1.Hash);
-            
-            return false;
+            return p_Obj is Sha1 s_Sha1 && Equals(s_Sha1);
+        }
+
+        /// <summary>
+        /// Sha1 equals
+        /// </summary>
+        /// <param name="p_Other">Hash to compare to this hash</param>
+        /// <returns>True if equal, false otherwise</returns>
+        public bool Equals(Sha1? p_Other)
+        {
+            if (p_Other is null)
+                return false;
+
+            return ReferenceEquals(this, p_Other) || Hash.AsSpan().SequenceEqual(p_Other.Hash);
         }
 
         /// <summary>
@@ -93,10 +104,9 @@ namespace RimeLib.Frostbite.Core
         /// <returns>Hash code</returns>
         public override int GetHashCode()
         {
-            // TODO: Optimize this. It's not very efficient.
-            var s_HashCode = Hash.Aggregate(0, (p_Current, p_Byte) => p_Current + p_Byte);
-            s_HashCode = (s_HashCode % int.MaxValue);
-            return s_HashCode;
+            // A SHA1 is already uniformly distributed, so its first four bytes make a good hash code for
+            // the catalog lookups (hundreds of thousands of entries keyed by Sha1).
+            return Hash.Length >= 4 ? BinaryPrimitives.ReadInt32LittleEndian(Hash) : 0;
         }
 
         /// <summary>

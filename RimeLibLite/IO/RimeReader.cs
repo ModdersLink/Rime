@@ -47,14 +47,38 @@ namespace RimeLib.IO
         /// <returns>String with the data inside</returns>
         public string ReadNullTerminatedString()
         {
-            char s_TempChar;
-            var s_ReturnString = "";
+            // Each byte maps straight to a char, collected in a buffer (every DbObject field name is
+            // read through here).
+            Span<char> s_Stack = stackalloc char[128];
+            var s_Chars = s_Stack;
+            char[]? s_Rented = null;
+            var s_Length = 0;
 
-            while ((s_TempChar = (char) ReadUByte()) != '\0')
-                if (s_TempChar != '\0')
-                    s_ReturnString += s_TempChar;
+            try
+            {
+                char s_TempChar;
+                while ((s_TempChar = (char) ReadUByte()) != '\0')
+                {
+                    if (s_Length == s_Chars.Length)
+                    {
+                        var s_Bigger = System.Buffers.ArrayPool<char>.Shared.Rent(s_Chars.Length * 2);
+                        s_Chars.CopyTo(s_Bigger);
+                        if (s_Rented != null)
+                            System.Buffers.ArrayPool<char>.Shared.Return(s_Rented);
+                        s_Rented = s_Bigger;
+                        s_Chars = s_Bigger;
+                    }
 
-            return s_ReturnString;
+                    s_Chars[s_Length++] = s_TempChar;
+                }
+
+                return new string(s_Chars[..s_Length]);
+            }
+            finally
+            {
+                if (s_Rented != null)
+                    System.Buffers.ArrayPool<char>.Shared.Return(s_Rented);
+            }
         }
 
         public string ReadFixedLengthString(int p_Length)
