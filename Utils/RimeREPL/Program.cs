@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Reflection;
 using CommandLine;
@@ -40,7 +41,15 @@ namespace Rime.Utils.RimeREPL
                     ProcessCommandsFromFile(p_Options.CommandsFile);
                     return;
                 }
-                
+
+                // Piped stdin (scripts, tools, a FIFO for a long-lived session): the interactive
+                // REPL needs a real console for ReadKey, so read plain lines instead.
+                if (Console.IsInputRedirected)
+                {
+                    ProcessCommandsFromStdin();
+                    return;
+                }
+
                 var s_REPL = new REPL();
                 s_REPL.Process();
             }).WithNotParsed(p_Err => { Environment.Exit(1); });
@@ -79,6 +88,47 @@ namespace Rime.Utils.RimeREPL
             {
                 var s_REPL = new REPL((BaseContext?)s_StartingContext);
                 s_REPL.Process();
+            }
+        }
+
+        private static IEnumerable<string> ReadStdinLines()
+        {
+            string? s_Line;
+            while ((s_Line = Console.In.ReadLine()) != null)
+                yield return s_Line;
+        }
+
+        private static void ProcessCommandsFromStdin()
+        {
+            var s_Output = Quiet ? TextWriter.Null : Console.Out;
+            ExecutionContext? s_Context = new BaseContext();
+
+            foreach (var s_RawLine in ReadStdinLines())
+            {
+                var s_Line = s_RawLine.Trim();
+
+                if (s_Line.Length == 0 || s_Line.StartsWith('#'))
+                    continue;
+
+                // Echo the command and mark where its output ends, so a caller reading the
+                // output stream can tell which output belongs to which command.
+                s_Output.WriteLine($"> {s_Line}");
+
+                try
+                {
+                    s_Context!.ProcessCommand(s_Line, s_Output, out s_Context);
+                }
+                catch (Exception s_Exception)
+                {
+                    s_Output.WriteLine($"[error] {s_Exception}");
+                }
+
+                s_Output.WriteLine("<<< done");
+                s_Output.Flush();
+
+                // A null context means the base context was asked to exit.
+                if (s_Context == null)
+                    return;
             }
         }
     }
