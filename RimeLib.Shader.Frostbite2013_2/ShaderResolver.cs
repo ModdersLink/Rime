@@ -5,25 +5,34 @@ using System.Text;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
+using RimeLib.Shader.Frostbite2013_2.Frostbite;
+using RimeLib.Shader.Pooled;
 
 namespace RimeLib.Shader.Frostbite2013_2;
 
 /// <summary>
-/// Which shaders and textures a Frostbite 2013.2 shader database (version 194) holds. This is not a
-/// parser of the whole database: it reads only the two things that name assets.
-///  - The shader table: a count followed by 32 byte entries, one per shader solution, each starting
-///    with the lowercase name hash of its shader asset. Several entries share a shader. The table is
-///    found by its shape (a count whose entries all fit, and whose first, second and last entries name
-///    mounted partitions), which matches exactly once per database in retail levels.
-///  - Texture names, stored as null-terminated strings: those that name a mounted partition.
+/// Which shaders and textures a Frostbite 2013.2 shader database (version 194) holds. Shaders are
+/// stored by name hash and named here by the mounted partition of that hash; textures are named in
+/// the texture constants of the solutions.
 /// </summary>
 public class ShaderResolver : IShaderResolver
 {
-    private const int c_EntrySize = 32;
-    private const uint c_ShaderDatabaseVersion = 194;
+    // Size, padding, the offsets of values, textures, external values, external textures and
+    // sampler states, the constant count and value start, then one count byte per list.
+    private const int c_TextureOffsetField = 16;
+    private const int c_TextureCountField = 8 + 5 * 8 + 4 + 1;
+
+    // Index, type, padding, then the name.
+    private const int c_TextureSize = 152;
+    private const int c_TextureNameOffset = 8;
+    private const int c_TextureNameSize = 144;
+
+    // The solution's vertex and pixel constants, after its five permutations.
+    private static readonly int[] s_ConstantRefs = { 5, 6 };
 
     private readonly HashSet<string> m_ShaderNames = new(StringComparer.OrdinalIgnoreCase);
     private readonly HashSet<string> m_TextureNames = new(StringComparer.OrdinalIgnoreCase);
+    private readonly Dictionary<string, ISet<string>> m_TexturesByShader = new(StringComparer.OrdinalIgnoreCase);
 
     public EngineType[] GetSupportedEngines()
     {
@@ -34,13 +43,13 @@ public class ShaderResolver : IShaderResolver
 
     public ISet<string> GetShaderNames() => m_ShaderNames;
 
-    // The shader table names shaders and the texture strings textures, but not which binds which.
-    public IReadOnlyDictionary<string, ISet<string>> GetTexturesByShader() => new Dictionary<string, ISet<string>>();
+    public IReadOnlyDictionary<string, ISet<string>> GetTexturesByShader() => m_TexturesByShader;
 
     public void Initialize(IResourceObject resource, IEngineMounter mounter)
     {
         m_ShaderNames.Clear();
         m_TextureNames.Clear();
+        m_TexturesByShader.Clear();
 
         if (resource == null || resource.GetResourceType() != ResourceType.IShaderDatabase)
             return;
@@ -53,90 +62,60 @@ public class ShaderResolver : IShaderResolver
             s_Data = s_Memory.ToArray();
         }
 
-        // Container: render path count, then per render path its id, size and database.
-        var s_RenderPaths = BitConverter.ToUInt32(s_Data, 0);
-        var s_Offset = 4;
-        for (var i = 0; i < s_RenderPaths && s_Offset + 8 <= s_Data.Length; i++)
+        foreach (var s_Database in PooledShaderDatabaseImage.Read(s_Data, ShaderDatabaseFormat.Instance).Databases)
         {
-            var s_Size = (int)BitConverter.ToUInt32(s_Data, s_Offset + 4);
-            var s_Start = s_Offset + 8;
-            if (s_Start + s_Size > s_Data.Length)
-                throw new InvalidDataException($"Shader database {i} of {s_Size} bytes overruns the resource.");
+            var s_Constants = s_Database.Pools[0];
+            var s_TexturesOf = new Dictionary<int, List<string>>();
+            List<string> TexturesOf(int p_Constants)
+            {
+                if (!s_TexturesOf.TryGetValue(p_Constants, out var s_Names))
+                    s_TexturesOf[p_Constants] = s_Names = ReadTextureNames(s_Constants[p_Constants].Bytes);
+                return s_Names;
+            }
 
-            var s_Version = BitConverter.ToUInt32(s_Data, s_Start);
-            if (s_Version != c_ShaderDatabaseVersion)
-                throw new InvalidDataException($"Unsupported shader database version (expected {c_ShaderDatabaseVersion} got {s_Version}).");
+            foreach (var s_Shader in s_Database.Shaders)
+            {
+                if (!mounter.TryGetPartitionByHashLower(s_Shader.Key, out var s_Partition))
+                    continue;
 
-            var s_Database = new ReadOnlySpan<byte>(s_Data, s_Start, s_Size);
-            ReadShaderTable(s_Database, mounter);
-            ReadTextureNames(s_Database, mounter);
+                var s_Name = s_Partition.OriginalName.ToLowerInvariant();
+                m_ShaderNames.Add(s_Name);
+                if (!m_TexturesByShader.TryGetValue(s_Name, out var s_Textures))
+                    m_TexturesByShader[s_Name] = s_Textures = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            s_Offset = s_Start + s_Size;
+                foreach (var s_Index in s_Shader.Solutions)
+                {
+                    var s_Solution = s_Database.Solutions[s_Index];
+                    foreach (var s_Ref in s_ConstantRefs)
+                    {
+                        var s_Constant = s_Solution.GetIndex(s_Solution.Refs[s_Ref]);
+                        if (s_Constant != -1)
+                            s_Textures.UnionWith(TexturesOf((int)s_Constant));
+                    }
+                }
+            }
+
+            foreach (var s_Record in s_Constants)
+            foreach (var s_Texture in ReadTextureNames(s_Record.Bytes))
+            {
+                if (mounter.TryGetPartition(s_Texture, out _))
+                    m_TextureNames.Add(s_Texture.ToLowerInvariant());
+            }
         }
     }
 
-    private void ReadShaderTable(ReadOnlySpan<byte> p_Database, IEngineMounter p_Mounter)
+    private static List<string> ReadTextureNames(byte[] p_Constants)
     {
-        bool NamesShader(ReadOnlySpan<byte> p_Data, int p_Entry) =>
-            p_Mounter.TryGetPartitionByHashLower(BitConverter.ToUInt32(p_Data.Slice(p_Entry, 4)), out _);
-
-        // A position inside the table can look like a table too (a field of the previous entry read as
-        // a small count), but such a match lies within the real one; keep the largest.
-        var s_Best = -1;
-        var s_BestCount = 0u;
-        for (var s_Position = 4; s_Position <= p_Database.Length - c_EntrySize; s_Position++)
+        var s_Names = new List<string>();
+        var s_Offset = (int)BitConverter.ToUInt64(p_Constants, c_TextureOffsetField);
+        var s_Count = p_Constants[c_TextureCountField];
+        for (var i = 0; i < s_Count; i++)
         {
-            var s_Count = BitConverter.ToUInt32(p_Database.Slice(s_Position - 4, 4));
-            if (s_Count < 2 || s_Count <= s_BestCount || s_Count > (p_Database.Length - s_Position) / c_EntrySize)
-                continue;
-
-            var s_Last = s_Position + (int)(s_Count - 1) * c_EntrySize;
-            if (!NamesShader(p_Database, s_Position) || !NamesShader(p_Database, s_Position + c_EntrySize) || !NamesShader(p_Database, s_Last))
-                continue;
-
-            s_Best = s_Position;
-            s_BestCount = s_Count;
+            var s_Name = p_Constants.AsSpan(s_Offset + i * c_TextureSize + c_TextureNameOffset, c_TextureNameSize);
+            var s_End = s_Name.IndexOf((byte)0);
+            s_Names.Add(Encoding.ASCII.GetString(s_End < 0 ? s_Name : s_Name[..s_End]));
         }
 
-        if (s_Best >= 0)
-        {
-            for (var i = 0; i < s_BestCount; i++)
-            {
-                var s_Hash = BitConverter.ToUInt32(p_Database.Slice(s_Best + i * c_EntrySize, 4));
-                if (p_Mounter.TryGetPartitionByHashLower(s_Hash, out var s_Partition))
-                    m_ShaderNames.Add(s_Partition.OriginalName.ToLowerInvariant());
-            }
-
-            return;
-        }
-
-        throw new InvalidDataException("Could not find the shader table in the shader database.");
-    }
-
-    private void ReadTextureNames(ReadOnlySpan<byte> p_Database, IEngineMounter p_Mounter)
-    {
-        var s_Start = -1;
-        for (var i = 0; i < p_Database.Length; i++)
-        {
-            var s_Byte = p_Database[i];
-            var s_IsNameChar = s_Byte is >= (byte)'a' and <= (byte)'z' or >= (byte)'A' and <= (byte)'Z' or >= (byte)'0' and <= (byte)'9'
-                or (byte)'_' or (byte)'/' or (byte)'-' or (byte)'.';
-
-            if (s_IsNameChar)
-            {
-                if (s_Start < 0)
-                    s_Start = i;
-                continue;
-            }
-
-            if (s_Byte == 0 && s_Start >= 0 && i - s_Start >= 4)
-            {
-                var s_Name = Encoding.ASCII.GetString(p_Database.Slice(s_Start, i - s_Start));
-                if (s_Name.Contains('/') && p_Mounter.TryGetPartition(s_Name, out _))
-                    m_TextureNames.Add(s_Name.ToLowerInvariant());
-            }
-
-            s_Start = -1;
-        }
+        return s_Names;
     }
 }

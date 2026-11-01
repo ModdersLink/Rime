@@ -237,9 +237,20 @@ The shaders a level's database holds:
 The shaders it lists ship in its bundle as partitions; the bundle also carries the textures they bind,
 except those another bundle of the superbundle carries.
 
-BF4 shader database format (version 194, two render paths, as in BF3's version 182): Rime reads only
-the shader table (a count, then 32-byte entries starting with the shader's lowercase name hash) and
-the texture name strings. A full reader or writer is still missing.
+### Building one (BF4)
+Version 194 pools its records the same way, with a quality level in the header, hull and domain
+permutation pools (render path 3 uses them), 80-byte solutions with seven indices and the
+tessellation fragment in the solution state. Shaders name their textures only by hash; the names are
+in the texture constants of their solutions. Both versions share one reader, writer and merger
+(`RimeLib.Shader.Pooled`); an engine only describes its layout. All 32 BF4 databases read and write
+back byte-identical, and `mp_siege` rebuilt from its own database matches every solution.
+
+Unlike BF3, BF4 compiles a shader per level: for the same shader and solution state, `mp_siege` and
+`mp_flooded` have different pixel bytecode and constants in 3280 of their 7245 shared solutions,
+because the level's textures are compiled in (`mp_siege`'s dirt mask, `mp_flooded`'s rain drops).
+Copying a shader from another level gives it that level's look, so the level's own database is the
+only faithful source for its shaders. Built from the other 31 databases, `mp_siege` lacks 117 of its
+551 shaders.
 
 ### Material grid
 Every level ships its own cooked grid (`levels/<level>/<level>/materialgrid_win32` in BF4,
@@ -316,8 +327,8 @@ and compared with retail: `derive_registry`, `derive_mesh_variation_db`; in bund
 `collect_drawn_shaders`; and `build_level`, which runs them
 from a JSON recipe and compares each bundle with its retail namesake.
 
-Missing: material indices from mesh and Havok payloads, a BF4 shader database reader and writer,
-`LevelData` sub-world reference generation.
+Missing: material indices from mesh and Havok payloads, `build_level` on a BF4 level (not
+tried yet), `LevelData` sub-world reference generation.
 
 ### Measured on `mp_subway` (BF3)
 Recipe: [`recipes/mp_subway.json`](recipes/mp_subway.json): the 11 gamemode and sub-world bundles,
