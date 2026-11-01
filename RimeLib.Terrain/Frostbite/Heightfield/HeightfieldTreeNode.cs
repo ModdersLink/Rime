@@ -18,13 +18,13 @@ public class HeightfieldTreeNode : RasterTreeNode
     /// The four flag bytes as they appear, rather than only their effect on
     /// <see cref="RasterTreeNode.Flags"/>.
     ///
-    /// Flags cannot stand in for them. A node carrying data sets bit 16 and never looks at
-    /// <see cref="HasData1"/>, so that byte's value is not recoverable from the flags -- and a
+    /// Flags cannot stand in for them. A node carrying data sets CanBeStreamedIn and never looks
+    /// at <see cref="HasBeenPruned"/>, so that byte's value is not recoverable from the flags -- and a
     /// node with data but no persistent copy reads no samples at all, which nothing in the flags
     /// records either. Writing the node back needs both.
     /// </summary>
     public bool Disabled { get; set; }
-    public bool HasData1 { get; set; }
+    public bool HasBeenPruned { get; set; }
     public bool HasData { get; set; }
     public bool HasPersistent { get; set; }
 

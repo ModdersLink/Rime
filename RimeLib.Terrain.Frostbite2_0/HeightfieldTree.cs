@@ -26,17 +26,17 @@ namespace RimeLib.Terrain.Frostbite2_0
             s_Node.Disabled = p_Reader.ReadBool();
             if (s_Node.Disabled)
             {
-                s_Node.Flags |= 8; // the node is not in the terrain at all
+                s_Node.Flags |= (ushort)RasterTreeNodeFlags.Disabled;
                 return s_Node;
             }
 
-            s_Node.HasData1 = p_Reader.ReadBool();
+            s_Node.HasBeenPruned = p_Reader.ReadBool();
             s_Node.HasData = p_Reader.ReadBool();
 
             if (s_Node.HasData)
-                s_Node.Flags |= 16;
-            else if (s_Node.HasData1)
-                s_Node.Flags |= 256;
+                s_Node.Flags |= (ushort)RasterTreeNodeFlags.CanBeStreamedIn;
+            else if (s_Node.HasBeenPruned)
+                s_Node.Flags |= (ushort)RasterTreeNodeFlags.Pruned;
             else
                 return s_Node;
 
@@ -173,10 +173,10 @@ namespace RimeLib.Terrain.Frostbite2_0
             if (p_Node.Disabled)
                 return;
 
-            p_Writer.Write(p_Node.HasData1);
+            p_Writer.Write(p_Node.HasBeenPruned);
             p_Writer.Write(p_Node.HasData);
 
-            if (!p_Node.HasData && !p_Node.HasData1)
+            if (!p_Node.HasData && !p_Node.HasBeenPruned)
                 return;
 
             p_Writer.Write(p_Node.HasPersistent);

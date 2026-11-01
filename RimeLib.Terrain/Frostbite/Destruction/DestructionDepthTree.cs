@@ -48,7 +48,7 @@ public class DestructionDepthTree : RasterTree
 
         if (s_NodeHasData)
         {
-            s_Node.Flags |= 0x10;
+            s_Node.Flags |= (ushort)RasterTreeNodeFlags.CanBeStreamedIn;
         }
 
         if (s_NodeHasData && s_NodeHasPersistent)
