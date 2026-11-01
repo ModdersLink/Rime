@@ -192,6 +192,12 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             return m_MountedBundles;
         }
 
+        private void MarkBundleMounted(string p_Bundle)
+        {
+            lock (m_MountedBundles)
+                m_MountedBundles.Add(p_Bundle.ToLowerInvariant());
+        }
+
         public IEnumerable<(string Name, ResourceType ResourceType)> GetResourcesInBundle(string p_Bundle)
         {
             if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
@@ -812,6 +818,8 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             // Don't do if automount isn't on.
             if (p_AutoMount && !MountCasBundle(s_BundleEntry)) 
                 throw new Exception($"Failed to mount bundle '{s_Bundle.Path}'.");
+            if (p_AutoMount)
+                MarkBundleMounted(p_BundleInfo.Id);
         }
         
         protected void ParseBundle(RimeReader p_Reader, BundleInfo p_BundleInfo, SuperbundleEntry p_Superbundle, bool p_InUpdate, bool p_AutoMount)
@@ -830,6 +838,8 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             // Don't do if automount isn't on.
             if (p_AutoMount && !MountEmbeddedBundle(s_Manifest)) 
                 throw new Exception($"Failed to mount embedded bundle '{p_BundleInfo.Id}'.");
+            if (p_AutoMount)
+                MarkBundleMounted(p_BundleInfo.Id);
         }
 
         protected void ParseDeltaBundle(RimeReader p_BaseReader, RimeReader p_PatchReader, 
@@ -853,6 +863,8 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
             // Don't do if automount isn't on.
             if (p_AutoMount && !MountEmbeddedBundle(s_Manifest)) 
                 throw new Exception($"Failed to mount embedded delta bundle '{p_BaseBundle.Id}'.");
+            if (p_AutoMount)
+                MarkBundleMounted(p_BaseBundle.Id);
         }
 
         protected void ParseBundles(SuperbundleEntry p_Superbundle, SuperbundleLayout p_Toc, SuperbundleLayout? p_PatchToc, bool p_AutoMount)
@@ -935,7 +947,7 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                     }
 
                     // If all is good, parse as we normally would.
-                    ParseBundle(s_PatchReader!, s_Bundle, p_Superbundle, p_AutoMount, true);
+                    ParseBundle(s_PatchReader!, s_Bundle, p_Superbundle, true, p_AutoMount);
                 }
             }
         }
