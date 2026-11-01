@@ -17,7 +17,7 @@ namespace RimeLib.Content.Frostbite2013_2
     ///    from EBX, so unlike Frostbite 2 it names no streaming tree, decals or surface shader.
     ///  - TerrainLayerCombinations: the default surface shader and the shader each layer
     ///    combination draws with, the generated terrain permutations among them.
-    ///  - TerrainDecals: each decal block's shader, z-only shader and mask texture.
+    ///  - TerrainDecals: each decal block's shader, z-only shader and mesh scattering mask shader.
     ///  - TerrainStreamingTree: the chunk of each node's tile data.
     /// </summary>
     public class ResourcePayloadReader : IResourcePayloadReader
@@ -55,8 +55,8 @@ namespace RimeLib.Content.Frostbite2013_2
         // no surface shader name after them.
         private const int c_VisualTerrainHeaderSize = 0x54;
 
-        // From the variation hash up to the instance type: hashes, density, scale, rotation,
-        // spawn levels, lod distances.
+        // From the mesh resource id up to the texture atlas size: ids, density, scale, wind,
+        // flags, spawn level counts, shadow distance, lod distances.
         private const int c_ScatteringFixedSize = 133;
 
         private static void ReadVisualTerrain(RimeReader p_Reader, ResourcePayloadNames p_Result)
@@ -76,13 +76,15 @@ namespace RimeLib.Content.Frostbite2013_2
 
                     p_Reader.Seek(c_ScatteringFixedSize, SeekOrigin.Current);
 
-                    // A type other than 1 (imposters, billboards) carries five more distances.
-                    var s_InstanceType = p_Reader.ReadUInt32();
-                    p_Reader.ReadUInt32();
-                    if (s_InstanceType > 1)
-                        p_Reader.Seek(5 * 4, SeekOrigin.Current);
+                    // An atlas of more than one tile carries a cumulative weight per tile and their max.
+                    var s_Tiles = (ulong)p_Reader.ReadUInt32() * p_Reader.ReadUInt32();
+                    if (s_Tiles > 0xFFFF)
+                        throw new Exception($"a scattering texture atlas of {s_Tiles} tiles, the walk is misaligned");
+                    if (s_Tiles > 1)
+                        p_Reader.Seek((long)(s_Tiles + 1) * 4, SeekOrigin.Current);
 
-                    // Three bytes, a float and three bytes of shadow and billboard settings.
+                    // Spawn level, rotation and orientation mode, slope weight, billboarding,
+                    // instance data mode, ground clamp.
                     p_Reader.Seek(10, SeekOrigin.Current);
                 }
             }
@@ -126,7 +128,7 @@ namespace RimeLib.Content.Frostbite2013_2
             }
         }
 
-        // Start index, primitive count, two bounding boxes, draw distance, vertex range, a flag.
+        // Start index, primitive count, two bounding boxes, draw distance, vertex range, tangent space flag.
         private const int c_DecalBlockFixedSize = 4 + 4 + 2 * 24 + 4 + 4 + 4 + 1;
 
         private static void ReadDecals(RimeReader p_Reader, ResourcePayloadNames p_Result)
@@ -145,7 +147,7 @@ namespace RimeLib.Content.Frostbite2013_2
                 {
                     AddName(p_Result.PartitionNames, ReadCString(p_Reader)); // surface shader
                     AddName(p_Result.PartitionNames, ReadCString(p_Reader)); // z-only surface shader
-                    AddName(p_Result.ResourceNames, ReadCString(p_Reader)); // mask texture
+                    AddName(p_Result.PartitionNames, ReadCString(p_Reader)); // mesh scattering mask shader
                     p_Reader.Seek(c_DecalBlockFixedSize, SeekOrigin.Current);
                 }
 
@@ -157,14 +159,14 @@ namespace RimeLib.Content.Frostbite2013_2
             }
         }
 
-        /// <summary>Frostbite 2's streaming tree with one more field before the node count.</summary>
+        /// <summary>Frostbite 2's streaming tree with the skip level count before the node count.</summary>
         private static void ReadStreamingTree(RimeReader p_Reader, ResourcePayloadNames p_Result)
         {
             p_Reader.Seek(4, SeekOrigin.Current); // unblurredSamplesPerNodeSidePot
             p_Reader.Seek(1, SeekOrigin.Current); // trackTextureDetailFalloff
             p_Reader.Seek(8, SeekOrigin.Current); // invisible/occludedDetailReductionFactor
             p_Reader.Seek(4, SeekOrigin.Current); // resourceBlurriness
-            p_Reader.Seek(4, SeekOrigin.Current);
+            p_Reader.Seek(4, SeekOrigin.Current); // skipLevels
 
             var s_NodeCount = ReadCount(p_Reader, "TerrainStreamingTree nodeCount");
 

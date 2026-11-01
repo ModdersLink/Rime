@@ -182,7 +182,7 @@ reads it back: on cloned retail `mp_subway` all 1025 entries, `rush` all 993 plu
 - BF4 terrain payloads (`ResourcePayloadReader` in `RimeLib.Content.Frostbite2013_2`, each walked to
   its last byte on all 16 retail terrains): `TerrainLayerCombinations` names the default surface
   shader and every generated permutation (in BF3 these are in `VisualTerrain`); `TerrainDecals`
-  names each decal block's shader, z-only shader and mask texture; `VisualTerrain` names only its
+  names each decal block's shader, z-only shader and mesh scattering mask shader; `VisualTerrain` names only its
   scattering meshes; `TerrainStreamingTree` names its tile chunks. On `mp_siege` this reaches 48
   shaders only the shader database listed before (37 permutations, the default surface shader, 10
   decal shaders), 18 terrain chunks and 5 scattering meshes.
