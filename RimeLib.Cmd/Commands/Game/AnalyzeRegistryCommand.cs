@@ -61,48 +61,11 @@ namespace RimeLib.Cmd.Commands.Game
                 return false;
             }
 
-            // The closure, over partitions; embedded index lists and index partitions are not followed,
-            // so what they list counts only when content references it too.
-            var s_Closure = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { s_Root };
-            var s_Queue = new Queue<string>(new[] { s_Root });
-            var s_Registries = new List<(string Kind, List<CtrRefBase> Entries)>();
-
-            while (s_Queue.Count > 0)
-            {
-                var s_Name = s_Queue.Dequeue();
-                if (!m_Mounter.TryGetPartition(s_Name, out var s_Mounted))
-                    continue;
-
-                var s_References = m_Scanner.ScanPartition(s_Name, s_Mounted.FirstVariant, p_I => s_Indexes.GetEmbeddedIndexes(p_I).Any());
-                if (s_References.Parsed == null)
-                    continue;
-
-                AddInstances(s_Name, s_References.Parsed);
-
-                if (s_Name == s_Root)
-                {
-                    foreach (var s_Instance in s_References.Parsed.Instances)
-                    foreach (var (s_Kind, s_Entries) in s_Indexes.GetEmbeddedIndexes(s_Instance))
-                        s_Registries.Add((s_Kind, s_Entries.ToList()));
-                }
-
-                if (s_Indexes.GetPartitionIndexKind(s_References.Parsed.PrimaryInstance) != null)
-                    continue;
-
-                foreach (var s_Next in s_References.Partitions)
-                {
-                    if (s_Closure.Add(s_Next))
-                        s_Queue.Enqueue(s_Next);
-                }
-            }
-
-            // Registries that are partitions of their own (BF4).
-            if (s_Registries.Count == 0)
-            {
-                var s_RegistryName = (RegistryPartition ?? $"{s_Root}_networkregistry_win32").ToLowerInvariant();
-                if (Parse(s_RegistryName) is { } s_Registry && s_Indexes.GetPartitionIndexKind(s_Registry.PrimaryInstance) is { } s_Kind)
-                    s_Registries.Add((s_Kind, s_Indexes.GetIndexEntries(s_Registry).ToList()));
-            }
+            var s_LevelClosure = LevelClosure.Build(m_Mounter, m_Scanner, s_Indexes, Parse, s_Root, RegistryPartition);
+            var s_Closure = s_LevelClosure.Partitions.Keys.ToHashSet(StringComparer.OrdinalIgnoreCase);
+            var s_Registries = s_LevelClosure.Registries;
+            foreach (var (s_Name, s_Parsed) in s_LevelClosure.Partitions)
+                AddInstances(s_Name, s_Parsed);
 
             if (s_Registries.Count == 0)
             {
@@ -273,7 +236,7 @@ namespace RimeLib.Cmd.Commands.Game
         }
 
         /// <summary>Every reference an object holds, through structs and lists, as ("Type.Field", reference).</summary>
-        private static IEnumerable<(string Field, CtrRefBase Ref)> References(object p_Object, string p_Path, int p_Depth)
+        internal static IEnumerable<(string Field, CtrRefBase Ref)> References(object p_Object, string p_Path, int p_Depth)
         {
             if (p_Depth > 4)
                 yield break;

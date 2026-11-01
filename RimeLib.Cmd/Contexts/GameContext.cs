@@ -82,6 +82,7 @@ namespace RimeLib.Cmd.Contexts
                 RegisterCommand<AnalyzeLevelCommand>();
                 RegisterCommand<FindPartitionByGuidCommand>();
                 RegisterCommand<AnalyzeRegistryCommand>();
+                RegisterCommand<DeriveRegistryCommand>();
                 RegisterCommand<DumpPartitionJsonByGuidCommand>();
                 RegisterCommand<DumpMountedPartitionsJsonCommand>();
             }

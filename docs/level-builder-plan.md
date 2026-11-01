@@ -60,28 +60,54 @@ and the gamemodes. Every bundle of the level: 0 unexplained.
 | Anything an always-loaded parent bundle already has | leave it out; registering it twice can freeze the client (two mesh variation registrations do) |
 | Content only gamemodes need | may live in the main bundle: 109 `SoldierWeaponUnlockAsset`, 100 `ValueUnlockAsset`, UI graphs and combat-area assets, shaders and effects |
 
-### Registry rules (BF3, measured with `analyze_registry` on `mp_subway` and `rush`)
+### Registry rules (BF3)
 `analyze_registry <level partition>` compares a registry with the closure of its level partition,
 instance by instance, and searches for the property that decides whether an instance is listed.
-Measured on BF3 `mp_subway` and `rush`:
+`derive_registry <level partition>` builds the registries from the closure with the rules below
+(`IRegistryRules`, per engine) and compares them with the shipped ones entry by entry.
 
-| Registry | Lists | Rule found |
-|---|---|---|
-| `EntityRegistry` | networked entity data (soldier weapons, synced bools, objectives, map markers, vehicles, projectiles, pickups, round and combat-area logic, vegetation trees, debris clusters) | every instance of these types in the closure; debris clusters only when `ClientSideOnly` is false |
-| `AssetRegistry` | unlocks, object variations, soldier customizations, dog tags | every instance in the closure |
-| | skinned meshes | only those an unlock points at (`BlueprintAndVariationPair.BaseAsset`, `UnlockAsset.LinkedTo`); weapon 1p/3p and socket meshes are left out |
-| `BlueprintRegistry` | blueprints | `NeedNetworkId` set (all 724 main-bundle object blueprints without it are left out) |
-| `ReferenceObjectRegistry` | reference objects | the referenced blueprint has `NeedNetworkId` set (2686 of 2687 unlisted ones lack it) |
-| `BlueprintRegistry` / `ReferenceObjectRegistry` | world parts and their reference objects | open: 4 of 42 in `rush`, 10 of 52 in `mp_subway`; empty world parts are never listed |
+What counts as the level's content: the instances reached by reference from the level partition's
+primary instance, not every instance of every partition in the closure. A partition can be in the
+closure for one instance only: `carrier_nongroupable_autogen`, a flattened copy of the carrier
+prefab, borrows its sequence tracks, and the carrier blueprint itself is not listed. A partition
+whose primary instance is reached counts whole, because destruction prefabs place loose reference
+objects that nothing references (`parisfacade_02_s1024_destruction` and its debris clusters). The
+values an `InterfaceDescriptorData` holds (`LevelData`'s interface defaults point at container
+variations) don't count, and neither do the registries themselves.
 
-A sub-world's registry lists only its own closure. The level's own registry (in `LevelData`) also
-lists the sub-worlds' networked content (weapons, vehicles, ~1500 unlocks), which `LevelData`'s
-closure doesn't reach, because sub-worlds are referenced by bundle name.
+| Registry | Rule |
+|---|---|
+| `EntityRegistry` | every instance of the networked entity types: weapons, controllables (vehicles, soldiers), projectiles except bullets, vehicle projectiles, pickups, bangers, vegetation trees, synced bool/sequence/transform, event syncs, objectives, capture points, map markers, combat areas, game interactions, life and ticket counters, pre-round, round-over, coop lobby; debris clusters only when `ClientSideOnly` is false |
+| `AssetRegistry` | every unlock, object variation and soldier customization; skinned meshes only when an unlock points at them (`UnlockAsset.LinkedTo`, or the `BaseAsset` of a `BlueprintAndVariationPair` there) |
+| `BlueprintRegistry` | blueprints with `NeedNetworkId`; and prefabs without it (world parts above all) that hold a listed object directly, hold `SoldierTestEntityData`, or whose interface starts a `ModelAnimationEntityData` by event (building collapses; cloth animations started inside the prefab don't count) |
+| `ReferenceObjectRegistry` | reference objects whose blueprint has `NeedNetworkId` (not `LevelData.LevelReference`), spawn and sub-world reference objects, and reference objects of the prefabs listed above; runs to a fixed point, since listing a reference object can list the prefab holding it |
+
+A sub-world's registry lists its own content. The level's own registry (in `LevelData`) also lists
+its sub-worlds' entries, but only those whose partition ships in a bundle loaded with the level
+(`win32/<level>`, `win32/<level>_settings_win32`): that is how it gets the weapons, vehicles and
+~1500 unlocks every gamemode shares, and not the gamemode logic.
+
+Measured on 19 BF3 registries (13 MP and XP1 main levels, `mp_subway`'s `rush`, `conquest_small` and
+`teams_large`, `mp_018`'s `rush`, `coop_002`, `sp_bank`): 14 match the shipped registries exactly as
+sets, all four lists each. What remains:
+- Loose reference objects: `xp1_001` and `xp1_003` list 3 more than shipped in `mec_house_high_01_breakable`,
+  whose unreferenced instances are not listed while those of the Paris facade are. Listing too
+  much only costs network ids; listing too little leaves objects unsynced, so the rule errs this way.
+- Unlocks that no closure reaches but that ship in the level bundle: `aavheupgrade` (XP1 levels),
+  `sp_valley_sprint_unlock` (`mp_007`).
+- Singleplayer (`sp_bank`): a mortar and 14 vehicle unlocks from no closure, and one visual
+  environment blueprint.
+- Order: the shipped order is not closure order; whether the engine needs a particular order is open.
+
+BF4 keeps one list per level and sub-world (`<partition>_networkregistry_win32`) and lists much
+less: `mp_siege` lists 60 entries (synced bools, a few prefabs and reference objects, 36 unlocks
+from outside its closure), `conquestlarge0` 326 (gamemode logic, map markers, vehicles, spawns,
+1 of 13 customizations, no weapons). Its rules still need measuring.
 
 `generate_registry_container` predates these rules: it scans only the partitions of the bundle being
 built and uses a fixed type list, so on cloned retail bundles it misses most entries (`rush`: 2056
-assets, 146 entities, 118 blueprints) and adds others. Rebuilding it on the closure with the rules
-above is the next step.
+assets, 146 entities, 118 blueprints) and adds others. The bundle builder should derive the
+registries from the closure the way `derive_registry` does.
 
 ### Things the engine finds by name (roots of their own)
 - `<bundle>/meshvariationdb_win32`, one per bundle, plus `weapon_shaderstateassets/*/meshvariationdb_win32`.
@@ -204,9 +230,10 @@ engine interfaces, so no version-specific code lives in the general projects.
 ### Existing building blocks
 `reference_existing_partition` (closure, dependency and scenario bundles; its walk is
 `AssetReferenceScanner`), `generate_registry_container`, `emit_subworld_registry`,
-`mvdb_add_all` / `mvdb_add_entry`, `resolve_shader_textures`, `analyze_level`.
+`mvdb_add_all` / `mvdb_add_entry`, `resolve_shader_textures`, `analyze_level`, `derive_registry`
+(BF3 registry derivation, compared with retail; not yet wired into bundle building).
 
-Missing: registry derivation by the measured rules, a shader database builder (and for BF4 a full
+Missing: BF4 registry rules, registry derivation inside bundle building, a shader database builder (and for BF4 a full
 shader database reader), the material grid derivation, `LevelData` sub-world reference generation, hoisting, the recipe and `build_level`.
 
 ### Templates
