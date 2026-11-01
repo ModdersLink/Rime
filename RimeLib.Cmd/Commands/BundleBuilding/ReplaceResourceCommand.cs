@@ -1,10 +1,10 @@
 ﻿using RimeLib.Cmd.Attributes;
+using RimeLib.Content.Building;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -21,42 +21,6 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
         [CommandArgument(Description = "The path to the file containing the NEW resource data.")]
         public FileInfo? FilePath { get; set; }
-
-        // Wraps the original resource variant (for type/meta/id) but serves NEW data
-        // from a file. This preserves the resource identity (so the engine matches it
-        // against the vanilla resource) while swapping the payload.
-        private class ReplacedResource : IResourceObject
-        {
-            private readonly IResourceVariant m_Original;
-            private readonly string m_Path;
-
-            public ReplacedResource(IResourceVariant p_Original, string p_Path)
-            {
-                m_Original = p_Original;
-                m_Path = p_Path;
-            }
-
-            public ResourceType GetResourceType() => m_Original.GetResourceType();
-
-            public bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta) => m_Original.TryGetMeta(out p_Meta);
-
-            public ResourceRef GetId(string? p_Name = null)
-            {
-                // Non-CAS FB2 bundles don't store a resource id, so this is usually
-                // never called. Fall back to generating one from the name+data if the
-                // original variant has none (eg. CAS builds).
-                try { return m_Original.GetId(p_Name); }
-                catch { return new ResourceRef(p_Name ?? string.Empty, this); }
-            }
-
-            public RimeReader GetReader()
-            {
-                var s_FileStream = File.Open(m_Path, FileMode.Open, FileAccess.Read, FileShare.Read);
-                return new RimeReader(s_FileStream);
-            }
-
-            public long GetSize() => new FileInfo(m_Path).Length;
-        }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
@@ -127,7 +91,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             foreach (var s_V in s_Resource.Variants)
                 p_Writer.WriteLine($"   - {s_V.GetContainedSuperbundle()} / {s_V.GetContainedBundle() ?? "<none>"}");
 
-            s_BundleContext.AddResource(Name!, new ReplacedResource(s_Variant, FilePath.FullName));
+            s_BundleContext.AddResource(Name!, ReplacedResource.FromFile(s_Variant, FilePath.FullName));
 
             return true;
         }

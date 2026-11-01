@@ -57,10 +57,68 @@ public class TextureGenerator : ITextureGenerator
         return TextureType.TextureType_2D;
     }
 
+    /// <summary>
+    /// The TextureFormat an UNCOMPRESSED DDS describes, from its bit count and channel masks.
+    ///
+    /// A DDS only carries a FourCC when it is block-compressed; the uncompressed ones describe
+    /// themselves with DDPF_RGB or DDPF_LUMINANCE plus per-channel masks, and BF3 has texture
+    /// formats for exactly these. Rejecting them meant a level's uncompressed textures could not be
+    /// imported at all -- and because the throw aborts the whole build, one such texture took every
+    /// other one with it.
+    /// </summary>
+    private static TextureFormat TextureFormatFromMasks(DDSPixelFormat p_Format)
+    {
+        var s_Bits = p_Format.RGBBitCount;
+        var s_HasAlpha = p_Format.Flags.HasFlag(DDSFormatFlags.AlphaPixels);
+
+        if (p_Format.Flags.HasFlag(DDSFormatFlags.Luminance))
+        {
+            if (s_Bits == 8)
+                return TextureFormat.TextureFormat_L8;
+
+            if (s_Bits == 16)
+                return TextureFormat.TextureFormat_L16;
+        }
+
+        if (p_Format.Flags.HasFlag(DDSFormatFlags.Rgb))
+        {
+            switch (s_Bits)
+            {
+                case 32:
+                    // BF3 stores 32-bit colour as ARGB8888 whichever way round the masks read; the
+                    // channel ORDER is the pixel data's business, not the format's.
+                    return TextureFormat.TextureFormat_ARGB8888;
+
+                case 24:
+                    return TextureFormat.TextureFormat_ARGB8888;
+
+                case 16:
+                    if (p_Format.RBitMask == 0xF800 && p_Format.GBitMask == 0x07E0)
+                        return TextureFormat.TextureFormat_RGB565;
+
+                    if (p_Format.RBitMask == 0x7C00 && s_HasAlpha)
+                        return TextureFormat.TextureFormat_ARGB1555;
+
+                    if (p_Format.RBitMask == 0x0F00)
+                        return TextureFormat.TextureFormat_ARGB4444;
+
+                    return TextureFormat.TextureFormat_RGB565;
+            }
+        }
+
+        if (p_Format.Flags.HasFlag(DDSFormatFlags.Alpha) && s_Bits == 8)
+            return TextureFormat.TextureFormat_L8;
+
+        throw new Exception(
+            $"Unsupported uncompressed DDS: {s_Bits} bpp, flags {p_Format.Flags}, " +
+            $"masks R=0x{p_Format.RBitMask:X8} G=0x{p_Format.GBitMask:X8} " +
+            $"B=0x{p_Format.BBitMask:X8} A=0x{p_Format.ABitMask:X8}.");
+    }
+
     private static TextureFormat TextureFormatFromDDSHeader(DDSHeader p_Header, bool p_IsNormalMap = false)
     {
         if (!p_Header.PixelFormat.Flags.HasFlag(DDSFormatFlags.FourCC))
-            throw new Exception("The provided DDS had no FourCC code.");
+            return TextureFormatFromMasks(p_Header.PixelFormat);
         
         if (p_Header.PixelFormat.FourCC == DDSUtils.MakeFourCC("DXT1"))
             return p_IsNormalMap ? TextureFormat.TextureFormat_NormalDXT1 : TextureFormat.TextureFormat_DXT1;

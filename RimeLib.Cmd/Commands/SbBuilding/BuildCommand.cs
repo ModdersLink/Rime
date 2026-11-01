@@ -8,13 +8,16 @@ namespace RimeLib.Cmd.Commands.SbBuilding
     [CommandDescription("Builds the superbundle and exits this context.")]
     public class BuildCommand : Command
     {
+        [CommandArgument(Description = "For a cas superbundle: embed every payload instead of ref'ing catalogued ones (a diagnostic for builds that will not load).", Optional = true)]
+        public bool NoCasRefs { get; set; }
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             //try
             {
                 p_Writer.WriteLine("Building superbundle. Please wait...");
 
-                ((SbBuildingContext)p_Context).Build(p_Writer);
+                ((SbBuildingContext)p_Context).Build(p_Writer, NoCasRefs);
 
                 p_Writer.WriteLine("Superbundle successfully built!");
 

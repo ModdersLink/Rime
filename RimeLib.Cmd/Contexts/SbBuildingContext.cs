@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using RimeLib.Cmd.Commands.SbBuilding;
 using RimeLib.Content.Building;
+using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
 using RimeLib.Content.Frostbite2_0.Mounting;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
@@ -60,23 +62,48 @@ namespace RimeLib.Cmd.Contexts
         {
             private readonly string? m_AssetName;
             private readonly int? m_AssetHash;
+            private readonly int? m_FirstMip;
 
-            public ChunkFileReader(string p_Path, string? p_AssetName) :
+            public ChunkFileReader(string p_Path, string? p_AssetName, int? p_FirstMip = null) :
                 base(p_Path)
             {
                 m_AssetName = p_AssetName;
+                m_FirstMip = p_FirstMip;
             }
 
-            public ChunkFileReader(string p_Path, int? p_AssetHash) :
+            public ChunkFileReader(string p_Path, int? p_AssetHash, int? p_FirstMip = null) :
                 base(p_Path)
             {
                 m_AssetHash = p_AssetHash;
+                m_FirstMip = p_FirstMip;
             }
 
+            /// <summary>
+            /// A texture chunk's meta, when one was supplied.
+            ///
+            /// `firstMip` is how the engine slices a texture chunk into D3D subresources: it says
+            /// which mip the chunk's data starts at. Returning nothing leaves the mip chain
+            /// undescribed, and CreateTexture2D then rejects the subresource array outright with
+            /// E_INVALIDARG -- which is a malformed descriptor, not an allocation failure, and is
+            /// exactly the error a rebuilt DDS produces. Chunks pulled from an existing bundle keep
+            /// their own meta because the closure passes the mounted variant through; this is the
+            /// path for a chunk added from a FILE, which had no way to carry one.
+            /// </summary>
             public bool TryGetMeta([NotNullWhen(true)] out DbObject? p_Meta)
             {
                 p_Meta = null;
-                return false;
+
+                if (m_FirstMip == null)
+                    return false;
+
+                var s_Entry = new ChunkEntry.ChunkMetaEntry();
+
+                if (m_AssetHash.HasValue)
+                    s_Entry.AssetNameHash = m_AssetHash.Value;
+
+                s_Entry.Payload.FirstMip = m_FirstMip;
+                p_Meta = DbObjectConverter.ToDbObject(s_Entry);
+                return true;
             }
 
             public uint GetRangeStart()
@@ -204,12 +231,22 @@ namespace RimeLib.Cmd.Contexts
             return m_Builder.GetBundles();
         }
 
-        internal void Build(TextWriter p_Writer)
+        /// <param name="p_NoCasRefs">
+        /// For a cas superbundle: embed every payload instead of ref'ing catalogued ones. The output
+        /// is as large as a noncas build, so it is a diagnostic, not a shipping mode: it separates
+        /// "the cas manifest format is wrong" from "the sha1 refs do not resolve" when a cas build
+        /// will not load.
+        /// </param>
+        internal void Build(TextWriter p_Writer, bool p_NoCasRefs = false)
         {
-            // Give a cas build a catalog membership probe, so a noncas source can ship as a bare sha1
-            // ref whenever the player's own catalog already holds the identical stored frame.
-            if (m_Builder.Cas() && Parent is BaseContext s_BaseContext)
+            if (m_Builder.Cas() && p_NoCasRefs)
             {
+                p_Writer.WriteLine("Embedding every payload, emitting no refs.");
+            }
+            else if (m_Builder.Cas() && Parent is BaseContext s_BaseContext)
+            {
+                // Give a cas build a catalog membership probe, so a noncas source can ship as a bare
+                // sha1 ref whenever the player's own catalog already holds the identical stored frame.
                 foreach (var s_MounterEntry in s_BaseContext.GetMounters())
                 {
                     if (s_MounterEntry.Value is EngineMounter s_Fb2Mounter)

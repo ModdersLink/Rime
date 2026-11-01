@@ -19,6 +19,9 @@ namespace RimeLib.Cmd.Commands.Game
         [CommandArgument(Description = "Shader name (or substring), e.g. Vehicles/M1A2/M1A2_Frame_Main")]
         public string? Shader { get; set; }
 
+        [CommandArgument(Description = "Optional directory to write the bytecode into", Optional = true)]
+        public string? Destination { get; set; }
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             if (string.IsNullOrWhiteSpace(Name) || string.IsNullOrWhiteSpace(Shader))
@@ -73,6 +76,68 @@ namespace RimeLib.Cmd.Commands.Game
                             $"  SHSOL: tech={Get("Technique")} colorScale={Get("ColorScale")} " +
                             $"boolPerm={Get("BoolPermutation")} mode={Get("Mode")} " +
                             $"objLight={Get("ObjectLighting")} stateHash=0x{s_StateHash:X}");
+
+                        // The COMPILED BYTECODE. It is not in systems/shaderprogramdb -- that
+                        // holds only engine passes (Sky, deferred lighting, tonemap). Each surface
+                        // shader carries its own compiled program here, inside its solution's
+                        // permutation, which is why a search of the program database found nothing.
+                        foreach (var s_Stage in new[] { "PixelPermutation", "VertexPermutation" })
+                        {
+                            var s_Perm = s_Solution.GetType().GetProperty(s_Stage)?.GetValue(s_Solution);
+
+                            if (s_Perm == null)
+                                continue;
+
+                            var s_Bytes = s_Perm.GetType().GetProperty("ShaderBytecode")?.GetValue(s_Perm) as byte[];
+                            var s_Instr = s_Perm.GetType().GetProperty("InstructionCount")?.GetValue(s_Perm);
+                            var s_Magic = (s_Bytes != null && s_Bytes.Length >= 4)
+                                ? System.Text.Encoding.ASCII.GetString(s_Bytes, 0, 4) : "-";
+
+                            p_Writer.WriteLine($"    {s_Stage}: {(s_Bytes?.Length ?? 0)} bytes, " +
+                                $"magic='{s_Magic}', instructions={s_Instr}");
+
+                            if (s_Bytes != null && s_Bytes.Length > 0 && Destination != null)
+                            {
+                                // Create the directory rather than assuming it exists. Without
+                                // this, File.WriteAllBytes throws DirectoryNotFoundException, the
+                                // exception escapes ProcessCommand and takes the whole REPL down --
+                                // which reads as "this shader crashes the dumper" rather than "the
+                                // output path was not there".
+                                Directory.CreateDirectory(Destination);
+
+                                File.WriteAllBytes(Path.Combine(Destination,
+                                    $"{s_Stage}.{s_StateHash:X}.bin"), s_Bytes);
+                            }
+                        }
+
+                        // The baked float constants. A generated terrain shader's per-layer UV
+                        // scale lives here and nowhere else -- the client has been guessing it
+                        // with a hardcoded tile size. Printed with their register index, because
+                        // the index is what the shader indexes them by.
+                        foreach (var s_Which in new[] { "PixelConstants", "VertexConstants" })
+                        {
+                            var s_Constants = s_Solution.GetType().GetProperty(s_Which)?.GetValue(s_Solution);
+
+                            if (s_Constants == null)
+                                continue;
+
+                            var s_Start = s_Constants.GetType().GetProperty("ValueConstantsStart")?.GetValue(s_Constants);
+                            var s_Values = s_Constants.GetType().GetProperty("ValueConstants")?.GetValue(s_Constants)
+                                as System.Collections.IEnumerable;
+                            var s_Index = Convert.ToInt32(s_Start ?? 0);
+
+                            if (s_Values == null)
+                                continue;
+
+                            foreach (var s_Value in s_Values)
+                            {
+                                var s_Type = s_Value.GetType();
+                                object? C(string p_N) => s_Type.GetProperty(p_N)?.GetValue(s_Value);
+                                p_Writer.WriteLine($"    {s_Which}[c{s_Index}] = " +
+                                    $"{C("x")}, {C("y")}, {C("z")}, {C("w")}");
+                                s_Index++;
+                            }
+                        }
                     }
                 }
             }

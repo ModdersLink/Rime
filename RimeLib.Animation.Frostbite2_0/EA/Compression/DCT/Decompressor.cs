@@ -68,9 +68,75 @@ namespace RimeLib.Animation.Frostbite2_0.EA.Compression.DCT
             return Vector4.Normalize(s_Vec);
         }
 
+        /// <summary>
+        /// Decompresses a DCT clip into [frame][dof] Vector4 -- quaternions first (NumQuats of
+        /// them), then Vec3s, then float vectors, in the order the DOF table lists them.
+        ///
+        /// This is <see cref="Parse"/> with the Console.WriteLine replaced by a return value.
+        /// Parse printed the numbers and threw them away, so nothing could consume a clip; the
+        /// decode itself is unchanged and Parse now prints what this returns, so the two cannot
+        /// drift apart.
+        /// </summary>
+        public Vector4[][] Decode(DctAnimationAsset p_Dct)
+        {
+            var s_Frames = new Vector4[p_Dct.NumKeys][];
+            var s_DofTotal = p_Dct.NumVec3 + p_Dct.NumQuats + p_Dct.NumFloatVec;
+
+            var s_Decoded = DecodeBlocks(p_Dct, out var s_DofCount);
+
+            for (var s_Frame = 0; s_Frame < p_Dct.NumKeys; ++s_Frame)
+            {
+                var s_Row = new Vector4[s_DofTotal];
+                var s_BlockIdx = s_Frame / 8;
+
+                for (var s_DofIdx = 0; s_DofIdx < s_DofCount; ++s_DofIdx)
+                {
+                    var s_DataIdx = s_BlockIdx * s_DofCount + s_DofIdx;
+
+                    if (s_DataIdx >= s_Decoded.Count)
+                        break;
+
+                    var s_Block = s_Decoded[s_DataIdx];
+
+                    s_Row[s_DofIdx] = s_DofIdx < p_Dct.NumQuats
+                        ? UnpackQuat(p_Dct, s_Block, (ushort)s_Frame)
+                        : UnpackVec(p_Dct, s_Block, (ushort)s_Frame);
+                }
+
+                s_Frames[s_Frame] = s_Row;
+            }
+
+            return s_Frames;
+        }
+
         public void Parse(DctAnimationAsset p_Dct)
         {
+            var s_Decoded = Decode(p_Dct);
 
+            for (var s_Frame = 0; s_Frame < s_Decoded.Length; ++s_Frame)
+            {
+                for (var s_DofIdx = 0; s_DofIdx < s_Decoded[s_Frame].Length; ++s_DofIdx)
+                {
+                    var s_Kind = s_DofIdx < p_Dct.NumQuats ? 0
+                        : (s_DofIdx - p_Dct.NumQuats) < p_Dct.NumVec3 ? 1 : 2;
+
+                    Console.WriteLine($"{s_Frame},{s_DofIdx},{s_Kind}," +
+                                      s_Decoded[s_Frame][s_DofIdx].ToString().Replace(",", "."));
+                }
+            }
+        }
+
+        /// <summary>
+        /// The clip's per-DOF bit-allocation table, rebuilt from the flat Frostbite fields.
+        ///
+        /// Frostbite does not store the Ant DCT header as a blob: it splays it across
+        /// DofTableDescBytes / DeltaBase{X,Y,Z,W} / BitsPerSubblock. This puts it back together,
+        /// and it is public and static because the ENCODER has to see exactly the same table the
+        /// decoder saw -- a re-derived one that disagreed by a single bit width would produce a
+        /// stream that decodes to garbage while looking fine.
+        /// </summary>
+        public static DofTable[] BuildDofTable(DctAnimationAsset p_Dct)
+        {
             var s_DofCount = p_Dct.NumVec3 + p_Dct.NumQuats + p_Dct.NumFloatVec;
 
             var s_DofTable = new DofTable[s_DofCount];
@@ -97,10 +163,24 @@ namespace RimeLib.Animation.Frostbite2_0.EA.Compression.DCT
                 s_DofTable[i] = s_DofData;
 
                 s_SubBlockTotal += s_SubBlocksCount;
-
             }
 
-   
+            return s_DofTable;
+        }
+
+        /// <summary>
+        /// The quantized coefficient blocks, before the cosine transform: one entry per
+        /// (8-frame block, DOF) in that order, each 32 shorts of xyzw per sub-block.
+        ///
+        /// Public because this is the level the ENCODER round-trips at. Going all the way to
+        /// floats and back cannot be byte-exact (quaternions are normalised on the way out, which
+        /// throws their magnitude away), but shorts in -> shorts out can be, and that is the only
+        /// check that proves the bit packing itself.
+        /// </summary>
+        public List<List<short>> DecodeBlocks(DctAnimationAsset p_Dct, out int p_DofCount)
+        {
+            var s_DofTable = BuildDofTable(p_Dct);
+
             var s_BitReader = new BitReader(new MemoryStream(p_Dct.Data.ToArray()), 64, IO.Conversion.Endianness.BigEndian);
 
             List<List<short>> s_Blocks = new();
@@ -161,27 +241,8 @@ namespace RimeLib.Animation.Frostbite2_0.EA.Compression.DCT
                 }
             }
 
-            for (var s_Frame = 0; s_Frame < p_Dct.NumKeys; s_Frame++)
-            {
-                var s_BlockIdx = s_Frame / 8;
-
-                for (var s_DofIdx = 0; s_DofIdx < s_DofTable.Length; s_DofIdx++)
-                {
-                    var s_DataIdx = s_BlockIdx * s_DofTable.Length + s_DofIdx;
-
-                    if (s_DataIdx >= s_Blocks.Count)
-                        break;
-
-                    var s_Block = s_Blocks.ElementAt(s_DataIdx);
-
-                    if (s_DofIdx < p_Dct.NumQuats)
-                        Console.WriteLine($"{s_Frame},{s_DofIdx},{0},{UnpackQuat(p_Dct, s_Block, (ushort)s_Frame).ToString().Replace(",", ".")}");
-                    else if ((s_DofIdx - p_Dct.NumQuats) < p_Dct.NumVec3)
-                        Console.WriteLine($"{s_Frame},{s_DofIdx},{1},{UnpackVec(p_Dct, s_Block, (ushort)s_Frame).ToString().Replace(",", ".")}");
-                    else
-                        Console.WriteLine($"{s_Frame},{s_DofIdx},{2},{UnpackVec(p_Dct, s_Block, (ushort)s_Frame).ToString().Replace(",", ".")}");
-                }
-            }
+            p_DofCount = s_DofTable.Length;
+            return s_Blocks;
         }
     }
 }

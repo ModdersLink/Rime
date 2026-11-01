@@ -34,6 +34,47 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
 
         public List<AntObject> Objects { get; set; } = new();
 
+        /// <summary>Where a variable-length array's ELEMENTS sit in the blob that was read.</summary>
+        public sealed class ArrayLocation
+        {
+            public long Offset { get; set; }
+            public int Count { get; set; }
+            public LayoutType Type { get; set; }
+
+            /// <summary>
+            /// Byte order of the ELEMENTS, taken from the blob that was parsed rather than assumed.
+            /// A GD blob carries its own endian flag and the two are not the same question: a DCT
+            /// payload is a byte array and does not care, while the float and short arrays beside
+            /// it do, and writing those the wrong way round produces a clip that decodes to noise
+            /// instead of failing.
+            /// </summary>
+            public bool BigEndian { get; set; }
+        }
+
+        /// <summary>
+        /// Per object, per field name, where that field's array elements live in the source blob.
+        ///
+        /// Ant banks are relocatable GenericData archives and Rime has no writer for one -- every
+        /// pointer in the blob is a file offset, so emitting a bank from the object graph means
+        /// re-laying-out the whole archive. Recording where each array was read from instead makes
+        /// the useful case reachable without that: a clip whose payload keeps its element count can
+        /// be written straight back over its own bytes, and nothing else in the bank moves.
+        ///
+        /// Keyed by reference -- AntObject does not override Equals, so the default comparer is
+        /// reference identity, and two clips with identical contents are still two clips.
+        ///
+        /// Offsets are FILE offsets, not offsets into the blob the object was parsed from. Each
+        /// GD.DATA blob is copied out before it is parsed, so the pointers the parser reads are
+        /// blob-relative; recording those raw would put two clips' payloads a dozen bytes apart
+        /// and a patch written at them would land in the middle of the bank's own structure.
+        /// </summary>
+        public Dictionary<AntObject, Dictionary<string, ArrayLocation>> ArrayLocations { get; }
+            = new();
+
+        /// <summary>File offset of the blob currently being parsed, added to every array pointer
+        /// read out of it.</summary>
+        private long m_BlobBase = 0;
+
         public IAssetResolver Resolver => (LocalResolver != null) ? LocalResolver : AssetResolver.Instance;
 
         public AssetBank()
@@ -63,6 +104,8 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
 
         public void ParseData(RimeReader p_Reader, RimeLib.Animation.EA.GenericData.Data p_Data)
         {
+            m_BlobBase = Archive.CurrentDataBlobOffset;
+
             var s_Class = ParseClass(p_Reader, p_Data);
 
 
@@ -397,6 +440,20 @@ namespace Rimelib.Animation.Frostbite2_0.Frostbite
             // A misparsed header would otherwise loop for minutes before failing to allocate.
             if (s_Count > p_Reader.Length || s_Offset > p_Reader.Length)
                 throw new InvalidDataException($"Array header out of bounds (count={s_Count}, offset=0x{s_Offset:X}, blob=0x{p_Reader.Length:X}).");
+
+            if (p_Instance is AntObject s_Owner)
+            {
+                if (!ArrayLocations.TryGetValue(s_Owner, out var s_Fields))
+                    ArrayLocations[s_Owner] = s_Fields = new Dictionary<string, ArrayLocation>();
+
+                s_Fields[p_Slot.Name] = new ArrayLocation
+                {
+                    Offset = m_BlobBase + s_Offset,
+                    Count = (int)s_Count,
+                    Type = p_Slot.Type,
+                    BigEndian = p_Reader.Endianness == RimeLib.IO.Conversion.Endianness.BigEndian,
+                };
+            }
 
             var s_AlignedSize = (s_Layout.DataSize + (s_Layout.Alignment - 1)) & ~(s_Layout.Alignment - 1);
 

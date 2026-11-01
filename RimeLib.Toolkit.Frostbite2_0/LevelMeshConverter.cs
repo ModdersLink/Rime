@@ -452,6 +452,80 @@ public class LevelMeshConverter
         }
     }
 
+    /// <summary>
+    /// Runs the level walk and hands back where each mesh is placed, without building geometry.
+    /// The placements are gathered by the same handlers ExportLevelMesh uses, so StaticModelGroup
+    /// instances -- the ones whose transforms live in the Havok physics data -- are included.
+    /// </summary>
+    internal bool ExportLevelPlacements(string p_LevelPartitionName,
+        out Dictionary<string, List<fb.LinearTransform>>? p_OutPlacements)
+    {
+        p_OutPlacements = null;
+
+        if (!WalkLevel(p_LevelPartitionName))
+            return false;
+
+        p_OutPlacements = m_MeshLocations;
+
+        return true;
+    }
+
+    /// <summary>
+    /// Walks a level's objects and fills m_MeshLocations / m_Lights. Shared by the mesh export and
+    /// the placement export, which differ only in what they do afterwards.
+    /// </summary>
+    private bool WalkLevel(string p_LevelPartitionName)
+    {
+        if (!PartitionRegistry.Partitions.Any())
+            PartitionRegistry.ParseAndRegisterAllPartitions(m_Mounter!);
+
+        m_Lights.Clear();
+        m_MeshLocations.Clear();
+
+        var s_LevelPartition = PartitionRegistry.Partitions.FirstOrDefault(p_Partition =>
+            p_Partition.Name.Equals(p_LevelPartitionName, StringComparison.InvariantCultureIgnoreCase));
+
+        if (s_LevelPartition is null)
+        {
+            m_Writer.WriteLine($"Partition {p_LevelPartitionName} not found.");
+            return false;
+        }
+
+        if (s_LevelPartition.PrimaryInstance is not LevelData s_LevelData)
+        {
+            m_Writer.WriteLine($"Partition {p_LevelPartitionName} LevelData not found.");
+            return false;
+        }
+
+        m_Writer.WriteLine($"Level {s_LevelData.LevelDescription.Name} MP: {s_LevelData.LevelDescription.IsMultiplayer}");
+
+        foreach (var s_LevelObjects in s_LevelData.Objects)
+        {
+            var s_LevelObject = s_LevelObjects.Get();
+
+            if (s_LevelObject is null)
+                continue;
+
+            switch (s_LevelObject)
+            {
+                case WorldPartReferenceObjectData s_WorldPartReference:
+                    HandleWorldPart(s_WorldPartReference, m_Writer);
+                    break;
+                case SubWorldReferenceObjectData s_SubWorldReference:
+                    HandleSubWorld(s_SubWorldReference, m_Writer);
+                    break;
+                case StaticModelGroupEntityData s_StaticModelGroup:
+                    HandleStaticModelGroupEntity(s_StaticModelGroup, m_Writer);
+                    break;
+                default:
+                    m_Writer.WriteLine($"UNKNOWN LEVEL OBJECT: {s_LevelObject.TypeName}");
+                    break;
+            }
+        }
+
+        return true;
+    }
+
     internal bool ExportLevelMesh(string p_LevelPartitionName, out SceneBuilder? p_OutSceneBuilder, FileInfo? p_HavokTransforms = null)
     {
         // Required

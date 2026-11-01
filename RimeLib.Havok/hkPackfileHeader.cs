@@ -56,5 +56,34 @@ namespace RimeLib.Havok
             
             Pad = p_Reader.ReadInt32();
         }
+
+        /// <summary>
+        /// Mirrors <see cref="Deserialize"/> field for field, in its order: 0x40 bytes.
+        /// </summary>
+        public void Serialize(RimeWriter p_Writer)
+        {
+            for (var s_MagicIndex = 0; s_MagicIndex < c_MagicCount; ++s_MagicIndex)
+                p_Writer.Write(Magic[s_MagicIndex]);
+
+            p_Writer.Write(UserTag);
+            p_Writer.Write(FileVersion);
+
+            for (var s_LayoutRuleIndex = 0; s_LayoutRuleIndex < c_LayoutRuleCount; ++s_LayoutRuleIndex)
+                p_Writer.Write(LayoutRules[s_LayoutRuleIndex]);
+
+            p_Writer.Write(NumSections);
+
+            p_Writer.Write(ContentsSectionIndex);
+            p_Writer.Write(ContentsSectionOffset);
+
+            p_Writer.Write(ContentsClassNameSectionIndex);
+            p_Writer.Write(ContentsClassNameSectionOffset);
+
+            p_Writer.Write(ContentsVersion);
+
+            p_Writer.Write(Flags);
+
+            p_Writer.Write(Pad);
+        }
     }
 }

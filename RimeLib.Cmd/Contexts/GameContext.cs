@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Newtonsoft.Json;
 using RimeLib.Cmd.Commands.Game;
 using RimeLib.Terrain.Resources;
@@ -56,8 +58,14 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<ListResourcesOfTypeCommand>();
             RegisterCommand<DumpShaderDbCommand>();
+            RegisterCommand<DumpShaderTexturesCommand>();
+            RegisterCommand<WhereIsCommand>();
+            RegisterCommand<DumpShaderBytecodeCommand>();
+            RegisterCommand<DumpEbxLayoutCommand>();
+            RegisterCommand<ListResourcesOfTypeJsonCommand>();
             RegisterCommand<DumpShaderSolutionsCommand>();
             RegisterCommand<DumpMeshVariationDbVariationsCommand>();
+            RegisterCommand<DumpMeshTexturesCommand>();
             RegisterCommand<ListPartitionsCommand>();
             RegisterCommand<ListSbChunksCommand>();
             RegisterCommand<ListBundleChunksCommand>();
@@ -72,13 +80,16 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<RoundTripPartitionsCommand>();
             RegisterCommand<DumpPartitionByGuidCommand>();
+            // RegisterCommand<DumpAnimTrackDataCommand>(); // class not in repo
             RegisterCommand<BuildCasCatalogCommand>();
             RegisterCommand<MountExternalCatCommand>();
+            RegisterCommand<RoundTripWritersCommand>();
 
             var s_EngineType = m_Mounter.GetEngineType();
 
             if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))
             {
+                // RegisterCommand<EmulateLuaCommand>(); // class not in repo
                 RegisterCommand<DumpPartitionJsonCommand>();
                 RegisterCommand<AnalyzeLevelCommand>();
                 RegisterCommand<FindPartitionByGuidCommand>();
@@ -87,6 +98,14 @@ namespace RimeLib.Cmd.Contexts
                 RegisterCommand<DeriveMeshVariationDbCommand>();
                 RegisterCommand<DumpPartitionJsonByGuidCommand>();
                 RegisterCommand<DumpMountedPartitionsJsonCommand>();
+                // RegisterCommand<DumpSkeletonCommand>(); // class not in repo
+                RegisterCommand<DumpAnimationBankCommand>();
+                RegisterCommand<CheckAnimationCodecCommand>();
+                RegisterCommand<PatchAnimationBankCommand>();
+                RegisterCommand<DumpAnimCodecClipsCommand>();
+                // RegisterCommand<DumpSoundWaveCommand>(); // class not in repo
+                RegisterCommand<DumpNameSourcesCommand>();
+                RegisterCommand<DumpIntFieldsCommand>();
             }
 
             if (EngineInterfaceRegistry.IsSupported<ITextureConverter>(s_EngineType))
@@ -97,6 +116,19 @@ namespace RimeLib.Cmd.Contexts
             if (EngineInterfaceRegistry.IsSupported<ITerrainDecalsConverter>(s_EngineType))
             {
                 RegisterCommand<DumpTerrainDecalsJsonCommand>();
+                RegisterCommand<DumpTerrainNodesCommand>();
+                RegisterCommand<DumpEnlightenCommand>();
+                RegisterCommand<DumpLevelEnlightenCommand>();
+                RegisterCommand<CompareResourceCommand>();
+                RegisterCommand<CompareResourcesCommand>();
+            }
+
+            if (EngineInterfaceRegistry.IsSupported<IVisualTerrain>(s_EngineType))
+            {
+                RegisterCommand<DumpVisualTerrainCommand>();
+                RegisterCommand<CheckVisualTerrainCommand>();
+                RegisterCommand<WriteVisualTerrainCommand>();
+                RegisterCommand<DumpCollisionShapesCommand>();
             }
 
             if (EngineInterfaceRegistry.IsSupported<IMeshConverter>(s_EngineType))
@@ -106,6 +138,7 @@ namespace RimeLib.Cmd.Contexts
                 if (EngineInterfaceRegistry.IsSupported<IToolKit>(s_EngineType) && EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))
                 {
                     RegisterCommand<DumpLevelMeshesCommand>();
+                    RegisterCommand<DumpLevelPlacementsCommand>();
                 }
             }
         }
@@ -647,6 +680,81 @@ namespace RimeLib.Cmd.Contexts
         /// <param name="p_InputTransforms"></param>
         /// <param name="p_Writer"></param>
         /// <exception cref="NotImplementedException"></exception>
+        /// <summary>
+        /// Writes where every mesh in a level sits, as JSON:
+        ///   { "level": name, "meshes": { "<resource>": [ [right(3), up(3), forward(3), trans(3)], ... ] } }
+        ///
+        /// This is the placement data that is NOT in EBX: a level's StaticModelGroup members carry
+        /// an InstanceCount but usually no InstanceTransforms, because the per-instance transforms
+        /// live in the level's Havok physics asset. The walk resolves them the same way the mesh
+        /// export does, and skips loading any geometry.
+        /// </summary>
+        internal bool DumpLevelPlacements(string p_LevelPartition, FileInfo p_Destination, TextWriter p_Writer)
+        {
+            var s_Toolkit = EngineInterfaceRegistry.Create<IToolKit>(m_Mounter.GetEngineType());
+
+            if (!s_Toolkit.Initialize(m_Mounter, p_Writer))
+            {
+                p_Writer.WriteLine("Failed to initialize toolkit.");
+                return false;
+            }
+
+            if (!s_Toolkit.ConvertLevelPlacements(p_LevelPartition, out var s_Placements) || s_Placements is null)
+            {
+                p_Writer.WriteLine("Failed to resolve level placements.");
+                return false;
+            }
+
+            var s_Json = new StringBuilder();
+            s_Json.Append("{\"level\":");
+            s_Json.Append(JsonConvert.SerializeObject(p_LevelPartition));
+            s_Json.Append(",\"meshes\":{");
+
+            var s_FirstMesh = true;
+
+            foreach (var s_Pair in s_Placements)
+            {
+                if (!s_FirstMesh)
+                    s_Json.Append(',');
+
+                s_FirstMesh = false;
+
+                s_Json.Append(JsonConvert.SerializeObject(s_Pair.Key));
+                s_Json.Append(":[");
+
+                var s_FirstTransform = true;
+
+                foreach (var s_Transform in s_Pair.Value)
+                {
+                    if (!s_FirstTransform)
+                        s_Json.Append(',');
+
+                    s_FirstTransform = false;
+
+                    s_Json.Append('[');
+
+                    for (var i = 0; i < s_Transform.Length; i++)
+                    {
+                        if (i > 0)
+                            s_Json.Append(',');
+
+                        s_Json.Append(s_Transform[i].ToString(CultureInfo.InvariantCulture));
+                    }
+
+                    s_Json.Append(']');
+                }
+
+                s_Json.Append(']');
+            }
+
+            s_Json.Append("}}");
+
+            File.WriteAllText(p_Destination.FullName, s_Json.ToString());
+            p_Writer.WriteLine($"Placements for {p_LevelPartition} written to {p_Destination.FullName} ({s_Placements.Count} meshes).");
+
+            return true;
+        }
+
         internal void DumpLevelMesh(MeshConverterType p_Format, string p_LevelPartition, FileInfo p_OutputDestination, FileInfo? p_InputTransforms, TextWriter p_Writer)
         {
             var s_Toolkit = EngineInterfaceRegistry.Create<IToolKit>(m_Mounter.GetEngineType());

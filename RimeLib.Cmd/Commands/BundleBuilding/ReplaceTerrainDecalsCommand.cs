@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using RimeLib;
 using RimeLib.Cmd.Attributes;
+using RimeLib.Content.Building;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
@@ -8,7 +9,6 @@ using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.Terrain.Resources;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -33,33 +33,6 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         // bleed across, e.g. '.../Water' will not also pick up '.../WaterPool'.
         [CommandArgument(Description = "Only move water blocks whose surfaceShaderName is exactly this, so pools sharing the .decals stay put. Omit to move all of them.", Optional = true)]
         public string? WaterShader { get; set; }
-
-        // Wraps the original resource variant's type, meta and id but serves new bytes from memory.
-        private class DecalsResource : IResourceObject
-        {
-            private readonly IResourceVariant m_Original;
-            private readonly byte[] m_Data;
-
-            public DecalsResource(IResourceVariant p_Original, byte[] p_Data)
-            {
-                m_Original = p_Original;
-                m_Data = p_Data;
-            }
-
-            public ResourceType GetResourceType() => m_Original.GetResourceType();
-
-            public bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta) => m_Original.TryGetMeta(out p_Meta);
-
-            public ResourceRef GetId(string? p_Name = null)
-            {
-                try { return m_Original.GetId(p_Name); }
-                catch { return new ResourceRef(p_Name ?? string.Empty, this); }
-            }
-
-            public RimeReader GetReader() => new RimeReader(new MemoryStream(m_Data, false));
-
-            public long GetSize() => m_Data.Length;
-        }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
@@ -191,7 +164,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 : "<none>";
             p_Writer.WriteLine($"Replacing '{Name}' (type {s_Variant.GetResourceType()}, meta {s_MetaHex}) with {s_Bytes.Length} bytes from {FilePath.Name}.");
 
-            s_BundleContext.AddResource(Name!, new DecalsResource(s_Variant, s_Bytes));
+            s_BundleContext.AddResource(Name!, new ReplacedResource(s_Variant, s_Bytes));
 
             return true;
         }

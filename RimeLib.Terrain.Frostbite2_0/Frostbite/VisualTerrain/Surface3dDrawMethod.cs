@@ -15,25 +15,39 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
         public uint MaskedTerrainLayerIndexCount;
         public byte[] MaskedTerrainLayerIndices { get; set; } = new byte[0];
 
-        string ShaderName { get; set; } = string.Empty;
+        public string ShaderName { get; set; } = string.Empty;
 
-        bool DestructionMaskEnable;
-        byte Level;
-        byte DrawDirectLayerCount;
+        public bool DestructionMaskEnable;
+        public byte Level;
+        public byte DrawDirectLayerCount;
 
         public Surface3dDrawMethod(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
         }
 
+        /// <summary>
+        /// The exact mirror of <see cref="Deserialize(RimeReader)"/>. Level and
+        /// DrawDirectLayerCount are single bytes trailing the flag, not padding.
+        /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            p_Writer.Write((uint) MaskedTerrainLayerIndices.Length);
+            foreach (var s_Index in MaskedTerrainLayerIndices)
+                p_Writer.Write(s_Index);
+
+            p_Writer.WriteNullTerminatedString(ShaderName);
+            p_Writer.Write(DestructionMaskEnable);
+            p_Writer.Write(Level);
+            p_Writer.Write(DrawDirectLayerCount);
+
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)
         {
             MaskedTerrainLayerIndexCount = p_Reader.ReadUInt32();
+            MaskedTerrainLayerIndices = new byte[MaskedTerrainLayerIndexCount];
             for (var i = 0; i < MaskedTerrainLayerIndexCount; i++)
                 MaskedTerrainLayerIndices[i] = p_Reader.ReadUByte();
 

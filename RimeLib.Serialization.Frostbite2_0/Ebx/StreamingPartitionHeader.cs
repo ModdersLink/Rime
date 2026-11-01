@@ -3,6 +3,7 @@ using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 
 namespace RimeLib.Serialization.Frostbite2_0.Ebx;
 
@@ -56,8 +57,17 @@ public class StreamingPartitionHeader : IFbSerializable
 
     public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
     {
+        var s_Stream = new MemoryStream();
+        using var s_Writer = new RimeWriter(s_Stream);
+
+        if (Serialize(s_Writer))
+        {
+            p_Data = s_Stream.ToArray();
+            return true;
+        }
+
         p_Data = null;
-        throw new NotImplementedException();
+        return false;
     }
 
     public void Deserialize(RimeReader p_Reader)
@@ -80,6 +90,8 @@ public class StreamingPartitionHeader : IFbSerializable
 
     public void Deserialize(byte[] p_Data)
     {
-        throw new NotImplementedException();
+        using var s_Reader = new RimeReader(new MemoryStream(p_Data));
+
+        Deserialize(s_Reader);
     }
 }

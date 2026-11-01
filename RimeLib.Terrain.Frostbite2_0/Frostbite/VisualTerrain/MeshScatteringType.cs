@@ -21,43 +21,43 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
 
         // fb::MeshScatteringType
         public float RandomPositionOffset { get; set; } = 0.0f;
-        float MinMask;
-        float MaxMask;
+        public float MinMask { get; set; }
+        public float MaxMask { get; set; }
 
-        
-        float MinScaleX; //vector2
-        float MinScaleY; 
 
-        float MaxScaleX; //vector2
-        float MaxScaleY;
+        public float MinScaleX { get; set; }          // MinScale is a vector2
+        public float MinScaleY { get; set; }
 
-        float MinMaskScaleFactorX; //vector2
-        float MinMaskScaleFactorY;
+        public float MaxScaleX { get; set; }          // MaxScale is a vector2
+        public float MaxScaleY { get; set; }
 
-        float ScaleRandomess;
-        float WindScale;
+        public float MinMaskScaleFactorX { get; set; } // MinMaskScaleFactor is a vector2
+        public float MinMaskScaleFactorY { get; set; }
 
-        sbyte FirstSpawnLevel;
-        sbyte SpawnLevelCount;
+        public float ScaleRandomess { get; set; }
+        public float WindScale { get; set; }
 
-        sbyte RotationMode;
-        sbyte OrientationMode;
+        public sbyte FirstSpawnLevel { get; set; }
+        public sbyte SpawnLevelCount { get; set; }
 
-        float RotateTowardSlopeWeight;
+        public sbyte RotationMode { get; set; }
+        public sbyte OrientationMode { get; set; }
 
-        bool CastShadowsEnable;
-        float ShadowViewDistance;
+        public float RotateTowardSlopeWeight { get; set; }
 
-        bool BillboardingEnable;
-        bool BillboardingGpuAccelleration;
+        public bool CastShadowsEnable { get; set; }
+        public float ShadowViewDistance { get; set; }
+
+        public bool BillboardingEnable { get; set; }
+        public bool BillboardingGpuAccelleration { get; set; }
 
 
         // Normals = 2
         // normal + color = 3
-        sbyte InstanceType; //unknown
+        public sbyte InstanceType { get; set; }       // 1 = normals, 2 = normal + colour
 
 
-        bool GroundClampBoundingBoxEnable;
+        public bool GroundClampBoundingBoxEnable { get; set; }
 
 
         float RotateTowardsSlopeRandomWeight => (1.0f - RotateTowardSlopeWeight);
@@ -75,9 +75,55 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
             Deserialize(p_Reader);
         }
 
+        /// <summary>
+        /// The exact mirror of <see cref="Deserialize(RimeReader)"/>, field for field and in its
+        /// order. Without it a scattering type could be read and never written, so an edited
+        /// terrain layer had no way back into the game.
+        ///
+        /// BillboardingGpuAccelleration is written as it is HELD, not as it was read: Deserialize
+        /// forces it false when billboarding is off, and re-applying that here would be a second
+        /// correction of an already-corrected value.
+        /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            p_Writer.WriteNullTerminatedString(MeshName);
+            p_Writer.Write(VariationAssetNameHash);
+            p_Writer.Write(Density);
+            p_Writer.Write(LockDensity);
+
+            p_Writer.Write(RandomPositionOffset);
+            p_Writer.Write(MinMask);
+            p_Writer.Write(MaxMask);
+            p_Writer.Write(MinScaleX);
+            p_Writer.Write(MinScaleY);
+
+            p_Writer.Write(MaxScaleX);
+            p_Writer.Write(MaxScaleY);
+
+            p_Writer.Write(MinMaskScaleFactorX);
+            p_Writer.Write(MinMaskScaleFactorY);
+
+            p_Writer.Write(ScaleRandomess);
+            p_Writer.Write(WindScale);
+
+            p_Writer.Write(FirstSpawnLevel);
+            p_Writer.Write(SpawnLevelCount);
+            p_Writer.Write(RotationMode);
+            p_Writer.Write(OrientationMode);
+
+            p_Writer.Write(RotateTowardSlopeWeight);
+
+            p_Writer.Write(CastShadowsEnable);
+            p_Writer.Write(ShadowViewDistance);
+
+            p_Writer.Write(BillboardingEnable);
+            p_Writer.Write(BillboardingGpuAccelleration);
+
+            p_Writer.Write(InstanceType);
+
+            p_Writer.Write(GroundClampBoundingBoxEnable);
+
+            return true;
         }
 
 

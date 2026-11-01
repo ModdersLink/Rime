@@ -24,24 +24,38 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
         public uint MaskedTerrainLayerIndexCount;
         public byte[] MaskedTerrainLayerIndices { get; set; } = new byte[0];
 
-        string ShaderName { get; set; } = string.Empty;
+        public string ShaderName { get; set; } = string.Empty;
 
-        bool DestructionMaskEnable;
+        public bool DestructionMaskEnable;
        
         public Surface2dDrawMethod(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
         }
 
+        /// <summary>
+        /// The exact mirror of <see cref="Deserialize(RimeReader)"/>. DrawPassType is stored as a
+        /// uint32, so it is cast back rather than written as the enum's own (int) storage.
+        /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            p_Writer.Write((uint) DrawPassType);
+
+            p_Writer.Write((uint) MaskedTerrainLayerIndices.Length);
+            foreach (var s_Index in MaskedTerrainLayerIndices)
+                p_Writer.Write(s_Index);
+
+            p_Writer.WriteNullTerminatedString(ShaderName);
+            p_Writer.Write(DestructionMaskEnable);
+
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)
         {
             DrawPassType = (TerrainDrawPassType)p_Reader.ReadUInt32();
             MaskedTerrainLayerIndexCount = p_Reader.ReadUInt32();
+            MaskedTerrainLayerIndices = new byte[MaskedTerrainLayerIndexCount];
             for (var i = 0; i < MaskedTerrainLayerIndexCount; i++)
                 MaskedTerrainLayerIndices[i] = p_Reader.ReadUByte();
 

@@ -57,9 +57,24 @@ namespace RimeLib.Animation.EA.Compression.DCT
 
 
 
+        /// <summary>
+        /// The exact mirror of <see cref="Deserialize"/>: four delta bases, then one packed
+        /// bit-width word per sub-block. <see cref="SubBlockCount"/> is NOT written here -- it
+        /// lives in the header's per-DOF descriptor byte, so a DofTable on its own cannot say how
+        /// long it is, and <see cref="Header.Serialize"/> writes that byte before it writes us.
+        /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            if (BitsPerSubBlock.Length != SubBlockCount)
+                return false;
+
+            for (var i = 0; i < 4; i++)
+                p_Writer.Write(DeltaBase[i]);
+
+            for (var i = 0; i < SubBlockCount; i++)
+                p_Writer.Write(BitsPerSubBlock[i].Value);
+
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)

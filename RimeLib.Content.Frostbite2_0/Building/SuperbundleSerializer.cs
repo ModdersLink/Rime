@@ -147,6 +147,11 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 var s_FullObject = new DbObject();
                 s_FullObject.AddElement(s_AnonDbObjectElement);
 
+                // Keep the caller's casing. Two WORKING cas mod superbundles on this machine --
+                // watershaderportfft and terrain_tools_baked -- list their bundles as
+                // "Win32/watershaderportfft/mp_017b" and "Win32/watertools/mp_007b", i.e. original
+                // case, while the noncas path lowercases. Lowercasing here to match noncas is a
+                // regression against the only known-good reference.
                 s_BundleData.Add((s_Pair.Value.BundleName, s_FullObject.Serialize()));
             }
 

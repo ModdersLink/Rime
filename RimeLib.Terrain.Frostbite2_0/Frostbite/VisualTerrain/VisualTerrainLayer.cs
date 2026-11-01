@@ -23,9 +23,21 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
             Deserialize(p_Reader);
         }
 
+        /// <summary>
+        /// The exact mirror of <see cref="Deserialize(RimeReader)"/>: the layer flag, then the
+        /// scattering types it grows. The count comes from the array so adding or removing a
+        /// scattering type is a one-sided edit.
+        /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new NotImplementedException();
+            p_Writer.Write(VirtualTextureEnable);
+
+            p_Writer.Write((uint) ScatteringTypes.Length);
+            foreach (var s_Scattering in ScatteringTypes)
+                if (!s_Scattering.Serialize(p_Writer))
+                    return false;
+
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)

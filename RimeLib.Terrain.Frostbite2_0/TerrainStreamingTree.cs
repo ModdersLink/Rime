@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using RimeLib.Terrain.Frostbite;
 using RimeLib.Terrain.Frostbite.Destruction;
 using RimeLib.Terrain.Frostbite.Heightfield;
+using RimeLib.Terrain.Frostbite.TerrainMask;
 using RimeLib.Terrain.Frostbite.TerrainMaterial;
 
 namespace RimeLib.Terrain.Frostbite2_0
@@ -26,7 +27,12 @@ namespace RimeLib.Terrain.Frostbite2_0
             s_Node.ID = p_NodeId;
             s_Node.Lod0ChunkSize = p_Reader.ReadUInt32();
             s_Node.Lod0ChunkID = new GUID(p_Reader);
-            s_Node.TreeNode = (HeightfieldTree as HeightfieldTree)!.FindNode(p_NodeId);
+            // Optional: see HeightfieldTree.TryFindNode. A streaming node without a heightfield
+            // node still carries the chunk its heights come from.
+            var s_TreeNode = (HeightfieldTree as HeightfieldTree)?.TryFindNode(p_NodeId);
+
+            if (s_TreeNode != null)
+                s_Node.TreeNode = s_TreeNode;
 
             var s_Lod1Enabled = p_Reader.ReadBool();
 
@@ -63,16 +69,97 @@ namespace RimeLib.Terrain.Frostbite2_0
             return s_Node;
         }
 
+        /// <summary>
+        /// The exact inverse of <see cref="Deserialize(RimeReader)"/>: the header, then each raster
+        /// tree as a type byte and a LENGTH followed by its payload, then the terminator, then the
+        /// stream nodes.
+        ///
+        /// Each tree's length is measured from what its writer actually produced rather than
+        /// carried over from the read, so a tree that has been edited records its new size. Getting
+        /// that wrong does not fail loudly -- the loader resyncs on the declared length and reads
+        /// the NEXT tree's type byte out of the middle of this one's data.
+        /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
-            throw new System.NotImplementedException();
+            p_Writer.Write(UnblurredSamplesPerNodeSidePot);
+            p_Writer.Write(TrackTextureDetailFalloff);
+            p_Writer.Write(InvisibleDetailReductionFactor);
+            p_Writer.Write(OccludedDetailReductionFactor);
+            p_Writer.Write(ResourceBlurriness);
+            p_Writer.Write(NodeCount);
+            p_Writer.Write(FreeStreamingEnabled);
+
+            foreach (var s_Entry in RasterTreeOrder)
+            {
+                byte[]? s_Payload = s_Entry.Raw;
+
+                if (s_Payload == null)
+                {
+                    var s_Tree = s_Entry.Type < RasterTrees.Count ? RasterTrees[s_Entry.Type] : null;
+
+                    if (s_Tree == null || !s_Tree.Serialize(out s_Payload) || s_Payload == null)
+                        return false;
+                }
+
+                p_Writer.Write((byte)s_Entry.Type);
+                p_Writer.Write((uint)s_Payload.Length);
+                p_Writer.Write(s_Payload);
+            }
+
+            p_Writer.Write((byte)RasterTree.RasterTreeTypes.RasterTreeTypeInvalid);
+
+            SaveNodes(p_Writer, RootNode);
+
+            return true;
+        }
+
+        private static void SaveNodes(RimeWriter p_Writer, HeightfieldNode p_Node)
+        {
+            p_Writer.Write(p_Node.Lod0ChunkSize);
+
+            if (!p_Node.Lod0ChunkID.Serialize(p_Writer))
+                return;
+
+            // Lod1 is optional and its flag is the only record that it was there.
+            var s_Lod1 = p_Node.Lod1ChunkID != GUID.Empty || p_Node.Lod1ChunkSize != 0;
+            p_Writer.Write(s_Lod1);
+
+            if (s_Lod1)
+            {
+                p_Writer.Write(p_Node.Lod1ChunkSize);
+                p_Node.Lod1ChunkID.Serialize(p_Writer);
+            }
+
+            p_Writer.Write(p_Node.PersistentDedicatedServer);
+
+            var s_HasChildren = p_Node.Children != null && p_Node.Children.Length > 0;
+            p_Writer.Write(s_HasChildren);
+
+            if (!s_HasChildren)
+                return;
+
+            foreach (var s_Child in p_Node.Children!)
+                SaveNodes(p_Writer, s_Child);
         }
 
         public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {
+            var s_Stream = new MemoryStream();
+            using var s_Writer = new RimeWriter(s_Stream);
+
+            if (Serialize(s_Writer))
+            {
+                p_Data = s_Stream.ToArray();
+                return true;
+            }
+
             p_Data = null;
-            throw new System.NotImplementedException();
+            return false;
         }
+
+        /// <summary>Every raster tree the stream announced, as (type, byte size). Diagnostic: it is
+        /// the only way to tell "this level has no material tree" from "the parse lost it".</summary>
+        public List<(int Type, uint Size, long Consumed)> SeenRasterTrees { get; } = new();
 
         public void Deserialize(RimeReader p_Reader)
         {
@@ -86,7 +173,12 @@ namespace RimeLib.Terrain.Frostbite2_0
             NodeCount = p_Reader.ReadUInt32();
             FreeStreamingEnabled = p_Reader.ReadBool();
 
+            // Capacity is not size: the loop below assigns BY INDEX, so the list has to hold the
+            // slots up front or deserialising any streaming tree throws before it reads a tree.
             RasterTrees = new List<RasterTree>((int)RasterTree.RasterTreeTypes.RasterTreeTypeCount);
+
+            for (var i = 0; i < (int)RasterTree.RasterTreeTypes.RasterTreeTypeCount; ++i)
+                RasterTrees.Add(null!);
 
             for (; ; )
             {
@@ -96,35 +188,83 @@ namespace RimeLib.Terrain.Frostbite2_0
 
                 var s_RasterTreeLoadSize = p_Reader.ReadUInt32();
 
+
                 Debug.WriteLine("Parsing '{0}' raster tree with size '{1}'.", s_RasterTreeType, s_RasterTreeLoadSize);
 
                 var s_InitialPosition = p_Reader.Position;
+                byte[]? s_Unparsed = null;
 
                 if (s_RasterTreeLoadSize < 1)
                     throw new InvalidDataException("Raster tree load size is invalid.");
 
                 if (s_RasterTreeType == RasterTree.RasterTreeTypes.HeightfieldTreeType)
                 {
-                    RasterTrees[(int)s_RasterTreeType] = new HeightfieldTree();
-                    RasterTrees[(int)s_RasterTreeType].Deserialize(p_Reader);
+                    // Read the block whole, as the mask tree below is. The heightfield parser stops
+                    // at the root node and keeps the remainder as Trailing, which is only the
+                    // heightfield's own remainder if it cannot see past the end of its block.
+                    var s_HeightfieldBytes = p_Reader.ReadBytes((int)s_RasterTreeLoadSize);
+                    var s_Heightfield = new HeightfieldTree();
+
+                    s_Heightfield.Deserialize(s_HeightfieldBytes);
+                    RasterTrees[(int)s_RasterTreeType] = s_Heightfield;
+                }
+                else if (s_RasterTreeType == RasterTree.RasterTreeTypes.TerrainMaskTreeType)
+                {
+                    // Read the block whole first: the mask tree's layout is still being worked out,
+                    // and keeping the bytes lets a caller see what a partial parse left behind.
+                    var s_MaskBytes = p_Reader.ReadBytes((int)s_RasterTreeLoadSize);
+                    var s_Mask = new TerrainMaskTree { Raw = s_MaskBytes };
+
+                    s_Mask.Deserialize(s_MaskBytes);
+                    RasterTrees[(int)s_RasterTreeType] = s_Mask;
                 }
                 else if (s_RasterTreeType == RasterTree.RasterTreeTypes.TerrainMaterialTreeType)
                 {
-                    RasterTrees[(int)s_RasterTreeType] = new TerrainMaterialTree();
-                    RasterTrees[(int)s_RasterTreeType].Deserialize(p_Reader);
+                    var s_MaterialBytes = p_Reader.ReadBytes((int)s_RasterTreeLoadSize);
+                    var s_Material = new TerrainMaterialTree();
+
+                    s_Material.Deserialize(s_MaterialBytes);
+                    RasterTrees[(int)s_RasterTreeType] = s_Material;
                 }
                 else if (s_RasterTreeType == RasterTree.RasterTreeTypes.DestructionDepthTreeType)
                 {
-                    RasterTrees[(int)s_RasterTreeType] = new DestructionDepthTree();
-                    RasterTrees[(int)s_RasterTreeType].Deserialize(p_Reader);
+                    var s_DestructionBytes = p_Reader.ReadBytes((int)s_RasterTreeLoadSize);
+                    var s_Destruction = new DestructionDepthTree();
+
+                    s_Destruction.Deserialize(s_DestructionBytes);
+                    RasterTrees[(int)s_RasterTreeType] = s_Destruction;
                 }
                 else
                 {
+                    // No parser for this type -- keep the bytes so it can be written back.
                     Debug.WriteLine("Skipping raster tree loading of type '{0}'.", s_RasterTreeType);
-                    p_Reader.Seek(s_RasterTreeLoadSize, SeekOrigin.Current);
+                    s_Unparsed = p_Reader.ReadBytes((int)s_RasterTreeLoadSize);
                 }
 
                 Debug.WriteLine("Read '{0}' bytes.", p_Reader.Position - s_InitialPosition);
+
+                // Resync on the size the stream declared, whatever the sub-parser consumed.
+                //
+                // Each raster tree announces its length, and only the UNKNOWN branch above was
+                // using it. A tree whose parser reads a byte too few or too many therefore
+                // misaligned everything after it -- which is why a level's material tree came back
+                // missing: the heightfield before it left the cursor in the wrong place, and its
+                // type byte was then read out of the middle of somebody else's data.
+                // Recorded after parsing so the caller can see a sub-parser that read the wrong
+                // number of bytes -- silent misalignment is how the material tree came back empty.
+                SeenRasterTrees.Add(((int)s_RasterTreeType, s_RasterTreeLoadSize,
+                    p_Reader.Position - s_InitialPosition));
+                RasterTreeOrder.Add(((int)s_RasterTreeType, s_Unparsed));
+
+                var s_Expected = s_InitialPosition + s_RasterTreeLoadSize;
+
+                if (p_Reader.Position != s_Expected)
+                {
+                    Debug.WriteLine("Raster tree '{0}' read {1} of {2} bytes; resyncing.",
+                        s_RasterTreeType, p_Reader.Position - s_InitialPosition, s_RasterTreeLoadSize);
+
+                    p_Reader.Seek(s_Expected, SeekOrigin.Begin);
+                }
             }
 
             var s_RootNode = new QuadtreeNodeId()
@@ -148,7 +288,10 @@ namespace RimeLib.Terrain.Frostbite2_0
 
         public void Deserialize(byte[] p_Data)
         {
-            throw new System.NotImplementedException();
+            Raw = p_Data;
+
+            using var s_Reader = new RimeReader(new MemoryStream(p_Data));
+            Deserialize(s_Reader);
         }
     }
 

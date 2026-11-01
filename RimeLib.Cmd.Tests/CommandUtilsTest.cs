@@ -102,6 +102,31 @@ namespace RimeLib.Cmd.Tests
                 CommandUtils.ParseArguments("one t\\wo"),
                 new[] { "one", "t\\wo" }
             );
+
+            // A resource name whose LAST character is a space survives quoting.
+            //
+            // BF3 ships exactly one: `objects/rugpile_01/rugpile_01_n ` (a DICE typo -- rugpile_02
+            // has none). Unquoted it tokenises to `..._n` and the builder reports "Could not find
+            // resource", because no such resource exists. Emitters must quote it; this pins the
+            // parser side of that contract.
+            Assert.Equal(
+                CommandUtils.ParseArguments(
+                    "add_existing_resource \"objects/rugpile_01/rugpile_01_n \" 1"),
+                new[] { "add_existing_resource", "objects/rugpile_01/rugpile_01_n ", "1" }
+            );
+
+            // The same name UNQUOTED loses the space -- the failure this guards against.
+            Assert.Equal(
+                CommandUtils.ParseArguments(
+                    "add_existing_resource objects/rugpile_01/rugpile_01_n  1"),
+                new[] { "add_existing_resource", "objects/rugpile_01/rugpile_01_n", "1" }
+            );
+
+            // A quoted argument that is ONLY whitespace is still an argument.
+            Assert.Equal(
+                CommandUtils.ParseArguments("cmd \" \" x"),
+                new[] { "cmd", " ", "x" }
+            );
         }
 
         [Fact]

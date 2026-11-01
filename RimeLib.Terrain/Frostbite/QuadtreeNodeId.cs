@@ -31,15 +31,32 @@ public class QuadtreeNodeId : IFbSerializable
         Deserialize(p_Reader);
     }
 
+    /// <summary>
+    /// The exact inverse of <see cref="Deserialize(RimeReader)"/>: level as a byte, then the two
+    /// indices as UInt16, in that order. Five bytes, not padded.
+    /// </summary>
     public bool Serialize(RimeWriter p_Writer)
     {
-        throw new System.NotImplementedException();
+        p_Writer.Write(Level);
+        p_Writer.Write(IndexX);
+        p_Writer.Write(IndexY);
+
+        return true;
     }
 
     public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
     {
+        var s_Stream = new System.IO.MemoryStream();
+        using var s_Writer = new RimeWriter(s_Stream);
+
+        if (Serialize(s_Writer))
+        {
+            p_Data = s_Stream.ToArray();
+            return true;
+        }
+
         p_Data = null;
-        throw new System.NotImplementedException();
+        return false;
     }
 
     public void Deserialize(RimeReader p_Reader)
@@ -51,7 +68,8 @@ public class QuadtreeNodeId : IFbSerializable
 
     public void Deserialize(byte[] p_Data)
     {
-        throw new System.NotImplementedException();
+        using var s_Reader = new RimeReader(new System.IO.MemoryStream(p_Data));
+        Deserialize(s_Reader);
     }
 
     protected bool Equals(QuadtreeNodeId other)

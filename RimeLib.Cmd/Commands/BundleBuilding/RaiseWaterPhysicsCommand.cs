@@ -1,4 +1,5 @@
 using RimeLib.Cmd.Attributes;
+using RimeLib.Content.Building;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
@@ -6,7 +7,6 @@ using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -33,35 +33,6 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
         [CommandArgument(Description = "Leave the shared MOPP origin alone and move only this body. Set it when one Havok serves water bodies at different heights.", Optional = true)]
         public bool KeepMoppOffset { get; set; } = false;
-
-        // Serves the raised bytes from memory, keeping the original variant's type and meta.
-        private class RawResource : IResourceObject
-        {
-            private readonly IResourceVariant m_Original;
-            private readonly byte[] m_Data;
-            private readonly string? m_Name;
-
-            public RawResource(IResourceVariant p_Original, byte[] p_Data, string? p_Name = null)
-            {
-                m_Original = p_Original;
-                m_Data = p_Data;
-                m_Name = p_Name;
-            }
-
-            public ResourceType GetResourceType() => m_Original.GetResourceType();
-
-            public bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta) => m_Original.TryGetMeta(out p_Meta);
-
-            public ResourceRef GetId(string? p_Name = null)
-            {
-                try { return m_Original.GetId(p_Name ?? m_Name); }
-                catch { return new ResourceRef(p_Name ?? m_Name ?? string.Empty, this); }
-            }
-
-            public RimeReader GetReader() => new RimeReader(new MemoryStream(m_Data, false));
-
-            public long GetSize() => m_Data.Length;
-        }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
@@ -116,7 +87,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             }
 
             var s_OutName = string.IsNullOrWhiteSpace(NewName) ? Name! : NewName!;
-            s_BundleContext.AddResource(s_OutName, new RawResource(s_Variant, s_Bytes, s_OutName));
+            s_BundleContext.AddResource(s_OutName, new ReplacedResource(s_Variant, s_Bytes, s_OutName));
             p_Writer.WriteLine($"Raised '{Name}' water physics by Y {DeltaY:+0.##;-0.##}" +
                                (s_OutName == Name ? "." : $", published as '{s_OutName}'."));
             return true;
