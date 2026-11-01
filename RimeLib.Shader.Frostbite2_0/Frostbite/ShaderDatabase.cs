@@ -7,7 +7,7 @@ using System.IO;
 using fb;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
-using RimeLib.Mesh.Frostbite;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 using RimeLib.Serialization;
 using RimeLib.Shader.Frostbite2_0.Frostbite.Functions;
 

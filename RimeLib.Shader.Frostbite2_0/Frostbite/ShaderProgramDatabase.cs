@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using fb;
-using RimeLib.Mesh.Frostbite;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 
 namespace RimeLib.Shader.Frostbite2_0.Frostbite;
 

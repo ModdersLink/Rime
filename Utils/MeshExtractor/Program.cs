@@ -3,7 +3,6 @@ using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.IO;
 using RimeLib.Math;
-using RimeLib.Mesh.Frostbite;
 using SharpGLTF.Geometry;
 using SharpGLTF.Materials;
 using SharpGLTF.Schema2;
@@ -20,9 +19,10 @@ using System.Runtime.InteropServices;
 using RimeLib.Serialization.Frostbite2_0.Ebx;
 using fb;
 using RimeLib;
-using MeshSubsetCategory = RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory;
+using MeshSubsetCategory = RimeLib.Mesh.Frostbite2_0.Frostbite.MeshSubsetCategory;
 using SharpGLTF.Transforms;
 using System.Text;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 
 namespace MeshExtractor
 {
@@ -479,7 +479,7 @@ namespace MeshExtractor
                     Console.WriteLine($"Dumping rigid mesh ({s_LodName}) lod {s_LodIndex}");
 
                 // Debug checking to make sure assumptions are correct
-                if (s_Lod.CategorySubsetIndices.Length != (int)RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory.Count)
+                if (s_Lod.CategorySubsetIndices.Length != (int)RimeLib.Mesh.Frostbite2_0.Frostbite.MeshSubsetCategory.Count)
                     throw new Exception("category subset indicies don't match the count");
 
                 // Get the data chunk
@@ -721,7 +721,7 @@ namespace MeshExtractor
                         switch (s_SubsetKey.PrimitiveType)
                         {
                             // If we are parsing a triangle list, then read out the X, Y, Z indices
-                            case RimeLib.Mesh.Frostbite.PrimitiveType.PrimitiveType_TriangleList:
+                            case RimeLib.Mesh.Frostbite2_0.Frostbite.PrimitiveType.PrimitiveType_TriangleList:
                                 s_IndexReader.Seek(s_SubsetStartOffset, SeekOrigin.Begin);
                                 for (var s_PrimitiveIndex = 0; s_PrimitiveIndex < s_SubsetKey.PrimitiveCount; ++s_PrimitiveIndex)
                                     s_PrimitiveList.Add((s_IndexReader.ReadUInt16(), s_IndexReader.ReadUInt16(), s_IndexReader.ReadUInt16()));
@@ -819,7 +819,7 @@ namespace MeshExtractor
                     Console.WriteLine($"Dumping rigid mesh ({s_LodName}) lod {s_LodIndex}");
 
                 // Debug checking to make sure assumptions are correct
-                if (s_Lod.CategorySubsetIndices.Length != (int)RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory.Count)
+                if (s_Lod.CategorySubsetIndices.Length != (int)RimeLib.Mesh.Frostbite2_0.Frostbite.MeshSubsetCategory.Count)
                     throw new Exception("category subset indicies don't match the count");
 
                 // Get the data chunk
@@ -1124,7 +1124,7 @@ namespace MeshExtractor
                         switch (s_SubsetKey.PrimitiveType)
                         {
                             // If we are parsing a triangle list, then read out the X, Y, Z indices
-                            case RimeLib.Mesh.Frostbite.PrimitiveType.PrimitiveType_TriangleList:
+                            case RimeLib.Mesh.Frostbite2_0.Frostbite.PrimitiveType.PrimitiveType_TriangleList:
                                 s_IndexReader.Seek(s_SubsetStartOffset, SeekOrigin.Begin);
                                 for (var s_PrimitiveIndex = 0; s_PrimitiveIndex < s_SubsetKey.PrimitiveCount; ++s_PrimitiveIndex)
                                     s_PrimitiveList.Add((s_IndexReader.ReadUInt16(), s_IndexReader.ReadUInt16(), s_IndexReader.ReadUInt16()));

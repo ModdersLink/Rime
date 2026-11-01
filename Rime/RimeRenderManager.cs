@@ -11,7 +11,6 @@ using RimeLib;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.IO.Conversion;
-using RimeLib.Mesh.Frostbite;
 using RimeLib.Shader.Frostbite2_0.Frostbite;
 using RimeLib.Texture;
 using SharpDX;
@@ -26,6 +25,7 @@ using StencilOperation = SharpDX.Direct3D11.StencilOperation;
 using Vector2 = SharpDX.Vector2;
 using Vector3 = SharpDX.Vector3;
 using Vector4 = SharpDX.Vector4;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 
 namespace Rime.Rendering;
 

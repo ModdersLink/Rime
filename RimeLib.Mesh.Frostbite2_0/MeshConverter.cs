@@ -10,14 +10,14 @@ using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.Math;
-using RimeLib.Mesh.Frostbite;
 using SharpGLTF.Geometry;
 using SharpGLTF.Geometry.VertexTypes;
 using SharpGLTF.Materials;
 using SharpGLTF.Scenes;
 using SharpGLTF.Schema2;
 using SharpGLTF.Transforms;
-using MeshSubsetCategory = RimeLib.Mesh.Frostbite.Fb2.MeshSubsetCategory;
+using MeshSubsetCategory = RimeLib.Mesh.Frostbite2_0.Frostbite.MeshSubsetCategory;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 
 namespace RimeLib.Mesh.Frostbite2_0;
 
@@ -26,6 +26,33 @@ public class MeshConverter : IMeshConverter
     public EngineType[] GetSupportedEngines()
     {
         return new[] { EngineType.Frostbite2_0 };
+    }
+
+    public IReadOnlyList<(int Lod, GUID ChunkId)> GetLodChunkIds(IResourceObject p_Resource)
+    {
+        using var s_Source = p_Resource.GetReader();
+        var s_Data = s_Source.ReadBytes((int)s_Source.Length);
+        using var s_Reader = new RimeReader(new MemoryStream(s_Data));
+
+        var s_Layout = new MeshSetLayout(s_Reader);
+        var s_Result = new List<(int Lod, GUID ChunkId)>();
+
+        // MeshSetLayout has its own flag set. Bit 0 is StreamingEnable here, but IsBaseLod on a
+        // MeshLayout. With it clear there is no chunk and the geometry sits inline.
+        if (((uint)s_Layout.Flags & 1) == 0)
+            return s_Result;
+
+        // Every lod, not just the base one. IsBaseLod decides when a lod is pulled, not whether.
+        // The streaming manager reads m_dataChunkId for arbitrary lods later, so a missing
+        // non-base chunk fails at stream-in instead of at level load.
+        for (var i = 0; i < s_Layout.LodCount; ++i)
+        {
+            var s_Lod = s_Layout.Lods[i].Object;
+            if (s_Lod != null && s_Lod.DataChunkId != GUID.Empty)
+                s_Result.Add((i, s_Lod.DataChunkId));
+        }
+
+        return s_Result;
     }
 
     public Dictionary<string, GUID> GetChunkGuids(IResourceObject p_Resource)
@@ -376,7 +403,7 @@ public class MeshConverter : IMeshConverter
                     switch (s_SubsetKey.PrimitiveType)
                     {
                         // If we are parsing a triangle list, then read out the X, Y, Z indices
-                        case RimeLib.Mesh.Frostbite.PrimitiveType.PrimitiveType_TriangleList:
+                        case RimeLib.Mesh.Frostbite2_0.Frostbite.PrimitiveType.PrimitiveType_TriangleList:
                             s_IndexReader.Seek(s_SubsetStartOffset, SeekOrigin.Begin);
                             for (var s_PrimitiveIndex = 0;
                                  s_PrimitiveIndex < s_SubsetKey.PrimitiveCount;

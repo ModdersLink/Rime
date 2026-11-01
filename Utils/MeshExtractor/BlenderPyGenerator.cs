@@ -2,11 +2,13 @@
 using RimeLib.Content.Mounting;
 using RimeLib.IO;
 using RimeLib.Math;
-using RimeLib.Mesh.Frostbite;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
+// fb's enum, as before the Frostbite 2 mesh layout moved into this namespace.
+using MeshSubsetCategory = fb.MeshSubsetCategory;
 
 namespace MeshExtractor
 {
@@ -242,7 +244,7 @@ namespace MeshExtractor
             //            switch (s_SubsetKey.PrimitiveType)
             //            {
             //                // If we are parsing a triangle list, then read out the X, Y, Z indices
-            //                case RimeLib.Mesh.Frostbite.PrimitiveType.PrimitiveType_TriangleList:
+            //                case RimeLib.Mesh.Frostbite2_0.Frostbite.PrimitiveType.PrimitiveType_TriangleList:
             //                    s_IndexReader.Seek(s_SubsetStartOffset, SeekOrigin.Begin);
             //                    for (var s_PrimitiveIndex = 0; s_PrimitiveIndex < s_SubsetKey.PrimitiveCount; ++s_PrimitiveIndex)
             //                        s_PrimitiveList.Add((s_IndexReader.ReadUInt16(), s_IndexReader.ReadUInt16(), s_IndexReader.ReadUInt16()));

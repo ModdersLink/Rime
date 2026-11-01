@@ -24,4 +24,11 @@ public interface IMeshConverter : IEngineInterface
     /// </summary>
     /// <param name="p_Resource">MeshAsset resource to read.</returns>
     public Dictionary<string, GUID> GetChunkGuids(IResourceObject p_Resource);
+
+    /// <summary>
+    /// The chunks a MeshSet streams its geometry from: each LOD that has one, with its index.
+    /// Empty when the mesh keeps its geometry inline in the resource.
+    /// </summary>
+    /// <param name="p_Resource">MeshSet resource to read.</param>
+    public IReadOnlyList<(int Lod, GUID ChunkId)> GetLodChunkIds(IResourceObject p_Resource);
 }

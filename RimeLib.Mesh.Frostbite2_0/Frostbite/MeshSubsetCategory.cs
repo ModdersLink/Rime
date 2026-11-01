@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace RimeLib.Mesh.Frostbite.Fb2
+namespace RimeLib.Mesh.Frostbite2_0.Frostbite
 {
     public enum MeshSubsetCategory
     {

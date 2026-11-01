@@ -2,7 +2,7 @@
 using RimeLib.IO;
 using System.Diagnostics.CodeAnalysis;
 using fb;
-using RimeLib.Mesh.Frostbite;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 using System.IO;
 using RimeLib.Extensions;
 using System.Collections.Generic;

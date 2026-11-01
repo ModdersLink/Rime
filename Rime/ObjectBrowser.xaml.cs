@@ -17,7 +17,7 @@ using SharpGLTF.Schema2;
 using RimeLib.IO;
 using System.IO;
 using RimeLib.Extensions;
-using RimeLib.Mesh.Frostbite;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 
 namespace Rime
 {

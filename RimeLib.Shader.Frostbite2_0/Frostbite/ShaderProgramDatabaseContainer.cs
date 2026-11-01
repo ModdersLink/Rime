@@ -3,7 +3,7 @@ using System.Diagnostics.CodeAnalysis;
 using fb;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
-using RimeLib.Mesh.Frostbite;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 
 namespace RimeLib.Shader.Frostbite2_0.Frostbite;
 
