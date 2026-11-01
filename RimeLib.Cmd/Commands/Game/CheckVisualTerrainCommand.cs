@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using Newtonsoft.Json;
 using RimeLib.Cmd.Attributes;
+using RimeLib.Content.Building;
 using RimeLib.Cmd.Contexts;
 using RimeLib;
 using RimeLib.Content.Frostbite;
@@ -37,33 +37,6 @@ namespace RimeLib.Cmd.Commands.Game
 
         [CommandArgument(Description = "Optional .json file to write the full result to.", Optional = true)]
         public FileInfo? Destination { get; set; }
-
-        /// <summary>Serves bytes held in memory under another resource's type, meta and id.</summary>
-        private class MemoryResource : IResourceObject
-        {
-            private readonly IResourceObject m_Original;
-            private readonly byte[] m_Data;
-
-            public MemoryResource(IResourceObject p_Original, byte[] p_Data)
-            {
-                m_Original = p_Original;
-                m_Data = p_Data;
-            }
-
-            public ResourceType GetResourceType() => m_Original.GetResourceType();
-
-            public bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta) => m_Original.TryGetMeta(out p_Meta);
-
-            public ResourceRef GetId(string? p_Name = null)
-            {
-                try { return m_Original.GetId(p_Name); }
-                catch { return new ResourceRef(p_Name ?? string.Empty, this); }
-            }
-
-            public RimeReader GetReader() => new RimeReader(new MemoryStream(m_Data, false));
-
-            public long GetSize() => m_Data.Length;
-        }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
@@ -144,7 +117,7 @@ namespace RimeLib.Cmd.Commands.Game
 
                 if (s_EditApplied)
                 {
-                    var s_Edited = new MemoryResource(s_Variant, s_EditedBytes!);
+                    var s_Edited = new ReplacedResource(s_Variant, s_EditedBytes!);
 
                     if (s_Terrain.ReadVisualTerrain(s_Edited, s_Mounter, out var s_After) && s_After != null
                         && s_After.Scattering.Count == s_Info.Scattering.Count)

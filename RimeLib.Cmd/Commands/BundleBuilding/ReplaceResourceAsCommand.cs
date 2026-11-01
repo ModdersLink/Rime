@@ -1,11 +1,11 @@
 using RimeLib.Cmd.Attributes;
+using RimeLib.Content.Building;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using System;
-using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 
@@ -31,46 +31,6 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
         [CommandArgument(Description = "Meta override as a hex string, for a resource whose section sizes changed. Defaults to the original's meta.", Optional = true)]
         public string? MetaHex { get; set; }
-
-        // Wraps the original resource variant's type and meta but serves new data from a file, under a
-        // different name so the original is not overridden.
-        private class RenamedResource : IResourceObject
-        {
-            private readonly IResourceVariant m_Original;
-            private readonly string m_Path;
-            private readonly string m_Name;
-            private readonly byte[]? m_MetaOverride;
-
-            public RenamedResource(IResourceVariant p_Original, string p_Path, string p_Name, byte[]? p_MetaOverride = null)
-            {
-                m_Original = p_Original;
-                m_Path = p_Path;
-                m_Name = p_Name;
-                m_MetaOverride = p_MetaOverride;
-            }
-
-            public ResourceType GetResourceType() => m_Original.GetResourceType();
-
-            public bool TryGetMeta([NotNullWhen(true)] out byte[]? p_Meta)
-            {
-                if (m_MetaOverride != null) { p_Meta = m_MetaOverride; return true; }
-                return m_Original.TryGetMeta(out p_Meta);
-            }
-
-            public ResourceRef GetId(string? p_Name = null)
-            {
-                try { return m_Original.GetId(p_Name ?? m_Name); }
-                catch { return new ResourceRef(p_Name ?? m_Name, this); }
-            }
-
-            public RimeReader GetReader()
-            {
-                var s_FileStream = File.Open(m_Path, FileMode.Open, FileAccess.Read, FileShare.Read);
-                return new RimeReader(s_FileStream);
-            }
-
-            public long GetSize() => new FileInfo(m_Path).Length;
-        }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
@@ -145,7 +105,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             p_Writer.WriteLine($"Adding '{NewName}' (type {s_Variant.GetResourceType()}, meta {s_MetaHex} from '{OrigName}') with {FilePath.Length} bytes from {FilePath.Name}.");
 
-            s_BundleContext.AddResource(NewName!, new RenamedResource(s_Variant, FilePath.FullName, NewName!, s_MetaOverride));
+            s_BundleContext.AddResource(NewName!, ReplacedResource.FromFile(s_Variant, FilePath.FullName, NewName!, s_MetaOverride));
 
             return true;
         }
