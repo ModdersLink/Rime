@@ -29,17 +29,31 @@ public static class DataContainerTypeRegistry
 
     private static void RefreshTypes()
     {
-        var s_GuidTypes = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(a => a.GetTypes())
-            .Where(t => t.GetCustomAttribute<ContainerTypeAttribute>() != null);
-        
-        Type? s_FoundInterface = null;
+        // Other engines' assemblies define the same type names; this assembly's types take precedence.
+        var s_Own = typeof(DataContainerTypeRegistry).Assembly;
 
-        // From the above types, check the engine support method for each and register accordingly.
-        foreach (var s_InterfaceType in s_GuidTypes)
+        foreach (var s_Type in ContainerTypes(s_Own))
+            NameRegistry.TryAdd(s_Type.Name, s_Type);
+
+        foreach (var s_Assembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => a != s_Own))
         {
-            NameRegistry.TryAdd(s_InterfaceType.Name, s_InterfaceType);
+            foreach (var s_Type in ContainerTypes(s_Assembly))
+                NameRegistry.TryAdd(s_Type.Name, s_Type);
+        }
+    }
+
+    private static IEnumerable<Type> ContainerTypes(Assembly p_Assembly)
+    {
+        Type[] s_Types;
+        try
+        {
+            s_Types = p_Assembly.GetTypes();
+        }
+        catch (ReflectionTypeLoadException s_Ex)
+        {
+            s_Types = s_Ex.Types.Where(t => t != null).ToArray()!;
         }
 
+        return s_Types.Where(t => t.GetCustomAttribute<ContainerTypeAttribute>() != null);
     }
 }
