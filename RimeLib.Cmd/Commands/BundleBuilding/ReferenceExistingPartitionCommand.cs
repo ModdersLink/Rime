@@ -43,24 +43,6 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "Comma-separated partition name prefixes to leave out of the closure, e.g. 'characters/'.", Optional = true)]
         public string? SkipPrefixes { get; set; }
 
-        // A named instance is tried as a resource with each of these appended. Every one is a real
-        // bind the engine performs off Asset.Name. The ones that do not apply to a given name simply
-        // miss, so there is no need to know which type wants which.
-        //
-        // Lowercase because that is how a manifest spells a name. The binary has them as
-        // `_occluderMesh`, `/ShaderDb` and `.Visual`. `.streamingtree` and `.decals` are the odd
-        // ones out: their authoritative names live inside the VisualTerrain payload, which layer 3
-        // reads. They stay here as a fallback, because the convention only usually matches.
-        private static readonly string[] c_NameSuffixes =
-        {
-            "",
-            "_occludermesh",
-            "/shaderdb",
-            ".visual",
-            ".streamingtree",
-            ".decals",
-        };
-
         private readonly Queue<string> m_PartitionQueue = new();
         private readonly Queue<string> m_ResourceQueue = new();
         // AssetName picks the variant, and is set only for a chunk named by a resource payload.
@@ -77,14 +59,13 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         private readonly HashSet<string> m_ExcludedResources = new(StringComparer.OrdinalIgnoreCase);
         private string[] m_SkipPrefixes = Array.Empty<string>();
 
-        // The instance being walked, so a chunk found by the guid sweep can name what asked for it.
-        private string m_Origin = string.Empty;
 
         private BundleBuildingContext m_Context = null!;
         private IEngineMounter m_Mounter = null!;
         private IPartitionConverter m_PartitionConverter = null!;
         private ITextureConverter? m_TextureConverter;
         private IMeshConverter? m_MeshConverter;
+        private AssetReferenceScanner m_Scanner = null!;
         private TextWriter m_Writer = null!;
 
         private int m_AddedPartitions;
@@ -142,6 +123,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 // Same as textures: without it every mesh ships without its streamed geometry.
                 p_Writer.WriteLine($"WARN: no mesh converter ({s_Ex.Message}). Mesh chunks will not be resolved.");
             }
+
+            m_Scanner = new AssetReferenceScanner(m_Mounter, m_PartitionConverter, m_TextureConverter, m_MeshConverter);
 
             m_SkipPrefixes = string.IsNullOrWhiteSpace(SkipPrefixes)
                 ? Array.Empty<string>()
@@ -353,43 +336,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             m_AddedPartitions++;
             m_Writer.WriteLine($"PART {p_Name}");
 
-            try
-            {
-                var s_Parsed = m_PartitionConverter.FromPartitionObject(p_Name, s_Variant);
-
-                foreach (var s_Instance in s_Parsed.Instances)
-                {
-                    m_Origin = $"{p_Name}#{s_Instance?.GetType().Name}";
-                    WalkInstance(s_Instance);
-                }
-
-                CollectMeshVariationTextures(p_Name, s_Parsed.PartitionGuid);
-            }
-            catch (Exception s_Ex)
-            {
-                m_Unresolved.Add($"partition {p_Name} could not be parsed: {s_Ex.Message}");
-            }
-        }
-
-        /// <summary>
-        /// The textures a mesh partition's MeshVariationDatabase entries bind. Nothing in the EBX
-        /// names these, so this index is the only way a closure walk reaches them.
-        /// </summary>
-        private void CollectMeshVariationTextures(string p_Name, GUID p_PartitionGuid)
-        {
-            if (!MeshVariationDbIndex.TryGetTexturePartitions(p_PartitionGuid, out var s_Textures))
-                return;
-
-            foreach (var s_Texture in s_Textures)
-            {
-                if (!m_Mounter.TryGetPartitionByGuid(s_Texture, out var s_TextureName, out _))
-                {
-                    m_Unresolved.Add($"MVDB texture partition {s_Texture} bound by a mesh in {p_Name}");
-                    continue;
-                }
-
-                m_PartitionQueue.Enqueue(s_TextureName);
-            }
+            Enqueue(m_Scanner.ScanPartition(p_Name, s_Variant));
         }
 
         private void ProcessResource(string p_Name)
@@ -420,8 +367,15 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_Type = s_Variant.GetResourceType();
             m_Writer.WriteLine($"RES  {p_Name} ({s_Type})");
 
-            CollectPayloadChunks(p_Name, s_Variant, s_Type);
-            CollectPayloadNames(p_Name, s_Variant, s_Type);
+            if (s_Type == ResourceType.MeshSet)
+                m_AddedMeshes++;
+
+            var s_References = m_Scanner.ScanResource(p_Name, s_Variant);
+
+            foreach (var s_PayloadResource in s_References.PayloadResources)
+                m_Writer.WriteLine($"PAY  {p_Name} -> res {s_PayloadResource}");
+
+            Enqueue(s_References);
         }
 
         private void ProcessChunk(GUID p_Id, string? p_AssetName, string p_Origin)
@@ -452,175 +406,19 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             m_Writer.WriteLine($"CHNK {p_Id} <- {p_Origin}");
         }
 
-        /// <summary>
-        /// Layer 3: the resource names a resource holds inside its own payload. An EBX walk cannot
-        /// reach these, and neither can a chunk-guid walk, so a level with terrain or Enlighten is
-        /// under-resolved without them.
-        /// </summary>
-        private void CollectPayloadNames(string p_Name, IResourceVariant p_Variant, ResourceType p_Type)
+        /// <summary>Queues everything one scanned item references, and records what it could not scan.</summary>
+        private void Enqueue(AssetReferenceScanner.References p_References)
         {
-            if (!ResourcePayloadDependencies.Handles(p_Type))
-                return;
-
-            byte[] s_Data;
-            try
-            {
-                using var s_Source = p_Variant.GetReader();
-                s_Data = s_Source.ReadBytes((int)s_Source.Length);
-            }
-            catch (Exception s_Ex)
-            {
-                m_Unresolved.Add($"resource {p_Name} ({p_Type}) payload could not be read: {s_Ex.Message}");
-                return;
-            }
-
-            var s_Payload = ResourcePayloadDependencies.Read(p_Type, s_Data);
-
-            if (s_Payload.Error != null)
-            {
-                m_Unresolved.Add($"resource {p_Name} ({p_Type}) payload could not be walked: {s_Payload.Error}");
-                return;
-            }
-
-            foreach (var s_Resource in s_Payload.ResourceNames)
-            {
-                m_ResourceQueue.Enqueue(s_Resource);
-                m_Writer.WriteLine($"PAY  {p_Name} -> res {s_Resource}");
-            }
-
-            foreach (var s_Partition in s_Payload.PartitionNames)
+            foreach (var s_Partition in p_References.Partitions)
                 m_PartitionQueue.Enqueue(s_Partition);
 
-            foreach (var s_Chunk in s_Payload.ChunkIds)
-                m_ChunkQueue.Enqueue((s_Chunk, p_Name, $"{p_Name} payload"));
-        }
+            foreach (var s_Resource in p_References.Resources)
+                m_ResourceQueue.Enqueue(s_Resource);
 
-        /// <summary>Layer 2: the chunk guids a resource reads out of its own payload.</summary>
-        private void CollectPayloadChunks(string p_Name, IResourceVariant p_Variant, ResourceType p_Type)
-        {
-            try
-            {
-                if (p_Type == ResourceType.DxTexture || p_Type == ResourceType.Ps3Texture)
-                {
-                    if (m_TextureConverter == null)
-                        return;
+            foreach (var s_Chunk in p_References.Chunks)
+                m_ChunkQueue.Enqueue(s_Chunk);
 
-                    // A non-chunked texture keeps its whole payload in the resource.
-                    var s_ChunkId = m_TextureConverter.GetTextureChunkId(p_Variant);
-                    if (s_ChunkId != GUID.Empty)
-                        m_ChunkQueue.Enqueue((s_ChunkId, p_Name, p_Name));
-                }
-                else if (p_Type == ResourceType.MeshSet)
-                {
-                    m_AddedMeshes++;
-
-                    if (m_MeshConverter == null)
-                        return;
-
-                    foreach (var (s_Lod, s_ChunkId) in m_MeshConverter.GetLodChunkIds(p_Variant))
-                        m_ChunkQueue.Enqueue((s_ChunkId, p_Name, $"{p_Name} lod{s_Lod}"));
-                }
-            }
-            catch (Exception s_Ex)
-            {
-                m_Unresolved.Add($"resource {p_Name} ({p_Type}) payload could not be read for chunks: {s_Ex.Message}");
-            }
-        }
-
-        /// <summary>Layer 1: everything an instance names, by reference, by resource name or by chunk guid.</summary>
-        private void WalkInstance(DataContainerBase? p_Instance)
-        {
-            if (p_Instance == null)
-                return;
-
-            CollectFields(p_Instance);
-
-            var s_Type = p_Instance.GetType();
-
-            if (s_Type.GetProperty("Name")?.GetValue(p_Instance) is string s_Name && s_Name.Length > 0)
-            {
-                var s_Lower = s_Name.ToLowerInvariant();
-
-                foreach (var s_Suffix in c_NameSuffixes)
-                    m_ResourceQueue.Enqueue($"{s_Lower}{s_Suffix}");
-            }
-
-            if (s_Type.GetProperty("ResourceName")?.GetValue(p_Instance) is string s_ResourceName && s_ResourceName.Length > 0)
-                m_ResourceQueue.Enqueue(s_ResourceName.ToLowerInvariant());
-        }
-
-        /// <summary>
-        /// Walks the reflected fields of an instance or a nested struct, collecting partition
-        /// references and chunk guids.
-        ///
-        /// Guids are matched against the mounted chunk table instead of a list of known chunk
-        /// fields. Most guid fields hold partition or instance ids, which are not in that table, so
-        /// the table does the classifying and nothing has to be listed by hand.
-        /// </summary>
-        private void CollectFields(object? p_Object)
-        {
-            if (p_Object == null)
-                return;
-
-            var s_Properties = p_Object.GetType()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p_P => p_P.GetCustomAttribute<ContainerFieldAttribute>() != null);
-
-            foreach (var s_Property in s_Properties)
-            {
-                object? s_Value;
-                try
-                {
-                    s_Value = s_Property.GetValue(p_Object);
-                }
-                catch
-                {
-                    continue;
-                }
-
-                CollectValue(s_Value);
-            }
-        }
-
-        private void CollectValue(object? p_Value)
-        {
-            switch (p_Value)
-            {
-                case null:
-                    return;
-
-                case CtrRefBase s_Ref:
-                    if (!s_Ref.IsNull())
-                        m_PartitionQueue.Enqueue(ResolvePartitionName(s_Ref.PartitionGuid));
-                    return;
-
-                case GUID s_Guid:
-                    if (s_Guid != GUID.Empty && m_Mounter.TryGetChunk(s_Guid, out _))
-                        m_ChunkQueue.Enqueue((s_Guid, null, m_Origin));
-                    return;
-
-                case string:
-                    return;
-
-                case EbxSerializable s_Serializable:
-                    CollectFields(s_Serializable);
-                    return;
-
-                case IEnumerable s_Enumerable:
-                    foreach (var s_Item in s_Enumerable)
-                        CollectValue(s_Item);
-                    return;
-            }
-        }
-
-        private string ResolvePartitionName(GUID p_Guid)
-        {
-            if (m_Mounter.TryGetPartitionByGuid(p_Guid, out var s_Name, out _))
-                return s_Name;
-
-            // Return the guid as the name, so the miss is reported once on the same path as every
-            // other miss, instead of being counted here and lost when the reference shows up again.
-            return p_Guid.ToString();
+            m_Unresolved.AddRange(p_References.Problems);
         }
 
         private bool IsSkippedByPrefix(string p_Name)

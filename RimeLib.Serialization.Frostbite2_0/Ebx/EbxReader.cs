@@ -53,6 +53,35 @@ public class EbxReader : IDisposable
         return m_Partition;
     }
 
+    /// <summary>
+    /// The partition's GUID and the distinct GUIDs of the partitions it imports, read from the header
+    /// and the import table only.
+    /// </summary>
+    public static (GUID Partition, IReadOnlyCollection<GUID> Imports) ReadPartitionImports(IObjectVariant p_Variant)
+    {
+        using var s_Source = p_Variant.GetReader();
+
+        var s_Magic = s_Source.ReadBytes(4);
+        s_Source.Seek(-4, SeekOrigin.Current);
+
+        RimeReader s_Reader;
+
+        if (IsLittleEndian(s_Magic))
+            s_Reader = new RimeReader(s_Source, Endianness.LittleEndian, false);
+        else if (IsBigEndian(s_Magic))
+            s_Reader = new RimeReader(s_Source, Endianness.BigEndian, false);
+        else
+            throw new Exception("The supplied file has an invalid magic header.");
+
+        var s_Header = new StreamingPartitionHeader(s_Reader);
+
+        var s_Imports = new HashSet<GUID>();
+        for (var i = 0; i < s_Header.ImportCount; ++i)
+            s_Imports.Add(new ImportEntry(s_Reader).PartitionGuid);
+
+        return (s_Header.PartitionGuid, s_Imports);
+    }
+
     public static GUID GetPartitionGuid(IObjectVariant p_Variant)
     {
         // The source owns a file handle, and the endian wrapper below is built with p_ShouldDispose

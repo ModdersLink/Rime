@@ -39,6 +39,19 @@ namespace RimeLib.Shader.Frostbite2_0
             return textureNames;
         }
 
+        public ISet<string> GetShaderNames()
+        {
+            var shaderNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+            if (ShaderDatabaseContainer == null)
+                return shaderNames;
+
+            foreach (var database in ShaderDatabaseContainer.Databases.Values)
+                shaderNames.UnionWith(database.Shaders.Keys);
+
+            return shaderNames;
+        }
+
         public void Initialize(IResourceObject resource, IEngineMounter mounter)
         {
             if (resource == null)
