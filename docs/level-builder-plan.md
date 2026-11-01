@@ -60,6 +60,29 @@ and the gamemodes. Every bundle of the level: 0 unexplained.
 | Anything an always-loaded parent bundle already has | leave it out; registering it twice can freeze the client (two mesh variation registrations do) |
 | Content only gamemodes need | may live in the main bundle: 109 `SoldierWeaponUnlockAsset`, 100 `ValueUnlockAsset`, UI graphs and combat-area assets, shaders and effects |
 
+### Registry rules (BF3, measured with `analyze_registry` on `mp_subway` and `rush`)
+`analyze_registry <level partition>` compares a registry with the closure of its level partition,
+instance by instance, and searches for the property that decides whether an instance is listed.
+Measured on BF3 `mp_subway` and `rush`:
+
+| Registry | Lists | Rule found |
+|---|---|---|
+| `EntityRegistry` | networked entity data (soldier weapons, synced bools, objectives, map markers, vehicles, projectiles, pickups, round and combat-area logic, vegetation trees, debris clusters) | every instance of these types in the closure; debris clusters only when `ClientSideOnly` is false |
+| `AssetRegistry` | unlocks, object variations, soldier customizations, dog tags | every instance in the closure |
+| | skinned meshes | only those an unlock points at (`BlueprintAndVariationPair.BaseAsset`, `UnlockAsset.LinkedTo`); weapon 1p/3p and socket meshes are left out |
+| `BlueprintRegistry` | blueprints | `NeedNetworkId` set (all 724 main-bundle object blueprints without it are left out) |
+| `ReferenceObjectRegistry` | reference objects | the referenced blueprint has `NeedNetworkId` set (2686 of 2687 unlisted ones lack it) |
+| `BlueprintRegistry` / `ReferenceObjectRegistry` | world parts and their reference objects | open: 4 of 42 in `rush`, 10 of 52 in `mp_subway`; empty world parts are never listed |
+
+A sub-world's registry lists only its own closure. The level's own registry (in `LevelData`) also
+lists the sub-worlds' networked content (weapons, vehicles, ~1500 unlocks), which `LevelData`'s
+closure doesn't reach, because sub-worlds are referenced by bundle name.
+
+`generate_registry_container` predates these rules: it scans only the partitions of the bundle being
+built and uses a fixed type list, so on cloned retail bundles it misses most entries (`rush`: 2056
+assets, 146 entities, 118 blueprints) and adds others. Rebuilding it on the closure with the rules
+above is the next step.
+
 ### Things the engine finds by name (roots of their own)
 - `<bundle>/meshvariationdb_win32`, one per bundle, plus `weapon_shaderstateassets/*/meshvariationdb_win32`.
 - BF4 also: `<bundle>_networkregistry_win32` and `<bundle>_win32_antstate` (`AntStateAsset`), one
@@ -183,8 +206,8 @@ engine interfaces, so no version-specific code lives in the general projects.
 `AssetReferenceScanner`), `generate_registry_container`, `emit_subworld_registry`,
 `mvdb_add_all` / `mvdb_add_entry`, `resolve_shader_textures`, `analyze_level`.
 
-Missing: a shader database builder (and for BF4 a full shader database reader), the material grid
-derivation, `LevelData` sub-world reference generation, hoisting, the recipe and `build_level`.
+Missing: registry derivation by the measured rules, a shader database builder (and for BF4 a full
+shader database reader), the material grid derivation, `LevelData` sub-world reference generation, hoisting, the recipe and `build_level`.
 
 ### Templates
 Recipe fragments that expand to a root list by querying the mounted game ("all weapons": every weapon
