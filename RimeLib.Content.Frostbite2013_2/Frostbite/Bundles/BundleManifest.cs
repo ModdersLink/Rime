@@ -211,7 +211,7 @@ public class BundleChunkEntry : ChunkEntry
         Meta = p_Meta;
 
         m_SeekOffset = p_SeekOffset;
-        m_Size = p_Entry.LogicalSize;
+        m_Size = p_Entry.StoredSize;
 
         // TODO: Range and logical range have something to do with textures and mip-maps.
         // I still have no idea what, need to investigate. We also need to pull firstMip
@@ -365,6 +365,14 @@ public class BundleManifest
 
         public uint LogicalOffset { get; set; } = 0;// 0x0008
         public uint LogicalSize { get; set; } = 0;// 0x0008
+
+        /// <summary>
+        /// How many bytes of chunk data the bundle stores for this entry. A chunk whose logical
+        /// range starts inside a 64 KiB block (a texture streaming from a later mip, for example)
+        /// stores that partial block too: (LogicalOffset &amp; 0xFFFF) | LogicalSize. Stepping over
+        /// only LogicalSize put every entry after such a chunk at the wrong offset.
+        /// </summary>
+        public uint StoredSize => (LogicalOffset & 0xFFFF) | LogicalSize;
         
 
         public ChunkEntry(RimeReader p_Reader)
@@ -617,12 +625,12 @@ public class BundleManifest
             // TODO: What do do here?
             if (PatchBundle != null && !InUpdate)
             {
-                p_Reader.Seek(s_ChunkEntry.LogicalSize, SeekOrigin.Current);
+                p_Reader.Seek(s_ChunkEntry.StoredSize, SeekOrigin.Current);
             }
             else
             {
                 long s_CurrentSize = 0;
-                while (s_CurrentSize < s_ChunkEntry.LogicalSize)
+                while (s_CurrentSize < s_ChunkEntry.StoredSize)
                 {
                     var s_Codec = new CodecHeader(p_Reader);
                     p_Reader.Seek(s_Codec.PackedSize, SeekOrigin.Current);
