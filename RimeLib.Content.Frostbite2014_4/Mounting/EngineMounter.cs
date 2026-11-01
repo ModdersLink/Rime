@@ -157,11 +157,17 @@ public class EngineMounter : IEngineMounter
         return m_MountedBundles;
     }
 
+    private void MarkBundleMounted(string p_Bundle)
+    {
+        lock (m_MountedBundles)
+            m_MountedBundles.Add(p_Bundle.ToLowerInvariant());
+    }
+
     public IEnumerable<(string Name, ResourceType ResourceType)> GetResourcesInBundle(string p_Bundle)
     {
         if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
         {
-            foreach (var s_Resource in s_CasBundle.Bundle.ResourceEntries)
+            foreach (var s_Resource in s_CasBundle.Current.ResourceEntries)
                 yield return (s_Resource.Name, (ResourceType)s_Resource.ResourceType);
         }
         else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
@@ -195,7 +201,7 @@ public class EngineMounter : IEngineMounter
     {
         if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
         {
-            foreach (var s_Chunk in s_CasBundle.Bundle.ChunkEntries)
+            foreach (var s_Chunk in s_CasBundle.Current.ChunkEntries)
                 yield return s_Chunk.Id;
         }
         else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
@@ -209,8 +215,8 @@ public class EngineMounter : IEngineMounter
     {
         if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
         {
-            for (int i = 0; i < s_CasBundle.Bundle.ChunkEntries.Length; i++)
-                yield return (s_CasBundle.Bundle.ChunkEntries[i].Id, s_CasBundle.Bundle.ChunkMeta[i].AssetNameHash);
+            for (int i = 0; i < s_CasBundle.Current.ChunkEntries.Length; i++)
+                yield return (s_CasBundle.Current.ChunkEntries[i].Id, s_CasBundle.Current.ChunkMeta[i].AssetNameHash);
         }
         else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
         {
@@ -223,7 +229,7 @@ public class EngineMounter : IEngineMounter
     {
         if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
         {
-            foreach (var s_Partition in s_CasBundle.Bundle.EbxEntries)
+            foreach (var s_Partition in s_CasBundle.Current.EbxEntries)
                 yield return s_Partition.Name;
         }
         else if (m_Bundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_Bundle))
@@ -682,7 +688,13 @@ public class EngineMounter : IEngineMounter
     {
         // TODO: Re-enable parallel processing once we've made sure everything is working as intended.
         //Parallel.ForEach(m_Superbundles, p_Superbundle => ParseSuperbundle(p_Superbundle, true));
-        m_Superbundles.ForEach(p_Superbundle => ParseSuperbundle(p_Superbundle, true));
+        m_Superbundles.ForEach(p_Superbundle =>
+        {
+            ParseSuperbundle(p_Superbundle, true);
+
+            lock (m_MountedSuperbundles)
+                m_MountedSuperbundles.Add(p_Superbundle.Name.ToLowerInvariant());
+        });
     }
 
     protected void ParseSuperbundle(SuperbundleEntry p_Superbundle, bool p_AutoMount)
@@ -720,6 +732,8 @@ public class EngineMounter : IEngineMounter
         // Don't do if automount isn't on.
         if (p_AutoMount && !MountCasBundle(s_BundleEntry)) 
             throw new Exception($"Failed to mount bundle '{s_Bundle.Path}'.");
+        if (p_AutoMount)
+            MarkBundleMounted(p_BundleInfo.Id);
     }
     
     protected void ParseDeltaCasBundle(RimeReader p_BaseReader, RimeReader p_PatchReader, 
@@ -743,6 +757,8 @@ public class EngineMounter : IEngineMounter
         // Don't do if automount isn't on.
         if (p_AutoMount && !MountCasBundle(s_BundleEntry)) 
             throw new Exception($"Failed to mount bundle '{s_BaseBundleDb.Path} | {s_PatchBundleDb.Path}'.");
+        if (p_AutoMount)
+            MarkBundleMounted(p_BaseBundle.Id);
         
     }
     
@@ -765,6 +781,8 @@ public class EngineMounter : IEngineMounter
         // Don't do if automount isn't on.
         if (p_AutoMount && !MountEmbeddedBundle(s_Manifest)) 
             throw new Exception($"Failed to mount embedded bundle '{p_BundleInfo.Id}'.");
+        if (p_AutoMount)
+            MarkBundleMounted(p_BundleInfo.Id);
     }
 
     protected void ParseDeltaBundle(RimeReader p_BaseReader, RimeReader p_PatchReader, 
@@ -797,6 +815,8 @@ public class EngineMounter : IEngineMounter
         // Don't do if automount isn't on.
         if (p_AutoMount && !MountEmbeddedBundle(s_Manifest)) 
             throw new Exception($"Failed to mount embedded delta bundle '{p_BaseBundle.Id}'.");
+        if (p_AutoMount)
+            MarkBundleMounted(p_BaseBundle.Id);
             */
     }
 
@@ -896,7 +916,7 @@ public class EngineMounter : IEngineMounter
                 }
 
                 // If all is good, parse as we normally would.
-                ParseBundle(s_PatchReader!, s_Bundle, p_Superbundle, p_AutoMount, true);
+                ParseBundle(s_PatchReader!, s_Bundle, p_Superbundle, true, p_AutoMount);
             }
         }
     }
@@ -910,7 +930,7 @@ public class EngineMounter : IEngineMounter
         
         //TODO: Delta bundle, and patch reader//
         // Mount all resources.
-        foreach (var s_Resource in p_Bundle.Bundle.ResourceEntries)
+        foreach (var s_Resource in p_Bundle.Current.ResourceEntries)
         {
             //if (!s_ContainedCatalog.ContainsEntry(s_Resource.Hash) && m_CatalogRegistry.TryGetEntry(s_Resource.Hash, out var s_ContainingCat))
             //    throw new Exception($"Containing catalog is diffrent! {s_ContainingCat.FirstEntry.ContainedCatalog.Path}" );
@@ -918,23 +938,32 @@ public class EngineMounter : IEngineMounter
             // Create variant.
             var s_Readable = new CatalogReadable(m_CatalogRegistry!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size, s_Resource);
             var s_Variant = new ResourceVariant(s_Readable, (ResourceType) s_Resource.ResourceType, s_Resource.Meta,
-                p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
+                p_Bundle.ContainedSuperbundle.Name, p_Bundle.Current.Path);
 
             // Mount.
             var s_MountedObject = new MountedObject<IResourceVariant>(s_Variant, s_Resource.Name);
 
-            m_MountedResources.AddOrUpdate(s_Resource.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
+            var s_NamedObject = m_MountedResources.AddOrUpdate(s_Resource.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
             {
                 // If this was already mounted, just add the variant.
                 p_MountedObject.AddVariant(s_Variant);
                 return p_MountedObject;
             });
 
-            m_MountedResourcesRefs.AddOrUpdate(s_Resource.ResourceId, s_MountedObject, (p_ExistingId, p_ExistingObject) =>
+            // A resource without a resource id has ResourceId 0. Registering those would put every
+            // id-less resource under one key, and since this map shares mounted objects with the name
+            // map, the first such resource's variant list would collect all the others' variants.
+            if (s_Resource.ResourceIdInt != 0)
             {
-                p_ExistingObject.AddVariant(s_Variant);
-                return p_ExistingObject;
-            });
+                m_MountedResourcesRefs.AddOrUpdate(s_Resource.ResourceId, s_MountedObject, (p_ExistingId, p_ExistingObject) =>
+                {
+                    // Both maps usually hold the same mounted object, which the name map already
+                    // gave this variant; adding it again would list every bundle twice.
+                    if (!ReferenceEquals(p_ExistingObject, s_NamedObject))
+                        p_ExistingObject.AddVariant(s_Variant);
+                    return p_ExistingObject;
+                });
+            }
 
             m_MountedResourceLowerNameHashes.AddOrUpdate(
                 RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Resource.Name),
@@ -944,9 +973,9 @@ public class EngineMounter : IEngineMounter
         }
 
         // Mount all chunks.
-        for (var i = 0; i < p_Bundle.Bundle.ChunkEntries.Length; i++)
+        for (var i = 0; i < p_Bundle.Current.ChunkEntries.Length; i++)
         {
-            var s_Chunk = p_Bundle.Bundle.ChunkEntries[i];
+            var s_Chunk = p_Bundle.Current.ChunkEntries[i];
             
 #if DEBUG
            // if (!s_ContainedCatalog.ContainsEntry(s_Chunk.Hash) && m_CatalogRegistry.TryGetEntry(s_Chunk.Hash, out var s_ContainingCat))
@@ -956,13 +985,13 @@ public class EngineMounter : IEngineMounter
             DbObject? s_Meta = null;
 
             // If we have any meta, set it.
-            if (p_Bundle.Bundle.ChunkMeta.Length > i)
-                s_Meta = DbObjectConverter.ToDbObject(p_Bundle.Bundle.ChunkMeta[i]);
+            if (p_Bundle.Current.ChunkMeta.Length > i)
+                s_Meta = DbObjectConverter.ToDbObject(p_Bundle.Current.ChunkMeta[i]);
 
             // Create variant.
             var s_Readable = new CatalogReadable(m_CatalogRegistry!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag(), s_Chunk);
             var s_Variant = new ChunkVariant(s_Readable, s_Chunk.LogicalOffset, s_Chunk.LogicalSize, s_Meta, p_Bundle.ContainedSuperbundle.Name,
-                p_Bundle.Bundle.Path);
+                p_Bundle.Current.Path);
 
             // Mount.
             var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant, s_Chunk.Id.ToString());
@@ -976,14 +1005,14 @@ public class EngineMounter : IEngineMounter
         }
 
         // Mount all partitions.
-        foreach (var s_Partition in p_Bundle.Bundle.EbxEntries)
+        foreach (var s_Partition in p_Bundle.Current.EbxEntries)
         {
             //if (!s_ContainedCatalog.ContainsEntry(s_Partition.Hash) && m_CatalogRegistry.TryGetEntry(s_Partition.Hash, out var s_ContainingCat))
             //    throw new Exception($"Containing catalog is diffrent! {s_ContainingCat.FirstEntry.ContainedCatalog.Path}" );
             
             // Create variant.
             var s_Readable = new CatalogReadable(m_CatalogRegistry!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
-            var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
+            var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Current.Path);
 
             // Mount.
             var s_MountedObject = new MountedObject(s_Variant, s_Partition.Name);
@@ -1003,7 +1032,7 @@ public class EngineMounter : IEngineMounter
         }
 
         // Mount all partitions.
-        foreach (var s_Partition in p_Bundle.Bundle.DbxEntries)
+        foreach (var s_Partition in p_Bundle.Current.DbxEntries)
         {
             //if (!s_ContainedCatalog.TryGetEntry(s_Partition.Hash, out var s_CatEntry) && m_CatalogRegistry.TryGetEntry(s_Partition.Hash, out var s_ContainingCat))
                 //throw new Exception($"Containing catalog is diffrent! {s_ContainingCat.FirstEntry.ContainedCatalog.Path}" );
@@ -1013,7 +1042,7 @@ public class EngineMounter : IEngineMounter
             
             // Create variant.
             var s_Readable = new CatalogReadable(m_CatalogRegistry!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
-            var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
+            var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Current.Path);
 
             // Mount.
             var s_MountedObject = new MountedObject(s_Variant, s_Partition.Name);
@@ -1032,125 +1061,6 @@ public class EngineMounter : IEngineMounter
             );
         }
 
-
-        var s_DeltaBundle = p_Bundle.DeltaBundle;
-
-        // override entries with patches if avalible
-        if (s_DeltaBundle != null)
-        {
-            foreach (var s_Resource in s_DeltaBundle.ResourceEntries)
-            {
-                //if (!s_ContainedCatalog.ContainsEntry(s_Resource.Hash) && m_CatalogRegistry.TryGetEntry(s_Resource.Hash, out var s_ContainingCat))
-                //    throw new Exception($"Containing catalog is diffrent! {s_ContainingCat.FirstEntry.ContainedCatalog.Path}" );
-                
-                // Create variant.
-                var s_Readable = new CatalogReadable(m_CatalogRegistry!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size, s_Resource);
-                var s_Variant = new ResourceVariant(s_Readable, (ResourceType) s_Resource.ResourceType, s_Resource.Meta,
-                    p_Bundle.ContainedSuperbundle.Name, s_DeltaBundle.Path);
-
-                // Mount.
-                var s_MountedObject = new MountedObject<IResourceVariant>(s_Variant, s_Resource.Name);
-
-                m_MountedResources.AddOrUpdate(s_Resource.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
-                {
-                    // If this was already mounted, replace with patch
-                    return s_MountedObject;
-                });
-
-                m_MountedResourceLowerNameHashes.AddOrUpdate(
-                    RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Resource.Name),
-                    s_Resource.Name.ToLowerInvariant(),
-                    (_, _) => s_Resource.Name.ToLowerInvariant()
-                );
-            }
-
-            // Mount all chunks.
-            for (var i = 0; i < s_DeltaBundle.ChunkEntries.Length; i++)
-            {
-                var s_Chunk = s_DeltaBundle.ChunkEntries[i];
-                
-                
-                //if (!s_ContainedCatalog.ContainsEntry(s_Chunk.Hash) && m_CatalogRegistry.TryGetEntry(s_Chunk.Hash, out var s_ContainingCat))
-                    //throw new Exception($"Containing catalog is diffrent! {s_ContainingCat.FirstEntry.ContainedCatalog.Path}" );
-                
-                DbObject? s_Meta = null;
-
-                // If we have any meta, set it.
-                if (s_DeltaBundle.ChunkMeta.Length > i)
-                    s_Meta = DbObjectConverter.ToDbObject(s_DeltaBundle.ChunkMeta[i]);
-
-                // Create variant.
-                var s_Readable = new CatalogReadable(m_CatalogRegistry!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag(), s_Chunk);
-                var s_Variant = new ChunkVariant(s_Readable, s_Chunk.LogicalOffset, s_Chunk.LogicalSize, s_Meta, p_Bundle.ContainedSuperbundle.Name,
-                    s_DeltaBundle.Path);
-
-                // Mount.
-                var s_MountedObject = new MountedObject<IChunkVariant>(s_Variant, s_Chunk.Id.ToString());
-
-                m_MountedChunks.AddOrUpdate(s_Chunk.Id, s_MountedObject, (p_GUID, p_MountedObject) =>
-                {
-                    // If this was already mounted, replace with patch
-                    return s_MountedObject;
-                });
-            }
-
-            // Mount all partitions.
-            foreach (var s_Partition in s_DeltaBundle.EbxEntries)
-            {
-                
-                //if (!s_ContainedCatalog.ContainsEntry(s_Partition.Hash) && m_CatalogRegistry.TryGetEntry(s_Partition.Hash, out var s_ContainingCat))
-                    //throw new Exception($"Containing catalog is diffrent! {s_ContainingCat.FirstEntry.ContainedCatalog.Path}" );
-
-                
-                // Create variant.
-                var s_Readable = new CatalogReadable(m_CatalogRegistry!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
-                var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, s_DeltaBundle.Path);
-
-                // Mount.
-                var s_MountedObject = new MountedObject(s_Variant, s_Partition.Name);
-
-                m_MountedEbxPartitions.AddOrUpdate(s_Partition.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
-                {
-                    // If this was already mounted, replace with patch
-                    return s_MountedObject;
-                });
-
-                m_MountedEbxPartitionsLowerNameHashes.AddOrUpdate(
-                    RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Partition.Name),
-                    s_Partition.Name.ToLowerInvariant(),
-                    (_, _) => s_Partition.Name.ToLowerInvariant()
-                );
-            }
-
-            // Mount all partitions.
-            foreach (var s_Partition in s_DeltaBundle.DbxEntries)
-            {
-                //if (!s_ContainedCatalog.ContainsEntry(s_Partition.Hash) && m_CatalogRegistry.TryGetEntry(s_Partition.Hash, out var s_ContainingCat))
-                //    throw new Exception($"Containing catalog is diffrent! {s_ContainingCat.FirstEntry.ContainedCatalog.Path}" );
-
-                if (!m_CatalogRegistry.ContainsEntry(s_Partition.Hash))
-                    continue;
-                
-                // Create variant.
-                var s_Readable = new CatalogReadable(m_CatalogRegistry!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
-                var s_Variant = new ObjectVariant(s_Readable, p_Bundle.ContainedSuperbundle.Name, s_DeltaBundle.Path);
-
-                // Mount.
-                var s_MountedObject = new MountedObject(s_Variant, s_Partition.Name);
-
-                m_MountedDbxPartitions.AddOrUpdate(s_Partition.Name.ToLowerInvariant(), s_MountedObject, (p_GUID, p_MountedObject) =>
-                {
-                    // If this was already mounted, replace with patch
-                    return s_MountedObject;
-                });
-
-                m_MountedDbxPartitionsLowerNameHashes.AddOrUpdate(
-                    RimeLib.Frostbite.Utils.HashQuickLowerCase(s_Partition.Name),
-                    s_Partition.Name.ToLowerInvariant(),
-                    (_, _) => s_Partition.Name.ToLowerInvariant()
-                );
-            }
-        }
         return true;
     }
 

@@ -486,9 +486,11 @@ public class RimePatchEntryReader : RimeReader
                             s_Remaining -= s_ReadBytes;
                             m_CurrentPosition += s_ReadBytes;
                             s_OffsetInPatch += s_ReadBytes;
-                            
-                            s_CurrentOutOffset += s_ReadBytes;
-                            s_CurrentCompressedOffset += s_ReadBytes;
+
+                            // A read that resumes inside this prefix started s_PrefixOffset bytes in,
+                            // so both cursors move past those bytes too, not just the ones read now.
+                            s_CurrentOutOffset += s_PrefixOffset + s_ReadBytes;
+                            s_CurrentCompressedOffset += s_PrefixOffset + s_ReadBytes;
                         }
                         else
                         {
@@ -513,8 +515,9 @@ public class RimePatchEntryReader : RimeReader
                             s_Remaining -= s_ReadBytes;
                             m_CurrentPosition += s_ReadBytes;
                             s_OffsetInPatch += s_ReadBytes;
-                            
-                            s_CurrentOutOffset += s_ReadBytes;
+
+                            // Same as the prefix: account for the bytes skipped when resuming mid-block.
+                            s_CurrentOutOffset += s_PatchOffset + s_ReadBytes;
                         }
                         else
                         {
@@ -599,9 +602,11 @@ public class RimePatchEntryReader : RimeReader
                             m_CurrentPosition += s_ReadBytes;
                             
                             s_OffsetInPatch += s_ReadBytes;
-                            
+
+                            // s_CurrentBaseDataPos already moved past the s_CompressedOffset bytes
+                            // skipped when resuming mid-region; the output cursor has to as well.
                             s_CurrentBaseDataPos += s_ReadBytes;
-                            s_CurrentOutFilePos += s_ReadBytes;
+                            s_CurrentOutFilePos += s_CompressedOffset + s_ReadBytes;
                         }
                         else
                         {
@@ -634,7 +639,7 @@ public class RimePatchEntryReader : RimeReader
                             m_CurrentPosition += s_ReadBytes;
                             
                             s_OffsetInPatch += s_ReadBytes;
-                            s_CurrentOutFilePos += s_ReadBytes;
+                            s_CurrentOutFilePos += s_PatchOffset + s_ReadBytes;
                         }
                         else
                         {

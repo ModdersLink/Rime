@@ -207,6 +207,13 @@ public class CasBundleEntry
     public CasBundle Bundle { get; }
     
     public CasBundle? DeltaBundle { get; }
+
+    /// <summary>
+    /// The listing the game actually uses for this bundle: the patch's bundle when the bundle was
+    /// patched (it lists every entry the patched bundle contains, unchanged ones included, and drops
+    /// entries the patch removed), otherwise the base bundle.
+    /// </summary>
+    public CasBundle Current => DeltaBundle ?? Bundle;
     public SuperbundleEntry ContainedSuperbundle { get; }
 
     public CasBundleEntry(CasBundle p_Bundle, SuperbundleEntry p_Sb)
