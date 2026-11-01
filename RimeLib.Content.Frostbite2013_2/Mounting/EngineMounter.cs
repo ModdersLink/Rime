@@ -40,6 +40,12 @@ public class EngineMounter : IEngineMounter
     private readonly ConcurrentDictionary<uint, string> m_MountedEbxPartitionsLowerNameHashes = new();
     private readonly ConcurrentDictionary<GUID, string> m_MountedEbxPartitionsGuids = new();
 
+    // Partitions mounted since the GUID index was last brought up to date. Reading a partition's GUID
+    // means opening and decompressing its ebx, so it happens the first time something looks a
+    // partition up by GUID, not while mounting.
+    private readonly ConcurrentQueue<(IObjectVariant Variant, string Name)> m_PendingPartitionGuids = new();
+    private readonly object m_PartitionGuidsLock = new();
+
     private readonly ConcurrentDictionary<string, MountedObject> m_MountedDbxPartitions = new();
     private readonly ConcurrentDictionary<uint, string> m_MountedDbxPartitionsLowerNameHashes = new();
 
@@ -310,11 +316,50 @@ public class EngineMounter : IEngineMounter
 
     public bool TryGetPartitionByGuid(GUID p_GUID, [NotNullWhen(true)] out string? p_Name, [NotNullWhen(true)] out IMountedObject? p_Partition)
     {
+        IndexPendingPartitionGuids();
+
         if (m_MountedEbxPartitionsGuids.TryGetValue(p_GUID, out p_Name))
             return TryGetPartition(p_Name, out p_Partition);
 
         p_Partition = null;
         return false;
+    }
+
+    /// <summary>
+    /// Reads the GUIDs of partitions mounted since the last call into the GUID index.
+    /// </summary>
+    private void IndexPendingPartitionGuids()
+    {
+        if (m_PendingPartitionGuids.IsEmpty)
+            return;
+
+        lock (m_PartitionGuidsLock)
+        {
+            var s_Pending = new List<(IObjectVariant Variant, string Name)>();
+            while (m_PendingPartitionGuids.TryDequeue(out var s_Entry))
+                s_Pending.Add(s_Entry);
+
+            // Read in parallel, then apply in mount order, so a GUID shared by two partitions resolves
+            // to the one mounted last.
+            var s_Guids = new GUID?[s_Pending.Count];
+            Parallel.For(0, s_Pending.Count, i =>
+            {
+                try
+                {
+                    s_Guids[i] = EbxReader.GetPartitionGuid(s_Pending[i].Variant);
+                }
+                catch (Exception s_Exception)
+                {
+                    Debug.WriteLine($"Could not read the partition GUID of {s_Pending[i].Name}: {s_Exception.Message}");
+                }
+            });
+
+            for (var i = 0; i < s_Pending.Count; i++)
+            {
+                if (s_Guids[i] is { } s_Guid)
+                    m_MountedEbxPartitionsGuids[s_Guid] = s_Pending[i].Name;
+            }
+        }
     }
 
     public IReadOnlyDictionary<string, IMountedObject<IResourceVariant>> GetResources()
@@ -930,11 +975,7 @@ public class EngineMounter : IEngineMounter
                 (_, _) => s_Partition.Name.ToLowerInvariant()
             );
 
-            //m_MountedEbxPartitionsGuids.AddOrUpdate(
-            //    EbxReader.GetPartitionGuid(s_Variant),
-            //    s_Partition.Name.ToLowerInvariant(),
-            //    (_, _) => s_Partition.Name.ToLowerInvariant()
-            //);
+            m_PendingPartitionGuids.Enqueue((s_Variant, s_Partition.Name.ToLowerInvariant()));
         }
 
         // Mount all partitions.
@@ -1060,11 +1101,7 @@ public class EngineMounter : IEngineMounter
                     (_, _) => s_PartitionNameLower
                 );
 
-                //m_MountedEbxPartitionsGuids.AddOrUpdate(
-                //    EbxReader.GetPartitionGuid(s_Variant),
-                //    s_PartitionNameLower,
-                //    (_, _) => s_PartitionNameLower
-                //);
+                m_PendingPartitionGuids.Enqueue((s_Variant, s_PartitionNameLower));
             }
         }
 
