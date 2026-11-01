@@ -96,15 +96,20 @@ One per level, in the main bundle, named after `LevelData` plus `/shaderdb`. It 
 |---|---|---|
 | Shaders | 640 | 551 |
 | used by main-bundle content | 497 | 26 |
-| used only by sub-world content | ~23 | ~440 (`content`, `gen4_content`) |
+| used only by sub-world content | 23 | 437 (`content`, `gen4_content`) |
 | generated terrain permutations (`<terrain>__<layers>__<mode>__0`), used by no content | 81 | 37 |
-| no user found in the level's closure | 39 | 50 |
+| used only by shared content (imported by vehicles, weapons, decal templates, effects in shared superbundles) | 0 | 35 |
+| engine defaults nothing references (`Systems/*`: default mesh, decal volume, sky, emitter, Enlighten debug, terrain surface roots; the terrain's default surface shader) | 37 | 2 |
+| terrain decal shaders nothing references (road markings, skid marks, `whitedecal2d`) | 0 | 10 |
+| other shaders nothing references (electric cables, a glass shard) | 0 | 3 |
+| imported only by other levels | 2 | 1 |
 
-So it is the union of every shader any bundle of the level uses, plus generated terrain
-permutations. In BF4 nearly all level content sits in the `content` and `gen4_content` sub-worlds, so
-nearly all its shaders are theirs. The unexplained users are probably content the level gets from
-shared superbundles (weapons, soldiers, vehicles), which the closure walk does not reach from the
-level; to be checked.
+So it is the union of every shader any bundle of the level uses, the shaders of shared content the
+level loads (BF4 keeps those in the level database; BF3 apparently doesn't), the engine's default
+shaders, and generated terrain permutations. In BF4 nearly all level content sits in the `content`
+and `gen4_content` sub-worlds, so nearly all its shaders are theirs. BF3 reaches its terrain decal
+shaders through the names in the `TerrainDecals` payload; BF4's payload doesn't name them, so they
+probably go by hash or through the terrain payloads Rime can't walk yet.
 
 Per shader the database holds solutions, one per way the shader is drawn (permutation and vertex
 layout): BF4 `mp_siege` has 25270 solution entries for 551 shaders. Textures are named as strings.
@@ -127,15 +132,26 @@ Every level ships its own cooked grid (`levels/<level>/<level>/materialgrid_win3
   penetration, decal, vehicle, terrain-destruction and tire-trail relations. They reference about 200
   effects and sounds, which is how impact effects get into a level.
 
-No material container (the source the grids were cooked from) ships in either game: 19 grids in BF4,
-33 in BF3, nothing else. So a builder can't cook a grid; it has to derive one from the retail grids:
-- Collect the global material indices everything in the level uses (meshes, Havok physics data,
-  terrain, plus soldiers, weapons and vehicles the level loads).
-- Take each index's row, and the relations between each pair, from a retail grid that has them;
-  merge grids where one level lacks a material. Check first whether levels agree on a pair's
-  relations.
-- Ship every effect and sound the chosen relations reference. Retail levels carry leftovers here:
-  `mp_siege` holds effects and sounds that only other levels' grids reference.
+Every level's grid is a consistent piece of one global grid. Across the 19 BF4 grids (33275 material
+pairs that occur in more than one level) and the 33 BF3 grids (17265), no pair's relations and no
+material's properties differ between levels. A level's grid holds exactly the materials it uses: up to
+171 of the 190 that appear in any BF4 grid (240 global indices), up to 121 of 138 in BF3 (180).
+
+The grids are cooked, and their source doesn't fully ship: BF3 ships `materials/materialcontainer`
+(in `win32/globals` and each level's `gameconfiglight` bundle), which defines the materials and which
+each grid's `DefaultMaterial` and `MaterialPairs` (180 × 180) point at, but not the relations. BF4 has
+no container at all; its grids use packed material indices.
+
+So the builder derives a grid instead of cooking one:
+1. Build the global grid once per game: the union of every retail grid, keyed by global material
+   index. Consistency makes the union well defined.
+2. Collect the global material indices everything in the level uses (meshes, Havok physics data,
+   terrain, and the soldiers, weapons and vehicles the level loads).
+3. Emit the level's grid: one row per used material, the index map, and the relations between used
+   pairs, copied from the global grid. A material no retail grid has (50 BF4 indices, 42 BF3) can't be
+   derived; no retail content uses them in a level, so this should only matter for new materials.
+4. Ship every effect and sound the copied relations reference. Retail levels carry leftovers here:
+   `mp_siege` holds effects and sounds that only other levels' grids reference.
 
 The simplest version for a level cloned from a retail one: keep its grid, and add rows only for
 materials the new content brings in.
@@ -183,8 +199,8 @@ time.
 
 ## Phases
 1. **Research** with `analyze_level` until every bundle of a BF3 and a BF4 level is explained. Done
-   for `mp_subway` and `mp_siege`; still open: the shader users found in neither closure, BF4 terrain
-   payloads, and whether material grids agree between levels.
+   for `mp_subway` and `mp_siege`, including every shader of both shader databases and the material
+   grids of every level. Still open: BF4 terrain payloads and terrain decal shader names.
 2. **Recipe and pipeline on existing commands.** Oracle: describe a retail level as a recipe, rebuild
    it, and compare the derived parts (mesh variation databases, registries, shader database,
    sub-world references) with retail; then `analyze_level` on the result must leave nothing
@@ -215,8 +231,8 @@ Getting here took two fixes in Rime's BF4 readers:
   such import-table entries the parse misses, so a reader gap like this shows up in the report.
 
 ## Open questions
-- Which shader users sit outside the level's closure (the "no user found" shaders), and how the
-  level reaches them.
+- How BF4 names its terrain decal shaders (10 in `mp_siege`), and walking BF4's `VisualTerrain` and
+  `TerrainStreamingTree` payloads.
 - Which game first: BF3 (most building work so far) or BF4?
 - How builds reach the game: the mod loader's runtime injection (which `emit_subworld_registry`
   targets) or replacing superbundles on disk. This decides whether the main bundle may be changed or
