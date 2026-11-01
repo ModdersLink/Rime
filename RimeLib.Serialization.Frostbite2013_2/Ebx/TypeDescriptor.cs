@@ -32,6 +32,9 @@ public class TypeDescriptor
     public byte FieldCount { get; set; }
     public byte Alignment { get; set; }
     public MemberInfoFlags Flags { get; set; }
+
+    /// <summary>The flag bits as stored, including bits <see cref="MemberInfoFlags"/> doesn't model.</summary>
+    public ushort RawFlags { get; set; }
     public ushort Size { get; set; }
     public ushort SecondarySize { get; set; }
 
@@ -44,7 +47,8 @@ public class TypeDescriptor
         FieldCount = (byte)p_Reader.ReadByte();
         Alignment = (byte)p_Reader.ReadByte();
         Flags = new MemberInfoFlags();
-        Flags.Deserialize(p_Reader);
+        RawFlags = p_Reader.ReadUInt16();
+        Flags.SetFromFlagBits(RawFlags);
         Size = p_Reader.ReadUInt16();
         SecondarySize = p_Reader.ReadUInt16();
         m_Name = string.Empty;
