@@ -212,27 +212,26 @@ public class EbxReader : IDisposable
         }
         
         // avoid having to resolve CtrRefs later, just do double loop
+        // Each instance entry is a run of ExportCount instances of one type; parse every one of them.
         var s_CurrentInstanceEntry = 0;
         for (var s_ContainerIdx = 0; s_ContainerIdx < m_InstanceEntries.Count; s_ContainerIdx++)
         {
             var s_Entry = m_InstanceEntries[s_ContainerIdx];
             var s_Descriptor = m_TypeDescriptors[(int)s_Entry.TypeDescriptorIndex];
-            
-           if (s_Entry.ExportCount == 0) 
-               continue;
-            
-            var s_InstanceId = m_InstanceIds[s_CurrentInstanceEntry];
-            var s_Instance = m_Partition.InstanceMap[s_InstanceId];
-            
-            var s_ContainerAttribute = s_Instance.GetType().GetCustomAttribute<ContainerTypeAttribute>()!;
-            if (s_ContainerAttribute == null)
-                throw new InvalidDataException();
-            
-            m_Reader.Seek(m_InstanceOffsets[s_CurrentInstanceEntry], SeekOrigin.Begin);
-            using var s_LimitedReader = new LimitedRimeReader(m_Reader, s_Descriptor.Size, false);
-            ParseTypeInstance(s_LimitedReader, s_Descriptor, s_Instance, s_Instance.GetType());
-            
-            s_CurrentInstanceEntry += s_Entry.ExportCount;
+
+            for (var i = 0; i < s_Entry.ExportCount; ++i, ++s_CurrentInstanceEntry)
+            {
+                var s_InstanceId = m_InstanceIds[s_CurrentInstanceEntry];
+                var s_Instance = m_Partition.InstanceMap[s_InstanceId];
+
+                var s_ContainerAttribute = s_Instance.GetType().GetCustomAttribute<ContainerTypeAttribute>()!;
+                if (s_ContainerAttribute == null)
+                    throw new InvalidDataException();
+
+                m_Reader.Seek(m_InstanceOffsets[s_CurrentInstanceEntry], SeekOrigin.Begin);
+                using var s_LimitedReader = new LimitedRimeReader(m_Reader, s_Descriptor.Size, false);
+                ParseTypeInstance(s_LimitedReader, s_Descriptor, s_Instance, s_Instance.GetType());
+            }
         }
     }
         
