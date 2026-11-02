@@ -13,14 +13,9 @@ using RimeLib.Frostbite.Db;
 namespace RimeLib.Content.Frostbite2013_2.Building;
 
 /// <summary>
-/// The manifest of a bundle in a cas superbundle.
-///
-/// Content mounted from the game's cas bundles keeps the entry it was mounted from: its sha1,
-/// sizes and, for patched content, the patch type and the base and delta it is rebuilt from. The
-/// game resolves those through its own catalogs, so they are copied as references. Everything else
-/// (generated partitions and resources, content from noncas superbundles) is stored inline as codec
-/// blocks, as the game stores EBX and resources (size and originalSize tell them apart); a chunk
-/// only when its guid carries the compression flag, raw otherwise.
+/// The manifest of a bundle in a cas superbundle. Content mounted from the game's cas bundles is
+/// copied as a reference to its catalog entry (with the patch base and delta, if patched); anything
+/// else is stored inline as codec blocks, a chunk raw unless its guid carries the compression flag.
 /// </summary>
 public class CasBundleManifestBuilder
 {
