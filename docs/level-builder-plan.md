@@ -249,7 +249,22 @@ So the builder derives a grid instead of cooking one:
 The simplest version for a level cloned from a retail one: keep its grid, and add rows only for
 materials the new content brings in.
 
-Step 2 needs the material indices in mesh and Havok payloads, which Rime doesn't read yet.
+Step 2 is `derive_materials <level partition> [grid]`. It walks the level partition and every
+sub-world it references, and takes whole every bundle the content names (weapon, vehicle and
+configuration bundles: `SoldierWeaponUnlockAsset.WeaponBundleName`, `PreloadedBundleNames`, ...; not
+the bundles those name in turn, which reach every vehicle in the game). From that content it
+collects the material values of the EBX material references, of the Havok physics data (the material
+table in the Frostbite header in front of the packfiles) and of the terrain material tree, background
+material included. A material value names two global indices, a material and a property:
+- BF3: its low 16 bits are a pair's position in `materials/materialcontainer` (180 x 180 pairs); the
+  pair's `PhysicsMaterialIndex` and `PhysicsPropertyIndex` are the indices.
+- BF4: a `MaterialDecl`, whose two high bytes are the indices and low 16 bits flags. There is no
+  container.
+
+Meshes don't carry materials of their own here. Against the shipped grids: `mp_subway` 101 of 102
+(Mud is missing), `mp_001` all 111 plus a second material named Default that grids leave out, BF4
+`mp_siege` 162 of 165, nothing extra.
+
 `build_material_grid <partition> <all|grid,...>` implements steps 1, 3 and 4 with the material set
 given as grids: rows for the materials of those grids, relations from every grid in the game, and a
 `GRID-REF` line for every partition the relations reference. Rebuilding `mp_subway`'s and `mp_001`'s
@@ -288,7 +303,7 @@ and compared with retail: `derive_registry`, `derive_mesh_variation_db`; in bund
 `build_material_grid`.
 
 Missing: a BF4 EBX writer (Rime's is commented out, so nothing can write a BF4 partition yet, derived
-or not), material indices from mesh and Havok payloads, a shader database builder (and for BF4 a full
+or not), a shader database builder (and for BF4 a full
 shader database reader), `LevelData` sub-world reference generation, hoisting, the recipe and
 `build_level`.
 

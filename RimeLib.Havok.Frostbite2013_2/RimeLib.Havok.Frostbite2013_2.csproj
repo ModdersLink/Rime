@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <Platforms>AnyCPU</Platforms>
+    <Configurations>Debug;Release</Configurations>
+    <LangVersion>default</LangVersion>
+    <OutputPath>$(SolutionDir)/bin/$(Configuration)</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RimeLib.Havok\RimeLib.Havok.csproj" />
+    <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
+    <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
+  </ItemGroup>
+
+</Project>

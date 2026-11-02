@@ -85,6 +85,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<MountExternalCatCommand>();
             RegisterCommand<RoundTripWritersCommand>();
             RegisterCommand<RoundTripTerrainCommand>();
+            RegisterCommand<DeriveMaterialsCommand>();
 
             var s_EngineType = m_Mounter.GetEngineType();
 
