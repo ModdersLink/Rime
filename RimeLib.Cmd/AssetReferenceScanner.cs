@@ -102,7 +102,7 @@ namespace RimeLib.Cmd
 
             try
             {
-                var s_Parsed = m_PartitionConverter.FromPartitionObject(p_Name, p_Variant);
+                var s_Parsed = PartitionCache.Parse(m_PartitionConverter, p_Name, p_Variant);
                 s_References.TypeName = s_Parsed.PrimaryInstance?.GetType().Name;
                 s_References.Parsed = s_Parsed;
 

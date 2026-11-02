@@ -129,6 +129,9 @@ namespace RimeLib.Cmd.Commands.Base
                 return false;
             }
 
+            // Every step reads the same mounted partitions; they are parsed once for the run.
+            using var s_Cache = PartitionCache.Begin();
+
             // The bundles of the shared superbundles are loaded with everything.
             var s_Shared = new List<string>(s_Recipe.SharedBundles);
             foreach (var s_Superbundle in s_Recipe.SharedSuperbundles)

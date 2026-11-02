@@ -71,7 +71,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             // itself, or the registry's own partition.
             {
                 var s_RegistryName = s_Deriver.Rules.GetRegistryPartitionName(s_Root).ToLowerInvariant();
-                var s_Template = s_Deriver.Parse(s_RegistryName);
+                var s_Template = s_Deriver.ParseCopy(s_RegistryName);
                 if (s_Template == null && s_RegistryName == s_Root)
                 {
                     p_Writer.WriteLine($"Could not read '{s_RegistryName}'.");
@@ -81,7 +81,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 if (s_Template == null)
                 {
                     var s_Any = s_Mounter.GetPartitions().Keys.FirstOrDefault(p_N => p_N.EndsWith("_networkregistry_win32", StringComparison.OrdinalIgnoreCase));
-                    if (s_Any == null || s_Deriver.Parse(s_Any.ToLowerInvariant()) is not { } s_Found)
+                    if (s_Any == null || s_Deriver.ParseCopy(s_Any.ToLowerInvariant()) is not { } s_Found)
                     {
                         p_Writer.WriteLine("No registry partition to start from in the mounted game.");
                         return false;

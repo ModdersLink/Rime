@@ -105,7 +105,7 @@ namespace RimeLib.Cmd
             try
             {
                 if (m_Mounter.TryGetPartitionByGuid(p_Guid, out var s_Name, out var s_Mounted))
-                    s_Partition = m_Converter.FromPartitionObject(s_Name, s_Mounted.FirstVariant);
+                    s_Partition = PartitionCache.Parse(m_Converter, s_Name, s_Mounted.FirstVariant);
             }
             catch (Exception)
             {
