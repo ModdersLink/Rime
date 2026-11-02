@@ -55,30 +55,19 @@ public static class EngineInterfaceRegistry
         
         Registry[typeof(T)].Clear();
 
-        Type? s_FoundInterface = null;
-
-        // From the above types, check the engine support method for each and register accordingly.
+        // Each implementation's supported engines, and its own engine: the oldest it supports.
+        var s_Candidates = new List<(Type Type, EngineType Own, EngineType[] Supported)>();
         foreach (var s_InterfaceType in s_InterfaceTypes)
         {
             // We only want types with 0-arg constructors.
-            var s_Constructor = s_InterfaceType.GetConstructor(Type.EmptyTypes);
-
-            if (s_Constructor == null)
+            if (s_InterfaceType.IsAbstract || s_InterfaceType.GetConstructor(Type.EmptyTypes) == null)
                 continue;
 
             try
             {
-                // This is kinda dirty but whatever.
-                var s_TempInstance = (T) Activator.CreateInstance(s_InterfaceType);
-
-                foreach (var s_SupportedEngine in s_TempInstance!.GetSupportedEngines())
-                {
-                    Registry[typeof(T)][s_SupportedEngine] = s_InterfaceType;
-
-                    // If this is the requested type then store it so we can return it later.
-                    if (s_SupportedEngine == p_Type)
-                        s_FoundInterface = s_InterfaceType;
-                }
+                var s_Supported = ((T) Activator.CreateInstance(s_InterfaceType)!).GetSupportedEngines();
+                if (s_Supported.Length > 0)
+                    s_Candidates.Add((s_InterfaceType, s_Supported.Min(), s_Supported));
             }
             catch
             {
@@ -86,6 +75,21 @@ public static class EngineInterfaceRegistry
             }
         }
 
+        // An engine gets the implementation of the newest engine at or below it that supports it:
+        // a struct lives in the oldest engine project with its layout and names the later engines
+        // it still fits, and an engine whose layout changed brings its own, which then wins.
+        foreach (var s_Engine in s_Candidates.SelectMany(p_C => p_C.Supported).Distinct())
+        {
+            var s_Best = s_Candidates
+                .Where(p_C => p_C.Supported.Contains(s_Engine) && p_C.Own <= s_Engine)
+                .OrderByDescending(p_C => p_C.Own)
+                .Select(p_C => p_C.Type)
+                .FirstOrDefault();
+            if (s_Best != null)
+                Registry[typeof(T)][s_Engine] = s_Best;
+        }
+
+        Registry[typeof(T)].TryGetValue(p_Type, out var s_FoundInterface);
         return s_FoundInterface;
     }
 }

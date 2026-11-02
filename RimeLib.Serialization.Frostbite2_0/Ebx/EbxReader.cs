@@ -79,7 +79,13 @@ public class EbxReader : IDisposable
 
     public DatabasePartition ParsePartition(string p_Name, IObjectVariant p_Variant)
     {
-        using var s_Reader = p_Variant.GetReader();
+        // Parsing makes many small reads and seeks; through the variant's own reader (patch and
+        // decompression layers) each one is expensive, so the partition is read whole first.
+        var s_Bytes = new MemoryStream();
+        using (var s_Source = p_Variant.GetReader())
+            s_Source.CopyTo(s_Bytes);
+        s_Bytes.Position = 0;
+        using var s_Reader = new RimeReader(s_Bytes);
 
         m_Partition = new DatabasePartition
         {
@@ -129,6 +135,59 @@ public class EbxReader : IDisposable
             s_Imports.Add(new ImportEntry(s_Reader).PartitionGuid);
 
         return (s_Header.PartitionGuid, s_Imports);
+    }
+
+    /// <summary>
+    /// The type name of the partition's primary instance, without parsing its payload: the
+    /// metadata, then the instance guids until the header's primary one.
+    /// </summary>
+    public static string? ReadPrimaryTypeName(IObjectVariant p_Variant)
+    {
+        using var s_Source = p_Variant.GetReader();
+
+        var s_Magic = s_Source.ReadBytes(4);
+        s_Source.Seek(-4, SeekOrigin.Current);
+
+        RimeReader s_Reader;
+        if (IsLittleEndian(s_Magic))
+            s_Reader = new RimeReader(s_Source, Endianness.LittleEndian, false);
+        else if (IsBigEndian(s_Magic))
+            s_Reader = new RimeReader(s_Source, Endianness.BigEndian, false);
+        else
+            throw new Exception("The supplied file has an invalid magic header.");
+
+        var s_Header = new StreamingPartitionHeader(s_Reader);
+        s_Reader.Seek(s_Header.ImportCount * ImportEntry.SizeOf, SeekOrigin.Current);
+
+        var s_Strings = new Dictionary<uint, string>();
+        foreach (var s_String in Encoding.UTF8.GetString(s_Reader.ReadBytes((int)s_Header.TypeStringTableSize)).TrimEnd('\0').Split('\0'))
+            s_Strings[Frostbite.Utils.HashQuick(s_String)] = s_String;
+
+        for (var i = 0; i < s_Header.FieldDescriptorCount; ++i)
+            _ = new FieldDescriptor(s_Reader, s_Strings);
+        s_Reader.Align(16);
+
+        var s_Types = new List<TypeDescriptor>((int)s_Header.TypeDescriptorCount);
+        for (var i = 0; i < s_Header.TypeDescriptorCount; ++i)
+            s_Types.Add(new TypeDescriptor(s_Reader, s_Strings));
+
+        var s_Entries = new List<InstanceEntry>((int)s_Header.TypeCount);
+        for (var i = 0; i < s_Header.TypeCount; ++i)
+            s_Entries.Add(new InstanceEntry(s_Reader));
+
+        s_Reader.Seek(s_Header.MetaSize + s_Header.StringTableSize, SeekOrigin.Begin);
+        foreach (var s_Entry in s_Entries)
+        {
+            var s_Type = s_Types[(int)s_Entry.TypeDescriptorIndex];
+            for (var i = 0; i < s_Entry.ExportCount; ++i)
+            {
+                if (new GUID(s_Reader).Equals(s_Header.PrimaryInstanceGuid))
+                    return s_Type.Name;
+                s_Reader.Seek(s_Type.Size, SeekOrigin.Current);
+            }
+        }
+
+        return null;
     }
 
     public static GUID GetPartitionGuid(IObjectVariant p_Variant)

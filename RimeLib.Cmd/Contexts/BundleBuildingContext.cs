@@ -215,6 +215,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<CompareRegistryContainersCommand>();
             RegisterCommand<EmitSubworldRegistryCommand>();
             RegisterCommand<KeepOnlyPartitionCommand>();
+
+            RegisterEngineCommands(s_EngineType);
         }
 
         public bool Cas()

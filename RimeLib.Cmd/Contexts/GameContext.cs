@@ -60,6 +60,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpShaderDbCommand>();
             RegisterCommand<DumpShaderTexturesCommand>();
             RegisterCommand<WhereIsCommand>();
+            RegisterCommand<RoundTripResourcesCommand>();
             RegisterCommand<DumpShaderBytecodeCommand>();
             RegisterCommand<DumpEbxLayoutCommand>();
             RegisterCommand<ListResourcesOfTypeJsonCommand>();
@@ -141,6 +142,8 @@ namespace RimeLib.Cmd.Contexts
                     RegisterCommand<DumpLevelPlacementsCommand>();
                 }
             }
+
+            RegisterEngineCommands(s_EngineType);
         }
 
         public override string GetShortDescription()

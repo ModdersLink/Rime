@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Numerics;
 using System.Text;
 using RimeLib.IO.Conversion;
 
@@ -120,6 +121,32 @@ namespace RimeLib.IO
         {
             Encode7Bit((ulong) ((p_Value >> 63) ^ (p_Value << 1)));
         }
+
+        public void Write(Vector3 p_Value)
+        {
+            Write(p_Value.X);
+            Write(p_Value.Y);
+            Write(p_Value.Z);
+        }
+
+        public void Write(Vector4 p_Value)
+        {
+            Write(p_Value.X);
+            Write(p_Value.Y);
+            Write(p_Value.Z);
+            Write(p_Value.W);
+        }
+
+        /// <summary>Sixteen floats, row by row.</summary>
+        public void Write(Matrix4x4 p_Value)
+        {
+            for (var r = 0; r < 4; ++r)
+            for (var c = 0; c < 4; ++c)
+                Write(p_Value[r, c]);
+        }
+
+        /// <summary>A Guid in its 16-byte little-endian layout.</summary>
+        public void Write(Guid p_Value) => Write(p_Value.ToByteArray());
 
         public void Align(int p_Alignment, byte p_Padding = 0x00)
         {

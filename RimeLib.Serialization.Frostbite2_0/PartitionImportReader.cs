@@ -17,4 +17,6 @@ public class PartitionImportReader : IPartitionImportReader
     {
         return EbxReader.ReadPartitionImports(p_Variant);
     }
+
+    public string? ReadPrimaryTypeName(IObjectVariant p_Variant) => EbxReader.ReadPrimaryTypeName(p_Variant);
 }

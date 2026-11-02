@@ -16,4 +16,7 @@ public interface IPartitionImportReader : IEngineInterface
     /// The partition's GUID and the distinct GUIDs of the partitions it imports from.
     /// </summary>
     (GUID Partition, IReadOnlyCollection<GUID> Imports) ReadImports(IObjectVariant p_Variant);
+
+    /// <summary>The type name of the partition's primary instance, read without parsing the partition.</summary>
+    string? ReadPrimaryTypeName(IObjectVariant p_Variant);
 }
