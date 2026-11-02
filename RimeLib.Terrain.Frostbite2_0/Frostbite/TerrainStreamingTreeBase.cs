@@ -1,0 +1,41 @@
+﻿using System.Collections.Generic;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.Destruction;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.Heightfield;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainMaterial;
+
+
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite;
+public abstract class TerrainStreamingTreeBase
+{
+    public HeightfieldNode RootNode { get; set; } = new HeightfieldNode();
+    public uint UnblurredSamplesPerNodeSidePot { get; set; }
+    public bool TrackTextureDetailFalloff { get; set; }
+    public float InvisibleDetailReductionFactor { get; set; }
+    public float OccludedDetailReductionFactor { get; set; }
+    public uint ResourceBlurriness { get; set; }
+    public uint NodeCount { get; set; }
+    public bool FreeStreamingEnabled { get; set; }
+    public List<RasterTree> RasterTrees { get; set; } = new List<RasterTree>();
+
+    /// <summary>
+    /// The raster tree types in the order the stream declared them, and any tree this does not
+    /// model, kept as its raw bytes.
+    ///
+    /// The reader skips over tree types it has no parser for. Writing the tree back from the parsed
+    /// list alone would drop those silently, so the order and the unparsed payloads travel too --
+    /// a terrain that comes back missing a tree the game shipped is not a terrain that loads.
+    /// </summary>
+    public List<(int Type, byte[]? Raw)> RasterTreeOrder { get; set; } = new List<(int, byte[]?)>();
+
+    /// <summary>The block as it was read, for measuring a rewrite against.</summary>
+    public byte[] Raw { get; set; } = System.Array.Empty<byte>();
+
+
+    public HeightfieldTreeBase? HeightfieldTree => RasterTrees[(int)RasterTree.RasterTreeTypes.HeightfieldTreeType] as HeightfieldTreeBase;
+    public RasterTree? TerrainMaskTree => RasterTrees[(int)RasterTree.RasterTreeTypes.TerrainMaskTreeType] as RasterTree;
+    public RasterTree? TerrainColorTree => RasterTrees[(int)RasterTree.RasterTreeTypes.TerrainColorTreeType] as RasterTree;
+    public TerrainMaterialTree? TerrainMaterialTree => RasterTrees[(int)RasterTree.RasterTreeTypes.TerrainMaterialTreeType] as TerrainMaterialTree;
+    public DestructionDepthTree? DestructionTree => RasterTrees[(int)RasterTree.RasterTreeTypes.DestructionDepthTreeType] as DestructionDepthTree;
+
+
+}

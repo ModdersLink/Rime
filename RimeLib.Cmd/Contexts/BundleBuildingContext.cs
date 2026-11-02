@@ -140,7 +140,7 @@ namespace RimeLib.Cmd.Contexts
 
         protected BundleBuilder m_Builder;
 
-        protected fb.RegistryContainer? m_GeneratedRegistry;
+        protected DataContainerBase? m_GeneratedRegistry;
 
         public BundleBuildingContext(SbBuildingContext p_Parent, string p_BundleName)
         {
@@ -151,7 +151,6 @@ namespace RimeLib.Cmd.Contexts
 
             RegisterCommand<AddChunkCommand>();
             RegisterCommand<AddExistingChunkCommand>();
-            RegisterCommand<AddCasChunkCommand>();
             RegisterCommand<RemoveChunkCommand>();
             RegisterCommand<ListChunksCommand>();
             RegisterCommand<AddResourceCommand>();
@@ -170,10 +169,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<AddRawPartitionCommand>();
             RegisterCommand<RaiseWaterPhysicsCommand>();
             RegisterCommand<ClonePartitionFreshCommand>();
-            RegisterCommand<MeshVariationDbAddEntryCommand>();
-            RegisterCommand<MeshVariationDbAddAllCommand>();
             RegisterCommand<StripSbLevelChunksCommand>();
-            RegisterCommand<CapTextureCommand>();
 
             var s_EngineType = p_Parent.EngineType;
 
@@ -208,13 +204,12 @@ namespace RimeLib.Cmd.Contexts
             }
 
             RegisterCommand<ExportBundleContentsCommand>();
-            RegisterCommand<GenerateRegistryContainerCommand>();
             RegisterCommand<DeriveRegistryContainerCommand>();
             RegisterCommand<BuildMeshVariationDbCommand>();
             RegisterCommand<BuildMaterialGridCommand>();
-            RegisterCommand<CompareRegistryContainersCommand>();
-            RegisterCommand<EmitSubworldRegistryCommand>();
             RegisterCommand<KeepOnlyPartitionCommand>();
+
+            RegisterEngineCommands(s_EngineType);
         }
 
         public bool Cas()
@@ -252,12 +247,12 @@ namespace RimeLib.Cmd.Contexts
 
         internal void AddChunk(GUID p_Guid, FileInfo p_File, string p_AssetName, int? p_FirstMip = null)
         {
-            m_Builder.WithChunk(p_Guid, new SbBuildingContext.ChunkFileReader(p_File.FullName, p_AssetName, p_FirstMip));
+            m_Builder.WithChunk(p_Guid, new SbBuildingContext.ChunkFileReader(((SbBuildingContext)Parent!).EngineType, p_File.FullName, p_AssetName, p_FirstMip));
         }
 
         internal void AddChunk(GUID p_Guid, FileInfo p_File, int p_AssetHash, int? p_FirstMip = null)
         {
-            m_Builder.WithChunk(p_Guid, new SbBuildingContext.ChunkFileReader(p_File.FullName, p_AssetHash, p_FirstMip));
+            m_Builder.WithChunk(p_Guid, new SbBuildingContext.ChunkFileReader(((SbBuildingContext)Parent!).EngineType, p_File.FullName, p_AssetHash, p_FirstMip));
         }
 
         internal void AddChunk(GUID p_Guid, IChunkObject p_Object)
@@ -337,14 +332,15 @@ namespace RimeLib.Cmd.Contexts
             m_Builder.RemovePartition(p_Name);
         }
 
-        internal void SetGeneratedRegistry(fb.RegistryContainer p_Registry)
+        internal void SetGeneratedRegistry(DataContainerBase p_Registry)
         {
             m_GeneratedRegistry = p_Registry;
         }
 
-        internal fb.RegistryContainer? GetGeneratedRegistry()
+        /// <summary>The generated or derived registry, as the engine's registry object.</summary>
+        internal DataContainerBase? GetGeneratedRegistry()
         {
-            return m_GeneratedRegistry ?? m_DerivedRegistry as fb.RegistryContainer;
+            return m_GeneratedRegistry ?? m_DerivedRegistry;
         }
 
         /// <summary>

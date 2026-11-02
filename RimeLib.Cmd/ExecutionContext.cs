@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Commands.Common;
+using RimeLib.Frostbite;
 
 namespace RimeLib.Cmd
 {
@@ -290,9 +291,39 @@ namespace RimeLib.Cmd
         /// </summary>
         /// <typeparam name="T">Command type</typeparam>
         /// <exception cref="Exception">TODO: Exception details</exception>
-        protected void RegisterCommand<T>() where T : Command
+        protected void RegisterCommand<T>() where T : Command => RegisterCommand(typeof(T));
+
+        /// <summary>
+        /// Registers the commands engine projects contribute to this context for this engine (see
+        /// <see cref="Attributes.EngineCommandAttribute"/>), from every loaded assembly.
+        /// </summary>
+        protected void RegisterEngineCommands(EngineType p_Engine)
         {
-            var s_Type = typeof(T);
+            foreach (var s_Assembly in AppDomain.CurrentDomain.GetAssemblies())
+            {
+                Type[] s_Types;
+                try
+                {
+                    s_Types = s_Assembly.GetTypes();
+                }
+                catch (System.Reflection.ReflectionTypeLoadException s_Ex)
+                {
+                    s_Types = s_Ex.Types.Where(p_T => p_T != null).ToArray()!;
+                }
+
+                foreach (var s_Type in s_Types)
+                {
+                    if (s_Type.IsAbstract || !typeof(Command).IsAssignableFrom(s_Type))
+                        continue;
+                    var s_Attribute = (Attributes.EngineCommandAttribute?)Attribute.GetCustomAttribute(s_Type, typeof(Attributes.EngineCommandAttribute));
+                    if (s_Attribute != null && s_Attribute.Context == GetType() && s_Attribute.Engines.Contains(p_Engine))
+                        RegisterCommand(s_Type);
+                }
+            }
+        }
+
+        private void RegisterCommand(Type s_Type)
+        {
 
             if (s_Type.GetConstructor(Type.EmptyTypes) == null)
                 throw new Exception("Tried registering a command without a default constructor.");
@@ -316,7 +347,7 @@ namespace RimeLib.Cmd
             }
 
             // Register the command.
-            m_RegisteredCommands[CommandUtils.GetCommandName<T>()] = s_Type;
+            m_RegisteredCommands[CommandUtils.GetCommandName(s_Type)] = s_Type;
         }
     }
 }

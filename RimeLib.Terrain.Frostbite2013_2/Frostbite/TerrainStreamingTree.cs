@@ -5,10 +5,10 @@ using System.IO;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
-using RimeLib.Terrain.Frostbite;
-using RimeLib.Terrain.Frostbite.Destruction;
-using RimeLib.Terrain.Frostbite.Heightfield;
-using RimeLib.Terrain.Frostbite.TerrainMaterial;
+using RimeLib.Terrain.Frostbite2_0.Frostbite;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.Destruction;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.Heightfield;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainMaterial;
 
 namespace RimeLib.Terrain.Frostbite2013_2.Frostbite;
 

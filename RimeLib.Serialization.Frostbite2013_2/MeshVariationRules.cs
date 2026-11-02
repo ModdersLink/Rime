@@ -41,6 +41,10 @@ public class MeshVariationRules : IMeshVariationRules
 
     public bool IsMesh(DataContainerBase p_Instance) => p_Instance is fb.Render.MeshAsset;
 
+    public IEnumerable<CtrRefBase> GetTextures(object p_Entry) =>
+        ((fb.Render.MeshVariationDatabaseEntry)p_Entry).Materials.SelectMany(p_M => p_M.TextureParameters)
+            .Where(p_P => p_P?.Value != null && !p_P.Value.IsNull()).Select(p_P => (CtrRefBase)p_P.Value);
+
     public void SetEntries(DatabasePartitionBase p_Database, IReadOnlyList<object> p_Entries)
     {
         var s_Database = (fb.Render.MeshVariationDatabase)p_Database.PrimaryInstance;

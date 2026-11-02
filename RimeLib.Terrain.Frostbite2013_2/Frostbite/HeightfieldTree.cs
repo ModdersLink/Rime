@@ -1,8 +1,8 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using RimeLib.IO;
-using RimeLib.Terrain.Frostbite;
-using RimeLib.Terrain.Frostbite.Heightfield;
+using RimeLib.Terrain.Frostbite2_0.Frostbite;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.Heightfield;
 
 namespace RimeLib.Terrain.Frostbite2013_2.Frostbite;
 
