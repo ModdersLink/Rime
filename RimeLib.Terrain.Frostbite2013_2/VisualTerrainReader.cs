@@ -24,9 +24,16 @@ public class VisualTerrainReader : IVisualTerrain, ITerrainLayerCombinations
         return s_Buffer.ToArray();
     }
 
+    private static T Read<T>(byte[] p_Data) where T : IFbSerializable, new()
+    {
+        var s_Struct = new T();
+        s_Struct.Deserialize(p_Data);
+        return s_Struct;
+    }
+
     public bool ReadVisualTerrain(IResourceObject p_Resource, IEngineMounter p_Mounter, out VisualTerrainInfo? p_Info)
     {
-        var s_Terrain = VisualTerrain.Read(ReadAll(p_Resource));
+        var s_Terrain = Read<VisualTerrain>(ReadAll(p_Resource));
 
         // No surface shader, streaming tree, decals or draws: BF4 keeps them elsewhere (see
         // ITerrainLayerCombinations), and no per-layer virtual texture flag.
@@ -81,7 +88,7 @@ public class VisualTerrainReader : IVisualTerrain, ITerrainLayerCombinations
     public bool RoundTripVisualTerrain(IResourceObject p_Resource, out byte[]? p_Original, out byte[]? p_Rebuilt)
     {
         p_Original = ReadAll(p_Resource);
-        return VisualTerrain.Read(p_Original).Serialize(out p_Rebuilt);
+        return Read<VisualTerrain>(p_Original).Serialize(out p_Rebuilt);
     }
 
     /// <summary>
@@ -100,7 +107,7 @@ public class VisualTerrainReader : IVisualTerrain, ITerrainLayerCombinations
             return false;
         }
 
-        var s_Terrain = VisualTerrain.Read(ReadAll(p_Resource));
+        var s_Terrain = Read<VisualTerrain>(ReadAll(p_Resource));
         var s_Applied = new HashSet<(int, int)>();
 
         foreach (var s_Edit in p_Edits.Scattering)
@@ -155,12 +162,12 @@ public class VisualTerrainReader : IVisualTerrain, ITerrainLayerCombinations
 
     public bool ReadLayerCombinations(IResourceObject p_Resource, out VisualTerrainInfo? p_Info)
     {
-        var s_Combinations = TerrainLayerCombinations.Read(ReadAll(p_Resource));
+        var s_Combinations = Read<TerrainLayerCombinations>(ReadAll(p_Resource));
         p_Info = new VisualTerrainInfo { SurfaceShader = s_Combinations.DefaultSurfaceShaderName };
 
         foreach (var s_Draw in s_Combinations.Draws)
         {
-            foreach (var s_Method in s_Draw.MaskScaleDrawMethods)
+            foreach (var s_Method in s_Draw.MeshScatteringMaskScaleDrawMethods)
                 p_Info.Draws.Add(new VisualTerrainDraw { Shader = s_Method.ShaderName, Layers = s_Method.MaskedTerrainLayerIndices.Select(p_I => (int)p_I).ToList(), Kind = "maskscale", Level = s_Method.Level });
             foreach (var s_Method in s_Draw.Surface2dDrawMethods)
                 p_Info.Draws.Add(new VisualTerrainDraw { Shader = s_Method.ShaderName, Layers = s_Method.MaskedTerrainLayerIndices.Select(p_I => (int)p_I).ToList(), Kind = "2d" });
@@ -174,6 +181,6 @@ public class VisualTerrainReader : IVisualTerrain, ITerrainLayerCombinations
     public bool RoundTripLayerCombinations(IResourceObject p_Resource, out byte[]? p_Original, out byte[]? p_Rebuilt)
     {
         p_Original = ReadAll(p_Resource);
-        return TerrainLayerCombinations.Read(p_Original).Serialize(out p_Rebuilt);
+        return Read<TerrainLayerCombinations>(p_Original).Serialize(out p_Rebuilt);
     }
 }

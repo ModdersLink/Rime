@@ -1,5 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using RimeLib.Frostbite;
 using RimeLib.IO;
 
 namespace RimeLib.Terrain.Frostbite2013_2.Frostbite;
@@ -8,7 +9,7 @@ namespace RimeLib.Terrain.Frostbite2013_2.Frostbite;
 /// One mesh scattering type of a terrain layer (the engine's MeshScatteringTypeBase), in stream
 /// order. A later engine version reads the same fields in the same order where both have them.
 /// </summary>
-public class MeshScatteringType
+public class MeshScatteringType : IFbSerializable
 {
     public string MeshName { get; set; } = string.Empty;
 
@@ -75,68 +76,64 @@ public class MeshScatteringType
 
     private uint TileCount => TextureAtlasSizeX * TextureAtlasSizeY;
 
-    public static MeshScatteringType Read(RimeReader p_Reader)
+    public void Deserialize(RimeReader p_Reader)
     {
-        var s_Type = new MeshScatteringType
+        MeshName = p_Reader.ReadNullTerminatedString();
+        MeshResourceId = p_Reader.ReadUInt64();
+        VariationAssetNameHash = p_Reader.ReadUInt32();
+        Identifier = p_Reader.ReadUInt32();
+
+        for (var i = 0; i < 4; ++i)
+            Density[i] = p_Reader.ReadSingle();
+
+        RandomPositionOffset = p_Reader.ReadSingle();
+        MinMask = p_Reader.ReadSingle();
+        MaxMask = p_Reader.ReadSingle();
+        MinScaleX = p_Reader.ReadSingle();
+        MinScaleY = p_Reader.ReadSingle();
+        MaxScaleX = p_Reader.ReadSingle();
+        MaxScaleY = p_Reader.ReadSingle();
+        MinMaskScaleFactorX = p_Reader.ReadSingle();
+        MinMaskScaleFactorY = p_Reader.ReadSingle();
+        ScaleRandomness = p_Reader.ReadSingle();
+        WindScale = p_Reader.ReadSingle();
+        Stiffness = p_Reader.ReadSingle();
+        Damping = p_Reader.ReadSingle();
+        Mass = p_Reader.ReadSingle();
+        WindWiggle = p_Reader.ReadSingle();
+        LastLodAndBillboard = p_Reader.ReadSByte();
+        Enabled = p_Reader.ReadBool();
+        Flags = p_Reader.ReadBytes(3);
+
+        for (var i = 0; i < 4; ++i)
+            SpawnLevelCounts[i] = p_Reader.ReadUInt32();
+        ShadowViewDistance = p_Reader.ReadSingle();
+        for (var i = 0; i < 4; ++i)
+            LodDistances[i] = p_Reader.ReadSingle();
+
+        TextureAtlasSizeX = p_Reader.ReadUInt32();
+        TextureAtlasSizeY = p_Reader.ReadUInt32();
+        if (TileCount > 1)
         {
-            MeshName = p_Reader.ReadNullTerminatedString(),
-            MeshResourceId = p_Reader.ReadUInt64(),
-            VariationAssetNameHash = p_Reader.ReadUInt32(),
-            Identifier = p_Reader.ReadUInt32(),
-        };
+            if (TileCount > 0xFFFF)
+                throw new InvalidDataException($"A scattering texture atlas of {TextureAtlasSizeX}x{TextureAtlasSizeY} tiles; the walk is misaligned.");
 
-        for (var i = 0; i < 4; ++i)
-            s_Type.Density[i] = p_Reader.ReadSingle();
-
-        s_Type.RandomPositionOffset = p_Reader.ReadSingle();
-        s_Type.MinMask = p_Reader.ReadSingle();
-        s_Type.MaxMask = p_Reader.ReadSingle();
-        s_Type.MinScaleX = p_Reader.ReadSingle();
-        s_Type.MinScaleY = p_Reader.ReadSingle();
-        s_Type.MaxScaleX = p_Reader.ReadSingle();
-        s_Type.MaxScaleY = p_Reader.ReadSingle();
-        s_Type.MinMaskScaleFactorX = p_Reader.ReadSingle();
-        s_Type.MinMaskScaleFactorY = p_Reader.ReadSingle();
-        s_Type.ScaleRandomness = p_Reader.ReadSingle();
-        s_Type.WindScale = p_Reader.ReadSingle();
-        s_Type.Stiffness = p_Reader.ReadSingle();
-        s_Type.Damping = p_Reader.ReadSingle();
-        s_Type.Mass = p_Reader.ReadSingle();
-        s_Type.WindWiggle = p_Reader.ReadSingle();
-        s_Type.LastLodAndBillboard = p_Reader.ReadSByte();
-        s_Type.Enabled = p_Reader.ReadBool();
-        s_Type.Flags = p_Reader.ReadBytes(3);
-
-        for (var i = 0; i < 4; ++i)
-            s_Type.SpawnLevelCounts[i] = p_Reader.ReadUInt32();
-        s_Type.ShadowViewDistance = p_Reader.ReadSingle();
-        for (var i = 0; i < 4; ++i)
-            s_Type.LodDistances[i] = p_Reader.ReadSingle();
-
-        s_Type.TextureAtlasSizeX = p_Reader.ReadUInt32();
-        s_Type.TextureAtlasSizeY = p_Reader.ReadUInt32();
-        if (s_Type.TileCount > 1)
-        {
-            if (s_Type.TileCount > 0xFFFF)
-                throw new InvalidDataException($"A scattering texture atlas of {s_Type.TextureAtlasSizeX}x{s_Type.TextureAtlasSizeY} tiles; the walk is misaligned.");
-
-            s_Type.TextureAtlasCumulativeTileWeights = new uint[s_Type.TileCount];
-            for (var i = 0; i < s_Type.TileCount; ++i)
-                s_Type.TextureAtlasCumulativeTileWeights[i] = p_Reader.ReadUInt32();
-            s_Type.TextureAtlasCumulativeTileWeightMax = p_Reader.ReadUInt32();
+            TextureAtlasCumulativeTileWeights = new uint[TileCount];
+            for (var i = 0; i < TileCount; ++i)
+                TextureAtlasCumulativeTileWeights[i] = p_Reader.ReadUInt32();
+            TextureAtlasCumulativeTileWeightMax = p_Reader.ReadUInt32();
         }
 
-        s_Type.FirstSpawnLevel = p_Reader.ReadUByte();
-        s_Type.RotationMode = p_Reader.ReadUByte();
-        s_Type.OrientationMode = p_Reader.ReadUByte();
-        s_Type.RotateTowardsSlopeRandomWeight = p_Reader.ReadSingle();
-        s_Type.BillboardingEnable = p_Reader.ReadBool();
-        s_Type.InstanceDataMode = p_Reader.ReadUByte();
-        s_Type.GroundClampBoundingBoxEnable = p_Reader.ReadBool();
-        return s_Type;
+        FirstSpawnLevel = p_Reader.ReadUByte();
+        RotationMode = p_Reader.ReadUByte();
+        OrientationMode = p_Reader.ReadUByte();
+        RotateTowardsSlopeRandomWeight = p_Reader.ReadSingle();
+        BillboardingEnable = p_Reader.ReadBool();
+        InstanceDataMode = p_Reader.ReadUByte();
+        GroundClampBoundingBoxEnable = p_Reader.ReadBool();
     }
 
-    public void Write(RimeWriter p_Writer)
+    public bool Serialize(RimeWriter p_Writer)
     {
         var s_Weights = TileCount > 1 ? (int)TileCount : 0;
         if (TextureAtlasCumulativeTileWeights.Length != s_Weights)
@@ -187,12 +184,64 @@ public class MeshScatteringType
         p_Writer.Write(BillboardingEnable);
         p_Writer.Write(InstanceDataMode);
         p_Writer.Write(GroundClampBoundingBoxEnable);
+        return true;
+    }
+
+    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+    {
+        var s_Stream = new MemoryStream();
+        using (var s_Writer = new RimeWriter(s_Stream))
+            Serialize(s_Writer);
+
+        p_Data = s_Stream.ToArray();
+        return true;
+    }
+
+    public void Deserialize(byte[] p_Data)
+    {
+        using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
+        Deserialize(s_Reader);
     }
 }
 
-public class VisualTerrainLayer
+/// <summary>A terrain layer's scattering: a count, then the scattering types.</summary>
+public class VisualTerrainLayer : IFbSerializable
 {
     public MeshScatteringType[] ScatteringTypes { get; set; } = [];
+
+    public void Deserialize(RimeReader p_Reader)
+    {
+        ScatteringTypes = new MeshScatteringType[p_Reader.ReadUInt32()];
+        for (var i = 0; i < ScatteringTypes.Length; ++i)
+        {
+            ScatteringTypes[i] = new MeshScatteringType();
+            ScatteringTypes[i].Deserialize(p_Reader);
+        }
+    }
+
+    public bool Serialize(RimeWriter p_Writer)
+    {
+        p_Writer.Write((uint)ScatteringTypes.Length);
+        foreach (var s_Type in ScatteringTypes)
+            s_Type.Serialize(p_Writer);
+        return true;
+    }
+
+    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+    {
+        var s_Stream = new MemoryStream();
+        using (var s_Writer = new RimeWriter(s_Stream))
+            Serialize(s_Writer);
+
+        p_Data = s_Stream.ToArray();
+        return true;
+    }
+
+    public void Deserialize(byte[] p_Data)
+    {
+        using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
+        Deserialize(s_Reader);
+    }
 }
 
 /// <summary>
@@ -201,7 +250,7 @@ public class VisualTerrainLayer
 /// (EBX references those by id) and holds no layer combination draws (those are their own
 /// resource, <see cref="TerrainLayerCombinations"/>).
 /// </summary>
-public class VisualTerrain
+public class VisualTerrain : IFbSerializable
 {
     /// <summary>A QualityScalableFloat: low, medium, high, ultra.</summary>
     public float[] MeshScatteringScaleFactors { get; set; } = new float[4];
@@ -228,85 +277,79 @@ public class VisualTerrain
 
     public VisualTerrainLayer[] Layers { get; set; } = [];
 
-    public static VisualTerrain Read(RimeReader p_Reader)
+    public void Deserialize(RimeReader p_Reader)
     {
-        var s_Terrain = new VisualTerrain();
-        for (var i = 0; i < 4; ++i)
-            s_Terrain.MeshScatteringScaleFactors[i] = p_Reader.ReadSingle();
-        s_Terrain.MeshScatteringCellFov = p_Reader.ReadSingle();
-        s_Terrain.MeshScatteringCellMaskSamplesPerSide = p_Reader.ReadUInt32();
-        s_Terrain.MeshScatteringInstancePoolSize = p_Reader.ReadUInt32();
-        s_Terrain.MeshScatteringInstanceDrawBufferSize = p_Reader.ReadUInt32();
-        s_Terrain.MeshScatteringVirtualTextureBlurriness = p_Reader.ReadInt32();
-        s_Terrain.ResourcePatchFov = p_Reader.ReadSingle();
-        s_Terrain.ResourceLodScale = p_Reader.ReadSingle();
-        s_Terrain.ResourceTriangleSizeMin = p_Reader.ReadSingle();
-        s_Terrain.TextureAtlasSampleCountX = p_Reader.ReadUInt32();
-        s_Terrain.TextureAtlasSampleCountY = p_Reader.ReadUInt32();
-        s_Terrain.TextureSamplesPerMeterMax = p_Reader.ReadSingle();
-        s_Terrain.TextureDetailFalloffCurve = p_Reader.ReadSingle();
-        s_Terrain.TextureDetailFalloffDistance = p_Reader.ReadSingle();
-        s_Terrain.TextureDetailFalloffFactor = p_Reader.ReadSingle();
-        s_Terrain.TextureInvisibleDetailReductionFactor = p_Reader.ReadSingle();
-        s_Terrain.TextureOccludedDetailReductionFactor = p_Reader.ReadSingle();
-        s_Terrain.VirtualTextureDisableTerrainLayerIndex = p_Reader.ReadInt32();
+        for (var i = 0; i < MeshScatteringScaleFactors.Length; ++i)
+            MeshScatteringScaleFactors[i] = p_Reader.ReadSingle();
+        MeshScatteringCellFov = p_Reader.ReadSingle();
+        MeshScatteringCellMaskSamplesPerSide = p_Reader.ReadUInt32();
+        MeshScatteringInstancePoolSize = p_Reader.ReadUInt32();
+        MeshScatteringInstanceDrawBufferSize = p_Reader.ReadUInt32();
+        MeshScatteringVirtualTextureBlurriness = p_Reader.ReadInt32();
+        ResourcePatchFov = p_Reader.ReadSingle();
+        ResourceLodScale = p_Reader.ReadSingle();
+        ResourceTriangleSizeMin = p_Reader.ReadSingle();
+        TextureAtlasSampleCountX = p_Reader.ReadUInt32();
+        TextureAtlasSampleCountY = p_Reader.ReadUInt32();
+        TextureSamplesPerMeterMax = p_Reader.ReadSingle();
+        TextureDetailFalloffCurve = p_Reader.ReadSingle();
+        TextureDetailFalloffDistance = p_Reader.ReadSingle();
+        TextureDetailFalloffFactor = p_Reader.ReadSingle();
+        TextureInvisibleDetailReductionFactor = p_Reader.ReadSingle();
+        TextureOccludedDetailReductionFactor = p_Reader.ReadSingle();
+        VirtualTextureDisableTerrainLayerIndex = p_Reader.ReadInt32();
 
-        s_Terrain.Layers = new VisualTerrainLayer[p_Reader.ReadUInt32()];
-        for (var i = 0; i < s_Terrain.Layers.Length; ++i)
+        Layers = new VisualTerrainLayer[p_Reader.ReadUInt32()];
+        for (var i = 0; i < Layers.Length; ++i)
         {
-            var s_Layer = new VisualTerrainLayer { ScatteringTypes = new MeshScatteringType[p_Reader.ReadUInt32()] };
-            for (var j = 0; j < s_Layer.ScatteringTypes.Length; ++j)
-                s_Layer.ScatteringTypes[j] = MeshScatteringType.Read(p_Reader);
-            s_Terrain.Layers[i] = s_Layer;
+            Layers[i] = new VisualTerrainLayer();
+            Layers[i].Deserialize(p_Reader);
         }
-
-        if (p_Reader.Position != p_Reader.Length)
-            throw new InvalidDataException($"VisualTerrain ends {p_Reader.Length - p_Reader.Position} byte(s) after its last layer.");
-
-        return s_Terrain;
     }
 
-    public static VisualTerrain Read(byte[] p_Data)
+    public bool Serialize(RimeWriter p_Writer)
     {
-        using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
-        return Read(s_Reader);
+        foreach (var s_Value in MeshScatteringScaleFactors)
+            p_Writer.Write(s_Value);
+        p_Writer.Write(MeshScatteringCellFov);
+        p_Writer.Write(MeshScatteringCellMaskSamplesPerSide);
+        p_Writer.Write(MeshScatteringInstancePoolSize);
+        p_Writer.Write(MeshScatteringInstanceDrawBufferSize);
+        p_Writer.Write(MeshScatteringVirtualTextureBlurriness);
+        p_Writer.Write(ResourcePatchFov);
+        p_Writer.Write(ResourceLodScale);
+        p_Writer.Write(ResourceTriangleSizeMin);
+        p_Writer.Write(TextureAtlasSampleCountX);
+        p_Writer.Write(TextureAtlasSampleCountY);
+        p_Writer.Write(TextureSamplesPerMeterMax);
+        p_Writer.Write(TextureDetailFalloffCurve);
+        p_Writer.Write(TextureDetailFalloffDistance);
+        p_Writer.Write(TextureDetailFalloffFactor);
+        p_Writer.Write(TextureInvisibleDetailReductionFactor);
+        p_Writer.Write(TextureOccludedDetailReductionFactor);
+        p_Writer.Write(VirtualTextureDisableTerrainLayerIndex);
+
+        p_Writer.Write((uint)Layers.Length);
+        foreach (var s_Layer in Layers)
+            s_Layer.Serialize(p_Writer);
+        return true;
     }
 
     public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
     {
         var s_Stream = new MemoryStream();
         using (var s_Writer = new RimeWriter(s_Stream))
-        {
-            foreach (var s_Value in MeshScatteringScaleFactors)
-                s_Writer.Write(s_Value);
-            s_Writer.Write(MeshScatteringCellFov);
-            s_Writer.Write(MeshScatteringCellMaskSamplesPerSide);
-            s_Writer.Write(MeshScatteringInstancePoolSize);
-            s_Writer.Write(MeshScatteringInstanceDrawBufferSize);
-            s_Writer.Write(MeshScatteringVirtualTextureBlurriness);
-            s_Writer.Write(ResourcePatchFov);
-            s_Writer.Write(ResourceLodScale);
-            s_Writer.Write(ResourceTriangleSizeMin);
-            s_Writer.Write(TextureAtlasSampleCountX);
-            s_Writer.Write(TextureAtlasSampleCountY);
-            s_Writer.Write(TextureSamplesPerMeterMax);
-            s_Writer.Write(TextureDetailFalloffCurve);
-            s_Writer.Write(TextureDetailFalloffDistance);
-            s_Writer.Write(TextureDetailFalloffFactor);
-            s_Writer.Write(TextureInvisibleDetailReductionFactor);
-            s_Writer.Write(TextureOccludedDetailReductionFactor);
-            s_Writer.Write(VirtualTextureDisableTerrainLayerIndex);
-
-            s_Writer.Write((uint)Layers.Length);
-            foreach (var s_Layer in Layers)
-            {
-                s_Writer.Write((uint)s_Layer.ScatteringTypes.Length);
-                foreach (var s_Type in s_Layer.ScatteringTypes)
-                    s_Type.Write(s_Writer);
-            }
-        }
+            Serialize(s_Writer);
 
         p_Data = s_Stream.ToArray();
         return true;
+    }
+
+    public void Deserialize(byte[] p_Data)
+    {
+        using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
+        Deserialize(s_Reader);
+        if (s_Reader.Position != s_Reader.Length)
+            throw new InvalidDataException($"VisualTerrain ends {s_Reader.Length - s_Reader.Position} byte(s) after its last layer.");
     }
 }

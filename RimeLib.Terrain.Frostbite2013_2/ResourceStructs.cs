@@ -21,10 +21,14 @@ public class ResourceStructs : IResourceStructs
         switch (p_Type)
         {
             case ResourceType.VisualTerrain:
-                VisualTerrain.Read(p_Data).Serialize(out s_Written);
+                var s_Terrain = new VisualTerrain();
+                s_Terrain.Deserialize(p_Data);
+                s_Terrain.Serialize(out s_Written);
                 return s_Written;
             case ResourceType.TerrainLayerCombinations:
-                TerrainLayerCombinations.Read(p_Data).Serialize(out s_Written);
+                var s_Combinations = new TerrainLayerCombinations();
+                s_Combinations.Deserialize(p_Data);
+                s_Combinations.Serialize(out s_Written);
                 return s_Written;
             case ResourceType.TerrainStreamingTree:
                 var s_Tree = new TerrainStreamingTree();
