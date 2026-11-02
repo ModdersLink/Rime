@@ -90,7 +90,8 @@ namespace RimeLib.Cmd.Commands.Game
                 return false;
             }
 
-            var s_Empty = s_Info.LayerCount == 0 || s_Info.Draws.Count == 0;
+            // Draws or scattering make a round trip mean something; BF4 keeps its draws in another resource.
+            var s_Empty = s_Info.LayerCount == 0 || (s_Info.Draws.Count == 0 && s_Info.Scattering.Count == 0);
 
             // ---- the edit probe ----------------------------------------------------------------
             // A density that no shipped type uses, so "the edit landed" cannot be confused with
@@ -178,7 +179,7 @@ namespace RimeLib.Cmd.Commands.Game
                                + (s_EditError != null ? $" error={s_EditError}" : string.Empty));
 
             if (s_Empty)
-                p_Writer.WriteLine($"{Name}: NO CONTENT -- the resource has no layers or no draws, so a "
+                p_Writer.WriteLine($"{Name}: NO CONTENT -- the resource has no layers, or neither draws nor scattering, so a "
                                    + "byte-exact round trip proves nothing here.");
 
             return s_ByteExact && !s_Empty;
