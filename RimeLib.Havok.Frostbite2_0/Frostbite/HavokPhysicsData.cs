@@ -1,10 +1,10 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 using RimeLib.Frostbite;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 
-namespace RimeLib.Havok.Frostbite;
+namespace RimeLib.Havok.Frostbite2_0.Frostbite;
 
 /// <summary>A part's local bounding box: two Vec3s, each four floats with its padding.</summary>
 public readonly record struct HavokAabb(Vector4 Min, Vector4 Max);
@@ -64,8 +64,12 @@ public class HavokPhysicsData : IFbSerializable
     /// </summary>
     public int[] Relocations { get; private set; } = new int[4];
 
-    public HavokPhysicsData(RimeReader p_Reader)
+    /// <summary>How this engine's Havok lays its shapes out.</summary>
+    public ShapeReader Shapes { get; }
+
+    public HavokPhysicsData(RimeReader p_Reader, ShapeReader? p_Shapes = null)
     {
+        Shapes = p_Shapes ?? new ShapeReader();
         Deserialize(p_Reader);
     }
 
@@ -533,9 +537,6 @@ public class HavokPhysicsData : IFbSerializable
         var s_Unread = new Dictionary<string, int>();
         p_Unread = s_Unread;
 
-        // BF4 ships Havok 2012.2, whose convex vertices and convex transform shapes are laid out
-        // differently from BF3's Havok 2010.2.
-        var s_Havok2012 = System.Text.Encoding.ASCII.GetString(s_Instance.HkPackfile.ContentsVersion).StartsWith("hk_2012");
 
         var s_ClassOf = BuildObjectIndex(s_Instance, out var s_ObjectStarts);
 
@@ -609,7 +610,7 @@ public class HavokPhysicsData : IFbSerializable
 
                 case "hkpConvexTranslateShape":
                 {
-                    var s_Wrapper = hkpShapeReader.ReadTranslate(s_Instance.Reader, s_DataStart,
+                    var s_Wrapper = Shapes.ReadTranslate(s_Instance.Reader, s_DataStart,
                                                                  p_Offset, s_Instance.ObjectOffsets);
 
                     if (s_Wrapper == null)
@@ -626,14 +627,22 @@ public class HavokPhysicsData : IFbSerializable
                 }
 
                 case "hkpStaticCompoundShape":
-                    foreach (var (s_Placed, s_Child, s_At) in hkpShapeReader.ReadStaticCompound(s_Instance.Reader, s_DataStart,
-                                 p_Offset, s_Instance.ArrayOffsets, s_Instance.ObjectOffsets))
+                {
+                    var s_Instances = Shapes.ReadStaticCompound(s_Instance.Reader, s_DataStart, p_Offset, s_Instance.ArrayOffsets, s_Instance.ObjectOffsets);
+                    if (s_Instances == null)
+                    {
+                        Note(s_Name);
+                        return;
+                    }
+
+                    foreach (var (s_Placed, s_Child, s_At) in s_Instances)
                         Visit(s_Child, p_Placement.Compose(s_Placed), s_At, p_Depth + 1);
 
                     return;
+                }
 
                 case "hkpBvCompressedMeshShape":
-                    s_Leaf = hkpShapeReader.ReadBvCompressedMesh(s_Instance.Reader, s_DataStart, p_Offset, s_Instance.ArrayOffsets);
+                    s_Leaf = Shapes.ReadBvCompressedMesh(s_Instance.Reader, s_DataStart, p_Offset, s_Instance.ArrayOffsets);
 
                     if (s_Leaf == null)
                     {
@@ -645,10 +654,7 @@ public class HavokPhysicsData : IFbSerializable
 
                 case "hkpConvexTransformShape":
                 {
-                    var s_Wrapper = s_Havok2012
-                        ? hkpShapeReader.ReadQsTransformShape(s_Instance.Reader, s_DataStart, p_Offset, s_Instance.ObjectOffsets)
-                        : hkpShapeReader.ReadTransform(s_Instance.Reader, s_DataStart,
-                                                                 p_Offset, s_Instance.ObjectOffsets);
+                    var s_Wrapper = Shapes.ReadTransformShape(s_Instance.Reader, s_DataStart, p_Offset, s_Instance.ObjectOffsets);
 
                     if (s_Wrapper == null)
                     {
@@ -663,25 +669,25 @@ public class HavokPhysicsData : IFbSerializable
                 }
 
                 case "hkpBoxShape":
-                    s_Leaf = hkpShapeReader.ReadBox(s_Instance.Reader, s_DataStart, p_Offset);
+                    s_Leaf = Shapes.ReadBox(s_Instance.Reader, s_DataStart, p_Offset);
                     break;
 
                 case "hkpConvexVerticesShape":
-                    s_Leaf = hkpShapeReader.ReadConvex(s_Instance.Reader, s_DataStart, p_Offset,
+                    s_Leaf = Shapes.ReadConvex(s_Instance.Reader, s_DataStart, p_Offset,
                                                        s_Instance.ArrayOffsets,
-                                                       s_Instance.ObjectOffsets, s_Havok2012);
+                                                       s_Instance.ObjectOffsets);
                     break;
 
                 case "hkpCylinderShape":
-                    s_Leaf = hkpShapeReader.ReadCylinder(s_Instance.Reader, s_DataStart, p_Offset);
+                    s_Leaf = Shapes.ReadCylinder(s_Instance.Reader, s_DataStart, p_Offset);
                     break;
 
                 case "hkpCapsuleShape":
-                    s_Leaf = hkpShapeReader.ReadCapsule(s_Instance.Reader, s_DataStart, p_Offset);
+                    s_Leaf = Shapes.ReadCapsule(s_Instance.Reader, s_DataStart, p_Offset);
                     break;
 
                 case "hkpSphereShape":
-                    s_Leaf = hkpShapeReader.ReadSphere(s_Instance.Reader, s_DataStart, p_Offset);
+                    s_Leaf = Shapes.ReadSphere(s_Instance.Reader, s_DataStart, p_Offset);
                     break;
 
                 case "hkpStorageExtendedMeshShapeMeshSubpartStorage":
@@ -691,7 +697,7 @@ public class HavokPhysicsData : IFbSerializable
                         ? s_ObjectStarts[s_At + 1]
                         : s_Instance.DataSection.VirtualFixupsOffset;
 
-                    s_Leaf = hkpShapeReader.ReadStorageMesh(s_Instance.Reader, s_DataStart, p_Offset,
+                    s_Leaf = Shapes.ReadStorageMesh(s_Instance.Reader, s_DataStart, p_Offset,
                                                             s_End, s_Instance.ArrayOffsets);
 
                     if (s_Leaf == null)
