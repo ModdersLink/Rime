@@ -85,6 +85,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Havok", "RimeLib.Ha
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Havok.Frostbite2_0", "RimeLib.Havok.Frostbite2_0\RimeLib.Havok.Frostbite2_0.csproj", "{FC370BDF-3E2D-4421-B8B6-185062AD2B50}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Havok.Frostbite2013_2", "RimeLib.Havok.Frostbite2013_2\RimeLib.Havok.Frostbite2013_2.csproj", "{87B5E424-63E8-4CCB-98BE-BB10F540A582}"
+EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HavokTool", "Utils\HavokTool\HavokTool.csproj", "{F474AA17-2758-41BE-8AC1-90F3ED2880AC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Animation", "RimeLib.Animation\RimeLib.Animation.csproj", "{77A9BD12-4F63-452F-B5C5-550CD9E127E2}"
@@ -291,6 +293,10 @@ Global
 		{FC370BDF-3E2D-4421-B8B6-185062AD2B50}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FC370BDF-3E2D-4421-B8B6-185062AD2B50}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FC370BDF-3E2D-4421-B8B6-185062AD2B50}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87B5E424-63E8-4CCB-98BE-BB10F540A582}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87B5E424-63E8-4CCB-98BE-BB10F540A582}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87B5E424-63E8-4CCB-98BE-BB10F540A582}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87B5E424-63E8-4CCB-98BE-BB10F540A582}.Release|Any CPU.Build.0 = Release|Any CPU
 		{F474AA17-2758-41BE-8AC1-90F3ED2880AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F474AA17-2758-41BE-8AC1-90F3ED2880AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F474AA17-2758-41BE-8AC1-90F3ED2880AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
