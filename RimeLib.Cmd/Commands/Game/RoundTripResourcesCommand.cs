@@ -18,6 +18,9 @@ namespace RimeLib.Cmd.Commands.Game
         [CommandArgument(Description = "How many differing resources to list per type.", Optional = true)]
         public int List { get; set; } = 3;
 
+        [CommandArgument(Description = "A directory to write every differing resource to: <name>.bin as read, .meta and .out as written.", Optional = true)]
+        public DirectoryInfo? Dump { get; set; }
+
         /// <summary>Every IResourceStructs of the loaded assemblies that supports the engine.</summary>
         private static List<IResourceStructs> Providers(RimeLib.Frostbite.EngineType p_Engine)
         {
@@ -66,7 +69,7 @@ namespace RimeLib.Cmd.Commands.Game
 
                 if (s_ByType.TryGetValue(s_Type, out var s_Provider))
                 {
-                    string? s_Problem;
+                    string? s_Problem = null;
                     try
                     {
                         byte[] s_Data;
@@ -74,10 +77,19 @@ namespace RimeLib.Cmd.Commands.Game
                             s_Data = s_Reader.ReadBytes((int)s_Reader.Length);
                         s_Variant.TryGetMeta(out var s_Meta);
 
-                        var s_Written = s_Provider.RoundTrip(s_Type, s_Data, s_Meta);
-                        s_Problem = s_Written.AsSpan().SequenceEqual(s_Data)
-                            ? null
-                            : $"{s_Data.Length} bytes read, {s_Written.Length} written, first difference at {FirstDifference(s_Data, s_Written)}";
+                        byte[]? s_Written = null;
+                        try
+                        {
+                            s_Written = s_Provider.RoundTrip(s_Type, s_Data, s_Meta);
+                            s_Problem = s_Written.AsSpan().SequenceEqual(s_Data)
+                                ? null
+                                : $"{s_Data.Length} bytes read, {s_Written.Length} written, first difference at {FirstDifference(s_Data, s_Written)}";
+                        }
+                        finally
+                        {
+                            if (Dump != null && (s_Written == null || s_Problem != null))
+                                DumpDiffering(s_Name, s_Data, s_Meta, s_Written);
+                        }
                     }
                     catch (Exception s_Ex)
                     {
@@ -104,6 +116,17 @@ namespace RimeLib.Cmd.Commands.Game
             }
 
             return s_AllSame;
+        }
+
+        private void DumpDiffering(string p_Name, byte[] p_Data, byte[]? p_Meta, byte[]? p_Written)
+        {
+            var s_Path = Path.Combine(Dump!.FullName, p_Name.Replace('/', '_'));
+            Directory.CreateDirectory(Dump.FullName);
+            File.WriteAllBytes(s_Path + ".bin", p_Data);
+            if (p_Meta != null)
+                File.WriteAllBytes(s_Path + ".meta", p_Meta);
+            if (p_Written != null)
+                File.WriteAllBytes(s_Path + ".out", p_Written);
         }
 
         private static int FirstDifference(byte[] p_A, byte[] p_B)
