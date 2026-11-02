@@ -7,6 +7,7 @@ namespace RimeLib.Serialization.Frostbite2013_2;
 public static class DataContainerTypeRegistry
 {
     private static readonly ConcurrentDictionary<string, Type> NameRegistry = new();
+    private static readonly object s_RefreshLock = new();
 
     public static Type FindByName(string p_Name) 
     {
@@ -15,7 +16,14 @@ public static class DataContainerTypeRegistry
             // If it doesn't exist, then refresh and try again.
             // only refresh if registry is empty, otherwise seems like an annoying performance hit
             if (NameRegistry.Count == 0)
-                RefreshTypes();
+            {
+                // Parsers on other threads wait for the whole registry, not a part of it.
+                lock (s_RefreshLock)
+                {
+                    if (NameRegistry.Count == 0)
+                        RefreshTypes();
+                }
+            }
             
             NameRegistry.TryGetValue(p_Name, out s_InterfaceType);
         }
