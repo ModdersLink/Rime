@@ -182,5 +182,4 @@ public class ShapeReader : Frostbite2_0.Frostbite.ShapeReader
 
         return s_Shape;
     }
-
 }

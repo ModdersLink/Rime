@@ -64,12 +64,12 @@ public class HavokPhysicsData : IFbSerializable
     /// </summary>
     public int[] Relocations { get; private set; } = new int[4];
 
-    /// <summary>How this engine's Havok lays its shapes out.</summary>
-    public ShapeReader Shapes { get; }
-
-    public HavokPhysicsData(RimeReader p_Reader, ShapeReader? p_Shapes = null)
+    public HavokPhysicsData()
     {
-        Shapes = p_Shapes ?? new ShapeReader();
+    }
+
+    public HavokPhysicsData(RimeReader p_Reader)
+    {
         Deserialize(p_Reader);
     }
 
@@ -514,13 +514,14 @@ public class HavokPhysicsData : IFbSerializable
     /// children -- and it means a list with a disabled or null child is walked correctly without
     /// this having to know what "disabled" looks like.
     /// </summary>
-    public List<hkpCollisionShape> GetShapes()
+    /// <param name="p_Shapes">How the engine's Havok lays its shapes out.</param>
+    public List<hkpCollisionShape> GetShapes(ShapeReader p_Shapes)
     {
-        return GetShapes(out _);
+        return GetShapes(p_Shapes, out _);
     }
 
     /// <summary>
-    /// <inheritdoc cref="GetShapes()"/>
+    /// <inheritdoc cref="GetShapes(ShapeReader)"/>
     /// </summary>
     /// <param name="p_Unread">
     /// Classes the walk reached and could not turn into geometry, by name and count. Reported
@@ -528,7 +529,7 @@ public class HavokPhysicsData : IFbSerializable
     /// it is all of them, and the honest answer for hkpMoppCode or hkpCompressedMeshShape is that
     /// they are baked by the Havok SDK and are not modelled here.
     /// </param>
-    public List<hkpCollisionShape> GetShapes(out Dictionary<string, int> p_Unread)
+    public List<hkpCollisionShape> GetShapes(ShapeReader p_Shapes, out Dictionary<string, int> p_Unread)
     {
         var s_Shapes = new List<hkpCollisionShape>();
         var s_Instance = HavokInstance32;
@@ -536,7 +537,6 @@ public class HavokPhysicsData : IFbSerializable
 
         var s_Unread = new Dictionary<string, int>();
         p_Unread = s_Unread;
-
 
         var s_ClassOf = BuildObjectIndex(s_Instance, out var s_ObjectStarts);
 
@@ -610,7 +610,7 @@ public class HavokPhysicsData : IFbSerializable
 
                 case "hkpConvexTranslateShape":
                 {
-                    var s_Wrapper = Shapes.ReadTranslate(s_Instance.Reader, s_DataStart,
+                    var s_Wrapper = p_Shapes.ReadTranslate(s_Instance.Reader, s_DataStart,
                                                                  p_Offset, s_Instance.ObjectOffsets);
 
                     if (s_Wrapper == null)
@@ -628,7 +628,7 @@ public class HavokPhysicsData : IFbSerializable
 
                 case "hkpStaticCompoundShape":
                 {
-                    var s_Instances = Shapes.ReadStaticCompound(s_Instance.Reader, s_DataStart, p_Offset, s_Instance.ArrayOffsets, s_Instance.ObjectOffsets);
+                    var s_Instances = p_Shapes.ReadStaticCompound(s_Instance.Reader, s_DataStart, p_Offset, s_Instance.ArrayOffsets, s_Instance.ObjectOffsets);
                     if (s_Instances == null)
                     {
                         Note(s_Name);
@@ -642,7 +642,7 @@ public class HavokPhysicsData : IFbSerializable
                 }
 
                 case "hkpBvCompressedMeshShape":
-                    s_Leaf = Shapes.ReadBvCompressedMesh(s_Instance.Reader, s_DataStart, p_Offset, s_Instance.ArrayOffsets);
+                    s_Leaf = p_Shapes.ReadBvCompressedMesh(s_Instance.Reader, s_DataStart, p_Offset, s_Instance.ArrayOffsets);
 
                     if (s_Leaf == null)
                     {
@@ -654,7 +654,7 @@ public class HavokPhysicsData : IFbSerializable
 
                 case "hkpConvexTransformShape":
                 {
-                    var s_Wrapper = Shapes.ReadTransformShape(s_Instance.Reader, s_DataStart, p_Offset, s_Instance.ObjectOffsets);
+                    var s_Wrapper = p_Shapes.ReadTransformShape(s_Instance.Reader, s_DataStart, p_Offset, s_Instance.ObjectOffsets);
 
                     if (s_Wrapper == null)
                     {
@@ -669,25 +669,25 @@ public class HavokPhysicsData : IFbSerializable
                 }
 
                 case "hkpBoxShape":
-                    s_Leaf = Shapes.ReadBox(s_Instance.Reader, s_DataStart, p_Offset);
+                    s_Leaf = p_Shapes.ReadBox(s_Instance.Reader, s_DataStart, p_Offset);
                     break;
 
                 case "hkpConvexVerticesShape":
-                    s_Leaf = Shapes.ReadConvex(s_Instance.Reader, s_DataStart, p_Offset,
+                    s_Leaf = p_Shapes.ReadConvex(s_Instance.Reader, s_DataStart, p_Offset,
                                                        s_Instance.ArrayOffsets,
                                                        s_Instance.ObjectOffsets);
                     break;
 
                 case "hkpCylinderShape":
-                    s_Leaf = Shapes.ReadCylinder(s_Instance.Reader, s_DataStart, p_Offset);
+                    s_Leaf = p_Shapes.ReadCylinder(s_Instance.Reader, s_DataStart, p_Offset);
                     break;
 
                 case "hkpCapsuleShape":
-                    s_Leaf = Shapes.ReadCapsule(s_Instance.Reader, s_DataStart, p_Offset);
+                    s_Leaf = p_Shapes.ReadCapsule(s_Instance.Reader, s_DataStart, p_Offset);
                     break;
 
                 case "hkpSphereShape":
-                    s_Leaf = Shapes.ReadSphere(s_Instance.Reader, s_DataStart, p_Offset);
+                    s_Leaf = p_Shapes.ReadSphere(s_Instance.Reader, s_DataStart, p_Offset);
                     break;
 
                 case "hkpStorageExtendedMeshShapeMeshSubpartStorage":
@@ -697,7 +697,7 @@ public class HavokPhysicsData : IFbSerializable
                         ? s_ObjectStarts[s_At + 1]
                         : s_Instance.DataSection.VirtualFixupsOffset;
 
-                    s_Leaf = Shapes.ReadStorageMesh(s_Instance.Reader, s_DataStart, p_Offset,
+                    s_Leaf = p_Shapes.ReadStorageMesh(s_Instance.Reader, s_DataStart, p_Offset,
                                                             s_End, s_Instance.ArrayOffsets);
 
                     if (s_Leaf == null)
@@ -847,7 +847,7 @@ public class HavokPhysicsData : IFbSerializable
         return true;
     }
 
-    public bool Serialize(out byte[]? p_Data)
+    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
     {
         var s_Stream = new MemoryStream();
         using var s_Writer = new RimeWriter(s_Stream);
@@ -861,5 +861,4 @@ public class HavokPhysicsData : IFbSerializable
         p_Data = null;
         return false;
     }
-
 }

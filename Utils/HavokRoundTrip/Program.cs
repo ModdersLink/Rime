@@ -96,7 +96,7 @@ foreach (var l_File in s_Files)
 
     try
     {
-        s_Data = Parse(s_Reader);
+        s_Data = new HavokPhysicsData(s_Reader);
     }
     catch (Exception s_Exception)
     {
@@ -245,23 +245,18 @@ return s_Pass ? 0 : 1;
 
 // The dumps carry no engine, so the packfile's Havok version picks the shape reader: Havok 2012 is
 // BF4's.
-static HavokPhysicsData Parse(RimeReader p_Reader)
-{
-    var s_Data = new HavokPhysicsData(p_Reader);
-    if (!System.Text.Encoding.ASCII.GetString(s_Data.HavokInstance32.HkPackfile.ContentsVersion).StartsWith("hk_2012"))
-        return s_Data;
-
-    p_Reader.Seek(0, SeekOrigin.Begin);
-    return new HavokPhysicsData(p_Reader, new RimeLib.Havok.Frostbite2013_2.Frostbite.ShapeReader());
-}
+static ShapeReader ShapesOf(HavokPhysicsData p_Data) =>
+    System.Text.Encoding.ASCII.GetString(p_Data.HavokInstance32.HkPackfile.ContentsVersion).StartsWith("hk_2012")
+        ? new RimeLib.Havok.Frostbite2013_2.Frostbite.ShapeReader()
+        : new ShapeReader();
 
 static int DumpOne(string p_Path, string? p_Out)
 {
     var s_Bytes = File.ReadAllBytes(p_Path);
 
     using var s_Reader = new RimeReader(new MemoryStream(s_Bytes));
-    var s_Data = Parse(s_Reader);
-    var s_Shapes = s_Data.GetShapes(out var s_Unread);
+    var s_Data = new HavokPhysicsData(s_Reader);
+    var s_Shapes = s_Data.GetShapes(ShapesOf(s_Data), out var s_Unread);
     var s_Objects = s_Data.HavokInstance32.DescriptorInfos.Count;
     var s_NameOf = new Dictionary<long, string>();
 
@@ -338,7 +333,7 @@ static int DumpOne(string p_Path, string? p_Out)
 // the counters above; everything it touches is measured, nothing is assumed.
 void Cover(HavokPhysicsData p_Data, string p_Name)
 {
-    var s_Shapes = p_Data.GetShapes(out var s_Unread);
+    var s_Shapes = p_Data.GetShapes(ShapesOf(p_Data), out var s_Unread);
 
     s_Placements += s_Shapes.Count;
     s_MeshVertices += s_Shapes.Sum(p => p.Kind == "mesh" ? p.Vertices.Count : 0);
