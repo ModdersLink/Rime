@@ -404,7 +404,11 @@ namespace RimeLib.Cmd.Contexts
             m_Builder.WithDependencyBundle(p_BundleName);
             if (p_Walked)
                 m_WalkedDependencyBundles.Add(p_BundleName);
+            Coverage = null;
         }
+
+        /// <summary>What the dependency and scenario bundles carry; cleared when one is added.</summary>
+        internal DependencyCoverage? Coverage { get; set; }
 
         /// <summary>
         /// Dependency bundles that are loaded but not self-contained: what they carry is left out,
@@ -429,6 +433,7 @@ namespace RimeLib.Cmd.Contexts
                 m_Scenarios[p_Scenario] = s_Bundles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             s_Bundles.Add(p_BundleName);
+            Coverage = null;
         }
 
         internal IReadOnlyDictionary<string, HashSet<string>> GetScenarios()
