@@ -1,11 +1,13 @@
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using RimeLib.Frostbite;
 using RimeLib.IO;
 
 namespace RimeLib.Content.Scaleform
 {
     /// <summary>A SWF or GFx tag: its type and its undecoded body.</summary>
-    public class SwfTagSection
+    public class SwfTagSection : IFbSerializable
     {
         /// <summary>Where the tag starts in the uncompressed movie, when it was read from one.</summary>
         public long? Offset { get; set; }
@@ -47,13 +49,30 @@ namespace RimeLib.Content.Scaleform
             Data = p_Reader.ReadBytes(s_Length);
         }
 
-        public void Serialize(RimeWriter p_Writer)
+        public bool Serialize(RimeWriter p_Writer)
         {
             var s_Long = LongHeader || Data.Length >= 0x3F;
             p_Writer.Write((ushort)(((ushort)Tag << 6) | (s_Long ? 0x3F : Data.Length)));
             if (s_Long)
                 p_Writer.Write(Data.Length);
             p_Writer.Write(Data);
+            return true;
+        }
+
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+        {
+            var s_Stream = new MemoryStream();
+            using (var s_Writer = new RimeWriter(s_Stream))
+                Serialize(s_Writer);
+
+            p_Data = s_Stream.ToArray();
+            return true;
+        }
+
+        public void Deserialize(byte[] p_Data)
+        {
+            using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
+            Deserialize(s_Reader);
         }
     }
 }
