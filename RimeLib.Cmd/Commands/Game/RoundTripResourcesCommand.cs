@@ -21,41 +21,10 @@ namespace RimeLib.Cmd.Commands.Game
         [CommandArgument(Description = "A directory to write every differing resource to: <name>.bin as read, .meta and .out as written.", Optional = true)]
         public DirectoryInfo? Dump { get; set; }
 
-        /// <summary>Every IResourceStructs of the loaded assemblies that supports the engine.</summary>
-        private static List<IResourceStructs> Providers(RimeLib.Frostbite.EngineType p_Engine)
-        {
-            var s_Providers = new List<IResourceStructs>();
-            foreach (var s_Assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                Type[] s_Types;
-                try
-                {
-                    s_Types = s_Assembly.GetTypes();
-                }
-                catch (System.Reflection.ReflectionTypeLoadException s_Ex)
-                {
-                    s_Types = s_Ex.Types.Where(p_T => p_T != null).ToArray()!;
-                }
-
-                foreach (var s_Type in s_Types.Where(p_T => !p_T.IsAbstract && !p_T.IsInterface && typeof(IResourceStructs).IsAssignableFrom(p_T)))
-                {
-                    if (Activator.CreateInstance(s_Type) is IResourceStructs s_Provider && s_Provider.GetSupportedEngines().Contains(p_Engine) && s_Provider.GetSupportedEngines().Min() <= p_Engine)
-                        s_Providers.Add(s_Provider);
-                }
-            }
-
-            return s_Providers;
-        }
-
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             var s_Mounter = ((GameContext)p_Context).GetMounter();
-            // Per type, the provider of the newest engine at or below this one, as the engine
-            // interface registry resolves.
-            var s_ByType = Providers(s_Mounter.GetEngineType())
-                .SelectMany(p_P => p_P.Types.Select(p_T => (Type: p_T, Provider: p_P)))
-                .GroupBy(p_E => p_E.Type)
-                .ToDictionary(p_G => p_G.Key, p_G => p_G.OrderByDescending(p_E => p_E.Provider.GetSupportedEngines().Min()).First().Provider);
+            var s_ByType = ResourceTypeProviders.ByType<IResourceStructs>(s_Mounter.GetEngineType(), p_P => p_P.Types);
 
             var s_Stats = new SortedDictionary<string, (int Total, int Same, List<string> Differing)>(StringComparer.Ordinal);
             foreach (var (s_Name, s_Resource) in s_Mounter.GetResources().OrderBy(p_R => p_R.Key, StringComparer.Ordinal))
