@@ -413,6 +413,15 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return;
             }
 
+            // A chunk only other superbundles carry, outside any bundle, is in a chunk superbundle
+            // (localisation, mpchunks) and loads with it, not with a bundle.
+            var s_Superbundle = ((SbBuildingContext)m_Context.Parent!).SuperbundleName;
+            if (s_Chunk.Variants.All(p_V => p_V.GetContainedBundle() == null && !string.Equals(p_V.GetContainedSuperbundle(), s_Superbundle, StringComparison.OrdinalIgnoreCase)))
+            {
+                m_Skipped++;
+                return;
+            }
+
             // The variant that carries the owner's name hash is the one the game's own bundle ships.
             // It is ranged to exactly the slice that resource asks for. Any other variant is a
             // different slice of the same payload and reads the wrong bytes.
