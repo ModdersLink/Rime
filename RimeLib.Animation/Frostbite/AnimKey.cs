@@ -3,7 +3,7 @@ using System.IO;
 using RimeLib.Frostbite;
 using RimeLib.IO;
 
-namespace RimeLib.Animation.Frostbite2_0;
+namespace RimeLib.Animation.Frostbite;
 
 public class AnimKey : IFbSerializable
 {

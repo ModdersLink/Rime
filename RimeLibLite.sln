@@ -147,6 +147,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RimeLib.Shader.Frostbite201
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Havok.Frostbite2013_2", "RimeLib.Havok.Frostbite2013_2\RimeLib.Havok.Frostbite2013_2.csproj", "{87B5E424-63E8-4CCB-98BE-BB10F540A582}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RimeLib.Animation.Frostbite2013_2", "RimeLib.Animation.Frostbite2013_2\RimeLib.Animation.Frostbite2013_2.csproj", "{96B29399-0751-4451-8BB0-16C6A7261BB6}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -391,6 +393,10 @@ Global
 		{87B5E424-63E8-4CCB-98BE-BB10F540A582}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{87B5E424-63E8-4CCB-98BE-BB10F540A582}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{87B5E424-63E8-4CCB-98BE-BB10F540A582}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96B29399-0751-4451-8BB0-16C6A7261BB6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96B29399-0751-4451-8BB0-16C6A7261BB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96B29399-0751-4451-8BB0-16C6A7261BB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96B29399-0751-4451-8BB0-16C6A7261BB6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
