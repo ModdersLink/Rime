@@ -31,7 +31,13 @@ public class EbxReader : IDisposable
 
     public DatabasePartition ParsePartition(string p_Name, IObjectVariant p_Variant)
     {
-        using var s_Reader = p_Variant.GetReader();
+        // Parsing makes many small reads and seeks; through the variant's own reader (patch and
+        // decompression layers) each one is expensive, so the partition is read whole first.
+        var s_Bytes = new MemoryStream();
+        using (var s_Source = p_Variant.GetReader())
+            s_Source.CopyTo(s_Bytes);
+        s_Bytes.Position = 0;
+        using var s_Reader = new RimeReader(s_Bytes);
 
         m_Partition = new DatabasePartition
         {
@@ -85,6 +91,50 @@ public class EbxReader : IDisposable
             s_Imports.Add(new ImportEntry(s_Reader).PartitionGuid);
 
         return (s_Header.PartitionGuid, s_Imports);
+    }
+
+    /// <summary>
+    /// The type name of the partition's primary instance, from the metadata alone: the primary
+    /// instance is the first of the first instance range.
+    /// </summary>
+    public static string? ReadPrimaryTypeName(IObjectVariant p_Variant)
+    {
+        using var s_Source = p_Variant.GetReader();
+
+        var s_Magic = s_Source.ReadBytes(4);
+        s_Source.Seek(-4, SeekOrigin.Current);
+
+        RimeReader s_Reader;
+        if (IsLittleEndian(s_Magic))
+            s_Reader = new RimeReader(s_Source, Endianness.LittleEndian, false);
+        else if (IsBigEndian(s_Magic))
+            s_Reader = new RimeReader(s_Source, Endianness.BigEndian, false);
+        else
+            throw new Exception("The supplied file has an invalid magic header.");
+
+        var s_Header = new StreamingPartitionHeader(s_Reader);
+        if (s_Header.RangeCount == 0)
+            return null;
+
+        s_Reader.Align(16);
+        s_Reader.Seek(s_Header.ImportCount * ImportEntry.SizeOf, SeekOrigin.Current);
+        var s_Strings = TypeStrings(s_Reader, s_Header.TypeStringTableSize);
+
+        for (var i = 0; i < s_Header.FieldDescriptorCount; ++i)
+            _ = new FieldDescriptor(s_Reader, s_Strings);
+        var s_Types = new List<TypeDescriptor>(s_Header.TypeDescriptorCount);
+        for (var i = 0; i < s_Header.TypeDescriptorCount; ++i)
+            s_Types.Add(new TypeDescriptor(s_Reader, s_Strings));
+
+        return s_Types[(int)new InstanceEntry(s_Reader).TypeDescriptorIndex].Name;
+    }
+
+    private static Dictionary<uint, string> TypeStrings(RimeReader p_Reader, int p_Size)
+    {
+        var s_Strings = new Dictionary<uint, string>();
+        foreach (var s_String in Encoding.UTF8.GetString(p_Reader.ReadBytes(p_Size)).TrimEnd('\0').Split('\0'))
+            s_Strings[Frostbite.Utils.HashQuick(s_String)] = s_String;
+        return s_Strings;
     }
 
     public static GUID GetPartitionGuid(IObjectVariant p_Variant)
