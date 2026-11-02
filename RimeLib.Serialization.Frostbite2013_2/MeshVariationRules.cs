@@ -39,6 +39,9 @@ public class MeshVariationRules : IMeshVariationRules
 
     public bool PlainEntryWithVariations => true;
 
+    // Retail sub-worlds without meshes (gameplay, all_gamemodes_except_dm) have no database.
+    public bool OmitsEmptyDatabase => true;
+
     public bool IsMesh(DataContainerBase p_Instance) => p_Instance is fb.Render.MeshAsset;
 
     public void SetEntries(DatabasePartitionBase p_Database, IReadOnlyList<object> p_Entries)

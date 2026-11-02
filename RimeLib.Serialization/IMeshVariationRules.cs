@@ -17,6 +17,9 @@ public interface IMeshVariationRules : IEngineInterface
 
     bool IsMesh(DataContainerBase p_Instance);
 
+    /// <summary>Whether a bundle whose database would have no entries ships none.</summary>
+    bool OmitsEmptyDatabase => false;
+
     /// <summary>The name hash a variation is looked up by, or null when the instance is not a variation.</summary>
     uint? GetVariationHash(DataContainerBase p_Instance);
 

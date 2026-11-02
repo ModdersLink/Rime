@@ -48,11 +48,15 @@ public interface IRegistryRules : IEngineInterface
     DataContainerBase CreateRegistry(IReadOnlyDictionary<string, List<CtrRefBase>> p_Entries);
 
     /// <summary>
-    /// The partition a level partition's registry is a partition of its own in (Frostbite 2013.2:
-    /// <c>&lt;level&gt;_networkregistry_win32</c>), or null when the registry is embedded.
+    /// The partition that holds a level partition's registry: the level partition itself when the
+    /// registry is embedded (Frostbite 2), or a partition of its own (Frostbite 2013.2:
+    /// <c>&lt;level&gt;_networkregistry_win32</c>).
     /// </summary>
-    string? GetRegistryPartitionName(string p_LevelPartition);
+    string GetRegistryPartitionName(string p_LevelPartition);
 
-    /// <summary>Puts the entries into a registry partition's registry, replacing what it lists.</summary>
+    /// <summary>Whether a bundle whose registry (a partition of its own) would have no entries ships none.</summary>
+    bool OmitsEmptyRegistry => false;
+
+    /// <summary>Puts the entries into the registry that partition holds, replacing what it lists.</summary>
     void SetRegistry(DatabasePartitionBase p_Partition, IReadOnlyDictionary<string, List<CtrRefBase>> p_Entries);
 }

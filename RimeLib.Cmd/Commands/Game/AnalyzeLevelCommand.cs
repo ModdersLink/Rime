@@ -213,6 +213,7 @@ namespace RimeLib.Cmd.Commands.Game
                     AlsoIn = m_ItemBundles[s_Item].Where(p_B => p_B != s_MainBundle).OrderBy(p_B => p_B).ToList(),
                     OtherSuperbundles = OtherSuperbundles(s_Item, s_Superbundle),
                     ImportedBy = m_OutsideImporters.GetValueOrDefault(s_Item) ?? new List<string>(),
+                    ReferencedBy = m_ContentRefs.GetValueOrDefault(s_Item)?.OrderBy(p_K => p_K).ToList() ?? new List<string>(),
                 });
             }
 
@@ -877,6 +878,9 @@ namespace RimeLib.Cmd.Commands.Game
             public List<string> AlsoIn { get; set; } = new();
             public List<string> OtherSuperbundles { get; set; } = new();
             public List<string> ImportedBy { get; set; } = new();
+
+            /// <summary>The level's items that reference this one as content.</summary>
+            public List<string> ReferencedBy { get; set; } = new();
         }
 
         private class AggregateBreakdown
