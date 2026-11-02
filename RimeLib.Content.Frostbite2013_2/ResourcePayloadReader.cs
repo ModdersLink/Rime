@@ -10,15 +10,8 @@ using static RimeLib.Content.Mounting.PayloadStream;
 namespace RimeLib.Content.Frostbite2013_2
 {
     /// <summary>
-    /// The dependencies Frostbite 2013.2 terrain resources name inside their own payloads. The
-    /// payloads are byte-packed streams like Frostbite 2's (see <see cref="PayloadStream"/>), and
-    /// each is walked to its last byte, which is what checks the layout.
-    ///  - VisualTerrain: the meshes its layers scatter. The resources it uses are referenced by id
-    ///    from EBX, so unlike Frostbite 2 it names no streaming tree, decals or surface shader.
-    ///  - TerrainLayerCombinations: the default surface shader and the shader each layer
-    ///    combination draws with, the generated terrain permutations among them.
-    ///  - TerrainDecals: each decal block's shader, z-only shader and mesh scattering mask shader.
-    ///  - TerrainStreamingTree: the chunk of each node's tile data.
+    /// The dependencies Frostbite 2013.2 terrain resources name inside their payloads. Each payload
+    /// is walked to its last byte, which is what checks the layout.
     /// </summary>
     public class ResourcePayloadReader : IResourcePayloadReader
     {
@@ -59,6 +52,7 @@ namespace RimeLib.Content.Frostbite2013_2
         // flags, spawn level counts, shadow distance, lod distances.
         private const int c_ScatteringFixedSize = 133;
 
+        /// <summary>The meshes its layers scatter; everything else it uses EBX references by id.</summary>
         private static void ReadVisualTerrain(RimeReader p_Reader, ResourcePayloadNames p_Result)
         {
             p_Reader.Seek(c_VisualTerrainHeaderSize, SeekOrigin.Begin);
