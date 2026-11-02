@@ -1,11 +1,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using RimeLib.Frostbite;
+using RimeLib.Havok.Frostbite2_0.Frostbite;
 using RimeLib.IO;
 
-namespace RimeLib.Havok.Frostbite2_0.Frostbite;
+namespace RimeLib.Havok.Frostbite2013_2.Frostbite;
 
-/// <summary>A HavokClothPhysicsData: the sizes of its two packfiles, then the packfiles.</summary>
+/// <summary>A HavokClothPhysicsData (BF4; BF3 ships none): the sizes of its two packfiles, then the packfiles.</summary>
 public class HavokClothPhysicsData : IFbSerializable
 {
     public HavokPackfilePair Packfiles { get; set; } = new();

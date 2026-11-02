@@ -14,7 +14,7 @@ public class ResourceStructs : IResourceStructs
     public EngineType[] GetSupportedEngines() => [EngineType.Frostbite2_0, EngineType.Frostbite2013_2];
 
     public IReadOnlyCollection<ResourceType> Types { get; } =
-        [ResourceType.HavokPhysicsData, ResourceType.HavokDestructionPhysicsData, ResourceType.HavokClothPhysicsData, ResourceType.RagdollResource];
+        [ResourceType.HavokPhysicsData, ResourceType.HavokDestructionPhysicsData, ResourceType.RagdollResource];
 
     public byte[] RoundTrip(ResourceType p_Type, byte[] p_Data, byte[]? p_Meta)
     {
@@ -22,7 +22,6 @@ public class ResourceStructs : IResourceStructs
         using (var s_Reader = new RimeReader(new MemoryStream(p_Data, false)))
             s_Struct = p_Type switch
             {
-                ResourceType.HavokClothPhysicsData => new HavokClothPhysicsData(s_Reader),
                 ResourceType.RagdollResource => ReadRagdoll(s_Reader, p_Meta ?? throw new InvalidDataException("a ragdoll resource without meta")),
                 _ => new HavokPhysicsData(s_Reader),
             };
