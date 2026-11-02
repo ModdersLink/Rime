@@ -13,7 +13,7 @@ namespace RimeLib.Content.Frostbite2013_2.Resources
         public IReadOnlyCollection<ResourceType> Types { get; } = new[] { ResourceType.CompiledLuaResource, ResourceType.SwfMovie };
 
         public byte[] RoundTrip(ResourceType p_Type, byte[] p_Data, byte[]? p_Meta) => p_Type == ResourceType.SwfMovie
-            ? SwfMovie.Read(p_Data).Write()
+            ? SwfFile.Read(p_Data).Write()
             : CompiledLuaResource.Read(p_Data).Write();
     }
 }
