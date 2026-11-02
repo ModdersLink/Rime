@@ -57,12 +57,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
         private readonly List<string> m_Unresolved = new();
 
-        private readonly HashSet<string> m_ExcludedPartitions = new(StringComparer.OrdinalIgnoreCase);
-        private readonly HashSet<string> m_ExcludedResources = new(StringComparer.OrdinalIgnoreCase);
+        private HashSet<string> m_ExcludedPartitions = new(StringComparer.OrdinalIgnoreCase);
+        private HashSet<string> m_ExcludedResources = new(StringComparer.OrdinalIgnoreCase);
 
         // Excluded partitions whose references are still walked: those only walked dependency
         // bundles carry.
-        private readonly HashSet<string> m_WalkedPartitions = new(StringComparer.OrdinalIgnoreCase);
+        private HashSet<string> m_WalkedPartitions = new(StringComparer.OrdinalIgnoreCase);
         private int m_Walked;
         private string[] m_SkipPrefixes = Array.Empty<string>();
 
@@ -220,6 +220,13 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         /// </summary>
         private void CollectExclusions()
         {
+            // The same for every root of the bundle, so worked out once.
+            if (m_Context.Coverage is { } s_Coverage && s_Coverage.Mounter == m_Mounter)
+            {
+                (m_ExcludedPartitions, m_ExcludedResources, m_WalkedPartitions) = (s_Coverage.Partitions, s_Coverage.Resources, s_Coverage.Walked);
+                return;
+            }
+
             var s_Walked = m_Context.GetWalkedDependencyBundles();
             var s_SelfContained = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var s_Bundle in m_Context.GetDependencyBundles())
@@ -236,6 +243,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             if (m_ExcludedPartitions.Count > 0 || m_ExcludedResources.Count > 0)
                 m_Writer.WriteLine($"Dependency bundles cover {m_ExcludedPartitions.Count} partition(s) and {m_ExcludedResources.Count} resource(s).");
+
+            m_Context.Coverage = new DependencyCoverage(m_Mounter, m_ExcludedPartitions, m_ExcludedResources, m_WalkedPartitions);
         }
 
         /// <summary>
@@ -469,4 +478,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             return false;
         }
     }
+
+    /// <summary>The partitions and resources a bundle's dependencies carry, and those of them still walked.</summary>
+    internal sealed record DependencyCoverage(IEngineMounter Mounter, HashSet<string> Partitions, HashSet<string> Resources, HashSet<string> Walked);
 }
