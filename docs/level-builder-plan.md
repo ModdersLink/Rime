@@ -395,6 +395,15 @@ blueprint and unlock; "xp4 soldiers": every soldier asset in the XP4 superbundle
 the same closure, deduplication and derivation. Queries rather than fixed lists, so they survive
 patches.
 
+A bundle's `templates` in a recipe are such queries: primary instance types (a trailing `*` matches a
+prefix), optionally limited to some superbundles and name prefixes. Each partition they find is a
+root. `find_partitions <types> [superbundles] [prefixes]` runs the same query in the REPL. The type
+comes from the partition's EBX metadata, so a query over all of BF4 (80000 partitions) takes
+seconds: every `SoldierWeaponUnlockAsset` is 316 partitions, those in `win32/xp4weapons` 6, and in
+BF3 those under `weapons/` 182. Example: `{"types": ["SoldierWeaponUnlockAsset"], "prefixes":
+["weapons/"]}` gives a BF3 gamemode bundle every weapon unlock and whatever of their closure its
+dependencies don't carry.
+
 ### Empty level
 The smallest level that loads: `LevelData`, settings and game config bundles, the UI bundles, the
 by-name roots above, possibly a flat terrain. Found by experiment, then extended one gamemode at a

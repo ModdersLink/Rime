@@ -56,6 +56,9 @@ namespace RimeLib.Cmd.Commands.Base
             /// <summary>More partitions to add with their closure.</summary>
             public List<string> Roots { get; set; } = new();
 
+            /// <summary>Queries whose partitions are added like <see cref="Roots"/> ("all weapons").</summary>
+            public List<TemplateRecipe> Templates { get; set; } = new();
+
             /// <summary>Bundles loaded before this one, whose content it does not carry again.</summary>
             public List<string> DependsOn { get; set; } = new();
 
@@ -80,6 +83,17 @@ namespace RimeLib.Cmd.Commands.Base
             public bool Registry { get; set; } = true;
             public bool MeshVariationDb { get; set; } = true;
             public MaterialGridRecipe? MaterialGrid { get; set; }
+        }
+
+        /// <summary>
+        /// Mounted partitions by primary instance type (a trailing * matches a prefix), optionally
+        /// only those some of the superbundles carry or under some of the name prefixes.
+        /// </summary>
+        public class TemplateRecipe
+        {
+            public List<string> Types { get; set; } = new();
+            public List<string> Superbundles { get; set; } = new();
+            public List<string> Prefixes { get; set; } = new();
         }
 
         public class HoistRecipe
@@ -152,7 +166,14 @@ namespace RimeLib.Cmd.Commands.Base
                 var s_Steps = new List<string> { $"build_bundle {Quote(s_Bundle.Name)}" };
                 s_Steps.AddRange(s_Shared.Concat(s_Bundle.DependsOn).Distinct(StringComparer.OrdinalIgnoreCase).Select(p_B => $"add_dependency_bundle {Quote(p_B)}"));
                 s_Steps.AddRange(s_Walked.Distinct(StringComparer.OrdinalIgnoreCase).Select(p_B => $"add_dependency_bundle {Quote(p_B)} true"));
-                s_Steps.AddRange(new[] { s_Bundle.Level }.Concat(s_Bundle.Roots).Select(p_R => $"reference_existing_partition {Quote(p_R)} {s_Recipe.Game}"));
+                var s_Roots = s_Bundle.Roots.ToList();
+                foreach (var s_Template in s_Bundle.Templates)
+                {
+                    var s_Found = PartitionQuery.Find(s_Mounter, s_Template.Types, s_Template.Superbundles, s_Template.Prefixes);
+                    p_Writer.WriteLine($"build_level: template {string.Join(",", s_Template.Types)}: {s_Found.Count} partition(s).");
+                    s_Roots.AddRange(s_Found);
+                }
+                s_Steps.AddRange(new[] { s_Bundle.Level }.Concat(s_Roots.Distinct(StringComparer.OrdinalIgnoreCase)).Select(p_R => $"reference_existing_partition {Quote(p_R)} {s_Recipe.Game}"));
                 if (s_Bundle.Hoist != null)
                     s_Steps.AddRange(s_Bundle.Hoist.From.Select(p_F => $"hoist_content {Quote(p_F)} {Quote(string.Join(",", s_Bundle.Hoist.Types))} {s_Recipe.Game}"));
                 if (s_Bundle.MeshVariationDb)
