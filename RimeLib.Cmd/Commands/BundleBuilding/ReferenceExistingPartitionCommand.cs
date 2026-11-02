@@ -413,10 +413,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return;
             }
 
-            // A chunk only other superbundles carry, outside any bundle, is in a chunk superbundle
-            // (localisation, mpchunks) and loads with it, not with a bundle.
-            var s_Superbundle = ((SbBuildingContext)m_Context.Parent!).SuperbundleName;
-            if (s_Chunk.Variants.All(p_V => p_V.GetContainedBundle() == null && !string.Equals(p_V.GetContainedSuperbundle(), s_Superbundle, StringComparison.OrdinalIgnoreCase)))
+            // A chunk that only chunk superbundles carry, outside any bundle (BF4's localisation
+            // and mpchunks voice-over), loads with them, not with a bundle. A level's own
+            // superbundle-level chunks, which other levels borrow, are not such.
+            if (s_Chunk.Variants.All(p_V => p_V.GetContainedBundle() == null && !p_V.GetContainedSuperbundle().Contains("/levels/", StringComparison.OrdinalIgnoreCase)))
             {
                 m_Skipped++;
                 return;

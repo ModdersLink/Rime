@@ -58,6 +58,13 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             var s_Result = s_Deriver.Derive(s_Root, null, p_Writer);
             var s_Entries = s_Result.Entries.ToDictionary(p_P => p_P.Key, p_P => p_P.Value.Select(s_Deriver.ToReference).ToList());
+            var s_OwnPartition = s_Deriver.Rules.GetRegistryPartitionName(s_Root).ToLowerInvariant();
+            if (s_Entries.Values.All(p_E => p_E.Count == 0) && s_Deriver.Rules.OmitsEmptyRegistry && s_OwnPartition != s_Root)
+            {
+                s_BundleContext.RemovePartition(s_OwnPartition);
+                p_Writer.WriteLine($"No entries; '{s_OwnPartition}' is left out, as the engine ships no empty registry.");
+                return true;
+            }
             s_BundleContext.SetDerivedRegistry(s_Deriver.Rules.CreateRegistry(s_Entries));
 
             // The partition that holds the registry gets rewritten with it: the level partition

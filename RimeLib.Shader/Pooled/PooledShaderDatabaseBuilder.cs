@@ -14,6 +14,8 @@ public abstract class PooledShaderDatabaseBuilder : IShaderDatabaseBuilder
 
     public abstract EngineType[] GetSupportedEngines();
 
+    public virtual bool ShipsEveryShader => false;
+
     private PooledShaderDatabaseImage Read(byte[] p_Data) => PooledShaderDatabaseImage.Read(p_Data, Format);
 
     public byte[] RoundTrip(byte[] p_Data) => Read(p_Data).Write();

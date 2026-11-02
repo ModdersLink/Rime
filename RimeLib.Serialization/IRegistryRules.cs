@@ -54,6 +54,9 @@ public interface IRegistryRules : IEngineInterface
     /// </summary>
     string GetRegistryPartitionName(string p_LevelPartition);
 
+    /// <summary>Whether a bundle whose registry (a partition of its own) would have no entries ships none.</summary>
+    bool OmitsEmptyRegistry => false;
+
     /// <summary>Puts the entries into the registry that partition holds, replacing what it lists.</summary>
     void SetRegistry(DatabasePartitionBase p_Partition, IReadOnlyDictionary<string, List<CtrRefBase>> p_Entries);
 }

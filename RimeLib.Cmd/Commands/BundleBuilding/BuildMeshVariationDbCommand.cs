@@ -57,6 +57,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_MeshDeriver = new MeshVariationDeriver(s_Deriver);
             var s_Result = s_MeshDeriver.Derive(s_Root, s_Partitions.Keys.Where(p_N => p_N != s_Name), p_Writer);
             var s_Entries = s_MeshDeriver.EntriesFor(s_Result.Keys);
+            if (s_Entries.Count == 0 && s_MeshDeriver.Rules.OmitsEmptyDatabase)
+            {
+                s_BundleContext.RemovePartition(s_Name);
+                p_Writer.WriteLine($"No entries; '{s_Name}' is left out, as the engine ships no empty database.");
+                return true;
+            }
 
             // The bundle's own database, or the game's of that name, keeps its guids; any other one
             // serves as a template under a new partition guid.

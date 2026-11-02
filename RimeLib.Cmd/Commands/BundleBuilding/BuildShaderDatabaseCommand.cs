@@ -100,8 +100,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             s_BundleContext.RemoveResource(s_Name);
             s_BundleContext.AddGeneratedResource(s_Name, s_Data, ResourceType.IShaderDatabase, s_Meta);
 
-            // The database names its shaders, so they ship with it; other bundles' shaders ship with those.
-            var s_ToAdd = s_Shaders.Except(s_Missing).Except(s_Others).Where(p_N => !s_Partitions.Contains(p_N)).ToList();
+            // The database names its shaders, so they ship with it; other bundles' shaders ship with
+            // those, unless the engine keeps every shader with the database.
+            var s_ToAdd = s_Shaders.Except(s_Missing).Except(s_Builder.ShipsEveryShader ? Enumerable.Empty<string>() : s_Others)
+                .Where(p_N => !s_Partitions.Contains(p_N)).ToList();
             foreach (var s_Shader in s_ToAdd)
             {
                 var s_Reference = new ReferenceExistingPartitionCommand { Name = s_Shader, Id = Id, Strict = false };

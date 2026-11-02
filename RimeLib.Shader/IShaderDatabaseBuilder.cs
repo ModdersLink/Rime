@@ -33,5 +33,11 @@ namespace RimeLib.Shader
 
         /// <summary>The key a database stores a shader under.</summary>
         uint GetShaderKey(string p_Name);
+
+        /// <summary>
+        /// Whether the bundle holding the database ships every shader it names, those only other
+        /// bundles draw with included, rather than leaving those to the bundles that draw with them.
+        /// </summary>
+        bool ShipsEveryShader => false;
     }
 }

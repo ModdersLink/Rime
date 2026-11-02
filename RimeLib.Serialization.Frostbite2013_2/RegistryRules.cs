@@ -21,6 +21,8 @@ public class RegistryRules : IRegistryRules
 
     public bool CoversBundle => true;
 
+    public bool OmitsEmptyRegistry => true;
+
     public EngineType[] GetSupportedEngines()
     {
         return new[] { EngineType.Frostbite2013_2 };
