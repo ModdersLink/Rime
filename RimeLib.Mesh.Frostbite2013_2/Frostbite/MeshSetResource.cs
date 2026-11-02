@@ -14,8 +14,8 @@ namespace RimeLib.Mesh.Frostbite2013_2.Frostbite;
 /// </summary>
 public class MeshSetResource
 {
-    /// <summary>The last meta word: the MeshSetLayout size and the largest MeshLayout size.</summary>
-    public const uint LayoutSizes = MeshSetLayout.Size | (0xC0u << 16);
+    /// <summary>The last meta word: the MeshSetLayout size and the MeshSubset size.</summary>
+    public const uint LayoutSizes = MeshSetLayout.Size | ((uint)MeshSubset.Size << 16);
 
     public MeshSetLayout Layout { get; set; } = new();
 
