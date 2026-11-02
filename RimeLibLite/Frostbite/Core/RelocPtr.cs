@@ -45,6 +45,8 @@ namespace RimeLib.Frostbite.Core
         /// </summary>
         public bool Serialize(RimeWriter p_Writer)
         {
+            if (BaseAddress != 0)
+                (p_Writer as RelocationRimeWriter)?.RecordPointer();
             p_Writer.Write(BaseAddress);
 
             return true;
