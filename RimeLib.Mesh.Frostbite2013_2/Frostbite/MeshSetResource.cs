@@ -9,15 +9,9 @@ using System.Text;
 namespace RimeLib.Mesh.Frostbite2013_2.Frostbite;
 
 /// <summary>
-/// A whole MeshSet resource: a relocatable image of the MeshSetLayout, its mesh layouts, their
-/// subsets and everything they point to, then the embedded vertex and index data of meshes that
-/// have no chunk, then the offsets of every pointer in the image.
+/// A MeshSet resource: a relocatable image of the layout and its meshes (pointers are 64-bit image
+/// offsets), the embedded data of meshes without a chunk, then the relocation table.
 /// </summary>
-/// <remarks>
-/// Pointers are 64-bit image offsets. The image is laid out as the pipeline lays it out: header,
-/// layouts, subsets, bone indices, strings, category subset indices, then each layout's bone or
-/// part arrays; the relocation table lists the pointers layout by layout, field by field.
-/// </remarks>
 public class MeshSetResource
 {
     public const int HeaderSize = 0x70;
@@ -139,8 +133,8 @@ public class MeshSetResource
     public static MeshSetResource Read(byte[] p_Data, byte[] p_Meta)
     {
         using var s_Meta = new RimeReader(new MemoryStream(p_Meta, false));
-        var s_DataSize = (int)s_Meta.ReadUInt32();
-        var s_EmbeddedSize = (int)s_Meta.ReadUInt32();
+        var s_DataSize = s_Meta.ReadInt32();
+        var s_EmbeddedSize = s_Meta.ReadInt32();
 
         using var r = new RimeReader(new MemoryStream(p_Data, 0, s_DataSize, false));
 
@@ -179,7 +173,7 @@ public class MeshSetResource
         {
             var l = Ptr(0x20 + 8 * i);
             var s_Lod = new Lod { Type = At(l).ReadUInt32(), MaxStreamInstanceCount = r.ReadUInt32() };
-            var s_SubsetCount = (int)r.ReadUInt32();
+            var s_SubsetCount = r.ReadInt32();
 
             var s_CategoryCounts = new uint[CategoryCount];
             var s_CategoryOffsets = new int[CategoryCount];
@@ -297,6 +291,10 @@ public class MeshSetResource
     }
 
     /// <summary>The resource and its meta (image size, embedded data size, relocation table size, layout sizes).</summary>
+    /// <summary>
+    /// Lays the image out in the pipeline's order: header, layouts, subsets, bone indices, strings,
+    /// category subset indices, then each layout's bone or part arrays.
+    /// </summary>
     public (byte[] Data, byte[] Meta) Write()
     {
         var s_Stream = new MemoryStream();
