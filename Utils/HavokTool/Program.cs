@@ -11,7 +11,7 @@ using RimeLib.Extensions;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
-using RimeLib.Havok.Frostbite2_0;
+using RimeLib.Havok.Frostbite;
 
 namespace EbxExtractor
 {

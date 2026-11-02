@@ -1,5 +1,5 @@
 ﻿using System.Numerics;
-using RimeLib.Havok.Frostbite2_0;
+using RimeLib.Havok.Frostbite;
 using RimeLib.IO;
 
 // Reads shipped HavokPhysicsData resources, writes them back, and diffs the BYTES.
@@ -81,6 +81,7 @@ var s_MissedOwners = new Dictionary<string, int>();
 var s_Rotations = 0;
 var s_Rotated = 0;
 var s_BadDeterminant = 0;
+var s_Scaled = 0;
 var s_WorstDeterminant = 0.0;
 
 foreach (var l_File in s_Files)
@@ -209,9 +210,9 @@ Console.WriteLine("  by kind    " + string.Join(", ", s_ByKind.OrderByDescending
 Console.WriteLine($"  wrappers   {s_WrappersReachedAll} of {s_WrappersAll} placement wrappers reached corpus-wide; " +
                   $"{s_WrappersReached} of {s_Wrappers} in resources with no undecodable class " +
                   "(flat virtual-fixup census vs traversal)");
-Console.WriteLine($"  rotations  {s_Rotations} rigid placement(s), of which {s_Rotated} carry a rotation; " +
-                  $"{s_BadDeterminant} with a non-unit determinant " +
-                  $"(worst |det - 1| = {s_WorstDeterminant:E2})");
+Console.WriteLine($"  rotations  {s_Rotations} placement(s), of which {s_Rotated} carry a rotation and {s_Scaled} a scale; " +
+                  $"{s_BadDeterminant} not a rotation times a scale " +
+                  $"(worst column skew {s_WorstDeterminant:E2})");
 Console.WriteLine("  unreached  " + (s_MissedOwners.Count == 0
     ? "none"
     : "held only by " + string.Join(", ", s_MissedOwners.OrderByDescending(p => p.Value)
@@ -269,10 +270,10 @@ static int DumpOne(string p_Path, string? p_Out)
     s_Text.Write($"\"PartCount\":{s_Data.PartCount},\"Scale\":{F(s_Data.Scale)}," +
                  $"\"MaterialCountUsed\":{s_Data.MaterialCountUsed}," +
                  $"\"HighestMaterialIndex\":{s_Data.HighestMaterialIndex},\"PartTranslations\":[" +
-                 string.Join(",", s_Data.PartTranslations.Select(t => $"[{F(t.x)},{F(t.y)},{F(t.z)}]")) +
+                 string.Join(",", s_Data.PartTranslations.Select(t => $"[{F(t.X)},{F(t.Y)},{F(t.Z)}]")) +
                  "],\"LocalAabbs\":[" +
                  string.Join(",", s_Data.LocalAabbs.Select(a =>
-                     $"[{F(a.min.x)},{F(a.min.y)},{F(a.min.z)},{F(a.max.x)},{F(a.max.y)},{F(a.max.z)}]")) +
+                     $"[{F(a.Min.X)},{F(a.Min.Y)},{F(a.Min.Z)},{F(a.Max.X)},{F(a.Max.Y)},{F(a.Max.Z)}]")) +
                  "],\"MaterialIndices\":[" + string.Join(",", s_Data.MaterialIndices) +
                  "],\"MaterialFlagsAndIndices\":[" + string.Join(",", s_Data.MaterialFlagsAndIndices) +
                  "]},");
@@ -344,7 +345,24 @@ void Cover(HavokPhysicsData p_Data, string p_Name)
             || Vector3.Distance(l_Shape.Placement.Column2, Vector3.UnitZ) > 1e-6f)
             ++s_Rotated;
 
-        var l_Off = Math.Abs(l_Shape.Placement.Determinant() - 1.0);
+        // A placement is a rotation times a scale (Havok 2012 transforms carry a scale): its columns
+        // are orthogonal and keep their handedness. Their lengths are the scale.
+        var l_C0 = l_Shape.Placement.Column0;
+        var l_C1 = l_Shape.Placement.Column1;
+        var l_C2 = l_Shape.Placement.Column2;
+        var l_Scale = new Vector3(l_C0.Length(), l_C1.Length(), l_C2.Length());
+
+        if (Math.Abs(l_Scale.X - 1) > 1e-4 || Math.Abs(l_Scale.Y - 1) > 1e-4 || Math.Abs(l_Scale.Z - 1) > 1e-4)
+            ++s_Scaled;
+
+        var l_Off = l_Scale.X * l_Scale.Y * l_Scale.Z == 0
+            ? 1.0
+            : Math.Max(Math.Max(Math.Abs(Vector3.Dot(l_C0, l_C1) / (l_Scale.X * l_Scale.Y)),
+                                Math.Abs(Vector3.Dot(l_C0, l_C2) / (l_Scale.X * l_Scale.Z))),
+                       Math.Abs(Vector3.Dot(l_C1, l_C2) / (l_Scale.Y * l_Scale.Z)));
+
+        if (l_Shape.Placement.Determinant() <= 0)
+            l_Off = 1.0;
 
         if (l_Off > s_WorstDeterminant)
             s_WorstDeterminant = l_Off;
@@ -450,7 +468,7 @@ static string? Probe(HavokPhysicsData p_Data, byte[] p_Original)
     if (p_Data.PartTranslations.Count > 0)
     {
         // A float32, so flip it to a value nothing else in the file can coincide with.
-        p_Data.PartTranslations[0].x = -12345.678f;
+        p_Data.PartTranslations[0] = p_Data.PartTranslations[0] with { X = -12345.678f };
         s_Offset = p_Data.PartTranslationsOffset;
         s_Width = 4;
     }

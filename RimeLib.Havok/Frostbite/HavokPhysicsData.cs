@@ -1,11 +1,13 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using fb;
+using System.Numerics;
 using RimeLib.Frostbite;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
-using RimeLib.Serialization.Frostbite2_0.Extensions;
 
-namespace RimeLib.Havok.Frostbite2_0;
+namespace RimeLib.Havok.Frostbite;
+
+/// <summary>A part's local bounding box: two Vec3s, each four floats with its padding.</summary>
+public readonly record struct HavokAabb(Vector4 Min, Vector4 Max);
 
 public class HavokPhysicsData : IFbSerializable
 {
@@ -13,8 +15,9 @@ public class HavokPhysicsData : IFbSerializable
     public float Scale { get; private set; }
     public byte MaterialCountUsed { get; private set; }
     public byte HighestMaterialIndex { get; private set; }
-    public List<Vec3> PartTranslations { get; private set; } = [];
-    public List<AxisAlignedBox> LocalAabbs { get; private set; } = [];
+    /// <summary>Each a Vec3: four floats with its padding.</summary>
+    public List<Vector4> PartTranslations { get; private set; } = [];
+    public List<HavokAabb> LocalAabbs { get; private set; } = [];
     public List<byte> MaterialIndices { get; private set; } = [];
     public List<uint> MaterialFlagsAndIndices { get; private set; } = [];
     public HavokInstance HavokInstance32 { get; private set; } = new();
@@ -153,10 +156,17 @@ public class HavokPhysicsData : IFbSerializable
 
             while (s_DescriptorReader.Position < s_DescriptorReader.Length)
             {
-                var s_EndByte = s_DescriptorReader.ReadByte();
-                s_DescriptorReader.Seek(-1, SeekOrigin.Current);
-                
-                if (s_EndByte == 0xFF) // alignment leftover bytes.
+                // An entry is a 4-byte signature, the 0x09 tag and the name; what follows the last one
+                // is 0xFF alignment. A signature can start with 0xFF (hkpCapsuleShape's 0xB58289FF),
+                // so the tag is what tells an entry from padding.
+                if (s_DescriptorReader.Length - s_DescriptorReader.Position < 5)
+                    break;
+
+                s_DescriptorReader.Seek(4, SeekOrigin.Current);
+                var s_Tag = s_DescriptorReader.ReadByte();
+                s_DescriptorReader.Seek(-5, SeekOrigin.Current);
+
+                if (s_Tag != 0x09)
                     break;
 
                 var s_Descriptor = new hkDescriptor();
@@ -262,6 +272,17 @@ public class HavokPhysicsData : IFbSerializable
         }
     }
 
+    private static Vector4 ReadVector4(RimeReader p_Reader) =>
+        new(p_Reader.ReadSingle(), p_Reader.ReadSingle(), p_Reader.ReadSingle(), p_Reader.ReadSingle());
+
+    private static void WriteVector4(RimeWriter p_Writer, Vector4 p_Value)
+    {
+        p_Writer.Write(p_Value.X);
+        p_Writer.Write(p_Value.Y);
+        p_Writer.Write(p_Value.Z);
+        p_Writer.Write(p_Value.W);
+    }
+
     static long RoundUp(long p_Position, long p_Alignment)
     {
         return (p_Position + (p_Alignment - 1)) & ~(p_Alignment - 1);
@@ -344,19 +365,13 @@ public class HavokPhysicsData : IFbSerializable
         p_Reader.Seek(s_PartTranslationsOffset, SeekOrigin.Begin);
         for (var i = 0; i < s_PartTranslationsCount; i++)
         {
-            var s_Vec = new Vec3();
-            s_Vec.Deserialize(p_Reader);
-
-            PartTranslations.Add(s_Vec);
+            PartTranslations.Add(ReadVector4(p_Reader));
         }
 
         p_Reader.Seek(s_LocalAabbsOffset, SeekOrigin.Begin);
         for (var i = 0; i < s_LocalAabbsCount; ++i)
         {
-            var s_AxisAlignedBox = new AxisAlignedBox();
-            s_AxisAlignedBox.Deserialize(p_Reader);
-
-            LocalAabbs.Add(s_AxisAlignedBox);
+            LocalAabbs.Add(new HavokAabb(ReadVector4(p_Reader), ReadVector4(p_Reader)));
         }
 
         p_Reader.Seek(s_MaterialIndiciesOffset, SeekOrigin.Begin);
@@ -529,6 +544,10 @@ public class HavokPhysicsData : IFbSerializable
         var s_Unread = new Dictionary<string, int>();
         p_Unread = s_Unread;
 
+        // BF4 ships Havok 2012.2, whose convex vertices and convex transform shapes are laid out
+        // differently from BF3's Havok 2010.2.
+        var s_Havok2012 = System.Text.Encoding.ASCII.GetString(s_Instance.HkPackfile.ContentsVersion).StartsWith("hk_2012");
+
         var s_ClassOf = BuildObjectIndex(s_Instance, out var s_ObjectStarts);
 
         if (s_ObjectStarts.Length == 0)
@@ -617,9 +636,29 @@ public class HavokPhysicsData : IFbSerializable
                     return;
                 }
 
+                case "hkpStaticCompoundShape":
+                    foreach (var (s_Placed, s_Child, s_At) in hkpShapeReader.ReadStaticCompound(s_Instance.Reader, s_DataStart,
+                                 p_Offset, s_Instance.ArrayOffsets, s_Instance.ObjectOffsets))
+                        Visit(s_Child, p_Placement.Compose(s_Placed), s_At, p_Depth + 1);
+
+                    return;
+
+                case "hkpBvCompressedMeshShape":
+                    s_Leaf = hkpShapeReader.ReadBvCompressedMesh(s_Instance.Reader, s_DataStart, p_Offset, s_Instance.ArrayOffsets);
+
+                    if (s_Leaf == null)
+                    {
+                        Note(s_Name);
+                        return;
+                    }
+
+                    break;
+
                 case "hkpConvexTransformShape":
                 {
-                    var s_Wrapper = hkpShapeReader.ReadTransform(s_Instance.Reader, s_DataStart,
+                    var s_Wrapper = s_Havok2012
+                        ? hkpShapeReader.ReadQsTransformShape(s_Instance.Reader, s_DataStart, p_Offset, s_Instance.ObjectOffsets)
+                        : hkpShapeReader.ReadTransform(s_Instance.Reader, s_DataStart,
                                                                  p_Offset, s_Instance.ObjectOffsets);
 
                     if (s_Wrapper == null)
@@ -641,7 +680,7 @@ public class HavokPhysicsData : IFbSerializable
                 case "hkpConvexVerticesShape":
                     s_Leaf = hkpShapeReader.ReadConvex(s_Instance.Reader, s_DataStart, p_Offset,
                                                        s_Instance.ArrayOffsets,
-                                                       s_Instance.ObjectOffsets);
+                                                       s_Instance.ObjectOffsets, s_Havok2012);
                     break;
 
                 case "hkpCylinderShape":
@@ -772,11 +811,14 @@ public class HavokPhysicsData : IFbSerializable
 
         p_Writer.Seek(s_Start + PartTranslationsOffset, SeekOrigin.Begin);
         foreach (var l_Translation in PartTranslations)
-            l_Translation.Serialize(p_Writer);
+            WriteVector4(p_Writer, l_Translation);
 
         p_Writer.Seek(s_Start + LocalAabbsOffset, SeekOrigin.Begin);
         foreach (var l_Aabb in LocalAabbs)
-            l_Aabb.Serialize(p_Writer);
+        {
+            WriteVector4(p_Writer, l_Aabb.Min);
+            WriteVector4(p_Writer, l_Aabb.Max);
+        }
 
         p_Writer.Seek(s_Start + MaterialIndicesOffset, SeekOrigin.Begin);
         foreach (var l_Index in MaterialIndices)
