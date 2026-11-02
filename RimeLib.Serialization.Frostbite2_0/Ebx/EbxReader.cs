@@ -79,7 +79,13 @@ public class EbxReader : IDisposable
 
     public DatabasePartition ParsePartition(string p_Name, IObjectVariant p_Variant)
     {
-        using var s_Reader = p_Variant.GetReader();
+        // Parsing makes many small reads and seeks; through the variant's own reader (patch and
+        // decompression layers) each one is expensive, so the partition is read whole first.
+        var s_Bytes = new MemoryStream();
+        using (var s_Source = p_Variant.GetReader())
+            s_Source.CopyTo(s_Bytes);
+        s_Bytes.Position = 0;
+        using var s_Reader = new RimeReader(s_Bytes);
 
         m_Partition = new DatabasePartition
         {

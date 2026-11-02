@@ -146,6 +146,7 @@ namespace RimeLib.Cmd.Commands.Base
                 var s_Done = s_Context.ProcessCommand(p_Command, p_Writer, out var s_Next) && s_Next != null;
                 var s_Verb = p_Command.Split(' ')[0];
                 s_Times[s_Verb] = s_Times.GetValueOrDefault(s_Verb) + s_Watch.Elapsed;
+                p_Writer.WriteLine($"build_level: {s_Verb} took {s_Watch.Elapsed.TotalSeconds:F1}s");
 
                 s_Context = s_Done ? s_Next! : s_Next ?? s_Context;
                 return s_Done;
