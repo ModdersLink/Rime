@@ -4,7 +4,8 @@ using System.IO;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
-using RimeLib.Havok.Frostbite;
+using RimeLib.Havok.Frostbite2_0.Frostbite;
+using RimeLib.Havok.Frostbite2013_2.Frostbite;
 using RimeLib.IO;
 
 namespace RimeLib.Havok.Frostbite2013_2;

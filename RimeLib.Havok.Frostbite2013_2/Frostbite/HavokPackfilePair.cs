@@ -1,8 +1,9 @@
 using System;
 using System.IO;
+using RimeLib.Havok.Frostbite2_0.Frostbite;
 using RimeLib.IO;
 
-namespace RimeLib.Havok.Frostbite;
+namespace RimeLib.Havok.Frostbite2013_2.Frostbite;
 
 /// <summary>
 /// One Havok object graph as Frostbite ships it: its 32-bit packfile, then its 64-bit packfile,

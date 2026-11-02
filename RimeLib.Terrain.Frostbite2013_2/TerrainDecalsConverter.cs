@@ -10,7 +10,7 @@ namespace RimeLib.Terrain.Frostbite2013_2
     /// A block's vertex range is a byte offset and size into the vertex buffer, and blocks with
     /// tangent space have another vertex layout, so the vertices are kept as bytes.
     /// </summary>
-    public class TerrainDecalsConverter : TerrainDecalsConverterBase
+    public class TerrainDecalsConverter : Frostbite2_0.TerrainDecalsConverter
     {
         public override EngineType[] GetSupportedEngines() => new[] { EngineType.Frostbite2013_2 };
 
