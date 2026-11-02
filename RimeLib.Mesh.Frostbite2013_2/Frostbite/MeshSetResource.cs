@@ -1,7 +1,8 @@
 using System;
-using System.Buffers.Binary;
+using RimeLib.IO;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Numerics;
 using System.Text;
 
@@ -137,114 +138,80 @@ public class MeshSetResource
 
     public static MeshSetResource Read(byte[] p_Data, byte[] p_Meta)
     {
-        var s_DataSize = (int)BinaryPrimitives.ReadUInt32LittleEndian(p_Meta);
-        var s_EmbeddedSize = (int)BinaryPrimitives.ReadUInt32LittleEndian(p_Meta.AsSpan(4));
-        var d = new ReadOnlySpan<byte>(p_Data, 0, s_DataSize);
-        var s_Data = p_Data;
+        using var s_Meta = new RimeReader(new MemoryStream(p_Meta, false));
+        var s_DataSize = (int)s_Meta.ReadUInt32();
+        var s_EmbeddedSize = (int)s_Meta.ReadUInt32();
 
-        uint U32(int p_Offset) => BinaryPrimitives.ReadUInt32LittleEndian(s_Data.AsSpan(p_Offset));
-        float F32(int p_Offset) => BinaryPrimitives.ReadSingleLittleEndian(s_Data.AsSpan(p_Offset));
-        int Ptr(int p_Offset)
+        using var r = new RimeReader(new MemoryStream(p_Data, 0, s_DataSize, false));
+
+        RimeReader At(long p_Offset)
         {
-            var s_Value = BinaryPrimitives.ReadUInt64LittleEndian(s_Data.AsSpan(p_Offset));
+            r.Seek(p_Offset, SeekOrigin.Begin);
+            return r;
+        }
+
+        int Ptr(long p_Offset)
+        {
+            var s_Value = At(p_Offset).ReadUInt64();
             if (s_Value > (ulong)s_DataSize)
                 throw new InvalidDataException($"pointer at 0x{p_Offset:x} leaves the image");
             return (int)s_Value;
         }
-        string Str(int p_Offset)
-        {
-            var s_End = Array.IndexOf(s_Data, (byte)0, p_Offset);
-            return Encoding.UTF8.GetString(s_Data, p_Offset, s_End - p_Offset);
-        }
-        Vector3 Vec3(int p_Offset) => new(F32(p_Offset), F32(p_Offset + 4), F32(p_Offset + 8));
-        Vector4 Vec4(int p_Offset) => new(F32(p_Offset), F32(p_Offset + 4), F32(p_Offset + 8), F32(p_Offset + 12));
+
+        string Str(long p_Offset) => At(p_Offset).ReadNullTerminatedString();
 
         var s_Set = new MeshSetResource
         {
-            BoundingBoxMin = Vec3(0x00),
-            BoundingBoxMax = Vec3(0x10),
-            NameHash = U32(0x60),
-            MeshType = U32(0x64),
-            Flags = U32(0x68),
-            TotalSubsetCount = BinaryPrimitives.ReadUInt16LittleEndian(d[0x6E..]),
+            BoundingBoxMin = At(0x00).ReadVector3(),
+            BoundingBoxMax = At(0x10).ReadVector3(),
+            NameHash = At(0x60).ReadUInt32(),
+            MeshType = r.ReadUInt32(),
+            Flags = r.ReadUInt32(),
             EmbeddedData = p_Data.AsSpan(s_DataSize, s_EmbeddedSize).ToArray(),
         };
+        var s_LodCount = r.ReadUInt16();
+        s_Set.TotalSubsetCount = r.ReadUInt16();
         s_Set.Name = Str(Ptr(0x50));
         if (Ptr(0x58) is var s_Short and not 0)
             s_Set.ShortName = Str(s_Short);
 
-        var s_LodCount = BinaryPrimitives.ReadUInt16LittleEndian(d[0x6C..]);
         for (var i = 0; i < s_LodCount; ++i)
         {
             var l = Ptr(0x20 + 8 * i);
-            var s_Lod = new Lod
+            var s_Lod = new Lod { Type = At(l).ReadUInt32(), MaxStreamInstanceCount = r.ReadUInt32() };
+            var s_SubsetCount = (int)r.ReadUInt32();
+
+            var s_CategoryCounts = new uint[CategoryCount];
+            var s_CategoryOffsets = new int[CategoryCount];
+            for (var k = 0; k < CategoryCount; ++k)
             {
-                Type = U32(l),
-                MaxStreamInstanceCount = U32(l + 0x04),
-                Flags = U32(l + 0x44),
-                IndexBufferFormat = U32(l + 0x48),
-                IndexDataSize = U32(l + 0x4C),
-                VertexDataSize = U32(l + 0x50),
-                EdgePartitionBufferSize = U32(l + 0x54),
-                DataChunkId = new Guid(d.Slice(l + 0x58, 16)),
-                AuxVertexIndexDataOffset = U32(l + 0x68),
-                HasEmbeddedEdgeData = Ptr(l + 0x6C) != 0,
-                ShaderDebugName = Str(Ptr(l + 0x74)),
-                Name = Str(Ptr(l + 0x7C)),
-                ShortName = Str(Ptr(l + 0x84)),
-                NameHash = U32(l + 0x8C),
-            };
+                s_CategoryCounts[k] = At(l + 0x14 + 12 * k).ReadUInt32();
+                s_CategoryOffsets[k] = Ptr(l + 0x18 + 12 * k);
+            }
+
+            s_Lod.Flags = At(l + 0x44).ReadUInt32();
+            s_Lod.IndexBufferFormat = r.ReadUInt32();
+            s_Lod.IndexDataSize = r.ReadUInt32();
+            s_Lod.VertexDataSize = r.ReadUInt32();
+            s_Lod.EdgePartitionBufferSize = r.ReadUInt32();
+            s_Lod.DataChunkId = r.ReadGuid();
+            s_Lod.AuxVertexIndexDataOffset = r.ReadUInt32();
+            s_Lod.HasEmbeddedEdgeData = Ptr(l + 0x6C) != 0;
+            s_Lod.ShaderDebugName = Str(Ptr(l + 0x74));
+            s_Lod.Name = Str(Ptr(l + 0x7C));
+            s_Lod.ShortName = Str(Ptr(l + 0x84));
+            s_Lod.NameHash = At(l + 0x8C).ReadUInt32();
             if (Ptr(l + 0x90) != 0)
                 throw new InvalidDataException("a mesh layout with m_data set");
 
             for (var k = 0; k < CategoryCount; ++k)
-                s_Lod.CategorySubsetIndices[k] = d.Slice(Ptr(l + 0x18 + 12 * k), (int)U32(l + 0x14 + 12 * k)).ToArray();
+                s_Lod.CategorySubsetIndices[k] = At(s_CategoryOffsets[k]).ReadBytes((int)s_CategoryCounts[k]);
 
-            var s_SubsetCount = (int)U32(l + 0x08);
             var s_Subsets = Ptr(l + 0x0C);
             for (var j = 0; j < s_SubsetCount; ++j)
-            {
-                var o = s_Subsets + SubsetSize * j;
-                if (Ptr(o) != 0)
-                    throw new InvalidDataException("a subset with geometryDeclarations set");
+                s_Lod.Subsets.Add(ReadSubset(s_Subsets + SubsetSize * j));
 
-                var s_Subset = new Subset
-                {
-                    MaterialName = Str(Ptr(o + 0x08)),
-                    MaterialIndex = U32(o + 0x10),
-                    PrimitiveCount = U32(o + 0x14),
-                    StartIndex = U32(o + 0x18),
-                    VertexOffset = U32(o + 0x1C),
-                    VertexCount = U32(o + 0x20),
-                    VertexStride = d[o + 0x24],
-                    PrimitiveType = d[o + 0x25],
-                    BonesPerVertex = d[o + 0x26],
-                    BoneCount = d[o + 0x27],
-                    ElementCount = d[o + 0x78],
-                    StreamCount = d[o + 0x79],
-                    Reserved = d.Slice(o + 0x94, Subset.ReservedSize).ToArray(),
-                };
-                if (d[o + 0x7A] != 0 || d[o + 0x7B] != 0)
-                    throw new InvalidDataException("geometry declaration padding is not zero");
-
-                if (Ptr(o + 0x28) is var s_Bones and not 0)
-                {
-                    s_Subset.BoneIndices = new ushort[s_Subset.BoneCount];
-                    for (var b = 0; b < s_Subset.BoneCount; ++b)
-                        s_Subset.BoneIndices[b] = BinaryPrimitives.ReadUInt16LittleEndian(d[(s_Bones + 2 * b)..]);
-                }
-
-                for (var e = 0; e < 16; ++e)
-                    s_Subset.Elements[e] = new GeometryElement(d[o + 0x30 + 4 * e], d[o + 0x31 + 4 * e], d[o + 0x32 + 4 * e], d[o + 0x33 + 4 * e]);
-                for (var s = 0; s < 4; ++s)
-                    s_Subset.Streams[s] = new GeometryStream(d[o + 0x70 + 2 * s], d[o + 0x71 + 2 * s]);
-                for (var t = 0; t < 6; ++t)
-                    s_Subset.TexCoordsPerMeter[t] = F32(o + 0x7C + 4 * t);
-
-                s_Lod.Subsets.Add(s_Subset);
-            }
-
-            var s_Count = (int)U32(l + 0x98);
+            var s_Count = (int)At(l + 0x98).ReadUInt32();
             switch (s_Lod.Type)
             {
                 case 1:
@@ -256,21 +223,17 @@ public class MeshSetResource
                     var s_Transforms = Ptr(l + 0xA4);
                     var s_Masks = Ptr(l + 0xAC);
                     s_Lod.PartBoundingBoxes = new Vector4[2 * s_Count];
-                    s_Lod.PartTransforms = new Matrix4x4[s_Count];
+                    At(s_Boxes);
                     for (var p = 0; p < 2 * s_Count; ++p)
-                        s_Lod.PartBoundingBoxes[p] = Vec4(s_Boxes + 16 * p);
+                        s_Lod.PartBoundingBoxes[p] = r.ReadVector4();
+                    s_Lod.PartTransforms = new Matrix4x4[s_Count];
+                    At(s_Transforms);
                     for (var p = 0; p < s_Count; ++p)
-                    {
-                        var t = s_Transforms + 64 * p;
-                        s_Lod.PartTransforms[p] = new Matrix4x4(
-                            F32(t), F32(t + 4), F32(t + 8), F32(t + 12),
-                            F32(t + 16), F32(t + 20), F32(t + 24), F32(t + 28),
-                            F32(t + 32), F32(t + 36), F32(t + 40), F32(t + 44),
-                            F32(t + 48), F32(t + 52), F32(t + 56), F32(t + 60));
-                    }
+                        s_Lod.PartTransforms[p] = r.ReadMatrix4x4();
                     s_Lod.SubsetPartIndices = new byte[s_SubsetCount][];
+                    At(s_Masks);
                     for (var j = 0; j < s_SubsetCount; ++j)
-                        s_Lod.SubsetPartIndices[j] = d.Slice(s_Masks + 24 * j, 24).ToArray();
+                        s_Lod.SubsetPartIndices[j] = r.ReadBytes(24);
                     break;
                 default:
                     if (s_Count != 0)
@@ -283,11 +246,52 @@ public class MeshSetResource
 
         return s_Set;
 
+        Subset ReadSubset(int o)
+        {
+            if (Ptr(o) != 0)
+                throw new InvalidDataException("a subset with geometryDeclarations set");
+
+            var s_Subset = new Subset { MaterialName = Str(Ptr(o + 0x08)) };
+            At(o + 0x10);
+            s_Subset.MaterialIndex = r.ReadUInt32();
+            s_Subset.PrimitiveCount = r.ReadUInt32();
+            s_Subset.StartIndex = r.ReadUInt32();
+            s_Subset.VertexOffset = r.ReadUInt32();
+            s_Subset.VertexCount = r.ReadUInt32();
+            s_Subset.VertexStride = r.ReadUByte();
+            s_Subset.PrimitiveType = r.ReadUByte();
+            s_Subset.BonesPerVertex = r.ReadUByte();
+            s_Subset.BoneCount = r.ReadUByte();
+
+            if (Ptr(o + 0x28) is var s_Bones and not 0)
+            {
+                s_Subset.BoneIndices = new ushort[s_Subset.BoneCount];
+                At(s_Bones);
+                for (var b = 0; b < s_Subset.BoneCount; ++b)
+                    s_Subset.BoneIndices[b] = r.ReadUInt16();
+            }
+
+            At(o + 0x30);
+            for (var e = 0; e < 16; ++e)
+                s_Subset.Elements[e] = new GeometryElement(r.ReadUByte(), r.ReadUByte(), r.ReadUByte(), r.ReadUByte());
+            for (var s = 0; s < 4; ++s)
+                s_Subset.Streams[s] = new GeometryStream(r.ReadUByte(), r.ReadUByte());
+            s_Subset.ElementCount = r.ReadUByte();
+            s_Subset.StreamCount = r.ReadUByte();
+            if (r.ReadUInt16() != 0)
+                throw new InvalidDataException("geometry declaration padding is not zero");
+            for (var t = 0; t < 6; ++t)
+                s_Subset.TexCoordsPerMeter[t] = r.ReadSingle();
+            s_Subset.Reserved = r.ReadBytes(Subset.ReservedSize);
+            return s_Subset;
+        }
+
         uint[] ReadU32s(int p_Offset, int p_Count)
         {
+            At(p_Offset);
             var s_Values = new uint[p_Count];
             for (var i = 0; i < p_Count; ++i)
-                s_Values[i] = U32(p_Offset + 4 * i);
+                s_Values[i] = r.ReadUInt32();
             return s_Values;
         }
     }
@@ -295,16 +299,38 @@ public class MeshSetResource
     /// <summary>The resource and its meta (image size, embedded data size, relocation table size, layout sizes).</summary>
     public (byte[] Data, byte[] Meta) Write()
     {
-        var s_Image = new ImageWriter();
-        s_Image.Skip(HeaderSize);
+        var s_Stream = new MemoryStream();
+        using var w = new RimeWriter(s_Stream);
 
-        var s_LodOffsets = new int[Lods.Count];
-        for (var i = 0; i < Lods.Count; ++i)
-            s_LodOffsets[i] = s_Image.Skip(Lods[i].LayoutSize);
+        // Pointers in the order they are written, which is the order of the relocation table.
+        var s_Pointers = new List<int>();
 
-        var s_SubsetOffsets = new int[Lods.Count];
-        for (var i = 0; i < Lods.Count; ++i)
-            s_SubsetOffsets[i] = s_Image.Skip(SubsetSize * Lods[i].Subsets.Count);
+        int Reserve(int p_Size)
+        {
+            var s_Offset = (int)w.Position;
+            w.WriteNullBytes((uint)p_Size);
+            return s_Offset;
+        }
+
+        int Here() => (int)w.Position;
+
+        // Fields are filled in at their offsets once the regions they point at are laid out.
+        RimeWriter At(long p_Offset)
+        {
+            w.Seek(p_Offset, SeekOrigin.Begin);
+            return w;
+        }
+
+        void Pointer(long p_At, int p_Target)
+        {
+            At(p_At).Write((ulong)p_Target);
+            s_Pointers.Add((int)p_At);
+        }
+
+        Reserve(HeaderSize);
+
+        var s_LodOffsets = Lods.Select(p_L => Reserve(p_L.LayoutSize)).ToArray();
+        var s_SubsetOffsets = Lods.Select(p_L => Reserve(SubsetSize * p_L.Subsets.Count)).ToArray();
 
         var s_BoneOffsets = new int[Lods.Count][];
         for (var i = 0; i < Lods.Count; ++i)
@@ -312,42 +338,50 @@ public class MeshSetResource
             s_BoneOffsets[i] = new int[Lods[i].Subsets.Count];
             for (var j = 0; j < Lods[i].Subsets.Count; ++j)
             {
-                s_BoneOffsets[i][j] = s_Image.Position;
+                s_BoneOffsets[i][j] = Here();
                 foreach (var s_Bone in Lods[i].Subsets[j].BoneIndices ?? Array.Empty<ushort>())
-                    s_Image.Append16(s_Bone);
+                    w.Write(s_Bone);
             }
         }
-        s_Image.Align(16);
+        w.Align(16);
 
         var s_MaterialOffsets = new int[Lods.Count][];
         var s_DebugNameOffsets = new int[Lods.Count];
         for (var i = 0; i < Lods.Count; ++i)
         {
-            s_MaterialOffsets[i] = new int[Lods[i].Subsets.Count];
-            for (var j = 0; j < Lods[i].Subsets.Count; ++j)
-                s_MaterialOffsets[i][j] = s_Image.AppendString(Lods[i].Subsets[j].MaterialName);
-
             var s_Lod = Lods[i];
+            s_MaterialOffsets[i] = new int[s_Lod.Subsets.Count];
+            for (var j = 0; j < s_Lod.Subsets.Count; ++j)
+            {
+                s_MaterialOffsets[i][j] = Here();
+                w.WriteNullTerminatedString(s_Lod.Subsets[j].MaterialName);
+            }
+
             if (!s_Lod.ShaderDebugName.EndsWith(s_Lod.Name, StringComparison.Ordinal) || !s_Lod.Name.EndsWith(s_Lod.ShortName, StringComparison.Ordinal))
                 throw new InvalidDataException($"layout {i}: the name must end the shader debug name and the short name the name");
-            s_DebugNameOffsets[i] = s_Image.AppendString(s_Lod.ShaderDebugName);
+            s_DebugNameOffsets[i] = Here();
+            w.WriteNullTerminatedString(s_Lod.ShaderDebugName);
         }
 
         if (ShortName != null && !Name.EndsWith(ShortName, StringComparison.Ordinal))
             throw new InvalidDataException("the short name must end the name");
-        var s_NameOffset = s_Image.AppendString(Name);
-        s_Image.Align(16);
+        var s_NameOffset = Here();
+        w.WriteNullTerminatedString(Name);
+        w.Align(16);
 
         var s_CategoryOffsets = new int[Lods.Count][];
         for (var i = 0; i < Lods.Count; ++i)
         {
             s_CategoryOffsets[i] = new int[CategoryCount];
             for (var k = 0; k < CategoryCount; ++k)
-                s_CategoryOffsets[i][k] = s_Image.Append(Lods[i].CategorySubsetIndices[k]);
+            {
+                s_CategoryOffsets[i][k] = Here();
+                w.Write(Lods[i].CategorySubsetIndices[k]);
+            }
         }
-        s_Image.Align(16);
+        w.Align(16);
 
-        var s_ArraysOffset = s_Image.Position;
+        var s_ArraysOffset = Here();
         var s_UnionOffsets = new int[Lods.Count][];
         for (var i = 0; i < Lods.Count; ++i)
         {
@@ -357,32 +391,32 @@ public class MeshSetResource
                 case 1:
                     if (s_Lod.BoneShortNameArray.Length != s_Lod.BoneIndexArray.Length)
                         throw new InvalidDataException($"layout {i}: the bone arrays differ in length");
-                    s_Image.Align(4);
-                    var s_Indices = s_Image.Position;
+                    w.Align(4);
+                    var s_Indices = Here();
                     foreach (var s_Value in s_Lod.BoneIndexArray)
-                        s_Image.Append32(s_Value);
-                    var s_Names = s_Image.Position;
+                        w.Write(s_Value);
+                    var s_Names = Here();
                     foreach (var s_Value in s_Lod.BoneShortNameArray)
-                        s_Image.Append32(s_Value);
+                        w.Write(s_Value);
                     s_UnionOffsets[i] = new[] { s_Indices, s_Names };
                     break;
                 case 2:
                     if (s_Lod.PartBoundingBoxes.Length != 2 * s_Lod.PartTransforms.Length || s_Lod.SubsetPartIndices.Length != s_Lod.Subsets.Count)
                         throw new InvalidDataException($"layout {i}: the part arrays do not match the part and subset counts");
-                    s_Image.Align(16);
-                    var s_Boxes = s_Image.Position;
+                    w.Align(16);
+                    var s_Boxes = Here();
                     foreach (var s_Value in s_Lod.PartBoundingBoxes)
-                        s_Image.AppendVector4(s_Value);
-                    s_Image.Align(16);
-                    var s_Transforms = s_Image.Position;
+                        w.Write(s_Value);
+                    w.Align(16);
+                    var s_Transforms = Here();
                     foreach (var s_Value in s_Lod.PartTransforms)
-                        s_Image.AppendMatrix(s_Value);
-                    var s_Masks = s_Image.Position;
+                        w.Write(s_Value);
+                    var s_Masks = Here();
                     foreach (var s_Mask in s_Lod.SubsetPartIndices)
                     {
                         if (s_Mask.Length != 24)
                             throw new InvalidDataException($"layout {i}: a subset part mask is not 24 bytes");
-                        s_Image.Append(s_Mask);
+                        w.Write(s_Mask);
                     }
                     s_UnionOffsets[i] = new[] { s_Boxes, s_Transforms, s_Masks };
                     break;
@@ -391,222 +425,117 @@ public class MeshSetResource
                     break;
             }
         }
-        s_Image.Align(16);
-        var s_DataSize = s_Image.Position;
+        w.Align(16);
+        var s_DataSize = Here();
 
-        s_Image.PutVector3(0x00, BoundingBoxMin);
-        s_Image.PutVector3(0x10, BoundingBoxMax);
+        At(0x00).Write(BoundingBoxMin);
+        At(0x10).Write(BoundingBoxMax);
 
         for (var i = 0; i < Lods.Count; ++i)
         {
             var s_Lod = Lods[i];
             var l = s_LodOffsets[i];
-            s_Image.Put32(l, s_Lod.Type);
-            s_Image.Put32(l + 0x04, s_Lod.MaxStreamInstanceCount);
-            s_Image.Put32(l + 0x08, (uint)s_Lod.Subsets.Count);
-            s_Image.PutPointer(l + 0x0C, s_SubsetOffsets[i]);
+            At(l).Write(s_Lod.Type);
+            w.Write(s_Lod.MaxStreamInstanceCount);
+            w.Write((uint)s_Lod.Subsets.Count);
+            Pointer(l + 0x0C, s_SubsetOffsets[i]);
 
             for (var j = 0; j < s_Lod.Subsets.Count; ++j)
-            {
-                var s_Subset = s_Lod.Subsets[j];
-                var o = s_SubsetOffsets[i] + SubsetSize * j;
-                s_Image.PutPointer(o + 0x08, s_MaterialOffsets[i][j]);
-                s_Image.Put32(o + 0x10, s_Subset.MaterialIndex);
-                s_Image.Put32(o + 0x14, s_Subset.PrimitiveCount);
-                s_Image.Put32(o + 0x18, s_Subset.StartIndex);
-                s_Image.Put32(o + 0x1C, s_Subset.VertexOffset);
-                s_Image.Put32(o + 0x20, s_Subset.VertexCount);
-                s_Image.Put8(o + 0x24, s_Subset.VertexStride);
-                s_Image.Put8(o + 0x25, s_Subset.PrimitiveType);
-                s_Image.Put8(o + 0x26, s_Subset.BonesPerVertex);
-                s_Image.Put8(o + 0x27, s_Subset.BoneCount);
-                if (s_Subset.BoneIndices != null)
-                {
-                    if (s_Subset.BoneIndices.Length != s_Subset.BoneCount)
-                        throw new InvalidDataException($"layout {i} subset {j}: the bone count does not match its indices");
-                    s_Image.PutPointer(o + 0x28, s_BoneOffsets[i][j]);
-                }
-
-                for (var e = 0; e < 16; ++e)
-                {
-                    var s_Element = s_Subset.Elements[e];
-                    s_Image.Put8(o + 0x30 + 4 * e, s_Element.Usage);
-                    s_Image.Put8(o + 0x31 + 4 * e, s_Element.Format);
-                    s_Image.Put8(o + 0x32 + 4 * e, s_Element.Offset);
-                    s_Image.Put8(o + 0x33 + 4 * e, s_Element.StreamIndex);
-                }
-                for (var s = 0; s < 4; ++s)
-                {
-                    s_Image.Put8(o + 0x70 + 2 * s, s_Subset.Streams[s].Stride);
-                    s_Image.Put8(o + 0x71 + 2 * s, s_Subset.Streams[s].Classification);
-                }
-                s_Image.Put8(o + 0x78, s_Subset.ElementCount);
-                s_Image.Put8(o + 0x79, s_Subset.StreamCount);
-                for (var t = 0; t < 6; ++t)
-                    s_Image.PutFloat(o + 0x7C + 4 * t, s_Subset.TexCoordsPerMeter[t]);
-                s_Image.Put(o + 0x94, s_Subset.Reserved);
-            }
+                WriteSubset(s_Lod.Subsets[j], s_SubsetOffsets[i] + SubsetSize * j, s_MaterialOffsets[i][j], s_BoneOffsets[i][j], i, j);
 
             for (var k = 0; k < CategoryCount; ++k)
             {
-                s_Image.Put32(l + 0x14 + 12 * k, (uint)s_Lod.CategorySubsetIndices[k].Length);
-                s_Image.PutPointer(l + 0x18 + 12 * k, s_CategoryOffsets[i][k]);
+                At(l + 0x14 + 12 * k).Write((uint)s_Lod.CategorySubsetIndices[k].Length);
+                Pointer(l + 0x18 + 12 * k, s_CategoryOffsets[i][k]);
             }
 
-            s_Image.Put32(l + 0x44, s_Lod.Flags);
-            s_Image.Put32(l + 0x48, s_Lod.IndexBufferFormat);
-            s_Image.Put32(l + 0x4C, s_Lod.IndexDataSize);
-            s_Image.Put32(l + 0x50, s_Lod.VertexDataSize);
-            s_Image.Put32(l + 0x54, s_Lod.EdgePartitionBufferSize);
-            s_Image.Put(l + 0x58, s_Lod.DataChunkId.ToByteArray());
-            s_Image.Put32(l + 0x68, s_Lod.AuxVertexIndexDataOffset);
+            At(l + 0x44).Write(s_Lod.Flags);
+            w.Write(s_Lod.IndexBufferFormat);
+            w.Write(s_Lod.IndexDataSize);
+            w.Write(s_Lod.VertexDataSize);
+            w.Write(s_Lod.EdgePartitionBufferSize);
+            w.Write(s_Lod.DataChunkId);
+            w.Write(s_Lod.AuxVertexIndexDataOffset);
             if (s_Lod.HasEmbeddedEdgeData)
-                s_Image.PutPointer(l + 0x6C, s_ArraysOffset);
+                Pointer(l + 0x6C, s_ArraysOffset);
 
             var s_Debug = s_DebugNameOffsets[i];
-            s_Image.PutPointer(l + 0x74, s_Debug);
-            s_Image.PutPointer(l + 0x7C, s_Debug + Encoding.UTF8.GetByteCount(s_Lod.ShaderDebugName) - Encoding.UTF8.GetByteCount(s_Lod.Name));
-            s_Image.PutPointer(l + 0x84, s_Debug + Encoding.UTF8.GetByteCount(s_Lod.ShaderDebugName) - Encoding.UTF8.GetByteCount(s_Lod.ShortName));
-            s_Image.Put32(l + 0x8C, s_Lod.NameHash);
+            var s_DebugLength = Encoding.UTF8.GetByteCount(s_Lod.ShaderDebugName);
+            Pointer(l + 0x74, s_Debug);
+            Pointer(l + 0x7C, s_Debug + s_DebugLength - Encoding.UTF8.GetByteCount(s_Lod.Name));
+            Pointer(l + 0x84, s_Debug + s_DebugLength - Encoding.UTF8.GetByteCount(s_Lod.ShortName));
+            At(l + 0x8C).Write(s_Lod.NameHash);
 
-            s_Image.Put32(l + 0x98, (uint)s_Lod.UnionCount);
+            At(l + 0x98).Write((uint)s_Lod.UnionCount);
             for (var k = 0; k < s_UnionOffsets[i].Length; ++k)
-                s_Image.PutPointer(l + 0x9C + 8 * k, s_UnionOffsets[i][k]);
+                Pointer(l + 0x9C + 8 * k, s_UnionOffsets[i][k]);
         }
 
         for (var i = 0; i < Lods.Count; ++i)
-            s_Image.PutPointer(0x20 + 8 * i, s_LodOffsets[i]);
-        s_Image.PutPointer(0x50, s_NameOffset);
+            Pointer(0x20 + 8 * i, s_LodOffsets[i]);
+        Pointer(0x50, s_NameOffset);
         if (ShortName != null)
-            s_Image.PutPointer(0x58, s_NameOffset + Encoding.UTF8.GetByteCount(Name) - Encoding.UTF8.GetByteCount(ShortName));
-        s_Image.Put32(0x60, NameHash);
-        s_Image.Put32(0x64, MeshType);
-        s_Image.Put32(0x68, Flags);
-        s_Image.Put16(0x6C, (ushort)Lods.Count);
-        s_Image.Put16(0x6E, TotalSubsetCount);
+            Pointer(0x58, s_NameOffset + Encoding.UTF8.GetByteCount(Name) - Encoding.UTF8.GetByteCount(ShortName));
+        At(0x60).Write(NameHash);
+        w.Write(MeshType);
+        w.Write(Flags);
+        w.Write((ushort)Lods.Count);
+        w.Write(TotalSubsetCount);
 
-        s_Image.Append(EmbeddedData);
-        var s_RelocationSize = 4 * s_Image.Pointers.Count;
-        foreach (var s_Pointer in s_Image.Pointers)
-            s_Image.Append32((uint)s_Pointer);
+        At(s_DataSize).Write(EmbeddedData);
+        foreach (var s_Pointer in s_Pointers)
+            w.Write((uint)s_Pointer);
 
-        var s_Meta = new byte[16];
-        BinaryPrimitives.WriteUInt32LittleEndian(s_Meta, (uint)s_DataSize);
-        BinaryPrimitives.WriteUInt32LittleEndian(s_Meta.AsSpan(4), (uint)EmbeddedData.Length);
-        BinaryPrimitives.WriteUInt32LittleEndian(s_Meta.AsSpan(8), (uint)s_RelocationSize);
-        BinaryPrimitives.WriteUInt32LittleEndian(s_Meta.AsSpan(12), LayoutSizes);
-        return (s_Image.ToArray(), s_Meta);
-    }
-
-    /// <summary>
-    /// A growing image: regions are appended, fields put at known offsets, and pointers recorded in
-    /// the order they are put, which is the order of the relocation table.
-    /// </summary>
-    private sealed class ImageWriter
-    {
-        private readonly List<byte> m_Bytes = new();
-        public List<int> Pointers { get; } = new();
-
-        public int Position => m_Bytes.Count;
-
-        public int Skip(int p_Size)
+        var s_MetaStream = new MemoryStream();
+        using (var s_Meta = new RimeWriter(s_MetaStream))
         {
-            var s_Offset = Position;
-            m_Bytes.AddRange(new byte[p_Size]);
-            return s_Offset;
+            s_Meta.Write((uint)s_DataSize);
+            s_Meta.Write((uint)EmbeddedData.Length);
+            s_Meta.Write((uint)(4 * s_Pointers.Count));
+            s_Meta.Write(LayoutSizes);
         }
 
-        public void Align(int p_Alignment)
+        w.Flush();
+        return (s_Stream.ToArray(), s_MetaStream.ToArray());
+
+        void WriteSubset(Subset p_Subset, int o, int p_Material, int p_Bones, int i, int j)
         {
-            while (m_Bytes.Count % p_Alignment != 0)
-                m_Bytes.Add(0);
+            Pointer(o + 0x08, p_Material);
+            At(o + 0x10).Write(p_Subset.MaterialIndex);
+            w.Write(p_Subset.PrimitiveCount);
+            w.Write(p_Subset.StartIndex);
+            w.Write(p_Subset.VertexOffset);
+            w.Write(p_Subset.VertexCount);
+            w.Write(p_Subset.VertexStride);
+            w.Write(p_Subset.PrimitiveType);
+            w.Write(p_Subset.BonesPerVertex);
+            w.Write(p_Subset.BoneCount);
+            if (p_Subset.BoneIndices != null)
+            {
+                if (p_Subset.BoneIndices.Length != p_Subset.BoneCount)
+                    throw new InvalidDataException($"layout {i} subset {j}: the bone count does not match its indices");
+                Pointer(o + 0x28, p_Bones);
+            }
+
+            At(o + 0x30);
+            foreach (var s_Element in p_Subset.Elements)
+            {
+                w.Write(s_Element.Usage);
+                w.Write(s_Element.Format);
+                w.Write(s_Element.Offset);
+                w.Write(s_Element.StreamIndex);
+            }
+            foreach (var s_Stream in p_Subset.Streams)
+            {
+                w.Write(s_Stream.Stride);
+                w.Write(s_Stream.Classification);
+            }
+            w.Write(p_Subset.ElementCount);
+            w.Write(p_Subset.StreamCount);
+            w.Write((ushort)0);
+            foreach (var s_Value in p_Subset.TexCoordsPerMeter)
+                w.Write(s_Value);
+            w.Write(p_Subset.Reserved);
         }
-
-        public int Append(ReadOnlySpan<byte> p_Bytes)
-        {
-            var s_Offset = Position;
-            foreach (var s_Byte in p_Bytes)
-                m_Bytes.Add(s_Byte);
-            return s_Offset;
-        }
-
-        public int AppendString(string p_Value)
-        {
-            var s_Offset = Append(Encoding.UTF8.GetBytes(p_Value));
-            m_Bytes.Add(0);
-            return s_Offset;
-        }
-
-        public void Append16(ushort p_Value)
-        {
-            Span<byte> s_Bytes = stackalloc byte[2];
-            BinaryPrimitives.WriteUInt16LittleEndian(s_Bytes, p_Value);
-            Append(s_Bytes);
-        }
-
-        public void Append32(uint p_Value)
-        {
-            Span<byte> s_Bytes = stackalloc byte[4];
-            BinaryPrimitives.WriteUInt32LittleEndian(s_Bytes, p_Value);
-            Append(s_Bytes);
-        }
-
-        public void AppendFloat(float p_Value) => Append32(BitConverter.SingleToUInt32Bits(p_Value));
-
-        public void AppendVector4(Vector4 p_Value)
-        {
-            AppendFloat(p_Value.X);
-            AppendFloat(p_Value.Y);
-            AppendFloat(p_Value.Z);
-            AppendFloat(p_Value.W);
-        }
-
-        public void AppendMatrix(Matrix4x4 p_Value)
-        {
-            for (var r = 0; r < 4; ++r)
-            for (var c = 0; c < 4; ++c)
-                AppendFloat(p_Value[r, c]);
-        }
-
-        public void Put(int p_Offset, ReadOnlySpan<byte> p_Bytes)
-        {
-            for (var i = 0; i < p_Bytes.Length; ++i)
-                m_Bytes[p_Offset + i] = p_Bytes[i];
-        }
-
-        public void Put8(int p_Offset, byte p_Value) => m_Bytes[p_Offset] = p_Value;
-
-        public void Put16(int p_Offset, ushort p_Value)
-        {
-            Span<byte> s_Bytes = stackalloc byte[2];
-            BinaryPrimitives.WriteUInt16LittleEndian(s_Bytes, p_Value);
-            Put(p_Offset, s_Bytes);
-        }
-
-        public void Put32(int p_Offset, uint p_Value)
-        {
-            Span<byte> s_Bytes = stackalloc byte[4];
-            BinaryPrimitives.WriteUInt32LittleEndian(s_Bytes, p_Value);
-            Put(p_Offset, s_Bytes);
-        }
-
-        public void PutFloat(int p_Offset, float p_Value) => Put32(p_Offset, BitConverter.SingleToUInt32Bits(p_Value));
-
-        public void PutVector3(int p_Offset, Vector3 p_Value)
-        {
-            PutFloat(p_Offset, p_Value.X);
-            PutFloat(p_Offset + 4, p_Value.Y);
-            PutFloat(p_Offset + 8, p_Value.Z);
-        }
-
-        public void PutPointer(int p_Offset, int p_Target)
-        {
-            Span<byte> s_Bytes = stackalloc byte[8];
-            BinaryPrimitives.WriteUInt64LittleEndian(s_Bytes, (ulong)p_Target);
-            Put(p_Offset, s_Bytes);
-            Pointers.Add(p_Offset);
-        }
-
-        public byte[] ToArray() => m_Bytes.ToArray();
     }
 }

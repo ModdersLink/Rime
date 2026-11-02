@@ -29,21 +29,10 @@ public class OccluderMesh
     public List<Vector4> Vertices { get; set; } = new();
     public List<ushort> Indices { get; set; } = new();
 
-    private static Vector4 ReadVector4(RimeReader p_Reader) =>
-        new(p_Reader.ReadSingle(), p_Reader.ReadSingle(), p_Reader.ReadSingle(), p_Reader.ReadSingle());
-
-    private static void WriteVector4(RimeWriter p_Writer, Vector4 p_Value)
-    {
-        p_Writer.Write(p_Value.X);
-        p_Writer.Write(p_Value.Y);
-        p_Writer.Write(p_Value.Z);
-        p_Writer.Write(p_Value.W);
-    }
-
     public static OccluderMesh Read(byte[] p_Data)
     {
         using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
-        var s_Mesh = new OccluderMesh { BoundingBox = { [0] = ReadVector4(s_Reader), [1] = ReadVector4(s_Reader) } };
+        var s_Mesh = new OccluderMesh { BoundingBox = { [0] = s_Reader.ReadVector4(), [1] = s_Reader.ReadVector4() } };
 
         var s_VertexCount = s_Reader.ReadUInt16();
         var s_IndexCount = s_Reader.ReadUInt16();
@@ -61,7 +50,7 @@ public class OccluderMesh
 
         s_Reader.Seek(s_VertexDataOffset, SeekOrigin.Begin);
         for (var i = 0; i < s_VertexCount; ++i)
-            s_Mesh.Vertices.Add(ReadVector4(s_Reader));
+            s_Mesh.Vertices.Add(s_Reader.ReadVector4());
 
         s_Reader.Seek(s_IndexDataOffset, SeekOrigin.Begin);
         for (var i = 0; i < s_IndexCount; ++i)
@@ -83,8 +72,8 @@ public class OccluderMesh
         var s_Stream = new MemoryStream();
         using (var s_Writer = new RimeWriter(s_Stream))
         {
-            WriteVector4(s_Writer, BoundingBox[0]);
-            WriteVector4(s_Writer, BoundingBox[1]);
+            s_Writer.Write(BoundingBox[0]);
+            s_Writer.Write(BoundingBox[1]);
             s_Writer.Write((ushort)Vertices.Count);
             s_Writer.Write((ushort)Indices.Count);
             s_Writer.Write((uint)s_VertexDataOffset);
@@ -101,7 +90,7 @@ public class OccluderMesh
             for (var i = PartMasks.Count; i < s_MaskSlots; ++i)
                 s_Writer.Write(new byte[24]);
             foreach (var s_Vertex in Vertices)
-                WriteVector4(s_Writer, s_Vertex);
+                s_Writer.Write(s_Vertex);
             foreach (var s_Index in Indices)
                 s_Writer.Write(s_Index);
 

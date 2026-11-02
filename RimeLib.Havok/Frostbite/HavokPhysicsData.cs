@@ -272,17 +272,6 @@ public class HavokPhysicsData : IFbSerializable
         }
     }
 
-    private static Vector4 ReadVector4(RimeReader p_Reader) =>
-        new(p_Reader.ReadSingle(), p_Reader.ReadSingle(), p_Reader.ReadSingle(), p_Reader.ReadSingle());
-
-    private static void WriteVector4(RimeWriter p_Writer, Vector4 p_Value)
-    {
-        p_Writer.Write(p_Value.X);
-        p_Writer.Write(p_Value.Y);
-        p_Writer.Write(p_Value.Z);
-        p_Writer.Write(p_Value.W);
-    }
-
     static long RoundUp(long p_Position, long p_Alignment)
     {
         return (p_Position + (p_Alignment - 1)) & ~(p_Alignment - 1);
@@ -365,13 +354,13 @@ public class HavokPhysicsData : IFbSerializable
         p_Reader.Seek(s_PartTranslationsOffset, SeekOrigin.Begin);
         for (var i = 0; i < s_PartTranslationsCount; i++)
         {
-            PartTranslations.Add(ReadVector4(p_Reader));
+            PartTranslations.Add(p_Reader.ReadVector4());
         }
 
         p_Reader.Seek(s_LocalAabbsOffset, SeekOrigin.Begin);
         for (var i = 0; i < s_LocalAabbsCount; ++i)
         {
-            LocalAabbs.Add(new HavokAabb(ReadVector4(p_Reader), ReadVector4(p_Reader)));
+            LocalAabbs.Add(new HavokAabb(p_Reader.ReadVector4(), p_Reader.ReadVector4()));
         }
 
         p_Reader.Seek(s_MaterialIndiciesOffset, SeekOrigin.Begin);
@@ -811,13 +800,13 @@ public class HavokPhysicsData : IFbSerializable
 
         p_Writer.Seek(s_Start + PartTranslationsOffset, SeekOrigin.Begin);
         foreach (var l_Translation in PartTranslations)
-            WriteVector4(p_Writer, l_Translation);
+            p_Writer.Write(l_Translation);
 
         p_Writer.Seek(s_Start + LocalAabbsOffset, SeekOrigin.Begin);
         foreach (var l_Aabb in LocalAabbs)
         {
-            WriteVector4(p_Writer, l_Aabb.Min);
-            WriteVector4(p_Writer, l_Aabb.Max);
+            p_Writer.Write(l_Aabb.Min);
+            p_Writer.Write(l_Aabb.Max);
         }
 
         p_Writer.Seek(s_Start + MaterialIndicesOffset, SeekOrigin.Begin);

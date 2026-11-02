@@ -22,7 +22,13 @@ public class ResourceStructs : IResourceStructs
         {
             var s_Cloth = p_Type == ResourceType.HavokClothPhysicsData;
             var s_Sizes = s_Cloth ? p_Data : p_Meta ?? throw new InvalidDataException("a ragdoll resource without meta");
-            var s_Pair = HavokPackfilePair.Read(p_Data, s_Cloth ? 8 : 0, BitConverter.ToInt32(s_Sizes, 0), BitConverter.ToInt32(s_Sizes, 4));
+            int s_Size32, s_Size64;
+            using (var s_SizeReader = new RimeReader(new MemoryStream(s_Sizes, false)))
+            {
+                s_Size32 = s_SizeReader.ReadInt32();
+                s_Size64 = s_SizeReader.ReadInt32();
+            }
+            var s_Pair = HavokPackfilePair.Read(p_Data, s_Cloth ? 8 : 0, s_Size32, s_Size64);
             var s_Stream = new MemoryStream();
             using (var s_Writer = new RimeWriter(s_Stream))
             {

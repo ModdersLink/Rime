@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using System.Numerics;
 using System.Text;
 using RimeLib.IO.Conversion;
 
@@ -233,6 +234,20 @@ namespace RimeLib.IO
 
             return s_Gap;
         }
+
+        public Vector3 ReadVector3() => new(ReadSingle(), ReadSingle(), ReadSingle());
+
+        public Vector4 ReadVector4() => new(ReadSingle(), ReadSingle(), ReadSingle(), ReadSingle());
+
+        /// <summary>Sixteen floats, row by row.</summary>
+        public Matrix4x4 ReadMatrix4x4() => new(
+            ReadSingle(), ReadSingle(), ReadSingle(), ReadSingle(),
+            ReadSingle(), ReadSingle(), ReadSingle(), ReadSingle(),
+            ReadSingle(), ReadSingle(), ReadSingle(), ReadSingle(),
+            ReadSingle(), ReadSingle(), ReadSingle(), ReadSingle());
+
+        /// <summary>A Guid in its 16-byte little-endian layout.</summary>
+        public Guid ReadGuid() => new(ReadBytes(16));
 
         public void Align(int p_Alignment)
         {

@@ -1,8 +1,8 @@
 using System;
-using System.Buffers.Binary;
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
+using RimeLib.IO;
 
 namespace RimeLib.Enlighten.Frostbite2013_2.Frostbite;
 
@@ -23,26 +23,27 @@ public class EnlightenShaderDatabase
 
     public static EnlightenShaderDatabase Read(byte[] p_Data, byte[] p_Meta)
     {
-        var s_Count = (int)BinaryPrimitives.ReadUInt32LittleEndian(p_Meta.AsSpan(4));
-        if (BinaryPrimitives.ReadUInt32LittleEndian(p_Meta) != p_Data.Length || p_Data.Length != c_MaterialSize * s_Count)
+        using var s_Meta = new RimeReader(new MemoryStream(p_Meta, false));
+        var s_Size = s_Meta.ReadUInt32();
+        var s_Count = (int)s_Meta.ReadUInt32();
+        if (s_Size != p_Data.Length || p_Data.Length != c_MaterialSize * s_Count)
             throw new InvalidDataException("the shader database size does not match its material count");
 
-        var s_Database = new EnlightenShaderDatabase
-        {
-            CookiePadding = [BinaryPrimitives.ReadUInt32LittleEndian(p_Meta.AsSpan(8)), BinaryPrimitives.ReadUInt32LittleEndian(p_Meta.AsSpan(12))],
-        };
+        var s_Database = new EnlightenShaderDatabase { CookiePadding = [s_Meta.ReadUInt32(), s_Meta.ReadUInt32()] };
 
+        using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
         for (var i = 0; i < s_Count; ++i)
         {
-            var d = p_Data.AsSpan(c_MaterialSize * i, c_MaterialSize);
-            if (d[12..16].IndexOfAnyExcept((byte)0) >= 0 || d[41..].IndexOfAnyExcept((byte)0) >= 0 || d[40] > 1)
+            var s_Color = s_Reader.ReadVector3();
+            var s_ColorPad = s_Reader.ReadUInt32();
+            var s_Guid = s_Reader.ReadGuid();
+            var s_ShaderId = s_Reader.ReadUInt64();
+            var s_Emissive = s_Reader.ReadUByte();
+            var s_Pad = s_Reader.ReadBytes(7);
+            if (s_ColorPad != 0 || s_Emissive > 1 || Array.Exists(s_Pad, p_B => p_B != 0))
                 throw new InvalidDataException($"material {i} has padding that is not zero");
 
-            s_Database.Materials.Add(new EnlightenMaterial(
-                new Vector3(BinaryPrimitives.ReadSingleLittleEndian(d), BinaryPrimitives.ReadSingleLittleEndian(d[4..]), BinaryPrimitives.ReadSingleLittleEndian(d[8..])),
-                new Guid(d[16..32]),
-                BinaryPrimitives.ReadUInt64LittleEndian(d[32..]),
-                d[40] != 0));
+            s_Database.Materials.Add(new EnlightenMaterial(s_Color, s_Guid, s_ShaderId, s_Emissive != 0));
         }
 
         return s_Database;
@@ -51,24 +52,29 @@ public class EnlightenShaderDatabase
     /// <summary>The resource and its meta.</summary>
     public (byte[] Data, byte[] Meta) Write()
     {
-        var s_Data = new byte[c_MaterialSize * Materials.Count];
-        for (var i = 0; i < Materials.Count; ++i)
+        var s_Data = new MemoryStream();
+        using (var s_Writer = new RimeWriter(s_Data))
         {
-            var d = s_Data.AsSpan(c_MaterialSize * i, c_MaterialSize);
-            var s_Material = Materials[i];
-            BinaryPrimitives.WriteSingleLittleEndian(d, s_Material.Color.X);
-            BinaryPrimitives.WriteSingleLittleEndian(d[4..], s_Material.Color.Y);
-            BinaryPrimitives.WriteSingleLittleEndian(d[8..], s_Material.Color.Z);
-            s_Material.Guid.TryWriteBytes(d[16..32]);
-            BinaryPrimitives.WriteUInt64LittleEndian(d[32..], s_Material.ShaderId);
-            d[40] = s_Material.Emissive ? (byte)1 : (byte)0;
+            foreach (var s_Material in Materials)
+            {
+                s_Writer.Write(s_Material.Color);
+                s_Writer.Write(0u);
+                s_Writer.Write(s_Material.Guid);
+                s_Writer.Write(s_Material.ShaderId);
+                s_Writer.Write(s_Material.Emissive);
+                s_Writer.WriteNullBytes(7);
+            }
         }
 
-        var s_Meta = new byte[16];
-        BinaryPrimitives.WriteUInt32LittleEndian(s_Meta, (uint)s_Data.Length);
-        BinaryPrimitives.WriteUInt32LittleEndian(s_Meta.AsSpan(4), (uint)Materials.Count);
-        BinaryPrimitives.WriteUInt32LittleEndian(s_Meta.AsSpan(8), CookiePadding[0]);
-        BinaryPrimitives.WriteUInt32LittleEndian(s_Meta.AsSpan(12), CookiePadding[1]);
-        return (s_Data, s_Meta);
+        var s_Meta = new MemoryStream();
+        using (var s_Writer = new RimeWriter(s_Meta))
+        {
+            s_Writer.Write((uint)(c_MaterialSize * Materials.Count));
+            s_Writer.Write((uint)Materials.Count);
+            s_Writer.Write(CookiePadding[0]);
+            s_Writer.Write(CookiePadding[1]);
+        }
+
+        return (s_Data.ToArray(), s_Meta.ToArray());
     }
 }

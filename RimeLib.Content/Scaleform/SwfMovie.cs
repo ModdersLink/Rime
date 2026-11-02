@@ -42,16 +42,17 @@ namespace RimeLib.Content.Scaleform
 
         public static SwfMovie Read(byte[] p_Data)
         {
+            using var s_MovieHeader = new RimeReader(new MemoryStream(p_Data, false));
             var s_Movie = new SwfMovie
             {
-                Signature = Encoding.ASCII.GetString(p_Data, 0, 3),
-                Version = p_Data[3],
+                Signature = s_MovieHeader.ReadFixedLengthString(3),
+                Version = s_MovieHeader.ReadUByte(),
             };
 
             if (s_Movie.Signature is not ("FWS" or "CWS" or "GFX" or "CFX"))
                 throw new InvalidDataException($"Not a SWF or GFx movie ({s_Movie.Signature}).");
 
-            var s_FileLength = BitConverter.ToUInt32(p_Data, 4);
+            var s_FileLength = s_MovieHeader.ReadUInt32();
             byte[] s_Body;
             if (s_Movie.Compressed)
             {
@@ -131,7 +132,7 @@ namespace RimeLib.Content.Scaleform
             var s_Stream = new MemoryStream();
             using (var s_Writer = new RimeWriter(s_Stream))
             {
-                s_Writer.Write(Encoding.ASCII.GetBytes(Signature));
+                s_Writer.WriteFixedLengthString(Signature, 3);
                 s_Writer.Write(Version);
                 s_Writer.Write((uint)(s_Body.Length + 8));
 

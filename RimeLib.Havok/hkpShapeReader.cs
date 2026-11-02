@@ -61,25 +61,11 @@ public static class hkpShapeReader
     /// <summary>Four points held as three vectors: 12 floats.</summary>
     private const int c_FourTransposedPoints = 48;
 
-    private static Vector3 ReadVector3(LimitedRimeReader p_Reader, long p_At)
+    /// <summary>The reader, moved to <paramref name="p_At"/>.</summary>
+    private static LimitedRimeReader At(LimitedRimeReader p_Reader, long p_At)
     {
         p_Reader.Seek(p_At, SeekOrigin.Begin);
-
-        return new Vector3(p_Reader.ReadSingle(), p_Reader.ReadSingle(), p_Reader.ReadSingle());
-    }
-
-    private static float ReadSingleAt(LimitedRimeReader p_Reader, long p_At)
-    {
-        p_Reader.Seek(p_At, SeekOrigin.Begin);
-
-        return p_Reader.ReadSingle();
-    }
-
-    private static uint ReadUInt32At(LimitedRimeReader p_Reader, long p_At)
-    {
-        p_Reader.Seek(p_At, SeekOrigin.Begin);
-
-        return p_Reader.ReadUInt32();
+        return p_Reader;
     }
 
     public static hkpCollisionShape ReadBox(LimitedRimeReader p_Reader, long p_DataStart,
@@ -89,8 +75,8 @@ public static class hkpShapeReader
         {
             Kind = "box",
             Offset = p_Offset,
-            Radius = ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_RadiusOffset),
-            HalfExtents = ReadVector3(p_Reader, p_DataStart + p_Offset + c_HalfExtentsOffset)
+            Radius = At(p_Reader, p_DataStart + p_Offset + c_RadiusOffset).ReadSingle(),
+            HalfExtents = At(p_Reader, p_DataStart + p_Offset + c_HalfExtentsOffset).ReadVector3()
         };
     }
 
@@ -107,7 +93,7 @@ public static class hkpShapeReader
         {
             Kind = "convex",
             Offset = p_Offset,
-            Radius = ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_RadiusOffset),
+            Radius = At(p_Reader, p_DataStart + p_Offset + c_RadiusOffset).ReadSingle(),
 
             // A null connectivity pointer has no fixup, so the fixup table is the record of whether
             // there is one -- reading the slot itself would only ever see the zero the relocation
@@ -117,7 +103,7 @@ public static class hkpShapeReader
         };
 
         // Planes first: hkArray is pointer then count, and the count lives one pointer in.
-        var s_PlaneCount = ReadUInt32At(p_Reader, p_DataStart + p_Offset + c_PlanesOffset + 4);
+        var s_PlaneCount = At(p_Reader, p_DataStart + p_Offset + c_PlanesOffset + 4).ReadUInt32();
 
         if (s_PlaneCount > 0 && p_ArrayOffsets.TryGetValue(p_Offset + c_PlanesOffset,
                                                            out var s_PlanesAt))
@@ -130,7 +116,7 @@ public static class hkpShapeReader
             }
         }
 
-        var s_Count = ReadUInt32At(p_Reader, p_DataStart + p_Offset + c_VertexCountOffset);
+        var s_Count = At(p_Reader, p_DataStart + p_Offset + c_VertexCountOffset).ReadUInt32();
 
         if (s_Count == 0 || !p_ArrayOffsets.TryGetValue(p_Offset + c_RotatedVerticesOffset,
                                                         out var s_Blocks))
@@ -167,10 +153,10 @@ public static class hkpShapeReader
         {
             Kind = "cylinder",
             Offset = p_Offset,
-            Radius = ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_RadiusOffset),
-            CylinderRadius = ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_CylinderRadiusOffset),
-            VertexA = ReadVector3(p_Reader, p_DataStart + p_Offset + c_VertexAOffset),
-            VertexB = ReadVector3(p_Reader, p_DataStart + p_Offset + c_VertexBOffset)
+            Radius = At(p_Reader, p_DataStart + p_Offset + c_RadiusOffset).ReadSingle(),
+            CylinderRadius = At(p_Reader, p_DataStart + p_Offset + c_CylinderRadiusOffset).ReadSingle(),
+            VertexA = At(p_Reader, p_DataStart + p_Offset + c_VertexAOffset).ReadVector3(),
+            VertexB = At(p_Reader, p_DataStart + p_Offset + c_VertexBOffset).ReadVector3()
         };
     }
 
@@ -182,9 +168,9 @@ public static class hkpShapeReader
         {
             Kind = "capsule",
             Offset = p_Offset,
-            Radius = ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_RadiusOffset),
-            VertexA = ReadVector3(p_Reader, p_DataStart + p_Offset + c_VertexAOffset),
-            VertexB = ReadVector3(p_Reader, p_DataStart + p_Offset + c_VertexBOffset)
+            Radius = At(p_Reader, p_DataStart + p_Offset + c_RadiusOffset).ReadSingle(),
+            VertexA = At(p_Reader, p_DataStart + p_Offset + c_VertexAOffset).ReadVector3(),
+            VertexB = At(p_Reader, p_DataStart + p_Offset + c_VertexBOffset).ReadVector3()
         };
     }
 
@@ -196,7 +182,7 @@ public static class hkpShapeReader
         {
             Kind = "sphere",
             Offset = p_Offset,
-            Radius = ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_RadiusOffset)
+            Radius = At(p_Reader, p_DataStart + p_Offset + c_RadiusOffset).ReadSingle()
         };
     }
 
@@ -232,7 +218,7 @@ public static class hkpShapeReader
         if (!p_ArrayOffsets.TryGetValue(p_Offset + c_SubpartVerticesSlot, out var s_VerticesAt))
             return null;
 
-        var s_VertexCount = (int) ReadUInt32At(p_Reader, p_DataStart + p_Offset + c_SubpartVerticesSlot + 4);
+        var s_VertexCount = (int) At(p_Reader, p_DataStart + p_Offset + c_SubpartVerticesSlot + 4).ReadUInt32();
 
         if (s_VertexCount <= 0 || EndOf(s_VerticesAt) - s_VerticesAt < (long) s_VertexCount * 16)
             return null;
@@ -240,14 +226,14 @@ public static class hkpShapeReader
         var s_Shape = new hkpCollisionShape { Kind = "mesh", Offset = p_Offset };
 
         for (var i = 0; i < s_VertexCount; ++i)
-            s_Shape.Vertices.Add(ReadVector3(p_Reader, p_DataStart + s_VerticesAt + i * 16));
+            s_Shape.Vertices.Add(At(p_Reader, p_DataStart + s_VerticesAt + i * 16).ReadVector3());
 
         foreach (var l_Slot in s_SubpartIndexSlots)
         {
             if (!p_ArrayOffsets.TryGetValue(p_Offset + l_Slot, out var s_IndicesAt))
                 continue;
 
-            var s_Count = (int) ReadUInt32At(p_Reader, p_DataStart + p_Offset + l_Slot + 4);
+            var s_Count = (int) At(p_Reader, p_DataStart + p_Offset + l_Slot + 4).ReadUInt32();
 
             // Four indices per triangle, of which three are corners.
             if (s_Count <= 0 || s_Count % 4 != 0)
@@ -311,10 +297,10 @@ public static class hkpShapeReader
     /// <summary>An hkQsTransform as a placement: translation, rotation quaternion (x, y, z, w), scale.</summary>
     public static hkpPlacement ReadQsTransform(LimitedRimeReader p_Reader, long p_At)
     {
-        var s_Translation = ReadVector3(p_Reader, p_At);
+        var s_Translation = At(p_Reader, p_At).ReadVector3();
         p_Reader.Seek(p_At + 16, SeekOrigin.Begin);
         float x = p_Reader.ReadSingle(), y = p_Reader.ReadSingle(), z = p_Reader.ReadSingle(), w = p_Reader.ReadSingle();
-        var s_Scale = ReadVector3(p_Reader, p_At + 32);
+        var s_Scale = At(p_Reader, p_At + 32).ReadVector3();
 
         return hkpPlacement.FromQsTransform(s_Translation, new Quaternion(x, y, z, w), s_Scale);
     }
@@ -340,7 +326,7 @@ public static class hkpShapeReader
         IReadOnlyDictionary<long, long> p_ArrayOffsets, IReadOnlyDictionary<long, long> p_ObjectOffsets)
     {
         var s_Result = new List<(hkpPlacement, long, long)>();
-        var s_Count = ReadUInt32At(p_Reader, p_DataStart + p_Offset + c_CompoundInstancesOffset + 4);
+        var s_Count = At(p_Reader, p_DataStart + p_Offset + c_CompoundInstancesOffset + 4).ReadUInt32();
         if (s_Count == 0 || !p_ArrayOffsets.TryGetValue(p_Offset + c_CompoundInstancesOffset, out var s_Instances))
             return s_Result;
 
@@ -393,7 +379,7 @@ public static class hkpShapeReader
     {
         var s_Tree = p_Offset + c_MeshTreeOffset;
         long? Array(int p_Slot) => p_ArrayOffsets.TryGetValue(s_Tree + p_Slot, out var s_At) ? s_At : null;
-        uint Count(int p_Slot) => ReadUInt32At(p_Reader, p_DataStart + s_Tree + p_Slot + 4);
+        uint Count(int p_Slot) => At(p_Reader, p_DataStart + s_Tree + p_Slot + 4).ReadUInt32();
 
         var s_Shape = new hkpCollisionShape { Kind = "mesh", Offset = p_Offset };
         var s_SectionCount = Count(c_TreeSectionsOffset);
@@ -403,8 +389,8 @@ public static class hkpShapeReader
         if (Array(c_TreeSectionsOffset) is not { } s_Sections || Array(c_TreePrimitivesOffset) is not { } s_Primitives)
             return null;
 
-        var s_DomainMin = ReadVector3(p_Reader, p_DataStart + s_Tree + c_TreeDomainOffset);
-        var s_DomainMax = ReadVector3(p_Reader, p_DataStart + s_Tree + c_TreeDomainOffset + 16);
+        var s_DomainMin = At(p_Reader, p_DataStart + s_Tree + c_TreeDomainOffset).ReadVector3();
+        var s_DomainMax = At(p_Reader, p_DataStart + s_Tree + c_TreeDomainOffset + 16).ReadVector3();
         var s_SharedScale = (s_DomainMax - s_DomainMin) / new Vector3((1 << 21) - 1, (1 << 21) - 1, (1 << 22) - 1);
         var s_PackedVertices = Array(c_TreePackedVerticesOffset);
         var s_SharedIndex = Array(c_TreeSharedVerticesIndexOffset);
@@ -413,13 +399,13 @@ public static class hkpShapeReader
         for (var i = 0; i < s_SectionCount; ++i)
         {
             var s_Section = p_DataStart + s_Sections + i * c_SectionSize;
-            var s_Min = ReadVector3(p_Reader, s_Section + c_TreeDomainOffset) - new Vector3(c_DomainTolerance);
-            var s_Max = ReadVector3(p_Reader, s_Section + c_TreeDomainOffset + 16) + new Vector3(c_DomainTolerance);
-            var s_Origin = ReadVector3(p_Reader, s_Section + c_SectionCodecOffset);
-            var s_Scale = ReadVector3(p_Reader, s_Section + c_SectionCodecOffset + 12);
-            var s_FirstPacked = ReadUInt32At(p_Reader, s_Section + c_SectionFirstPackedVertexOffset);
-            var s_Shared = ReadUInt32At(p_Reader, s_Section + c_SectionSharedVerticesOffset);
-            var s_Prims = ReadUInt32At(p_Reader, s_Section + c_SectionPrimitivesOffset);
+            var s_Min = At(p_Reader, s_Section + c_TreeDomainOffset).ReadVector3() - new Vector3(c_DomainTolerance);
+            var s_Max = At(p_Reader, s_Section + c_TreeDomainOffset + 16).ReadVector3() + new Vector3(c_DomainTolerance);
+            var s_Origin = At(p_Reader, s_Section + c_SectionCodecOffset).ReadVector3();
+            var s_Scale = At(p_Reader, s_Section + c_SectionCodecOffset + 12).ReadVector3();
+            var s_FirstPacked = At(p_Reader, s_Section + c_SectionFirstPackedVertexOffset).ReadUInt32();
+            var s_Shared = At(p_Reader, s_Section + c_SectionSharedVerticesOffset).ReadUInt32();
+            var s_Prims = At(p_Reader, s_Section + c_SectionPrimitivesOffset).ReadUInt32();
             p_Reader.Seek(s_Section + c_SectionNumPackedVerticesOffset, SeekOrigin.Begin);
             var s_PackedCount = (int)p_Reader.ReadUByte();
             var s_SharedCount = (int)p_Reader.ReadUByte();
@@ -429,7 +415,7 @@ public static class hkpShapeReader
             {
                 if (s_PackedVertices == null)
                     return null;
-                var v = ReadUInt32At(p_Reader, p_DataStart + s_PackedVertices.Value + (s_FirstPacked + j) * 4);
+                var v = At(p_Reader, p_DataStart + s_PackedVertices.Value + (s_FirstPacked + j) * 4).ReadUInt32();
                 s_Shape.Vertices.Add(s_Origin + new Vector3(v & 0x7FF, (v >> 11) & 0x7FF, v >> 22) * s_Scale);
             }
 
@@ -484,10 +470,10 @@ public static class hkpShapeReader
 
         // 16 apart because each column is an hkVector4 whose w is padding.
         var s_Placement = new hkpPlacement(
-            ReadVector3(p_Reader, s_At),
-            ReadVector3(p_Reader, s_At + 16),
-            ReadVector3(p_Reader, s_At + 32),
-            ReadVector3(p_Reader, p_DataStart + p_Offset + c_TransformTranslationOffset));
+            At(p_Reader, s_At).ReadVector3(),
+            At(p_Reader, s_At + 16).ReadVector3(),
+            At(p_Reader, s_At + 32).ReadVector3(),
+            At(p_Reader, p_DataStart + p_Offset + c_TransformTranslationOffset).ReadVector3());
 
         return (s_Placement, s_Child);
     }
@@ -500,8 +486,8 @@ public static class hkpShapeReader
         if (!p_ObjectOffsets.TryGetValue(p_Offset + c_ChildOffset, out var s_Child))
             return null;
 
-        return (ReadVector3(p_Reader, p_DataStart + p_Offset + c_TranslationOffset),
-                ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_RadiusOffset),
+        return (At(p_Reader, p_DataStart + p_Offset + c_TranslationOffset).ReadVector3(),
+                At(p_Reader, p_DataStart + p_Offset + c_RadiusOffset).ReadSingle(),
                 s_Child);
     }
 }
