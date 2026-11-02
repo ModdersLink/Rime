@@ -8,8 +8,8 @@ namespace RimeLib.Enlighten.Frostbite2013_2.Frostbite;
 
 /// <summary>
 /// A Frostbite 2013.2 EnlightenStaticDatabase: the Frostbite 2 database as a relocatable image (atlas
-/// size and a RelocArray of the probes) with its one-entry relocation table. The meta is the
-/// cookie: enabled, image size, relocation table size and a last word stored as found.
+/// size and a RelocArray of the probes) with its one-entry relocation table. Reading takes whether
+/// it is enabled and the sizes from <see cref="Cookie"/>; writing sets them.
 /// </summary>
 public class StaticEnlightenDatabase : Frostbite2_0.StaticEnlightenDatabase
 {
@@ -18,32 +18,26 @@ public class StaticEnlightenDatabase : Frostbite2_0.StaticEnlightenDatabase
     /// <summary>The whole payload of a disabled database.</summary>
     private const uint c_Disabled = 0xDEADBEEF;
 
-    public uint CookiePad { get; set; }
+    /// <summary>Where the probes pointer sits, after the atlas size and the array's count: the relocation table's one entry.</summary>
+    private const uint c_ProbesPointer = 12;
 
-    /// <summary>Where <see cref="Serialize"/> wrote the probes pointer, the relocation table's one entry.</summary>
-    private long m_ProbesPointer;
+    public EnlightenStaticDatabaseCookie Cookie { get; set; } = new();
 
-    public static StaticEnlightenDatabase Read(byte[] p_Data, byte[] p_Meta)
-    {
-        using var s_Meta = new RimeReader(new MemoryStream(p_Meta, false));
-        var s_Database = new StaticEnlightenDatabase { Enabled = s_Meta.ReadUInt32() != 0 };
-        s_Meta.Seek(12, SeekOrigin.Begin);
-        s_Database.CookiePad = s_Meta.ReadUInt32();
-
-        using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
-        if (!s_Database.Enabled)
-        {
-            if (p_Data.Length != 4 || s_Reader.ReadUInt32() != c_Disabled)
-                throw new InvalidDataException("a disabled static database with a payload");
-            return s_Database;
-        }
-
-        s_Database.Deserialize(s_Reader);
-        return s_Database;
-    }
-
+    /// <summary>
+    /// Reads the payload <see cref="Cookie"/> describes: for a disabled database a single marker
+    /// word, else the image and its relocation table, whose one entry is the probes pointer.
+    /// </summary>
     public override void Deserialize(RimeReader p_Reader)
     {
+        Enabled = Cookie.Enabled != 0;
+        if (!Enabled)
+        {
+            if (p_Reader.ReadUInt32() != c_Disabled)
+                throw new InvalidDataException("a disabled static database with a payload");
+            return;
+        }
+
+        var s_Start = p_Reader.Position;
         OutputAtlasWidth = p_Reader.ReadUInt32();
         OutputAtlasHeight = p_Reader.ReadUInt32();
         var s_Probes = new RelocArray<StaticEnlightenProbe>(p_Reader);
@@ -51,52 +45,35 @@ public class StaticEnlightenDatabase : Frostbite2_0.StaticEnlightenDatabase
             throw new InvalidDataException("the probes do not follow the header");
 
         Probes = s_Probes.Get.ToList();
+
+        p_Reader.Seek(s_Start + Cookie.DataSize, SeekOrigin.Begin);
+        if (Cookie.RelocSize != sizeof(uint) || p_Reader.ReadUInt32() != c_ProbesPointer)
+            throw new InvalidDataException("the relocation table is not the probes pointer alone");
     }
 
     public override bool Serialize(RimeWriter p_Writer)
     {
+        Cookie.Enabled = Enabled ? 1u : 0u;
+        if (!Enabled)
+        {
+            p_Writer.Write(c_Disabled);
+            Cookie.DataSize = 0;
+            Cookie.RelocSize = 0;
+            return true;
+        }
+
+        var s_Start = p_Writer.Position;
         p_Writer.Write(OutputAtlasWidth);
         p_Writer.Write(OutputAtlasHeight);
-
-        // The pointer follows the count in the slot.
-        m_ProbesPointer = p_Writer.Position + sizeof(uint);
         new RelocArray<StaticEnlightenProbe> { Count = (uint)Probes.Count, BaseAddress = c_HeaderSize }.Serialize(p_Writer);
-        p_Writer.WriteNullBytes((uint)(c_HeaderSize - p_Writer.Position));
+        p_Writer.WriteNullBytes((uint)(c_HeaderSize - (p_Writer.Position - s_Start)));
 
         foreach (var s_Probe in Probes)
             s_Probe.Serialize(p_Writer);
 
+        Cookie.DataSize = (uint)(p_Writer.Position - s_Start);
+        Cookie.RelocSize = sizeof(uint);
+        p_Writer.Write(c_ProbesPointer);
         return true;
-    }
-
-    /// <summary>The resource and its meta.</summary>
-    public (byte[] Data, byte[] Meta) Write()
-    {
-        var s_Data = new MemoryStream();
-        var s_DataSize = 0;
-        using (var s_Writer = new RimeWriter(s_Data))
-        {
-            if (!Enabled)
-            {
-                s_Writer.Write(c_Disabled);
-            }
-            else
-            {
-                Serialize(s_Writer);
-                s_DataSize = (int)s_Writer.Position;
-                s_Writer.Write((uint)m_ProbesPointer);
-            }
-        }
-
-        var s_Meta = new MemoryStream();
-        using (var s_Writer = new RimeWriter(s_Meta))
-        {
-            s_Writer.Write(Enabled ? 1u : 0u);
-            s_Writer.Write((uint)s_DataSize);
-            s_Writer.Write(Enabled ? 4u : 0u);
-            s_Writer.Write(CookiePad);
-        }
-
-        return (s_Data.ToArray(), s_Meta.ToArray());
     }
 }

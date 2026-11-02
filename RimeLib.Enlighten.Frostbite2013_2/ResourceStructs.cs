@@ -20,10 +20,24 @@ public class ResourceStructs : IResourceStructs
         if (p_Meta == null)
             throw new InvalidDataException($"{p_Type} without meta");
 
-        var (s_Data, s_Meta) = p_Type == ResourceType.EnlightenStaticDatabase
-            ? StaticEnlightenDatabase.Read(p_Data, p_Meta).Write()
-            : EnlightenShaderDatabase.Read(p_Data, p_Meta).Write();
+        byte[] s_Data;
+        ResourceCookie s_Cookie;
+        if (p_Type == ResourceType.EnlightenStaticDatabase)
+        {
+            var s_Database = new StaticEnlightenDatabase { Cookie = ResourceCookie.Read<EnlightenStaticDatabaseCookie>(p_Meta) };
+            s_Database.Deserialize(p_Data);
+            s_Database.Serialize(out s_Data!);
+            s_Cookie = s_Database.Cookie;
+        }
+        else
+        {
+            var s_Database = new EnlightenShaderDatabase { Cookie = ResourceCookie.Read<EnlightenShaderDatabaseCookie>(p_Meta) };
+            s_Database.Deserialize(p_Data);
+            s_Database.Serialize(out s_Data!);
+            s_Cookie = s_Database.Cookie;
+        }
 
+        var s_Meta = s_Cookie.ToArray();
         if (!s_Meta.AsSpan().SequenceEqual(p_Meta))
             throw new InvalidDataException($"meta {Convert.ToHexString(p_Meta)} written as {Convert.ToHexString(s_Meta)}");
         return s_Data;
