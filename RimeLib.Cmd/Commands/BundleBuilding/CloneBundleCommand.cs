@@ -32,6 +32,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_GameContext = new GameContext(s_BaseContext, p_Id: 1, p_Mounter: s_Mounter!);
             var s_BundleBuildingContext = (BundleBuildingContext)p_Context;
 
+            // Each object as this bundle ships it, not as the first bundle that has it does.
+            bool InBundle(IObjectVariant p_Variant) => string.Equals(p_Variant.GetContainedBundle(), Bundle, StringComparison.OrdinalIgnoreCase);
+
             // Chunks
             var s_Chunks = s_GameContext.GetBundleChunksWithHash(Bundle!).ToList();
             foreach (var s_Chunk in s_Chunks)
@@ -42,7 +45,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     return false;
                 }
 
-                var s_Variant = s_ChunkObject.Variants.FirstOrDefault(p_Variant => p_Variant.GetAssetNameHash() == s_Chunk.AssetNameHash);
+                var s_Variant = s_ChunkObject.Variants.FirstOrDefault(p_Variant => p_Variant.GetAssetNameHash() == s_Chunk.AssetNameHash && InBundle(p_Variant))
+                    ?? s_ChunkObject.Variants.FirstOrDefault(p_Variant => p_Variant.GetAssetNameHash() == s_Chunk.AssetNameHash);
                 if (s_Variant == null)
                 {
                     p_Writer.Write($"Could not find chunk variant of ({s_Chunk.Guid.ToString("D")}) with h32 ({s_Chunk.AssetNameHash}).\n");
@@ -62,7 +66,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     return false;
                 }
 
-                s_BundleBuildingContext.AddResource(s_Resource.Name, s_ResourceObject.FirstVariant);
+                s_BundleBuildingContext.AddResource(s_Resource.Name, s_ResourceObject.Variants.FirstOrDefault(InBundle) ?? s_ResourceObject.FirstVariant);
             }
 
             // Partitions
@@ -76,7 +80,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     return false;
                 }
 
-                s_BundleBuildingContext.AddPartition(p_MountedPartition.OriginalName, p_MountedPartition.FirstVariant);
+                s_BundleBuildingContext.AddPartition(p_MountedPartition.OriginalName, p_MountedPartition.Variants.FirstOrDefault(InBundle) ?? p_MountedPartition.FirstVariant);
             }
 
             return true;

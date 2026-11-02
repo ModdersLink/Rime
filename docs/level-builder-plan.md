@@ -333,8 +333,8 @@ and compared with retail: `derive_registry`, `derive_mesh_variation_db`; in bund
 `collect_drawn_shaders`; and `build_level`, which runs them
 from a JSON recipe and compares each bundle with its retail namesake.
 
-Missing: material indices from mesh and Havok payloads, BF4 CAS output (BF4 builds are
-non-CAS), `LevelData` sub-world reference generation.
+Missing: material indices from mesh and Havok payloads, `LevelData` sub-world reference
+generation.
 
 ### Measured on `mp_subway` (BF3)
 Recipe: [`recipes/mp_subway.json`](recipes/mp_subway.json): the 11 gamemode and sub-world bundles,
@@ -362,6 +362,17 @@ together: 23243 of 23622 partitions, 6 extra.
   gamemodes 52 to 55 short (`conquestlarge0` 1515 of 1570); `dm_objects` 73 of 108.
 - Main bundle: 2032 of 2059, 5 extra; shader database 528 of 551 shaders, every solution of them
   identical; mesh variation database all 33 entries plus one.
+
+BF4 builds are CAS, like retail. A bundle's content mounted from the game's cas bundles keeps the
+entry it came from (sha1, sizes, and for patched content the patch type, base and delta), and the
+manifest copies it as a reference into the game's catalogs. Generated partitions and resources are
+stored inline as codec blocks (zlib), as the game stores them. A bundle without chunks has no
+`chunks` or `chunkMeta` list, and its sizes are the bytes it reads from cas: `dbxTotalSize` those of
+its resources and chunks (a ranged chunk counts its range), `totalSize` those and its EBX.
+Measured: cloning all 26 `mp_siege` bundles gives the 24 manifests of retail's patch superbundle
+byte for byte, and `verify_superbundle` reads back all 40627 objects identical to the game's. The
+recipe builds as CAS in 8:42: 39395 references and 36 inline entries, and read back, everything
+equals the game's except the regenerated indexes and the 6 extra partitions.
 
 What BF4 loads with a level, and what the closure may leave out because of it:
 - `win32/globals`, `warsawmppersistence`, and of the weapons only the common bundles

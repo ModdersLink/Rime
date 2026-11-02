@@ -3,7 +3,7 @@
   "engine": "Frostbite2013_2",
   "superbundle": "win32/levels/mp/mp_siege/mp_siege",
   "output": "out/mp_siege",
-  "cas": false,
+  "cas": true,
   "sharedSuperbundles": [
     "win32/globals"
   ],

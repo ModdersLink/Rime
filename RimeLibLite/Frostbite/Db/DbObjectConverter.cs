@@ -444,6 +444,10 @@ namespace RimeLib.Frostbite.Db
             if (s_Type == typeof(int) || s_Type == typeof(int?))
                 return new DbObjectElement(p_FieldName, (int) p_Object);
 
+            // A uint field (chunk ranges and logical offsets) is stored as the 32-bit integer it is read from.
+            if (s_Type == typeof(uint) || s_Type == typeof(uint?))
+                return new DbObjectElement(p_FieldName, unchecked((int)(uint) p_Object));
+
             if (s_Type == typeof(long) || s_Type == typeof(long?))
                 return new DbObjectElement(p_FieldName, (long) p_Object, p_VariableLength);
             if (s_Type == typeof(ulong) || s_Type == typeof(ulong?))

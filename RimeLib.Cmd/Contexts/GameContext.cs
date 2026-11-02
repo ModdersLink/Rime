@@ -63,6 +63,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpShaderTexturesCommand>();
             RegisterCommand<WhereIsCommand>();
             RegisterCommand<FindPartitionsCommand>();
+            RegisterCommand<VerifySuperbundleCommand>();
             RegisterCommand<DumpShaderBytecodeCommand>();
             RegisterCommand<DumpEbxLayoutCommand>();
             RegisterCommand<ListResourcesOfTypeJsonCommand>();
