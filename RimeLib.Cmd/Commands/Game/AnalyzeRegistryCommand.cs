@@ -235,17 +235,19 @@ namespace RimeLib.Cmd.Commands.Game
                 .Take(12).ToList();
         }
 
+        private static readonly System.Collections.Concurrent.ConcurrentDictionary<Type, System.Reflection.PropertyInfo[]> s_ReferenceProperties = new();
+
         /// <summary>Every reference an object holds, through structs and lists, as ("Type.Field", reference).</summary>
         internal static IEnumerable<(string Field, CtrRefBase Ref)> References(object p_Object, string p_Path, int p_Depth)
         {
             if (p_Depth > 4)
                 yield break;
 
-            foreach (var s_Property in p_Object.GetType().GetProperties())
-            {
-                if (s_Property.GetIndexParameters().Length > 0 || s_Property.Name is "Partition" or "InstanceId")
-                    continue;
+            var s_Properties = s_ReferenceProperties.GetOrAdd(p_Object.GetType(), p_T => p_T.GetProperties()
+                .Where(p_P => p_P.GetIndexParameters().Length == 0 && p_P.Name is not ("Partition" or "InstanceId")).ToArray());
 
+            foreach (var s_Property in s_Properties)
+            {
                 object? s_Value;
                 try { s_Value = s_Property.GetValue(p_Object); }
                 catch (Exception) { continue; }
