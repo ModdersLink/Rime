@@ -178,8 +178,14 @@ reads it back: on cloned retail `mp_subway` all 1025 entries, `rush` all 993 plu
 - Terrain roots nothing references at all: `systems/terrain/noisetexture2d` (`NoiseTextureAsset`)
   and its `noisetexture2d_output_win32`, `grey50percentdxt1`, `grey50percentrgb`. BF4 has
   `X.layercombinations_win32` (`TerrainLayerCombinationsData`) and its terrain chunks (26 in the main
-  bundle); Rime can't walk BF4's `VisualTerrain` and `TerrainStreamingTree` payloads yet, which is
-  probably where those are named.
+  bundle).
+- BF4 terrain payloads (`ResourcePayloadReader` in `RimeLib.Content.Frostbite2013_2`, each walked to
+  its last byte on all 16 retail terrains): `TerrainLayerCombinations` names the default surface
+  shader and every generated permutation (in BF3 these are in `VisualTerrain`); `TerrainDecals`
+  names each decal block's shader, z-only shader and mesh scattering mask shader; `VisualTerrain` names only its
+  scattering meshes; `TerrainStreamingTree` names its tile chunks. On `mp_siege` this reaches 48
+  shaders only the shader database listed before (37 permutations, the default surface shader, 10
+  decal shaders), 18 terrain chunks and 5 scattering meshes.
 - The level's material grid: `LevelData.RuntimeMaterialGrid` (see [Material grid](#material-grid)).
 
 ### How the shader database is filled
@@ -193,16 +199,16 @@ One per level, in the main bundle, named after `LevelData` plus `/shaderdb`. It 
 | generated terrain permutations (`<terrain>__<layers>__<mode>__0`), used by no content | 81 | 37 |
 | used only by shared content (imported by vehicles, weapons, decal templates, effects in shared superbundles) | 0 | 35 |
 | engine defaults nothing references (`Systems/*`: default mesh, decal volume, sky, emitter, Enlighten debug, terrain surface roots; the terrain's default surface shader) | 37 | 2 |
-| terrain decal shaders nothing references (road markings, skid marks, `whitedecal2d`) | 0 | 10 |
+| terrain decal shaders, named only by the `TerrainDecals` payload (road markings, skid marks, `whitedecal2d`) | 0 | 10 |
 | other shaders nothing references (electric cables, a glass shard) | 0 | 3 |
 | imported only by other levels | 2 | 1 |
 
 So it is the union of every shader any bundle of the level uses, the shaders of shared content the
 level loads (BF4 keeps those in the level database; BF3 apparently doesn't), the engine's default
 shaders, and generated terrain permutations. In BF4 nearly all level content sits in the `content`
-and `gen4_content` sub-worlds, so nearly all its shaders are theirs. BF3 reaches its terrain decal
-shaders through the names in the `TerrainDecals` payload; BF4's payload doesn't name them, so they
-probably go by hash or through the terrain payloads Rime can't walk yet.
+and `gen4_content` sub-worlds, so nearly all its shaders are theirs. Both games name their terrain
+decal shaders in the `TerrainDecals` payload, and BF4 its terrain permutations in the
+`TerrainLayerCombinations` payload.
 
 Per shader the database holds solutions, one per way the shader is drawn (permutation and vertex
 layout): BF4 `mp_siege` has 25270 solution entries for 551 shaders. Textures are named as strings.
@@ -359,7 +365,7 @@ time.
 ## Phases
 1. **Research** with `analyze_level` until every bundle of a BF3 and a BF4 level is explained. Done
    for `mp_subway` and `mp_siege`, including every shader of both shader databases and the material
-   grids of every level. Still open: BF4 terrain payloads and terrain decal shader names.
+   grids of every level.
 2. **Recipe and pipeline on existing commands.** Oracle: describe a retail level as a recipe, rebuild
    it, and compare the derived parts (mesh variation databases, registries, shader database,
    sub-world references) with retail; then `analyze_level` on the result must leave nothing
@@ -390,8 +396,6 @@ Getting here took two fixes in Rime's BF4 readers:
   such import-table entries the parse misses, so a reader gap like this shows up in the report.
 
 ## Open questions
-- How BF4 names its terrain decal shaders (10 in `mp_siege`), and walking BF4's `VisualTerrain` and
-  `TerrainStreamingTree` payloads.
 - Which game first: BF3 (most building work so far) or BF4?
 - How builds reach the game: the mod loader's runtime injection (which `emit_subworld_registry`
   targets) or replacing superbundles on disk. This decides whether the main bundle may be changed or

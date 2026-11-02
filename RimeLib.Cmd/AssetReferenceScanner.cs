@@ -82,6 +82,7 @@ namespace RimeLib.Cmd
         private readonly IPartitionConverter m_PartitionConverter;
         private readonly ITextureConverter? m_TextureConverter;
         private readonly IMeshConverter? m_MeshConverter;
+        private readonly IResourcePayloadReader? m_PayloadReader;
 
         public AssetReferenceScanner(IEngineMounter p_Mounter, IPartitionConverter p_PartitionConverter,
             ITextureConverter? p_TextureConverter, IMeshConverter? p_MeshConverter)
@@ -90,6 +91,10 @@ namespace RimeLib.Cmd
             m_PartitionConverter = p_PartitionConverter;
             m_TextureConverter = p_TextureConverter;
             m_MeshConverter = p_MeshConverter;
+
+            var s_Engine = p_Mounter.GetEngineType();
+            if (EngineInterfaceRegistry.IsSupported<IResourcePayloadReader>(s_Engine))
+                m_PayloadReader = EngineInterfaceRegistry.Create<IResourcePayloadReader>(s_Engine);
         }
 
         /// <summary>Layer 1 for every instance of a partition, plus its MeshVariationDatabase texture bindings.</summary>
@@ -165,7 +170,7 @@ namespace RimeLib.Cmd
         /// </summary>
         private void CollectPayloadNames(string p_Name, IResourceVariant p_Variant, ResourceType p_Type, References p_References)
         {
-            if (!ResourcePayloadDependencies.Handles(p_Type))
+            if (m_PayloadReader == null || !m_PayloadReader.Handles(p_Type))
                 return;
 
             byte[] s_Data;
@@ -180,7 +185,7 @@ namespace RimeLib.Cmd
                 return;
             }
 
-            var s_Payload = ResourcePayloadDependencies.Read(p_Type, s_Data);
+            var s_Payload = m_PayloadReader.Read(p_Type, s_Data);
 
             if (s_Payload.Error != null)
             {
