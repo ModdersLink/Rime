@@ -14,6 +14,7 @@
 	<ItemGroup>
 		<ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
 		<ProjectReference Include="..\RimeLib.Enlighten\RimeLib.Enlighten.csproj" />
+		<ProjectReference Include="..\RimeLib.Enlighten.Frostbite2_0\RimeLib.Enlighten.Frostbite2_0.csproj" />
 		<ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
 	</ItemGroup>
 

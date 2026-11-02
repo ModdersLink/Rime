@@ -21,7 +21,7 @@ public class ResourceStructs : IResourceStructs
             throw new InvalidDataException($"{p_Type} without meta");
 
         var (s_Data, s_Meta) = p_Type == ResourceType.EnlightenStaticDatabase
-            ? EnlightenStaticDatabase.Read(p_Data, p_Meta).Write()
+            ? StaticEnlightenDatabase.Read(p_Data, p_Meta).Write()
             : EnlightenShaderDatabase.Read(p_Data, p_Meta).Write();
 
         if (!s_Meta.AsSpan().SequenceEqual(p_Meta))
