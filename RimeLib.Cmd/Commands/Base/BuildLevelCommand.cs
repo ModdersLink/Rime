@@ -122,17 +122,26 @@ namespace RimeLib.Cmd.Commands.Base
             var s_Walked = s_Recipe.WalkedSuperbundles.SelectMany(s_Mounter.GetBundlesInSuperbundle).ToList();
 
             ExecutionContext s_Context = s_Base;
+            // Time per command, summed over the bundles, for the summary at the end.
+            var s_Times = new Dictionary<string, TimeSpan>(StringComparer.Ordinal);
+            var s_Total = System.Diagnostics.Stopwatch.StartNew();
             bool Run(string p_Command)
             {
                 p_Writer.WriteLine($"build_level> {p_Command}");
-                if (s_Context.ProcessCommand(p_Command, p_Writer, out var s_Next) && s_Next != null)
-                {
-                    s_Context = s_Next;
-                    return true;
-                }
+                var s_Watch = System.Diagnostics.Stopwatch.StartNew();
+                var s_Done = s_Context.ProcessCommand(p_Command, p_Writer, out var s_Next) && s_Next != null;
+                var s_Verb = p_Command.Split(' ')[0];
+                s_Times[s_Verb] = s_Times.GetValueOrDefault(s_Verb) + s_Watch.Elapsed;
 
-                s_Context = s_Next ?? s_Context;
-                return false;
+                s_Context = s_Done ? s_Next! : s_Next ?? s_Context;
+                return s_Done;
+            }
+
+            void Summary()
+            {
+                p_Writer.WriteLine($"build_level: {s_Total.Elapsed:hh\\:mm\\:ss} in all");
+                foreach (var (s_Verb, s_Time) in s_Times.OrderByDescending(p_T => p_T.Value))
+                    p_Writer.WriteLine($"  {s_Time:hh\\:mm\\:ss}  {s_Verb}");
             }
 
             if (!Run($"build_sb {Quote(s_Recipe.Superbundle)} {s_Recipe.Engine} {Quote(s_Recipe.Output)} {s_Recipe.Cas}"))
@@ -180,7 +189,9 @@ namespace RimeLib.Cmd.Commands.Base
                     return false;
             }
 
-            return Run("build");
+            var s_Built = Run("build");
+            Summary();
+            return s_Built;
         }
 
         /// <summary>The built bundle against the game's bundle of that name: which partitions only one has.</summary>

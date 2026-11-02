@@ -140,6 +140,9 @@ namespace RimeLib.Cmd.Contexts
 
         public EngineType EngineType;
 
+        /// <summary>Per level partition built so far, the meshes its mesh variation database's keys cover.</summary>
+        internal Dictionary<string, IReadOnlyCollection<string>> DerivedMeshes { get; } = new(StringComparer.OrdinalIgnoreCase);
+
         /// <summary>The shaders the bundles built so far draw with, for a shader database built after them.</summary>
         internal HashSet<string> DrawnShaders { get; } = new(StringComparer.OrdinalIgnoreCase);
         protected string m_OutPath;

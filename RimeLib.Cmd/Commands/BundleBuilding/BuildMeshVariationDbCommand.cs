@@ -55,7 +55,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             }
 
             var s_MeshDeriver = new MeshVariationDeriver(s_Deriver);
-            var s_Result = s_MeshDeriver.Derive(s_Root, s_Partitions.Keys.Where(p_N => p_N != s_Name), p_Writer);
+            var s_Result = s_MeshDeriver.Derive(s_Root, s_Partitions.Keys.Where(p_N => p_N != s_Name), p_Writer, s_SbContext.DerivedMeshes.GetValueOrDefault);
+            s_SbContext.DerivedMeshes[s_Root] = s_Result.Keys.Select(p_K => p_K.Mesh).ToHashSet();
             var s_Entries = s_MeshDeriver.EntriesFor(s_Result.Keys);
             if (s_Entries.Count == 0 && s_MeshDeriver.Rules.OmitsEmptyDatabase)
             {

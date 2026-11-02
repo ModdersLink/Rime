@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using RimeLib.Content.Mounting;
+using RimeLib.Frostbite.Core;
 using RimeLib.Serialization;
 
 namespace RimeLib.Cmd
@@ -37,25 +38,43 @@ namespace RimeLib.Cmd
                 if (m_Pool != null)
                     return m_Pool;
 
+                // The mounted databases don't change, so they are read once per mounted game; each
+                // deriver still registers the keys it hands out.
+                var s_Mounted = s_MountedPools.GetValue(m_Deriver.Mounter, _ => ReadMountedPool());
                 m_Pool = new();
-                foreach (var s_Name in m_Deriver.Mounter.GetPartitions().Keys.Where(p_N => p_N.EndsWith("meshvariationdb_win32", StringComparison.OrdinalIgnoreCase)))
+                foreach (var s_Item in s_Mounted.Entries)
                 {
-                    var s_Lower = s_Name.ToLowerInvariant();
-                    if (!m_Deriver.Mounter.TryGetPartition(s_Lower, out var s_Mounted) || Parse(s_Lower, s_Mounted.FirstVariant) is not { } s_Parsed)
-                        continue;
-
-                    ++PoolDatabases;
-                    foreach (var (s_Mesh, s_Hash, s_Entry) in m_Rules.ReadEntries(s_Parsed))
-                    {
-                        var s_Key = (m_Deriver.Key(s_Mesh.PartitionGuid, s_Mesh.InstanceId), s_Hash);
-                        if (!m_Pool.TryGetValue(s_Key, out var s_List))
-                            m_Pool[s_Key] = s_List = new();
-                        s_List.Add((s_Lower, m_Rules.Fingerprint(s_Entry), s_Entry));
-                    }
+                    var s_Key = (m_Deriver.Key(s_Item.MeshPartition, s_Item.MeshInstance), s_Item.Hash);
+                    if (!m_Pool.TryGetValue(s_Key, out var s_List))
+                        m_Pool[s_Key] = s_List = new();
+                    s_List.Add((s_Item.Database, s_Item.Fingerprint, s_Item.Entry));
                 }
+                PoolDatabases = s_Mounted.Databases;
 
                 return m_Pool;
             }
+        }
+
+        private sealed record MountedPool(int Databases, List<(GUID MeshPartition, DataContainerId MeshInstance, uint Hash, string Database, string Fingerprint, object Entry)> Entries);
+
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<IEngineMounter, MountedPool> s_MountedPools = new();
+
+        private MountedPool ReadMountedPool()
+        {
+            var s_Databases = 0;
+            var s_Entries = new List<(GUID, DataContainerId, uint, string, string, object)>();
+            foreach (var s_Name in m_Deriver.Mounter.GetPartitions().Keys.Where(p_N => p_N.EndsWith("meshvariationdb_win32", StringComparison.OrdinalIgnoreCase)))
+            {
+                var s_Lower = s_Name.ToLowerInvariant();
+                if (!m_Deriver.Mounter.TryGetPartition(s_Lower, out var s_Mounted) || Parse(s_Lower, s_Mounted.FirstVariant) is not { } s_Parsed)
+                    continue;
+
+                ++s_Databases;
+                foreach (var (s_Mesh, s_Hash, s_Entry) in m_Rules.ReadEntries(s_Parsed))
+                    s_Entries.Add((s_Mesh.PartitionGuid, s_Mesh.InstanceId, s_Hash, s_Lower, m_Rules.Fingerprint(s_Entry), s_Entry));
+            }
+
+            return new MountedPool(s_Databases, s_Entries);
         }
 
         public class Result
@@ -72,7 +91,8 @@ namespace RimeLib.Cmd
         /// the bundle that ships it if by nothing else.
         /// </summary>
         /// <param name="p_OwnBundlePartitions">The partitions of the level partition's own bundle.</param>
-        public Result Derive(string p_Root, IEnumerable<string> p_OwnBundlePartitions, TextWriter p_Log)
+        /// <param name="p_KnownSubWorldMeshes">The meshes a sub-world's keys cover, when already derived (by its own bundle, earlier in the build).</param>
+        public Result Derive(string p_Root, IEnumerable<string> p_OwnBundlePartitions, TextWriter p_Log, Func<string, IReadOnlyCollection<string>?>? p_KnownSubWorldMeshes = null)
         {
             var s_Root = p_Root.ToLowerInvariant();
             var (s_Closure, s_All) = m_Deriver.ReachedContent(s_Root);
@@ -82,6 +102,13 @@ namespace RimeLib.Cmd
             {
                 if (m_Deriver.GetVariant(s_SubWorld) == null)
                     continue;
+
+                if (p_KnownSubWorldMeshes?.Invoke(s_SubWorld) is { } s_Known)
+                {
+                    s_Covered.UnionWith(s_Known);
+                    p_Log.WriteLine($"  sub-world {s_SubWorld}: {s_Known.Count} meshes, as derived for its bundle.");
+                    continue;
+                }
 
                 var (s_SubClosure, _) = m_Deriver.ReachedContent(s_SubWorld);
                 var s_SubKeys = DeriveKeys(s_SubClosure, out _, out _);
