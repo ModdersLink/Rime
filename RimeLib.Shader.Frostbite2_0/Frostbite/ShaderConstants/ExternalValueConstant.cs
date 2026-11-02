@@ -40,7 +40,7 @@ public class ExternalValueConstant : IFbSerializable
     }
 
     /// <summary>
-    /// Mirrors <see cref="Deserialize(RimeReader)"/> field for field, in its order: 0x30 bytes.
+    /// Mirrors <see cref="Deserialize(RimeReader)"/> field for field, in its order: 0x3C bytes.
     /// </summary>
     public bool Serialize(RimeWriter p_Writer)
     {
