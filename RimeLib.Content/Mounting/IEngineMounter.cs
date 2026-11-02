@@ -235,6 +235,9 @@ namespace RimeLib.Content.Mounting
         /// <returns>A dictionary of partition name keys and mounted object values.</returns>
         IReadOnlyDictionary<string, IMountedObject> GetDbxPartitions();
 
+        /// <summary>The names of a bundle's dbx entries, in bundle order; none where dbx is not mounted.</summary>
+        IEnumerable<string> GetDbxPartitionsInBundle(string p_Bundle) => System.Array.Empty<string>();
+
         /// <summary>
         /// Gets a list of bundles that are contained within a specific superbundle.
         /// </summary>

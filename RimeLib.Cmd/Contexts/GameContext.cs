@@ -49,6 +49,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<MountSbCommand>();
             RegisterCommand<MountStandaloneSbCommand>();
             RegisterCommand<ListMountedSbCommand>();
+            RegisterCommand<VerifySuperbundleCommand>();
             RegisterCommand<ListBundlesCommand>();
             RegisterCommand<MountBundleCommand>();
             RegisterCommand<MountAllBundlesCommand>();

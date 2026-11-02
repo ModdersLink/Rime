@@ -307,6 +307,11 @@ namespace RimeLib.Cmd.Contexts
             m_Builder.WithPartition(p_Name, p_Partition);
         }
 
+        internal void AddDbx(string p_Name, IObjectVariant p_Dbx)
+        {
+            m_Builder.WithDbx(p_Name, p_Dbx);
+        }
+
         internal void AddJsonPartition(string p_Name, FileInfo p_File)
         {
             var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(((SbBuildingContext)Parent!).EngineType);

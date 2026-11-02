@@ -30,6 +30,9 @@ namespace RimeLib.Content.Building
         /// </summary>
         public Dictionary<string, IReadableObject> Partitions { get; }
 
+        /// <summary>The bundle's dbx entries (the editor's text form of its EBX), by name, in bundle order.</summary>
+        public Dictionary<string, IReadableObject> Dbx { get; }
+
         /// <summary>
         /// Dependency Bundles
         /// </summary>
@@ -51,6 +54,7 @@ namespace RimeLib.Content.Building
             Resources = new Dictionary<string, IResourceObject>();
             Chunks = new Dictionary<GUID, IChunkObject>();
             Partitions = new Dictionary<string, IReadableObject>();
+            Dbx = new Dictionary<string, IReadableObject>();
             DependencyBundles = new List<string>();
             DependencySuperbundles = new List<string>();
         }
