@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using RimeLib;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
@@ -9,8 +11,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace RimeLib.Cmd.Commands.BundleBuilding
+namespace RimeLib.Cmd.Frostbite2_0.Commands.BundleBuilding
 {
+    [EngineCommand(typeof(BundleBuildingContext), EngineType.Frostbite2_0)]
     [CommandDescription("Copies one mesh's MeshVariationDatabase entry from a source mvdb into a new minimal mvdb partition. Its mesh, material and texture partitions have to be in the same bundle.")]
     internal class MeshVariationDbAddEntryCommand : Command
     {

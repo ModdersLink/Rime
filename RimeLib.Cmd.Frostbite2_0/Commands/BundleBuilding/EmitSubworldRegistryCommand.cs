@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using fb;
 using Newtonsoft.Json;
 using RimeLib.Cmd.Attributes;
@@ -9,8 +11,9 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 
-namespace RimeLib.Cmd.Commands.BundleBuilding
+namespace RimeLib.Cmd.Frostbite2_0.Commands.BundleBuilding
 {
+    [EngineCommand(typeof(BundleBuildingContext), EngineType.Frostbite2_0)]
     [CommandDescription("Emits a SubWorldData partition whose registryContainer holds the registry from generate_registry_container plus any mvdb_add_all refs. Run it after those, in the same bundle.")]
     public class EmitSubworldRegistryCommand : Command
     {
@@ -38,7 +41,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_BundleContext = (BundleBuildingContext)p_Context;
             var s_SbContext = (SbBuildingContext)s_BundleContext.Parent!;
 
-            var s_Registry = s_BundleContext.GetGeneratedRegistry();
+            var s_Registry = s_BundleContext.GetGeneratedRegistry() as fb.RegistryContainer;
             if (s_Registry == null)
             {
                 p_Writer.WriteLine("No RegistryContainer generated yet. Run 'generate_registry_container' first.");

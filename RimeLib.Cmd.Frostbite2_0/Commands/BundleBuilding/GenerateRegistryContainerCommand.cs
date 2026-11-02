@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using fb;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
@@ -8,8 +10,9 @@ using System;
 using System.IO;
 using System.Linq;
 
-namespace RimeLib.Cmd.Commands.BundleBuilding
+namespace RimeLib.Cmd.Frostbite2_0.Commands.BundleBuilding
 {
+    [EngineCommand(typeof(BundleBuildingContext), EngineType.Frostbite2_0)]
     [CommandDescription("Generates a new RegistryContainer by looping through all partitions in the bundle and collecting networked entities, assets, blueprints, and reference objects.")]
     public class GenerateRegistryContainerCommand : Command
     {

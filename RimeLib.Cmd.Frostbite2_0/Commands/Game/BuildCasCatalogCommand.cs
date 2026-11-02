@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,8 +12,9 @@ using RimeLib.Content.Frostbite2_0.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.Texture;
 
-namespace RimeLib.Cmd.Commands.Game
+namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 {
+    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Builds a cas.cat and its cas files from the stored frames of the named objects that no mounted catalog already holds, so a mod can cas-ref them instead of shipping the bytes.")]
     public class BuildCasCatalogCommand : Command
     {

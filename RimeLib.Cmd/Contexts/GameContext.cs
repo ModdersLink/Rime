@@ -65,8 +65,6 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpEbxLayoutCommand>();
             RegisterCommand<ListResourcesOfTypeJsonCommand>();
             RegisterCommand<DumpShaderSolutionsCommand>();
-            RegisterCommand<DumpMeshVariationDbVariationsCommand>();
-            RegisterCommand<DumpMeshTexturesCommand>();
             RegisterCommand<ListPartitionsCommand>();
             RegisterCommand<ListSbChunksCommand>();
             RegisterCommand<ListBundleChunksCommand>();
@@ -82,9 +80,6 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<RoundTripPartitionsCommand>();
             RegisterCommand<DumpPartitionByGuidCommand>();
             // RegisterCommand<DumpAnimTrackDataCommand>(); // class not in repo
-            RegisterCommand<BuildCasCatalogCommand>();
-            RegisterCommand<MountExternalCatCommand>();
-            RegisterCommand<RoundTripWritersCommand>();
 
             var s_EngineType = m_Mounter.GetEngineType();
 
@@ -100,12 +95,7 @@ namespace RimeLib.Cmd.Contexts
                 RegisterCommand<DumpPartitionJsonByGuidCommand>();
                 RegisterCommand<DumpMountedPartitionsJsonCommand>();
                 // RegisterCommand<DumpSkeletonCommand>(); // class not in repo
-                RegisterCommand<DumpAnimationBankCommand>();
-                RegisterCommand<CheckAnimationCodecCommand>();
-                RegisterCommand<PatchAnimationBankCommand>();
-                RegisterCommand<DumpAnimCodecClipsCommand>();
                 // RegisterCommand<DumpSoundWaveCommand>(); // class not in repo
-                RegisterCommand<DumpNameSourcesCommand>();
                 RegisterCommand<DumpIntFieldsCommand>();
             }
 
@@ -118,8 +108,6 @@ namespace RimeLib.Cmd.Contexts
             {
                 RegisterCommand<DumpTerrainDecalsJsonCommand>();
                 RegisterCommand<DumpTerrainNodesCommand>();
-                RegisterCommand<DumpEnlightenCommand>();
-                RegisterCommand<DumpLevelEnlightenCommand>();
                 RegisterCommand<CompareResourceCommand>();
                 RegisterCommand<CompareResourcesCommand>();
             }

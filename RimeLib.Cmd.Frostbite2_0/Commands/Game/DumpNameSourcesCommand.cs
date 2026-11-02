@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using System;
 using System.Collections.Generic;
 using System.Buffers.Binary;
@@ -12,7 +14,7 @@ using RimeLib.Content.Mounting;
 using RimeLib.IO;
 using RimeLib.Serialization;
 
-namespace RimeLib.Cmd.Commands.Game
+namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 {
     /// <summary>
     /// Writes every NAME the mounted game itself contains, so a reverse table for fb::hashQuick /
@@ -41,6 +43,7 @@ namespace RimeLib.Cmd.Commands.Game
     ///    DIFFERENT partition -- the cross-partition case a reverse table actually exists for;
     ///  * non-cas chunk entries carry an AssetNameHash of the asset they belong to.
     /// </summary>
+    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Dumps every name source in the mounted game (partitions, resources, bundles, EBX type/field/string tables, Ant rig names) plus hash ground truth, for building a name-hash reverse table.")]
     public class DumpNameSourcesCommand : Command
     {

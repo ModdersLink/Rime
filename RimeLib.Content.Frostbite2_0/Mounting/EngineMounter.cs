@@ -23,7 +23,7 @@ using PackageManifest = RimeLib.Content.Frostbite2_0.Frostbite.PackageManifest;
 
 namespace RimeLib.Content.Frostbite2_0.Mounting
 {
-    public class EngineMounter : IEngineMounter
+    public class EngineMounter : IEngineMounter, ICatalogProbe
     {
         protected string m_GamePath = "";
         

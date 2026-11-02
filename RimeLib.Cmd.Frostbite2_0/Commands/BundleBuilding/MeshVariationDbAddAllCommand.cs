@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using RimeLib;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
@@ -9,8 +11,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 
-namespace RimeLib.Cmd.Commands.BundleBuilding
+namespace RimeLib.Cmd.Frostbite2_0.Commands.BundleBuilding
 {
+    [EngineCommand(typeof(BundleBuildingContext), EngineType.Frostbite2_0)]
     [CommandDescription("Builds one MeshVariationDatabase from the source mvdb's entries for every mesh in this bundle, and adds it as a new partition. Their texture partitions are reported as MVDB-TEX.")]
     internal class MeshVariationDbAddAllCommand : Command
     {

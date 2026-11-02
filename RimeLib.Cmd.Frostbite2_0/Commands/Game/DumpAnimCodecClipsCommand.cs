@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -7,7 +9,7 @@ using Rimelib.Animation.Frostbite2_0.Frostbite;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 
-namespace RimeLib.Cmd.Commands.Game
+namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 {
     /// <summary>
     /// Dumps every VBR and CURV clip the game ships, header fields and raw payload alike, so the
@@ -23,6 +25,7 @@ namespace RimeLib.Cmd.Commands.Game
     /// VectorOffsetSize / FloatOffsetSize and a per-frame-block size table, and whether those
     /// account for <c>Data</c> exactly is a sum that can be checked without the game running.
     /// </summary>
+    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Dumps every VBR and CURV clip in every mounted Ant bank as JSON, payload included.")]
     public class DumpAnimCodecClipsCommand : Command
     {

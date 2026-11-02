@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,7 +8,7 @@ using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Frostbite;
 
-namespace RimeLib.Cmd.Commands.Game
+namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 {
     /// <summary>
     /// Every Enlighten resource one level ships, in a single JSON: the structured read where there
@@ -28,6 +30,7 @@ namespace RimeLib.Cmd.Commands.Game
     /// in Rime decodes Enlighten's radiosity data, and a level that carries every other Enlighten
     /// resource and silently drops those is carrying an incomplete bake.
     /// </summary>
+    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Dumps every Enlighten resource belonging to one level as a single JSON, payloads included.")]
     public class DumpLevelEnlightenCommand : Command
     {

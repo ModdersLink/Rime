@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -9,7 +11,7 @@ using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Serialization;
 
-namespace RimeLib.Cmd.Commands.Game
+namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 {
     /// <summary>
     /// Writes which textures a level's meshes actually use, as JSON.
@@ -19,6 +21,7 @@ namespace RimeLib.Cmd.Commands.Game
     /// per mesh, one material per subset, each with its own texture parameters. So this is the only
     /// place to learn that a given mesh subset is painted with a given texture resource.
     /// </summary>
+    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Dumps mesh -> material -> texture resource bindings from a MeshVariationDatabase, as JSON.")]
     public class DumpMeshTexturesCommand : Command
     {

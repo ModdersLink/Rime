@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,8 +11,9 @@ using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization;
 
-namespace RimeLib.Cmd.Commands.BundleBuilding
+namespace RimeLib.Cmd.Frostbite2_0.Commands.BundleBuilding
 {
+    [EngineCommand(typeof(BundleBuildingContext), EngineType.Frostbite2_0)]
     [CommandDescription("Compares the generated RegistryContainer (from context) to an existing one in a partition.")]
     public class CompareRegistryContainersCommand : Command
     {
@@ -29,7 +32,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_SbContext = (SbBuildingContext)s_BundleContext.Parent!;
             var s_Partitions = s_BundleContext.GetPartitions();
 
-            var s_GeneratedRegistry = s_BundleContext.GetGeneratedRegistry();
+            var s_GeneratedRegistry = s_BundleContext.GetGeneratedRegistry() as fb.RegistryContainer;
             if (s_GeneratedRegistry == null)
             {
                 p_Writer.WriteLine("Error: No RegistryContainer has been generated yet. Run 'build GenerateRegistryContainer' first.");

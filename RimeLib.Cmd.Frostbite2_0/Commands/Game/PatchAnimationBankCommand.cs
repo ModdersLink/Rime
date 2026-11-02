@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +14,7 @@ using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.IO;
 
-namespace RimeLib.Cmd.Commands.Game
+namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 {
     /// <summary>
     /// Writes edited animation clips back into an Ant bank blob.
@@ -42,6 +44,7 @@ namespace RimeLib.Cmd.Commands.Game
     /// <c>index</c> is the object's position in the bank, which is what
     /// <c>dump_animation_bank</c> reports and what an AntAnimationSetAsset addresses clips by.
     /// </summary>
+    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Writes edited clips back into an Ant bank blob, in place, and verifies the result decodes to what was asked for.")]
     public class PatchAnimationBankCommand : Command
     {

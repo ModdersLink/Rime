@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -12,7 +14,7 @@ using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.IO;
 
-namespace RimeLib.Cmd.Commands.Game
+namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 {
     /// <summary>
     /// Re-encodes every clip in an Ant bank and compares the result against the bytes the game
@@ -34,6 +36,7 @@ namespace RimeLib.Cmd.Commands.Game
     /// It also round-trips the standalone <see cref="Header"/>/<see cref="DofTable"/> writers,
     /// which had no call site at all, against every clip's own bit-allocation table.
     /// </summary>
+    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Re-encodes every clip in an Ant bank and reports how many re-encode to the shipped bytes.")]
     public class CheckAnimationCodecCommand : Command
     {
