@@ -133,7 +133,7 @@ namespace RimeLib.Content.Frostbite2_0.Frostbite.Cas
             var s_Path = System.IO.Path.Join(System.IO.Path.GetDirectoryName(Path), $"cas_{s_Entry.FileNumber:D2}.cas");
 
             // Open a reader.
-            var s_Reader = new RimeReader(File.Open(s_Path, FileMode.Open, FileAccess.Read, FileShare.Read));
+            var s_Reader = new RimeReader(SharedFileStream.Open(s_Path));
             s_Reader.Seek(s_Entry.FileOffset, SeekOrigin.Begin);
 
             // Wrap in a limited reader.
