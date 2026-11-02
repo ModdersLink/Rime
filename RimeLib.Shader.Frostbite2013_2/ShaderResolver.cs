@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
@@ -25,7 +24,6 @@ public class ShaderResolver : IShaderResolver
     // Index, type, padding, then the name.
     private const int c_TextureSize = 152;
     private const int c_TextureNameOffset = 8;
-    private const int c_TextureNameSize = 144;
 
     // The solution's vertex and pixel constants, after its five permutations.
     private static readonly int[] s_ConstantRefs = { 5, 6 };
@@ -107,13 +105,14 @@ public class ShaderResolver : IShaderResolver
     private static List<string> ReadTextureNames(byte[] p_Constants)
     {
         var s_Names = new List<string>();
-        var s_Offset = (int)BitConverter.ToUInt64(p_Constants, c_TextureOffsetField);
-        var s_Count = p_Constants[c_TextureCountField];
+        using var s_Reader = PooledRecord.ReaderAt(p_Constants, c_TextureOffsetField);
+        var s_Offset = s_Reader.ReadInt64();
+        s_Reader.Seek(c_TextureCountField, SeekOrigin.Begin);
+        var s_Count = s_Reader.ReadByte();
         for (var i = 0; i < s_Count; i++)
         {
-            var s_Name = p_Constants.AsSpan(s_Offset + i * c_TextureSize + c_TextureNameOffset, c_TextureNameSize);
-            var s_End = s_Name.IndexOf((byte)0);
-            s_Names.Add(Encoding.ASCII.GetString(s_End < 0 ? s_Name : s_Name[..s_End]));
+            s_Reader.Seek(s_Offset + i * c_TextureSize + c_TextureNameOffset, SeekOrigin.Begin);
+            s_Names.Add(s_Reader.ReadNullTerminatedString());
         }
 
         return s_Names;

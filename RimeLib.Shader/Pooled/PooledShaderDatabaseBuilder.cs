@@ -134,7 +134,7 @@ public abstract class PooledShaderDatabaseBuilder : IShaderDatabaseBuilder
             foreach (var s_Ref in p_Record.Refs)
             {
                 var s_Index = p_Record.GetIndex(s_Ref);
-                s_Hash.AppendData(BitConverter.GetBytes(s_Index == -1));
+                s_Hash.AppendData([s_Index == -1 ? (byte)1 : (byte)0]);
                 if (s_Index != -1)
                     Record(p_Database.Pools[s_Ref.Pool][(int)s_Index]);
             }

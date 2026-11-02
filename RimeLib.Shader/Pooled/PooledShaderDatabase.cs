@@ -15,14 +15,27 @@ public sealed class PooledRecord
     public byte[] Bytes { get; init; } = [];
     public IReadOnlyList<RecordRef> Refs { get; init; } = [];
 
-    public long GetIndex(RecordRef p_Ref) => p_Ref.Wide ? BitConverter.ToInt64(Bytes, p_Ref.Offset) : BitConverter.ToInt32(Bytes, p_Ref.Offset);
+    public long GetIndex(RecordRef p_Ref)
+    {
+        using var s_Reader = ReaderAt(Bytes, p_Ref.Offset);
+        return p_Ref.Wide ? s_Reader.ReadInt64() : s_Reader.ReadInt32();
+    }
 
     public void SetIndex(RecordRef p_Ref, long p_Value)
     {
+        using var s_Writer = new RimeWriter(new MemoryStream(Bytes, true));
+        s_Writer.Seek(p_Ref.Offset, SeekOrigin.Begin);
         if (p_Ref.Wide)
-            BitConverter.TryWriteBytes(Bytes.AsSpan(p_Ref.Offset, 8), p_Value);
+            s_Writer.Write(p_Value);
         else
-            BitConverter.TryWriteBytes(Bytes.AsSpan(p_Ref.Offset, 4), (int)p_Value);
+            s_Writer.Write((int)p_Value);
+    }
+
+    public static RimeReader ReaderAt(byte[] p_Bytes, int p_Offset)
+    {
+        var s_Reader = new RimeReader(new MemoryStream(p_Bytes, false));
+        s_Reader.Seek(p_Offset, SeekOrigin.Begin);
+        return s_Reader;
     }
 
     public PooledRecord Clone() => new() { Bytes = (byte[])Bytes.Clone(), Refs = Refs };
@@ -81,9 +94,17 @@ public sealed class PooledDatabase
     /// <summary>Whatever follows the shader table.</summary>
     public byte[] Trailing { get; set; } = [];
 
-    public static ulong StateHash(PooledRecord p_Solution) => BitConverter.ToUInt64(p_Solution.Bytes, 0);
+    public static ulong StateHash(PooledRecord p_Solution)
+    {
+        using var s_Reader = PooledRecord.ReaderAt(p_Solution.Bytes, 0);
+        return s_Reader.ReadUInt64();
+    }
 
-    public uint DeclarationHash(int p_Solution) => BitConverter.ToUInt32(States[p_Solution], Format.DeclarationHashOffset);
+    public uint DeclarationHash(int p_Solution)
+    {
+        using var s_Reader = PooledRecord.ReaderAt(States[p_Solution], Format.DeclarationHashOffset);
+        return s_Reader.ReadUInt32();
+    }
 
     /// <summary>A database of the same format and render path, with nothing in it.</summary>
     public PooledDatabase CreateEmpty() => new()
@@ -149,8 +170,9 @@ public sealed class PooledShaderDatabaseImage
 
     private static PooledDatabase ReadDatabase(RimeReader p_Reader, PooledShaderDatabaseFormat p_Format, uint p_Key, long p_End)
     {
+        var s_Version = p_Reader.ReadUInt32();
+        p_Reader.Seek(-4, SeekOrigin.Current);
         var s_Header = p_Reader.ReadBytes(p_Format.HeaderSize);
-        var s_Version = BitConverter.ToUInt32(s_Header, 0);
         if (s_Version != p_Format.Version)
             throw new Exception($"Unsupported shader database version (expected {p_Format.Version} got {s_Version}).");
 
