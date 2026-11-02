@@ -1,5 +1,5 @@
 ﻿
-namespace RimeLib.Terrain.Frostbite.Heightfield;
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite.Heightfield;
 public abstract class HeightfieldTreeBase : RasterTree
 {
     

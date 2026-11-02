@@ -1,4 +1,4 @@
-namespace RimeLib.Terrain.Frostbite.TerrainMask;
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainMask;
 
 /// <summary>
 /// One node of a terrain mask tree: how strongly each layer covers each sample of its patch.

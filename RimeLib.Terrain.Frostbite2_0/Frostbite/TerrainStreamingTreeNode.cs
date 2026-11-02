@@ -1,5 +1,5 @@
 ﻿
-namespace RimeLib.Terrain.Frostbite;
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite;
 public class TerrainStreamingTreeNode
 {
     public QuadtreeNodeId Id { get; set; } = QuadtreeNodeId.Empty;

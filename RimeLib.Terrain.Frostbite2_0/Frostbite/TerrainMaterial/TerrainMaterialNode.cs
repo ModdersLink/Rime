@@ -1,4 +1,4 @@
-namespace RimeLib.Terrain.Frostbite.TerrainMaterial;
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainMaterial;
 
 /// <summary>
 /// One node of a terrain material tree: which material covers which sample, run-length encoded.

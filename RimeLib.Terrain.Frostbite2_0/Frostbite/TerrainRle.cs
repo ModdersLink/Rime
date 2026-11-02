@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace RimeLib.Terrain.Frostbite;
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite;
 
 /// <summary>
 /// The run-length encoding the terrain mask and material trees store their samples in.

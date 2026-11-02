@@ -1,4 +1,4 @@
-﻿using RimeLib.Frostbite;
+using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using System;
@@ -6,9 +6,9 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using RimeLib.Terrain.Frostbite;
-using RimeLib.Terrain.Frostbite.Destruction;
-using RimeLib.Terrain.Frostbite.TerrainMaterial;
+using RimeLib.Terrain.Frostbite2_0.Frostbite;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.Destruction;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainMaterial;
 
 namespace RimeLib.Terrain.Frostbite3
 {

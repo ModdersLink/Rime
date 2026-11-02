@@ -6,7 +6,7 @@ using System.IO;
 using RimeLib.Serialization.Frostbite2_0.Extensions;
 using AxisAlignedBox2 = fb.AxisAlignedBox;
 
-namespace RimeLib.Terrain.Frostbite.TerrainMask;
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainMask;
 
 /// <summary>
 /// Which terrain layer covers which ground, and how strongly.

@@ -2,7 +2,7 @@
 using System;
 
 
-namespace RimeLib.Terrain.Frostbite;
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite;
 public class RasterTreeNode
 {
     public ushort FirstChildIndex { get; set; }

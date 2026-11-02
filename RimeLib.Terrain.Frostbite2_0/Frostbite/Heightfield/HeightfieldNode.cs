@@ -1,7 +1,7 @@
 ﻿using RimeLib.Frostbite.Core;
 using System;
 
-namespace RimeLib.Terrain.Frostbite.Heightfield;
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite.Heightfield;
 public class HeightfieldNode
 {
     public HeightfieldTreeNode TreeNode { get; set; } = new HeightfieldTreeNode();

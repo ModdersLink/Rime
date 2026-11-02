@@ -9,8 +9,8 @@ using RimeLib.Terrain.Resources;
 namespace RimeLib.Terrain.Frostbite2_0
 {
     /// <summary>
-    /// Frostbite 2 (BF3) TerrainDecals (.decals) (de)serializer. Mirrors bree's 010 template
-    /// (External/010templates/bree/fb2/TerrainDecals.bt). Little-endian, no alignment,
+    /// Frostbite 2 (BF3) TerrainDecals (.decals) (de)serializer. A later engine whose decal block
+    /// differs derives from this and overrides the block. Little-endian, no alignment,
     /// null-terminated strings (no length prefix). Reading then writing back is byte-identical.
     ///
     /// Layout:
@@ -22,7 +22,51 @@ namespace RimeLib.Terrain.Frostbite2_0
     /// </summary>
     public class TerrainDecalsConverter : ITerrainDecalsConverter
     {
-        public EngineType[] GetSupportedEngines() => new[] { EngineType.Frostbite2_0 };
+        public virtual EngineType[] GetSupportedEngines() => new[] { EngineType.Frostbite2_0 };
+
+        /// <summary>
+        /// The smallest block the layout allows, to bound a block count by the bytes left: two empty
+        /// names, start index, primitive count, two bounding boxes, draw distance, vertex range.
+        /// </summary>
+        protected virtual long MinBlockBytes => 70;
+
+        protected virtual DecalBlock ReadBlock(RimeReader p_Reader)
+        {
+            var s_Block = new DecalBlock
+            {
+                SurfaceShaderName = p_Reader.ReadNullTerminatedString(),
+                ZOnlySurfaceShaderName = p_Reader.ReadNullTerminatedString(),
+                StartIndex = p_Reader.ReadUInt32(),
+                PrimitiveCount = p_Reader.ReadUInt32(),
+            };
+
+            for (var i = 0; i < 6; ++i) s_Block.BoundingBox[i] = p_Reader.ReadSingle();
+            for (var i = 0; i < 6; ++i) s_Block.BoundingBox2[i] = p_Reader.ReadSingle();
+
+            s_Block.DrawDistance = p_Reader.ReadSingle();
+            s_Block.VertexBegin = p_Reader.ReadUInt32();
+            s_Block.VertexEnd = p_Reader.ReadUInt32();
+            return s_Block;
+        }
+
+        protected virtual void WriteBlock(RimeWriter p_Writer, DecalBlock p_Block)
+        {
+            p_Writer.WriteNullTerminatedString(p_Block.SurfaceShaderName);
+            p_Writer.WriteNullTerminatedString(p_Block.ZOnlySurfaceShaderName);
+            p_Writer.Write(p_Block.StartIndex);
+            p_Writer.Write(p_Block.PrimitiveCount);
+
+            for (var i = 0; i < 6; ++i) p_Writer.Write(p_Block.BoundingBox[i]);
+            for (var i = 0; i < 6; ++i) p_Writer.Write(p_Block.BoundingBox2[i]);
+
+            p_Writer.Write(p_Block.DrawDistance);
+            p_Writer.Write(p_Block.VertexBegin);
+            p_Writer.Write(p_Block.VertexEnd);
+        }
+
+
+        /// <summary>Whether vertices are kept as <see cref="DecalGeometry.VertexData"/> rather than parsed with one layout per geometry.</summary>
+        protected virtual bool KeepsVertexBytes => false;
 
         public static int VertexSize(DecalGeometryKind p_Kind) => p_Kind switch
         {
@@ -65,12 +109,8 @@ namespace RimeLib.Terrain.Frostbite2_0
             WriteGeometry(p_Writer, p_Decals.GeometryWater, DecalGeometryKind.Water);
         }
 
-        // Smallest possible on-disk Block (two empty null-terminated strings + the fixed fields):
-        // 1 + 1 + uint StartIndex + uint PrimitiveCount + 6 floats bbox + 6 floats bbox2 +
-        // float DrawDistance + uint VertexBegin + uint VertexEnd = 70 bytes.
-        private const long MinBlockBytes = 70;
 
-        private static DecalGeometry ReadGeometry(RimeReader p_Reader, DecalGeometryKind p_Kind)
+        private DecalGeometry ReadGeometry(RimeReader p_Reader, DecalGeometryKind p_Kind)
         {
             var s_Geometry = new DecalGeometry { BlockCount = p_Reader.ReadUInt32() };
             if (s_Geometry.BlockCount == 0)
@@ -99,7 +139,11 @@ namespace RimeLib.Terrain.Frostbite2_0
 
             var s_VertexCount = s_VerticesByteCount / (uint) VertexSize(p_Kind);
 
-            if (p_Kind == DecalGeometryKind.Water)
+            if (KeepsVertexBytes)
+            {
+                s_Geometry.VertexData = p_Reader.ReadBytes((int) s_VerticesByteCount);
+            }
+            else if (p_Kind == DecalGeometryKind.Water)
             {
                 s_Geometry.WaterVertices = new List<DecalWaterVertex>((int) s_VertexCount);
                 for (var v = 0u; v < s_VertexCount; ++v)
@@ -120,7 +164,7 @@ namespace RimeLib.Terrain.Frostbite2_0
             return s_Geometry;
         }
 
-        private static void WriteGeometry(RimeWriter p_Writer, DecalGeometry p_Geometry, DecalGeometryKind p_Kind)
+        private void WriteGeometry(RimeWriter p_Writer, DecalGeometry p_Geometry, DecalGeometryKind p_Kind)
         {
             p_Writer.Write(p_Geometry.BlockCount);
             if (p_Geometry.BlockCount == 0)
@@ -133,10 +177,14 @@ namespace RimeLib.Terrain.Frostbite2_0
                 ? p_Geometry.WaterVertices?.Count ?? 0
                 : p_Geometry.Vertices?.Count ?? 0;
 
-            p_Writer.Write((uint) (s_VertexCount * VertexSize(p_Kind)));
+            p_Writer.Write(p_Geometry.VertexData != null ? (uint) p_Geometry.VertexData.Length : (uint) (s_VertexCount * VertexSize(p_Kind)));
             p_Writer.Write((uint) (p_Geometry.Indices.Count * 4));
 
-            if (p_Kind == DecalGeometryKind.Water)
+            if (p_Geometry.VertexData != null)
+            {
+                p_Writer.Write(p_Geometry.VertexData);
+            }
+            else if (p_Kind == DecalGeometryKind.Water)
             {
                 foreach (var s_Vertex in p_Geometry.WaterVertices!)
                     WriteWaterVertex(p_Writer, s_Vertex);
@@ -149,40 +197,6 @@ namespace RimeLib.Terrain.Frostbite2_0
 
             foreach (var s_Index in p_Geometry.Indices)
                 p_Writer.Write(s_Index);
-        }
-
-        private static DecalBlock ReadBlock(RimeReader p_Reader)
-        {
-            var s_Block = new DecalBlock
-            {
-                SurfaceShaderName = p_Reader.ReadNullTerminatedString(),
-                ZOnlySurfaceShaderName = p_Reader.ReadNullTerminatedString(),
-                StartIndex = p_Reader.ReadUInt32(),
-                PrimitiveCount = p_Reader.ReadUInt32(),
-            };
-
-            for (var i = 0; i < 6; ++i) s_Block.BoundingBox[i] = p_Reader.ReadSingle();
-            for (var i = 0; i < 6; ++i) s_Block.BoundingBox2[i] = p_Reader.ReadSingle();
-
-            s_Block.DrawDistance = p_Reader.ReadSingle();
-            s_Block.VertexBegin = p_Reader.ReadUInt32();
-            s_Block.VertexEnd = p_Reader.ReadUInt32();
-            return s_Block;
-        }
-
-        private static void WriteBlock(RimeWriter p_Writer, DecalBlock p_Block)
-        {
-            p_Writer.WriteNullTerminatedString(p_Block.SurfaceShaderName);
-            p_Writer.WriteNullTerminatedString(p_Block.ZOnlySurfaceShaderName);
-            p_Writer.Write(p_Block.StartIndex);
-            p_Writer.Write(p_Block.PrimitiveCount);
-
-            for (var i = 0; i < 6; ++i) p_Writer.Write(p_Block.BoundingBox[i]);
-            for (var i = 0; i < 6; ++i) p_Writer.Write(p_Block.BoundingBox2[i]);
-
-            p_Writer.Write(p_Block.DrawDistance);
-            p_Writer.Write(p_Block.VertexBegin);
-            p_Writer.Write(p_Block.VertexEnd);
         }
 
         private static DecalVertex ReadVertex(RimeReader p_Reader, int p_PosCount)

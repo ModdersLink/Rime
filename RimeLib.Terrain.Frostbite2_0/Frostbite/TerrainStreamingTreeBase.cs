@@ -1,10 +1,10 @@
 ﻿using System.Collections.Generic;
-using RimeLib.Terrain.Frostbite.Destruction;
-using RimeLib.Terrain.Frostbite.Heightfield;
-using RimeLib.Terrain.Frostbite.TerrainMaterial;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.Destruction;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.Heightfield;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainMaterial;
 
 
-namespace RimeLib.Terrain.Frostbite;
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite;
 public abstract class TerrainStreamingTreeBase
 {
     public HeightfieldNode RootNode { get; set; } = new HeightfieldNode();

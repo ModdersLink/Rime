@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RimeLib.Terrain\RimeLib.Terrain.csproj" />
+    <ProjectReference Include="..\RimeLib.Terrain.Frostbite2_0\RimeLib.Terrain.Frostbite2_0.csproj" />
   </ItemGroup>
 
 </Project>

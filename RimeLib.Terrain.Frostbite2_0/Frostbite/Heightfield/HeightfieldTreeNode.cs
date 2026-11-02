@@ -3,7 +3,7 @@ using RimeLib.IO;
 using System;
 
 
-namespace RimeLib.Terrain.Frostbite.Heightfield;
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite.Heightfield;
 
 public class HeightfieldTreeNode : RasterTreeNode
 {
@@ -34,6 +34,12 @@ public class HeightfieldTreeNode : RasterTreeNode
     /// </summary>
     public byte[] MinMaxData { get; set; } = Array.Empty<byte>();
     public byte[] OccluderGridData { get; set; } = Array.Empty<byte>();
+
+    /// <summary>Frostbite 2013.2: the density map samples that follow the occluder grid.</summary>
+    public byte[] DensityMapData { get; set; } = Array.Empty<byte>();
+
+    /// <summary>Frostbite 2013.2: the min/max stack a pruned node keeps in place of its samples.</summary>
+    public byte[] PrunedMinMaxData { get; set; } = Array.Empty<byte>();
 
     public HeightfieldTreeNode()
     {

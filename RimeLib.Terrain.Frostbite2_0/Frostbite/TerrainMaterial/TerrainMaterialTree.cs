@@ -7,7 +7,7 @@ using System.IO;
 using RimeLib.Serialization.Frostbite2_0.Extensions;
 using AxisAlignedBox2 = fb.AxisAlignedBox;
 
-namespace RimeLib.Terrain.Frostbite.TerrainMaterial;
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainMaterial;
 public class TerrainMaterialTree : RasterTree
 {
     public uint NodeSamplesPerSide { get; set; }

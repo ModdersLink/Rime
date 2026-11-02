@@ -1,5 +1,5 @@
 using System;
-using RimeLib.Terrain.Frostbite;
+using RimeLib.Terrain.Frostbite2_0.Frostbite;
 using Xunit;
 
 namespace RimeLib.Tests.Terrain;
