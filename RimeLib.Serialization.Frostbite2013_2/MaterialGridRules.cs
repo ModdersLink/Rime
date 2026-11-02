@@ -140,6 +140,30 @@ public class MaterialGridRules : IMaterialGridRules
         return s_Result;
     }
 
+    public bool TryGetPackedMaterial(object p_Value, Func<CtrRefBase, DataContainerBase?> p_Resolve, out uint p_Packed)
+    {
+        p_Packed = 0;
+        if (p_Value is not fb.Entity.MaterialDecl s_Decl)
+            return false;
+
+        p_Packed = s_Decl.Packed;
+        return true;
+    }
+
+    /// <summary>
+    /// The two high bytes are global material indices (a material and a property); the low 16
+    /// bits are flags. There is no shared material container.
+    /// </summary>
+    public IReadOnlyCollection<uint> GetMaterials(uint p_Packed, Func<string, DatabasePartitionBase?> p_Parse)
+    {
+        var s_Material = p_Packed >> 24;
+        var s_Property = (p_Packed >> 16) & 0xFF;
+        return s_Material == s_Property ? new[] { s_Material } : new[] { s_Material, s_Property };
+    }
+
+    // BF4 ships no material names.
+    public string? GetMaterialName(uint p_Material, Func<string, DatabasePartitionBase?> p_Parse) => null;
+
     private static IEnumerable<uint> Used(fb.Entity.MaterialGridData p_Grid)
     {
         for (var i = 0; i < p_Grid.MaterialIndexMap.Count; ++i)
