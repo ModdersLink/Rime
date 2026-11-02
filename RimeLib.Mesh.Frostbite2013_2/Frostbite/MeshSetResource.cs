@@ -2,20 +2,24 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Diagnostics.CodeAnalysis;
 using System.Text;
 using fb.Render;
+using RimeLib.Frostbite;
 using RimeLib.IO;
+using RimeLib.Mesh.Frostbite2_0.Frostbite;
 
 namespace RimeLib.Mesh.Frostbite2013_2.Frostbite;
 
 /// <summary>
 /// A MeshSet resource: a relocatable image of the <see cref="MeshSetLayout"/> and its meshes, the
-/// embedded data of meshes without a chunk, then the relocation table.
+/// embedded data of meshes without a chunk, then the relocation table. Reading takes the three
+/// sizes from <see cref="Cookie"/> and checks its layout and subset sizes against this engine's;
+/// writing sets them.
 /// </summary>
-public class MeshSetResource
+public class MeshSetResource : IFbSerializable
 {
-    /// <summary>The last meta word: the MeshSetLayout size and the MeshSubset size.</summary>
-    public const uint LayoutSizes = MeshSetLayout.Size | ((uint)MeshSubset.Size << 16);
+    public MeshLayoutCookie Cookie { get; set; } = new() { MeshSetSize = MeshSetLayout.Size, SubsetSize = MeshSubset.Size };
 
     public MeshSetLayout Layout { get; set; } = new();
 
@@ -24,21 +28,20 @@ public class MeshSetResource
 
     public List<MeshLayout> Lods => Layout.Lods.Take(Layout.LodCount).Select(p_L => p_L.Object!).ToList();
 
-    public static MeshSetResource Read(byte[] p_Data, byte[] p_Meta)
+    public void Deserialize(RimeReader p_Reader)
     {
-        using var s_Meta = new RimeReader(new MemoryStream(p_Meta, false));
-        var s_DataSize = s_Meta.ReadInt32();
-        var s_EmbeddedSize = s_Meta.ReadInt32();
+        if (Cookie.MeshSetSize != MeshSetLayout.Size || Cookie.SubsetSize != MeshSubset.Size)
+            throw new InvalidDataException($"A MeshSet of {Cookie.MeshSetSize} byte layouts and {Cookie.SubsetSize} byte subsets; this engine's are {MeshSetLayout.Size} and {MeshSubset.Size}.");
 
-        using var s_Reader = new RimeReader(new MemoryStream(p_Data, 0, s_DataSize, false));
-        var s_Set = new MeshSetResource
-        {
-            Layout = new MeshSetLayout(s_Reader),
-            EmbeddedData = p_Data.AsSpan(s_DataSize, s_EmbeddedSize).ToArray(),
-        };
+        var s_Image = p_Reader.ReadBytes((int)Cookie.CellBlockSize);
+        EmbeddedData = p_Reader.ReadBytes((int)Cookie.RsxBlockSize);
+        p_Reader.Seek(Cookie.RelocationSize, SeekOrigin.Current);
+
+        using (var s_Reader = new RimeReader(new MemoryStream(s_Image, false)))
+            Layout = new MeshSetLayout(s_Reader);
 
         // Pointers the engine fills at runtime; one set in the file would be missing from the relocations.
-        foreach (var s_Lod in s_Set.Lods)
+        foreach (var s_Lod in Lods)
         {
             if (s_Lod == null)
                 throw new InvalidDataException("a MeshSet layout pointer leaves the image");
@@ -47,16 +50,20 @@ public class MeshSetResource
             if (s_Lod.Type == MeshType.MeshType_Rigid && s_Lod.BoneOrPartCount != 0)
                 throw new InvalidDataException("a rigid mesh layout with a bone or part count");
         }
+    }
 
-        return s_Set;
+    public void Deserialize(byte[] p_Data)
+    {
+        using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
+        Deserialize(s_Reader);
     }
 
     /// <summary>
-    /// The resource and its meta (image size, embedded data size, relocation table size, layout
-    /// sizes). The image is laid out in the pipeline's order: header, layouts, subsets, bone
-    /// indices, strings, category subset indices, then each layout's bone or part arrays.
+    /// Writes the image, the embedded data and the relocation table, and sets the cookie's sizes.
+    /// The image is laid out in the pipeline's order: header, layouts, subsets, bone indices,
+    /// strings, category subset indices, then each layout's bone or part arrays.
     /// </summary>
-    public (byte[] Data, byte[] Meta) Write()
+    public bool Serialize(RimeWriter p_Writer)
     {
         var s_Stream = new MemoryStream();
         using var w = new RelocationRimeWriter(s_Stream);
@@ -196,17 +203,25 @@ public class MeshSetResource
         foreach (var s_Pointer in s_Relocations)
             w.Write((uint)s_Pointer);
 
-        var s_MetaStream = new MemoryStream();
-        using (var s_Meta = new RimeWriter(s_MetaStream))
-        {
-            s_Meta.Write((uint)s_DataSize);
-            s_Meta.Write((uint)EmbeddedData.Length);
-            s_Meta.Write((uint)(4 * s_Relocations.Count));
-            s_Meta.Write(LayoutSizes);
-        }
+        Cookie.CellBlockSize = (uint)s_DataSize;
+        Cookie.RsxBlockSize = (uint)EmbeddedData.Length;
+        Cookie.RelocationSize = (uint)(4 * s_Relocations.Count);
+        Cookie.MeshSetSize = MeshSetLayout.Size;
+        Cookie.SubsetSize = MeshSubset.Size;
 
         w.Flush();
-        return (s_Stream.ToArray(), s_MetaStream.ToArray());
+        p_Writer.Write(s_Stream.ToArray());
+        return true;
+    }
+
+    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+    {
+        var s_Stream = new MemoryStream();
+        using (var s_Writer = new RimeWriter(s_Stream))
+            Serialize(s_Writer);
+
+        p_Data = s_Stream.ToArray();
+        return true;
     }
 
     private static ulong Suffix(ulong p_String, string p_Whole, string p_Suffix) =>
