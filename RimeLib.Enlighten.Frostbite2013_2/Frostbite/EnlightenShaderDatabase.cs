@@ -25,7 +25,7 @@ public class EnlightenShaderDatabase
     {
         using var s_Meta = new RimeReader(new MemoryStream(p_Meta, false));
         var s_Size = s_Meta.ReadUInt32();
-        var s_Count = (int)s_Meta.ReadUInt32();
+        var s_Count = s_Meta.ReadInt32();
         if (s_Size != p_Data.Length || p_Data.Length != c_MaterialSize * s_Count)
             throw new InvalidDataException("the shader database size does not match its material count");
 

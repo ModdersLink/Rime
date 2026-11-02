@@ -9,10 +9,8 @@ using RimeLib.IO;
 namespace RimeLib.Content.Scaleform
 {
     /// <summary>
-    /// A SWF or GFx movie that reads and writes: the signature (FWS, CWS, GFX or CFX; C for a zlib
-    /// compressed body), version and file length (of the uncompressed movie), then the body: the
-    /// frame rectangle (bit-packed, kept as bytes), frame rate and count, and the tags, each with its
-    /// header form (a tag can use the long form for a short length).
+    /// A SWF or GFx movie (FWS, CWS, GFX or CFX; C for a zlib compressed body). Each tag keeps its
+    /// header form, since a tag can use the long form for a short length.
     /// </summary>
     public class SwfMovie
     {
