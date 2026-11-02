@@ -48,7 +48,7 @@ public class EnlightenStaticDatabase
 
         s_Database.OutputAtlasWidth = s_Reader.ReadUInt32();
         s_Database.OutputAtlasHeight = s_Reader.ReadUInt32();
-        var s_Count = (int)s_Reader.ReadUInt32();
+        var s_Count = s_Reader.ReadInt32();
         if (s_Reader.ReadUInt64() != c_HeaderSize || s_Reader.ReadUInt32() != 0 || s_Reader.ReadUInt64() != 0)
             throw new InvalidDataException("the probes do not follow the header");
 

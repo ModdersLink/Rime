@@ -22,10 +22,10 @@ namespace RimeLib.Content.Frostbite2013_2.Resources
         {
             using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
             var s_Lua = new CompiledLuaResource { Version = s_Reader.ReadUInt32(), IsByteCode = s_Reader.ReadUInt32() };
-            var s_NameSize = (int)s_Reader.ReadUInt32();
-            var s_ArgsSize = (int)s_Reader.ReadUInt32();
+            var s_NameSize = s_Reader.ReadInt32();
+            var s_ArgsSize = s_Reader.ReadInt32();
             s_Lua.SignatureArgCount = s_Reader.ReadUInt32();
-            var s_PayloadSize = (int)s_Reader.ReadUInt32();
+            var s_PayloadSize = s_Reader.ReadInt32();
 
             if (24L + s_NameSize + s_ArgsSize + s_PayloadSize != p_Data.Length)
                 throw new InvalidDataException($"A compiled Lua resource of {p_Data.Length} bytes with a {s_NameSize}, {s_ArgsSize} and {s_PayloadSize} byte body.");
