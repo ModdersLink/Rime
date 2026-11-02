@@ -10,6 +10,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "The name of the dependency bundle.")]
         public string? Name { get; set; }
 
+        [CommandArgument(Description = "The bundle is loaded but not self-contained: leave out what it carries, but still add what that content references.", Optional = true)]
+        public bool Walked { get; set; }
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             if (string.IsNullOrWhiteSpace(Name))
@@ -19,7 +22,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             }
 
             var s_BundleContext = (BundleBuildingContext)p_Context;
-            s_BundleContext.AddDependencyBundle(Name);
+            s_BundleContext.AddDependencyBundle(Name, Walked);
 
             return true;
         }

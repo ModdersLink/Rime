@@ -59,6 +59,11 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
         private readonly HashSet<string> m_ExcludedPartitions = new(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<string> m_ExcludedResources = new(StringComparer.OrdinalIgnoreCase);
+
+        // Excluded partitions whose references are still walked: those only walked dependency
+        // bundles carry.
+        private readonly HashSet<string> m_WalkedPartitions = new(StringComparer.OrdinalIgnoreCase);
+        private int m_Walked;
         private string[] m_SkipPrefixes = Array.Empty<string>();
 
 
@@ -167,7 +172,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 }
             }
 
-            p_Writer.WriteLine($"Closure of '{Name}': +{m_AddedPartitions} partition(s), +{m_AddedResources} resource(s), +{m_AddedChunks} chunk(s), {m_Skipped} already covered.");
+            p_Writer.WriteLine($"Closure of '{Name}': +{m_AddedPartitions} partition(s), +{m_AddedResources} resource(s), +{m_AddedChunks} chunk(s), {m_Skipped} already covered{(m_Walked > 0 ? $", {m_Walked} of those walked" : "")}.");
 
             if (m_AddedMeshes > 0)
                 p_Writer.WriteLine($"{m_AddedMeshes} mesh(es) added, with the textures their MeshVariationDatabase entries bind.");
@@ -215,8 +220,17 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         /// </summary>
         private void CollectExclusions()
         {
+            var s_Walked = m_Context.GetWalkedDependencyBundles();
+            var s_SelfContained = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var s_Bundle in m_Context.GetDependencyBundles())
+            {
                 AddBundleCoverage(s_Bundle, m_ExcludedPartitions, m_ExcludedResources);
+                if (s_Walked.Contains(s_Bundle))
+                    AddBundleCoverage(s_Bundle, m_WalkedPartitions, new HashSet<string>());
+                else
+                    AddBundleCoverage(s_Bundle, s_SelfContained, new HashSet<string>());
+            }
+            m_WalkedPartitions.ExceptWith(s_SelfContained);
 
             CollectScenarioExclusions();
 
@@ -319,11 +333,16 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return;
             }
 
-            // A dependency bundle is self-contained, so its copy brings its own closure and there is
-            // nothing left to walk here.
+            // A self-contained dependency bundle brings its own closure, so there is nothing left to
+            // walk here. A walked one does not: its content's references still ship with us.
             if (m_ExcludedPartitions.Contains(p_Name))
             {
                 m_Skipped++;
+                if (m_WalkedPartitions.Contains(p_Name) && m_Mounter.TryGetPartition(p_Name, out var s_Walked))
+                {
+                    m_Walked++;
+                    Enqueue(m_Scanner.ScanPartition(p_Name, s_Walked.FirstVariant), p_Name);
+                }
                 return;
             }
 

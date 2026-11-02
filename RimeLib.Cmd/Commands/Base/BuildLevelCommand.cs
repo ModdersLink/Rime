@@ -33,6 +33,16 @@ namespace RimeLib.Cmd.Commands.Base
 
             /// <summary>Superbundles whose bundles are loaded with every bundle of the level.</summary>
             public List<string> SharedSuperbundles { get; set; } = new();
+
+            /// <summary>Single bundles loaded with every bundle of the level, from superbundles that are not loaded whole.</summary>
+            public List<string> SharedBundles { get; set; } = new();
+
+            /// <summary>
+            /// Superbundles whose bundles are loaded with every bundle of the level but are not
+            /// self-contained: the level ships what their content references (BF4's soldier and
+            /// vehicle bundles leave their effects to the levels).
+            /// </summary>
+            public List<string> WalkedSuperbundles { get; set; } = new();
             public List<BundleRecipe> Bundles { get; set; } = new();
         }
 
@@ -106,9 +116,10 @@ namespace RimeLib.Cmd.Commands.Base
             }
 
             // The bundles of the shared superbundles are loaded with everything.
-            var s_Shared = new List<string>();
+            var s_Shared = new List<string>(s_Recipe.SharedBundles);
             foreach (var s_Superbundle in s_Recipe.SharedSuperbundles)
                 s_Shared.AddRange(s_Mounter.GetBundlesInSuperbundle(s_Superbundle));
+            var s_Walked = s_Recipe.WalkedSuperbundles.SelectMany(s_Mounter.GetBundlesInSuperbundle).ToList();
 
             ExecutionContext s_Context = s_Base;
             bool Run(string p_Command)
@@ -131,6 +142,7 @@ namespace RimeLib.Cmd.Commands.Base
             {
                 var s_Steps = new List<string> { $"build_bundle {Quote(s_Bundle.Name)}" };
                 s_Steps.AddRange(s_Shared.Concat(s_Bundle.DependsOn).Distinct(StringComparer.OrdinalIgnoreCase).Select(p_B => $"add_dependency_bundle {Quote(p_B)}"));
+                s_Steps.AddRange(s_Walked.Distinct(StringComparer.OrdinalIgnoreCase).Select(p_B => $"add_dependency_bundle {Quote(p_B)} true"));
                 s_Steps.AddRange(new[] { s_Bundle.Level }.Concat(s_Bundle.Roots).Select(p_R => $"reference_existing_partition {Quote(p_R)} {s_Recipe.Game}"));
                 if (s_Bundle.Hoist != null)
                     s_Steps.AddRange(s_Bundle.Hoist.From.Select(p_F => $"hoist_content {Quote(p_F)} {Quote(string.Join(",", s_Bundle.Hoist.Types))} {s_Recipe.Game}"));
