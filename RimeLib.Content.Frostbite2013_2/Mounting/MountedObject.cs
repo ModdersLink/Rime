@@ -44,6 +44,13 @@ namespace RimeLib.Content.Frostbite2013_2.Mounting
                 m_Variants.RemoveAll(p_OtherVariant => p_OtherVariant.Equals(p_Variant));
         }
 
+        /// <summary>Puts the variants in key order, keeping the order of those with the same key.</summary>
+        internal void SortVariants(Func<T, int> p_Key)
+        {
+            lock (m_SyncRoot)
+                m_Variants = m_Variants.OrderBy(p_Key).ToList();
+        }
+
         internal void AddOrUpdateVariant(Func<T, bool> p_Match, T p_NewVariant)
         {
             lock (m_SyncRoot)
@@ -98,6 +105,13 @@ namespace RimeLib.Content.Frostbite2013_2.Mounting
         {
             lock (m_SyncRoot)
                 m_Variants.RemoveAll(p_OtherVariant => p_OtherVariant.Equals(p_Variant));
+        }
+
+        /// <summary>Puts the variants in key order, keeping the order of those with the same key.</summary>
+        internal void SortVariants(Func<IObjectVariant, int> p_Key)
+        {
+            lock (m_SyncRoot)
+                m_Variants = m_Variants.OrderBy(p_Key).ToList();
         }
 
         internal void AddOrUpdateVariant(Func<IObjectVariant, bool> p_Match, IObjectVariant p_NewVariant)

@@ -339,6 +339,9 @@ public class EngineMounter : IEngineMounter
             while (m_PendingPartitionGuids.TryDequeue(out var s_Entry))
                 s_Pending.Add(s_Entry);
 
+            // Superbundles mounted in parallel queue their partitions interleaved.
+            s_Pending = s_Pending.OrderBy(p_P => SuperbundleIndex(p_P.Variant)).ToList();
+
             // Read in parallel, then apply in mount order, so a GUID shared by two partitions resolves
             // to the one mounted last.
             var s_Guids = new GUID?[s_Pending.Count];
@@ -624,7 +627,6 @@ public class EngineMounter : IEngineMounter
 
     protected void ParseSuperbundles()
     {
-        // TODO: Re-enable parallel processing once we've made sure everything is working as intended.
         Parallel.ForEach(m_Superbundles, p_Superbundle =>
         {
             ParseSuperbundle(p_Superbundle, true);
@@ -632,7 +634,34 @@ public class EngineMounter : IEngineMounter
             lock (m_MountedSuperbundles)
                 m_MountedSuperbundles.Add(p_Superbundle.Name.ToLowerInvariant());
         });
-        //m_Superbundles.ForEach(p_Superbundle => ParseSuperbundle(p_Superbundle, true));
+
+        // Superbundles finish in any order, and content in several of them gets its variants in the
+        // order they finished. Put everything in superbundle order, as parsing them one after
+        // another would, so the first variant is the same on every mount.
+        foreach (var s_Object in m_MountedEbxPartitions.Values.Concat(m_MountedDbxPartitions.Values))
+            s_Object.SortVariants(SuperbundleIndex);
+        foreach (var s_Object in m_MountedResources.Values.Concat(m_MountedResourcesRefs.Values))
+            s_Object.SortVariants(SuperbundleIndex);
+        foreach (var s_Object in m_MountedChunks.Values)
+            s_Object.SortVariants(SuperbundleIndex);
+
+        lock (m_MountedSuperbundles)
+        {
+            var s_Mounted = m_Superbundles.Select(p_S => p_S.Name.ToLowerInvariant()).Where(m_MountedSuperbundles.Contains).ToList();
+            m_MountedSuperbundles.Clear();
+            m_MountedSuperbundles.UnionWith(s_Mounted);
+        }
+    }
+
+    private Dictionary<string, int>? m_SuperbundleIndices;
+
+    /// <summary>The position of a variant's superbundle in the game's superbundle list.</summary>
+    private int SuperbundleIndex(IObjectVariant p_Variant)
+    {
+        m_SuperbundleIndices ??= m_Superbundles.Select((p_S, i) => (p_S.Name, i))
+            .GroupBy(p_P => p_P.Name, StringComparer.OrdinalIgnoreCase)
+            .ToDictionary(p_G => p_G.Key, p_G => p_G.First().i, StringComparer.OrdinalIgnoreCase);
+        return m_SuperbundleIndices.TryGetValue(p_Variant.GetContainedSuperbundle() ?? "", out var s_Index) ? s_Index : int.MaxValue;
     }
 
     protected void ParseSuperbundle(SuperbundleEntry p_Superbundle, bool p_AutoMount)
