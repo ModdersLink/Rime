@@ -374,6 +374,14 @@ byte for byte, and `verify_superbundle` reads back all 40627 objects identical t
 recipe builds as CAS in 8:42: 39395 references and 36 inline entries, and read back, everything
 equals the game's except the regenerated indexes and the 6 extra partitions.
 
+BF3's cas output, checked the same way: cloning all 20 `mp_subway` bundles reads back 32018 of
+32018 objects identical to the game's (`verify_superbundle`). Every BF3 level bundle is changed by
+the noncas patch, so no retail cas manifest of the current content exists to compare bytes with;
+instead the 20 cas manifests of the unpatched base superbundle read and write back byte-identical
+through the `CasBundle` model, and their `totalSize` is the sum of the ebx, res, chunk and dbx sizes,
+as the builder writes it. The builder emits no `dbx` list (the editor's text form of the EBX), which
+retail bundles carry and the working BF3 cas mods do not.
+
 What BF4 loads with a level, and what the closure may leave out because of it:
 - `win32/globals`, `warsawmppersistence`, and of the weapons only the common bundles
   (`weaponsbundlecommon`, `weaponsbundlemp`, `xpNweaponsbundlemp`). The per-weapon `_bpb` bundles
