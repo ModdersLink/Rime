@@ -20,6 +20,7 @@
     <ProjectReference Include="..\RimeLib.Animation.Frostbite2_0\RimeLib.Animation.Frostbite2_0.csproj" />
     <ProjectReference Include="..\RimeLib.Content.Frostbite2_0\RimeLib.Content.Frostbite2_0.csproj" />
     <ProjectReference Include="..\RimeLib.Enlighten.Frostbite2_0\RimeLib.Enlighten.Frostbite2_0.csproj" />
+	<ProjectReference Include="..\RimeLib.Enlighten\RimeLib.Enlighten.csproj" />
 	<ProjectReference Include="..\RimeLib.Havok\RimeLib.Havok.csproj" />
 	<ProjectReference Include="..\RimeLib.Mesh\RimeLib.Mesh.csproj" />
     <ProjectReference Include="..\RimeLib.Serialization\RimeLib.Serialization.csproj" />
