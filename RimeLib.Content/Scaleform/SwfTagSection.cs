@@ -1,23 +1,28 @@
+using System;
 using System.IO;
 using RimeLib.IO;
 
 namespace RimeLib.Content.Scaleform
 {
-    // A single SWF/GFX tag: its type and raw (undecoded) body bytes.
-    // Copied from Utils/GFxTool, with Data exposed for dumping.
+    /// <summary>A SWF or GFx tag: its type and its undecoded body.</summary>
     public class SwfTagSection
     {
-        public long? Offset { get; set; } = null;
+        /// <summary>Where the tag starts in the uncompressed movie, when it was read from one.</summary>
+        public long? Offset { get; set; }
 
         public SwfTag Tag { get; set; } = SwfTag.End;
 
-        public byte[] Data { get; private set; } = new byte[0];
+        /// <summary>Whether the header uses the long form; a tag can do so for a short length.</summary>
+        public bool LongHeader { get; set; }
+
+        public byte[] Data { get; set; } = Array.Empty<byte>();
 
         public override string ToString() => $"{Tag} - length 0x{Data.Length:X}";
 
-        public RimeReader GetReader()
+        public RimeReader GetReader() => new(new MemoryStream(Data, false));
+
+        public SwfTagSection()
         {
-            return new RimeReader(new MemoryStream(Data));
         }
 
         public SwfTagSection(RimeReader p_Reader)
@@ -25,21 +30,30 @@ namespace RimeLib.Content.Scaleform
             Deserialize(p_Reader);
         }
 
-        void Deserialize(RimeReader p_Reader)
+        public void Deserialize(RimeReader p_Reader)
         {
             Offset = p_Reader.Position;
 
-            var s_TempByte = p_Reader.ReadUInt16();
+            var s_Header = p_Reader.ReadUInt16();
+            Tag = (SwfTag)(s_Header >> 6);
 
-            Tag = (SwfTag)(s_TempByte >> 6);
+            var s_Length = s_Header & 0x3F;
+            if (s_Length == 0x3F)
+            {
+                LongHeader = true;
+                s_Length = p_Reader.ReadInt32();
+            }
 
-            int s_DataSize = s_TempByte & 0x3F;
+            Data = p_Reader.ReadBytes(s_Length);
+        }
 
-            if (s_DataSize == 0x3F)
-                s_DataSize = p_Reader.ReadInt32();
-
-            if (s_DataSize != 0)
-                Data = p_Reader.ReadBytes(s_DataSize);
+        public void Serialize(RimeWriter p_Writer)
+        {
+            var s_Long = LongHeader || Data.Length >= 0x3F;
+            p_Writer.Write((ushort)(((ushort)Tag << 6) | (s_Long ? 0x3F : Data.Length)));
+            if (s_Long)
+                p_Writer.Write(Data.Length);
+            p_Writer.Write(Data);
         }
     }
 }
