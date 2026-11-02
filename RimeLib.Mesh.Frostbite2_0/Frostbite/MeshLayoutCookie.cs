@@ -1,7 +1,7 @@
 using RimeLib.Frostbite;
 using RimeLib.IO;
 
-namespace RimeLib.Mesh;
+namespace RimeLib.Mesh.Frostbite2_0.Frostbite;
 
 /// <summary>
 /// The cookie of a MeshSet: the sizes of its relocatable image (the cell block), its embedded

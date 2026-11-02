@@ -28,7 +28,6 @@
     <ProjectReference Include="..\RimeLib.Texture\RimeLib.Texture.csproj" />
     <ProjectReference Include="..\RimeLib.Toolkit\RimeLib.Toolkit.csproj" />
     <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
-    <ProjectReference Include="..\RimeLib.Enlighten\RimeLib.Enlighten.csproj" />
   </ItemGroup>
 
   <ItemGroup>

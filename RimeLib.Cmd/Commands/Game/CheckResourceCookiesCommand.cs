@@ -4,28 +4,13 @@ using System.IO;
 using System.Linq;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
-using RimeLib.Content.Frostbite;
-using RimeLib.Enlighten;
-using RimeLib.Frostbite;
-using RimeLib.Havok;
-using RimeLib.Mesh;
+using RimeLib.Content.Mounting;
 
 namespace RimeLib.Cmd.Commands.Game
 {
-    [CommandDescription("Reads the cookie (16-byte meta) of every mounted resource of a type with a known cookie, and reports per type whether its sizes add up to the payload and whether it writes back unchanged.")]
+    [CommandDescription("Reads the cookie (16-byte meta) of every mounted resource of a type the engine has a cookie struct for, and reports per type whether its sizes add up to the payload and whether it writes back unchanged.")]
     public class CheckResourceCookiesCommand : Command
     {
-        private static readonly Dictionary<ResourceType, Func<byte[], ResourceCookie>> s_Cookies = new()
-        {
-            [ResourceType.MeshSet] = ResourceCookie.Read<MeshLayoutCookie>,
-            [ResourceType.HavokPhysicsData] = ResourceCookie.Read<HavokResourceCookie>,
-            [ResourceType.RagdollResource] = ResourceCookie.Read<RagdollResourceCookie>,
-            [ResourceType.EnlightenProbeSet] = ResourceCookie.Read<EnlightenProbeSetCookie>,
-            [ResourceType.EnlightenDatabase] = ResourceCookie.Read<EnlightenDatabaseCookie>,
-            [ResourceType.EnlightenStaticDatabase] = ResourceCookie.Read<EnlightenStaticDatabaseCookie>,
-            [ResourceType.EnlightenShaderDatabase] = ResourceCookie.Read<EnlightenShaderDatabaseCookie>,
-        };
-
         private sealed class Tally
         {
             public int Resources, Empty, SizesMatch, WritesBack;
@@ -34,11 +19,14 @@ namespace RimeLib.Cmd.Commands.Game
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
+            var s_Game = (GameContext)p_Context;
+            var s_Cookies = ResourceTypeProviders.ByType<IResourceCookies>(s_Game.GetMounter().GetEngineType(), p_P => p_P.Types);
+
             var s_Tallies = new SortedDictionary<string, Tally>(StringComparer.Ordinal);
-            foreach (var (s_Name, s_Resource) in ((GameContext)p_Context).GetMountedResourceVariations())
+            foreach (var (s_Name, s_Resource) in s_Game.GetMountedResourceVariations())
             {
                 var s_Variant = s_Resource.FirstVariant;
-                if (!s_Cookies.TryGetValue(s_Variant.GetResourceType(), out var s_Read))
+                if (!s_Cookies.TryGetValue(s_Variant.GetResourceType(), out var s_Provider))
                     continue;
 
                 var s_Type = s_Variant.GetResourceType().ToString();
@@ -57,7 +45,7 @@ namespace RimeLib.Cmd.Commands.Game
                 var s_Payload = new MemoryStream();
                 s_Reader.CopyTo(s_Payload);
 
-                var s_Cookie = s_Read(s_Meta);
+                var s_Cookie = s_Provider.Read(s_Variant.GetResourceType(), s_Meta);
                 if (s_Cookie.PayloadSize == s_Payload.Length)
                     s_Tally.SizesMatch++;
                 else if (s_Tally.Mismatches.Count < 3)

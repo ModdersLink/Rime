@@ -1,7 +1,7 @@
 using RimeLib.Frostbite;
 using RimeLib.IO;
 
-namespace RimeLib.Havok;
+namespace RimeLib.Havok.Frostbite2_0;
 
 /// <summary>The cookie of a RagdollResource: the sizes of its 32-bit and 64-bit data, which together are the payload.</summary>
 public class RagdollResourceCookie : ResourceCookie

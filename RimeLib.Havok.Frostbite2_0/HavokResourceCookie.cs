@@ -1,7 +1,7 @@
 using RimeLib.Frostbite;
 using RimeLib.IO;
 
-namespace RimeLib.Havok;
+namespace RimeLib.Havok.Frostbite2_0;
 
 /// <summary>
 /// The cookie of a HavokPhysicsData: the sizes of its header, its 32-bit and 64-bit packfiles and
