@@ -78,6 +78,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListSbBundlesCommand>();
             RegisterCommand<DumpResourceWithChunksCommand>();
             RegisterCommand<DumpSwfJsonCommand>();
+            RegisterCommand<CheckResourceCookiesCommand>();
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<RoundTripPartitionsCommand>();
             RegisterCommand<DumpPartitionByGuidCommand>();
