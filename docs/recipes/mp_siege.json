@@ -23,197 +23,6 @@
   ],
   "bundles": [
     {
-      "name": "win32/levels/mp/mp_siege/content",
-      "level": "levels/mp/mp_siege/content",
-      "dependsOn": [
-        "win32/levels/mp/mp_siege/mp_siege",
-        "win32/levels/mp/mp_siege/mp_siege_loading_music",
-        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
-        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
-        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
-        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
-        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
-      ],
-      "roots": [
-        "levels/mp/mp_siege/content_win32_antstate",
-        "objects/vegetation/foresttree_l_03/foresttree_l_03_skeleton3",
-        "objects/vegetation/leaftree_full_l_01/leaftree_full_l_skeleton_01",
-        "objects/vegetation/leaning_tree_l_01/leaning_tree_l_01_skinned"
-      ],
-      "registry": true,
-      "meshVariationDb": true,
-      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
-    },
-    {
-      "name": "win32/levels/mp/mp_siege/gen4_content",
-      "level": "levels/mp/mp_siege/gen4_content",
-      "dependsOn": [
-        "win32/levels/mp/mp_siege/mp_siege",
-        "win32/levels/mp/mp_siege/mp_siege_loading_music",
-        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
-        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
-        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
-        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
-        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
-      ],
-      "roots": [
-        "objects/vegetation/chinese_mapletree_m_01/chinese_mapletree_m_01_skeleton",
-        "objects/vegetation/foresttree_l_03/foresttree_l_03_skeleton3",
-        "objects/vegetation/foresttree_l_04/foresttree_l_04_skeleton",
-        "objects/vegetation/leaftree_full_l_01/leaftree_full_l_skeleton_01",
-        "objects/vegetation/leaning_tree_l_01/leaning_tree_l_01_skinned"
-      ],
-      "registry": true,
-      "meshVariationDb": true,
-      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
-    },
-    {
-      "name": "win32/levels/mp/mp_siege/all_gamemodes_except_dm",
-      "level": "levels/mp/mp_siege/all_gamemodes_except_dm",
-      "dependsOn": [
-        "win32/levels/mp/mp_siege/content",
-        "win32/levels/mp/mp_siege/mp_siege",
-        "win32/levels/mp/mp_siege/gen4_content",
-        "win32/levels/mp/mp_siege/mp_siege_loading_music",
-        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
-        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
-        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
-        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
-        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
-      ],
-      "roots": [],
-      "registry": true,
-      "meshVariationDb": true,
-      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
-    },
-    {
-      "name": "win32/levels/mp/mp_siege/gameplay",
-      "level": "levels/mp/mp_siege/gameplay",
-      "dependsOn": [
-        "win32/levels/mp/mp_siege/content",
-        "win32/levels/mp/mp_siege/mp_siege",
-        "win32/levels/mp/mp_siege/gen4_content",
-        "win32/levels/mp/mp_siege/mp_siege_loading_music",
-        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
-        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
-        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
-        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
-        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
-      ],
-      "roots": [
-        "levels/mp/mp_siege/gameplay_win32_antstate"
-      ],
-      "registry": true,
-      "meshVariationDb": true,
-      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
-    },
-    {
-      "name": "win32/levels/mp/mp_siege/conquest",
-      "level": "levels/mp/mp_siege/conquest",
-      "dependsOn": [
-        "win32/levels/mp/mp_siege/gameplay",
-        "win32/levels/mp/mp_siege/content",
-        "win32/levels/mp/mp_siege/mp_siege",
-        "win32/levels/mp/mp_siege/all_gamemodes_except_dm",
-        "win32/levels/mp/mp_siege/gen4_content",
-        "win32/levels/mp/mp_siege/mp_siege_loading_music",
-        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
-        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
-        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
-        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
-        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
-      ],
-      "roots": [
-        "levels/mp/mp_siege/conquest_win32_antstate"
-      ],
-      "registry": true,
-      "meshVariationDb": true,
-      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
-    },
-    {
-      "name": "win32/levels/mp/mp_siege/rush",
-      "level": "levels/mp/mp_siege/rush",
-      "dependsOn": [
-        "win32/levels/mp/mp_siege/gameplay",
-        "win32/levels/mp/mp_siege/content",
-        "win32/levels/mp/mp_siege/mp_siege",
-        "win32/levels/mp/mp_siege/all_gamemodes_except_dm",
-        "win32/levels/mp/mp_siege/gen4_content",
-        "win32/levels/mp/mp_siege/mp_siege_loading_music",
-        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
-        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
-        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
-        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
-        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
-      ],
-      "roots": [
-        "levels/mp/mp_siege/rush_win32_antstate"
-      ],
-      "registry": true,
-      "meshVariationDb": true,
-      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
-    },
-    {
-      "name": "win32/levels/mp/mp_siege/deathmatch",
-      "level": "levels/mp/mp_siege/deathmatch",
-      "dependsOn": [
-        "win32/levels/mp/mp_siege/gameplay",
-        "win32/levels/mp/mp_siege/content",
-        "win32/levels/mp/mp_siege/mp_siege",
-        "win32/levels/mp/mp_siege/gen4_content",
-        "win32/levels/mp/mp_siege/mp_siege_loading_music",
-        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
-        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
-        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
-        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
-        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
-      ],
-      "roots": [
-        "levels/mp/mp_siege/deathmatch_win32_antstate"
-      ],
-      "registry": true,
-      "meshVariationDb": true,
-      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
-    },
-    {
-      "name": "win32/levels/mp/mp_siege/obliteration",
-      "level": "levels/mp/mp_siege/obliteration",
-      "dependsOn": [
-        "win32/levels/mp/mp_siege/gameplay",
-        "win32/levels/mp/mp_siege/content",
-        "win32/levels/mp/mp_siege/mp_siege",
-        "win32/levels/mp/mp_siege/all_gamemodes_except_dm",
-        "win32/levels/mp/mp_siege/gen4_content",
-        "win32/levels/mp/mp_siege/mp_siege_loading_music",
-        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
-        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
-        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
-        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
-        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
-      ],
-      "roots": [
-        "levels/mp/mp_siege/obliteration_win32_antstate",
-        "ui/assets/awardunlockinfobox/awardunlockinfobox_i1",
-        "ui/assets/eordetailsawardsscreen/eordetailsawardsscreen_i9",
-        "ui/assets/eorprogress/eorprogress_i14",
-        "ui/assets/eorprogressionscreencontent/eorprogressionscreencontent_ie",
-        "ui/assets/eorprogressscreen/eorprogressscreen_i12",
-        "ui/assets/pageheader/pageheader_i4",
-        "ui/assets/stepper/stepper_i1b",
-        "ui/assets/tabbar/tabbar_i3",
-        "ui/cppscreens/textures/rentaserver/servertypetextures",
-        "ui/cppscreens/textures/rentaserver/servertypetextureswin32",
-        "ui/cppscreens/textures/xpackicontextures",
-        "ui/cppscreens/textures/xpackicontextureswin32",
-        "ui/elements/elementsettings/teamsetup/headerlightbackgroundfill",
-        "ui/elements/fontstyles/deploypuristaeamedium_18px",
-        "ui/elements/fontstyles/deploypuristaeamedium_20px"
-      ],
-      "registry": true,
-      "meshVariationDb": true,
-      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
-    },
-    {
       "name": "win32/levels/mp/mp_siege/conquestsmall0",
       "level": "levels/mp/mp_siege/conquestsmall0",
       "dependsOn": [
@@ -348,6 +157,90 @@
         "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
       ],
       "roots": [],
+      "registry": true,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
+    },
+    {
+      "name": "win32/levels/mp/mp_siege/conquest",
+      "level": "levels/mp/mp_siege/conquest",
+      "dependsOn": [
+        "win32/levels/mp/mp_siege/gameplay",
+        "win32/levels/mp/mp_siege/content",
+        "win32/levels/mp/mp_siege/mp_siege",
+        "win32/levels/mp/mp_siege/all_gamemodes_except_dm",
+        "win32/levels/mp/mp_siege/gen4_content",
+        "win32/levels/mp/mp_siege/mp_siege_loading_music",
+        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
+        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
+        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
+        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
+        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
+      ],
+      "roots": [
+        "levels/mp/mp_siege/conquest_win32_antstate"
+      ],
+      "registry": true,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
+    },
+    {
+      "name": "win32/levels/mp/mp_siege/rush",
+      "level": "levels/mp/mp_siege/rush",
+      "dependsOn": [
+        "win32/levels/mp/mp_siege/gameplay",
+        "win32/levels/mp/mp_siege/content",
+        "win32/levels/mp/mp_siege/mp_siege",
+        "win32/levels/mp/mp_siege/all_gamemodes_except_dm",
+        "win32/levels/mp/mp_siege/gen4_content",
+        "win32/levels/mp/mp_siege/mp_siege_loading_music",
+        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
+        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
+        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
+        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
+        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
+      ],
+      "roots": [
+        "levels/mp/mp_siege/rush_win32_antstate"
+      ],
+      "registry": true,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
+    },
+    {
+      "name": "win32/levels/mp/mp_siege/obliteration",
+      "level": "levels/mp/mp_siege/obliteration",
+      "dependsOn": [
+        "win32/levels/mp/mp_siege/gameplay",
+        "win32/levels/mp/mp_siege/content",
+        "win32/levels/mp/mp_siege/mp_siege",
+        "win32/levels/mp/mp_siege/all_gamemodes_except_dm",
+        "win32/levels/mp/mp_siege/gen4_content",
+        "win32/levels/mp/mp_siege/mp_siege_loading_music",
+        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
+        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
+        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
+        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
+        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
+      ],
+      "roots": [
+        "levels/mp/mp_siege/obliteration_win32_antstate",
+        "ui/assets/awardunlockinfobox/awardunlockinfobox_i1",
+        "ui/assets/eordetailsawardsscreen/eordetailsawardsscreen_i9",
+        "ui/assets/eorprogress/eorprogress_i14",
+        "ui/assets/eorprogressionscreencontent/eorprogressionscreencontent_ie",
+        "ui/assets/eorprogressscreen/eorprogressscreen_i12",
+        "ui/assets/pageheader/pageheader_i4",
+        "ui/assets/stepper/stepper_i1b",
+        "ui/assets/tabbar/tabbar_i3",
+        "ui/cppscreens/textures/rentaserver/servertypetextures",
+        "ui/cppscreens/textures/rentaserver/servertypetextureswin32",
+        "ui/cppscreens/textures/xpackicontextures",
+        "ui/cppscreens/textures/xpackicontextureswin32",
+        "ui/elements/elementsettings/teamsetup/headerlightbackgroundfill",
+        "ui/elements/fontstyles/deploypuristaeamedium_18px",
+        "ui/elements/fontstyles/deploypuristaeamedium_20px"
+      ],
       "registry": true,
       "meshVariationDb": true,
       "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
@@ -558,6 +451,113 @@
         "ui/elements/elementsettings/teamsetup/headerlightbackgroundfill",
         "ui/elements/fontstyles/deploypuristaeamedium_18px",
         "ui/elements/fontstyles/deploypuristaeamedium_20px"
+      ],
+      "registry": true,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
+    },
+    {
+      "name": "win32/levels/mp/mp_siege/deathmatch",
+      "level": "levels/mp/mp_siege/deathmatch",
+      "dependsOn": [
+        "win32/levels/mp/mp_siege/gameplay",
+        "win32/levels/mp/mp_siege/content",
+        "win32/levels/mp/mp_siege/mp_siege",
+        "win32/levels/mp/mp_siege/gen4_content",
+        "win32/levels/mp/mp_siege/mp_siege_loading_music",
+        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
+        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
+        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
+        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
+        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
+      ],
+      "roots": [
+        "levels/mp/mp_siege/deathmatch_win32_antstate"
+      ],
+      "registry": true,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
+    },
+    {
+      "name": "win32/levels/mp/mp_siege/all_gamemodes_except_dm",
+      "level": "levels/mp/mp_siege/all_gamemodes_except_dm",
+      "dependsOn": [
+        "win32/levels/mp/mp_siege/content",
+        "win32/levels/mp/mp_siege/mp_siege",
+        "win32/levels/mp/mp_siege/gen4_content",
+        "win32/levels/mp/mp_siege/mp_siege_loading_music",
+        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
+        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
+        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
+        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
+        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
+      ],
+      "roots": [],
+      "registry": true,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
+    },
+    {
+      "name": "win32/levels/mp/mp_siege/gameplay",
+      "level": "levels/mp/mp_siege/gameplay",
+      "dependsOn": [
+        "win32/levels/mp/mp_siege/content",
+        "win32/levels/mp/mp_siege/mp_siege",
+        "win32/levels/mp/mp_siege/gen4_content",
+        "win32/levels/mp/mp_siege/mp_siege_loading_music",
+        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
+        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
+        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
+        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
+        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
+      ],
+      "roots": [
+        "levels/mp/mp_siege/gameplay_win32_antstate"
+      ],
+      "registry": true,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
+    },
+    {
+      "name": "win32/levels/mp/mp_siege/content",
+      "level": "levels/mp/mp_siege/content",
+      "dependsOn": [
+        "win32/levels/mp/mp_siege/mp_siege",
+        "win32/levels/mp/mp_siege/mp_siege_loading_music",
+        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
+        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
+        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
+        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
+        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
+      ],
+      "roots": [
+        "levels/mp/mp_siege/content_win32_antstate",
+        "objects/vegetation/foresttree_l_03/foresttree_l_03_skeleton3",
+        "objects/vegetation/leaftree_full_l_01/leaftree_full_l_skeleton_01",
+        "objects/vegetation/leaning_tree_l_01/leaning_tree_l_01_skinned"
+      ],
+      "registry": true,
+      "meshVariationDb": true,
+      "shaderDatabase": "levels/mp/mp_siege/mp_siege/shaderdb"
+    },
+    {
+      "name": "win32/levels/mp/mp_siege/gen4_content",
+      "level": "levels/mp/mp_siege/gen4_content",
+      "dependsOn": [
+        "win32/levels/mp/mp_siege/mp_siege",
+        "win32/levels/mp/mp_siege/mp_siege_loading_music",
+        "win32/levels/mp/mp_siege/mp_siege_uibundlepreload-2283139014",
+        "win32/levels/mp/mp_siege/mp_siege_uiendofround",
+        "win32/levels/mp/mp_siege/mp_siege_uiloadingmp",
+        "win32/levels/mp/mp_siege/mp_siege_uiplaying",
+        "win32/levels/mp/mp_siege/mp_siege_uipreendofround"
+      ],
+      "roots": [
+        "objects/vegetation/chinese_mapletree_m_01/chinese_mapletree_m_01_skeleton",
+        "objects/vegetation/foresttree_l_03/foresttree_l_03_skeleton3",
+        "objects/vegetation/foresttree_l_04/foresttree_l_04_skeleton",
+        "objects/vegetation/leaftree_full_l_01/leaftree_full_l_skeleton_01",
+        "objects/vegetation/leaning_tree_l_01/leaning_tree_l_01_skinned"
       ],
       "registry": true,
       "meshVariationDb": true,
