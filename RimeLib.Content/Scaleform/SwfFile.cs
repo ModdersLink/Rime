@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using System.Numerics;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using RimeLib.Frostbite;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 
@@ -13,7 +15,7 @@ namespace RimeLib.Content.Scaleform
     /// A SWF or GFx movie that reads and writes (FWS, CWS, GFX or CFX; C for a zlib compressed
     /// body). The frame rectangle is kept as its bit-packed bytes and tag bodies are not decoded.
     /// </summary>
-    public class SwfFile
+    public class SwfFile : IFbSerializable
     {
         public string Signature { get; set; } = "GFX";
         public byte Version { get; set; } = 8;
@@ -46,16 +48,15 @@ namespace RimeLib.Content.Scaleform
 
         public SwfFile(RimeReader p_Reader)
         {
-            var s_Data = new MemoryStream();
-            p_Reader.CopyTo(s_Data);
-            Load(s_Data.ToArray());
+            Deserialize(p_Reader);
         }
 
-        public static SwfFile Read(byte[] p_Data)
+        /// <summary>Reads the movie from the reader's position to its end.</summary>
+        public void Deserialize(RimeReader p_Reader)
         {
-            var s_File = new SwfFile();
-            s_File.Load(p_Data);
-            return s_File;
+            var s_Data = new MemoryStream();
+            p_Reader.CopyTo(s_Data);
+            Deserialize(s_Data.ToArray());
         }
 
         /// <summary>The frame rectangle decoded: left, top, right, bottom in twips.</summary>
@@ -74,7 +75,7 @@ namespace RimeLib.Content.Scaleform
             }
         }
 
-        private void Load(byte[] p_Data)
+        public void Deserialize(byte[] p_Data)
         {
             using var s_MovieHeader = new RimeReader(new MemoryStream(p_Data, false));
             Signature = s_MovieHeader.ReadFixedLengthString(3);
@@ -143,30 +144,40 @@ namespace RimeLib.Content.Scaleform
             return s_Stream.ToArray();
         }
 
-        public byte[] Write()
+        public bool Serialize(RimeWriter p_Writer)
         {
             var s_Body = Body();
-            var s_Stream = new MemoryStream();
-            using (var s_Writer = new RimeWriter(s_Stream))
-            {
-                s_Writer.WriteFixedLengthString(Signature, 3);
-                s_Writer.Write(Version);
-                s_Writer.Write((uint)(s_Body.Length + 8));
+            p_Writer.WriteFixedLengthString(Signature, 3);
+            p_Writer.Write(Version);
+            p_Writer.Write((uint)(s_Body.Length + 8));
 
-                if (!IsCompressed)
-                    s_Writer.Write(s_Body);
-                else if (m_CompressedBody != null && m_Body != null && m_Body.AsSpan().SequenceEqual(s_Body))
-                    s_Writer.Write(m_CompressedBody);
-                else
-                {
-                    var s_Compressed = new MemoryStream();
-                    using (var s_Deflater = new DeflaterOutputStream(s_Compressed) { IsStreamOwner = false })
-                        s_Deflater.Write(s_Body);
-                    s_Writer.Write(s_Compressed.ToArray());
-                }
+            if (!IsCompressed)
+            {
+                p_Writer.Write(s_Body);
+            }
+            else if (m_CompressedBody != null && m_Body != null && m_Body.AsSpan().SequenceEqual(s_Body))
+            {
+                p_Writer.Write(m_CompressedBody);
+            }
+            else
+            {
+                var s_Compressed = new MemoryStream();
+                using (var s_Deflater = new DeflaterOutputStream(s_Compressed) { IsStreamOwner = false })
+                    s_Deflater.Write(s_Body);
+                p_Writer.Write(s_Compressed.ToArray());
             }
 
-            return s_Stream.ToArray();
+            return true;
+        }
+
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+        {
+            var s_Stream = new MemoryStream();
+            using (var s_Writer = new RimeWriter(s_Stream))
+                Serialize(s_Writer);
+
+            p_Data = s_Stream.ToArray();
+            return true;
         }
     }
 }
