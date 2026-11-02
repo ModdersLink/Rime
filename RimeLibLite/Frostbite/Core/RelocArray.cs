@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using RimeLib.IO;
 
 namespace RimeLib.Frostbite.Core
@@ -106,7 +107,8 @@ namespace RimeLib.Frostbite.Core
 
         public void Deserialize(byte[] p_Data)
         {
-            throw new NotImplementedException();
+            using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
+            Deserialize(s_Reader);
         }
     }
 }

@@ -12,13 +12,10 @@ public class ResourceStructs : IResourceStructs
 {
     public EngineType[] GetSupportedEngines() => [EngineType.Frostbite2013_2];
 
-    public IReadOnlyCollection<ResourceType> Types { get; } = [ResourceType.OccluderMesh, ResourceType.MeshSet];
+    public IReadOnlyCollection<ResourceType> Types { get; } = [ResourceType.MeshSet];
 
     public byte[] RoundTrip(ResourceType p_Type, byte[] p_Data, byte[]? p_Meta)
     {
-        if (p_Type == ResourceType.OccluderMesh)
-            return OccluderMesh.Read(p_Data).Write();
-
         if (p_Meta == null)
             throw new InvalidDataException("a MeshSet without meta");
         var (s_Data, s_Meta) = MeshSetResource.Read(p_Data, p_Meta).Write();

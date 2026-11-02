@@ -16,10 +16,7 @@ public class ResourceStructs : IResourceStructs
 
     public byte[] RoundTrip(ResourceType p_Type, byte[] p_Data, byte[]? p_Meta)
     {
-        if (p_Type == ResourceType.AtlasTexture)
-            return AtlasTexture.Read(p_Data).Write();
-
-        var s_Texture = new DxTexture();
+        IFbSerializable s_Texture = p_Type == ResourceType.AtlasTexture ? new AtlasTexture() : new DxTexture();
         s_Texture.Deserialize(p_Data);
         if (!s_Texture.Serialize(out var s_Written))
             throw new InvalidDataException("the texture writer refused");

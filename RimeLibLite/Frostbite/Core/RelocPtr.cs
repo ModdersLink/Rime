@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using RimeLib.IO;
 
 namespace RimeLib.Frostbite.Core
@@ -150,10 +151,7 @@ namespace RimeLib.Frostbite.Core
                     case TypeCode.Object:
                         // Check if IFbSerializable this is an IFbSerializable.
                         if (!typeof(IFbSerializable).IsAssignableFrom(typeof(T)))
-                        {
-                            // TODO: Exception message
-                            throw new NotImplementedException();
-                        }
+                            throw new NotSupportedException($"Cannot read a {typeof(T).Name} through a relocated pointer.");
 
                         var s_Val = (IFbSerializable) Activator.CreateInstance(typeof(T), new object[] { });
                         s_Val.Deserialize(p_Reader);
@@ -161,7 +159,7 @@ namespace RimeLib.Frostbite.Core
                         return (T) s_Val;
 
                     default:
-                        throw new NotImplementedException();
+                        throw new NotSupportedException($"Cannot read a {typeof(T).Name} through a relocated pointer.");
                 }
             }
             finally
@@ -173,7 +171,8 @@ namespace RimeLib.Frostbite.Core
 
         public void Deserialize(byte[] p_Data)
         {
-            throw new NotImplementedException();
+            using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
+            Deserialize(s_Reader);
         }
     }
 }

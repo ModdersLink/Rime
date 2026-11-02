@@ -48,7 +48,7 @@ namespace RimeLib.Frostbite.Core
                     s_Object.Deserialize(p_Reader);
                     return (T)s_Object;
                 default:
-                    throw new NotImplementedException($"Cannot read a {s_Type.Name} through a relocated pointer.");
+                    throw new NotSupportedException($"Cannot read a {s_Type.Name} through a relocated pointer.");
             }
         }
     }
