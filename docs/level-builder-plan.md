@@ -333,8 +333,8 @@ and compared with retail: `derive_registry`, `derive_mesh_variation_db`; in bund
 `collect_drawn_shaders`; and `build_level`, which runs them
 from a JSON recipe and compares each bundle with its retail namesake.
 
-Missing: material indices from mesh and Havok payloads, `build_level` on a BF4 level (not
-tried yet), `LevelData` sub-world reference generation.
+Missing: material indices from mesh and Havok payloads, BF4 CAS output (BF4 builds are
+non-CAS), `LevelData` sub-world reference generation.
 
 ### Measured on `mp_subway` (BF3)
 Recipe: [`recipes/mp_subway.json`](recipes/mp_subway.json): the 11 gamemode and sub-world bundles,
@@ -350,6 +350,44 @@ then the main bundle with its shader database.
   texture one of them brings), and five textures of the frontend visual environment.
 - A mesh brings the textures of its mesh variation entries only once the bundle's own database is
   derived. Taking them from every retail database adds the camos of every level.
+
+### Measured on `mp_siege` (BF4)
+Recipe: [`recipes/mp_siege.json`](recipes/mp_siege.json): the 18 sub-world bundles (parents
+first), then the main bundle with its shader database. Each bundle depends on the bundles above it in
+the sub-world tree (`mp_siege` > `content`, `gen4_content` > `gameplay` >
+`conquest`/`rush`/`deathmatch`/`obliteration` > gamemodes; `all_gamemodes_except_dm` for every
+gamemode outside `deathmatch`) and on the level's UI bundles. Against retail, all 19 bundles
+together: 23243 of 23622 partitions, 6 extra.
+- `content` 5212 of 5216, `gen4_content` 3153 of 3158; the small sub-worlds exact; the large
+  gamemodes 52 to 55 short (`conquestlarge0` 1515 of 1570); `dm_objects` 73 of 108.
+- Main bundle: 2032 of 2059, 5 extra; shader database 528 of 551 shaders, every solution of them
+  identical; mesh variation database all 33 entries plus one.
+
+What BF4 loads with a level, and what the closure may leave out because of it:
+- `win32/globals`, `warsawmppersistence`, and of the weapons only the common bundles
+  (`weaponsbundlecommon`, `weaponsbundlemp`, `xpNweaponsbundlemp`). The per-weapon `_bpb` bundles
+  load one at a time, so content the level reaches directly ships with it.
+- `win32/mpcharacter` is loaded but not self-contained (`walkedSuperbundles`): its partitions are
+  left out, but what they reference ships with the level (`mpsoldier`'s blood and swimming effects).
+- `win32/mpvehicles` is not a dependency: the commander's vehicles (quadbike, jet ski) ship whole in
+  each gamemode bundle.
+- `win32/ui` is not a dependency either: the gamemodes carry the in-game UI they reach.
+- Chunk superbundles (`win32/loc/*`, `mpchunks`) carry their chunks outside any bundle; the closure
+  doesn't copy those (7000 voice-over chunks for `mp_siege`).
+- No mesh variation database or network registry for a bundle without entries, and the main
+  bundle ships every shader its database names, those only sub-worlds draw with included (438).
+
+Still missing:
+- In every large gamemode: about 45 jet and helicopter weapon partitions (AA-10 and AS-14
+  projectiles, countermeasure flares, missile trails, their sounds) that only blueprint bundles of
+  vehicles the gamemode doesn't name carry. Retail ships them; no rule for that is known yet.
+  Counting the content two or more named blueprint bundles share adds about 700 partitions retail
+  doesn't ship.
+- In every large gamemode: 7 UI textures and font styles that the level's UI bundles also carry,
+  and 4 that `gen4_content` also carries (a blood decal texture, a flag's ambient sound). Retail
+  ships these twice.
+- Main bundle: the 27 shaders the database holds that no content uses (terrain decal shaders
+  such as road marks and tire tracks, electric cables) and the textures only they bind.
 
 ### Templates
 Recipe fragments that expand to a root list by querying the mounted game ("all weapons": every weapon
