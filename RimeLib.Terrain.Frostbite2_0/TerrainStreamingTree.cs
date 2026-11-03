@@ -7,6 +7,7 @@ using RimeLib.IO;
 using RimeLib.Terrain.Frostbite2_0.Frostbite;
 using RimeLib.Terrain.Frostbite2_0.Frostbite.Destruction;
 using RimeLib.Terrain.Frostbite2_0.Frostbite.Heightfield;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainColor;
 using RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainMask;
 using RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainMaterial;
 
@@ -24,6 +25,7 @@ namespace RimeLib.Terrain.Frostbite2_0
         {
             RasterTree.RasterTreeTypes.HeightfieldTreeType => new HeightfieldTree(),
             RasterTree.RasterTreeTypes.TerrainMaskTreeType => new TerrainMaskTree(),
+            RasterTree.RasterTreeTypes.TerrainColorTreeType => new TerrainColorTree(),
             RasterTree.RasterTreeTypes.TerrainMaterialTreeType => new TerrainMaterialTree(),
             RasterTree.RasterTreeTypes.DestructionDepthTreeType => new DestructionDepthTree(),
             _ => null,

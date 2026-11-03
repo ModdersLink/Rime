@@ -33,7 +33,7 @@ public abstract class TerrainStreamingTreeBase
 
     public HeightfieldTreeBase? HeightfieldTree => RasterTrees[(int)RasterTree.RasterTreeTypes.HeightfieldTreeType] as HeightfieldTreeBase;
     public RasterTree? TerrainMaskTree => RasterTrees[(int)RasterTree.RasterTreeTypes.TerrainMaskTreeType] as RasterTree;
-    public RasterTree? TerrainColorTree => RasterTrees[(int)RasterTree.RasterTreeTypes.TerrainColorTreeType] as RasterTree;
+    public TerrainColor.TerrainColorTree? TerrainColorTree => RasterTrees[(int)RasterTree.RasterTreeTypes.TerrainColorTreeType] as TerrainColor.TerrainColorTree;
     public TerrainMaterialTree? TerrainMaterialTree => RasterTrees[(int)RasterTree.RasterTreeTypes.TerrainMaterialTreeType] as TerrainMaterialTree;
     public DestructionDepthTree? DestructionTree => RasterTrees[(int)RasterTree.RasterTreeTypes.DestructionDepthTreeType] as DestructionDepthTree;
 
