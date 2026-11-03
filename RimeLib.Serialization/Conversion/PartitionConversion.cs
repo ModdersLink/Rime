@@ -6,6 +6,7 @@ using System.Linq;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Text;
+using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Attributes;
 
@@ -33,6 +34,13 @@ public sealed class PartitionConversion
         m_Target = p_Target;
         m_Rules = p_Rules ?? new ConversionRules();
     }
+
+    /// <summary>A conversion to the target engine's types with the source engine's rules for it, if it has any.</summary>
+    public static PartitionConversion Between(EngineType p_Source, EngineType p_Target) => new(
+        EngineInterfaceRegistry.Create<IEbxTypeLibrary>(p_Target),
+        EngineInterfaceRegistry.IsSupported<IConversionRules>(p_Source)
+            ? EngineInterfaceRegistry.Create<IConversionRules>(p_Source).For(p_Target)
+            : null);
 
     /// <summary>
     /// The GUID an instance has in the target. One with a GUID keeps it; one with an index gets a
