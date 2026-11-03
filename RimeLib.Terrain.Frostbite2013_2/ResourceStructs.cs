@@ -17,26 +17,15 @@ public class ResourceStructs : IResourceStructs
 
     public byte[] RoundTrip(ResourceType p_Type, byte[] p_Data, byte[]? p_Meta)
     {
-        byte[]? s_Written;
         switch (p_Type)
         {
             case ResourceType.VisualTerrain:
-                var s_Terrain = new VisualTerrain();
-                s_Terrain.Deserialize(p_Data);
-                s_Terrain.Serialize(out s_Written);
-                return s_Written;
+                return RoundTrip(new VisualTerrain(), p_Data);
             case ResourceType.TerrainLayerCombinations:
-                var s_Combinations = new TerrainLayerCombinations();
-                s_Combinations.Deserialize(p_Data);
-                s_Combinations.Serialize(out s_Written);
-                return s_Written;
+                return RoundTrip(new TerrainLayerCombinations(), p_Data);
             case ResourceType.TerrainStreamingTree:
-                var s_Tree = new TerrainStreamingTree();
-                s_Tree.Deserialize(p_Data);
-                if (!s_Tree.Serialize(out s_Written))
-                    throw new InvalidDataException("the streaming tree writer refused");
-                return s_Written;
-            default:
+                return RoundTrip(new TerrainStreamingTree(), p_Data);
+            case ResourceType.TerrainDecals:
                 var s_Converter = new TerrainDecalsConverter();
                 Resources.TerrainDecalsResource s_Decals;
                 using (var s_Reader = new RimeReader(new MemoryStream(p_Data, false)))
@@ -45,6 +34,16 @@ public class ResourceStructs : IResourceStructs
                 using (var s_Writer = new RimeWriter(s_Stream))
                     s_Converter.Write(s_Writer, s_Decals);
                 return s_Stream.ToArray();
+            default:
+                throw new InvalidDataException($"{p_Type} is not a terrain resource");
         }
+    }
+
+    private static byte[] RoundTrip(IFbSerializable p_Struct, byte[] p_Data)
+    {
+        p_Struct.Deserialize(p_Data);
+        if (!p_Struct.Serialize(out var s_Written))
+            throw new InvalidDataException($"the {p_Struct.GetType().Name} writer refused");
+        return s_Written;
     }
 }
