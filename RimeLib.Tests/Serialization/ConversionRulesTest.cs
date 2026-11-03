@@ -173,7 +173,7 @@ public class ConversionRulesTest
         for (var i = 0; i < 3; i++)
             s_Wave.Segments.Add(new fb.Audio.SoundWaveVariationSegment { SamplesOffset = (uint)i * 100 });
         s_Wave.RuntimeVariations.Add(new fb.Audio.SoundWaveRuntimeVariation { FirstSegmentIndex = 0, SegmentCount = 1, ChunkIndex = 0 });
-        s_Wave.RuntimeVariations.Add(new fb.Audio.SoundWaveRuntimeVariation { FirstSegmentIndex = 1, SegmentCount = 2, ChunkIndex = 1, LastLoopSegmentIndex = 1 });
+        s_Wave.RuntimeVariations.Add(new fb.Audio.SoundWaveRuntimeVariation { FirstSegmentIndex = 1, SegmentCount = 2, ChunkIndex = 1, LastLoopSegmentIndex = 1, PersistentDataSize = 44 });
         var s_Conversion = Conversion();
 
         var s_Partition = s_Conversion.Convert(Partition(s_Wave));
@@ -186,6 +186,7 @@ public class ConversionRulesTest
         Assert.Equal(new uint[] { 100, 200 }, s_Variations[1].Segments.Select(p_S => p_S.SamplesOffset));
         Assert.Equal(1, s_Variations[1].ChunkIndex);
         Assert.Equal(1, s_Variations[1].LastLoopSegmentIndex);
+        Assert.Equal(44u, s_Variations[1].SeekTablesSize);
         Assert.Equal(RimeLib.Frostbite.Utils.HashQuick("Sound/Test_Wave"), s_Converted.NameHash);
         Assert.DoesNotContain("SoundWaveAsset.Segments", s_Conversion.Report.DroppedFields.Keys);
     }

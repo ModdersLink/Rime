@@ -42,6 +42,8 @@ public class ConversionRules : IConversionRules
             {
                 Reads = ["RuntimeVariations", "Segments", "Subtitles"],
             },
+            // Set exactly where the variation's segments have seek tables, in both engines.
+            [("SoundWaveVariation", "SeekTablesSize")] = new("PersistentDataSize"),
             [("GameObjectData", "IsEventConnectionTarget")] = new("Flags", Realm(25)),
             [("GameObjectData", "IsPropertyConnectionTarget")] = new("Flags", Realm(27)),
         },
