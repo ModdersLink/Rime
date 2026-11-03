@@ -60,13 +60,13 @@ public sealed class PartitionConversion
     /// </summary>
     public DatabasePartitionBase Convert(DatabasePartitionBase p_Source)
     {
-        var s_Types = p_Source.Instances.ToDictionary(p_I => p_I, p_I => ContainerType(p_I.GetType()), ReferenceEqualityComparer.Instance);
-        if (s_Types[p_Source.PrimaryInstance] == null)
+        if (ContainerType(p_Source.PrimaryInstance.GetType()) == null)
             throw new InvalidDataException($"the primary instance's type {p_Source.PrimaryInstance.GetType().Name} has no counterpart");
 
-        var s_Converted = new Dictionary<object, DataContainerBase>(ReferenceEqualityComparer.Instance);
-        foreach (var (s_Instance, s_Type) in s_Types)
+        var s_Converted = new Dictionary<DataContainerBase, DataContainerBase>(ReferenceEqualityComparer.Instance);
+        foreach (var s_Instance in p_Source.Instances)
         {
+            var s_Type = ContainerType(s_Instance.GetType());
             Report.Instances++;
             if (s_Type == null)
             {
@@ -75,11 +75,11 @@ public sealed class PartitionConversion
             }
 
             var s_Target = (DataContainerBase)Activator.CreateInstance(s_Type)!;
-            s_Target.InstanceId = new DataContainerId.Guid(InstanceGuid(p_Source.PartitionGuid, ((DataContainerBase)s_Instance).InstanceId));
+            s_Target.InstanceId = new DataContainerId.Guid(InstanceGuid(p_Source.PartitionGuid, s_Instance.InstanceId));
             s_Converted.Add(s_Instance, s_Target);
         }
 
-        var s_Partition = new Scope(p_Source.PartitionGuid, s_Converted.Keys.Select(p_I => ((DataContainerBase)p_I).InstanceId).ToHashSet());
+        var s_Partition = new Scope(p_Source.PartitionGuid, s_Converted.Keys.Select(p_I => p_I.InstanceId).ToHashSet());
         foreach (var (s_Source, s_Target) in s_Converted)
             CopyFields(s_Source, s_Target, s_Partition);
 
