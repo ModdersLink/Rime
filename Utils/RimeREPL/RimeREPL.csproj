@@ -22,13 +22,12 @@
   </ItemGroup>
 
   <!--
-    The engine assemblies are found in the output directory at runtime rather than referenced, so
-    building the REPL alone used to leave them as another branch built them. Build every one of
-    them with it, and remove those whose project no longer exists: a branch's engine assembly that
-    outlives the branch breaks mounting.
+    The engine assemblies are loaded from the output directory at runtime, not referenced, so the
+    REPL builds every engine project with itself and removes engine assemblies whose project does
+    not exist: one left from another branch breaks mounting.
   -->
   <ItemGroup>
-    <ProjectReference Include="..\..\RimeLib.*\*.csproj" Exclude="..\..\RimeLib.Cmd\RimeLib.Cmd.csproj;..\..\RimeLib.Tests\*.csproj;..\..\RimeLib.Partition\*.csproj">
+    <ProjectReference Include="..\..\RimeLib.*.Frostbite*\*.csproj">
       <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
     </ProjectReference>
   </ItemGroup>
