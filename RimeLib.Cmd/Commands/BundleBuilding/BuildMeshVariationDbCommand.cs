@@ -108,12 +108,13 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 .Select(p_G => s_Mounter.TryGetPartitionByGuid(p_G, out var s_N, out _) ? s_N.ToLowerInvariant() : null)
                 .Where(p_N => p_N != null && !s_BundleContext.GetPartitions().ContainsKey(p_N!))
                 .OrderBy(p_N => p_N, StringComparer.Ordinal).ToList();
-            foreach (var s_Partition in s_Needed)
+            if (PartitionClosure.Create((BundleBuildingContext)p_Context, Id, [], TextWriter.Null) is not { } s_Adder)
             {
-                var s_Reference = new ReferenceExistingPartitionCommand { Name = s_Partition, Id = Id, Strict = false };
-                var s_Context = p_Context;
-                s_Reference.Execute(ref s_Context, TextWriter.Null);
+                p_Writer.WriteLine($"No game {Id} of this bundle's engine is mounted to add their closure from.");
+                return false;
             }
+
+            s_Adder.AddAll(s_Needed, p_Writer);
             if (s_Needed.Count > 0)
                 p_Writer.WriteLine($"Added {s_Needed.Count} partition(s) the entries bind, with their closure.");
 
