@@ -16,6 +16,9 @@ public sealed class ConversionReport
     /// <summary>Values the target field cannot hold, by type, field and why.</summary>
     public SortedDictionary<string, int> UnconvertedValues { get; } = new();
 
+    /// <summary>Structs whose field the target makes a reference, made instances, by type and field.</summary>
+    public SortedDictionary<string, int> StructsMadeInstances { get; } = new();
+
     /// <summary>References to a dropped instance, by type and field.</summary>
     public SortedDictionary<string, int> DroppedReferences { get; } = new();
 
@@ -33,6 +36,7 @@ public sealed class ConversionReport
         Write(p_Writer, "Fields the target does not have, with a value set", DroppedFields, p_Top);
         Write(p_Writer, "Values the target field cannot hold", UnconvertedValues, p_Top);
         Write(p_Writer, "References to a dropped instance", DroppedReferences, p_Top);
+        Write(p_Writer, "Structs made instances, as the target references them", StructsMadeInstances, p_Top);
     }
 
     private static void Write(TextWriter p_Writer, string p_Title, IReadOnlyDictionary<string, int> p_Counts, int p_Top)

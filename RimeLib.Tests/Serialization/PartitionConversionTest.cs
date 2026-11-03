@@ -79,4 +79,29 @@ public class PartitionConversionTest
 
         Assert.Equal(fb.EnlightenType.EnlightenType_Dynamic, ((fb.RigidMeshAsset)s_Partition.PrimaryInstance).EnlightenType);
     }
+
+    [Fact]
+    public void MakesInstancesOfStructsTheTargetReferences()
+    {
+        // BF4 keeps mesh variation database entries as structs; BF3 references entry instances.
+        var s_Database = new fb.Render.MeshVariationDatabase { InstanceId = new DataContainerId.Guid(s_Primary) };
+        var s_Entry = new fb.Render.MeshVariationDatabaseEntry { VariationAssetNameHash = 7 };
+        s_Entry.Materials.Add(new fb.Render.MeshVariationDatabaseMaterial
+        {
+            TextureParameters = [new fb.Render.TextureShaderParameter { ParameterName = "_CS" }],
+        });
+        s_Database.Entries.Add(s_Entry);
+        var s_Source = new Bf4 { Name = "levels/crate/meshvariationdb_win32", PartitionGuid = s_Partition, PrimaryInstanceGuid = s_Primary };
+        s_Source.InstanceMap.Add(s_Database.InstanceId, s_Database);
+
+        var s_Conversion = new PartitionConversion(new EbxTypeLibrary());
+        var s_Converted = (Bf3)s_Conversion.Convert(s_Source);
+
+        var s_Ref = Assert.Single(((fb.MeshVariationDatabase)s_Converted.PrimaryInstance).Entries);
+        var s_Made = Assert.IsType<fb.MeshVariationDatabaseEntry>(s_Converted.InstanceMap[((DataContainerId.Guid)s_Ref.InstanceId).Id]);
+        Assert.Equal(s_Converted.PartitionGuid, s_Ref.PartitionGuid);
+        Assert.Equal(7u, s_Made.VariationAssetNameHash);
+        Assert.Equal("_CS", Assert.Single(Assert.Single(s_Made.Materials).TextureParameters).ParameterName);
+        Assert.Equal(1, s_Conversion.Report.StructsMadeInstances["MeshVariationDatabase.Entries"]);
+    }
 }

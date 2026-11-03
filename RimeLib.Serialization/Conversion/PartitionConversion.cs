@@ -14,7 +14,8 @@ namespace RimeLib.Serialization.Conversion;
 /// <summary>
 /// Converts partitions to another engine's types by name: each instance becomes the target's type
 /// of the same name, and each field takes the value of the source field of the same name, enums
-/// by value name. What the target cannot hold is dropped and counted in <see cref="Report"/>.
+/// by value name. A struct whose field the target makes a reference becomes an instance of the
+/// partition. What the target cannot hold is dropped and counted in <see cref="Report"/>.
 /// </summary>
 public sealed class PartitionConversion
 {
@@ -37,7 +38,7 @@ public sealed class PartitionConversion
     public static GUID InstanceGuid(GUID p_Partition, DataContainerId p_Id) => p_Id switch
     {
         DataContainerId.Guid s_Guid => s_Guid.Id,
-        DataContainerId.Index s_Index => Derived(p_Partition, s_Index.Id),
+        DataContainerId.Index s_Index => Derived(p_Partition, $"{s_Index.Id}"),
         _ => throw new ArgumentOutOfRangeException(nameof(p_Id)),
     };
 
@@ -72,11 +73,14 @@ public sealed class PartitionConversion
 
         Report.ConvertedInstances += s_Converted.Count;
         return m_Target.CreatePartition(p_Source.Name, p_Source.PartitionGuid,
-            InstanceGuid(p_Source.PartitionGuid, p_Source.PrimaryInstance.InstanceId), s_Converted.Values.ToList());
+            InstanceGuid(p_Source.PartitionGuid, p_Source.PrimaryInstance.InstanceId), s_Converted.Values.Concat(s_Partition.Inlined).ToList());
     }
 
-    /// <summary>The partition being converted and the ids of its instances that convert.</summary>
-    private sealed record Scope(GUID Partition, HashSet<DataContainerId> Converted);
+    /// <summary>The partition being converted, the ids of its instances that convert and the instances made of structs.</summary>
+    private sealed record Scope(GUID Partition, HashSet<DataContainerId> Converted)
+    {
+        public List<DataContainerBase> Inlined { get; } = new();
+    }
 
     private Type? ContainerType(Type p_Source)
     {
@@ -144,6 +148,19 @@ public sealed class PartitionConversion
                 CopyFields(p_Value, p_Result, p_Scope);
                 return true;
 
+            case EbxSerializable when typeof(CtrRefBase).IsAssignableFrom(p_Type) && InstanceType(p_Value.GetType(), p_Type) is { } s_InstanceType:
+                var s_Made = (DataContainerBase)Activator.CreateInstance(s_InstanceType)!;
+                var s_Guid = Derived(p_Scope.Partition, $"struct/{p_Scope.Inlined.Count}");
+                s_Made.InstanceId = new DataContainerId.Guid(s_Guid);
+                p_Scope.Inlined.Add(s_Made);
+                CopyFields(p_Value, s_Made, p_Scope);
+                ConversionReport.Count(Report.StructsMadeInstances, p_Field);
+
+                var s_MadeRef = (CtrRefBase)Activator.CreateInstance(p_Type)!;
+                s_MadeRef.SetValue(p_Scope.Partition, s_Made.InstanceId);
+                p_Result = s_MadeRef;
+                return true;
+
             case EbxSerializable:
                 p_Reason = $"{TypeName(p_Value.GetType())} to {TypeName(p_Type)}";
                 return false;
@@ -171,6 +188,17 @@ public sealed class PartitionConversion
                 p_Reason = $"{TypeName(p_Value.GetType())} to {TypeName(p_Type)}";
                 return false;
         }
+    }
+
+    /// <summary>
+    /// The instance type a struct becomes behind a reference of <paramref name="p_Ref"/>'s type: the
+    /// target's container type of the struct's name, if the reference can point at it.
+    /// </summary>
+    private Type? InstanceType(Type p_Struct, Type p_Ref)
+    {
+        var s_Type = ContainerType(p_Struct);
+        var s_Referenced = p_Ref.IsGenericType ? p_Ref.GetGenericArguments()[0] : typeof(DataContainerBase);
+        return s_Type != null && s_Referenced.IsAssignableFrom(s_Type) ? s_Type : null;
     }
 
     /// <summary>Where a reference points in the target: none when it is null or its instance is dropped.</summary>
@@ -231,6 +259,6 @@ public sealed class PartitionConversion
         _ => Equals(p_Value, p_Default),
     };
 
-    private static GUID Derived(GUID p_Partition, long p_Index) =>
-        new(new Guid(MD5.HashData(Encoding.UTF8.GetBytes($"{p_Partition}/{p_Index}"))));
+    private static GUID Derived(GUID p_Partition, string p_Key) =>
+        new(new Guid(MD5.HashData(Encoding.UTF8.GetBytes($"{p_Partition}/{p_Key}"))));
 }
