@@ -248,7 +248,7 @@ public sealed class PartitionConversion
 
         foreach (var (s_From, s_To) in s_Map.Sourced)
         {
-            var s_Field = $"{s_SourceType.Name}.{s_From.Path}";
+            var s_Field = $"{s_SourceType.Name}.{(s_From.Path.Length > 0 ? s_From.Path : s_To.Name)}";
             if (!Follow(p_Source, s_From.Path, p_Scope, out var s_Value))
                 ConversionReport.Count(Report.UnconvertedValues, $"{s_Field}: a reference on the way to a partition not found");
             else if (s_Value != null)
@@ -412,7 +412,10 @@ public sealed class PartitionConversion
             .Select(p_F => (p_F.Source!, p_F.Target))
             .ToArray();
         var s_Set = s_Sourced.Select(p_F => p_F.Target.Name).ToHashSet(StringComparer.Ordinal);
-        var s_Heads = s_Sourced.Where(p_F => p_F.Item1.Path.Length > 0).Select(p_F => p_F.Item1.Path.Split('.')[0]).ToHashSet(StringComparer.Ordinal);
+        var s_Heads = s_Sourced
+            .SelectMany(p_F => p_F.Item1.Reads.Prepend(p_F.Item1.Path.Split('.')[0]))
+            .Where(p_F => p_F.Length > 0)
+            .ToHashSet(StringComparer.Ordinal);
         var s_ByName = s_TargetFields.Where(p_F => !s_Set.Contains(p_F.Name)).ToDictionary(p_F => p_F.Name, StringComparer.Ordinal);
         var s_Names = s_SourceFields.Select(p_F => p_F.Name).ToHashSet(StringComparer.Ordinal);
 
