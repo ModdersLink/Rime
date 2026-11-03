@@ -1,0 +1,126 @@
+using System;
+using System.Linq;
+using RimeLib.Frostbite;
+using RimeLib.Frostbite.Core;
+using RimeLib.Serialization;
+using RimeLib.Serialization.Conversion;
+using RimeLib.Serialization.Frostbite2_0;
+using Xunit;
+using Bf4 = RimeLib.Serialization.Frostbite2013_2.Ebx.DatabasePartition;
+
+namespace RimeLib.Tests.Serialization;
+
+/// <summary>Frostbite 2013.2's rules for converting to Frostbite 2, and the conversion's rule kinds through them.</summary>
+public class ConversionRulesTest
+{
+    private static readonly GUID s_PartitionGuid = new(Guid.Parse("11111111-2222-3333-4444-555555555555"));
+    private static readonly GUID s_Primary = new(Guid.Parse("aaaaaaaa-bbbb-cccc-dddd-eeeeeeeeeeee"));
+
+    private static PartitionConversion Conversion() => PartitionConversion.Between(EngineType.Frostbite2013_2, EngineType.Frostbite2_0);
+
+    private static Bf4 Partition(params DataContainerBase[] p_Instances)
+    {
+        var s_Partition = new Bf4 { Name = "fx/test", PartitionGuid = s_PartitionGuid, PrimaryInstanceGuid = s_Primary };
+        foreach (var s_Instance in p_Instances)
+            s_Partition.InstanceMap.Add(s_Instance.InstanceId, s_Instance);
+        return s_Partition;
+    }
+
+    private static CtrRefBase Ref(DataContainerBase p_Instance) => new(s_PartitionGuid, p_Instance.InstanceId);
+
+    /// <summary>An emitter with a template for low and medium, one for high and ultra, and a processor each.</summary>
+    private static Bf4 Emitter()
+    {
+        var s_Document = new fb.Emitter.ScalableEmitterDocument { InstanceId = new DataContainerId.Guid(s_Primary) };
+        var s_Low = new fb.Emitter.EmitterTemplateData { InstanceId = new DataContainerId.Index(1), MaxCount = 10 };
+        var s_High = new fb.Emitter.EmitterTemplateData
+        {
+            InstanceId = new DataContainerId.Index(2),
+            MaxCount = 40,
+            EmittableType = fb.Emitter.EmittableType.EmittableType_Quad,
+            EmittableAlignment = fb.Emitter.EmittableAlignment.EmittableAlignment_Direction,
+        };
+        var s_LowSize = new fb.Emitter.SpawnSizeData { InstanceId = new DataContainerId.Index(3), Size = 1 };
+        var s_HighSize = new fb.Emitter.SpawnSizeData { InstanceId = new DataContainerId.Index(4), Size = 2 };
+
+        s_Document.TemplateDataLow.SetValue(Ref(s_Low));
+        s_Document.TemplateDataMedium.SetValue(Ref(s_Low));
+        s_Document.TemplateDataHigh.SetValue(Ref(s_High));
+        s_Document.TemplateDataUltra.SetValue(Ref(s_High));
+        s_Low.RootProcessor.SetValue(Ref(s_LowSize));
+        s_High.RootProcessor.SetValue(Ref(s_HighSize));
+        return Partition(s_Document, s_Low, s_High, s_LowSize, s_HighSize);
+    }
+
+    [Fact]
+    public void MakesTheHighTemplateTheEmitterAndItsDocument()
+    {
+        var s_Partition = Conversion().Convert(Emitter());
+
+        var s_Template = Assert.IsType<fb.EmitterTemplateData>(s_Partition.PrimaryInstance);
+        var s_Document = s_Partition.Instances.OfType<fb.EmitterDocument>().Single();
+        Assert.Equal(40u, s_Template.MaxCount);
+        Assert.Equal(s_Template.InstanceId, s_Document.TemplateData.InstanceId);
+        Assert.Equal(s_Template.RootProcessor.InstanceId, s_Document.RootProcessor.InstanceId);
+        Assert.Equal(2, Assert.IsType<fb.SpawnSizeData>(s_Partition.Instances.Single(p_I => p_I.InstanceId == s_Template.RootProcessor.InstanceId)).Size);
+    }
+
+    [Fact]
+    public void DropsTheTemplatesNothingReferencesAnyMore()
+    {
+        var s_Conversion = Conversion();
+        var s_Partition = s_Conversion.Convert(Emitter());
+
+        Assert.Equal(3, s_Partition.Instances.Count());
+        Assert.Equal(1, s_Conversion.Report.Unreferenced["EmitterTemplateData"]);
+        Assert.Equal(1, s_Conversion.Report.Unreferenced["SpawnSizeData"]);
+        Assert.Equal(1, s_Conversion.Report.DroppedFields["ScalableEmitterDocument.TemplateDataLow"]);
+        Assert.DoesNotContain("ScalableEmitterDocument.TemplateDataHigh", s_Conversion.Report.DroppedFields.Keys);
+    }
+
+    [Fact]
+    public void AlignsQuadsByTheirType()
+    {
+        var s_Partition = Conversion().Convert(Emitter());
+
+        Assert.Equal(fb.EmittableType.DirectionAlignedQuad, ((fb.EmitterTemplateData)s_Partition.PrimaryInstance).EmittableType);
+        Assert.True(s_Partition.Instances.OfType<fb.SpawnSizeData>().Single().Enable);
+    }
+
+    [Fact]
+    public void EnablesEffectsByQualityAndKeepsTheConnectionRealms()
+    {
+        var s_Effect = new fb.Entity.EffectEntityData
+        {
+            InstanceId = new DataContainerId.Guid(s_Primary),
+            // Event connections from the server, property connections from both realms.
+            Flags = (2u << 25) | (3u << 27),
+        };
+        s_Effect.Enable.Low = false;
+        s_Effect.Enable.Medium = true;
+        s_Effect.Enable.High = true;
+        s_Effect.MaxActiveInstanceCount.High = 8;
+
+        var s_Conversion = Conversion();
+        var s_Converted = (fb.EffectEntityData)s_Conversion.Convert(Partition(s_Effect)).PrimaryInstance;
+
+        Assert.False(s_Converted.LowEndPc);
+        Assert.True(s_Converted.MediumPc);
+        Assert.True(s_Converted.HighEndPc);
+        Assert.Equal(8u, s_Converted.MaxInstanceCount);
+        Assert.Equal(1, s_Converted.IsEventConnectionTarget);
+        Assert.Equal(2, s_Converted.IsPropertyConnectionTarget);
+        Assert.DoesNotContain("GameObjectData.IsEventConnectionTarget", s_Conversion.Report.MissingFields.Keys);
+    }
+
+    [Fact]
+    public void MarksAnObjectNoConnectionTargets()
+    {
+        var s_Effect = new fb.Entity.EffectEntityData { InstanceId = new DataContainerId.Guid(s_Primary) };
+
+        var s_Converted = (fb.EffectEntityData)Conversion().Convert(Partition(s_Effect)).PrimaryInstance;
+
+        Assert.Equal(3, s_Converted.IsEventConnectionTarget);
+        Assert.Equal(3, s_Converted.IsPropertyConnectionTarget);
+    }
+}
