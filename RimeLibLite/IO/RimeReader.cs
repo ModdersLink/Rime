@@ -235,6 +235,9 @@ namespace RimeLib.IO
             return s_Gap;
         }
 
+        /// <summary>A 16-bit float, in the reader's byte order.</summary>
+        public Half ReadHalf() => System.BitConverter.UInt16BitsToHalf(ReadUInt16());
+
         public Vector3 ReadVector3() => new(ReadSingle(), ReadSingle(), ReadSingle());
 
         public Vector4 ReadVector4() => new(ReadSingle(), ReadSingle(), ReadSingle(), ReadSingle());

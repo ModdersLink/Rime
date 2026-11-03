@@ -6,6 +6,7 @@ using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
+using RimeLib.Frostbite.Core;
 using RimeLib.Mesh.Sets;
 
 namespace RimeLib.Cmd.Commands.Game
@@ -18,6 +19,9 @@ namespace RimeLib.Cmd.Commands.Game
 
         [CommandArgument(Description = "How many MeshSets to list per failure.", Optional = true)]
         public int List { get; set; } = 3;
+
+        [CommandArgument(Description = "Also repack each LOD's chunk to its own vertex layouts, which must give the same bytes.", Optional = true)]
+        public bool Chunks { get; set; }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
@@ -46,6 +50,8 @@ namespace RimeLib.Cmd.Commands.Game
                     var s_Payload = Read(s_Resource.FirstVariant);
                     var s_Model = s_From.Decode(s_Payload);
                     Same(s_From.Encode(s_Model, s_Payload), s_Payload, "written back");
+                    if (Chunks)
+                        RepackChunks(s_Source, s_Model);
 
                     var s_Fitted = MeshSetConversion.ToEngine(s_Model, s_To, out var s_Drops);
                     var s_Written = s_To.Encode(s_Fitted);
@@ -77,6 +83,24 @@ namespace RimeLib.Cmd.Commands.Game
 
             p_Writer.WriteLine($"check_mesh_conversion: {s_Converted}/{s_Sets} converted to {s_Target.GetEngineType()}.");
             return s_Converted == s_Sets;
+        }
+
+        /// <summary>Repacks each LOD's chunk to the layouts it has, which must change nothing.</summary>
+        private static void RepackChunks(IEngineMounter p_Mounter, MeshSetModel p_Model)
+        {
+            foreach (var s_Lod in p_Model.Lods.Where(p_L => p_L.ChunkId != GUID.Empty))
+            {
+                if (!p_Mounter.TryGetChunk(s_Lod.ChunkId, out var s_Chunk))
+                    throw new InvalidDataException($"chunk {s_Lod.ChunkId} is not mounted");
+
+                byte[] s_Data;
+                using (var s_Reader = (s_Chunk.Variants.FirstOrDefault(p_V => p_V.GetLogicalOffset() == 0) ?? s_Chunk.FirstVariant).GetReader())
+                    s_Data = s_Reader.ReadBytes((int)s_Reader.Length);
+
+                var (_, s_Repacked) = VertexRepacking.Repack(s_Lod, s_Data, s_Lod.Subsets.Select(VertexLayout.Of).ToList(), out _);
+                if (!s_Repacked.AsSpan().SequenceEqual(s_Data))
+                    throw new InvalidDataException($"a {s_Data.Length} byte chunk repacked to its own layouts as {s_Repacked.Length} different bytes");
+            }
         }
 
         private static MeshSetPayload Read(IResourceObject p_Variant)
