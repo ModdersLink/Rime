@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using fb.Audio;
 using fb.Emitter;
 using RimeLib.Frostbite;
 using RimeLib.Serialization.Conversion;
@@ -36,6 +38,10 @@ public class ConversionRules : IConversionRules
             [("DataBusData", "InterfaceHasConnections")] = new("Flags", Bit(1)),
             [("DataBusData", "AlwaysCreateEntityBusClient")] = new("Flags", Bit(2)),
             [("DataBusData", "AlwaysCreateEntityBusServer")] = new("Flags", Bit(3)),
+            [("SoundWaveAsset", "Variations")] = new("", p_Wave => Variations((SoundWaveAsset)p_Wave))
+            {
+                Reads = ["RuntimeVariations", "Segments", "Subtitles"],
+            },
             [("GameObjectData", "IsEventConnectionTarget")] = new("Flags", Realm(25)),
             [("GameObjectData", "IsPropertyConnectionTarget")] = new("Flags", Realm(27)),
         },
@@ -90,6 +96,20 @@ public class ConversionRules : IConversionRules
         (EmittableType.EmittableType_Ribbon, _) => EmittableType.Trail,
         (var s_Type, _) => s_Type,
     };
+
+    /// <summary>
+    /// A sound wave's variations, each with its range of the wave's segments and subtitles, as
+    /// Frostbite 2 has them.
+    /// </summary>
+    private static List<SoundWaveVariation> Variations(SoundWaveAsset p_Wave) => p_Wave.RuntimeVariations.Select(p_Variation => new SoundWaveVariation
+    {
+        Segments = p_Wave.Segments.Skip(p_Variation.FirstSegmentIndex).Take(p_Variation.SegmentCount).ToList(),
+        Subtitles = p_Wave.Subtitles.Skip(p_Variation.FirstSubtitleIndex).Take(p_Variation.SubtitleCount).ToList(),
+        PersistentDataSize = p_Variation.PersistentDataSize,
+        ChunkIndex = p_Variation.ChunkIndex,
+        FirstLoopSegmentIndex = p_Variation.FirstLoopSegmentIndex,
+        LastLoopSegmentIndex = p_Variation.LastLoopSegmentIndex,
+    }).ToList();
 
     public EngineType[] GetSupportedEngines() => [EngineType.Frostbite2013_2];
 

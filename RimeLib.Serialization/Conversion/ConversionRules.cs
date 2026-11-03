@@ -43,7 +43,11 @@ public sealed class ConversionRules
 /// source instance itself), a reference on the way followed to its instance in the partition, and
 /// what the value at its end becomes.
 /// </summary>
-public sealed record FieldSource(string Path, Func<object, object>? Map = null);
+public sealed record FieldSource(string Path, Func<object, object>? Map = null)
+{
+    /// <summary>Other source fields the mapping reads, which are therefore not dropped.</summary>
+    public IReadOnlyList<string> Reads { get; init; } = [];
+}
 
 /// <summary>An engine's rules for converting its partitions to other engines.</summary>
 public interface IConversionRules : IEngineInterface

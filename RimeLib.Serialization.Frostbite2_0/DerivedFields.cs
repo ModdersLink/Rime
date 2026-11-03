@@ -12,11 +12,12 @@ public class DerivedFields : IDerivedFields
     private const string c_RuntimeComponentCount = "GameEntityData.RuntimeComponentCount";
     private const string c_IndexInBlueprint = "GameObjectData.IndexInBlueprint";
     private const string c_TemplateName = "EmitterTemplateData.Name";
+    private const string c_NameHash = "SoundDataAsset.NameHash";
     private const ushort c_NoIndex = ushort.MaxValue;
 
     public EngineType[] GetSupportedEngines() => [EngineType.Frostbite2_0];
 
-    public IReadOnlySet<string> Fields { get; } = new HashSet<string> { c_RuntimeComponentCount, c_IndexInBlueprint, c_TemplateName };
+    public IReadOnlySet<string> Fields { get; } = new HashSet<string> { c_RuntimeComponentCount, c_IndexInBlueprint, c_TemplateName, c_NameHash };
 
     public void Derive(DatabasePartitionBase p_Partition, ConversionReport p_Report)
     {
@@ -71,7 +72,10 @@ public class DerivedFields : IDerivedFields
             p_Ref.PartitionGuid == Partition ? Instances.GetValueOrDefault(p_Ref.InstanceId) : null;
     }
 
-    /// <summary>Names an emitter's document and template after the partition, where they have no name.</summary>
+    /// <summary>
+    /// Names an emitter's document and template after the partition, where they have no name, and
+    /// sets each sound's name hash.
+    /// </summary>
     private static void Name(DatabasePartitionBase p_Partition)
     {
         foreach (var s_Instance in p_Partition.Instances)
@@ -86,6 +90,9 @@ public class DerivedFields : IDerivedFields
                     break;
             }
         }
+
+        foreach (var s_Sound in p_Partition.Instances.OfType<SoundDataAsset>())
+            s_Sound.NameHash = Frostbite.Utils.HashQuick(s_Sound.Name);
     }
 
     /// <summary>

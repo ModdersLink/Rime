@@ -167,6 +167,30 @@ public class ConversionRulesTest
     }
 
     [Fact]
+    public void GivesEachSoundVariationItsRangeOfTheWavesSegments()
+    {
+        var s_Wave = new fb.Audio.SoundWaveAsset { InstanceId = new DataContainerId.Guid(s_Primary), Name = "Sound/Test_Wave" };
+        for (var i = 0; i < 3; i++)
+            s_Wave.Segments.Add(new fb.Audio.SoundWaveVariationSegment { SamplesOffset = (uint)i * 100 });
+        s_Wave.RuntimeVariations.Add(new fb.Audio.SoundWaveRuntimeVariation { FirstSegmentIndex = 0, SegmentCount = 1, ChunkIndex = 0 });
+        s_Wave.RuntimeVariations.Add(new fb.Audio.SoundWaveRuntimeVariation { FirstSegmentIndex = 1, SegmentCount = 2, ChunkIndex = 1, LastLoopSegmentIndex = 1 });
+        var s_Conversion = Conversion();
+
+        var s_Partition = s_Conversion.Convert(Partition(s_Wave));
+
+        var s_Converted = (fb.SoundWaveAsset)s_Partition.PrimaryInstance;
+        var s_Variations = s_Converted.Variations
+            .Select(p_Ref => (fb.SoundWaveVariation)s_Partition.Instances.Single(p_I => p_I.InstanceId == p_Ref.InstanceId))
+            .ToList();
+        Assert.Equal(new uint[] { 0 }, s_Variations[0].Segments.Select(p_S => p_S.SamplesOffset));
+        Assert.Equal(new uint[] { 100, 200 }, s_Variations[1].Segments.Select(p_S => p_S.SamplesOffset));
+        Assert.Equal(1, s_Variations[1].ChunkIndex);
+        Assert.Equal(1, s_Variations[1].LastLoopSegmentIndex);
+        Assert.Equal(RimeLib.Frostbite.Utils.HashQuick("Sound/Test_Wave"), s_Converted.NameHash);
+        Assert.DoesNotContain("SoundWaveAsset.Segments", s_Conversion.Report.DroppedFields.Keys);
+    }
+
+    [Fact]
     public void SplitsTheBusFlagsIntoTheirFields()
     {
         var s_Blueprint = new fb.Entity.LogicPrefabBlueprint { InstanceId = new DataContainerId.Guid(s_Primary), Flags = 0b1010 };
