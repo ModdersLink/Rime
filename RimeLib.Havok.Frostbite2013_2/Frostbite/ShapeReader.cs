@@ -16,6 +16,7 @@ public class ShapeReader : Frostbite2_0.Frostbite.ShapeReader
 {
     protected override int PlanesOffset => 84;
     protected override int ConnectivityOffset => 96;
+    public override int UserDataOffset => 12;
 
     // Havok 2012: hkpConvexTransformShape holds an hkQsTransform (translation, rotation quaternion,
     // scale) at +32 and an extra scale at +80, in place of Havok 2010's hkTransform.

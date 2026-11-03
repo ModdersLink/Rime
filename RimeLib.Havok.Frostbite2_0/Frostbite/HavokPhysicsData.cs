@@ -569,6 +569,9 @@ public class HavokPhysicsData : IFbSerializable
             return s_Children;
         }
 
+        // Which of the container's shapes the walk is under.
+        var s_Root = 0;
+
         void Note(string p_Name)
         {
             s_Unread[p_Name] = s_Unread.TryGetValue(p_Name, out var s_Count) ? s_Count + 1 : 1;
@@ -717,6 +720,9 @@ public class HavokPhysicsData : IFbSerializable
             s_Leaf.Centre = p_Placement.Translation;
             s_Leaf.Placement = p_Placement;
             s_Leaf.PlacementOffset = p_PlacedBy;
+            s_Leaf.Root = s_Root;
+            s_Instance.Reader.Seek(s_DataStart + p_Offset + p_Shapes.UserDataOffset, SeekOrigin.Begin);
+            s_Leaf.UserData = s_Instance.Reader.ReadUInt32();
 
             s_Shapes.Add(s_Leaf);
         }
@@ -728,8 +734,13 @@ public class HavokPhysicsData : IFbSerializable
         foreach (var l_Object in s_ObjectStarts)
         {
             if (s_ClassOf.TryGetValue(l_Object, out var l_Name) && l_Name == "HavokPhysicsContainer")
+            {
                 foreach (var l_Root in ChildrenOf(l_Object))
+                {
                     Visit(l_Root, hkpPlacement.Identity, l_Root, 0);
+                    ++s_Root;
+                }
+            }
         }
 
         return s_Shapes;

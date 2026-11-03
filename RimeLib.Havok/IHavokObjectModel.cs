@@ -11,9 +11,16 @@ namespace RimeLib.Havok
         byte[] Rewrite(byte[] p_Resource);
 
         /// <summary>
-        /// Queries each MOPP over a list shape in the resource with each child's bounds, and a MOPP Rime
-        /// builds over the same children: each query has to find its child. What it could not find,
-        /// and how many trees it queried.
+        /// The physics resource with both packfiles built in this engine's Havok from the shapes, its
+        /// Frostbite header kept: how another engine's physics is carried over.
+        /// </summary>
+        /// <exception cref="System.NotSupportedException">A shape has no counterpart in this engine's Havok.</exception>
+        byte[] Rewrite(byte[] p_Resource, System.Collections.Generic.IReadOnlyList<hkpCollisionShape> p_Shapes);
+
+        /// <summary>
+        /// Queries each MOPP in the resource with the bounds of each child or triangle it is over, and
+        /// a MOPP Rime builds over the same ones: each query has to find its key. What it could not
+        /// find, and how many trees it queried.
         /// </summary>
         System.Collections.Generic.IReadOnlyList<string> CheckMopps(byte[] p_Resource, out int p_Trees);
     }

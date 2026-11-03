@@ -24,6 +24,18 @@ public class HavokObjectModel : IHavokObjectModel
         return s_Data;
     }
 
+    public byte[] Rewrite(byte[] p_Resource, IReadOnlyList<hkpCollisionShape> p_Shapes)
+    {
+        var s_Physics = new HavokPhysicsData(new RimeReader(new MemoryStream(p_Resource)));
+        var s_Root = HkPhysicsBuilder.Build(p_Shapes);
+        s_Physics.HavokInstance32 = HkPackfile.Write(s_Root, 4);
+        s_Physics.HavokInstance64 = HkPackfile.Write(s_Root, 8);
+
+        if (!s_Physics.Serialize(out var s_Data))
+            throw new InvalidDataException("The physics resource could not be written.");
+        return s_Data;
+    }
+
     public IReadOnlyList<string> CheckMopps(byte[] p_Resource, out int p_Trees)
     {
         var s_Physics = new HavokPhysicsData(new RimeReader(new MemoryStream(p_Resource)));
@@ -33,16 +45,10 @@ public class HavokObjectModel : IHavokObjectModel
 
         foreach (var s_Tree in Trees(s_Root))
         {
-            if (s_Tree is not { Code: { } s_Code, Child: HkpListShape s_List })
+            if (s_Tree.Code is not { } s_Code || Primitives(s_Tree.Child) is not { } s_Primitives)
                 continue;
 
             ++p_Trees;
-            var s_Primitives = s_List.Children
-                .Select((p_Child, p_Index) => (p_Index, Bounds: p_Child.Shape is { } s_Shape ? HkShapeBounds.Of(s_Shape) : null))
-                .Where(p_C => p_C.Bounds != null)
-                .Select(p_C => new MoppPrimitive((uint)p_C.p_Index, p_C.Bounds!.Value.Min, p_C.Bounds.Value.Max))
-                .ToList();
-
             Check("BF3's", s_Code.Offset, s_Code.Instructions, s_Primitives, s_Misses);
             if (s_Primitives.Count > 0)
             {
@@ -52,6 +58,29 @@ public class HavokObjectModel : IHavokObjectModel
         }
 
         return s_Misses;
+    }
+
+    /// <summary>
+    /// The keys and bounds a MOPP is over that can be bounded: a list's children, or a compressed
+    /// mesh's big triangles, whose keys are their indices.
+    /// </summary>
+    private static List<MoppPrimitive>? Primitives(HkpShape? p_Child)
+    {
+        switch (p_Child)
+        {
+            case HkpListShape s_List:
+                return s_List.Children
+                    .Select((p_Child, p_Index) => (p_Index, Bounds: p_Child.Shape is { } s_Shape ? HkShapeBounds.Of(s_Shape) : null))
+                    .Where(p_C => p_C.Bounds != null)
+                    .Select(p_C => new MoppPrimitive((uint)p_C.p_Index, p_C.Bounds!.Value.Min, p_C.Bounds.Value.Max))
+                    .ToList();
+
+            case HkpCompressedMeshShape s_Mesh:
+                return HkShapeBounds.OfBigTriangles(s_Mesh);
+
+            default:
+                return null;
+        }
     }
 
     private static void Check(string p_Whose, Vector4 p_Offset, IReadOnlyList<MoppInstruction> p_Code, List<MoppPrimitive> p_Primitives, List<string> p_Misses)

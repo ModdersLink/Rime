@@ -9,7 +9,7 @@ using RimeLib.Havok;
 
 namespace RimeLib.Cmd.Commands.Game
 {
-    [CommandDescription("Writes each mounted physics resource's packfiles again from their Havok objects and compares the bytes, counting the resources with classes the object model lacks apart, and queries each MOPP over a list shape, and one Rime builds over the same children, with each child's bounds.")]
+    [CommandDescription("Writes each mounted physics resource's packfiles again from their Havok objects and compares the bytes, counting the resources with classes the object model lacks apart, and queries each MOPP, and one Rime builds over the same keys, with the bounds of each list child or big triangle it is over.")]
     public class RoundTripHavokObjectsCommand : Command
     {
         [CommandArgument(Description = "How many differing resources to list.", Optional = true)]
@@ -74,7 +74,7 @@ namespace RimeLib.Cmd.Commands.Game
 
             foreach (var s_Line in s_MoppMisses.Take(List))
                 p_Writer.WriteLine($"  {s_Line}");
-            p_Writer.WriteLine($"{s_Trees} MOPP(s) over list shapes queried with each child's bounds, BF3's and Rime's own over the same children: {s_MoppMisses.Count} child(ren) not found.");
+            p_Writer.WriteLine($"{s_Trees} MOPP(s) queried with the bounds of each list child or big triangle, BF3's and Rime's own over the same keys: {s_MoppMisses.Count} key(s) not found.");
 
             var s_Modelled = s_Total - s_Unmodelled.Values.Sum();
             p_Writer.WriteLine($"round_trip_havok_objects: {s_Same}/{s_Modelled} modelled physics resource(s) written byte for byte, {s_Total - s_Modelled} of {s_Total} with classes not modelled.");

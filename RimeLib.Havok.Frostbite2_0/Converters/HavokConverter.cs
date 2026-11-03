@@ -1,9 +1,11 @@
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Numerics;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Havok.Frostbite2_0.Frostbite;
+using RimeLib.IO;
 
 namespace RimeLib.Havok.Frostbite2_0.Converters;
 
@@ -18,10 +20,13 @@ public class HavokConverter : IHavokConverter, IHavokMaterials
     /// <summary>How this engine's Havok lays its shapes out.</summary>
     protected virtual ShapeReader CreateShapeReader() => new();
 
+    /// <summary>The resource read from a copy in memory, which its packfiles' readers go on reading after this returns.</summary>
     private HavokPhysicsData Read(IResourceObject p_Resource)
     {
-        using var s_Reader = p_Resource.GetReader();
-        return new HavokPhysicsData(s_Reader);
+        byte[] s_Data;
+        using (var s_Reader = p_Resource.GetReader())
+            s_Data = s_Reader.ReadBytes((int)s_Reader.Length);
+        return new HavokPhysicsData(new RimeReader(new MemoryStream(s_Data)));
     }
 
     public IEnumerable<hkpTransform> GetTransforms(IResourceObject p_Resource, IEngineMounter p_Mounter) => Read(p_Resource).GetTransforms();

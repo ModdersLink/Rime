@@ -1,9 +1,12 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
+using RimeLib.Havok.Frostbite2_0.Mopp;
 
 namespace RimeLib.Havok.Frostbite2_0.Packfile;
 
-/// <summary>The bounding boxes of convex shapes and lists of them, their convex radius included.</summary>
+/// <summary>The bounding boxes of convex shapes, meshes and lists of them, their convex radius included.</summary>
 public static class HkShapeBounds
 {
     /// <summary>The shape's bounds, or none for a shape this cannot bound.</summary>
@@ -19,8 +22,21 @@ public static class HkShapeBounds
             : null,
         HkpConvexTransformShape { Child: { } s_Child } s_Transform => Of(s_Child) is { } s_Bounds ? Transformed(s_Bounds, s_Transform) : null,
         HkpListShape s_List => Around(Xyz(s_List.AabbCenter), Xyz(s_List.AabbHalfExtents)),
+        HkpCompressedMeshShape s_Mesh => Grow((Xyz(s_Mesh.BoundsMin), Xyz(s_Mesh.BoundsMax)), s_Mesh.Radius),
+        HkpMoppBvTreeShape { Child: { } s_Child } => Of(s_Child),
         _ => null,
     };
+
+    /// <summary>A compressed mesh's big triangles as a MOPP finds them: keyed by their index, with their bounds.</summary>
+    public static List<MoppPrimitive> OfBigTriangles(HkpCompressedMeshShape p_Mesh)
+    {
+        Vector3 At(int p_Index) => Xyz(p_Mesh.BigVertices[p_Index]);
+        return p_Mesh.BigTriangles.Select((p_T, p_Key) =>
+        {
+            var (s_A, s_B, s_C) = (At(p_T.A), At(p_T.B), At(p_T.C));
+            return new MoppPrimitive((uint)p_Key, Vector3.Min(s_A, Vector3.Min(s_B, s_C)), Vector3.Max(s_A, Vector3.Max(s_B, s_C)));
+        }).ToList();
+    }
 
     private static Vector3 Xyz(Vector4 p_Vector) => new(p_Vector.X, p_Vector.Y, p_Vector.Z);
 

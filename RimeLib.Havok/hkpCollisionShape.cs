@@ -86,4 +86,10 @@ public class hkpCollisionShape
     /// of them apart.
     /// </summary>
     public long PlacementOffset { get; set; }
+
+    /// <summary>Which of the physics container's shapes the leaf is under.</summary>
+    public int Root { get; set; }
+
+    /// <summary>The leaf's hkpShape user data, as the game stores it.</summary>
+    public uint UserData { get; set; }
 }

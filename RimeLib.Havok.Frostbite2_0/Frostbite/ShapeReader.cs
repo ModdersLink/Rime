@@ -53,6 +53,9 @@ public class ShapeReader
     protected virtual int PlanesOffset => 80;
     protected virtual int ConnectivityOffset => 92;
 
+    /// <summary>Where hkpShape's user data sits: after the object header, and in Havok 2012 after the type bytes too.</summary>
+    public virtual int UserDataOffset => 8;
+
     // hkpStorageExtendedMeshShapeMeshSubpartStorage. Its hkArrays start at +8 with a 12-byte
     // stride (pointer, size, capacity), and the payloads sit inline after a 112-byte header.
     private const int c_SubpartVerticesSlot = 8;
