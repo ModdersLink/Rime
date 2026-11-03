@@ -165,4 +165,15 @@ public class PartitionConversionTest
         Assert.True(s_Mesh.Materials[1].IsNull());
         Assert.Equal(1, s_Conversion.Report.UnshippedReferences["RigidMeshAsset.Materials"]);
     }
+
+    [Fact]
+    public void RewritesStringsAndThePartitionsName()
+    {
+        var s_Conversion = new PartitionConversion(new EbxTypeLibrary()) { Strings = p_S => p_S.Replace("objects/crate/", "props/") };
+
+        var s_Partition = s_Conversion.Convert(Bf4Mesh());
+
+        Assert.Equal("props/crate_mesh", s_Partition.Name);
+        Assert.Equal("props/crate_mesh", ((fb.RigidMeshAsset)s_Partition.PrimaryInstance).Name);
+    }
 }

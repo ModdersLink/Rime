@@ -45,6 +45,12 @@ public sealed class PartitionConversion
     /// </summary>
     public IReadOnlySet<GUID>? ShippedPartitions { get; set; }
 
+    /// <summary>
+    /// What each string, and each partition's name, becomes in the target, if not itself: to move
+    /// content under another name, say.
+    /// </summary>
+    public Func<string, string>? Strings { get; set; }
+
     public PartitionConversion(IEbxTypeLibrary p_Target, ConversionRules? p_Rules = null, IDerivedFields? p_Derived = null)
     {
         m_Target = p_Target;
@@ -110,7 +116,7 @@ public sealed class PartitionConversion
         var s_Primary = PrimaryGuid(p_Source, s_Partition);
         var s_Kept = Reached(s_Converted, s_Partition, s_Primary);
         Report.ConvertedInstances += s_Converted.Values.Count(s_Kept.Contains);
-        var s_Result = m_Target.CreatePartition(p_Source.Name, p_Source.PartitionGuid, s_Primary,
+        var s_Result = m_Target.CreatePartition(Strings?.Invoke(p_Source.Name) ?? p_Source.Name, p_Source.PartitionGuid, s_Primary,
             s_Converted.Values.Concat(s_Partition.Inlined).Where(s_Kept.Contains).ToList());
         m_Derived?.Derive(s_Result, Report);
         return s_Result;
@@ -338,6 +344,10 @@ public sealed class PartitionConversion
             case EbxSerializable:
                 p_Reason = $"{TypeName(p_Value.GetType())} to {TypeName(p_Type)}";
                 return false;
+
+            case string s_String when p_Type == typeof(string):
+                p_Result = Strings?.Invoke(s_String) ?? s_String;
+                return true;
 
             case IConvertible when p_Type.IsInstanceOfType(p_Value):
             case GUID when p_Type == typeof(GUID):
