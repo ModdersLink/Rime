@@ -83,9 +83,11 @@ public class ConversionRulesTest
     [Fact]
     public void AlignsQuadsByTheirType()
     {
-        var s_Partition = Conversion().Convert(Emitter());
+        var s_Conversion = Conversion();
+        var s_Partition = s_Conversion.Convert(Emitter());
 
         Assert.Equal(fb.EmittableType.DirectionAlignedQuad, ((fb.EmitterTemplateData)s_Partition.PrimaryInstance).EmittableType);
+        Assert.DoesNotContain("EmitterTemplateData.EmittableAlignment", s_Conversion.Report.DroppedFields.Keys);
         Assert.True(s_Partition.Instances.OfType<fb.SpawnSizeData>().Single().Enable);
     }
 
@@ -206,5 +208,15 @@ public class ConversionRulesTest
         Assert.False(s_Converted.AlwaysCreateEntityBusClient);
         Assert.True(s_Converted.AlwaysCreateEntityBusServer);
         Assert.Equal(s_Partition.Instances.OfType<fb.InterfaceDescriptorData>().Single().InstanceId, s_Converted.Descriptor.InstanceId);
+    }
+
+    [Fact]
+    public void NamesTheTargetsGameConfiguration()
+    {
+        var s_Level = new fb.GameShared.LevelData { InstanceId = new DataContainerId.Guid(s_Primary), GameConfigurationName = "gameconfigurations/warsaw" };
+
+        var s_Converted = (fb.LevelData)Conversion().Convert(Partition(s_Level)).PrimaryInstance;
+
+        Assert.Equal("gameconfigurations/game", s_Converted.GameConfigurationName);
     }
 }

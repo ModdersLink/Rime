@@ -29,7 +29,12 @@ public class ConversionRules : IConversionRules
             [("EffectEntityData", "MaxInstanceCount")] = new("MaxActiveInstanceCount.High"),
             // Frostbite 2 names the parameters of fx/globaleffectparameterlist its parameter does.
             [("EvaluatorData", "EmitterParameter")] = new("Parameter.Name"),
-            [("EmitterTemplateData", "EmittableType")] = new("", p_Template => Emittables((EmitterTemplateData)p_Template)),
+            [("EmitterTemplateData", "EmittableType")] = new("", p_Template => Emittables((EmitterTemplateData)p_Template))
+            {
+                Reads = ["EmittableType", "EmittableAlignment"],
+            },
+            // Frostbite 2's game configuration, which a level names.
+            [("LevelData", "GameConfigurationName")] = new("", _ => "gameconfigurations/game") { Reads = ["GameConfigurationName"] },
             // Processors here have no switch to turn them off.
             [("ProcessorData", "Enable")] = new("", _ => true),
             [("DataBusData", "Descriptor")] = new("Interface"),
