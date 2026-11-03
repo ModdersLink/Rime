@@ -25,6 +25,18 @@ public class ConversionRules : IConversionRules
             // Where Frostbite 2 references the shader alone, as decal templates do.
             ["SurfaceShaderInstanceDataStruct"] = "Shader",
         },
+        // Each such resource is named after the asset's partition, which is how Frostbite 2 finds it;
+        // a GroupHavokAsset's is not.
+        NamedResources = new HashSet<string>
+        {
+            "RigidMeshAsset.MeshSetResource",
+            "SkinnedMeshAsset.MeshSetResource",
+            "CompositeMeshAsset.MeshSetResource",
+            "TextureAsset.Resource",
+            "HavokAsset.Resource",
+            "EnlightenShaderDatabaseAsset.DatabaseResource",
+            "TerrainData.VisualResource",
+        },
     };
 
     public EngineType[] GetSupportedEngines() => [EngineType.Frostbite2013_2];

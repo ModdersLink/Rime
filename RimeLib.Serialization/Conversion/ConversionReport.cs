@@ -13,6 +13,9 @@ public sealed class ConversionReport
     /// <summary>Values other than the default in a field the target type does not have, by type and field.</summary>
     public SortedDictionary<string, int> DroppedFields { get; } = new();
 
+    /// <summary>Resource references the target makes by the partition's name instead, by type and field.</summary>
+    public SortedDictionary<string, int> NamedResources { get; } = new();
+
     /// <summary>Values the target field cannot hold, by type, field and why.</summary>
     public SortedDictionary<string, int> UnconvertedValues { get; } = new();
 
@@ -37,6 +40,7 @@ public sealed class ConversionReport
         p_Writer.WriteLine($"{ConvertedInstances}/{Instances} instance(s) converted.");
         Write(p_Writer, "Types the target does not have", DroppedTypes, p_Top);
         Write(p_Writer, "Fields the target does not have, with a value set", DroppedFields, p_Top);
+        Write(p_Writer, "Resources the target finds by the partition's name instead", NamedResources, p_Top);
         Write(p_Writer, "Values the target field cannot hold", UnconvertedValues, p_Top);
         Write(p_Writer, "References to a dropped instance", DroppedReferences, p_Top);
         Write(p_Writer, "Structs made instances, as the target references them", StructsMadeInstances, p_Top);
