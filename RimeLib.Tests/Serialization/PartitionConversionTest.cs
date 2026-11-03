@@ -139,4 +139,14 @@ public class PartitionConversionTest
         Assert.Equal(3, ((fb.EmitterEntityData)s_Converted.PrimaryInstance).CullDistance);
         Assert.Equal(1, s_Conversion.Report.Unwrapped["EmitterEntityData.CullDistance: QualityScalableFloat.High"]);
     }
+
+    [Fact]
+    public void CountsResourcesTheTargetFindsByNameApart()
+    {
+        var s_Conversion = new PartitionConversion(new EbxTypeLibrary(), new RimeLib.Serialization.Frostbite2013_2.ConversionRules().For(RimeLib.Frostbite.EngineType.Frostbite2_0));
+        s_Conversion.Convert(Bf4Mesh());
+
+        Assert.Equal(1, s_Conversion.Report.NamedResources["RigidMeshAsset.MeshSetResource"]);
+        Assert.DoesNotContain("RigidMeshAsset.MeshSetResource", s_Conversion.Report.DroppedFields.Keys);
+    }
 }

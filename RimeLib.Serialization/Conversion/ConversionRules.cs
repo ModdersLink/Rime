@@ -14,6 +14,12 @@ public sealed class ConversionRules
     /// field. The other fields are dropped.
     /// </summary>
     public IReadOnlyDictionary<string, string> Unwrap { get; init; } = new Dictionary<string, string>();
+
+    /// <summary>
+    /// Resource references, by type and field, that the target has no field for because it finds
+    /// the resource by the partition's name, which the source's resource has.
+    /// </summary>
+    public IReadOnlySet<string> NamedResources { get; init; } = new HashSet<string>();
 }
 
 /// <summary>An engine's rules for converting its partitions to other engines.</summary>

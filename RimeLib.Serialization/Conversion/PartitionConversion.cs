@@ -109,8 +109,9 @@ public sealed class PartitionConversion
             var s_Field = $"{s_SourceType.Name}.{s_From.Name}";
             if (s_To == null)
             {
-                if (!IsDefault(s_Value, s_From.GetValue(Default(s_SourceType))))
-                    ConversionReport.Count(Report.DroppedFields, s_Field);
+                if (IsDefault(s_Value, s_From.GetValue(Default(s_SourceType))))
+                    continue;
+                ConversionReport.Count(m_Rules.NamedResources.Contains(s_Field) ? Report.NamedResources : Report.DroppedFields, s_Field);
                 continue;
             }
 
