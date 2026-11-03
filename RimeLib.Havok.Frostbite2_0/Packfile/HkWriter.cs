@@ -20,7 +20,12 @@ public sealed class HkWriter
     private readonly Dictionary<HkObject, int> m_Offsets = new(ReferenceEqualityComparer.Instance);
 
     private Queue<Action> m_Blocks = new();
-    private List<HkObject> m_Children = [];
+    /// <summary>
+    /// The pointers of the object being written, where each is and what it points to, in member
+    /// order: an array's elements' are a group in the array's place, filled when its data is
+    /// written. Havok lists the global fixups, and writes the objects reached, in this order.
+    /// </summary>
+    private List<object> m_Children = [];
     private int m_Alignment;
 
     public int PointerSize { get; }
@@ -62,15 +67,38 @@ public sealed class HkWriter
         p_Object.Write(this);
         Pad(m_Alignment);
 
-        while (m_Blocks.TryDequeue(out var s_Block))
-            s_Block();
+        // The object's data starts 16-aligned; each block of it is padded to 16 after its own data.
+        if (m_Blocks.Count > 0)
+            Pad(16);
+        DrainBlocks();
         Pad(16);
 
-        var s_Reached = m_Children;
+        var s_Pointers = Flattened(m_Children);
+        GlobalFixups.AddRange(s_Pointers);
         (m_Blocks, m_Children, m_Alignment) = (s_Blocks, s_Children, s_Alignment);
 
-        foreach (var s_Child in s_Reached)
+        foreach (var (_, s_Child) in s_Pointers)
             WriteTree(s_Child);
+    }
+
+    private void DrainBlocks()
+    {
+        while (m_Blocks.TryDequeue(out var s_Block))
+            s_Block();
+    }
+
+    private static List<(int Source, HkObject Target)> Flattened(List<object> p_Children)
+    {
+        var s_Pointers = new List<(int, HkObject)>();
+        foreach (var s_Child in p_Children)
+        {
+            if (s_Child is ValueTuple<int, HkObject> s_Pointer)
+                s_Pointers.Add(s_Pointer);
+            else
+                s_Pointers.AddRange(Flattened((List<object>)s_Child));
+        }
+
+        return s_Pointers;
     }
 
     /// <summary>Aligns the next member to <paramref name="p_Alignment"/> within the object.</summary>
@@ -144,10 +172,7 @@ public sealed class HkWriter
     {
         Align(PointerSize);
         if (p_Object != null)
-        {
-            GlobalFixups.Add((Position, p_Object));
-            m_Children.Add(p_Object);
-        }
+            m_Children.Add((Position, p_Object));
 
         WritePointerSlot();
     }
@@ -172,8 +197,8 @@ public sealed class HkWriter
 
     /// <summary>
     /// An hkArray: its pointer, size and capacity with the flag that the packfile owns the memory,
-    /// and its elements, written 16-aligned after the object, each padded to
-    /// <paramref name="p_ElementAlignment"/>.
+    /// and its elements, written after the object's data so far, each padded to
+    /// <paramref name="p_ElementAlignment"/>, then what they point to, then padding to 16.
     /// </summary>
     public void WriteArray<T>(IReadOnlyList<T> p_Items, int p_ElementAlignment, Action<HkWriter, T> p_WriteElement)
     {
@@ -186,15 +211,23 @@ public sealed class HkWriter
         if (p_Items.Count == 0)
             return;
 
+        var s_Group = new List<object>();
+        m_Children.Add(s_Group);
         m_Blocks.Enqueue(() =>
         {
-            Pad(16);
+            var (s_OuterChildren, s_OuterBlocks) = (m_Children, m_Blocks);
+            (m_Children, m_Blocks) = (s_Group, new Queue<Action>());
             LocalFixups.Add((s_Slot, Position));
             foreach (var s_Item in p_Items)
             {
                 p_WriteElement(this, s_Item);
                 Pad(p_ElementAlignment);
             }
+
+            // What the elements point to follows them, before the array's padding.
+            DrainBlocks();
+            Pad(16);
+            (m_Children, m_Blocks) = (s_OuterChildren, s_OuterBlocks);
         });
     }
 

@@ -24,6 +24,12 @@ public enum MoppOpcode : byte
     Term8 = 0x50, Term16 = 0x51, Term24 = 0x52, Term32 = 0x53,
     Property8 = 0x60, Property8Last = 0x63, Property16 = 0x64, Property16Last = 0x67, Property32 = 0x68, Property32Last = 0x6B,
     JumpChunk32 = 0x70,
+
+    /// <summary>
+    /// Not a command: the builder's uninitialised fill between a chunked MOPP's chunks and after its
+    /// code, which no jump reaches. Its one operand is how many bytes of it there are.
+    /// </summary>
+    Fill = 0xCD,
 }
 
 /// <summary>
@@ -54,10 +60,11 @@ public sealed record MoppInstruction(byte Opcode, IReadOnlyList<uint> Operands)
         >= (byte)MoppOpcode.Property8 and <= (byte)MoppOpcode.Property8Last => [1],
         >= (byte)MoppOpcode.Property16 and <= (byte)MoppOpcode.Property16Last => [2],
         >= (byte)MoppOpcode.Property32 and <= (byte)MoppOpcode.Property32Last => [4],
+        (byte)MoppOpcode.JumpChunk32 => [4],
         _ => null,
     };
 
-    /// <summary>The commands of a MOPP's byte code, in order.</summary>
+    /// <summary>The commands of a MOPP's byte code, in order, with each run of the builder's fill as one <see cref="MoppOpcode.Fill"/>.</summary>
     public static List<MoppInstruction> Decode(IReadOnlyList<byte> p_Code)
     {
         var s_Bytes = new byte[p_Code.Count];
@@ -68,6 +75,17 @@ public sealed record MoppInstruction(byte Opcode, IReadOnlyList<uint> Operands)
         var s_Instructions = new List<MoppInstruction>();
         while (s_Reader.Position < s_Reader.Length)
         {
+            var s_At = (int)s_Reader.Position;
+            if (s_Bytes[s_At] == (byte)MoppOpcode.Fill)
+            {
+                var s_End = s_At;
+                while (s_End < s_Bytes.Length && s_Bytes[s_End] == (byte)MoppOpcode.Fill)
+                    ++s_End;
+                s_Instructions.Add(new MoppInstruction((byte)MoppOpcode.Fill, [(uint)(s_End - s_At)]));
+                s_Reader.Seek(s_End, SeekOrigin.Begin);
+                continue;
+            }
+
             var s_Opcode = s_Reader.ReadUByte();
             var s_Widths = OperandWidths(s_Opcode)
                 ?? throw new NotSupportedException($"MOPP command 0x{s_Opcode:X2} is not modelled.");
@@ -88,6 +106,13 @@ public sealed record MoppInstruction(byte Opcode, IReadOnlyList<uint> Operands)
         {
             foreach (var s_Instruction in p_Instructions)
             {
+                if (s_Instruction.Opcode == (byte)MoppOpcode.Fill)
+                {
+                    for (var i = 0; i < s_Instruction.Operands[0]; ++i)
+                        s_Writer.Write((byte)MoppOpcode.Fill);
+                    continue;
+                }
+
                 var s_Widths = OperandWidths(s_Instruction.Opcode)
                     ?? throw new NotSupportedException($"MOPP command 0x{s_Instruction.Opcode:X2} is not modelled.");
                 if (s_Widths.Length != s_Instruction.Operands.Count)
@@ -103,7 +128,7 @@ public sealed record MoppInstruction(byte Opcode, IReadOnlyList<uint> Operands)
     }
 
     /// <summary>The instruction's size in bytes: the command and its operands.</summary>
-    public int Size => 1 + (OperandWidths(Opcode) is { } s_Widths ? Sum(s_Widths) : 0);
+    public int Size => Opcode == (byte)MoppOpcode.Fill ? (int)Operands[0] : 1 + (OperandWidths(Opcode) is { } s_Widths ? Sum(s_Widths) : 0);
 
     private static int Sum(int[] p_Values)
     {

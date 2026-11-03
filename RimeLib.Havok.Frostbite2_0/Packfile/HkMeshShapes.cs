@@ -13,6 +13,7 @@ public sealed class HkpMoppCode : HkObject
     /// <summary>Where the tree's integer space starts, and in w the scale from it to the shape's.</summary>
     public Vector4 Offset { get; set; }
     public List<MoppInstruction> Instructions { get; set; } = [];
+
     public sbyte BuildType { get; set; }
 
     internal override void Write(HkWriter p_Writer)

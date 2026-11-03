@@ -80,6 +80,11 @@ public sealed class MoppQuery
                     p_Byte = s_Next + (int)s_Args[0];
                     break;
 
+                // A chunked MOPP's jump to the chunk at an offset in the code.
+                case (byte)MoppOpcode.JumpChunk32:
+                    p_Byte = (int)s_Args[0];
+                    break;
+
                 case (byte)MoppOpcode.TermReoffset8 or (byte)MoppOpcode.TermReoffset16:
                     s_TermOffset += s_Args[0];
                     p_Byte = s_Next;
