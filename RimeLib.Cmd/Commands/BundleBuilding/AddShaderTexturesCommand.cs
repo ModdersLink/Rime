@@ -108,12 +108,13 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 .Where(p_T => !s_BundleContext.GetPartitions().ContainsKey(p_T) && !s_Siblings.Contains(p_T) && s_Mounter.TryGetPartition(p_T, out _))
                 .Distinct().OrderBy(p_T => p_T, StringComparer.Ordinal).ToList();
 
-            foreach (var s_Texture in s_Textures)
+            if (PartitionClosure.Create((BundleBuildingContext)p_Context, Id, [], TextWriter.Null) is not { } s_Adder)
             {
-                var s_Reference = new ReferenceExistingPartitionCommand { Name = s_Texture, Id = Id, Strict = false };
-                var s_Context = p_Context;
-                s_Reference.Execute(ref s_Context, TextWriter.Null);
+                p_Writer.WriteLine($"No game {Id} of this bundle's engine is mounted to add their closure from.");
+                return false;
             }
+
+            s_Adder.AddAll(s_Textures, p_Writer);
 
             p_Writer.WriteLine($"{s_Shaders.Count} shader(s) of '{Name}' used by the bundle; {s_Textures.Count} texture(s) they bind not in the bundle, added unless a dependency carries them.");
             return true;

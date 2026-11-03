@@ -104,12 +104,13 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             // those, unless the engine keeps every shader with the database.
             var s_ToAdd = s_Shaders.Except(s_Missing).Except(s_Builder.ShipsEveryShader ? Enumerable.Empty<string>() : s_Others)
                 .Where(p_N => !s_Partitions.Contains(p_N)).ToList();
-            foreach (var s_Shader in s_ToAdd)
+            if (PartitionClosure.Create((BundleBuildingContext)p_Context, Id, [], TextWriter.Null) is not { } s_Adder)
             {
-                var s_Reference = new ReferenceExistingPartitionCommand { Name = s_Shader, Id = Id, Strict = false };
-                var s_Context = p_Context;
-                s_Reference.Execute(ref s_Context, TextWriter.Null);
+                p_Writer.WriteLine($"No game {Id} of this bundle's engine is mounted to add their closure from.");
+                return false;
             }
+
+            s_Adder.AddAll(s_ToAdd, p_Writer);
 
             p_Writer.WriteLine($"Built '{s_Name}' ({s_Data.Length} bytes); added {s_ToAdd.Count} shader partition(s) it names, with their closure.");
 

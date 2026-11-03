@@ -53,12 +53,13 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 .Where(p_N => !s_BundleContext.GetPartitions().ContainsKey(p_N))
                 .OrderBy(p_N => p_N, StringComparer.Ordinal).ToList();
 
-            foreach (var s_Name in s_Hoisted)
+            if (PartitionClosure.Create((BundleBuildingContext)p_Context, Id, [], TextWriter.Null) is not { } s_Adder)
             {
-                var s_Reference = new ReferenceExistingPartitionCommand { Name = s_Name, Id = Id, Strict = false };
-                var s_Context = p_Context;
-                s_Reference.Execute(ref s_Context, TextWriter.Null);
+                p_Writer.WriteLine($"No game {Id} of this bundle's engine is mounted to add their closure from.");
+                return false;
             }
+
+            s_Adder.AddAll(s_Hoisted, p_Writer);
 
             p_Writer.WriteLine($"{s_Hoisted.Count} partition(s) of '{Partition}' matching '{Types}' not yet in the bundle, added unless a dependency carries them.");
             return true;
