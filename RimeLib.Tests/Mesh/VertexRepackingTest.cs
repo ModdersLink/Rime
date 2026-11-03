@@ -124,4 +124,17 @@ public class VertexRepackingTest
         using var s_Reader = new RimeReader(new MemoryStream(s_Data, false));
         Assert.Equal(p_Value, VertexFormats.Read(p_Format, s_Reader).X, 0.01f);
     }
+
+    [Fact]
+    public void ChoosesTheLayoutThatLeavesFewestElementsWithoutASource()
+    {
+        var s_PosOnly = new VertexLayout([new VertexElement(VertexUsage.Pos, VertexFormat.Half4, 0, 0)], 8);
+        var s_WithColor = new VertexLayout([.. s_Half.Elements, new VertexElement(VertexUsage.Color0, VertexFormat.UByte4N, 12, 0)], 16);
+
+        // s_WithColor's color would be zero; s_PosOnly drops the texture coordinates; s_Float has a normal the subset lacks.
+        Assert.Equal(s_PosOnly, VertexLayoutChoice.Closest(s_Half, [s_WithColor, s_PosOnly, s_Float]));
+        // Equal on what is missing and dropped: the one converting fewer formats.
+        Assert.Equal(s_Half, VertexLayoutChoice.Closest(s_Half, [s_Float with { Elements = s_Float.Elements.Take(2).ToList(), Stride = 20 }, s_Half]));
+        Assert.Null(VertexLayoutChoice.Closest(s_Half, []));
+    }
 }
