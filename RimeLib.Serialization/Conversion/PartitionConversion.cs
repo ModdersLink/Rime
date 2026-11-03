@@ -39,6 +39,12 @@ public sealed class PartitionConversion
     /// </summary>
     public Func<GUID, DatabasePartitionBase?>? SourcePartitions { get; set; }
 
+    /// <summary>
+    /// The partitions the target ships, if it ships only some: a reference to another partition is
+    /// left null and counted, as the target could not resolve it.
+    /// </summary>
+    public IReadOnlySet<GUID>? ShippedPartitions { get; set; }
+
     public PartitionConversion(IEbxTypeLibrary p_Target, ConversionRules? p_Rules = null, IDerivedFields? p_Derived = null)
     {
         m_Target = p_Target;
@@ -378,6 +384,12 @@ public sealed class PartitionConversion
         if (p_Ref.PartitionGuid == p_Scope.Partition && !p_Scope.Converted.Contains(p_Ref.InstanceId))
         {
             ConversionReport.Count(Report.DroppedReferences, p_Field);
+            return null;
+        }
+
+        if (p_Ref.PartitionGuid != p_Scope.Partition && ShippedPartitions?.Contains(p_Ref.PartitionGuid) == false)
+        {
+            ConversionReport.Count(Report.UnshippedReferences, p_Field);
             return null;
         }
 
