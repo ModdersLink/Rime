@@ -111,6 +111,12 @@ public sealed class PartitionConversion
     }
 
     /// <summary>
+    /// Sets the target's fields that depend on other partitions, once the partitions converted
+    /// together (a level's, say) are.
+    /// </summary>
+    public void DeriveAcross(IReadOnlyCollection<DatabasePartitionBase> p_Converted) => m_Derived?.DeriveAcross(p_Converted, Report);
+
+    /// <summary>
     /// The partition being converted, its instances by id, the ids of those that convert and the
     /// instances made of structs.
     /// </summary>

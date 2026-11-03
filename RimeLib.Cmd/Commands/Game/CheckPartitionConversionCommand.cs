@@ -45,7 +45,16 @@ namespace RimeLib.Cmd.Commands.Game
             var s_Names = s_Source.TryGetPartition(s_Name, out _) ? [s_Name] : s_Source.GetPartitionsInBundle(Name).ToList();
 
             var s_Failures = new Dictionary<string, List<string>>(StringComparer.Ordinal);
-            var s_Converted = 0;
+            void Fail(string p_Partition, Exception p_Ex)
+            {
+                var s_Reason = p_Ex.Message.Split('\n')[0];
+                if (!s_Failures.TryGetValue(s_Reason, out var s_List))
+                    s_Failures[s_Reason] = s_List = new List<string>();
+                s_List.Add(p_Partition);
+            }
+
+            // Converted all before any is written, as some fields depend on other partitions.
+            var s_Partitions = new List<(string Name, DatabasePartitionBase Original, DatabasePartitionBase Converted)>();
             foreach (var s_Partition in s_Names)
             {
                 if (!s_Source.TryGetPartition(s_Partition.ToLowerInvariant(), out var s_Mounted))
@@ -54,7 +63,22 @@ namespace RimeLib.Cmd.Commands.Game
                 try
                 {
                     var s_Original = s_Reader.FromPartitionObject(s_Partition, s_Mounted.FirstVariant);
-                    var s_Written = Write(s_TargetWriter, s_Conversion.Convert(s_Original));
+                    s_Partitions.Add((s_Partition, s_Original, s_Conversion.Convert(s_Original)));
+                }
+                catch (Exception s_Ex) when (IsConversionFailure(s_Ex))
+                {
+                    Fail(s_Partition, s_Ex);
+                }
+            }
+
+            s_Conversion.DeriveAcross(s_Partitions.Select(p_P => p_P.Converted).ToList());
+
+            var s_Converted = 0;
+            foreach (var (s_Partition, s_Original, s_Result) in s_Partitions)
+            {
+                try
+                {
+                    var s_Written = Write(s_TargetWriter, s_Result);
                     var s_Read = s_TargetReader.FromPartitionObject(s_Partition,
                         new BundlePartitionVariant(new SbBuildingContext.MemoryReader(s_Written), Name));
                     if (!Write(s_TargetWriter, s_Read).AsSpan().SequenceEqual(s_Written))
@@ -63,12 +87,9 @@ namespace RimeLib.Cmd.Commands.Game
                         throw new InvalidDataException("converted to its own engine, written differently than the source");
                     s_Converted++;
                 }
-                catch (Exception s_Ex) when (s_Ex is InvalidDataException or NotSupportedException or ArgumentException or InvalidCastException)
+                catch (Exception s_Ex) when (IsConversionFailure(s_Ex))
                 {
-                    var s_Reason = s_Ex.Message.Split('\n')[0];
-                    if (!s_Failures.TryGetValue(s_Reason, out var s_List))
-                        s_Failures[s_Reason] = s_List = new List<string>();
-                    s_List.Add(s_Partition);
+                    Fail(s_Partition, s_Ex);
                 }
             }
 
@@ -83,6 +104,9 @@ namespace RimeLib.Cmd.Commands.Game
             p_Writer.WriteLine($"check_partition_conversion: {s_Converted}/{s_Names.Count} partition(s) converted to {s_Target.GetEngineType()}.");
             return s_Converted == s_Names.Count;
         }
+
+        private static bool IsConversionFailure(Exception p_Ex) =>
+            p_Ex is InvalidDataException or NotSupportedException or ArgumentException or InvalidCastException;
 
         private static byte[] Write(IPartitionGenerator p_Writer, DatabasePartitionBase p_Partition)
         {

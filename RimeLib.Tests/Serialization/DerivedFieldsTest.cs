@@ -105,6 +105,63 @@ public class DerivedFieldsTest
         Assert.Equal(1, s_Conversion.Report.Underived["GameEntityData.RuntimeComponentCount: a component in another partition"]);
     }
 
+    /// <summary>A partition of a prefab blueprint of these objects, BF4's way: the blueprint has the GUID.</summary>
+    private static Bf4 Prefab(GUID p_Guid, fb.Entity.PrefabBlueprint p_Blueprint, params fb.Entity.GameObjectData[] p_Objects)
+    {
+        var s_Partition4 = new Bf4 { Name = $"levels/test/{p_Guid}", PartitionGuid = p_Guid, PrimaryInstanceGuid = p_Guid };
+        p_Blueprint.InstanceId = new DataContainerId.Guid(p_Guid);
+        s_Partition4.InstanceMap.Add(p_Blueprint.InstanceId, p_Blueprint);
+        for (var i = 0; i < p_Objects.Length; i++)
+        {
+            p_Objects[i].InstanceId = new DataContainerId.Index(i + 1);
+            s_Partition4.InstanceMap.Add(p_Objects[i].InstanceId, p_Objects[i]);
+            p_Blueprint.Objects.AddRef(new CtrRefBase(p_Guid, p_Objects[i].InstanceId));
+        }
+
+        return s_Partition4;
+    }
+
+    [Fact]
+    public void NumbersALevelsLayersAfterItsObjectsInTheOrderItReferencesThem()
+    {
+        var s_First = new GUID(Guid.Parse("00000000-0000-0000-0000-000000001000"));
+        var s_Second = new GUID(Guid.Parse("00000000-0000-0000-0000-000000002000"));
+        var s_Level = new GUID(Guid.Parse("00000000-0000-0000-0000-000000003000"));
+        // The level references the second layer before the first.
+        var s_ToSecond = new fb.Entity.WorldPartReferenceObjectData();
+        s_ToSecond.Blueprint.SetValue(s_Second, new DataContainerId.Guid(s_Second));
+        var s_ToFirst = new fb.Entity.WorldPartReferenceObjectData();
+        s_ToFirst.Blueprint.SetValue(s_First, new DataContainerId.Guid(s_First));
+        var s_Conversion = Conversion();
+
+        var s_Partitions = new[]
+        {
+            s_Conversion.Convert(Prefab(s_Level, new fb.Entity.SubWorldData(), s_ToSecond, s_ToFirst)),
+            s_Conversion.Convert(Prefab(s_First, new fb.Entity.WorldPartData(), new fb.GameShared.StaticModelEntityData())),
+            s_Conversion.Convert(Prefab(s_Second, new fb.Entity.WorldPartData(), new fb.GameShared.StaticModelEntityData(), new fb.GameShared.StaticModelEntityData())),
+        };
+        s_Conversion.DeriveAcross(s_Partitions);
+
+        ushort[] Indices(int p_Partition) => s_Partitions[p_Partition].Instances.OfType<fb.GameObjectData>().Select(p_O => p_O.IndexInBlueprint).Order().ToArray();
+        Assert.Equal(new ushort[] { 0, 1 }, Indices(0));
+        Assert.Equal(new ushort[] { 4 }, Indices(1));
+        Assert.Equal(new ushort[] { 2, 3 }, Indices(2));
+        Assert.Empty(s_Conversion.Report.Underived);
+    }
+
+    [Fact]
+    public void CountsALayerNoLevelReferences()
+    {
+        var s_Layer = new GUID(Guid.Parse("00000000-0000-0000-0000-000000001000"));
+        var s_Conversion = Conversion();
+
+        var s_Partition3 = s_Conversion.Convert(Prefab(s_Layer, new fb.Entity.WorldPartData(), new fb.GameShared.StaticModelEntityData()));
+        s_Conversion.DeriveAcross([s_Partition3]);
+
+        Assert.Equal(0, s_Partition3.Instances.OfType<fb.GameObjectData>().Single().IndexInBlueprint);
+        Assert.Equal(1, s_Conversion.Report.Underived["GameObjectData.IndexInBlueprint: a world part no level converted with it references, numbered from 0"]);
+    }
+
     [Fact]
     public void IsTheTargetsInterface() =>
         Assert.IsType<DerivedFields>(EngineInterfaceRegistry.Create<IDerivedFields>(EngineType.Frostbite2_0));

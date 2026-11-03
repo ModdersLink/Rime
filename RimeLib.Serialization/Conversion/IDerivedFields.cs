@@ -13,4 +13,10 @@ public interface IDerivedFields : IEngineInterface
 
     /// <summary>Sets the fields on each instance of the partition, counting in the report what it cannot derive.</summary>
     void Derive(DatabasePartitionBase p_Partition, ConversionReport p_Report);
+
+    /// <summary>
+    /// Sets the fields that depend on other partitions, such as those of a level's layers, on
+    /// partitions converted together.
+    /// </summary>
+    void DeriveAcross(IReadOnlyCollection<DatabasePartitionBase> p_Partitions, ConversionReport p_Report);
 }
