@@ -127,10 +127,7 @@ public class TerrainMaskTree : RasterTree
         s_Node.Children = new RasterTreeNode[4];
         for (var i = 0; i < 4; ++i)
         {
-            var s_ChildId = new QuadtreeNodeId(p_Id);
-            ++s_ChildId.Level;
-            s_ChildId.IndexX = (ushort)(QuadtreeNodeId.m_QuadtreeNodeChildOffsetX[i] + 2 * p_Id.IndexX);
-            s_ChildId.IndexY = (ushort)(QuadtreeNodeId.m_QuadtreeNodeChildOffsetY[i] + 2 * p_Id.IndexY);
+            var s_ChildId = p_Id.Child(i);
             s_Node.Children[i] = LoadNode(p_Reader, s_ChildId);
         }
 

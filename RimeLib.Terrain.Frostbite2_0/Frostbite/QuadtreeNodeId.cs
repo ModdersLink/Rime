@@ -26,6 +26,14 @@ public class QuadtreeNodeId : IFbSerializable
         Level = p_Other.Level;
     }
 
+    /// <summary>The id of child <paramref name="p_Index"/> (0 to 3) one level down.</summary>
+    public QuadtreeNodeId Child(int p_Index) => new()
+    {
+        Level = (byte)(Level + 1),
+        IndexX = (ushort)(m_QuadtreeNodeChildOffsetX[p_Index] + 2 * IndexX),
+        IndexY = (ushort)(m_QuadtreeNodeChildOffsetY[p_Index] + 2 * IndexY),
+    };
+
     public QuadtreeNodeId(RimeReader p_Reader)
     {
         Deserialize(p_Reader);

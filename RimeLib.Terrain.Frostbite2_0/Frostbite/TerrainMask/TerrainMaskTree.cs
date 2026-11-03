@@ -426,6 +426,7 @@ public class TerrainMaskTree : RasterTree
 
     public override void Deserialize(byte[] p_Data)
     {
+        Raw = p_Data;
         using var s_Reader = new RimeReader(new MemoryStream(p_Data));
         Deserialize(s_Reader);
     }

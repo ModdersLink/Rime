@@ -52,19 +52,7 @@ public class HeightfieldTree : HeightfieldTreeBase
         SkippedNodeCount = p_Reader.ReadUInt32();
         NodeBorderWidth = p_Reader.ReadUInt32();
 
-        MinMaxStackSize = 0;
-        for (var i = 0; i < MinMaxStackDepth; ++i)
-        {
-            var s_Side = (1u << ((int)MinMaxStackDepth - 1)) >> i;
-            MinMaxStackSize += 2 * s_Side * s_Side;
-        }
-
-        OccluderGridStackSize = 0;
-        for (var i = 0; i < OccluderGridStackDepth; ++i)
-        {
-            var s_Side = ((1u << ((int)OccluderGridStackDepth - 1)) >> i) + 1;
-            OccluderGridStackSize += s_Side * s_Side;
-        }
+        ComputeStackSizes();
 
         uint s_FirstIndex = 1;
         RootNode = LoadNodes(p_Reader, ref s_FirstIndex, new QuadtreeNodeId());
@@ -115,31 +103,11 @@ public class HeightfieldTree : HeightfieldTreeBase
 
         for (var i = 0; i < 4; ++i)
         {
-            var s_ChildId = new QuadtreeNodeId(p_NodeId);
-            ++s_ChildId.Level;
-            s_ChildId.IndexX = (ushort)(QuadtreeNodeId.m_QuadtreeNodeChildOffsetX[i] + 2 * p_NodeId.IndexX);
-            s_ChildId.IndexY = (ushort)(QuadtreeNodeId.m_QuadtreeNodeChildOffsetY[i] + 2 * p_NodeId.IndexY);
+            var s_ChildId = p_NodeId.Child(i);
             s_Node.Children[i] = LoadNodes(p_Reader, ref p_FirstFreeNodeIndex, s_ChildId);
         }
 
         return s_Node;
-    }
-
-    /// <summary>The heightfield node for an id, or null where the tree has none.</summary>
-    public HeightfieldTreeNode? TryFindNode(QuadtreeNodeId p_Id) => HeightfieldRootNode == null ? null : Find(HeightfieldRootNode, p_Id);
-
-    private static HeightfieldTreeNode? Find(HeightfieldTreeNode p_Node, QuadtreeNodeId p_Id)
-    {
-        if (p_Node.ID.Level == p_Id.Level && p_Node.ID.IndexX == p_Id.IndexX && p_Node.ID.IndexY == p_Id.IndexY)
-            return p_Node;
-
-        foreach (var s_Child in p_Node.Children)
-        {
-            if (s_Child is HeightfieldTreeNode s_Node && Find(s_Node, p_Id) is { } s_Found)
-                return s_Found;
-        }
-
-        return null;
     }
 
     public override bool Serialize(RimeWriter p_Writer)
