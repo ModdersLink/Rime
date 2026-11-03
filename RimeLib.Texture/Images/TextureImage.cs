@@ -34,6 +34,9 @@ public sealed class TextureImage
     /// <summary>The streaming chunk's bytes.</summary>
     public byte[] Data { get; set; } = Array.Empty<byte>();
 
+    /// <summary>A copy sharing the data, to change the description of.</summary>
+    public TextureImage Copy() => (TextureImage)MemberwiseClone();
+
     /// <summary>The width, height or depth of a mip level.</summary>
     public static int Level(int p_Size, int p_Mip) => System.Math.Max(1, p_Size >> p_Mip);
 

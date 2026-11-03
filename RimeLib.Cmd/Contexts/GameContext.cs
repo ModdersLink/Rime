@@ -63,6 +63,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<RoundTripResourcesCommand>();
             RegisterCommand<DumpShaderBytecodeCommand>();
             RegisterCommand<RoundTripTextureCodecsCommand>();
+            RegisterCommand<CheckTextureConversionCommand>();
             RegisterCommand<DumpEbxLayoutCommand>();
             RegisterCommand<ListResourcesOfTypeJsonCommand>();
             RegisterCommand<DumpShaderSolutionsCommand>();
