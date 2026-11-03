@@ -1,9 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
-using RimeLib.IO;
-
 using RimeLib.Havok;
+using RimeLib.IO;
 
 namespace RimeLib.Havok.Frostbite2_0.Frostbite;
 
@@ -89,7 +88,6 @@ public class ShapeReader
                                                IReadOnlyDictionary<long, long> p_ArrayOffsets,
                                                IReadOnlyDictionary<long, long>? p_ObjectOffsets = null)
     {
-
         var s_Shape = new hkpCollisionShape
         {
             Kind = "convex",

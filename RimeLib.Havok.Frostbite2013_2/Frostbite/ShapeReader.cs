@@ -93,13 +93,10 @@ public class ShapeReader : Frostbite2_0.Frostbite.ShapeReader
     private const float c_DomainTolerance = 0.05f;
 
     /// <summary>
-    /// Decodes an hkpBvCompressedMeshShape into a mesh. Each section stores its vertices quantised:
-    /// packed vertices in 11, 11 and 10 bits against the section's origin and scale, shared vertices
-    /// in 21, 21 and 22 bits across the whole tree's domain. A primitive is four vertex indices into
-    /// the section's packed then shared vertices; a triangle repeats its third index, and an unused
-    /// slot is DE AD DE AD. Null when a
-    /// primitive indexes past its vertices or a vertex falls outside its section's box, which is
-    /// what a mis-read layout produces.
+    /// Decodes an hkpBvCompressedMeshShape into a mesh. Packed vertices are 11, 11 and 10 bits against
+    /// the section's origin and scale, shared ones 21, 21 and 22 bits across the tree's domain. A
+    /// primitive is four indices into the section's packed then shared vertices (a triangle repeats
+    /// its third). Null when an index or vertex falls outside its section, as a mis-read layout does.
     /// </summary>
     public override hkpCollisionShape? ReadBvCompressedMesh(LimitedRimeReader p_Reader, long p_DataStart, long p_Offset,
         IReadOnlyDictionary<long, long> p_ArrayOffsets)
@@ -185,5 +182,4 @@ public class ShapeReader : Frostbite2_0.Frostbite.ShapeReader
 
         return s_Shape;
     }
-
 }

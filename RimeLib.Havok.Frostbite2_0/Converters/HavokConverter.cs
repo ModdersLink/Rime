@@ -21,12 +21,12 @@ public class HavokConverter : IHavokConverter, IHavokMaterials
     private HavokPhysicsData Read(IResourceObject p_Resource)
     {
         using var s_Reader = p_Resource.GetReader();
-        return new HavokPhysicsData(s_Reader, CreateShapeReader());
+        return new HavokPhysicsData(s_Reader);
     }
 
     public IEnumerable<hkpTransform> GetTransforms(IResourceObject p_Resource, IEngineMounter p_Mounter) => Read(p_Resource).GetTransforms();
 
-    public IEnumerable<hkpCollisionShape> GetShapes(IResourceObject p_Resource, IEngineMounter p_Mounter) => Read(p_Resource).GetShapes();
+    public IEnumerable<hkpCollisionShape> GetShapes(IResourceObject p_Resource, IEngineMounter p_Mounter) => Read(p_Resource).GetShapes(CreateShapeReader());
 
     public IReadOnlyList<uint> GetMaterialFlagsAndIndices(IResourceObject p_Resource) => Read(p_Resource).MaterialFlagsAndIndices;
 
