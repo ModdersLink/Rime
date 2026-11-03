@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Numerics;
+using RimeLib.Havok.Frostbite2_0.Mopp;
 
 namespace RimeLib.Havok.Frostbite2_0.Packfile;
 
@@ -11,14 +12,14 @@ public sealed class HkpMoppCode : HkObject
 
     /// <summary>Where the tree's integer space starts, and in w the scale from it to the shape's.</summary>
     public Vector4 Offset { get; set; }
-    public List<byte> Data { get; set; } = [];
+    public List<MoppInstruction> Instructions { get; set; } = [];
     public sbyte BuildType { get; set; }
 
     internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(Offset);
-        p_Writer.WriteArray(Data, 1, (p_Element, p_Byte) => p_Element.Write(p_Byte));
+        p_Writer.WriteArray(MoppInstruction.Encode(Instructions), 1, (p_Element, p_Byte) => p_Element.Write(p_Byte));
         p_Writer.Write((byte)BuildType);
         p_Writer.EndClass();
     }
@@ -27,7 +28,7 @@ public sealed class HkpMoppCode : HkObject
     {
         base.Read(p_Reader);
         Offset = p_Reader.ReadVector4();
-        Data = p_Reader.ReadArray(1, p_Element => p_Element.ReadByte());
+        Instructions = MoppInstruction.Decode(p_Reader.ReadArray(1, p_Element => p_Element.ReadByte()));
         BuildType = (sbyte)p_Reader.ReadByte();
         p_Reader.EndClass();
     }
