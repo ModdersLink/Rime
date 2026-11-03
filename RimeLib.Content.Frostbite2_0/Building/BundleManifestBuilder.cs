@@ -8,6 +8,7 @@ using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
 using RimeLib.Content.Building;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Frostbite2_0.Frostbite.Bundles;
+using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
@@ -21,6 +22,12 @@ namespace RimeLib.Content.Frostbite2_0.Building
         private readonly BundleManifest.Header m_Header = new();
 
         private readonly BundleDescriptor m_Descriptor;
+
+        /// <summary>
+        /// The resources by type hash, as the game's builder writes them: the loader counts a run of
+        /// each type into room for 32, so resources in more runs than that overrun it.
+        /// </summary>
+        private readonly List<KeyValuePair<string, IResourceObject>> m_Resources;
 
         public Sha1 Checksum { get; private set; }
 
@@ -49,6 +56,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             m_Header.EntryCount = m_Header.EbxCount + m_Header.ResourceCount + m_Header.ChunkCount;
 
             m_Descriptor = p_Descriptor;
+            m_Resources = p_Descriptor.Resources.OrderBy(p_R => (uint)p_R.Value.GetResourceType()).ToList();
         }
 
         public void Serialize(RimeWriter p_Writer)
@@ -84,15 +92,15 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             m_ResourceEntriesOffset = p_Writer.Position;
 
-            foreach (var s_Resource in m_Descriptor.Resources)
+            foreach (var s_Resource in m_Resources)
                 SerializeEntry(s_Resource.Key, s_Resource.Value, s_TextWriter, p_Writer);
 
             // Write resource types.
-            foreach (var s_Resource in m_Descriptor.Resources)
+            foreach (var s_Resource in m_Resources)
                 p_Writer.Write((uint) s_Resource.Value.GetResourceType());
 
             // Write resource metas.
-            foreach (var s_Resource in m_Descriptor.Resources)
+            foreach (var s_Resource in m_Resources)
             {
                 var s_Meta = new byte[16];
 
@@ -213,7 +221,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             var s_ResourceIndex = 0;
 
-            foreach (var s_Resource in m_Descriptor.Resources)
+            foreach (var s_Resource in m_Resources)
             {
                 p_Writer.Align(16);
                 
