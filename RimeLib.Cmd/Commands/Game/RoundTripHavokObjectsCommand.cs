@@ -9,7 +9,7 @@ using RimeLib.Havok;
 
 namespace RimeLib.Cmd.Commands.Game
 {
-    [CommandDescription("Writes each mounted physics resource's packfiles again from their Havok objects and compares the bytes, counting the resources with classes the object model lacks apart.")]
+    [CommandDescription("Writes each mounted physics resource's packfiles again from their Havok objects and compares the bytes, counting the resources with classes the object model lacks apart, and queries each MOPP over a list shape, and one Rime builds over the same children, with each child's bounds.")]
     public class RoundTripHavokObjectsCommand : Command
     {
         [CommandArgument(Description = "How many differing resources to list.", Optional = true)]
@@ -23,7 +23,8 @@ namespace RimeLib.Cmd.Commands.Game
             var s_Mounter = ((GameContext)p_Context).GetMounter();
             var s_Model = EngineInterfaceRegistry.Create<IHavokObjectModel>(s_Mounter.GetEngineType());
 
-            int s_Total = 0, s_Same = 0;
+            int s_Total = 0, s_Same = 0, s_Trees = 0;
+            var s_MoppMisses = new List<string>();
             var s_Differing = new List<string>();
             var s_Unmodelled = new SortedDictionary<string, int>(StringComparer.Ordinal);
             foreach (var (s_Name, s_Resource) in s_Mounter.GetResources().OrderBy(p_R => p_R.Key, StringComparer.Ordinal))
@@ -38,6 +39,9 @@ namespace RimeLib.Cmd.Commands.Game
 
                 try
                 {
+                    s_MoppMisses.AddRange(s_Model.CheckMopps(s_Data, out var s_Queried).Select(p_M => $"{s_Name}: {p_M}"));
+                    s_Trees += s_Queried;
+
                     var s_Written = s_Model.Rewrite(s_Data);
                     if (s_Written.AsSpan().SequenceEqual(s_Data))
                         ++s_Same;
@@ -68,9 +72,13 @@ namespace RimeLib.Cmd.Commands.Game
             foreach (var s_Line in s_Differing.Take(List))
                 p_Writer.WriteLine($"  {s_Line}");
 
+            foreach (var s_Line in s_MoppMisses.Take(List))
+                p_Writer.WriteLine($"  {s_Line}");
+            p_Writer.WriteLine($"{s_Trees} MOPP(s) over list shapes queried with each child's bounds, BF3's and Rime's own over the same children: {s_MoppMisses.Count} child(ren) not found.");
+
             var s_Modelled = s_Total - s_Unmodelled.Values.Sum();
             p_Writer.WriteLine($"round_trip_havok_objects: {s_Same}/{s_Modelled} modelled physics resource(s) written byte for byte, {s_Total - s_Modelled} of {s_Total} with classes not modelled.");
-            return s_Differing.Count == 0;
+            return s_Differing.Count == 0 && s_MoppMisses.Count == 0;
         }
 
         private static int FirstDifference(byte[] p_A, byte[] p_B)

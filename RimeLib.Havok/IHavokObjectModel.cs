@@ -9,5 +9,12 @@ namespace RimeLib.Havok
         /// </summary>
         /// <exception cref="System.NotSupportedException">A packfile holds a class that is not modelled.</exception>
         byte[] Rewrite(byte[] p_Resource);
+
+        /// <summary>
+        /// Queries each MOPP over a list shape in the resource with each child's bounds, and a MOPP Rime
+        /// builds over the same children: each query has to find its child. What it could not find,
+        /// and how many trees it queried.
+        /// </summary>
+        System.Collections.Generic.IReadOnlyList<string> CheckMopps(byte[] p_Resource, out int p_Trees);
     }
 }
