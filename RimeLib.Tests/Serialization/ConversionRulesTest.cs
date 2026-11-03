@@ -192,15 +192,19 @@ public class ConversionRulesTest
     }
 
     [Fact]
-    public void SplitsTheBusFlagsIntoTheirFields()
+    public void SplitsTheBusFlagsAndKeepsTheInterface()
     {
         var s_Blueprint = new fb.Entity.LogicPrefabBlueprint { InstanceId = new DataContainerId.Guid(s_Primary), Flags = 0b1010 };
+        var s_Interface = new fb.Entity.InterfaceDescriptorData { InstanceId = new DataContainerId.Index(1) };
+        s_Blueprint.Interface.SetValue(Ref(s_Interface));
 
-        var s_Converted = (fb.LogicPrefabBlueprint)Conversion().Convert(Partition(s_Blueprint)).PrimaryInstance;
+        var s_Partition = Conversion().Convert(Partition(s_Blueprint, s_Interface));
+        var s_Converted = (fb.LogicPrefabBlueprint)s_Partition.PrimaryInstance;
 
         Assert.False(s_Converted.NeedNetworkId);
         Assert.True(s_Converted.InterfaceHasConnections);
         Assert.False(s_Converted.AlwaysCreateEntityBusClient);
         Assert.True(s_Converted.AlwaysCreateEntityBusServer);
+        Assert.Equal(s_Partition.Instances.OfType<fb.InterfaceDescriptorData>().Single().InstanceId, s_Converted.Descriptor.InstanceId);
     }
 }

@@ -32,6 +32,7 @@ public class ConversionRules : IConversionRules
             [("EmitterTemplateData", "EmittableType")] = new("", p_Template => Emittables((EmitterTemplateData)p_Template)),
             // Processors here have no switch to turn them off.
             [("ProcessorData", "Enable")] = new("", _ => true),
+            [("DataBusData", "Descriptor")] = new("Interface"),
             // The bus flags' bits, in the order Frostbite 2 has the fields: bit 1 is set where a
             // connection uses the interface; the others follow from that order.
             [("DataBusData", "NeedNetworkId")] = new("Flags", Bit(0)),
