@@ -104,4 +104,39 @@ public class PartitionConversionTest
         Assert.Equal("_CS", Assert.Single(Assert.Single(s_Made.Materials).TextureParameters).ParameterName);
         Assert.Equal(1, s_Conversion.Report.StructsMadeInstances["MeshVariationDatabase.Entries"]);
     }
+
+    [Fact]
+    public void FollowsTheSourceEnginesRules()
+    {
+        var s_Wave = new fb.Audio.SoundWaveAsset
+        {
+            InstanceId = new DataContainerId.Guid(s_Primary),
+            Selection = fb.Audio.SoundWaveVariationSelection.SoundWaveVariationSelection_Random,
+        };
+        var s_Source = new Bf4 { Name = "sound/crate", PartitionGuid = s_Partition, PrimaryInstanceGuid = s_Primary };
+        s_Source.InstanceMap.Add(s_Wave.InstanceId, s_Wave);
+        var s_Rules = new RimeLib.Serialization.Frostbite2013_2.ConversionRules().For(RimeLib.Frostbite.EngineType.Frostbite2_0);
+
+        var s_Converted = new PartitionConversion(new EbxTypeLibrary(), s_Rules).Convert(s_Source);
+
+        Assert.Equal(fb.SoundWaveVariationSelection.SwvsRandom, ((fb.SoundWaveAsset)s_Converted.PrimaryInstance).Selection);
+    }
+
+    [Fact]
+    public void KeepsTheFieldOfAStructTheRulesUnwrap()
+    {
+        var s_Emitter = new fb.Emitter.EmitterEntityData
+        {
+            InstanceId = new DataContainerId.Guid(s_Primary),
+            CullDistance = new fb.Core.QualityScalableFloat { Low = 1, Medium = 2, High = 3, Ultra = 4 },
+        };
+        var s_Source = new Bf4 { Name = "fx/crate", PartitionGuid = s_Partition, PrimaryInstanceGuid = s_Primary };
+        s_Source.InstanceMap.Add(s_Emitter.InstanceId, s_Emitter);
+        var s_Conversion = new PartitionConversion(new EbxTypeLibrary(), new RimeLib.Serialization.Frostbite2013_2.ConversionRules().For(RimeLib.Frostbite.EngineType.Frostbite2_0));
+
+        var s_Converted = s_Conversion.Convert(s_Source);
+
+        Assert.Equal(3, ((fb.EmitterEntityData)s_Converted.PrimaryInstance).CullDistance);
+        Assert.Equal(1, s_Conversion.Report.Unwrapped["EmitterEntityData.CullDistance: QualityScalableFloat.High"]);
+    }
 }
