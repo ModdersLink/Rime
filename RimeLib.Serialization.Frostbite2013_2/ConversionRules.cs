@@ -28,6 +28,12 @@ public class ConversionRules : IConversionRules
             [("EmitterTemplateData", "EmittableType")] = new("", p_Template => Emittables((EmitterTemplateData)p_Template)),
             // Processors here have no switch to turn them off.
             [("ProcessorData", "Enable")] = new("", _ => true),
+            // The bus flags' bits, in the order Frostbite 2 has the fields: bit 1 is set where a
+            // connection uses the interface; the others follow from that order.
+            [("DataBusData", "NeedNetworkId")] = new("Flags", Bit(0)),
+            [("DataBusData", "InterfaceHasConnections")] = new("Flags", Bit(1)),
+            [("DataBusData", "AlwaysCreateEntityBusClient")] = new("Flags", Bit(2)),
+            [("DataBusData", "AlwaysCreateEntityBusServer")] = new("Flags", Bit(3)),
             [("GameObjectData", "IsEventConnectionTarget")] = new("Flags", Realm(25)),
             [("GameObjectData", "IsPropertyConnectionTarget")] = new("Flags", Realm(27)),
         },
@@ -60,6 +66,8 @@ public class ConversionRules : IConversionRules
             "TerrainData.VisualResource",
         },
     };
+
+    private static Func<object, object> Bit(int p_Bit) => p_Flags => ((ushort)p_Flags & (1 << p_Bit)) != 0;
 
     /// <summary>
     /// The realms that connect to an object, from the two bits of its flags at <paramref name="p_Shift"/>:

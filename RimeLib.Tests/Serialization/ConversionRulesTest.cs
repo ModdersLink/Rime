@@ -123,4 +123,17 @@ public class ConversionRulesTest
         Assert.Equal(3, s_Converted.IsEventConnectionTarget);
         Assert.Equal(3, s_Converted.IsPropertyConnectionTarget);
     }
+
+    [Fact]
+    public void SplitsTheBusFlagsIntoTheirFields()
+    {
+        var s_Blueprint = new fb.Entity.LogicPrefabBlueprint { InstanceId = new DataContainerId.Guid(s_Primary), Flags = 0b1010 };
+
+        var s_Converted = (fb.LogicPrefabBlueprint)Conversion().Convert(Partition(s_Blueprint)).PrimaryInstance;
+
+        Assert.False(s_Converted.NeedNetworkId);
+        Assert.True(s_Converted.InterfaceHasConnections);
+        Assert.False(s_Converted.AlwaysCreateEntityBusClient);
+        Assert.True(s_Converted.AlwaysCreateEntityBusServer);
+    }
 }
