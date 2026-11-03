@@ -16,7 +16,7 @@ public sealed class HkpMoppCode : HkObject
 
     public sbyte BuildType { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(Offset);
@@ -25,7 +25,7 @@ public sealed class HkpMoppCode : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         Offset = p_Reader.ReadVector4();
@@ -59,7 +59,7 @@ public sealed class HkpMoppBvTreeShape : HkpShape
     /// <summary>The child's size in bytes, which the loader computes again; kept as stored.</summary>
     public int ChildSize { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(BvTreeType);
@@ -77,7 +77,7 @@ public sealed class HkpMoppBvTreeShape : HkpShape
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         BvTreeType = p_Reader.ReadByte();
@@ -154,7 +154,7 @@ public sealed class HkpCompressedMeshShape : HkpShapeCollection
     public ushort MaterialCount { get; set; }
     public List<NamedMaterial> NamedMaterials { get; set; } = [];
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(BitsPerIndex);
@@ -223,7 +223,7 @@ public sealed class HkpCompressedMeshShape : HkpShapeCollection
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         BitsPerIndex = p_Reader.ReadInt32();

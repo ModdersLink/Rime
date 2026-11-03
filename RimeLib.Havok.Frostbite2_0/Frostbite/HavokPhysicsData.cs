@@ -529,7 +529,16 @@ public class HavokPhysicsData : IFbSerializable
     /// it is all of them, and the honest answer for hkpMoppCode or hkpCompressedMeshShape is that
     /// they are baked by the Havok SDK and are not modelled here.
     /// </param>
-    public List<hkpCollisionShape> GetShapes(ShapeReader p_Shapes, out Dictionary<string, int> p_Unread)
+    public List<hkpCollisionShape> GetShapes(ShapeReader p_Shapes, out Dictionary<string, int> p_Unread) =>
+        GetShapes(p_Shapes, null, out p_Unread);
+
+    /// <summary>
+    /// The leaves under one shape of the 32-bit packfile, by its offset in the data section, placed
+    /// as the shape places them: a breakable shape's physics, say, rather than the container's.
+    /// </summary>
+    public List<hkpCollisionShape> GetShapesUnder(ShapeReader p_Shapes, long p_Offset) => GetShapes(p_Shapes, p_Offset, out _);
+
+    private List<hkpCollisionShape> GetShapes(ShapeReader p_Shapes, long? p_Root, out Dictionary<string, int> p_Unread)
     {
         var s_Shapes = new List<hkpCollisionShape>();
         var s_Instance = HavokInstance32;
@@ -734,6 +743,12 @@ public class HavokPhysicsData : IFbSerializable
             s_Leaf.UserData = s_Instance.Reader.ReadUInt32();
 
             s_Shapes.Add(s_Leaf);
+        }
+
+        if (p_Root is { } s_Start)
+        {
+            Visit(s_Start, new WalkPlacement(hkpPlacement.Identity, null, hkpPlacement.Identity), s_Start, 0);
+            return s_Shapes;
         }
 
         // The roots are whatever HavokPhysicsContainer points at. Its shape slots start at +32 and

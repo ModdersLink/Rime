@@ -8,7 +8,7 @@ namespace RimeLib.Havok.Frostbite2_0.Packfile;
 /// An hkSmallArray the packfile keeps empty: its pointer, size and capacity, of which only the
 /// capacity's flags are stored.
 /// </summary>
-internal static class HkSmallArray
+public static class HkSmallArray
 {
     public static void Write(HkWriter p_Writer, ushort p_CapacityAndFlags)
     {
@@ -29,7 +29,7 @@ internal static class HkSmallArray
 /// <summary>Properties of a breakable shape or body: objects by key.</summary>
 public sealed record HkdProperty(int Key, HkObject? Object);
 
-internal static class HkdProperties
+public static class HkdProperties
 {
     public static void Write(HkWriter p_Writer, IReadOnlyList<HkdProperty> p_Properties) =>
         p_Writer.WriteArray(p_Properties, p_Writer.PointerSize, (p_E, p_P) =>
@@ -70,7 +70,7 @@ public class HkdBreakableShape : HkObject
     public float Strength { get; set; }
     public ulong UserData { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(TypeAndFlags);
@@ -104,7 +104,7 @@ public class HkdBreakableShape : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         TypeAndFlags = p_Reader.ReadByte();
@@ -138,7 +138,7 @@ public sealed class HkdCompoundBreakableShape : HkdBreakableShape
     public bool UseChildrenBreakableThreshold { get; set; }
     public int UnusedPaddingCompound { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteObject(RootBreakableShape);
@@ -148,7 +148,7 @@ public sealed class HkdCompoundBreakableShape : HkdBreakableShape
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         RootBreakableShape = p_Reader.ReadObject<HkdBreakableShape>();
@@ -175,7 +175,7 @@ public sealed class HkdBreakableBody : HkObject
     public HkObject? FixedConnectivity { get; set; }
     public ushort DecorationsCapacity { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(BodyTypeAndFlags);
@@ -192,7 +192,7 @@ public sealed class HkdBreakableBody : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         BodyTypeAndFlags = p_Reader.ReadByte();
@@ -217,7 +217,7 @@ public abstract class HkdController : HkObject
     public HkObject? InsideDecisionFunctor { get; set; }
     public ushort ListenersCapacity { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(Type);
@@ -226,7 +226,7 @@ public abstract class HkdController : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         Type = p_Reader.ReadByte();
@@ -250,7 +250,7 @@ public sealed class HkdBreakableBodyShapeKeyToChildMap : HkObject
 
     public List<ShapeKeyToChild> ShapeKeyToChildren { get; set; } = [];
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteArray(ShapeKeyToChildren, p_Writer.PointerSize, (p_E, p_M) =>
@@ -261,7 +261,7 @@ public sealed class HkdBreakableBodyShapeKeyToChildMap : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         ShapeKeyToChildren = p_Reader.ReadArray(p_Reader.PointerSize, p_E =>
@@ -280,7 +280,7 @@ public sealed class HkdBreakableShapeConnectionList : HkObject
 
     public List<Connection> Connections { get; set; } = [];
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteArray(Connections, 16, (p_E, p_C) =>
@@ -296,7 +296,7 @@ public sealed class HkdBreakableShapeConnectionList : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         Connections = p_Reader.ReadArray(16, p_E =>
@@ -317,14 +317,14 @@ public sealed class HkdBreakableShapeActionList : HkObject
 
     public List<HkdAction> Actions { get; set; } = [];
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteObjects(Actions);
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         Actions = p_Reader.ReadObjects<HkdAction>();
@@ -339,7 +339,7 @@ public abstract class HkdAction : HkObject
     public byte ExecutionType { get; set; }
     public ushort Padding { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(InheritanceType);
@@ -348,7 +348,7 @@ public abstract class HkdAction : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         InheritanceType = p_Reader.ReadByte();
@@ -370,7 +370,7 @@ public sealed class HkdExplosionForceAction : HkdAction
     public float VirtMass { get; set; }
     public float AngularImpulseFactor { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(ExplosionCenter);
@@ -382,7 +382,7 @@ public sealed class HkdExplosionForceAction : HkdAction
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         ExplosionCenter = p_Reader.ReadVector4();
@@ -446,7 +446,7 @@ public sealed class HkdDecorateFractureFaceAction : HkdAction
     public int NumCornerDecorationAttempts { get; set; }
     public float BorderOverlap { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(DecorateWhat);
@@ -483,7 +483,7 @@ public sealed class HkdDecorateFractureFaceAction : HkdAction
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         DecorateWhat = p_Reader.ReadByte();
@@ -528,7 +528,7 @@ public sealed class HkdDecorateFractureFaceActionShapeDecorationInfo : HkObject
     public List<ConnectionDecoration> ConnectionDecorations { get; set; } = [];
     public HkdDecorateFractureFaceActionGlobalDecorationData? SharedData { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteArray(ConnectionDecorations, p_Writer.PointerSize, (p_E, p_C) =>
@@ -542,7 +542,7 @@ public sealed class HkdDecorateFractureFaceActionShapeDecorationInfo : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         ConnectionDecorations = p_Reader.ReadArray(p_Reader.PointerSize, p_E =>
@@ -572,7 +572,7 @@ public sealed class HkdDecorateFractureFaceActionGlobalDecorationData : HkObject
     public List<ushort> IndexBuffer { get; set; } = [];
     public List<ushort> GraphicsRanges { get; set; } = [];
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteObjects(Templates);
@@ -598,7 +598,7 @@ public sealed class HkdDecorateFractureFaceActionGlobalDecorationData : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         Templates = p_Reader.ReadObjects<HkdBreakableShape>();
@@ -629,7 +629,7 @@ public abstract class HkdFracture : HkObject
     public bool FlattenHierarchy { get; set; }
     public HkdFracture? ChildFracture { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(RootToLeafRatio);
@@ -642,7 +642,7 @@ public abstract class HkdFracture : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         RootToLeafRatio = p_Reader.ReadSingle();
@@ -671,7 +671,7 @@ public sealed class HkdDebrisFracture : HkdFracture
     public float Density { get; set; }
     public uint MaxNumPieces { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteObject(TemplateDebris);
@@ -684,7 +684,7 @@ public sealed class HkdDebrisFracture : HkdFracture
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         TemplateDebris = p_Reader.ReadObject<HkdBreakableShape>();
@@ -705,14 +705,14 @@ public sealed class HkdStringObject : HkObject
 
     public string? String { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteString(String);
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         String = p_Reader.ReadString();
@@ -729,7 +729,7 @@ public sealed class HkdPropertyFlagSet : HkObject
 
     public List<Property> Properties { get; set; } = [];
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteArray(Properties, 8, (p_E, p_P) =>
@@ -742,7 +742,7 @@ public sealed class HkdPropertyFlagSet : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         Properties = p_Reader.ReadArray(8, p_E => new Property(p_E.ReadUInt32(), p_E.ReadUInt32(), p_E.ReadUInt32(), p_E.ReadUInt32()));
@@ -761,7 +761,7 @@ public sealed class HavokGraphicsShape : HkObject
     public int NumChildTransforms { get; set; }
     public List<DisplayPart> DisplayParts { get; set; } = [];
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(Type);
@@ -775,7 +775,7 @@ public sealed class HavokGraphicsShape : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         Type = p_Reader.ReadByte();

@@ -95,7 +95,57 @@ public sealed class HkpRigidBody : HkObject
     public ushort ActionsCapacity { get; set; }
     public uint NpData { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    /// <summary>
+    /// A breakable body's rigid body as BF3's are: unmoving unless <paramref name="p_MotionType"/>
+    /// says otherwise, at the origin, with BF3's material, damping and the one property they carry.
+    /// </summary>
+    public static HkpRigidBody ForBreakableBody(HkpShape p_Shape, float p_ObjectRadius, byte p_MotionType)
+    {
+        const ushort c_HalfOne = 0x3F80;
+        const ushort c_HalfAngularDamping = 0x3D4C;
+        const ushort c_InactiveFrames = 0xC000;
+
+        var s_Body = new HkpRigidBody
+        {
+            Shape = p_Shape,
+            ShapeKey = uint.MaxValue,
+            ForceCollideOntoPpu = 8,
+            BroadPhaseType = 1,
+            AllowedPenetrationDepth = float.MaxValue,
+            Properties = [new Property(0x2001, 0, 0, 0)],
+            ResponseType = 1,
+            Friction = 0.5f,
+            Restitution = 0.4f,
+            DamageMultiplier = 1,
+            StorageIndex = ushort.MaxValue,
+            ContactPointCallbackDelay = ushort.MaxValue,
+            NumShapeKeysInContactPointProperties = 2,
+            Uid = uint.MaxValue,
+            SpuCollisionCallbackEventFilter = 3,
+            SpuCollisionCallbackUserFilter = 1,
+            MotionType = p_MotionType,
+            DeactivationIntegrateCounter = 15,
+            DeactivationNumInactiveFrames = [c_InactiveFrames, c_InactiveFrames],
+            ObjectRadius = p_ObjectRadius,
+            AngularDamping = c_HalfAngularDamping,
+            TimeFactor = c_HalfOne,
+            MaxLinearVelocity = 127,
+            MaxAngularVelocity = 127,
+            DeactivationClass = 1,
+            GravityFactor = c_HalfOne,
+            NpData = uint.MaxValue,
+        };
+
+        // The motion state's transform, swept transform and delta angle: identity, unrotated, at rest.
+        s_Body.MotionStateVectors[0] = Vector4.UnitX;
+        s_Body.MotionStateVectors[1] = Vector4.UnitY;
+        s_Body.MotionStateVectors[2] = Vector4.UnitZ;
+        s_Body.MotionStateVectors[6] = Vector4.UnitW;
+        s_Body.MotionStateVectors[7] = Vector4.UnitW;
+        return s_Body;
+    }
+
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WritePointerSlot();
@@ -205,7 +255,7 @@ public sealed class HkpRigidBody : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         p_Reader.SkipPointerSlot();

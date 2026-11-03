@@ -12,7 +12,7 @@ public abstract class HkpShape : HkObject
     /// <summary>The shape type, which the loader sets again; kept as stored.</summary>
     public uint Type { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteUlong(UserData);
@@ -20,7 +20,7 @@ public abstract class HkpShape : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         UserData = p_Reader.ReadUlong();
@@ -34,14 +34,14 @@ public abstract class HkpConvexShape : HkpShape
 {
     public float Radius { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(Radius);
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         Radius = p_Reader.ReadSingle();
@@ -55,14 +55,14 @@ public sealed class HkpBoxShape : HkpConvexShape
 
     public Vector4 HalfExtents { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(HalfExtents);
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         HalfExtents = p_Reader.ReadVector4();
@@ -77,7 +77,7 @@ public sealed class HkpSphereShape : HkpConvexShape
     /// <summary>The three words of m_pad16, which pad the sphere for SIMD loads and are never set.</summary>
     private const int c_PadWords = 3;
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         for (var i = 0; i < c_PadWords; ++i)
@@ -85,7 +85,7 @@ public sealed class HkpSphereShape : HkpConvexShape
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         for (var i = 0; i < c_PadWords; ++i)
@@ -102,7 +102,7 @@ public sealed class HkpCapsuleShape : HkpConvexShape
     public Vector4 VertexA { get; set; }
     public Vector4 VertexB { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(VertexA);
@@ -110,7 +110,7 @@ public sealed class HkpCapsuleShape : HkpConvexShape
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         VertexA = p_Reader.ReadVector4();
@@ -130,7 +130,7 @@ public sealed class HkpCylinderShape : HkpConvexShape
     public Vector4 Perpendicular1 { get; set; }
     public Vector4 Perpendicular2 { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(CylinderRadius);
@@ -142,7 +142,7 @@ public sealed class HkpCylinderShape : HkpConvexShape
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         CylinderRadius = p_Reader.ReadSingle();
@@ -170,7 +170,7 @@ public sealed class HkpConvexVerticesShape : HkpConvexShape
     public List<Vector4> PlaneEquations { get; set; } = [];
     public HkpConvexVerticesConnectivity? Connectivity { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(AabbHalfExtents);
@@ -187,7 +187,7 @@ public sealed class HkpConvexVerticesShape : HkpConvexShape
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         AabbHalfExtents = p_Reader.ReadVector4();
@@ -208,7 +208,7 @@ public sealed class HkpConvexVerticesConnectivity : HkObject
     public List<ushort> VertexIndices { get; set; } = [];
     public List<byte> VerticesPerFace { get; set; } = [];
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteArray(VertexIndices, 2, (p_Element, p_Index) => p_Element.Write(p_Index));
@@ -216,7 +216,7 @@ public sealed class HkpConvexVerticesConnectivity : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         VertexIndices = p_Reader.ReadArray(2, p_Element => p_Element.ReadUInt16());
@@ -233,7 +233,7 @@ public abstract class HkpConvexWrapperShape : HkpConvexShape
     /// <summary>The child's size in bytes, which the loader computes again; kept as stored.</summary>
     public int ChildShapeSize { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WritePointerSlot();
@@ -242,7 +242,7 @@ public abstract class HkpConvexWrapperShape : HkpConvexShape
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         p_Reader.SkipPointerSlot();
@@ -258,14 +258,14 @@ public sealed class HkpConvexTranslateShape : HkpConvexWrapperShape
 
     public Vector4 Translation { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(Translation);
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         Translation = p_Reader.ReadVector4();
@@ -283,7 +283,7 @@ public sealed class HkpConvexTransformShape : HkpConvexWrapperShape
     public Vector4 Column2 { get; set; }
     public Vector4 Translation { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.Write(Column0);
@@ -293,7 +293,7 @@ public sealed class HkpConvexTransformShape : HkpConvexWrapperShape
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         Column0 = p_Reader.ReadVector4();
@@ -310,7 +310,7 @@ public abstract class HkpShapeCollection : HkpShape
     public bool DisableWelding { get; set; }
     public byte CollectionType { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WritePointerSlot();
@@ -319,7 +319,7 @@ public abstract class HkpShapeCollection : HkpShape
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         p_Reader.SkipPointerSlot();
@@ -345,7 +345,7 @@ public sealed class HkpListShape : HkpShapeCollection
     /// <summary>A bit per child, for the first 256, of which are enabled.</summary>
     public uint[] EnabledChildren { get; set; } = new uint[8];
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteArray(Children, 16, (p_Element, p_Child) =>
@@ -364,7 +364,7 @@ public sealed class HkpListShape : HkpShapeCollection
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         Children = p_Reader.ReadArray(16, p_Element => new ChildInfo(

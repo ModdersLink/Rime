@@ -26,15 +26,20 @@ public sealed class HkReader
     /// <param name="p_LocalFixups">Where each pointer to data in the section is, and where its data is.</param>
     /// <param name="p_GlobalFixups">Where each pointer to an object is, and where the object is.</param>
     /// <param name="p_Classes">Where each object starts, and its class.</param>
+    /// <param name="p_Create">The object of a class, given its offset: Havok 2010's classes unless another version's.</param>
     public HkReader(byte[] p_Data, int p_PointerSize, IReadOnlyDictionary<int, int> p_LocalFixups,
-        IReadOnlyDictionary<int, int> p_GlobalFixups, IReadOnlyDictionary<int, string> p_Classes)
+        IReadOnlyDictionary<int, int> p_GlobalFixups, IReadOnlyDictionary<int, string> p_Classes,
+        Func<string, int, HkObject>? p_Create = null)
     {
         m_Reader = new RimeReader(new MemoryStream(p_Data));
         PointerSize = p_PointerSize;
         m_LocalFixups = p_LocalFixups;
         m_GlobalFixups = p_GlobalFixups;
         m_Classes = p_Classes;
+        m_Create = p_Create ?? ((p_Class, _) => HkClasses.Create(p_Class));
     }
+
+    private readonly Func<string, int, HkObject> m_Create;
 
     private int Position => (int)m_Reader.Position;
 
@@ -47,7 +52,7 @@ public sealed class HkReader
         if (!m_Classes.TryGetValue(p_Offset, out var s_Class))
             throw new InvalidDataException($"No object starts at 0x{p_Offset:X} of the data section.");
 
-        s_Object = HkClasses.Create(s_Class);
+        s_Object = m_Create(s_Class, p_Offset);
         m_Objects[p_Offset] = s_Object;
 
         var (s_Resume, s_Alignment) = (m_Reader.Position, m_Alignment);

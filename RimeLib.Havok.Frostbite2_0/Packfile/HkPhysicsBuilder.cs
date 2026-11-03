@@ -41,6 +41,9 @@ public static class HkPhysicsBuilder
         };
     }
 
+    /// <summary>One container shape from its leaves, as <see cref="Build"/> makes each.</summary>
+    public static HkpShape BuildRoot(IReadOnlyList<hkpCollisionShape> p_Leaves) => Root([.. p_Leaves]);
+
     private static HkpShape Root(List<hkpCollisionShape> p_Leaves)
     {
         if (p_Leaves.Any(p_L => p_L.Instance != null))
@@ -297,6 +300,92 @@ public static class HkPhysicsBuilder
         return new Matrix4x4(s_X.X, s_X.Y, s_X.Z, 0, s_Y.X, s_Y.Y, s_Y.Z, 0, s_Z.X, s_Z.Y, s_Z.Z, 0, 0, 0, 0, 1);
     }
 
+    /// <summary>
+    /// The physics of a breakable shape's children as BF3 builds it: every child's convex pieces as
+    /// the one shapes subpart of an extended mesh behind a MOPP, which the compound shape, its rigid
+    /// body and the physics container share; each child's pieces again, as the one piece or a list
+    /// of them; and the keys the MOPP gives each child's pieces. A child's leaves are in its own
+    /// space, which its placement puts in the compound's: an unplaced child's pieces are its own
+    /// physics' too, a placed child's are copies in the compound's space. A piece keeps its child's
+    /// index in its user data, as the shapes that hold it do.
+    /// </summary>
+    public static (HkpMoppBvTreeShape Whole, List<HkpShape> Children, List<List<uint>> Keys) BuildBreakable(
+        IReadOnlyList<(IReadOnlyList<hkpCollisionShape> Leaves, hkpPlacement Placement)> p_Children)
+    {
+        var s_Pieces = new List<HkpConvexShape>();
+        var s_Children = new List<HkpShape>();
+        var s_Keys = new List<List<uint>>();
+        for (var s_Child = 0; s_Child < p_Children.Count; ++s_Child)
+        {
+            var (s_Leaves, s_Placement) = p_Children[s_Child];
+            if (s_Leaves.Any(p_L => p_L.Kind == "mesh"))
+                throw new NotSupportedException("A breakable shape whose physics is a mesh, which an extended mesh's shape subpart cannot hold.");
+
+            var s_Own = s_Leaves.Select(p_L => WithUserData(Convex(p_L, p_L.Placement), (ulong)s_Child)).ToList();
+            var s_Placed = IsIdentity(s_Placement)
+                ? s_Own
+                : s_Leaves.Select(p_L => WithUserData(Convex(p_L, s_Placement.Compose(p_L.Placement)), (ulong)s_Child)).ToList();
+
+            s_Keys.Add(Enumerable.Range(s_Pieces.Count, s_Placed.Count).Select(p_I => 0x80000000u | (uint)p_I).ToList());
+            s_Pieces.AddRange(s_Placed);
+            if (s_Own.Count > c_ListCapacity)
+                throw new NotSupportedException($"A breakable shape of {s_Own.Count} pieces, more than a list holds.");
+            s_Children.Add(s_Own.Count == 1 ? s_Own[0] : WithUserData(PlainList([.. s_Own], out _), (ulong)s_Child));
+        }
+
+        if (s_Pieces.Count == 0)
+            throw new ArgumentException("A breakable shape with no physics.");
+
+        var s_Mesh = new HkpExtendedMeshShape
+        {
+            CollectionType = 1,
+            // Enough bits below the top one for the subpart that the pieces' indices fit beside them.
+            NumBitsForSubpartIndex = (int)System.Math.Ceiling(System.Math.Log2(System.Math.Max(2, s_Pieces.Count))) + 1,
+            WeldingType = 6,
+            TriangleRadius = 0.05f,
+            EmbeddedTrianglesSubpart = new HkpExtendedMeshShape.TrianglesSubpart
+            {
+                MaterialIndexStridingType = 1, NumMaterials = 1, NumTriangleShapes = -1, NumVertices = -1, TriangleOffset = -1,
+                Rotation = new Vector4(0, 0, 0, 1), Scale = Vector4.One,
+            },
+            ShapesSubparts =
+            [
+                new HkpExtendedMeshShape.ShapesSubpart
+                {
+                    Type = 1,
+                    MaterialIndexStridingType = 1,
+                    NumMaterials = 1,
+                    ChildShapes = s_Pieces,
+                    Rotation = new Vector4(0, 0, 0, 1),
+                    // An identity placement sets neither flag.
+                    Translation = new Vector4(0, 0, 0, BitConverter.Int32BitsToSingle(0x3F000000)),
+                },
+            ],
+        };
+
+        var s_Primitives = HkShapeBounds.OfShapesSubparts(s_Mesh);
+        var (s_Min, s_Max) = (s_Primitives.Select(p_P => p_P.Min).Aggregate(Vector3.Min), s_Primitives.Select(p_P => p_P.Max).Aggregate(Vector3.Max));
+        s_Mesh.AabbHalfExtents = Point((s_Max - s_Min) / 2);
+        s_Mesh.AabbCenter = Point((s_Max + s_Min) / 2);
+        s_Mesh.CachedNumChildShapes = s_Pieces.Count;
+
+        var s_Whole = Mopp(s_Mesh, s_Primitives);
+        s_Whole.UserData = 0;
+        return (s_Whole, s_Children, s_Keys);
+    }
+
+    private static bool IsIdentity(hkpPlacement p_Placement) =>
+        p_Placement.Column0 == Vector3.UnitX && p_Placement.Column1 == Vector3.UnitY && p_Placement.Column2 == Vector3.UnitZ && p_Placement.Translation == Vector3.Zero;
+
+    /// <summary>The shape with the user data, and the shape it wraps with it too.</summary>
+    private static T WithUserData<T>(T p_Shape, ulong p_UserData) where T : HkpShape
+    {
+        p_Shape.UserData = p_UserData;
+        if (p_Shape is HkpConvexWrapperShape { Child: { } s_Child })
+            s_Child.UserData = p_UserData;
+        return p_Shape;
+    }
+
     /// <summary>The triangles of the meshes, placed, as a compressed mesh of big triangles behind a MOPP.</summary>
     private static HkpShape Mesh(List<hkpCollisionShape> p_Meshes)
     {
@@ -346,11 +435,21 @@ public static class HkPhysicsBuilder
         if (p_Children.Count > c_ListCapacity)
             return List(p_Children.Chunk(c_ListCapacity).Select(p_Chunk => p_Chunk.Length == 1 ? p_Chunk[0] : List([.. p_Chunk])).ToList());
 
+        var s_List = PlainList(p_Children, out var s_Bounds);
+        return p_Children.Count > c_ListMoppThreshold
+            ? Mopp(s_List, s_Bounds.Select((p_B, p_Key) => new MoppPrimitive((uint)p_Key, p_B.Min, p_B.Max)).ToList())
+            : s_List;
+    }
+
+    /// <summary>A list of the shapes, no more than a list holds, with no MOPP over it, and the shapes' bounds.</summary>
+    private static HkpListShape PlainList(List<HkpShape> p_Children, out List<(Vector3 Min, Vector3 Max)> p_Bounds)
+    {
         var s_Bounds = p_Children.Select(p_C => HkShapeBounds.Of(p_C)
             ?? throw new NotSupportedException($"A {p_C.ClassName} in a list cannot be bounded.")).ToList();
         var (s_Min, s_Max) = (s_Bounds.Select(p_B => p_B.Min).Aggregate(Vector3.Min), s_Bounds.Select(p_B => p_B.Max).Aggregate(Vector3.Max));
+        p_Bounds = s_Bounds;
 
-        var s_List = new HkpListShape
+        return new HkpListShape
         {
             UserData = c_ContainerUserData,
             Children = p_Children.Select(p_C => new HkpListShape.ChildInfo(p_C, 0, 0, 0)).ToList(),
@@ -359,10 +458,6 @@ public static class HkPhysicsBuilder
             AabbCenter = new Vector4((s_Max + s_Min) / 2, 1f),
             EnabledChildren = Enumerable.Repeat(0xFFFFFFFFu, c_ListCapacity / 32).ToArray(),
         };
-
-        return p_Children.Count > c_ListMoppThreshold
-            ? Mopp(s_List, s_Bounds.Select((p_B, p_Key) => new MoppPrimitive((uint)p_Key, p_B.Min, p_B.Max)).ToList())
-            : s_List;
     }
 
     private static HkpMoppBvTreeShape Mopp(HkpShape p_Child, List<MoppPrimitive> p_Primitives)

@@ -12,7 +12,7 @@ public sealed class HkRootLevelContainer : HkObject
     public List<NamedVariant> NamedVariants { get; set; } = [];
 
     // Not an hkReferencedObject: the root has no object header.
-    internal override void Write(HkWriter p_Writer) =>
+    protected internal override void Write(HkWriter p_Writer) =>
         p_Writer.WriteArray(NamedVariants, p_Writer.PointerSize, (p_Element, p_Variant) =>
         {
             p_Element.WriteString(p_Variant.Name);
@@ -20,7 +20,7 @@ public sealed class HkRootLevelContainer : HkObject
             p_Element.WriteObject(p_Variant.Variant);
         });
 
-    internal override void Read(HkReader p_Reader) =>
+    protected internal override void Read(HkReader p_Reader) =>
         NamedVariants = p_Reader.ReadArray(p_Reader.PointerSize, p_Element =>
             new NamedVariant(p_Element.ReadString(), p_Element.ReadString(), p_Element.ReadObject()));
 }
@@ -35,7 +35,7 @@ public sealed class HavokPhysicsContainer : HkObject
     /// <summary>The constraints between parts: none, but for the one breakable vent BF3 ships.</summary>
     public List<HkObject> Constraints { get; set; } = [];
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteObjects(Shapes);
@@ -43,7 +43,7 @@ public sealed class HavokPhysicsContainer : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         Shapes = p_Reader.ReadObjects<HkpShape>();

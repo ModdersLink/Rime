@@ -12,7 +12,7 @@ public sealed class HkMemoryResourceContainer : HkObject
     public List<HkMemoryResourceHandle> ResourceHandles { get; set; } = [];
     public List<HkMemoryResourceContainer> Children { get; set; } = [];
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteString(Name);
@@ -22,7 +22,7 @@ public sealed class HkMemoryResourceContainer : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         Name = p_Reader.ReadString();
@@ -44,7 +44,7 @@ public sealed class HkMemoryResourceHandle : HkObject
     public string? Name { get; set; }
     public List<ExternalLink> References { get; set; } = [];
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         p_Writer.WriteObject(Variant);
@@ -57,7 +57,7 @@ public sealed class HkMemoryResourceHandle : HkObject
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         Variant = p_Reader.ReadObject();

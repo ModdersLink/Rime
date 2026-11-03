@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -20,7 +21,8 @@ public static class HkPackfile
     private static readonly byte[] s_ContentsVersion = [.. Encoding.ASCII.GetBytes("hk_2010.2.0-r1"), 0x00, 0xFF];
 
     /// <summary>The objects of a packfile, from its root.</summary>
-    public static HkRootLevelContainer Read(HavokPhysicsData.HavokInstance p_Instance)
+    /// <param name="p_Create">The object of a class, given its offset, for a Havok version other than 2010.</param>
+    public static HkRootLevelContainer Read(HavokPhysicsData.HavokInstance p_Instance, Func<string, int, HkObject>? p_Create = null)
     {
         var s_Names = p_Instance.Descriptors.ToDictionary(p_D => (int)p_D.Key, p_D => p_D.Name);
         // The run of fixups ends at the first -1; what follows is the 0xFF padding of the section.
@@ -30,10 +32,21 @@ public static class HkPackfile
         var s_Reader = new HkReader(p_Instance.ObjectData, p_Instance.PointerSize,
             p_Instance.ArrayOffsets.ToDictionary(p_F => (int)p_F.Key, p_F => (int)p_F.Value),
             p_Instance.ObjectOffsets.ToDictionary(p_F => (int)p_F.Key, p_F => (int)p_F.Value),
-            s_Classes);
+            s_Classes, p_Create);
 
         return s_Reader.ObjectAt(p_Instance.HkPackfile.ContentsSectionOffset) as HkRootLevelContainer
             ?? throw new InvalidDataException("The packfile's contents are not an hkRootLevelContainer.");
+    }
+
+    /// <summary>The physics resource with both packfiles written from the root's objects, its Frostbite header kept.</summary>
+    public static byte[] Rewrite(byte[] p_Resource, HkRootLevelContainer p_Root)
+    {
+        var s_Physics = new HavokPhysicsData(new RimeReader(new MemoryStream(p_Resource)));
+        s_Physics.HavokInstance32 = Write(p_Root, 4);
+        s_Physics.HavokInstance64 = Write(p_Root, 8);
+        if (!s_Physics.Serialize(out var s_Data))
+            throw new InvalidDataException("The physics resource could not be written.");
+        return s_Data;
     }
 
     /// <summary>A packfile of the objects the root reaches, for the given pointer size.</summary>

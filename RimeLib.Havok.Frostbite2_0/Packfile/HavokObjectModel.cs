@@ -24,17 +24,7 @@ public class HavokObjectModel : IHavokObjectModel
         return s_Data;
     }
 
-    public byte[] Rewrite(byte[] p_Resource, IReadOnlyList<hkpCollisionShape> p_Shapes)
-    {
-        var s_Physics = new HavokPhysicsData(new RimeReader(new MemoryStream(p_Resource)));
-        var s_Root = HkPhysicsBuilder.Build(p_Shapes);
-        s_Physics.HavokInstance32 = HkPackfile.Write(s_Root, 4);
-        s_Physics.HavokInstance64 = HkPackfile.Write(s_Root, 8);
-
-        if (!s_Physics.Serialize(out var s_Data))
-            throw new InvalidDataException("The physics resource could not be written.");
-        return s_Data;
-    }
+    public byte[] Rewrite(byte[] p_Resource, IReadOnlyList<hkpCollisionShape> p_Shapes) => HkPackfile.Rewrite(p_Resource, HkPhysicsBuilder.Build(p_Shapes));
 
     public IReadOnlyList<string> CheckMopps(byte[] p_Resource, out int p_Trees)
     {

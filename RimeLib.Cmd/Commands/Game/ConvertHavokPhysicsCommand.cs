@@ -10,7 +10,7 @@ using RimeLib.Havok;
 
 namespace RimeLib.Cmd.Commands.Game
 {
-    [CommandDescription("Builds each mounted physics resource's packfiles again in another engine's Havok from its shapes, reads the result back and writes it again byte for byte, and queries each MOPP of it with the bounds of what it is over.")]
+    [CommandDescription("Builds each mounted physics resource's packfiles again in another engine's Havok from its shapes, and each destruction resource's from its breakable bodies, reads the result back and writes it again byte for byte, and queries each MOPP of it with the bounds of what it is over.")]
     public class ConvertHavokPhysicsCommand : Command
     {
         [CommandArgument(Description = "The engine to build the packfiles for.")]
@@ -30,13 +30,18 @@ namespace RimeLib.Cmd.Commands.Game
             var s_Mounter = ((GameContext)p_Context).GetMounter();
             var s_Source = EngineInterfaceRegistry.Create<IHavokConverter>(s_Mounter.GetEngineType());
             var s_Target = EngineInterfaceRegistry.Create<IHavokObjectModel>(Engine);
+            var s_Destruction = EngineInterfaceRegistry.IsSupported<IHavokDestructionConverter>(s_Mounter.GetEngineType())
+                ? EngineInterfaceRegistry.Create<IHavokDestructionConverter>(s_Mounter.GetEngineType())
+                : null;
 
             int s_Total = 0, s_Converted = 0, s_Trees = 0, s_Leaves = 0;
             var s_Failures = new List<string>();
             var s_Unsupported = new SortedDictionary<string, int>(StringComparer.Ordinal);
             foreach (var (s_Name, s_Resource) in s_Mounter.GetResources().OrderBy(p_R => p_R.Key, StringComparer.Ordinal))
             {
-                if (s_Resource.FirstVariant.GetResourceType() != ResourceType.HavokPhysicsData || !s_Name.StartsWith(Prefix, StringComparison.OrdinalIgnoreCase))
+                var s_Type = s_Resource.FirstVariant.GetResourceType();
+                if (!(s_Type == ResourceType.HavokPhysicsData || s_Type == ResourceType.HavokDestructionPhysicsData && s_Destruction != null)
+                    || !s_Name.StartsWith(Prefix, StringComparison.OrdinalIgnoreCase))
                     continue;
 
                 ++s_Total;
@@ -46,19 +51,30 @@ namespace RimeLib.Cmd.Commands.Game
 
                 try
                 {
-                    var s_Shapes = s_Source.GetShapes(s_Resource.FirstVariant, s_Mounter).ToList();
-                    if (s_Shapes.Count == 0)
+                    byte[] s_Written;
+                    if (s_Type == ResourceType.HavokDestructionPhysicsData)
                     {
-                        s_Unsupported["no shapes read"] = s_Unsupported.GetValueOrDefault("no shapes read") + 1;
-                        continue;
+                        s_Written = s_Destruction!.Convert(s_Data, Engine, out var s_Dropped);
+                        foreach (var (s_What, s_Count) in s_Dropped)
+                            s_Unsupported[$"dropped {s_What}"] = s_Unsupported.GetValueOrDefault($"dropped {s_What}") + s_Count;
+                    }
+                    else
+                    {
+                        var s_Shapes = s_Source.GetShapes(s_Resource.FirstVariant, s_Mounter).ToList();
+                        if (s_Shapes.Count == 0)
+                        {
+                            s_Unsupported["no shapes read"] = s_Unsupported.GetValueOrDefault("no shapes read") + 1;
+                            continue;
+                        }
+
+                        s_Leaves += s_Shapes.Count;
+                        s_Written = s_Target.Rewrite(s_Data, s_Shapes);
                     }
 
-                    var s_Written = s_Target.Rewrite(s_Data, s_Shapes);
                     var s_Misses = s_Target.CheckMopps(s_Written, out var s_Queried).ToList();
                     if (!s_Target.Rewrite(s_Written).AsSpan().SequenceEqual(s_Written))
                         s_Misses.Add("reads back as different objects");
                     s_Trees += s_Queried;
-                    s_Leaves += s_Shapes.Count;
                     s_Failures.AddRange(s_Misses.Select(p_M => $"{s_Name}: {p_M}"));
                     if (s_Misses.Count == 0)
                         ++s_Converted;
@@ -84,7 +100,7 @@ namespace RimeLib.Cmd.Commands.Game
             foreach (var s_Line in s_Failures.Take(List))
                 p_Writer.WriteLine($"  {s_Line}");
 
-            p_Writer.WriteLine($"convert_havok_physics: {s_Converted}/{s_Total} physics resource(s) built for {Engine} from {s_Leaves} shape(s), {s_Trees} MOPP(s) queried, {s_Failures.Count} failure(s).");
+            p_Writer.WriteLine($"convert_havok_physics: {s_Converted}/{s_Total} physics and destruction resource(s) built for {Engine}, physics from {s_Leaves} shape(s), {s_Trees} MOPP(s) queried, {s_Failures.Count} failure(s).");
             return s_Failures.Count == 0;
         }
     }

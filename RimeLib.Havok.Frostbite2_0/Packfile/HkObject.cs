@@ -17,7 +17,7 @@ public abstract class HkObject
     public ushort MemSizeAndFlags { get; set; }
     public ushort ReferenceCount { get; set; }
 
-    internal virtual void Write(HkWriter p_Writer)
+    protected internal virtual void Write(HkWriter p_Writer)
     {
         p_Writer.WritePointerSlot();
         p_Writer.Write(MemSizeAndFlags);
@@ -25,13 +25,30 @@ public abstract class HkObject
         p_Writer.EndClass();
     }
 
-    internal virtual void Read(HkReader p_Reader)
+    protected internal virtual void Read(HkReader p_Reader)
     {
         p_Reader.SkipPointerSlot();
         MemSizeAndFlags = p_Reader.ReadUInt16();
         ReferenceCount = p_Reader.ReadUInt16();
         p_Reader.EndClass();
     }
+}
+
+/// <summary>
+/// An object of a class a model leaves unread: its class and where it starts in the data section,
+/// for a reader that works by offsets.
+/// </summary>
+public sealed class HkUnreadObject(string p_ClassName, int p_Offset) : HkObject
+{
+    public override string ClassName { get; } = p_ClassName;
+    public int Offset { get; } = p_Offset;
+
+    protected internal override void Read(HkReader p_Reader)
+    {
+    }
+
+    protected internal override void Write(HkWriter p_Writer) =>
+        throw new NotSupportedException($"Havok class {ClassName} was left unread, so cannot be written.");
 }
 
 /// <summary>The Havok 2010 classes this models, by name, with the signature BF3's packfiles give each.</summary>

@@ -152,7 +152,7 @@ public class HkpExtendedMeshShape : HkpShapeCollection
 
     public float TriangleRadius { get; set; }
 
-    internal override void Write(HkWriter p_Writer)
+    protected internal override void Write(HkWriter p_Writer)
     {
         base.Write(p_Writer);
         EmbeddedTrianglesSubpart.Write(p_Writer);
@@ -171,7 +171,7 @@ public class HkpExtendedMeshShape : HkpShapeCollection
         p_Writer.EndClass();
     }
 
-    internal override void Read(HkReader p_Reader)
+    protected internal override void Read(HkReader p_Reader)
     {
         base.Read(p_Reader);
         EmbeddedTrianglesSubpart = TrianglesSubpart.Read(p_Reader);
