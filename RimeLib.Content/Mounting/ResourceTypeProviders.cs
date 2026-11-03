@@ -1,7 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
 using RimeLib.Content.Frostbite;
 using RimeLib.Frostbite;
 
@@ -16,32 +14,13 @@ namespace RimeLib.Content.Mounting
     {
         public static Dictionary<ResourceType, T> ByType<T>(EngineType p_Engine, Func<T, IEnumerable<ResourceType>> p_Types) where T : IEngineInterface
         {
-            var s_Providers = new List<T>();
-            foreach (var s_Assembly in AppDomain.CurrentDomain.GetAssemblies())
-            {
-                Type[] s_Types;
-                try
-                {
-                    s_Types = s_Assembly.GetTypes();
-                }
-                catch (ReflectionTypeLoadException s_Ex)
-                {
-                    s_Types = s_Ex.Types.Where(p_T => p_T != null).ToArray()!;
-                }
+            // Newest engine first, so a type goes to the newest implementation that names it.
+            var s_ByType = new Dictionary<ResourceType, T>();
+            foreach (var s_Provider in EngineInterfaceRegistry.CreateAll<T>(p_Engine))
+            foreach (var s_Type in p_Types(s_Provider))
+                s_ByType.TryAdd(s_Type, s_Provider);
 
-                foreach (var s_Type in s_Types.Where(p_T => !p_T.IsAbstract && !p_T.IsInterface && typeof(T).IsAssignableFrom(p_T) && p_T.GetConstructor(Type.EmptyTypes) != null))
-                {
-                    var s_Provider = (T)Activator.CreateInstance(s_Type)!;
-                    var s_Supported = s_Provider.GetSupportedEngines();
-                    if (s_Supported.Contains(p_Engine) && s_Supported.Min() <= p_Engine)
-                        s_Providers.Add(s_Provider);
-                }
-            }
-
-            return s_Providers
-                .SelectMany(p_P => p_Types(p_P).Select(p_T => (Type: p_T, Provider: p_P)))
-                .GroupBy(p_E => p_E.Type)
-                .ToDictionary(p_G => p_G.Key, p_G => p_G.OrderByDescending(p_E => p_E.Provider.GetSupportedEngines().Min()).First().Provider);
+            return s_ByType;
         }
     }
 }
