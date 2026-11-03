@@ -83,7 +83,7 @@ namespace RimeLib.Cmd.Commands.Game
         private IReadOnlyDictionary<InstanceRef, (ShaderParameters Parameters, int Materials)> Used(IEngineMounter p_Source, IEngineMounter p_Target, IShaderBindings p_Bindings)
         {
             var s_Reader = EngineInterfaceRegistry.Create<IPartitionConverter>(p_Source.GetEngineType());
-            var s_Conversion = new PartitionConversion(EngineInterfaceRegistry.Create<IEbxTypeLibrary>(p_Target.GetEngineType()));
+            var s_Conversion = PartitionConversion.Between(p_Source.GetEngineType(), p_Target.GetEngineType());
             var s_Name = Name.ToLowerInvariant();
             var s_Names = p_Source.TryGetPartition(s_Name, out _) ? [s_Name] : p_Source.GetPartitionsInBundle(Name).ToList();
 
