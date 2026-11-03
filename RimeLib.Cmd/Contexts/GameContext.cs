@@ -67,6 +67,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpShaderSolutionsCommand>();
             RegisterCommand<DumpMeshVariationDbVariationsCommand>();
             RegisterCommand<DumpMeshTexturesCommand>();
+            RegisterCommand<CheckMeshConversionCommand>();
             RegisterCommand<ListPartitionsCommand>();
             RegisterCommand<ListSbChunksCommand>();
             RegisterCommand<ListBundleChunksCommand>();

@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RimeLib.Serialization\RimeLib.Serialization.csproj" />
+    <ProjectReference Include="..\RimeLib.Mesh.Frostbite2013_2\RimeLib.Mesh.Frostbite2013_2.csproj" />
     <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
     <ProjectReference Include="..\RimeLib.Terrain\RimeLib.Terrain.csproj" />
     <ProjectReference Include="..\RimeLib.Animation.Frostbite2_0\RimeLib.Animation.Frostbite2_0.csproj" />

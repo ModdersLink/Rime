@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using RimeLib.IO;
@@ -34,6 +35,13 @@ namespace RimeLib.Frostbite.Core
         public RelocArray()
         {
             // Fuck yo couch
+        }
+
+        /// <summary>An array of <paramref name="p_Items"/>, whose place the owning layout sets.</summary>
+        public RelocArray(IEnumerable<T> p_Items)
+        {
+            m_Objects = new Array<T>(new List<T>(p_Items));
+            Count = (uint)m_Objects.Count;
         }
 
         /// <summary>

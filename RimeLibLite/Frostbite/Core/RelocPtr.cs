@@ -35,6 +35,12 @@ namespace RimeLib.Frostbite.Core
             BaseAddress = 0;
         }
 
+        /// <summary>A pointer to <paramref name="p_Object"/>, whose place the owning layout sets.</summary>
+        public RelocPtr(T p_Object)
+        {
+            Object = p_Object;
+        }
+
         /// <summary>
         /// Writes the pointer slot: the same 64 bits <see cref="DeserializeObject"/> reads.
         ///
