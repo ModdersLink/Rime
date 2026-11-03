@@ -21,4 +21,24 @@
     <ProjectReference Include="..\..\RimeLib.Cmd\RimeLib.Cmd.csproj" />
   </ItemGroup>
 
+  <!--
+    The engine assemblies are loaded from the output directory at runtime, not referenced, so the
+    REPL builds every engine project with itself and removes engine assemblies whose project does
+    not exist: one left from another branch breaks mounting.
+  -->
+  <ItemGroup>
+    <ProjectReference Include="..\..\RimeLib.*.Frostbite*\*.csproj">
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+
+  <Target Name="RemoveOrphanedEngineAssemblies" AfterTargets="Build">
+    <ItemGroup>
+      <_EngineAssembly Include="$(OutDir)RimeLib.*.dll" />
+      <_OrphanedEngineAssembly Include="@(_EngineAssembly)" Condition="!Exists('$(SolutionDir)%(Filename)/%(Filename).csproj')" />
+    </ItemGroup>
+    <Delete Files="@(_OrphanedEngineAssembly);@(_OrphanedEngineAssembly->'%(RootDir)%(Directory)%(Filename).pdb');@(_OrphanedEngineAssembly->'%(RootDir)%(Directory)%(Filename).deps.json')" />
+    <Message Importance="high" Condition="'@(_OrphanedEngineAssembly)' != ''" Text="Removed engine assemblies without a project: @(_OrphanedEngineAssembly->'%(Filename)', ', ')" />
+  </Target>
+
 </Project>

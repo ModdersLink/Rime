@@ -28,8 +28,14 @@ namespace Rime.Utils.RimeREPL
             // commands go missing.
             foreach (var s_Dll in Directory.GetFiles(AppContext.BaseDirectory, "RimeLib.*.dll"))
             {
-                try { Assembly.LoadFrom(s_Dll); }
-                catch { }
+                try
+                {
+                    Assembly.LoadFrom(s_Dll);
+                }
+                catch (Exception s_Exception)
+                {
+                    Console.Error.WriteLine($"Could not load {Path.GetFileName(s_Dll)}: {s_Exception.Message}");
+                }
             }
 
             Parser.Default.ParseArguments<Options>(p_Args).WithParsed(p_Options =>
