@@ -65,6 +65,13 @@ public sealed class HkReader
         m_Reader.Align(p_Alignment);
     }
 
+    /// <summary>Aligns the next member, for reading it in the same expression.</summary>
+    public HkReader AlignedTo(int p_Alignment)
+    {
+        Align(p_Alignment);
+        return this;
+    }
+
     /// <summary>The mirror of <see cref="HkWriter.EndClass"/>.</summary>
     public void EndClass() => m_Reader.Align(m_Alignment);
 

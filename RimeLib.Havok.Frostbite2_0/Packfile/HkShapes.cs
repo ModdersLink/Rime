@@ -73,6 +73,26 @@ public sealed class HkpBoxShape : HkpConvexShape
 public sealed class HkpSphereShape : HkpConvexShape
 {
     public override string ClassName => "hkpSphereShape";
+
+    /// <summary>The three words of m_pad16, which pad the sphere for SIMD loads and are never set.</summary>
+    private const int c_PadWords = 3;
+
+    internal override void Write(HkWriter p_Writer)
+    {
+        base.Write(p_Writer);
+        for (var i = 0; i < c_PadWords; ++i)
+            p_Writer.Write(0u);
+        p_Writer.EndClass();
+    }
+
+    internal override void Read(HkReader p_Reader)
+    {
+        base.Read(p_Reader);
+        for (var i = 0; i < c_PadWords; ++i)
+            if (p_Reader.ReadUInt32() != 0)
+                throw new System.IO.InvalidDataException("A sphere with a value in its padding.");
+        p_Reader.EndClass();
+    }
 }
 
 public sealed class HkpCapsuleShape : HkpConvexShape

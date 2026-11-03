@@ -50,6 +50,9 @@ public static class HkClasses
         ["hkpConvexTranslateShape"] = (0x5ba0a5f7, () => new HkpConvexTranslateShape()),
         ["hkpConvexTransformShape"] = (0xae3e5017, () => new HkpConvexTransformShape()),
         ["hkpListShape"] = (0xa1937cbd, () => new HkpListShape()),
+        ["hkpMoppBvTreeShape"] = (0xb9a38d82, () => new HkpMoppBvTreeShape()),
+        ["hkpMoppCode"] = (0x924c2661, () => new HkpMoppCode()),
+        ["hkpCompressedMeshShape"] = (0x29e8f04d, () => new HkpCompressedMeshShape()),
     };
 
     /// <summary>
