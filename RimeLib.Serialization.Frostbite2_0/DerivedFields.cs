@@ -11,16 +11,18 @@ public class DerivedFields : IDerivedFields
 {
     private const string c_RuntimeComponentCount = "GameEntityData.RuntimeComponentCount";
     private const string c_IndexInBlueprint = "GameObjectData.IndexInBlueprint";
+    private const string c_TemplateName = "EmitterTemplateData.Name";
     private const ushort c_NoIndex = ushort.MaxValue;
 
     public EngineType[] GetSupportedEngines() => [EngineType.Frostbite2_0];
 
-    public IReadOnlySet<string> Fields { get; } = new HashSet<string> { c_RuntimeComponentCount, c_IndexInBlueprint };
+    public IReadOnlySet<string> Fields { get; } = new HashSet<string> { c_RuntimeComponentCount, c_IndexInBlueprint, c_TemplateName };
 
     public void Derive(DatabasePartitionBase p_Partition, ConversionReport p_Report)
     {
         var s_Partition = Scope.Of(p_Partition);
         NumberObjects(p_Partition, s_Partition, 0);
+        Name(p_Partition);
 
         foreach (var s_Entity in s_Partition.Instances.Values.OfType<GameEntityData>())
         {
@@ -67,6 +69,23 @@ public class DerivedFields : IDerivedFields
         /// <summary>The instance a reference points at in the partition, if it points into it.</summary>
         public DataContainerBase? Find(CtrRefBase p_Ref) =>
             p_Ref.PartitionGuid == Partition ? Instances.GetValueOrDefault(p_Ref.InstanceId) : null;
+    }
+
+    /// <summary>Names an emitter's document and template after the partition, where they have no name.</summary>
+    private static void Name(DatabasePartitionBase p_Partition)
+    {
+        foreach (var s_Instance in p_Partition.Instances)
+        {
+            switch (s_Instance)
+            {
+                case EmitterDocument { Name.Length: 0 } s_Document:
+                    s_Document.Name = p_Partition.Name;
+                    break;
+                case EmitterTemplateData { Name.Length: 0 } s_Template:
+                    s_Template.Name = p_Partition.Name;
+                    break;
+            }
+        }
     }
 
     /// <summary>

@@ -63,6 +63,8 @@ public class ConversionRulesTest
         Assert.Equal(s_Template.InstanceId, s_Document.TemplateData.InstanceId);
         Assert.Equal(s_Template.RootProcessor.InstanceId, s_Document.RootProcessor.InstanceId);
         Assert.Equal(2, Assert.IsType<fb.SpawnSizeData>(s_Partition.Instances.Single(p_I => p_I.InstanceId == s_Template.RootProcessor.InstanceId)).Size);
+        Assert.Equal("fx/test", s_Template.Name);
+        Assert.Equal("fx/test", s_Document.Name);
     }
 
     [Fact]
