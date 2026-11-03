@@ -37,7 +37,7 @@ namespace RimeLib.Cmd.Commands.Game
                 return false;
             }
 
-            if (Read(s_Source, Name!) is not { } s_Data)
+            if (Read(s_Source, Name!, p_Writer) is not { } s_Data)
             {
                 p_Writer.WriteLine($"{Name} is not a mounted resource.");
                 return false;
@@ -61,7 +61,7 @@ namespace RimeLib.Cmd.Commands.Game
 
             if (Compare != null)
             {
-                if (Read(s_Target, Compare) is not { } s_Theirs)
+                if (Read(s_Target, Compare, p_Writer) is not { } s_Theirs)
                 {
                     p_Writer.WriteLine($"{Compare} is not a resource of the target.");
                     return false;
@@ -75,10 +75,14 @@ namespace RimeLib.Cmd.Commands.Game
             return s_Same;
         }
 
-        private static byte[]? Read(IEngineMounter p_Mounter, string p_Name)
+        private static byte[]? Read(IEngineMounter p_Mounter, string p_Name, TextWriter p_Writer)
         {
             if (!p_Mounter.TryGetResource(p_Name.ToLowerInvariant(), out var s_Resource) || s_Resource.FirstVariant == null)
                 return null;
+
+            p_Writer.WriteLine(s_Resource.FirstVariant.TryGetMeta(out var s_Meta) && s_Meta != null
+                ? $"{p_Name}: meta {Convert.ToHexString(s_Meta)}"
+                : $"{p_Name}: no meta");
 
             using var s_Reader = s_Resource.FirstVariant.GetReader();
             return s_Reader.ReadBytes((int)s_Reader.Length);
