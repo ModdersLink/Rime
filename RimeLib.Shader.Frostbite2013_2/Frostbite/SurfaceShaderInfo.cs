@@ -1,29 +1,51 @@
 using RimeLib.IO;
+using BaseInfo = RimeLib.Shader.Frostbite2_0.Frostbite.SurfaceShaderInfo;
 
 namespace RimeLib.Shader.Frostbite2013_2.Frostbite;
 
-/// <summary>A version 194 shader table entry: BF3's, with its textures named by hash.</summary>
-public class SurfaceShaderInfo : Frostbite2_0.Frostbite.SurfaceShaderInfo
+/// <summary>A version 194 shader table entry: BF3's, with its streamed textures named by hash.</summary>
+public class SurfaceShaderInfo : BaseInfo
 {
-    protected override void DeserializeTextures(RimeReader p_Reader)
+    /// <summary>A texture the shader streams, by the lowercase hash of its name.</summary>
+    public class HashedStreamableTexture : StreamableTexture
     {
-        StreamableTextures = new StreamableTexture[p_Reader.ReadUInt32()];
-        for (var i = 0; i < StreamableTextures.Length; i++)
-            StreamableTextures[i] = StreamableTexture.ReadHashed(p_Reader);
+        public uint NameHash { get; set; }
 
-        StreamableExternalTextures = new StreamableExternalTexture[p_Reader.ReadUInt32()];
-        for (var i = 0; i < StreamableExternalTextures.Length; i++)
-            StreamableExternalTextures[i] = StreamableExternalTexture.ReadHashed(p_Reader);
+        public override void Deserialize(RimeReader p_Reader)
+        {
+            NameHash = p_Reader.ReadUInt32();
+            ReadMapping(p_Reader);
+        }
+
+        public override bool Serialize(RimeWriter p_Writer)
+        {
+            p_Writer.Write(NameHash);
+            WriteMapping(p_Writer);
+            return true;
+        }
     }
 
-    protected override void SerializeTextures(RimeWriter p_Writer)
+    /// <summary>A texture the shader streams through a parameter, by the hash of the parameter's name and its id.</summary>
+    public class HashedStreamableExternalTexture : StreamableExternalTexture
     {
-        p_Writer.Write((uint)StreamableTextures.Length);
-        foreach (var s_Texture in StreamableTextures)
-            s_Texture.WriteHashed(p_Writer);
+        public uint ParameterNameHash { get; set; }
 
-        p_Writer.Write((uint)StreamableExternalTextures.Length);
-        foreach (var s_Texture in StreamableExternalTextures)
-            s_Texture.WriteHashed(p_Writer);
+        public override void Deserialize(RimeReader p_Reader)
+        {
+            ParameterNameHash = p_Reader.ReadUInt32();
+            ParameterId = p_Reader.ReadUInt32();
+            ReadMapping(p_Reader);
+        }
+
+        public override bool Serialize(RimeWriter p_Writer)
+        {
+            p_Writer.Write(ParameterNameHash);
+            p_Writer.Write(ParameterId);
+            WriteMapping(p_Writer);
+            return true;
+        }
     }
+
+    protected override StreamableTexture CreateStreamableTexture() => new HashedStreamableTexture();
+    protected override StreamableExternalTexture CreateStreamableExternalTexture() => new HashedStreamableExternalTexture();
 }
