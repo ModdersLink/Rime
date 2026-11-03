@@ -25,6 +25,8 @@ public class ConversionRules : IConversionRules
             [("EffectEntityData", "MediumPc")] = new("Enable.Medium"),
             [("EffectEntityData", "HighEndPc")] = new("Enable.High"),
             [("EffectEntityData", "MaxInstanceCount")] = new("MaxActiveInstanceCount.High"),
+            // Frostbite 2 names the parameters of fx/globaleffectparameterlist its parameter does.
+            [("EvaluatorData", "EmitterParameter")] = new("Parameter.Name"),
             [("EmitterTemplateData", "EmittableType")] = new("", p_Template => Emittables((EmitterTemplateData)p_Template)),
             // Processors here have no switch to turn them off.
             [("ProcessorData", "Enable")] = new("", _ => true),

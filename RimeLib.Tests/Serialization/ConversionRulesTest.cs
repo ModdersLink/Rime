@@ -124,6 +124,46 @@ public class ConversionRulesTest
         Assert.Equal(3, s_Converted.IsPropertyConnectionTarget);
     }
 
+    /// <summary>An evaluator using a parameter of a global list in another partition, as BF4's do.</summary>
+    private static (Bf4 Evaluator, Bf4 List) EvaluatorWithParameter(string p_Name)
+    {
+        var s_ListGuid = new GUID(Guid.Parse("99999999-2222-3333-4444-555555555555"));
+        var s_Parameter = new fb.Entity.EffectParameter { InstanceId = new DataContainerId.Guid(new GUID(Guid.NewGuid())), Name = p_Name };
+        var s_List = new Bf4 { Name = "fx/globaleffectparameterlist", PartitionGuid = s_ListGuid, PrimaryInstanceGuid = ((DataContainerId.Guid)s_Parameter.InstanceId).Id };
+        s_List.InstanceMap.Add(s_Parameter.InstanceId, s_Parameter);
+
+        var s_Evaluator = new fb.Emitter.PolynomialData { InstanceId = new DataContainerId.Guid(s_Primary) };
+        s_Evaluator.Parameter.SetValue(new CtrRefBase(s_ListGuid, s_Parameter.InstanceId));
+        return (Partition(s_Evaluator), s_List);
+    }
+
+    [Fact]
+    public void NamesTheEvaluatorsParameterThroughThePartitionItIsIn()
+    {
+        var (s_Evaluator, s_List) = EvaluatorWithParameter("EmitterParameterDistance");
+        var s_Conversion = Conversion();
+        s_Conversion.SourcePartitions = p_Guid => p_Guid == s_List.PartitionGuid ? s_List : null;
+
+        var s_Converted = (fb.PolynomialData)s_Conversion.Convert(s_Evaluator).PrimaryInstance;
+
+        Assert.Equal(fb.EmitterParameter.EmitterParameterDistance, s_Converted.EmitterParameter);
+    }
+
+    [Fact]
+    public void CountsParametersTheTargetHasNoValueForAndOnesNotFound()
+    {
+        var (s_Evaluator, s_List) = EvaluatorWithParameter("Speed");
+        var s_Named = Conversion();
+        s_Named.SourcePartitions = _ => s_List;
+        var s_Unfound = Conversion();
+
+        s_Named.Convert(s_Evaluator);
+        s_Unfound.Convert(s_Evaluator);
+
+        Assert.Equal(1, s_Named.Report.UnconvertedValues["PolynomialData.Parameter.Name: no EmitterParameter Speed"]);
+        Assert.Equal(1, s_Unfound.Report.UnconvertedValues["PolynomialData.Parameter.Name: a reference on the way to a partition not found"]);
+    }
+
     [Fact]
     public void SplitsTheBusFlagsIntoTheirFields()
     {

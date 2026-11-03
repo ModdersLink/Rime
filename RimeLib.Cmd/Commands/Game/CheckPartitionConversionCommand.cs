@@ -37,6 +37,9 @@ namespace RimeLib.Cmd.Commands.Game
             var s_TargetWriter = EngineInterfaceRegistry.Create<IPartitionGenerator>(s_Target.GetEngineType());
             var s_Conversion = PartitionConversion.Between(s_Source.GetEngineType(), s_Target.GetEngineType());
             var s_SameEngine = s_Source.GetEngineType() == s_Target.GetEngineType();
+            s_Conversion.SourcePartitions = p_Guid => s_Source.TryGetPartitionByGuid(p_Guid, out var s_Name, out var s_Mounted)
+                ? s_Reader.FromPartitionObject(s_Name, s_Mounted.FirstVariant)
+                : null;
 
             var s_Name = Name.ToLowerInvariant();
             var s_Names = s_Source.TryGetPartition(s_Name, out _) ? [s_Name] : s_Source.GetPartitionsInBundle(Name).ToList();
