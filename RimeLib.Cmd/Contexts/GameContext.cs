@@ -81,6 +81,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<RoundTripPartitionsCommand>();
             RegisterCommand<CheckPartitionConversionCommand>();
+            RegisterCommand<MapShaderStandInsCommand>();
             RegisterCommand<DumpPartitionByGuidCommand>();
             // RegisterCommand<DumpAnimTrackDataCommand>(); // class not in repo
             RegisterCommand<BuildCasCatalogCommand>();
