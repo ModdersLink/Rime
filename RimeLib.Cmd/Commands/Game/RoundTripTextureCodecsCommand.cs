@@ -5,7 +5,6 @@ using System.Linq;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Frostbite;
-using RimeLib.Texture;
 using RimeLib.Texture.Images;
 
 namespace RimeLib.Cmd.Commands.Game
@@ -25,7 +24,6 @@ namespace RimeLib.Cmd.Commands.Game
         {
             var s_Mounter = ((GameContext)p_Context).GetMounter();
             var s_Codec = EngineInterfaceRegistry.Create<ITextureCodec>(s_Mounter.GetEngineType());
-            var s_Converter = EngineInterfaceRegistry.Create<ITextureConverter>(s_Mounter.GetEngineType());
 
             var s_Tallies = new SortedDictionary<TexturePixelFormat, Tally>();
             var s_Failures = new Dictionary<string, List<string>>(StringComparer.Ordinal);
@@ -69,8 +67,7 @@ namespace RimeLib.Cmd.Commands.Game
                     Fail("written differently", s_Name);
 
                 // The full chunk is the variant read from its start; the others hold a range of it.
-                var s_ChunkId = s_Converter.GetTextureChunkId(s_Variant);
-                if (!s_Mounter.TryGetChunk(s_ChunkId, out var s_Chunk))
+                if (!s_Mounter.TryGetChunk(s_Image.ChunkId, out var s_Chunk))
                 {
                     Fail("chunk not mounted", s_Name);
                     continue;
