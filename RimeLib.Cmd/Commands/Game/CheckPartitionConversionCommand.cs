@@ -10,7 +10,7 @@ using RimeLib.Serialization.Conversion;
 
 namespace RimeLib.Cmd.Commands.Game
 {
-    [CommandDescription("Converts the partitions of a bundle (or one partition) to another mounted game's engine by type and field name, writes each with that engine's EBX writer and reads it back, reporting what the target's types cannot hold.")]
+    [CommandDescription("Converts the partitions of a bundle (or one partition) to another mounted game's engine by type and field name, writes each with that engine's EBX writer and reads it back, reporting what the target's types cannot hold. Converted to its own engine, each has to write as the source does.")]
     public class CheckPartitionConversionCommand : Command
     {
         [CommandArgument(Description = "Id of the mounted game to convert to.")]
@@ -36,6 +36,7 @@ namespace RimeLib.Cmd.Commands.Game
             var s_TargetReader = EngineInterfaceRegistry.Create<IPartitionConverter>(s_Target.GetEngineType());
             var s_TargetWriter = EngineInterfaceRegistry.Create<IPartitionGenerator>(s_Target.GetEngineType());
             var s_Conversion = PartitionConversion.Between(s_Source.GetEngineType(), s_Target.GetEngineType());
+            var s_SameEngine = s_Source.GetEngineType() == s_Target.GetEngineType();
 
             var s_Name = Name.ToLowerInvariant();
             var s_Names = s_Source.TryGetPartition(s_Name, out _) ? [s_Name] : s_Source.GetPartitionsInBundle(Name).ToList();
@@ -49,11 +50,14 @@ namespace RimeLib.Cmd.Commands.Game
 
                 try
                 {
-                    var s_Written = Write(s_TargetWriter, s_Conversion.Convert(s_Reader.FromPartitionObject(s_Partition, s_Mounted.FirstVariant)));
+                    var s_Original = s_Reader.FromPartitionObject(s_Partition, s_Mounted.FirstVariant);
+                    var s_Written = Write(s_TargetWriter, s_Conversion.Convert(s_Original));
                     var s_Read = s_TargetReader.FromPartitionObject(s_Partition,
                         new BundlePartitionVariant(new SbBuildingContext.MemoryReader(s_Written), Name));
                     if (!Write(s_TargetWriter, s_Read).AsSpan().SequenceEqual(s_Written))
                         throw new InvalidDataException("written differently after reading it back");
+                    if (s_SameEngine && !Write(s_TargetWriter, s_Original).AsSpan().SequenceEqual(s_Written))
+                        throw new InvalidDataException("converted to its own engine, written differently than the source");
                     s_Converted++;
                 }
                 catch (Exception s_Ex) when (s_Ex is InvalidDataException or NotSupportedException or ArgumentException or InvalidCastException)
