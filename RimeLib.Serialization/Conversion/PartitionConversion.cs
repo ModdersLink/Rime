@@ -19,8 +19,9 @@ namespace RimeLib.Serialization.Conversion;
 /// partition. <see cref="ConversionRules"/> cover the rest: types and enum values the target names
 /// differently, fields it takes from elsewhere, structs it keeps one field of and primary instances
 /// it has elsewhere. Fields the target's build derives are set by its <see cref="IDerivedFields"/>.
-/// Instances without a GUID that nothing references any more are dropped. What the target cannot
-/// hold is dropped and counted in <see cref="Report"/>.
+/// Instances without a GUID that nothing references any more are dropped, and a list leaves out the
+/// references it can no longer resolve. What the target cannot hold is dropped and counted in
+/// <see cref="Report"/>.
 /// </summary>
 public sealed class PartitionConversion
 {
@@ -298,6 +299,10 @@ public sealed class PartitionConversion
                 {
                     if (!TryConvert(s_Item, s_ElementType, p_Scope, p_Field, out var s_Converted, out p_Reason))
                         return false;
+
+                    // A reference whose instance the target lacks is left out rather than left a hole.
+                    if (s_Item is CtrRefBase s_ItemRef && !s_ItemRef.IsNull() && s_Converted is CtrRefBase { } s_ConvertedRef && s_ConvertedRef.IsNull())
+                        continue;
                     s_Items.Add(s_Converted);
                 }
 

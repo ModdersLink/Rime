@@ -44,20 +44,29 @@ public class DerivedFieldsTest
 
     private static PartitionConversion Conversion() => new(new EbxTypeLibrary(), null, new DerivedFields());
 
-    /// <summary>
-    /// A component the target has no type for is left a null reference, which counts as one the
-    /// build left out, as in Frostbite 2's data; its own components are gone with it.
-    /// </summary>
+    /// <summary>A component the target has no type for is left out, and its own components with it.</summary>
     [Fact]
-    public void CountsComponentsThroughComponentsOnlyAndDroppedOnesAsLeftOut()
+    public void CountsTheComponentsTheTargetKeepsThroughComponentsOnly()
     {
         var s_Partition = Conversion().Convert(Bf4Model());
 
         var s_Model = (fb.StaticModelEntityData)s_Partition.PrimaryInstance;
         var s_Child = s_Partition.Instances.OfType<fb.StaticModelEntityData>().Single(p_M => p_M != s_Model);
+        Assert.Equal(2, s_Model.RuntimeComponentCount);
+        Assert.Equal(1, s_Child.RuntimeComponentCount);
+        Assert.Equal(2, s_Model.Components.Count);
+    }
+
+    /// <summary>A null reference among an entity's components counts, as one Frostbite 2's build left out.</summary>
+    [Fact]
+    public void CountsANullComponentAsOneLeftOut()
+    {
+        var s_Source = Bf4Model();
+        ((fb.GameShared.StaticModelEntityData)s_Source.PrimaryInstance).Components.AddRef(new CtrRefBase());
+
+        var s_Model = (fb.StaticModelEntityData)Conversion().Convert(s_Source).PrimaryInstance;
+
         Assert.Equal(3, s_Model.RuntimeComponentCount);
-        Assert.Equal(2, s_Child.RuntimeComponentCount);
-        Assert.True(s_Model.Components[1].IsNull());
     }
 
     [Fact]
@@ -75,7 +84,8 @@ public class DerivedFieldsTest
         var s_Partition3 = Conversion().Convert(s_Source);
 
         // The model, its part and its child are numbered; the part's part and the child's part are not.
-        var s_Root = s_Partition3.Instances.OfType<fb.StaticModelEntityData>().Single(p_M => p_M.Components.Count == 3);
+        var s_Object = ((fb.ObjectBlueprint)s_Partition3.PrimaryInstance).Object;
+        var s_Root = s_Partition3.Instances.OfType<fb.StaticModelEntityData>().Single(p_M => p_M.InstanceId == s_Object.InstanceId);
         Assert.Equal(0, s_Root.IndexInBlueprint);
         Assert.Equal(new ushort[] { 0, 1, 2, ushort.MaxValue, ushort.MaxValue },
             s_Partition3.Instances.OfType<fb.GameObjectData>().Select(p_O => p_O.IndexInBlueprint).Order().ToArray());
