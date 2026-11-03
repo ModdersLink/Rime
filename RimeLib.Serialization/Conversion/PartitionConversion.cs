@@ -17,29 +17,38 @@ namespace RimeLib.Serialization.Conversion;
 /// of the same name, and each field takes the value of the source field of the same name, enums
 /// by value name. A struct whose field the target makes a reference becomes an instance of the
 /// partition. <see cref="ConversionRules"/> cover the rest: enum values the target names
-/// differently and structs it keeps one field of. What the target cannot hold is dropped and
-/// counted in <see cref="Report"/>.
+/// differently and structs it keeps one field of. Fields the target's build derives are set by
+/// its <see cref="IDerivedFields"/>. What the target cannot hold is dropped and counted in
+/// <see cref="Report"/>.
 /// </summary>
 public sealed class PartitionConversion
 {
     private readonly IEbxTypeLibrary m_Target;
     private readonly ConversionRules m_Rules;
-    private readonly Dictionary<(Type, Type), (PropertyInfo Source, PropertyInfo? Target)[]> m_Fields = new();
+    private readonly IDerivedFields? m_Derived;
+    private readonly Dictionary<(Type, Type), FieldMap> m_Fields = new();
     private readonly Dictionary<Type, object> m_Defaults = new();
 
     public ConversionReport Report { get; } = new();
 
-    public PartitionConversion(IEbxTypeLibrary p_Target, ConversionRules? p_Rules = null)
+    public PartitionConversion(IEbxTypeLibrary p_Target, ConversionRules? p_Rules = null, IDerivedFields? p_Derived = null)
     {
         m_Target = p_Target;
         m_Rules = p_Rules ?? new ConversionRules();
+        m_Derived = p_Derived;
     }
 
-    /// <summary>A conversion to the target engine's types with the source engine's rules for it, if it has any.</summary>
+    /// <summary>
+    /// A conversion to the target engine's types with the source engine's rules for it and the
+    /// target's derived fields, where the engines have them.
+    /// </summary>
     public static PartitionConversion Between(EngineType p_Source, EngineType p_Target) => new(
         EngineInterfaceRegistry.Create<IEbxTypeLibrary>(p_Target),
         EngineInterfaceRegistry.IsSupported<IConversionRules>(p_Source)
             ? EngineInterfaceRegistry.Create<IConversionRules>(p_Source).For(p_Target)
+            : null,
+        EngineInterfaceRegistry.IsSupported<IDerivedFields>(p_Target)
+            ? EngineInterfaceRegistry.Create<IDerivedFields>(p_Target)
             : null);
 
     /// <summary>
@@ -84,8 +93,10 @@ public sealed class PartitionConversion
             CopyFields(s_Source, s_Target, s_Partition);
 
         Report.ConvertedInstances += s_Converted.Count;
-        return m_Target.CreatePartition(p_Source.Name, p_Source.PartitionGuid,
+        var s_Result = m_Target.CreatePartition(p_Source.Name, p_Source.PartitionGuid,
             InstanceGuid(p_Source.PartitionGuid, p_Source.PrimaryInstance.InstanceId), s_Converted.Values.Concat(s_Partition.Inlined).ToList());
+        m_Derived?.Derive(s_Result, Report);
+        return s_Result;
     }
 
     /// <summary>The partition being converted, the ids of its instances that convert and the instances made of structs.</summary>
@@ -103,7 +114,11 @@ public sealed class PartitionConversion
     private void CopyFields(object p_Source, object p_Target, Scope p_Scope)
     {
         var s_SourceType = p_Source.GetType();
-        foreach (var (s_From, s_To) in Fields(s_SourceType, p_Target.GetType()))
+        var s_Map = Fields(s_SourceType, p_Target.GetType());
+        foreach (var s_Missing in s_Map.Missing)
+            ConversionReport.Count(Report.MissingFields, s_Missing);
+
+        foreach (var (s_From, s_To) in s_Map.Pairs)
         {
             var s_Value = s_From.GetValue(p_Source);
             var s_Field = $"{s_SourceType.Name}.{s_From.Name}";
@@ -244,18 +259,28 @@ public sealed class PartitionConversion
     private static Type? ElementType(Type p_Type) =>
         p_Type.GetInterfaces().FirstOrDefault(p_I => p_I.IsGenericType && p_I.GetGenericTypeDefinition() == typeof(IList<>))?.GetGenericArguments()[0];
 
-    /// <summary>Each EBX field of the source type with the target's field of the same name, if it has one.</summary>
-    private (PropertyInfo Source, PropertyInfo? Target)[] Fields(Type p_Source, Type p_Target)
+    /// <summary>
+    /// Each EBX field of a source type with the target type's field of the same name, if it has one,
+    /// and the target's fields the source does not have and the target does not derive, by declaring type and field.
+    /// </summary>
+    private sealed record FieldMap((PropertyInfo Source, PropertyInfo? Target)[] Pairs, string[] Missing);
+
+    private FieldMap Fields(Type p_Source, Type p_Target)
     {
-        if (!m_Fields.TryGetValue((p_Source, p_Target), out var s_Fields))
+        if (!m_Fields.TryGetValue((p_Source, p_Target), out var s_Map))
         {
             var s_TargetFields = EbxFields(p_Target).ToDictionary(p_F => p_F.Name, StringComparer.Ordinal);
-            m_Fields[(p_Source, p_Target)] = s_Fields = EbxFields(p_Source)
-                .Select(p_F => (p_F, s_TargetFields.GetValueOrDefault(p_F.Name)))
-                .ToArray();
+            var s_SourceFields = EbxFields(p_Source).ToArray();
+            var s_Names = s_SourceFields.Select(p_F => p_F.Name).ToHashSet(StringComparer.Ordinal);
+            m_Fields[(p_Source, p_Target)] = s_Map = new FieldMap(
+                s_SourceFields.Select(p_F => (p_F, s_TargetFields.GetValueOrDefault(p_F.Name))).ToArray(),
+                s_TargetFields.Values.Where(p_F => !s_Names.Contains(p_F.Name))
+                    .Select(p_F => $"{p_F.DeclaringType!.Name}.{p_F.Name}")
+                    .Where(p_F => m_Derived == null || !m_Derived.Fields.Contains(p_F))
+                    .ToArray());
         }
 
-        return s_Fields;
+        return s_Map;
     }
 
     private static IEnumerable<PropertyInfo> EbxFields(Type p_Type) =>
