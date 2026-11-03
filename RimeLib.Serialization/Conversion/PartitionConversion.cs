@@ -29,8 +29,15 @@ public sealed class PartitionConversion
     private readonly IDerivedFields? m_Derived;
     private readonly Dictionary<(Type, Type), FieldMap> m_Fields = new();
     private readonly Dictionary<Type, object> m_Defaults = new();
+    private readonly Dictionary<GUID, Dictionary<DataContainerId, DataContainerBase>?> m_SourceInstances = new();
 
     public ConversionReport Report { get; } = new();
+
+    /// <summary>
+    /// The source engine's partitions by GUID, if they can be looked up, for rules whose path leads
+    /// through a reference to another partition.
+    /// </summary>
+    public Func<GUID, DatabasePartitionBase?>? SourcePartitions { get; set; }
 
     public PartitionConversion(IEbxTypeLibrary p_Target, ConversionRules? p_Rules = null, IDerivedFields? p_Derived = null)
     {
@@ -166,11 +173,11 @@ public sealed class PartitionConversion
     };
 
     /// <summary>
-    /// The value at a path of fields, following each reference on the way to its instance in the
-    /// partition; none where such a reference is null, and false where one leads out of the partition.
-    /// The empty path is the object itself.
+    /// The value at a path of fields, following each reference on the way to its instance, in the
+    /// partition or one of <see cref="SourcePartitions"/>; none where such a reference is null, and
+    /// false where its instance is not found. The empty path is the object itself.
     /// </summary>
-    private static bool Follow(object p_Object, string p_Path, Scope p_Scope, out object? p_Value)
+    private bool Follow(object p_Object, string p_Path, Scope p_Scope, out object? p_Value)
     {
         p_Value = p_Object;
         foreach (var s_Name in p_Path.Length == 0 ? [] : p_Path.Split('.'))
@@ -183,7 +190,8 @@ public sealed class PartitionConversion
                     return true;
                 }
 
-                if (s_Ref.PartitionGuid != p_Scope.Partition || !p_Scope.Sources.TryGetValue(s_Ref.InstanceId, out var s_Instance))
+                var s_Instances = s_Ref.PartitionGuid == p_Scope.Partition ? p_Scope.Sources : SourceInstances(s_Ref.PartitionGuid);
+                if (s_Instances == null || !s_Instances.TryGetValue(s_Ref.InstanceId, out var s_Instance))
                     return false;
                 p_Value = s_Instance;
             }
@@ -194,6 +202,14 @@ public sealed class PartitionConversion
         }
 
         return true;
+    }
+
+    /// <summary>The instances of another source partition by id, if <see cref="SourcePartitions"/> has it.</summary>
+    private Dictionary<DataContainerId, DataContainerBase>? SourceInstances(GUID p_Partition)
+    {
+        if (!m_SourceInstances.TryGetValue(p_Partition, out var s_Instances))
+            m_SourceInstances[p_Partition] = s_Instances = SourcePartitions?.Invoke(p_Partition)?.Instances.ToDictionary(p_I => p_I.InstanceId);
+        return s_Instances;
     }
 
     private Type? ContainerType(Type p_Source)
@@ -228,7 +244,7 @@ public sealed class PartitionConversion
         {
             var s_Field = $"{s_SourceType.Name}.{s_From.Path}";
             if (!Follow(p_Source, s_From.Path, p_Scope, out var s_Value))
-                ConversionReport.Count(Report.UnconvertedValues, $"{s_Field}: a reference on the way out of the partition");
+                ConversionReport.Count(Report.UnconvertedValues, $"{s_Field}: a reference on the way to a partition not found");
             else if (s_Value != null)
                 Set(p_Target, s_To, s_From.Map == null ? s_Value : s_From.Map(s_Value), p_Scope, s_Field);
         }
@@ -269,6 +285,12 @@ public sealed class PartitionConversion
 
                 p_Result = s_Items;
                 return true;
+
+            case string s_Value when p_Type.IsEnum:
+                if (Enum.TryParse(p_Type, s_Value, out p_Result) && Enum.IsDefined(p_Type, p_Result!))
+                    return true;
+                p_Reason = $"no {p_Type.Name} {s_Value}";
+                return false;
 
             case Enum s_Enum when p_Type.IsEnum:
                 var s_Name = m_Rules.EnumValues.GetValueOrDefault((s_Enum.GetType().Name, s_Enum.ToString()), s_Enum.ToString());
