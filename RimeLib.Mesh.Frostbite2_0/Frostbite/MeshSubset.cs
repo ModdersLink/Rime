@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.CodeAnalysis;
+using System;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
@@ -7,130 +8,42 @@ using RimeLib.IO;
 namespace RimeLib.Mesh.Frostbite2_0.Frostbite
 {
     /// <summary>
-    /// Implementation of fb::MeshSubset
-    /// Sizeof MeshSubset = 148 or 0x94
+    /// A part of a mesh LOD drawn with one material (fb::MeshSubset), 0x94 bytes. A later engine
+    /// appends fields of its own after <see cref="TexCoordRatios"/>.
     /// </summary>
     public class MeshSubset : IFbSerializable
     {
-        /// <summary>
-        /// Geometry declarations
-        /// </summary>
-        public ulong GeometryDeclarations { get; set; } // RelocPtr
+        public const int Frostbite2Size = 0x94;
 
-        /// <summary>
-        /// Material name
-        /// </summary>
-        public RelocPtr<string> MaterialName { get; set; } = new RelocPtr<string>(); // RelocPtr
+        /// <summary>m_geometryDeclarations, a pointer the engine fills at runtime.</summary>
+        public ulong GeometryDeclarations { get; set; }
 
-        /// <summary>
-        /// Material index
-        /// </summary>
+        public RelocPtr<string> MaterialName { get; set; } = new();
         public uint MaterialIndex { get; set; }
-
-        /// <summary>
-        /// Primitive (face) count
-        /// </summary>
         public uint PrimitiveCount { get; set; }
-
-        /// <summary>
-        /// Start index
-        /// </summary>
         public uint StartIndex { get; set; }
-
-        /// <summary>
-        /// Vertex offset
-        /// </summary>
         public uint VertexOffset { get; set; }
-
-        /// <summary>
-        /// Verticies count
-        /// </summary>
         public uint VertexCount { get; set; }
-
-        /// <summary>
-        /// Stride of vertices (how many bits per "chunk")
-        /// </summary>
         public byte VertexStride { get; set; }
-
-        /// <summary>
-        /// Primitive type
-        /// </summary>
         public PrimitiveType PrimitiveType { get; set; }
-
-        /// <summary>
-        /// Bones per vertex
-        /// </summary>
         public byte BonesPerVertex { get; set; }
-
-        /// <summary>
-        /// Bone count
-        /// </summary>
         public byte BoneCount { get; set; }
+        public RelocPtrArray<ushort> BoneIndices { get; set; } = new();
+        public GeometryDeclarationDesc GeometryDeclarationDesc { get; set; } = new();
 
-        /// <summary>
-        /// Bone indicies
-        /// </summary>
-        public RelocPtr<ushort> BoneIndices { get; set; } = new RelocPtr<ushort>(); // RelocPtr
+        /// <summary>Six ratios, one per texture coordinate set.</summary>
+        public Array<float> TexCoordRatios { get; set; } = new();
 
-        /// <summary>
-        /// Geometry declaration descriptor
-        /// </summary>
-        public GeometryDeclarationDesc GeometryDeclarationDesc { get; set; } = new GeometryDeclarationDesc();
+        /// <summary>The bytes a subset takes in this engine's MeshSet.</summary>
+        public virtual int Size => Frostbite2Size;
 
-        /// <summary>
-        /// Texture coordinate ratios
-        /// </summary>
-        public Array<float> TexCoordRatios { get; set; } = new Array<float>(); // float[6]
-
-        /// <summary>
-        /// Default constructor
-        /// </summary>
         public MeshSubset()
         {
-
         }
 
-        /// <summary>
-        /// Constructor that reads a mesh subset from an opened reader
-        /// </summary>
-        /// <param name="p_Reader">Reader opened to the position of a MeshSubset</param>
         public MeshSubset(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
-        }
-
-        /// <summary>
-        /// Writes a meshsubset to an opened writer
-        /// </summary>
-        /// <param name="p_Writer">Writer opened to the position of a MeshSubset</param>
-        public bool Serialize(RimeWriter p_Writer)
-        {
-            p_Writer.Write(GeometryDeclarations); // 0
-            p_Writer.Write(MaterialName.BaseAddress);
-            p_Writer.Write(MaterialIndex);
-            p_Writer.Write(PrimitiveCount);
-            p_Writer.Write(StartIndex);
-            p_Writer.Write(VertexOffset);
-            p_Writer.Write(VertexCount);
-            p_Writer.Write(VertexStride);
-            p_Writer.Write((byte)PrimitiveType);
-            p_Writer.Write(BonesPerVertex);
-            p_Writer.Write(BoneCount);
-            p_Writer.Write(BoneIndices.BaseAddress);
-
-            if (!GeometryDeclarationDesc.Serialize(p_Writer))
-                return false;
-
-            for (var i = 0; i < 6; ++i)
-                p_Writer.Write(TexCoordRatios[i]);
-
-            return true;
-        }
-
-        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
-        {
-            p_Data = null;
-            throw new System.NotImplementedException();
         }
 
         public void Deserialize(RimeReader p_Reader)
@@ -146,16 +59,56 @@ namespace RimeLib.Mesh.Frostbite2_0.Frostbite
             PrimitiveType = (PrimitiveType)p_Reader.ReadUByte();
             BonesPerVertex = p_Reader.ReadUByte();
             BoneCount = p_Reader.ReadUByte();
-            BoneIndices = new RelocPtr<ushort>(p_Reader);
+            BoneIndices = new RelocPtrArray<ushort>(p_Reader, BoneCount);
             GeometryDeclarationDesc = new GeometryDeclarationDesc(p_Reader);
 
+            TexCoordRatios = new Array<float>();
             for (var i = 0; i < 6; ++i)
                 TexCoordRatios.Add(p_Reader.ReadSingle());
+
+            DeserializeTail(p_Reader);
         }
+
+        /// <summary>The fields a later engine appends.</summary>
+        protected virtual void DeserializeTail(RimeReader p_Reader)
+        {
+        }
+
+        protected virtual void SerializeTail(RimeWriter p_Writer)
+        {
+        }
+
+        /// <summary>Writes the subset; its pointers are the slots, whose targets the MeshSet places.</summary>
+        public bool Serialize(RimeWriter p_Writer)
+        {
+            p_Writer.Write(GeometryDeclarations);
+            MaterialName.Serialize(p_Writer);
+            p_Writer.Write(MaterialIndex);
+            p_Writer.Write(PrimitiveCount);
+            p_Writer.Write(StartIndex);
+            p_Writer.Write(VertexOffset);
+            p_Writer.Write(VertexCount);
+            p_Writer.Write(VertexStride);
+            p_Writer.Write((byte)PrimitiveType);
+            p_Writer.Write(BonesPerVertex);
+            p_Writer.Write(BoneCount);
+            BoneIndices.Serialize(p_Writer);
+            GeometryDeclarationDesc.Serialize(p_Writer);
+
+            foreach (var s_Ratio in TexCoordRatios.AsList)
+                p_Writer.Write(s_Ratio);
+
+            SerializeTail(p_Writer);
+            return true;
+        }
+
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data) =>
+            throw new NotSupportedException("A mesh subset is written as part of its MeshSet.");
 
         public void Deserialize(byte[] p_Data)
         {
-            Deserialize(new RimeReader(new MemoryStream(p_Data)));
+            using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
+            Deserialize(s_Reader);
         }
     }
 }
