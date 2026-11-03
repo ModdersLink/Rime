@@ -312,8 +312,19 @@ namespace RimeLib.Cmd
             return false;
         }
 
+        /// <summary>
+        /// What a dependency bundle carries: one built earlier into this superbundle (a level's main
+        /// bundle, for its sub-worlds), or the mounted game's.
+        /// </summary>
         private void AddBundleCoverage(string p_Bundle, HashSet<string> p_Partitions, HashSet<string> p_Resources)
         {
+            if (((SbBuildingContext)m_Context.Parent!).GetBuiltBundle(p_Bundle) is { } s_Built)
+            {
+                p_Partitions.UnionWith(s_Built.Partitions.Keys);
+                p_Resources.UnionWith(s_Built.Resources.Keys);
+                return;
+            }
+
             try
             {
                 foreach (var s_Partition in m_Mounter.GetPartitionsInBundle(p_Bundle))
