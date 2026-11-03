@@ -28,6 +28,7 @@
 
 		/// <summary>
 		/// Battlefield 4
+		/// Battlefield Hardline
 		/// Need for Speed: Rivals
 		/// </summary>
 		Frostbite2013_2,
