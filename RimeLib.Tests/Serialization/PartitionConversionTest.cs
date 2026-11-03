@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System;
 using System.Linq;
 using RimeLib.Frostbite.Core;
@@ -148,5 +149,20 @@ public class PartitionConversionTest
 
         Assert.Equal(1, s_Conversion.Report.NamedResources["RigidMeshAsset.MeshSetResource"]);
         Assert.DoesNotContain("RigidMeshAsset.MeshSetResource", s_Conversion.Report.DroppedFields.Keys);
+    }
+
+    [Fact]
+    public void LeavesReferencesToPartitionsNotShippedNull()
+    {
+        var s_Source = Bf4Mesh();
+        var s_Other = new GUID(Guid.Parse("99999999-2222-3333-4444-555555555555"));
+        ((fb.Render.RigidMeshAsset)s_Source.PrimaryInstance).Materials.AddRef(new CtrRefBase(s_Other, new DataContainerId.Guid(s_Primary)));
+        var s_Conversion = new PartitionConversion(new EbxTypeLibrary()) { ShippedPartitions = new HashSet<GUID> { s_Partition } };
+
+        var s_Mesh = (fb.RigidMeshAsset)s_Conversion.Convert(s_Source).PrimaryInstance;
+
+        Assert.False(s_Mesh.Materials[0].IsNull());
+        Assert.True(s_Mesh.Materials[1].IsNull());
+        Assert.Equal(1, s_Conversion.Report.UnshippedReferences["RigidMeshAsset.Materials"]);
     }
 }

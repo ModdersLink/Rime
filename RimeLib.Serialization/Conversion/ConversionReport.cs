@@ -34,6 +34,9 @@ public sealed class ConversionReport
     /// <summary>Instances without a GUID that nothing converted references any more, dropped, by type.</summary>
     public SortedDictionary<string, int> Unreferenced { get; } = new();
 
+    /// <summary>References to a partition the target does not ship, left null, by type and field.</summary>
+    public SortedDictionary<string, int> UnshippedReferences { get; } = new();
+
     /// <summary>References to a dropped instance, by type and field.</summary>
     public SortedDictionary<string, int> DroppedReferences { get; } = new();
 
@@ -55,6 +58,7 @@ public sealed class ConversionReport
         Write(p_Writer, "Values the target field cannot hold", UnconvertedValues, p_Top);
         Write(p_Writer, "Fields the target derives that could not be derived", Underived, p_Top);
         Write(p_Writer, "Instances nothing references any more, dropped", Unreferenced, p_Top);
+        Write(p_Writer, "References to a partition not shipped, left null", UnshippedReferences, p_Top);
         Write(p_Writer, "References to a dropped instance", DroppedReferences, p_Top);
         Write(p_Writer, "Structs made instances, as the target references them", StructsMadeInstances, p_Top);
         Write(p_Writer, "Structs the target keeps one field of", Unwrapped, p_Top);
