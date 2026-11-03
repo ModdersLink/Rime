@@ -31,6 +31,16 @@ namespace RimeLib.IO
             return new BufferedStream(new SharedFileStream(s_Handle), 4096);
         }
 
+        /// <summary>
+        /// Closes the shared handle on a file before it is written, so the writer can open it and
+        /// later reads see what was written. Streams still open on the old handle stop working.
+        /// </summary>
+        public static void Release(string p_Path)
+        {
+            if (s_Handles.TryRemove(Path.GetFullPath(p_Path), out var s_Handle))
+                s_Handle.Dispose();
+        }
+
         public override bool CanRead => true;
         public override bool CanSeek => true;
         public override bool CanWrite => false;
