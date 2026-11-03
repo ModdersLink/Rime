@@ -152,7 +152,7 @@ public class PartitionConversionTest
     }
 
     [Fact]
-    public void LeavesReferencesToPartitionsNotShippedNull()
+    public void LeavesReferencesToPartitionsNotShippedOut()
     {
         var s_Source = Bf4Mesh();
         var s_Other = new GUID(Guid.Parse("99999999-2222-3333-4444-555555555555"));
@@ -161,8 +161,7 @@ public class PartitionConversionTest
 
         var s_Mesh = (fb.RigidMeshAsset)s_Conversion.Convert(s_Source).PrimaryInstance;
 
-        Assert.False(s_Mesh.Materials[0].IsNull());
-        Assert.True(s_Mesh.Materials[1].IsNull());
+        Assert.Single(s_Mesh.Materials);
         Assert.Equal(1, s_Conversion.Report.UnshippedReferences["RigidMeshAsset.Materials"]);
     }
 
