@@ -16,30 +16,40 @@ namespace RimeLib.Serialization.Conversion;
 /// Converts partitions to another engine's types by name: each instance becomes the target's type
 /// of the same name, and each field takes the value of the source field of the same name, enums
 /// by value name. A struct whose field the target makes a reference becomes an instance of the
-/// partition. <see cref="ConversionRules"/> cover the rest: enum values the target names
-/// differently and structs it keeps one field of. What the target cannot hold is dropped and
-/// counted in <see cref="Report"/>.
+/// partition. <see cref="ConversionRules"/> cover the rest: types and enum values the target names
+/// differently, fields it takes from elsewhere, structs it keeps one field of and primary instances
+/// it has elsewhere. Fields the target's build derives are set by its <see cref="IDerivedFields"/>.
+/// Instances without a GUID that nothing references any more are dropped. What the target cannot
+/// hold is dropped and counted in <see cref="Report"/>.
 /// </summary>
 public sealed class PartitionConversion
 {
     private readonly IEbxTypeLibrary m_Target;
     private readonly ConversionRules m_Rules;
-    private readonly Dictionary<(Type, Type), (PropertyInfo Source, PropertyInfo? Target)[]> m_Fields = new();
+    private readonly IDerivedFields? m_Derived;
+    private readonly Dictionary<(Type, Type), FieldMap> m_Fields = new();
     private readonly Dictionary<Type, object> m_Defaults = new();
 
     public ConversionReport Report { get; } = new();
 
-    public PartitionConversion(IEbxTypeLibrary p_Target, ConversionRules? p_Rules = null)
+    public PartitionConversion(IEbxTypeLibrary p_Target, ConversionRules? p_Rules = null, IDerivedFields? p_Derived = null)
     {
         m_Target = p_Target;
         m_Rules = p_Rules ?? new ConversionRules();
+        m_Derived = p_Derived;
     }
 
-    /// <summary>A conversion to the target engine's types with the source engine's rules for it, if it has any.</summary>
+    /// <summary>
+    /// A conversion to the target engine's types with the source engine's rules for it and the
+    /// target's derived fields, where the engines have them.
+    /// </summary>
     public static PartitionConversion Between(EngineType p_Source, EngineType p_Target) => new(
         EngineInterfaceRegistry.Create<IEbxTypeLibrary>(p_Target),
         EngineInterfaceRegistry.IsSupported<IConversionRules>(p_Source)
             ? EngineInterfaceRegistry.Create<IConversionRules>(p_Source).For(p_Target)
+            : null,
+        EngineInterfaceRegistry.IsSupported<IDerivedFields>(p_Target)
+            ? EngineInterfaceRegistry.Create<IDerivedFields>(p_Target)
             : null);
 
     /// <summary>
@@ -79,31 +89,127 @@ public sealed class PartitionConversion
             s_Converted.Add(s_Instance, s_Target);
         }
 
-        var s_Partition = new Scope(p_Source.PartitionGuid, s_Converted.Keys.Select(p_I => p_I.InstanceId).ToHashSet());
+        var s_Partition = new Scope(p_Source.PartitionGuid, p_Source.Instances.ToDictionary(p_I => p_I.InstanceId),
+            s_Converted.Keys.Select(p_I => p_I.InstanceId).ToHashSet());
         foreach (var (s_Source, s_Target) in s_Converted)
             CopyFields(s_Source, s_Target, s_Partition);
 
-        Report.ConvertedInstances += s_Converted.Count;
-        return m_Target.CreatePartition(p_Source.Name, p_Source.PartitionGuid,
-            InstanceGuid(p_Source.PartitionGuid, p_Source.PrimaryInstance.InstanceId), s_Converted.Values.Concat(s_Partition.Inlined).ToList());
+        var s_Primary = PrimaryGuid(p_Source, s_Partition);
+        var s_Kept = Reached(s_Converted, s_Partition, s_Primary);
+        Report.ConvertedInstances += s_Converted.Values.Count(s_Kept.Contains);
+        var s_Result = m_Target.CreatePartition(p_Source.Name, p_Source.PartitionGuid, s_Primary,
+            s_Converted.Values.Concat(s_Partition.Inlined).Where(s_Kept.Contains).ToList());
+        m_Derived?.Derive(s_Result, Report);
+        return s_Result;
     }
 
-    /// <summary>The partition being converted, the ids of its instances that convert and the instances made of structs.</summary>
-    private sealed record Scope(GUID Partition, HashSet<DataContainerId> Converted)
+    /// <summary>
+    /// The partition being converted, its instances by id, the ids of those that convert and the
+    /// instances made of structs.
+    /// </summary>
+    private sealed record Scope(GUID Partition, Dictionary<DataContainerId, DataContainerBase> Sources, HashSet<DataContainerId> Converted)
     {
         public List<DataContainerBase> Inlined { get; } = new();
     }
 
+    /// <summary>The GUID of the target's primary instance: the source's, or the one a <see cref="ConversionRules.Primary"/> rule leads to.</summary>
+    private GUID PrimaryGuid(DatabasePartitionBase p_Source, Scope p_Scope)
+    {
+        var s_Primary = p_Source.PrimaryInstance;
+        if (!m_Rules.Primary.TryGetValue(s_Primary.GetType().Name, out var s_Path))
+            return InstanceGuid(p_Scope.Partition, s_Primary.InstanceId);
+
+        if (!Follow(s_Primary, s_Path, p_Scope, out var s_Value) || s_Value is not CtrRefBase s_Ref
+            || s_Ref.PartitionGuid != p_Scope.Partition || !p_Scope.Converted.Contains(s_Ref.InstanceId))
+            throw new InvalidDataException($"the primary instance's {s_Path} is no instance of the partition that converts");
+        return InstanceGuid(p_Scope.Partition, s_Ref.InstanceId);
+    }
+
+    /// <summary>
+    /// The converted instances that the primary or an instance with a GUID reaches through references
+    /// in the partition. Nothing else can reference one that has only an index, so the rest are
+    /// dropped and counted.
+    /// </summary>
+    private HashSet<DataContainerBase> Reached(Dictionary<DataContainerBase, DataContainerBase> p_Converted, Scope p_Scope, GUID p_Primary)
+    {
+        var s_ByGuid = p_Converted.Values.Concat(p_Scope.Inlined).ToDictionary(p_I => ((DataContainerId.Guid)p_I.InstanceId).Id);
+        var s_Pending = new Stack<DataContainerBase>(p_Converted
+            .Where(p_C => p_C.Key.InstanceId is DataContainerId.Guid)
+            .Select(p_C => p_C.Value)
+            .Append(s_ByGuid[p_Primary]));
+        var s_Reached = new HashSet<DataContainerBase>(ReferenceEqualityComparer.Instance);
+        while (s_Pending.TryPop(out var s_Instance))
+        {
+            if (!s_Reached.Add(s_Instance))
+                continue;
+
+            foreach (var s_Ref in References(s_Instance))
+                if (s_Ref.PartitionGuid == p_Scope.Partition && s_Ref.InstanceId is DataContainerId.Guid s_Id && s_ByGuid.TryGetValue(s_Id.Id, out var s_Next))
+                    s_Pending.Push(s_Next);
+        }
+
+        foreach (var s_Instance in s_ByGuid.Values.Where(p_I => !s_Reached.Contains(p_I)))
+            ConversionReport.Count(Report.Unreferenced, s_Instance.GetType().Name);
+        return s_Reached;
+    }
+
+    /// <summary>The references in an instance's or struct's fields, those of its structs and lists included.</summary>
+    private static IEnumerable<CtrRefBase> References(object p_Object) =>
+        EbxFields(p_Object.GetType()).SelectMany(p_F => ReferencesIn(p_F.GetValue(p_Object)));
+
+    private static IEnumerable<CtrRefBase> ReferencesIn(object? p_Value) => p_Value switch
+    {
+        CtrRefBase s_Ref => [s_Ref],
+        IList s_List => s_List.Cast<object?>().SelectMany(ReferencesIn),
+        EbxSerializable s_Struct => References(s_Struct),
+        _ => [],
+    };
+
+    /// <summary>
+    /// The value at a path of fields, following each reference on the way to its instance in the
+    /// partition; none where such a reference is null, and false where one leads out of the partition.
+    /// The empty path is the object itself.
+    /// </summary>
+    private static bool Follow(object p_Object, string p_Path, Scope p_Scope, out object? p_Value)
+    {
+        p_Value = p_Object;
+        foreach (var s_Name in p_Path.Length == 0 ? [] : p_Path.Split('.'))
+        {
+            if (p_Value is CtrRefBase s_Ref)
+            {
+                if (s_Ref.IsNull())
+                {
+                    p_Value = null;
+                    return true;
+                }
+
+                if (s_Ref.PartitionGuid != p_Scope.Partition || !p_Scope.Sources.TryGetValue(s_Ref.InstanceId, out var s_Instance))
+                    return false;
+                p_Value = s_Instance;
+            }
+
+            var s_Field = p_Value!.GetType().GetProperty(s_Name)
+                ?? throw new InvalidDataException($"{p_Value.GetType().Name} has no field {s_Name} on the path {p_Path}");
+            p_Value = s_Field.GetValue(p_Value);
+        }
+
+        return true;
+    }
+
     private Type? ContainerType(Type p_Source)
     {
-        var s_Type = m_Target.FindType(p_Source.Name);
+        var s_Type = m_Target.FindType(m_Rules.Types.GetValueOrDefault(p_Source.Name, p_Source.Name));
         return s_Type != null && !s_Type.IsAbstract && typeof(DataContainerBase).IsAssignableFrom(s_Type) ? s_Type : null;
     }
 
     private void CopyFields(object p_Source, object p_Target, Scope p_Scope)
     {
         var s_SourceType = p_Source.GetType();
-        foreach (var (s_From, s_To) in Fields(s_SourceType, p_Target.GetType()))
+        var s_Map = Fields(s_SourceType, p_Target.GetType());
+        foreach (var s_Missing in s_Map.Missing)
+            ConversionReport.Count(Report.MissingFields, s_Missing);
+
+        foreach (var (s_From, s_To) in s_Map.Pairs)
         {
             var s_Value = s_From.GetValue(p_Source);
             var s_Field = $"{s_SourceType.Name}.{s_From.Name}";
@@ -115,11 +221,25 @@ public sealed class PartitionConversion
                 continue;
             }
 
-            if (TryConvert(s_Value, s_To.PropertyType, p_Scope, s_Field, out var s_Converted, out var s_Reason))
-                s_To.SetValue(p_Target, s_Converted);
-            else
-                ConversionReport.Count(Report.UnconvertedValues, $"{s_Field}: {s_Reason}");
+            Set(p_Target, s_To, s_Value, p_Scope, s_Field);
         }
+
+        foreach (var (s_From, s_To) in s_Map.Sourced)
+        {
+            var s_Field = $"{s_SourceType.Name}.{s_From.Path}";
+            if (!Follow(p_Source, s_From.Path, p_Scope, out var s_Value))
+                ConversionReport.Count(Report.UnconvertedValues, $"{s_Field}: a reference on the way out of the partition");
+            else if (s_Value != null)
+                Set(p_Target, s_To, s_From.Map == null ? s_Value : s_From.Map(s_Value), p_Scope, s_Field);
+        }
+    }
+
+    private void Set(object p_Target, PropertyInfo p_Field, object? p_Value, Scope p_Scope, string p_Name)
+    {
+        if (TryConvert(p_Value, p_Field.PropertyType, p_Scope, p_Name, out var s_Converted, out var s_Reason))
+            p_Field.SetValue(p_Target, s_Converted);
+        else
+            ConversionReport.Count(Report.UnconvertedValues, $"{p_Name}: {s_Reason}");
     }
 
     private bool TryConvert(object? p_Value, Type p_Type, Scope p_Scope, string p_Field, out object? p_Result, out string p_Reason)
@@ -244,18 +364,53 @@ public sealed class PartitionConversion
     private static Type? ElementType(Type p_Type) =>
         p_Type.GetInterfaces().FirstOrDefault(p_I => p_I.IsGenericType && p_I.GetGenericTypeDefinition() == typeof(IList<>))?.GetGenericArguments()[0];
 
-    /// <summary>Each EBX field of the source type with the target's field of the same name, if it has one.</summary>
-    private (PropertyInfo Source, PropertyInfo? Target)[] Fields(Type p_Source, Type p_Target)
-    {
-        if (!m_Fields.TryGetValue((p_Source, p_Target), out var s_Fields))
-        {
-            var s_TargetFields = EbxFields(p_Target).ToDictionary(p_F => p_F.Name, StringComparer.Ordinal);
-            m_Fields[(p_Source, p_Target)] = s_Fields = EbxFields(p_Source)
-                .Select(p_F => (p_F, s_TargetFields.GetValueOrDefault(p_F.Name)))
-                .ToArray();
-        }
+    /// <summary>
+    /// Each EBX field of a source type with the target type's field of the same name, unless a rule
+    /// sets that one or the field only leads a rule's path; the target's fields rules set, with where
+    /// from; and the target's fields set neither way nor derived, by declaring type and field.
+    /// </summary>
+    private sealed record FieldMap((PropertyInfo Source, PropertyInfo? Target)[] Pairs, (FieldSource Source, PropertyInfo Target)[] Sourced, string[] Missing);
 
-        return s_Fields;
+    private FieldMap Fields(Type p_Source, Type p_Target)
+    {
+        if (m_Fields.TryGetValue((p_Source, p_Target), out var s_Map))
+            return s_Map;
+
+        var s_TargetFields = EbxFields(p_Target).ToArray();
+        var s_SourceFields = EbxFields(p_Source).ToArray();
+        var s_Sourced = s_TargetFields
+            .Select(p_F => (Source: FieldRule(p_Source, p_F.Name), Target: p_F))
+            .Where(p_F => p_F.Source != null)
+            .Select(p_F => (p_F.Source!, p_F.Target))
+            .ToArray();
+        var s_Set = s_Sourced.Select(p_F => p_F.Target.Name).ToHashSet(StringComparer.Ordinal);
+        var s_Heads = s_Sourced.Where(p_F => p_F.Item1.Path.Length > 0).Select(p_F => p_F.Item1.Path.Split('.')[0]).ToHashSet(StringComparer.Ordinal);
+        var s_ByName = s_TargetFields.Where(p_F => !s_Set.Contains(p_F.Name)).ToDictionary(p_F => p_F.Name, StringComparer.Ordinal);
+        var s_Names = s_SourceFields.Select(p_F => p_F.Name).ToHashSet(StringComparer.Ordinal);
+
+        foreach (var s_Head in s_Heads.Where(p_H => !s_Names.Contains(p_H)))
+            throw new InvalidDataException($"{p_Source.Name} has no field {s_Head} that a rule reads");
+
+        m_Fields[(p_Source, p_Target)] = s_Map = new FieldMap(
+            s_SourceFields
+                .Select(p_F => (p_F, s_ByName.GetValueOrDefault(p_F.Name)))
+                .Where(p_F => p_F.Item2 != null || !s_Heads.Contains(p_F.p_F.Name))
+                .ToArray(),
+            s_Sourced,
+            s_ByName.Values.Where(p_F => !s_Names.Contains(p_F.Name))
+                .Select(p_F => $"{p_F.DeclaringType!.Name}.{p_F.Name}")
+                .Where(p_F => m_Derived == null || !m_Derived.Fields.Contains(p_F))
+                .ToArray());
+        return s_Map;
+    }
+
+    /// <summary>Where a rule sets a target field from on a source type or the nearest of its bases, if one does.</summary>
+    private FieldSource? FieldRule(Type p_Source, string p_Field)
+    {
+        for (var s_Type = p_Source; s_Type != null; s_Type = s_Type.BaseType)
+            if (m_Rules.Fields.TryGetValue((s_Type.Name, p_Field), out var s_Rule))
+                return s_Rule;
+        return null;
     }
 
     private static IEnumerable<PropertyInfo> EbxFields(Type p_Type) =>
