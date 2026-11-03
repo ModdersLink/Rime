@@ -17,9 +17,13 @@ namespace RimeLib.Havok.Frostbite2013_2.Packfile;
 /// </summary>
 public sealed class DestructionConversion
 {
-    /// <summary>Property keys BF4 gives what BF3 keeps under another.</summary>
+    /// <summary>
+    /// Keys, of properties and of flags alike, that BF4 numbers one past BF3: a breakable body's type
+    /// among its flags and its decoration data among its properties.
+    /// </summary>
     private static readonly Dictionary<int, int> s_PropertyKeys = new()
     {
+        [unchecked((int)0xF0010007)] = unchecked((int)0xF0010006),
         [unchecked((int)0xF0010009)] = unchecked((int)0xF0010008),
     };
 
@@ -88,8 +92,12 @@ public sealed class DestructionConversion
 
         HkObject? s_Target = p_Source switch
         {
-            // Classes the two versions share are read as Havok 2010's already.
-            HavokGraphicsShape or HkdPropertyFlagSet or HkdStringObject => p_Source,
+            // Classes the two versions share are read as Havok 2010's already; flags take BF3's keys.
+            HavokGraphicsShape or HkdStringObject => p_Source,
+            HkdPropertyFlagSet s_Flags => new HkdPropertyFlagSet
+            {
+                Properties = s_Flags.Properties.Select(p_P => p_P with { Key = (uint)s_PropertyKeys.GetValueOrDefault((int)p_P.Key, (int)p_P.Key) }).ToList(),
+            },
             HkdBreakableBody2012 s_Body => Body(s_Body),
             HkdBreakableShape2012 s_Shape => Shape(s_Shape),
             HkdBuildingController2012 s_Controller => new HkdBuildingController
