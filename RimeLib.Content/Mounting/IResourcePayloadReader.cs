@@ -37,6 +37,11 @@ namespace RimeLib.Content.Mounting
     /// </summary>
     public static class PayloadStream
     {
+        /// <summary>
+        /// A lowercased name. The end of the payload is checked on every byte: a walk that has
+        /// gone wrong reaches it inside a string, and RimeReader.ReadNullTerminatedString would
+        /// keep returning the last byte there.
+        /// </summary>
         public static string ReadCString(RimeReader p_Reader)
         {
             var s_Bytes = new List<byte>(64);
@@ -44,7 +49,7 @@ namespace RimeLib.Content.Mounting
             while (true)
             {
                 if (p_Reader.Position >= p_Reader.Length)
-                    throw new Exception("payload ended inside a string");
+                    throw new InvalidDataException("payload ended inside a string");
 
                 var s_Byte = p_Reader.ReadByte();
                 if (s_Byte == 0)
@@ -65,7 +70,7 @@ namespace RimeLib.Content.Mounting
             var s_Count = p_Reader.ReadUInt32();
 
             if (s_Count > p_Max)
-                throw new Exception($"{p_What} is {s_Count}, the walk is misaligned");
+                throw new InvalidDataException($"{p_What} is {s_Count}, the walk is misaligned");
 
             return s_Count;
         }

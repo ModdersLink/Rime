@@ -73,7 +73,7 @@ namespace RimeLib.Content.Frostbite2013_2
                     // An atlas of more than one tile carries a cumulative weight per tile and their max.
                     var s_Tiles = (ulong)p_Reader.ReadUInt32() * p_Reader.ReadUInt32();
                     if (s_Tiles > 0xFFFF)
-                        throw new Exception($"a scattering texture atlas of {s_Tiles} tiles, the walk is misaligned");
+                        throw new InvalidDataException($"a scattering texture atlas of {s_Tiles} tiles, the walk is misaligned");
                     if (s_Tiles > 1)
                         p_Reader.Seek((long)(s_Tiles + 1) * 4, SeekOrigin.Current);
 
@@ -148,7 +148,7 @@ namespace RimeLib.Content.Frostbite2013_2
                 var s_VertexBytes = p_Reader.ReadUInt32();
                 var s_IndexBytes = p_Reader.ReadUInt32();
                 if ((long)s_VertexBytes + s_IndexBytes > p_Reader.Length - p_Reader.Position)
-                    throw new Exception($"decal geometry of {s_VertexBytes} + {s_IndexBytes} byte(s) overruns the payload");
+                    throw new InvalidDataException($"decal geometry of {s_VertexBytes} + {s_IndexBytes} byte(s) overruns the payload");
                 p_Reader.Seek((long)s_VertexBytes + s_IndexBytes, SeekOrigin.Current);
             }
         }
@@ -170,14 +170,14 @@ namespace RimeLib.Content.Frostbite2013_2
             while (true)
             {
                 if (p_Reader.Position >= p_Reader.Length)
-                    throw new Exception("payload ended inside the raster tree list");
+                    throw new InvalidDataException("payload ended inside the raster tree list");
 
                 if (p_Reader.ReadByte() == 0xFF)
                     break;
 
                 var s_Size = p_Reader.ReadUInt32();
                 if (s_Size > p_Reader.Length - p_Reader.Position)
-                    throw new Exception($"raster tree block of {s_Size} byte(s) overruns the payload");
+                    throw new InvalidDataException($"raster tree block of {s_Size} byte(s) overruns the payload");
 
                 p_Reader.Seek(s_Size, SeekOrigin.Current);
             }
@@ -189,7 +189,7 @@ namespace RimeLib.Content.Frostbite2013_2
         private static void ReadStreamingTreeNode(RimeReader p_Reader, ResourcePayloadNames p_Result, uint p_NodeCount, ref uint p_Read)
         {
             if (++p_Read > p_NodeCount)
-                throw new Exception($"the walk passed the {p_NodeCount} declared node(s)");
+                throw new InvalidDataException($"the walk passed the {p_NodeCount} declared node(s)");
 
             // A lod without tile data has size 0, and the loader skips its id.
             var s_Lod0Size = p_Reader.ReadUInt32();

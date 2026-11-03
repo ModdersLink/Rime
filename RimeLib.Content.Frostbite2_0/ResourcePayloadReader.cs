@@ -119,14 +119,14 @@ namespace RimeLib.Content.Frostbite2_0
             while (true)
             {
                 if (p_Reader.Position >= p_Reader.Length)
-                    throw new Exception("payload ended inside the raster tree list");
+                    throw new InvalidDataException("payload ended inside the raster tree list");
 
                 if (p_Reader.ReadByte() == 0xFF)
                     break;
 
                 var s_Size = p_Reader.ReadUInt32();
                 if (s_Size > p_Reader.Length - p_Reader.Position)
-                    throw new Exception($"raster tree block of {s_Size} byte(s) overruns the payload");
+                    throw new InvalidDataException($"raster tree block of {s_Size} byte(s) overruns the payload");
 
                 p_Reader.Seek(s_Size, SeekOrigin.Current);
             }
@@ -141,7 +141,7 @@ namespace RimeLib.Content.Frostbite2_0
             // The tree has no index and no node count per level, so a misaligned walk would recurse
             // on garbage. The declared node count bounds it.
             if (++p_Read > p_NodeCount)
-                throw new Exception($"the walk passed the {p_NodeCount} declared node(s)");
+                throw new InvalidDataException($"the walk passed the {p_NodeCount} declared node(s)");
 
             // A zero size means the lod has no tile data, and the loader then skips the id. Emitting
             // it anyway would ask for a chunk the game never fetches.
