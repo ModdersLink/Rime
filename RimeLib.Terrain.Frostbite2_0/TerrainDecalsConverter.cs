@@ -64,7 +64,6 @@ namespace RimeLib.Terrain.Frostbite2_0
             p_Writer.Write(p_Block.VertexEnd);
         }
 
-
         /// <summary>Whether vertices are kept as <see cref="DecalGeometry.VertexData"/> rather than parsed with one layout per geometry.</summary>
         protected virtual bool KeepsVertexBytes => false;
 
@@ -173,25 +172,29 @@ namespace RimeLib.Terrain.Frostbite2_0
             foreach (var s_Block in p_Geometry.Blocks)
                 WriteBlock(p_Writer, s_Block);
 
-            var s_VertexCount = p_Kind == DecalGeometryKind.Water
-                ? p_Geometry.WaterVertices?.Count ?? 0
-                : p_Geometry.Vertices?.Count ?? 0;
-
-            p_Writer.Write(p_Geometry.VertexData != null ? (uint) p_Geometry.VertexData.Length : (uint) (s_VertexCount * VertexSize(p_Kind)));
-            p_Writer.Write((uint) (p_Geometry.Indices.Count * 4));
-
-            if (p_Geometry.VertexData != null)
+            if (KeepsVertexBytes)
             {
+                if (p_Geometry.VertexData == null)
+                    throw new InvalidDataException($"TerrainDecals {p_Kind} geometry without its vertex bytes; this engine keeps vertices as bytes.");
+
+                p_Writer.Write((uint) p_Geometry.VertexData.Length);
+                p_Writer.Write((uint) (p_Geometry.Indices.Count * 4));
                 p_Writer.Write(p_Geometry.VertexData);
             }
             else if (p_Kind == DecalGeometryKind.Water)
             {
-                foreach (var s_Vertex in p_Geometry.WaterVertices!)
+                var s_Vertices = p_Geometry.WaterVertices ?? new List<DecalWaterVertex>();
+                p_Writer.Write((uint) (s_Vertices.Count * VertexSize(p_Kind)));
+                p_Writer.Write((uint) (p_Geometry.Indices.Count * 4));
+                foreach (var s_Vertex in s_Vertices)
                     WriteWaterVertex(p_Writer, s_Vertex);
             }
             else
             {
-                foreach (var s_Vertex in p_Geometry.Vertices!)
+                var s_Vertices = p_Geometry.Vertices ?? new List<DecalVertex>();
+                p_Writer.Write((uint) (s_Vertices.Count * VertexSize(p_Kind)));
+                p_Writer.Write((uint) (p_Geometry.Indices.Count * 4));
+                foreach (var s_Vertex in s_Vertices)
                     WriteVertex(p_Writer, s_Vertex);
             }
 
