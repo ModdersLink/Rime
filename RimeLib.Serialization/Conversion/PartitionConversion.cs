@@ -15,19 +15,23 @@ namespace RimeLib.Serialization.Conversion;
 /// Converts partitions to another engine's types by name: each instance becomes the target's type
 /// of the same name, and each field takes the value of the source field of the same name, enums
 /// by value name. A struct whose field the target makes a reference becomes an instance of the
-/// partition. What the target cannot hold is dropped and counted in <see cref="Report"/>.
+/// partition. <see cref="ConversionRules"/> cover the rest: enum values the target names
+/// differently and structs it keeps one field of. What the target cannot hold is dropped and
+/// counted in <see cref="Report"/>.
 /// </summary>
 public sealed class PartitionConversion
 {
     private readonly IEbxTypeLibrary m_Target;
+    private readonly ConversionRules m_Rules;
     private readonly Dictionary<(Type, Type), (PropertyInfo Source, PropertyInfo? Target)[]> m_Fields = new();
     private readonly Dictionary<Type, object> m_Defaults = new();
 
     public ConversionReport Report { get; } = new();
 
-    public PartitionConversion(IEbxTypeLibrary p_Target)
+    public PartitionConversion(IEbxTypeLibrary p_Target, ConversionRules? p_Rules = null)
     {
         m_Target = p_Target;
+        m_Rules = p_Rules ?? new ConversionRules();
     }
 
     /// <summary>
@@ -138,7 +142,8 @@ public sealed class PartitionConversion
                 return true;
 
             case Enum s_Enum when p_Type.IsEnum:
-                if (Enum.TryParse(p_Type, s_Enum.ToString(), out p_Result) && Enum.IsDefined(p_Type, p_Result!))
+                var s_Name = m_Rules.EnumValues.GetValueOrDefault((s_Enum.GetType().Name, s_Enum.ToString()), s_Enum.ToString());
+                if (Enum.TryParse(p_Type, s_Name, out p_Result) && Enum.IsDefined(p_Type, p_Result!))
                     return true;
                 p_Reason = $"no {p_Type.Name} {s_Enum}";
                 return false;
@@ -147,6 +152,12 @@ public sealed class PartitionConversion
                 p_Result = Activator.CreateInstance(p_Type)!;
                 CopyFields(p_Value, p_Result, p_Scope);
                 return true;
+
+            case EbxSerializable when m_Rules.Unwrap.TryGetValue(p_Value.GetType().Name, out var s_Kept):
+                ConversionReport.Count(Report.Unwrapped, $"{p_Field}: {p_Value.GetType().Name}.{s_Kept}");
+                var s_Field = p_Value.GetType().GetProperty(s_Kept)
+                    ?? throw new InvalidDataException($"{p_Value.GetType().Name} has no field {s_Kept} to keep");
+                return TryConvert(s_Field.GetValue(p_Value), p_Type, p_Scope, p_Field, out p_Result, out p_Reason);
 
             case EbxSerializable when typeof(CtrRefBase).IsAssignableFrom(p_Type) && InstanceType(p_Value.GetType(), p_Type) is { } s_InstanceType:
                 var s_Made = (DataContainerBase)Activator.CreateInstance(s_InstanceType)!;
