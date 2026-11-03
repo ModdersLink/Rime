@@ -87,6 +87,12 @@ public class hkpCollisionShape
     /// </summary>
     public long PlacementOffset { get; set; }
 
+    /// <summary>The instance the leaf is under, or none.</summary>
+    public hkpShapeInstance? Instance { get; set; }
+
+    /// <summary>Where the instance places the leaf; the same as <see cref="Placement"/> when there is no instance.</summary>
+    public hkpPlacement LocalPlacement { get; set; } = hkpPlacement.Identity;
+
     /// <summary>Which of the physics container's shapes the leaf is under.</summary>
     public int Root { get; set; }
 

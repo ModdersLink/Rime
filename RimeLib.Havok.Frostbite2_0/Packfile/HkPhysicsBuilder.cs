@@ -10,7 +10,9 @@ namespace RimeLib.Havok.Frostbite2_0.Packfile;
 /// Builds the Havok 2010 objects of a physics resource from its shapes, one container shape per root, the way BF3's
 /// own are made: a convex shape placed by a translate or transform wrapper (or, where a placement
 /// scales it, with the placement baked in), several of them in a list, behind a MOPP where the list
-/// is long, and triangles in a compressed mesh behind a MOPP.
+/// is long, and triangles in a compressed mesh behind a MOPP. Leaves under instances, a static
+/// model group's members, go into an extended mesh with a shape subpart per instance, over child
+/// shapes the instances share.
 /// </summary>
 public static class HkPhysicsBuilder
 {
@@ -41,7 +43,12 @@ public static class HkPhysicsBuilder
 
     private static HkpShape Root(List<hkpCollisionShape> p_Leaves)
     {
-        var s_Convex = p_Leaves.Where(p_L => p_L.Kind != "mesh").Select(Convex).ToList();
+        if (p_Leaves.Any(p_L => p_L.Instance != null))
+            return p_Leaves.All(p_L => p_L.Instance != null)
+                ? Instances(p_Leaves)
+                : throw new NotSupportedException("A container shape with leaves both under instances and not.");
+
+        var s_Convex = p_Leaves.Where(p_L => p_L.Kind != "mesh").Select(p_L => Convex(p_L, p_L.Placement)).ToList<HkpShape>();
         var s_Meshes = p_Leaves.Where(p_L => p_L.Kind == "mesh" && p_L.Indices.Count > 0).ToList();
 
         if (s_Meshes.Count > 0)
@@ -61,9 +68,9 @@ public static class HkPhysicsBuilder
         MathF.Max(MathF.Abs(p_Placement.Scale.X), MathF.Max(MathF.Abs(p_Placement.Scale.Y), MathF.Abs(p_Placement.Scale.Z)));
 
     /// <summary>A convex leaf as BF3 has it: placed by a wrapper, or with a scaling placement baked into it.</summary>
-    private static HkpShape Convex(hkpCollisionShape p_Leaf)
+    private static HkpConvexShape Convex(hkpCollisionShape p_Leaf, hkpPlacement p_Placement)
     {
-        var s_Placement = p_Leaf.Placement;
+        var s_Placement = p_Placement;
         switch (p_Leaf.Kind)
         {
             case "box":
@@ -106,7 +113,7 @@ public static class HkPhysicsBuilder
     }
 
     /// <summary>A shape centred on its origin, behind the wrapper that puts it where the placement does.</summary>
-    private static HkpShape Placed(HkpConvexShape p_Shape, hkpPlacement p_Placement, uint p_UserData)
+    private static HkpConvexShape Placed(HkpConvexShape p_Shape, hkpPlacement p_Placement, uint p_UserData)
     {
         var s_Rotation = Rotation(p_Placement);
         if (s_Rotation == (Vector3.UnitX, Vector3.UnitY, Vector3.UnitZ))
@@ -204,6 +211,90 @@ public static class HkPhysicsBuilder
             VertexCount = s_Vertices.Count,
             PlaneEquations = s_Planes,
         };
+    }
+
+    /// <summary>The bits of an extended mesh's shape keys, below the top one, that number the subpart, as in BF3's.</summary>
+    private const int c_SubpartIndexBits = 16;
+
+    /// <summary>
+    /// Havok's flags for a shape subpart whose translation and rotation are both set, kept in the
+    /// translation's w as the integer bits of 0x3F000000 | flags.
+    /// </summary>
+    private const int c_SubpartPlacementSet = 0x3F000003;
+
+    /// <summary>
+    /// Leaves under instances as an extended mesh behind a MOPP: a shape subpart per instance, in
+    /// the instance's rigid placement and keeping its first part, over the leaves placed within it.
+    /// A leaf placed alike in two instances is one child shape; an instance's scale, which a
+    /// subpart cannot hold, goes into its children.
+    /// </summary>
+    private static HkpShape Instances(List<hkpCollisionShape> p_Leaves)
+    {
+        var s_Shared = new Dictionary<(long, Vector3, Vector3, Vector3, Vector3), HkpConvexShape>();
+        var s_Mesh = new HkpExtendedMeshShape
+        {
+            CollectionType = 1,
+            NumBitsForSubpartIndex = c_SubpartIndexBits,
+            WeldingType = 6,
+            TriangleRadius = 0.05f,
+            EmbeddedTrianglesSubpart = new HkpExtendedMeshShape.TrianglesSubpart
+            {
+                MaterialIndexStridingType = 1, NumMaterials = 1, NumTriangleShapes = -1, NumVertices = -1, TriangleOffset = -1,
+                Rotation = new Vector4(0, 0, 0, 1), Scale = Vector4.One,
+            },
+        };
+
+        foreach (var s_Group in p_Leaves.GroupBy(p_L => p_L.Instance!).OrderBy(p_G => p_G.Key.Index))
+        {
+            var s_Instance = s_Group.Key;
+            var s_Rotation = s_Instance.Placement.Rotation ?? Quaternion.CreateFromRotationMatrix(RotationMatrix(s_Instance.Placement));
+            var s_Scale = hkpPlacement.FromQsTransform(Vector3.Zero, Quaternion.Identity, Snapped(s_Instance.Placement.Scale));
+
+            var s_Children = new List<HkpConvexShape>();
+            foreach (var s_Leaf in s_Group)
+            {
+                var s_Placement = s_Scale.Compose(s_Leaf.LocalPlacement);
+                var s_Key = (s_Leaf.Offset, s_Placement.Column0, s_Placement.Column1, s_Placement.Column2, s_Placement.Translation);
+                if (!s_Shared.TryGetValue(s_Key, out var s_Child))
+                    s_Shared[s_Key] = s_Child = Convex(s_Leaf, s_Placement);
+                s_Children.Add(s_Child);
+            }
+
+            s_Mesh.ShapesSubparts.Add(new HkpExtendedMeshShape.ShapesSubpart
+            {
+                Type = 1,
+                MaterialIndexStridingType = 1,
+                NumMaterials = 1,
+                UserData = (ulong)s_Instance.FirstPart,
+                ChildShapes = s_Children,
+                Rotation = new Vector4(s_Rotation.X, s_Rotation.Y, s_Rotation.Z, s_Rotation.W),
+                Translation = new Vector4(s_Instance.Placement.Translation, BitConverter.Int32BitsToSingle(c_SubpartPlacementSet)),
+            });
+        }
+
+        if (s_Mesh.ShapesSubparts.Count >= 1 << (31 - c_SubpartIndexBits))
+            throw new NotSupportedException($"{s_Mesh.ShapesSubparts.Count} instances, more than an extended mesh's shape keys number.");
+
+        var s_Primitives = HkShapeBounds.OfShapesSubparts(s_Mesh);
+        var (s_Min, s_Max) = (s_Primitives.Select(p_P => p_P.Min).Aggregate(Vector3.Min), s_Primitives.Select(p_P => p_P.Max).Aggregate(Vector3.Max));
+        s_Mesh.AabbHalfExtents = Point((s_Max - s_Min) / 2);
+        s_Mesh.AabbCenter = Point((s_Max + s_Min) / 2);
+        s_Mesh.CachedNumChildShapes = s_Primitives.Count;
+        return Mopp(s_Mesh, s_Primitives);
+    }
+
+    /// <summary>How far from one a scale is still rounding, which would otherwise keep instances from sharing children.</summary>
+    private const float c_ScaleTolerance = 1e-4f;
+
+    private static Vector3 Snapped(Vector3 p_Scale) => new(Snapped(p_Scale.X), Snapped(p_Scale.Y), Snapped(p_Scale.Z));
+
+    private static float Snapped(float p_Scale) => MathF.Abs(p_Scale - 1) < c_ScaleTolerance ? 1 : p_Scale;
+
+    /// <summary>The rotation of a placement given by its columns, for one that carries no quaternion.</summary>
+    private static Matrix4x4 RotationMatrix(hkpPlacement p_Placement)
+    {
+        var (s_X, s_Y, s_Z) = Rotation(p_Placement);
+        return new Matrix4x4(s_X.X, s_X.Y, s_X.Z, 0, s_Y.X, s_Y.Y, s_Y.Z, 0, s_Z.X, s_Z.Y, s_Z.Z, 0, 0, 0, 0, 1);
     }
 
     /// <summary>The triangles of the meshes, placed, as a compressed mesh of big triangles behind a MOPP.</summary>

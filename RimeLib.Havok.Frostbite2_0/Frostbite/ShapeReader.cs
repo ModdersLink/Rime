@@ -296,9 +296,15 @@ public class ShapeReader
         => ReadTransform(p_Reader, p_DataStart, p_Offset, p_ObjectOffsets);
 
     /// <summary>The instances of an hkpStaticCompoundShape, which Havok 2010 does not have; null when not read.</summary>
-    public virtual List<(hkpPlacement Placement, long Child, long Instance)>? ReadStaticCompound(
+    public virtual List<(hkpPlacement Placement, long Child, long Instance, uint UserData)>? ReadStaticCompound(
         LimitedRimeReader p_Reader, long p_DataStart, long p_Offset,
         IReadOnlyDictionary<long, long> p_ArrayOffsets, IReadOnlyDictionary<long, long> p_ObjectOffsets) => null;
+
+    /// <summary>
+    /// The instance a static compound shape's instance is, when its user data numbers parts; none
+    /// otherwise. Havok 2010 has no static compound shapes.
+    /// </summary>
+    public virtual hkpShapeInstance? InstanceOf(int p_Index, hkpPlacement p_Placement, uint p_UserData) => null;
 
     /// <summary>An hkpBvCompressedMeshShape, which Havok 2010 does not have; null when not read.</summary>
     public virtual hkpCollisionShape? ReadBvCompressedMesh(LimitedRimeReader p_Reader, long p_DataStart, long p_Offset,

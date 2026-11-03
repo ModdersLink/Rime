@@ -19,7 +19,7 @@ public readonly record struct MoppBox(int MinX, int MinY, int MinZ, int MaxX, in
 /// axes less 255 per negated one. A cut bounds what follows it, a rescale moves into a sub-cell
 /// of the current one, at twice the resolution per step.
 /// </summary>
-public static class MoppQuery
+public sealed class MoppQuery
 {
     private const int c_TopShift = 16;
 
@@ -32,18 +32,26 @@ public static class MoppQuery
 
     private sealed record State(int[] Offset, int Shift, uint TermOffset);
 
-    public static HashSet<uint> Query(IReadOnlyList<MoppInstruction> p_Code, MoppBox p_Box)
+    private readonly IReadOnlyList<MoppInstruction> m_Code;
+
+    /// <summary>Which instruction starts at each byte of the code, which jumps land on.</summary>
+    private readonly Dictionary<int, int> m_Starts = new();
+
+    public MoppQuery(IReadOnlyList<MoppInstruction> p_Code)
     {
-        var s_Starts = new Dictionary<int, int>();
+        m_Code = p_Code;
         var s_At = 0;
         for (var i = 0; i < p_Code.Count; ++i)
         {
-            s_Starts[s_At] = i;
+            m_Starts[s_At] = i;
             s_At += p_Code[i].Size;
         }
+    }
 
+    public HashSet<uint> Query(MoppBox p_Box)
+    {
         var s_Hits = new HashSet<uint>();
-        Walk(p_Code, s_Starts, 0, new State([0, 0, 0], 0, 0), p_Box, s_Hits);
+        Walk(m_Code, m_Starts, 0, new State([0, 0, 0], 0, 0), p_Box, s_Hits);
         return s_Hits;
     }
 

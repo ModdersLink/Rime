@@ -81,9 +81,18 @@ public static class MoppBuilder
         Emit(s_Left, p_Offset, p_Shift, s_LeftCode);
         var s_LeftSize = s_LeftCode.Sum(p_I => p_I.Size);
 
-        p_Code.Add(s_LeftSize <= byte.MaxValue
-            ? new MoppInstruction((byte)((byte)MoppOpcode.SplitX + s_Widest), [s_First, s_Second, (uint)s_LeftSize])
-            : new MoppInstruction((byte)((byte)MoppOpcode.SplitJumpX + s_Widest), [s_First, s_Second, 0, (uint)s_LeftSize]));
+        if (s_LeftSize <= byte.MaxValue)
+            p_Code.Add(new MoppInstruction((byte)((byte)MoppOpcode.SplitX + s_Widest), [s_First, s_Second, (uint)s_LeftSize]));
+        else if (s_LeftSize <= ushort.MaxValue)
+            p_Code.Add(new MoppInstruction((byte)((byte)MoppOpcode.SplitJumpX + s_Widest), [s_First, s_Second, 0, (uint)s_LeftSize]));
+        else
+        {
+            // Past a split's 16-bit jumps, its second child is a 24-bit jump over the first.
+            var s_Jump = new MoppInstruction((byte)MoppOpcode.Jump24, [(uint)s_LeftSize]);
+            p_Code.Add(new MoppInstruction((byte)((byte)MoppOpcode.SplitJumpX + s_Widest), [s_First, s_Second, (uint)s_Jump.Size, 0]));
+            p_Code.Add(s_Jump);
+        }
+
         p_Code.AddRange(s_LeftCode);
         Emit(s_Right, p_Offset, p_Shift, p_Code);
     }

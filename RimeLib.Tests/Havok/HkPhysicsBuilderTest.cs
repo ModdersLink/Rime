@@ -85,7 +85,7 @@ public class HkPhysicsBuilderTest
         foreach (var s_Triangle in HkShapeBounds.OfBigTriangles(s_Mesh))
         {
             var s_Box = MoppBuilder.ToBox(s_Triangle, new Vector3(s_Offset.X, s_Offset.Y, s_Offset.Z), s_Offset.W);
-            Assert.Contains(s_Triangle.Key, MoppQuery.Query(s_Tree.Code.Instructions, s_Box));
+            Assert.Contains(s_Triangle.Key, new MoppQuery(s_Tree.Code.Instructions).Query(s_Box));
         }
     }
 
@@ -117,5 +117,42 @@ public class HkPhysicsBuilderTest
             var s_Read = HkPackfile.Read(HkPackfile.Write(s_Root, s_PointerSize));
             Assert.Equal(2, ((HavokPhysicsContainer)s_Read.NamedVariants[0].Variant!).Shapes.Count);
         }
+    }
+
+    [Fact]
+    public void SharesTheChildShapesOfInstancesInAnExtendedMesh()
+    {
+        var s_Members = Enumerable.Range(0, 3).Select(p_I => new hkpShapeInstance
+        {
+            Index = p_I,
+            Placement = hkpPlacement.FromQsTransform(new Vector3(p_I * 20, 0, 0), Quaternion.CreateFromAxisAngle(Vector3.UnitY, p_I), new Vector3(p_I == 2 ? 2 : 1)),
+            FirstPart = p_I * 2,
+            PartCount = 2,
+        }).ToList();
+        var s_Local = hkpPlacement.FromTranslation(new Vector3(0, 1, 0));
+        var s_Leaves = s_Members.SelectMany(p_M => new[] { 0, 1 }.Select(p_Part => new hkpCollisionShape
+        {
+            Kind = "box", HalfExtents = Vector3.One, Offset = 64 + p_Part, UserData = (uint)p_Part, Instance = p_M,
+            LocalPlacement = s_Local, Placement = p_M.Placement.Compose(s_Local),
+        })).ToList();
+
+        var s_Tree = Assert.IsType<HkpMoppBvTreeShape>(Only(s_Leaves));
+        var s_Mesh = Assert.IsType<HkpExtendedMeshShape>(s_Tree.Child);
+
+        Assert.Equal([0ul, 2ul, 4ul], s_Mesh.ShapesSubparts.Select(p_S => p_S.UserData));
+        Assert.Same(s_Mesh.ShapesSubparts[0].ChildShapes[1], s_Mesh.ShapesSubparts[1].ChildShapes[1]);
+        Assert.NotSame(s_Mesh.ShapesSubparts[0].ChildShapes[1], s_Mesh.ShapesSubparts[2].ChildShapes[1]);
+        Assert.Equal(new Vector4(2, 2, 2, 2), ((HkpBoxShape)((HkpConvexTranslateShape)s_Mesh.ShapesSubparts[2].ChildShapes[0]).Child!).HalfExtents);
+
+        var s_Offset = s_Tree.Code!.Offset;
+        foreach (var s_Child in HkShapeBounds.OfShapesSubparts(s_Mesh))
+        {
+            var s_Box = MoppBuilder.ToBox(s_Child, new Vector3(s_Offset.X, s_Offset.Y, s_Offset.Z), s_Offset.W);
+            Assert.Contains(s_Child.Key, new MoppQuery(s_Tree.Code.Instructions).Query(s_Box));
+        }
+
+        var s_Read = HkPackfile.Read(HkPackfile.Write(HkPhysicsBuilder.Build(s_Leaves), 8));
+        var s_ReadMesh = (HkpExtendedMeshShape)((HkpMoppBvTreeShape)((HavokPhysicsContainer)s_Read.NamedVariants[0].Variant!).Shapes[0]).Child!;
+        Assert.Same(s_ReadMesh.ShapesSubparts[0].ChildShapes[0], s_ReadMesh.ShapesSubparts[1].ChildShapes[0]);
     }
 }

@@ -579,7 +579,7 @@ public class HavokPhysicsData : IFbSerializable
 
         // Depth is bounded because a list can hold a list -- 325 of BF3's do -- and a malformed
         // fixup could otherwise loop forever.
-        void Visit(long p_Offset, hkpPlacement p_Placement, long p_PlacedBy, int p_Depth)
+        void Visit(long p_Offset, WalkPlacement p_Placement, long p_PlacedBy, int p_Depth)
         {
             if (p_Depth > 32)
                 return;
@@ -623,7 +623,7 @@ public class HavokPhysicsData : IFbSerializable
                     }
 
                     Visit(s_Wrapper.Value.Child,
-                          p_Placement.Compose(hkpPlacement.FromTranslation(s_Wrapper.Value.Centre)),
+                          p_Placement.Then(hkpPlacement.FromTranslation(s_Wrapper.Value.Centre)),
                           p_Offset, p_Depth + 1);
 
                     return;
@@ -638,8 +638,15 @@ public class HavokPhysicsData : IFbSerializable
                         return;
                     }
 
-                    foreach (var (s_Placed, s_Child, s_At) in s_Instances)
-                        Visit(s_Child, p_Placement.Compose(s_Placed), s_At, p_Depth + 1);
+                    for (var i = 0; i < s_Instances.Count; ++i)
+                    {
+                        var (s_Placed, s_Child, s_At, s_UserData) = s_Instances[i];
+                        var s_Member = p_Placement.Instance == null
+                            ? p_Shapes.InstanceOf(i, p_Placement.Placement.Compose(s_Placed), s_UserData)
+                            : null;
+                        Visit(s_Child, s_Member != null ? new WalkPlacement(s_Member.Placement, s_Member, hkpPlacement.Identity) : p_Placement.Then(s_Placed),
+                              s_At, p_Depth + 1);
+                    }
 
                     return;
                 }
@@ -665,7 +672,7 @@ public class HavokPhysicsData : IFbSerializable
                         return;
                     }
 
-                    Visit(s_Wrapper.Value.Child, p_Placement.Compose(s_Wrapper.Value.Placement),
+                    Visit(s_Wrapper.Value.Child, p_Placement.Then(s_Wrapper.Value.Placement),
                           p_Offset, p_Depth + 1);
 
                     return;
@@ -717,8 +724,10 @@ public class HavokPhysicsData : IFbSerializable
                     return;
             }
 
-            s_Leaf.Centre = p_Placement.Translation;
-            s_Leaf.Placement = p_Placement;
+            s_Leaf.Centre = p_Placement.Placement.Translation;
+            s_Leaf.Placement = p_Placement.Placement;
+            s_Leaf.Instance = p_Placement.Instance;
+            s_Leaf.LocalPlacement = p_Placement.Local;
             s_Leaf.PlacementOffset = p_PlacedBy;
             s_Leaf.Root = s_Root;
             s_Instance.Reader.Seek(s_DataStart + p_Offset + p_Shapes.UserDataOffset, SeekOrigin.Begin);
@@ -737,13 +746,19 @@ public class HavokPhysicsData : IFbSerializable
             {
                 foreach (var l_Root in ChildrenOf(l_Object))
                 {
-                    Visit(l_Root, hkpPlacement.Identity, l_Root, 0);
+                    Visit(l_Root, new WalkPlacement(hkpPlacement.Identity, null, hkpPlacement.Identity), l_Root, 0);
                     ++s_Root;
                 }
             }
         }
 
         return s_Shapes;
+    }
+
+    /// <summary>Where the shape walk places what it reaches: in the resource, and within the instance it is under.</summary>
+    private readonly record struct WalkPlacement(hkpPlacement Placement, hkpShapeInstance? Instance, hkpPlacement Local)
+    {
+        public WalkPlacement Then(hkpPlacement p_Next) => new(Placement.Compose(p_Next), Instance, Local.Compose(p_Next));
     }
 
     /// <summary>Class name per object offset, plus those offsets sorted.</summary>

@@ -28,6 +28,7 @@ public class MoppTest
     [InlineData(40, 2, 5f)]
     [InlineData(500, 3, 2f)]
     [InlineData(3000, 4, 0.5f)]
+    [InlineData(20000, 5, 0.2f)]
     public void FindsEveryPrimitiveAQueryOverlaps(int p_Count, int p_Seed, float p_Size)
     {
         var s_Primitives = Primitives(p_Count, p_Seed, p_Size);
@@ -39,7 +40,7 @@ public class MoppTest
         {
             var s_Min = new Vector3(s_Random.NextSingle(), s_Random.NextSingle(), s_Random.NextSingle()) * 110f - new Vector3(55f);
             var s_Max = s_Min + new Vector3(s_Random.NextSingle(), s_Random.NextSingle(), s_Random.NextSingle()) * 10f;
-            var s_Hits = MoppQuery.Query(s_Code, MoppBuilder.ToBox(new MoppPrimitive(0, s_Min, s_Max), s_Origin, s_Offset.W));
+            var s_Hits = new MoppQuery(s_Code).Query(MoppBuilder.ToBox(new MoppPrimitive(0, s_Min, s_Max), s_Origin, s_Offset.W));
 
             foreach (var s_Primitive in s_Primitives.Where(p_P => Overlap(p_P, s_Min, s_Max)))
                 Assert.Contains(s_Primitive.Key, s_Hits);
@@ -54,7 +55,7 @@ public class MoppTest
         var s_Box = MoppBuilder.ToBox(new MoppPrimitive(0, new Vector3(10f), new Vector3(11f)), new Vector3(s_Offset.X, s_Offset.Y, s_Offset.Z), s_Offset.W);
 
         var s_Overlapping = s_Primitives.Count(p_P => Overlap(p_P, new Vector3(10f), new Vector3(11f)));
-        Assert.True(MoppQuery.Query(s_Code, s_Box).Count <= s_Overlapping + 2);
+        Assert.True(new MoppQuery(s_Code).Query(s_Box).Count <= s_Overlapping + 2);
     }
 
     [Fact]

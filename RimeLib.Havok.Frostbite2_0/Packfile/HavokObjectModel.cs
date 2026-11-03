@@ -61,8 +61,8 @@ public class HavokObjectModel : IHavokObjectModel
     }
 
     /// <summary>
-    /// The keys and bounds a MOPP is over that can be bounded: a list's children, or a compressed
-    /// mesh's big triangles, whose keys are their indices.
+    /// The keys and bounds a MOPP is over that can be bounded: a list's children, a compressed
+    /// mesh's big triangles, whose keys are their indices, or an extended mesh's shape subparts' children.
     /// </summary>
     private static List<MoppPrimitive>? Primitives(HkpShape? p_Child)
     {
@@ -78,6 +78,9 @@ public class HavokObjectModel : IHavokObjectModel
             case HkpCompressedMeshShape s_Mesh:
                 return HkShapeBounds.OfBigTriangles(s_Mesh);
 
+            case HkpExtendedMeshShape s_Mesh:
+                return HkShapeBounds.OfShapesSubparts(s_Mesh);
+
             default:
                 return null;
         }
@@ -85,11 +88,12 @@ public class HavokObjectModel : IHavokObjectModel
 
     private static void Check(string p_Whose, Vector4 p_Offset, IReadOnlyList<MoppInstruction> p_Code, List<MoppPrimitive> p_Primitives, List<string> p_Misses)
     {
+        var s_Query = new MoppQuery(p_Code);
         foreach (var s_Primitive in p_Primitives)
         {
             var s_Box = MoppBuilder.ToBox(s_Primitive, new Vector3(p_Offset.X, p_Offset.Y, p_Offset.Z), p_Offset.W);
-            if (!MoppQuery.Query(p_Code, s_Box).Contains(s_Primitive.Key))
-                p_Misses.Add($"{p_Whose} MOPP does not find child {s_Primitive.Key} of {p_Primitives.Count}");
+            if (!s_Query.Query(s_Box).Contains(s_Primitive.Key))
+                p_Misses.Add($"{p_Whose} MOPP does not find key 0x{s_Primitive.Key:X} of {p_Primitives.Count}");
         }
     }
 

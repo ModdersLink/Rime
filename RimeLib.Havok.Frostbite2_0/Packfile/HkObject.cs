@@ -53,6 +53,7 @@ public static class HkClasses
         ["hkpMoppBvTreeShape"] = (0xb9a38d82, () => new HkpMoppBvTreeShape()),
         ["hkpMoppCode"] = (0x924c2661, () => new HkpMoppCode()),
         ["hkpCompressedMeshShape"] = (0x29e8f04d, () => new HkpCompressedMeshShape()),
+        ["hkpExtendedMeshShape"] = (0x177114a2, () => new HkpExtendedMeshShape()),
     };
 
     /// <summary>
