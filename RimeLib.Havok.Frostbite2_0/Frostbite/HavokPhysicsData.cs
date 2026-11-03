@@ -20,8 +20,8 @@ public class HavokPhysicsData : IFbSerializable
     public List<HavokAabb> LocalAabbs { get; private set; } = [];
     public List<byte> MaterialIndices { get; private set; } = [];
     public List<uint> MaterialFlagsAndIndices { get; private set; } = [];
-    public HavokInstance HavokInstance32 { get; private set; } = new();
-    public HavokInstance HavokInstance64 { get; private set; } = new();
+    public HavokInstance HavokInstance32 { get; internal set; } = new();
+    public HavokInstance HavokInstance64 { get; internal set; } = new();
 
     /// <summary>
     /// Where each array sits in the file. These are stored rather than recomputed because they are
@@ -75,14 +75,14 @@ public class HavokPhysicsData : IFbSerializable
 
     public class HavokInstance : IFbSerializable
     {
-        public byte PointerSize { get; private set; } = 4;
-        public byte EndianType { get; private set; } = 1;
-        public hkPackfileHeader HkPackfile { get; private set; } = new();
-        public hkPackfileSectionHeader ClassNamesSection { get; private set; } = new();
-        public hkPackfileSectionHeader TypesSection { get; private set; } = new();
-        public hkPackfileSectionHeader DataSection { get; private set; } = new();
-        public List<hkDescriptor> Descriptors { get; private set; } = [];
-        public List<hkDescriptorInfo> DescriptorInfos { get; private set; } = [];
+        public byte PointerSize { get; internal set; } = 4;
+        public byte EndianType { get; internal set; } = 1;
+        public hkPackfileHeader HkPackfile { get; internal set; } = new();
+        public hkPackfileSectionHeader ClassNamesSection { get; internal set; } = new();
+        public hkPackfileSectionHeader TypesSection { get; internal set; } = new();
+        public hkPackfileSectionHeader DataSection { get; internal set; } = new();
+        public List<hkDescriptor> Descriptors { get; internal set; } = [];
+        public List<hkDescriptorInfo> DescriptorInfos { get; internal set; } = [];
         public LimitedRimeReader Reader { get; private set; }
         public Dictionary<long, long> ArrayOffsets { get; internal set; } = [];
         public Dictionary<long, long> ObjectOffsets { get; internal set; } = [];
