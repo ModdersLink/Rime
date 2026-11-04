@@ -25,6 +25,18 @@ public class ShaderBindings : IShaderBindings
             .Where(p_M => !p_M.Material.IsNull())
             .Select(p_M => (Ref(p_M.Material), p_M.TextureParameters.Select(p_P => p_P.ParameterName)));
 
+    public IReadOnlyList<InstanceRef?> MeshShaders(DatabasePartitionBase p_Partition)
+    {
+        if (p_Partition.PrimaryInstance is not MeshAsset s_Mesh)
+            return [];
+
+        return s_Mesh.Materials.Select(p_Ref => p_Partition.Instances.OfType<MeshMaterial>()
+                .FirstOrDefault(p_M => p_M.InstanceId.Equals(p_Ref.InstanceId)) is { } s_Material && !s_Material.Shader.Shader.IsNull()
+                ? Ref(s_Material.Shader.Shader)
+                : null)
+            .ToList();
+    }
+
     public IReadOnlyList<string> Rebind(DatabasePartitionBase p_Partition, IReadOnlyDictionary<InstanceRef, ShaderStandIn> p_StandIns)
     {
         var s_Dropped = new List<string>();

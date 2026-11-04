@@ -43,6 +43,21 @@ public class ShaderStandInsTest
     }
 
     [Fact]
+    public void TakesANearlyAsAlikeShaderThatDrawsMoreButNotAnUnalikeOne()
+    {
+        var s_StandIns = new ShaderStandIns(new Dictionary<InstanceRef, (ShaderParameters, int)>
+        {
+            [Shader(1)] = (Textures("Diffuse", "Normal", "Specular"), 9),
+            [Shader(2)] = (Textures("Diffuse", "Normal", "Specular", "Detail"), 1),
+            [Shader(3)] = (Textures("Diffuse"), 1),
+        });
+
+        // Shader 2 is 3/4 as alike as shader 1, shader 3 a third.
+        Assert.Equal(Shader(2), s_StandIns.Choose(Textures("Diffuse", "Normal", "Specular"), p_S => p_S == Shader(1) ? 0 : 5)!.Shader);
+        Assert.Equal(Shader(1), s_StandIns.Choose(Textures("Diffuse", "Normal", "Specular"), p_S => p_S == Shader(3) ? 5 : 0)!.Shader);
+    }
+
+    [Fact]
     public void ChoosesNoneWhenNoParameterNameIsShared()
     {
         var s_StandIns = new ShaderStandIns(new Dictionary<InstanceRef, (ShaderParameters, int)> { [Shader(1)] = (Textures("Diffuse"), 1) });
