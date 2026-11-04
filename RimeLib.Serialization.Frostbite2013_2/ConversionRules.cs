@@ -5,6 +5,7 @@ using fb.Audio;
 using fb.Emitter;
 using RimeLib.Frostbite;
 using RimeLib.Serialization.Conversion;
+using FbUtils = RimeLib.Frostbite.Utils;
 
 namespace RimeLib.Serialization.Frostbite2013_2;
 
@@ -27,8 +28,12 @@ public class ConversionRules : IConversionRules
             [("EffectEntityData", "MediumPc")] = new("Enable.Medium"),
             [("EffectEntityData", "HighEndPc")] = new("Enable.High"),
             [("EffectEntityData", "MaxInstanceCount")] = new("MaxActiveInstanceCount.High"),
-            // Frostbite 2 names the parameters of fx/globaleffectparameterlist its parameter does.
-            [("EvaluatorData", "EmitterParameter")] = new("Parameter.Name"),
+            // Frostbite 2 names the emitter parameter of fx/globaleffectparameterlist an evaluator reads.
+            [("EvaluatorData", "EmitterParameter")] = new("Parameter.Name", p_Name => EmitterParameter((string)p_Name)),
+            // A property that sets an effect parameter Frostbite 2 has no name for sets the one it becomes.
+            [("PropertyConnection", "SourceFieldId")] = new("SourceFieldId", ParameterField),
+            [("PropertyConnection", "TargetFieldId")] = new("TargetFieldId", ParameterField),
+            [("DataField", "Id")] = new("Id", ParameterField),
             [("EmitterTemplateData", "EmittableType")] = new("", p_Template => Emittables((EmitterTemplateData)p_Template))
             {
                 Reads = ["EmittableType", "EmittableAlignment"],
@@ -81,7 +86,24 @@ public class ConversionRules : IConversionRules
             "EnlightenShaderDatabaseAsset.DatabaseResource",
             "TerrainData.VisualResource",
         },
+        // Evaluators and connections name the parameters of fx/globaleffectparameterlist instead.
+        HeldByReferrers = new HashSet<string> { "EffectParameterList" },
     };
+
+    /// <summary>
+    /// The effect parameters Frostbite 2 has no name for, by the emitter parameter each becomes: one
+    /// an effect component sets from its property of that name. A level sequence drives SequenceDriven
+    /// through the effect component of the object it grows.
+    /// </summary>
+    private static readonly Dictionary<string, string> s_EmitterParameters = new() { ["SequenceDriven"] = "EmitterParameter1" };
+
+    private static readonly Dictionary<int, int> s_ParameterFields = s_EmitterParameters.ToDictionary(
+        p_P => (int)FbUtils.HashQuick(p_P.Key), p_P => (int)FbUtils.HashQuick(p_P.Value));
+
+    private static object EmitterParameter(string p_Name) => s_EmitterParameters.GetValueOrDefault(p_Name, p_Name);
+
+    /// <summary>A field id, that of the emitter parameter it becomes where it names an effect parameter Frostbite 2 has no name for.</summary>
+    private static object ParameterField(object p_Id) => s_ParameterFields.GetValueOrDefault((int)p_Id, (int)p_Id);
 
     private static Func<object, object> Bit(int p_Bit) => p_Flags => ((ushort)p_Flags & (1 << p_Bit)) != 0;
 

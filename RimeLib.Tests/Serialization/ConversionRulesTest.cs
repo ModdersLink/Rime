@@ -169,6 +169,39 @@ public class ConversionRulesTest
     }
 
     [Fact]
+    public void GivesParametersTheTargetHasNoNameForAnEmitterParameterOfTheirOwn()
+    {
+        var (s_Evaluator, s_List) = EvaluatorWithParameter("SequenceDriven");
+        var s_Conversion = Conversion();
+        s_Conversion.SourcePartitions = _ => s_List;
+
+        var s_Converted = (fb.PolynomialData)s_Conversion.Convert(s_Evaluator).PrimaryInstance;
+
+        Assert.Equal(fb.EmitterParameter.EmitterParameter1, s_Converted.EmitterParameter);
+    }
+
+    [Fact]
+    public void ConnectsAParameterTheTargetHasNoNameForToTheEmitterParameterItBecomes()
+    {
+        var s_SequenceDriven = (int)RimeLib.Frostbite.Utils.HashQuick("SequenceDriven");
+        var s_Blueprint = new fb.Entity.ObjectBlueprint { InstanceId = new DataContainerId.Guid(s_Primary) };
+        var s_Interface = new fb.Entity.InterfaceDescriptorData { InstanceId = new DataContainerId.Guid(new GUID(Guid.NewGuid())) };
+        var s_Effect = new fb.GameShared.EffectComponentData { InstanceId = new DataContainerId.Guid(new GUID(Guid.NewGuid())) };
+        s_Interface.Fields.Add(new fb.Core.DataField { Id = s_SequenceDriven });
+        s_Interface.Fields.Add(new fb.Core.DataField { Id = 7 });
+        s_Blueprint.PropertyConnections.Add(new fb.Core.PropertyConnection { SourceFieldId = s_SequenceDriven, TargetFieldId = s_SequenceDriven });
+        s_Blueprint.PropertyConnections[0].Source.SetValue(Ref(s_Interface));
+        s_Blueprint.PropertyConnections[0].Target.SetValue(Ref(s_Effect));
+
+        var s_Partition = Conversion().Convert(Partition(s_Blueprint, s_Interface, s_Effect));
+
+        var s_EmitterParameter1 = (int)RimeLib.Frostbite.Utils.HashQuick("EmitterParameter1");
+        var s_Connection = ((fb.ObjectBlueprint)s_Partition.PrimaryInstance).PropertyConnections.Single();
+        Assert.Equal((s_EmitterParameter1, s_EmitterParameter1), (s_Connection.SourceFieldId, s_Connection.TargetFieldId));
+        Assert.Equal([s_EmitterParameter1, 7], s_Partition.Instances.OfType<fb.InterfaceDescriptorData>().Single().Fields.Select(p_F => p_F.Id));
+    }
+
+    [Fact]
     public void GivesEachSoundVariationItsRangeOfTheWavesSegments()
     {
         var s_Wave = new fb.Audio.SoundWaveAsset { InstanceId = new DataContainerId.Guid(s_Primary), Name = "Sound/Test_Wave" };
