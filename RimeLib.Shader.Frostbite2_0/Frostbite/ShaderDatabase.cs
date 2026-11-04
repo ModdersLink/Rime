@@ -208,20 +208,23 @@ public class ShaderDatabase : IFbSerializable
     public void ResolveNames(IEngineMounter p_Mounter)
     {
         Shaders.Clear();
-        var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(EngineType.Frostbite2_0);
+        var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(p_Mounter.GetEngineType());
         foreach (var s_Info in ShaderInfos)
         {
             if (!p_Mounter.TryGetPartitionByHashLower(s_Info.Key, out var s_PartitionObject))
                 throw new InvalidDataException($"Could not find partition for shader asset with hash '{s_Info.Key}'. Is the appropriate content mounted?");
 
             var s_Partition = s_Converter.FromPartitionObject(s_PartitionObject.OriginalName, s_PartitionObject.FirstVariant);
-            if (s_Partition.PrimaryInstance is not SurfaceShaderBaseAsset s_Asset)
+            if (ShaderAssetName(s_Partition.PrimaryInstance) is not { } s_Name)
                 throw new InvalidDataException($"Primary instance of shader asset partition '{s_Partition.Name}' is not a SurfaceShaderBaseAsset.");
 
-            s_Info.NameHash = RimeLib.Frostbite.Utils.HashQuick(s_Asset.Name);
-            Shaders.Add(s_Asset.Name, s_Info);
+            s_Info.NameHash = RimeLib.Frostbite.Utils.HashQuick(s_Name);
+            Shaders.Add(s_Name, s_Info);
         }
     }
+
+    /// <summary>The name of a shader partition's primary instance, null when it is no surface shader asset.</summary>
+    protected virtual string? ShaderAssetName(DataContainerBase? p_Primary) => (p_Primary as SurfaceShaderBaseAsset)?.Name;
 
     /// <summary>Each pool's name and record count, in file order.</summary>
     public virtual IEnumerable<(string Name, int Count)> PoolCounts()

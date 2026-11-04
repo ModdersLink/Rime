@@ -15,6 +15,9 @@ namespace RimeLib.Shader.Frostbite2013_2;
 /// </summary>
 public class ShaderResolver : IShaderResolver
 {
+    /// <summary>The initialized database, its shader tables named by their assets.</summary>
+    public ShaderDatabaseContainer? ShaderDatabaseContainer { get; private set; }
+
     private readonly HashSet<string> m_ShaderNames = new(StringComparer.OrdinalIgnoreCase);
     private readonly HashSet<string> m_TextureNames = new(StringComparer.OrdinalIgnoreCase);
     private readonly Dictionary<string, ISet<string>> m_TexturesByShader = new(StringComparer.OrdinalIgnoreCase);
@@ -35,6 +38,7 @@ public class ShaderResolver : IShaderResolver
         m_ShaderNames.Clear();
         m_TextureNames.Clear();
         m_TexturesByShader.Clear();
+        ShaderDatabaseContainer = null;
 
         if (resource == null || resource.GetResourceType() != ResourceType.IShaderDatabase)
             return;
@@ -45,6 +49,9 @@ public class ShaderResolver : IShaderResolver
 
         var s_Container = new ShaderDatabaseContainer();
         s_Container.Deserialize(s_Data);
+        foreach (var s_Database in s_Container.Databases.Values)
+            s_Database.ResolveNames(mounter);
+        ShaderDatabaseContainer = s_Container;
 
         foreach (var s_Database in s_Container.Databases.Values)
         {

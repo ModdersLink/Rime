@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimeLib.IO;
+using RimeLib.Serialization;
 using BaseSolution = RimeLib.Shader.Frostbite2_0.Frostbite.Solutions.ShaderSolution;
 using BaseState = RimeLib.Shader.Frostbite2_0.Frostbite.Solutions.ShaderSolutionState;
 using BaseVertex = RimeLib.Shader.Frostbite2_0.Frostbite.Shaders.VertexShaderPermutation;
@@ -26,6 +27,8 @@ public class ShaderDatabase : Frostbite2_0.Frostbite.ShaderDatabase
     protected override BaseInfo CreateShaderInfo() => new SurfaceShaderInfo();
 
     public override Frostbite2_0.Frostbite.ShaderDatabase CreateEmpty() => new ShaderDatabase { RenderPath = RenderPath, QualityLevel = QualityLevel };
+
+    protected override string? ShaderAssetName(DataContainerBase? p_Primary) => (p_Primary as fb.Render.SurfaceShaderBaseAsset)?.Name;
 
     protected override void DeserializeHeader(RimeReader p_Reader) => QualityLevel = p_Reader.ReadUInt32();
 
