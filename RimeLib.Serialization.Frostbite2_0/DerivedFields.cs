@@ -13,17 +13,23 @@ public class DerivedFields : IDerivedFields
     private const string c_IndexInBlueprint = "GameObjectData.IndexInBlueprint";
     private const string c_TemplateName = "EmitterTemplateData.Name";
     private const string c_NameHash = "SoundDataAsset.NameHash";
+    private const string c_Normals = "VectorShapeData.Normals";
     private const ushort c_NoIndex = ushort.MaxValue;
 
     public EngineType[] GetSupportedEngines() => [EngineType.Frostbite2_0];
 
-    public IReadOnlySet<string> Fields { get; } = new HashSet<string> { c_RuntimeComponentCount, c_IndexInBlueprint, c_TemplateName, c_NameHash };
+    public IReadOnlySet<string> Fields { get; } = new HashSet<string> { c_RuntimeComponentCount, c_IndexInBlueprint, c_TemplateName, c_NameHash, c_Normals };
 
     public void Derive(DatabasePartitionBase p_Partition, ConversionReport p_Report)
     {
         var s_Partition = Scope.Of(p_Partition);
+        ListLinkedObjects(p_Partition);
         NumberObjects(p_Partition, s_Partition, 0);
         Name(p_Partition);
+
+        // A shape has a normal per point, up for the flat areas a level's shapes are.
+        foreach (var s_Shape in s_Partition.Instances.Values.OfType<VectorShapeData>().Where(p_S => p_S.Normals.Count != p_S.Points.Count))
+            s_Shape.Normals = s_Shape.Points.Select(_ => new Vec3 { y = 1 }).ToList();
 
         foreach (var s_Entity in s_Partition.Instances.Values.OfType<GameEntityData>())
         {
@@ -93,6 +99,25 @@ public class DerivedFields : IDerivedFields
 
         foreach (var s_Sound in p_Partition.Instances.OfType<SoundDataAsset>())
             s_Sound.NameHash = Frostbite.Utils.HashQuick(s_Sound.Name);
+    }
+
+    /// <summary>
+    /// Lists in a world part the objects nothing in it refers to, which other blueprints link to (a
+    /// mode's spawn points and areas): the game creates only listed objects.
+    /// </summary>
+    private static void ListLinkedObjects(DatabasePartitionBase p_Partition)
+    {
+        if (p_Partition.PrimaryInstance is not WorldPartData s_Part)
+            return;
+
+        var s_Referenced = p_Partition.Instances.Where(p_I => p_I != s_Part)
+            .SelectMany(PartitionConversion.References)
+            .Concat(s_Part.Objects)
+            .Where(p_R => p_R.PartitionGuid == p_Partition.PartitionGuid)
+            .Select(p_R => p_R.InstanceId)
+            .ToHashSet();
+        foreach (var s_Object in p_Partition.Instances.OfType<GameObjectData>().Where(p_O => !s_Referenced.Contains(p_O.InstanceId)))
+            s_Part.Objects.Add(new CtrRef<GameObjectData>(p_Partition.PartitionGuid, s_Object.InstanceId));
     }
 
     /// <summary>
