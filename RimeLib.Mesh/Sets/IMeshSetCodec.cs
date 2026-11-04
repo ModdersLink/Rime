@@ -26,4 +26,10 @@ public interface IMeshSetCodec : IEngineInterface
     /// meshes have.
     /// </param>
     MeshSetPayload Encode(MeshSetModel p_Model, MeshSetPayload? p_Template = null);
+
+    /// <summary>The hash a shader database names the vertex declaration the subset is written with by.</summary>
+    uint DeclarationHash(MeshSubsetModel p_Subset);
+
+    /// <summary>A vertex declaration as a shader database stores it, as a subset's elements and streams.</summary>
+    (IReadOnlyList<VertexElement> Elements, IReadOnlyList<VertexStream> Streams) ReadDeclaration(byte[] p_Declaration);
 }
