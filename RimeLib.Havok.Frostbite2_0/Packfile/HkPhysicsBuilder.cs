@@ -432,11 +432,11 @@ public static class HkPhysicsBuilder
 
     /// <summary>
     /// Several shapes in a list, behind a MOPP over them where there are many; more than a list
-    /// holds go into lists of their own first, a list per part where that makes fewer. Frostbite
-    /// reads a list child's user data as the part it belongs to, so each such list keeps its part,
-    /// or the first of its parts where it holds several.
+    /// holds go into lists of their own first, a list per part where that makes fewer, each behind
+    /// a MOPP: Frostbite reads a hit list child that is a list again at the hit's key, which only
+    /// the outer list numbers. Each such MOPP keeps its part, or the first of its parts.
     /// </summary>
-    private static HkpShape List(List<HkpShape> p_Children)
+    private static HkpShape List(List<HkpShape> p_Children, bool p_Mopp = false)
     {
         if (p_Children.Count > c_ListCapacity)
         {
@@ -444,11 +444,11 @@ public static class HkPhysicsBuilder
             var s_Groups = s_Parts.Count > 1 && s_Parts.Count < p_Children.Count
                 ? s_Parts.Select(p_P => p_P.ToArray())
                 : p_Children.OrderBy(p_C => p_C.UserData).Chunk(c_ListCapacity);
-            return List(s_Groups.Select(p_Group => p_Group.Length == 1 ? p_Group[0] : WithUserData(List([.. p_Group]), p_Group.Min(p_C => p_C.UserData))).ToList());
+            return List(s_Groups.Select(p_Group => p_Group.Length == 1 ? p_Group[0] : WithUserData(List([.. p_Group], true), p_Group.Min(p_C => p_C.UserData))).ToList(), p_Mopp);
         }
 
         var s_List = PlainList(p_Children, out var s_Bounds);
-        return p_Children.Count > c_ListMoppThreshold
+        return p_Mopp || p_Children.Count > c_ListMoppThreshold
             ? Mopp(s_List, s_Bounds.Select((p_B, p_Key) => new MoppPrimitive((uint)p_Key, p_B.Min, p_B.Max)).ToList())
             : s_List;
     }

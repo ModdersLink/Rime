@@ -23,7 +23,7 @@ public class HkPhysicsBuilderTest
     };
 
     [Fact]
-    public void GivesEachListChildAPartOfItsResource()
+    public void GivesEachListChildAPartOfItsResourceAndNoListChildIsAList()
     {
         // More boxes than a list holds, of two parts, and a mesh of each part beside them.
         var s_Leaves = Enumerable.Range(0, 600).Select(p_I =>
@@ -54,6 +54,8 @@ public class HkPhysicsBuilderTest
         Collect(Only(s_Leaves));
         Assert.Equal(600, s_Children.Count(p_C => p_C is HkpConvexShape));
         Assert.Equal(2, s_Children.Count(p_C => p_C is HkpMoppBvTreeShape { Child: HkpCompressedMeshShape }));
+        // A hit list child that is a list is read again at the outer key, so none is; the convex ones keep their part.
+        Assert.DoesNotContain(s_Children, p_C => p_C is HkpListShape);
         Assert.All(s_Children, p_C => Assert.True(p_C.UserData < 2));
     }
 
