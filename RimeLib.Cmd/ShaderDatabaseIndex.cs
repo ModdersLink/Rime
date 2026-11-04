@@ -61,6 +61,11 @@ namespace RimeLib.Cmd
             return m_Index;
         }
 
+        private ShaderDeclarations? m_Declarations;
+
+        /// <summary>The vertex declarations each shader has solutions for, over every mounted database.</summary>
+        public ShaderDeclarations Declarations => m_Declarations ??= ShaderDeclarations.Merge(Databases.Select(p_D => Builder.GetDeclarations(p_D.Load())));
+
         private HashSet<string>? m_Imported;
 
         /// <summary>
