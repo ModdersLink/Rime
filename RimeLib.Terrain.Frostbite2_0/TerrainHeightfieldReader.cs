@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Terrain.Frostbite2_0.Frostbite;
@@ -166,28 +167,29 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
         return true;
     }
 
-    /// <summary>The mask tree's samples: here one entry per node, its samples stored flat.</summary>
+    /// <summary>One entry per subtile with samples: the subtile's own coverage and its flat samples.</summary>
     protected virtual void ReadMask(TerrainStreamingTree p_Tree, TerrainHeightfield p_Heightfield)
     {
         if (p_Tree.TerrainMaskTree is not TerrainMaskTree s_Mask)
             return;
 
         p_Heightfield.MaskRaw = s_Mask.Raw;
-        p_Heightfield.MaskConsumed = s_Mask.Consumed;
-        p_Heightfield.MaskSamplesPerSide = s_Mask.NodeSamplesPerSide;
+        p_Heightfield.MaskConsumed = s_Mask.Raw.Length;
+        p_Heightfield.MaskSamplesPerSide = s_Mask.TileSamplesPerSide;
         p_Heightfield.MaskRewritesExactly = RewritesExactly(s_Mask, s_Mask.Raw);
-        p_Heightfield.MaskRewriteInfo = $"groups={s_Mask.Groups.Count} header={s_Mask.HeaderRaw.Length} trailing={s_Mask.Trailing.Length} raw={s_Mask.Raw.Length}";
+        p_Heightfield.MaskRewriteInfo = $"nodes={s_Mask.Nodes.Count} subtiles={s_Mask.SubtileCount}";
 
         foreach (var s_Node in s_Mask.Nodes)
+        foreach (var s_Subtile in s_Node.Subtiles.Where(p_S => p_S.Samples.Length > 0))
         {
             p_Heightfield.MaskNodes.Add(new TerrainMaterialSamples
             {
-                Level = s_Node.Level,
-                IndexX = s_Node.IndexX,
-                IndexY = s_Node.IndexY,
-                Min = [s_Node.MinX, s_Node.MinY],
-                Max = [s_Node.MaxX, s_Node.MaxY],
-                Rle = s_Node.Samples,
+                Level = s_Node.ID.Level,
+                IndexX = s_Node.ID.IndexX,
+                IndexY = s_Node.ID.IndexY,
+                Min = [s_Subtile.WorldCoverage[0], s_Subtile.WorldCoverage[1]],
+                Max = [s_Subtile.WorldCoverage[2], s_Subtile.WorldCoverage[3]],
+                Rle = s_Subtile.Samples,
                 LineSizes = [],
             });
         }
