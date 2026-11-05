@@ -38,6 +38,9 @@ public abstract class TextureHeaderCodec : ITextureCodec
     /// <param name="p_Template">The header the fields that depend on how the chunk is stored come from, if any.</param>
     protected abstract byte[] WriteHeader(Fields p_Fields, byte[]? p_Template);
 
+    /// <summary>The resource meta the engine ships a texture with, or none where it is not known.</summary>
+    protected virtual byte[]? Meta => null;
+
     public TextureImage Decode(string p_Name, byte[] p_Header, byte[] p_Chunk)
     {
         var s_Fields = ReadHeader(p_Header);
@@ -88,7 +91,7 @@ public abstract class TextureHeaderCodec : ITextureCodec
             p_Image.ChunkId, MipSizes(p_Image), checked((uint)p_Image.ChainSize(RowAlignment)), RimeLib.Frostbite.Utils.HashQuickLowerCase(p_Name), p_Image.Group);
 
         var s_Chunk = p_Image.Data.Length == 0 ? p_Image.Data : p_Image.RealignRows(p_Image.Data, 1, RowAlignment);
-        return new TextureResource(WriteHeader(s_Fields, p_Template), s_Chunk);
+        return new TextureResource(WriteHeader(s_Fields, p_Template), s_Chunk, Meta);
     }
 
     public long ChunkSize(TextureImage p_Image) => p_Image.DataSize(RowAlignment);

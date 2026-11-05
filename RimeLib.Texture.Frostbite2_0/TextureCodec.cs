@@ -49,6 +49,9 @@ public class TextureCodec : TextureHeaderCodec
 
     private const int c_HeaderSize = 128;
 
+    /// <summary>Every texture of the game's bundles ships with empty meta.</summary>
+    protected override byte[]? Meta => new byte[16];
+
     public override EngineType[] GetSupportedEngines() => [EngineType.Frostbite2_0];
 
     public override IReadOnlyCollection<TexturePixelFormat> Formats => s_ToEngine.Keys;
