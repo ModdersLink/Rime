@@ -5,6 +5,7 @@ using fb;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
+using RimeLib.Serialization.Frostbite2_0.Extensions;
 
 namespace RimeLib.Enlighten.Frostbite2_0;
 
@@ -29,11 +30,9 @@ public class EnlightenMaterial : IFbSerializable
     /// The exact inverse of <see cref="Deserialize(RimeReader)"/>: colour (Vec3), guid (16),
     /// shader id (8) and the emissive flag as a single byte.
     /// </summary>
-    public virtual bool Serialize(RimeWriter p_Writer)
+    public bool Serialize(RimeWriter p_Writer)
     {
-        p_Writer.Write(Color.x);
-        p_Writer.Write(Color.y);
-        p_Writer.Write(Color.z);
+        p_Writer.Write(Color.ToVec());
 
         if (!Guid.Serialize(p_Writer))
             return false;
@@ -59,14 +58,10 @@ public class EnlightenMaterial : IFbSerializable
         return false;
     }
 
-    public virtual void Deserialize(RimeReader p_Reader)
+    public void Deserialize(RimeReader p_Reader)
     {
-        Color = new Vec3
-        {
-            x = p_Reader.ReadSingle(),
-            y = p_Reader.ReadSingle(),
-            z = p_Reader.ReadSingle()
-        };
+        Color = new Vec3();
+        Color.Set(p_Reader.ReadVector3());
 
         Guid = new GUID(p_Reader);
         ShaderId = p_Reader.ReadUInt64();
