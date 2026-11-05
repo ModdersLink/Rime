@@ -54,7 +54,7 @@ namespace RimeLib.Animation.EA.GenericData
 
 
 
-        public bool Serialize(RimeWriter p_Writer)
+        public virtual bool Serialize(RimeWriter p_Writer)
         {
             p_Writer.Write(SerializeId());
             
@@ -69,7 +69,7 @@ namespace RimeLib.Animation.EA.GenericData
             return true;
         }
 
-        public void Deserialize(RimeReader p_Reader)
+        public virtual void Deserialize(RimeReader p_Reader)
         {
             ParseId(p_Reader);
 
@@ -158,10 +158,8 @@ namespace RimeLib.Animation.EA.GenericData
                     throw new Exception($"Invaid GenericData format! newer ANT or something else is wrong. [{Type}]");
             }
 
-            if (BigEndian)
-                s_String += "b";
-            else
-                s_String += " "; //TODO: i dont remember what this was 
+            // The byte order of everything after the id: 'b' big, 'l' little.
+            s_String += BigEndian ? "b" : "l";
 
             return Encoding.ASCII.GetBytes(s_String);
         }
