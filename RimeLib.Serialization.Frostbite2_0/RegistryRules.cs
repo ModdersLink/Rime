@@ -195,7 +195,7 @@ public class RegistryRules : IRegistryRules
                 or fb.SyncedBoolEntityData or fb.SyncedSequenceEntityData or fb.SyncedTransformEntityData or fb.EventSyncEntityData
                 or fb.CoopLobbyEntityData
                 or fb.ObjectiveEntityData or fb.CapturePointEntityData or fb.MapMarkerEntityData or fb.CombatAreaTriggerEntityData
-                or fb.GameInteractionEntityData or fb.LifeCounterEntityData or fb.TicketCounterEntityData
+                or fb.GameInteractionEntityData or fb.LifeCounterEntityData or fb.TicketCounterEntityData or fb.KillCounterEntityData
                 or fb.PreRoundEntityData or fb.RoundOverEntityData => true,
             _ => false,
         };
