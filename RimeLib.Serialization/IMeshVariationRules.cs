@@ -20,6 +20,9 @@ public interface IMeshVariationRules : IEngineInterface
     /// <summary>Whether a bundle whose database would have no entries ships none.</summary>
     bool OmitsEmptyDatabase => false;
 
+    /// <summary>What each material of an entry draws with: its material variation if it has one, else the material.</summary>
+    IEnumerable<CtrRefBase> GetDrawnMaterials(object p_Entry);
+
     /// <summary>The name hash a variation is looked up by, or null when the instance is not a variation.</summary>
     uint? GetVariationHash(DataContainerBase p_Instance);
 

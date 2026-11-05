@@ -216,9 +216,47 @@ Building one therefore means compiling or copying solutions per shader and per v
 meshes that use it. Copying from retail databases covers retail shaders with retail meshes; terrain
 permutations depend on the level's layer combinations and have to be generated.
 
-BF4 shader database format (version 194, two render paths, as in BF3's version 182): Rime reads only
-the shader table (a count, then 32-byte entries starting with the shader's lowercase name hash) and
-the texture name strings. A full reader or writer is still missing.
+### Building one (BF3)
+`build_shader_database` copies shaders from the mounted databases. The format pools its records
+(constants, constant and texture functions, vertex, pixel and geometry permutations, solutions and
+their states, geometry declarations) and the shaders index into the pools; Rime keeps each record's
+bytes and renumbers only the indices, so all 33 retail databases read and write back byte-identical
+(`round_trip_shader_databases`), and identical records are stored once when shaders from several
+databases are combined. Each shader comes from the level's namesake database when there is one,
+else from the first that has it; with `all_solutions` it also gets the solutions only later
+databases have. Copying can't make solutions retail has never compiled: built from the other 32
+databases, `mp_subway` lacks 195 of its shaders and, even with all solutions, 4 % of the solutions of
+the rest.
+
+The shaders a level's database holds:
+- what its bundles' content draws with: shaders non-mesh partitions reference, and per mesh
+  variation database entry, each material's variation shader, or the material's when it has none
+  (a mesh's own materials count only where something draws it without the database, like mesh
+  particles). The gamemode bundles' shaders are collected while they are built
+  (`collect_drawn_shaders`), so the main bundle goes last;
+- the engine's own: shaders nearly every database holds that no partition imports, and for a level
+  with terrain, the terrain system's (shaders nearly every database with terrain shaders holds and
+  none without);
+- the generated ones, named after a partition of the bundle: the terrain's permutations
+  (`<terrain>__<layers>__<mode>__0`) and default surface shader.
+
+The shaders it lists ship in its bundle as partitions; the bundle also carries the textures they bind,
+except those another bundle of the superbundle carries.
+
+### Building one (BF4)
+Version 194 pools its records the same way, with a quality level in the header, hull and domain
+permutation pools (render path 3 uses them), 80-byte solutions with seven indices and the
+tessellation fragment in the solution state. Shaders name their textures only by hash; the names are
+in the texture constants of their solutions. Both versions share one reader, writer and merger
+(`RimeLib.Shader.Pooled`); an engine only describes its layout. All 32 BF4 databases read and write
+back byte-identical, and `mp_siege` rebuilt from its own database matches every solution.
+
+Unlike BF3, BF4 compiles a shader per level: for the same shader and solution state, `mp_siege` and
+`mp_flooded` have different pixel bytecode and constants in 3280 of their 7245 shared solutions,
+because the level's textures are compiled in (`mp_siege`'s dirt mask, `mp_flooded`'s rain drops).
+Copying a shader from another level gives it that level's look, so the level's own database is the
+only faithful source for its shaders. Built from the other 31 databases, `mp_siege` lacks 117 of its
+551 shaders.
 
 ### Material grid
 Every level ships its own cooked grid (`levels/<level>/<level>/materialgrid_win32` in BF4,
@@ -255,7 +293,22 @@ So the builder derives a grid instead of cooking one:
 The simplest version for a level cloned from a retail one: keep its grid, and add rows only for
 materials the new content brings in.
 
-Step 2 needs the material indices in mesh and Havok payloads, which Rime doesn't read yet.
+Step 2 is `derive_materials <level partition> [grid]`. It walks the level partition and every
+sub-world it references, and takes whole every bundle the content names (weapon, vehicle and
+configuration bundles: `SoldierWeaponUnlockAsset.WeaponBundleName`, `PreloadedBundleNames`, ...; not
+the bundles those name in turn, which reach every vehicle in the game). From that content it
+collects the material values of the EBX material references, of the Havok physics data (the material
+table in the Frostbite header in front of the packfiles) and of the terrain material tree, background
+material included. A material value names two global indices, a material and a property:
+- BF3: its low 16 bits are a pair's position in `materials/materialcontainer` (180 x 180 pairs); the
+  pair's `PhysicsMaterialIndex` and `PhysicsPropertyIndex` are the indices.
+- BF4: a `MaterialDecl`, whose two high bytes are the indices and low 16 bits flags. There is no
+  container.
+
+Meshes don't carry materials of their own here. Against the shipped grids: `mp_subway` 101 of 102
+(Mud is missing), `mp_001` all 111 plus a second material named Default that grids leave out, BF4
+`mp_siege` 162 of 165, nothing extra.
+
 `build_material_grid <partition> <all|grid,...>` implements steps 1, 3 and 4 with the material set
 given as grids: rows for the materials of those grids, relations from every grid in the game, and a
 `GRID-REF` line for every partition the relations reference. Rebuilding `mp_subway`'s and `mp_001`'s
@@ -291,18 +344,98 @@ engine interfaces, so no version-specific code lives in the general projects.
 `mvdb_add_all` / `mvdb_add_entry`, `resolve_shader_textures`, `analyze_level`; derived from content
 and compared with retail: `derive_registry`, `derive_mesh_variation_db`; in bundle building:
 `derive_registry_container` (also writes BF4's `_networkregistry_win32`), `build_mesh_variation_db`,
-`build_material_grid`.
+`build_material_grid`, `add_shader_textures`, `hoist_content`, `build_shader_database`,
+`collect_drawn_shaders`; and `build_level`, which runs them
+from a JSON recipe and compares each bundle with its retail namesake.
 
-Missing: a BF4 EBX writer (Rime's is commented out, so nothing can write a BF4 partition yet, derived
-or not), material indices from mesh and Havok payloads, a shader database builder (and for BF4 a full
-shader database reader), `LevelData` sub-world reference generation, hoisting, the recipe and
-`build_level`.
+Missing: material indices from mesh and Havok payloads, `LevelData` sub-world reference
+generation.
+
+### Measured on `mp_subway` (BF3)
+Recipe: [`recipes/mp_subway.json`](recipes/mp_subway.json): the 11 gamemode and sub-world bundles,
+then the main bundle with its shader database.
+- Gamemode bundles, each against the retail main bundle: 6 of 11 exact, the others one or two
+  partitions short (`rush` 1541 of 1542); nothing extra.
+- Main bundle: 10087 of 10096 partitions, nothing extra; 1023 of 1025 mesh variation entries;
+  shader database 639 of 640 shaders, every solution of them identical.
+- The recipe lists the by-name roots (UI assets, weapon mesh variation databases, ...) and hoists the
+  partitions of type `UI*`, `VeniceUI*`, `EffectBlueprint` and `ShaderGraph` that the gamemodes
+  reach. `win32/ui` is not a dependency: the level carries its own copy of the in-game UI flow.
+- Missing: two meshes only the retail mesh variation database lists (and the scattering shader and
+  texture one of them brings), and five textures of the frontend visual environment.
+- A mesh brings the textures of its mesh variation entries only once the bundle's own database is
+  derived. Taking them from every retail database adds the camos of every level.
+
+### Measured on `mp_siege` (BF4)
+Recipe: [`recipes/mp_siege.json`](recipes/mp_siege.json): the 18 sub-world bundles (parents
+first), then the main bundle with its shader database. Each bundle depends on the bundles above it in
+the sub-world tree (`mp_siege` > `content`, `gen4_content` > `gameplay` >
+`conquest`/`rush`/`deathmatch`/`obliteration` > gamemodes; `all_gamemodes_except_dm` for every
+gamemode outside `deathmatch`) and on the level's UI bundles. Against retail, all 19 bundles
+together: 23243 of 23622 partitions, 6 extra.
+- `content` 5212 of 5216, `gen4_content` 3153 of 3158; the small sub-worlds exact; the large
+  gamemodes 52 to 55 short (`conquestlarge0` 1515 of 1570); `dm_objects` 73 of 108.
+- Main bundle: 2032 of 2059, 5 extra; shader database 528 of 551 shaders, every solution of them
+  identical; mesh variation database all 33 entries plus one.
+
+BF4 builds are CAS, like retail. A bundle's content mounted from the game's cas bundles keeps the
+entry it came from (sha1, sizes, and for patched content the patch type, base and delta), and the
+manifest copies it as a reference into the game's catalogs. Generated partitions and resources are
+stored inline as codec blocks (zlib), as the game stores them. A bundle without chunks has no
+`chunks` or `chunkMeta` list, and its sizes are the bytes it reads from cas: `dbxTotalSize` those of
+its resources and chunks (a ranged chunk counts its range), `totalSize` those and its EBX.
+Measured: cloning all 26 `mp_siege` bundles gives the 24 manifests of retail's patch superbundle
+byte for byte, and `verify_superbundle` reads back all 40627 objects identical to the game's. The
+recipe builds as CAS in 8:42: 39395 references and 36 inline entries, and read back, everything
+equals the game's except the regenerated indexes and the 6 extra partitions.
+
+BF3's cas output, checked the same way: cloning all 20 `mp_subway` bundles gives the 20 manifests
+of retail's patch superbundle byte for byte, and reads back 32018 of 32018 objects identical to the
+game's. That needed the builder to list each bundle's `dbx` entries (the editor's text form of its
+EBX, which the game's catalogs do not hold, so they are copied as mounted), to list a chunk's range
+exactly when its meta names a first mip, and to leave out `chunks` and `chunkMeta` for a bundle
+without chunks. `totalSize` is the sum of the ebx, res, chunk and dbx sizes.
+
+What BF4 loads with a level, and what the closure may leave out because of it:
+- `win32/globals`, `warsawmppersistence`, and of the weapons only the common bundles
+  (`weaponsbundlecommon`, `weaponsbundlemp`, `xpNweaponsbundlemp`). The per-weapon `_bpb` bundles
+  load one at a time, so content the level reaches directly ships with it.
+- `win32/mpcharacter` is loaded but not self-contained (`walkedSuperbundles`): its partitions are
+  left out, but what they reference ships with the level (`mpsoldier`'s blood and swimming effects).
+- `win32/mpvehicles` is not a dependency: the commander's vehicles (quadbike, jet ski) ship whole in
+  each gamemode bundle.
+- `win32/ui` is not a dependency either: the gamemodes carry the in-game UI they reach.
+- Chunk superbundles (`win32/loc/*`, `mpchunks`) carry their chunks outside any bundle; the closure
+  doesn't copy those (7000 voice-over chunks for `mp_siege`).
+- No mesh variation database or network registry for a bundle without entries, and the main
+  bundle ships every shader its database names, those only sub-worlds draw with included (438).
+
+Still missing:
+- In every large gamemode: about 45 jet and helicopter weapon partitions (AA-10 and AS-14
+  projectiles, countermeasure flares, missile trails, their sounds) that only blueprint bundles of
+  vehicles the gamemode doesn't name carry. Retail ships them; no rule for that is known yet.
+  Counting the content two or more named blueprint bundles share adds about 700 partitions retail
+  doesn't ship.
+- In every large gamemode: 7 UI textures and font styles that the level's UI bundles also carry,
+  and 4 that `gen4_content` also carries (a blood decal texture, a flag's ambient sound). Retail
+  ships these twice.
+- Main bundle: the 27 shaders the database holds that no content uses (terrain decal shaders
+  such as road marks and tire tracks, electric cables) and the textures only they bind.
 
 ### Templates
 Recipe fragments that expand to a root list by querying the mounted game ("all weapons": every weapon
 blueprint and unlock; "xp4 soldiers": every soldier asset in the XP4 superbundles), then go through
 the same closure, deduplication and derivation. Queries rather than fixed lists, so they survive
 patches.
+
+A bundle's `templates` in a recipe are such queries: primary instance types (a trailing `*` matches a
+prefix), optionally limited to some superbundles and name prefixes. Each partition they find is a
+root. `find_partitions <types> [superbundles] [prefixes]` runs the same query in the REPL. The type
+comes from the partition's EBX metadata, so a query over all of BF4 (80000 partitions) takes
+seconds: every `SoldierWeaponUnlockAsset` is 316 partitions, those in `win32/xp4weapons` 6, and in
+BF3 those under `weapons/` 182. Example: `{"types": ["SoldierWeaponUnlockAsset"], "prefixes":
+["weapons/"]}` gives a BF3 gamemode bundle every weapon unlock and whatever of their closure its
+dependencies don't carry.
 
 ### Empty level
 The smallest level that loads: `LevelData`, settings and game config bundles, the UI bundles, the
