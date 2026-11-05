@@ -37,7 +37,7 @@ public class StaticEnlightenDatabase : IFbSerializable
         Deserialize(p_Reader);
     }
 
-    public virtual bool Serialize(RimeWriter p_Writer)
+    public bool Serialize(RimeWriter p_Writer)
     {
         p_Writer.Write(Enabled);
         p_Writer.Write(OutputAtlasWidth);
@@ -66,7 +66,7 @@ public class StaticEnlightenDatabase : IFbSerializable
         return false;
     }
 
-    public virtual void Deserialize(RimeReader p_Reader)
+    public void Deserialize(RimeReader p_Reader)
     {
         Enabled = p_Reader.ReadBool();
         OutputAtlasWidth = p_Reader.ReadUInt32();
