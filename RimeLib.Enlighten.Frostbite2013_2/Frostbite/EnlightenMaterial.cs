@@ -2,6 +2,7 @@ using System.IO;
 using fb;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
+using RimeLib.Serialization.Frostbite2_0.Extensions;
 
 namespace RimeLib.Enlighten.Frostbite2013_2.Frostbite;
 
@@ -23,9 +24,7 @@ public class EnlightenMaterial : Frostbite2_0.EnlightenMaterial
 
     public override bool Serialize(RimeWriter p_Writer)
     {
-        p_Writer.Write(Color.x);
-        p_Writer.Write(Color.y);
-        p_Writer.Write(Color.z);
+        p_Writer.Write(Color.ToVec());
         p_Writer.Write(0u);
         Guid.Serialize(p_Writer);
         p_Writer.Write(ShaderId);
@@ -36,7 +35,8 @@ public class EnlightenMaterial : Frostbite2_0.EnlightenMaterial
 
     public override void Deserialize(RimeReader p_Reader)
     {
-        Color = new Vec3 { x = p_Reader.ReadSingle(), y = p_Reader.ReadSingle(), z = p_Reader.ReadSingle() };
+        Color = new Vec3();
+        Color.Set(p_Reader.ReadVector3());
         var s_ColorPad = p_Reader.ReadUInt32();
         Guid = new GUID(p_Reader);
         ShaderId = p_Reader.ReadUInt64();
