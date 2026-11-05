@@ -1,42 +1,30 @@
 using System;
-using System.Collections.Generic;
-using System.IO;
 using RimeLib.Content.Frostbite;
+using RimeLib.Content.Mounting;
+using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
+using System.IO;
+using static RimeLib.Content.Mounting.PayloadStream;
 
-namespace RimeLib.Cmd
+namespace RimeLib.Content.Frostbite2_0
 {
     /// <summary>
-    /// The dependencies a resource names inside its own payload, which appear nowhere in the EBX.
+    /// The dependencies Frostbite 2 resources name inside their own payloads.
     ///
     /// These four types are byte-packed sequential `fb::InStream` deserializations, unlike the
     /// memory-mapped MeshSet and DxTexture structs. There is no header, no relocation table, no
     /// alignment padding, and no fixed offset past the first variable-length field. A reader has to
     /// walk the payload instead of indexing into it.
     ///
-    /// Conventions, all from the engine's stream operators:
-    ///  - little-endian, raw memcpy, PC layout
-    ///  - a string is NUL-terminated with no length prefix; empty is a single 0x00
-    ///  - `bool` is one byte
-    ///  - `LinearTransform` is 48 bytes in the stream, not 64: the w of each row is skipped
-    ///  - an empty name means "no dependency"; that is the engine's own test in ResourceProxyBase::bind
+    /// Conventions beyond <see cref="PayloadStream"/>: `bool` is one byte, and `LinearTransform` is
+    /// 48 bytes in the stream, not 64 (the w of each row is skipped).
     /// </summary>
-    public static class ResourcePayloadDependencies
+    public class ResourcePayloadReader : IResourcePayloadReader
     {
-        public sealed class Result
-        {
-            public List<string> ResourceNames { get; } = new();
+        public EngineType[] GetSupportedEngines() => new[] { EngineType.Frostbite2_0 };
 
-            /// <summary>Names that are also EBX partitions, currently only VisualTerrain's meshes.</summary>
-            public List<string> PartitionNames { get; } = new();
-
-            public List<GUID> ChunkIds { get; } = new();
-
-            public string? Error { get; set; }
-        }
-
-        public static bool Handles(ResourceType p_Type)
+        public bool Handles(ResourceType p_Type)
         {
             return p_Type == ResourceType.Terrain
                 || p_Type == ResourceType.VisualTerrain
@@ -44,45 +32,33 @@ namespace RimeLib.Cmd
                 || p_Type == ResourceType.EnlightenDatabase;
         }
 
-        public static Result Read(ResourceType p_Type, byte[] p_Data)
+        // The walks stop once the names are read, so they don't have to reach the payload's end.
+        public ResourcePayloadNames Read(ResourceType p_Type, byte[] p_Data) => Walk(p_Data, false, (p_Reader, p_Result) =>
         {
-            var s_Result = new Result();
-
-            try
+            switch (p_Type)
             {
-                using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
-
-                switch (p_Type)
-                {
-                    case ResourceType.Terrain:
-                        ReadTerrain(s_Reader, s_Result);
-                        break;
-                    case ResourceType.VisualTerrain:
-                        ReadVisualTerrain(s_Reader, s_Result);
-                        break;
-                    case ResourceType.TerrainStreamingTree:
-                        ReadTerrainStreamingTree(s_Reader, s_Result);
-                        break;
-                    case ResourceType.EnlightenDatabase:
-                        ReadEnlightenDatabase(s_Reader, s_Result);
-                        break;
-                }
+                case ResourceType.Terrain:
+                    ReadTerrain(p_Reader, p_Result);
+                    break;
+                case ResourceType.VisualTerrain:
+                    ReadVisualTerrain(p_Reader, p_Result);
+                    break;
+                case ResourceType.TerrainStreamingTree:
+                    ReadTerrainStreamingTree(p_Reader, p_Result);
+                    break;
+                case ResourceType.EnlightenDatabase:
+                    ReadEnlightenDatabase(p_Reader, p_Result);
+                    break;
             }
-            catch (Exception s_Ex)
-            {
-                s_Result.Error = s_Ex.Message;
-            }
-
-            return s_Result;
-        }
+        });
 
         /// <summary>One string is the entire payload the engine reads.</summary>
-        private static void ReadTerrain(RimeReader p_Reader, Result p_Result)
+        private static void ReadTerrain(RimeReader p_Reader, ResourcePayloadNames p_Result)
         {
             AddResource(p_Result, ReadCString(p_Reader));
         }
 
-        private static void ReadVisualTerrain(RimeReader p_Reader, Result p_Result)
+        private static void ReadVisualTerrain(RimeReader p_Reader, ResourcePayloadNames p_Result)
         {
             // 15 four-byte scalars of cell, patch, atlas and falloff tuning, none of them
             // dependencies. The shader name below starts at exactly 0x3C, measured against MP_007's
@@ -126,7 +102,7 @@ namespace RimeLib.Cmd
         /// these chunks appear nowhere else: not in the EBX, and not through the chunkMeta mechanism
         /// that textures and meshes use. The loader keys them into its own validChunkIds map.
         /// </summary>
-        private static void ReadTerrainStreamingTree(RimeReader p_Reader, Result p_Result)
+        private static void ReadTerrainStreamingTree(RimeReader p_Reader, ResourcePayloadNames p_Result)
         {
             p_Reader.Seek(4, SeekOrigin.Current); // unblurredSamplesPerNodeSidePot
             p_Reader.Seek(1, SeekOrigin.Current); // trackTextureDetailFalloff, a bool despite the name
@@ -143,14 +119,14 @@ namespace RimeLib.Cmd
             while (true)
             {
                 if (p_Reader.Position >= p_Reader.Length)
-                    throw new Exception("payload ended inside the raster tree list");
+                    throw new InvalidDataException("payload ended inside the raster tree list");
 
                 if (p_Reader.ReadByte() == 0xFF)
                     break;
 
                 var s_Size = p_Reader.ReadUInt32();
                 if (s_Size > p_Reader.Length - p_Reader.Position)
-                    throw new Exception($"raster tree block of {s_Size} byte(s) overruns the payload");
+                    throw new InvalidDataException($"raster tree block of {s_Size} byte(s) overruns the payload");
 
                 p_Reader.Seek(s_Size, SeekOrigin.Current);
             }
@@ -159,13 +135,13 @@ namespace RimeLib.Cmd
             ReadStreamingTreeNode(p_Reader, p_Result, s_NodeCount, ref s_Read);
         }
 
-        private static void ReadStreamingTreeNode(RimeReader p_Reader, Result p_Result, uint p_NodeCount,
+        private static void ReadStreamingTreeNode(RimeReader p_Reader, ResourcePayloadNames p_Result, uint p_NodeCount,
             ref uint p_Read)
         {
             // The tree has no index and no node count per level, so a misaligned walk would recurse
             // on garbage. The declared node count bounds it.
             if (++p_Read > p_NodeCount)
-                throw new Exception($"the walk passed the {p_NodeCount} declared node(s)");
+                throw new InvalidDataException($"the walk passed the {p_NodeCount} declared node(s)");
 
             // A zero size means the lod has no tile data, and the loader then skips the id. Emitting
             // it anyway would ask for a chunk the game never fetches.
@@ -191,7 +167,7 @@ namespace RimeLib.Cmd
                 ReadStreamingTreeNode(p_Reader, p_Result, p_NodeCount, ref p_Read);
         }
 
-        private static void ReadEnlightenDatabase(RimeReader p_Reader, Result p_Result)
+        private static void ReadEnlightenDatabase(RimeReader p_Reader, ResourcePayloadNames p_Result)
         {
             // A disabled database has no payload past this byte.
             if (p_Reader.ReadByte() == 0)
@@ -228,50 +204,6 @@ namespace RimeLib.Cmd
             p_Reader.Seek(4, SeekOrigin.Current); // probeCount
         }
 
-        private static void AddResource(Result p_Result, string p_Name)
-        {
-            if (p_Name.Length > 0)
-                p_Result.ResourceNames.Add(p_Name);
-        }
-
-        private static void AddChunk(Result p_Result, GUID p_Id)
-        {
-            if (p_Id != GUID.Empty)
-                p_Result.ChunkIds.Add(p_Id);
-        }
-
-        private static string ReadCString(RimeReader p_Reader)
-        {
-            var s_Bytes = new List<byte>(64);
-
-            while (true)
-            {
-                if (p_Reader.Position >= p_Reader.Length)
-                    throw new Exception("payload ended inside a string");
-
-                var s_Byte = p_Reader.ReadByte();
-                if (s_Byte == 0)
-                    break;
-
-                s_Bytes.Add((byte)s_Byte);
-            }
-
-            return System.Text.Encoding.UTF8.GetString(s_Bytes.ToArray()).ToLowerInvariant();
-        }
-
-        /// <summary>
-        /// Reads an element count and rejects one that cannot be real. A misaligned walk shows up
-        /// here first, as a count in the millions. Failing loudly is better than emitting garbage
-        /// names.
-        /// </summary>
-        private static uint ReadCount(RimeReader p_Reader, string p_What)
-        {
-            var s_Count = p_Reader.ReadUInt32();
-
-            if (s_Count > 1_000_000)
-                throw new Exception($"{p_What} is {s_Count}, the walk is misaligned");
-
-            return s_Count;
-        }
+        private static void AddResource(ResourcePayloadNames p_Result, string p_Name) => AddName(p_Result.ResourceNames, p_Name);
     }
 }
