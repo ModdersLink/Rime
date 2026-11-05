@@ -21,8 +21,6 @@ namespace RimeLib.Content.Scaleform
 
         public override string ToString() => $"{Tag} - length 0x{Data.Length:X}";
 
-        public RimeReader GetReader() => new(new MemoryStream(Data, false));
-
         public SwfTagSection()
         {
         }
