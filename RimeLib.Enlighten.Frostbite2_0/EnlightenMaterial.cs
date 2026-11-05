@@ -30,7 +30,7 @@ public class EnlightenMaterial : IFbSerializable
     /// The exact inverse of <see cref="Deserialize(RimeReader)"/>: colour (Vec3), guid (16),
     /// shader id (8) and the emissive flag as a single byte.
     /// </summary>
-    public virtual bool Serialize(RimeWriter p_Writer)
+    public bool Serialize(RimeWriter p_Writer)
     {
         p_Writer.Write(Color.ToVec());
 
@@ -58,7 +58,7 @@ public class EnlightenMaterial : IFbSerializable
         return false;
     }
 
-    public virtual void Deserialize(RimeReader p_Reader)
+    public void Deserialize(RimeReader p_Reader)
     {
         Color = new Vec3();
         Color.Set(p_Reader.ReadVector3());

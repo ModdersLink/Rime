@@ -21,4 +21,11 @@ public interface ITerrainHeightfield : IEngineInterface
     /// <returns>false, with p_Error set, if a node is missing or a size does not match.</returns>
     bool WriteHeightfield(IResourceObject p_Resource, IReadOnlyList<TerrainNodeEdit> p_Edits,
         out byte[]? p_Payload, out string? p_Error);
+
+    /// <summary>
+    /// A material or destruction node's samples, one byte each, row by row, or null when its
+    /// encoded lines do not decode to whole lines. <paramref name="p_ReEncodes"/> says whether
+    /// encoding them again gives back the shipped bytes.
+    /// </summary>
+    byte[]? DecodeSamples(TerrainMaterialSamples p_Node, int p_SamplesPerSide, out bool p_ReEncodes);
 }
