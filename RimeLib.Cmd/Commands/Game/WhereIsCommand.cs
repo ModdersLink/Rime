@@ -22,7 +22,7 @@ namespace RimeLib.Cmd.Commands.Game
 
         // Written to a FILE, not just the console: the REPL's output is consumed by whatever is
         // driving it, so a console-only answer cannot be read back by a tool.
-        [CommandArgument(Description = "The output .json file")]
+        [CommandArgument(Description = "The output .json file", Optional = true)]
         public FileInfo? Destination { get; set; }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)

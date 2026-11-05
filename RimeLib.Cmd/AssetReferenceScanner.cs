@@ -75,6 +75,9 @@ namespace RimeLib.Cmd
             ".decals",
         };
 
+        /// <summary>Whether a mesh partition binds the textures its MeshVariationDatabase entries name.</summary>
+        public bool BindMeshVariationTextures { get; init; } = true;
+
         private readonly IEngineMounter m_Mounter;
         private readonly IPartitionConverter m_PartitionConverter;
         private readonly ITextureConverter? m_TextureConverter;
@@ -116,7 +119,8 @@ namespace RimeLib.Cmd
                     WalkInstance(s_Instance, $"{p_Name}#{s_Instance?.GetType().Name}", s_References);
                 }
 
-                CollectMeshVariationTextures(p_Name, s_Parsed.PartitionGuid, s_References);
+                if (BindMeshVariationTextures)
+                    CollectMeshVariationTextures(p_Name, s_Parsed.PartitionGuid, s_References);
             }
             catch (Exception s_Ex)
             {

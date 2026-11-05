@@ -50,6 +50,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         private readonly Queue<(GUID Id, string? AssetName, string Origin)> m_ChunkQueue = new();
 
         private readonly HashSet<string> m_SeenPartitions = new(StringComparer.OrdinalIgnoreCase);
+        // The partition that first referenced each queued one, for the log.
+        private readonly Dictionary<string, string> m_ReferencedFrom = new(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<string> m_SeenResources = new(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<GUID> m_SeenChunks = new();
 
@@ -57,6 +59,11 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
         private readonly HashSet<string> m_ExcludedPartitions = new(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<string> m_ExcludedResources = new(StringComparer.OrdinalIgnoreCase);
+
+        // Excluded partitions whose references are still walked: those only walked dependency
+        // bundles carry.
+        private readonly HashSet<string> m_WalkedPartitions = new(StringComparer.OrdinalIgnoreCase);
+        private int m_Walked;
         private string[] m_SkipPrefixes = Array.Empty<string>();
 
 
@@ -124,7 +131,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 p_Writer.WriteLine($"WARN: no mesh converter ({s_Ex.Message}). Mesh chunks will not be resolved.");
             }
 
-            m_Scanner = new AssetReferenceScanner(m_Mounter, m_PartitionConverter, m_TextureConverter, m_MeshConverter);
+            m_Scanner = new AssetReferenceScanner(m_Mounter, m_PartitionConverter, m_TextureConverter, m_MeshConverter)
+            {
+                BindMeshVariationTextures = m_Context.BindMeshVariationTextures,
+            };
 
             m_SkipPrefixes = string.IsNullOrWhiteSpace(SkipPrefixes)
                 ? Array.Empty<string>()
@@ -162,7 +172,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 }
             }
 
-            p_Writer.WriteLine($"Closure of '{Name}': +{m_AddedPartitions} partition(s), +{m_AddedResources} resource(s), +{m_AddedChunks} chunk(s), {m_Skipped} already covered.");
+            p_Writer.WriteLine($"Closure of '{Name}': +{m_AddedPartitions} partition(s), +{m_AddedResources} resource(s), +{m_AddedChunks} chunk(s), {m_Skipped} already covered{(m_Walked > 0 ? $", {m_Walked} of those walked" : "")}.");
 
             if (m_AddedMeshes > 0)
                 p_Writer.WriteLine($"{m_AddedMeshes} mesh(es) added, with the textures their MeshVariationDatabase entries bind.");
@@ -210,8 +220,17 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         /// </summary>
         private void CollectExclusions()
         {
+            var s_Walked = m_Context.GetWalkedDependencyBundles();
+            var s_SelfContained = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             foreach (var s_Bundle in m_Context.GetDependencyBundles())
+            {
                 AddBundleCoverage(s_Bundle, m_ExcludedPartitions, m_ExcludedResources);
+                if (s_Walked.Contains(s_Bundle))
+                    AddBundleCoverage(s_Bundle, m_WalkedPartitions, new HashSet<string>());
+                else
+                    AddBundleCoverage(s_Bundle, s_SelfContained, new HashSet<string>());
+            }
+            m_WalkedPartitions.ExceptWith(s_SelfContained);
 
             CollectScenarioExclusions();
 
@@ -314,11 +333,16 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return;
             }
 
-            // A dependency bundle is self-contained, so its copy brings its own closure and there is
-            // nothing left to walk here.
+            // A self-contained dependency bundle brings its own closure, so there is nothing left to
+            // walk here. A walked one does not: its content's references still ship with us.
             if (m_ExcludedPartitions.Contains(p_Name))
             {
                 m_Skipped++;
+                if (m_WalkedPartitions.Contains(p_Name) && m_Mounter.TryGetPartition(p_Name, out var s_Walked))
+                {
+                    m_Walked++;
+                    Enqueue(m_Scanner.ScanPartition(p_Name, s_Walked.FirstVariant), p_Name);
+                }
                 return;
             }
 
@@ -334,9 +358,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             m_Context.AddPartition(p_Name, s_Variant);
             m_AddedPartitions++;
-            m_Writer.WriteLine($"PART {p_Name}");
+            m_Writer.WriteLine(m_ReferencedFrom.TryGetValue(p_Name, out var s_From) ? $"PART {p_Name} <- {s_From}" : $"PART {p_Name}");
 
-            Enqueue(m_Scanner.ScanPartition(p_Name, s_Variant));
+            Enqueue(m_Scanner.ScanPartition(p_Name, s_Variant), p_Name);
         }
 
         private void ProcessResource(string p_Name)
@@ -375,7 +399,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             foreach (var s_PayloadResource in s_References.PayloadResources)
                 m_Writer.WriteLine($"PAY  {p_Name} -> res {s_PayloadResource}");
 
-            Enqueue(s_References);
+            Enqueue(s_References, $"res {p_Name}");
         }
 
         private void ProcessChunk(GUID p_Id, string? p_AssetName, string p_Origin)
@@ -386,6 +410,15 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             if (!m_Mounter.TryGetChunk(p_Id, out var s_Chunk))
             {
                 m_Unresolved.Add($"chunk {p_Id} (from {p_Origin})");
+                return;
+            }
+
+            // A chunk that only chunk superbundles carry, outside any bundle (BF4's localisation
+            // and mpchunks voice-over), loads with them, not with a bundle. A level's own
+            // superbundle-level chunks, which other levels borrow, are not such.
+            if (s_Chunk.Variants.All(p_V => p_V.GetContainedBundle() == null && !p_V.GetContainedSuperbundle().Contains("/levels/", StringComparison.OrdinalIgnoreCase)))
+            {
+                m_Skipped++;
                 return;
             }
 
@@ -407,10 +440,14 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         }
 
         /// <summary>Queues everything one scanned item references, and records what it could not scan.</summary>
-        private void Enqueue(AssetReferenceScanner.References p_References)
+        private void Enqueue(AssetReferenceScanner.References p_References, string? p_From)
         {
             foreach (var s_Partition in p_References.Partitions)
+            {
+                if (p_From != null)
+                    m_ReferencedFrom.TryAdd(s_Partition, p_From);
                 m_PartitionQueue.Enqueue(s_Partition);
+            }
 
             foreach (var s_Resource in p_References.Resources)
                 m_ResourceQueue.Enqueue(s_Resource);

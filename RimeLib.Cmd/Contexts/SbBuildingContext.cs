@@ -134,6 +134,10 @@ namespace RimeLib.Cmd.Contexts
         }
 
         public EngineType EngineType;
+
+        /// <summary>Per level partition built so far, the meshes its mesh variation database's keys cover.</summary>
+        internal Dictionary<string, IReadOnlyCollection<string>> DerivedMeshes { get; } = new(StringComparer.OrdinalIgnoreCase);
+
         protected string m_OutPath;
         protected string m_SbName;
 

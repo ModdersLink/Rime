@@ -142,6 +142,12 @@ namespace RimeLib.Cmd.Contexts
 
         protected DataContainerBase? m_GeneratedRegistry;
 
+        /// <summary>
+        /// Whether added meshes bring the textures that any mounted mesh variation database binds
+        /// for them. Off when the bundle derives its own database, which adds what its entries bind.
+        /// </summary>
+        public bool BindMeshVariationTextures { get; set; } = true;
+
         public BundleBuildingContext(SbBuildingContext p_Parent, string p_BundleName)
         {
             Parent = p_Parent;
@@ -392,10 +398,20 @@ namespace RimeLib.Cmd.Contexts
             return m_Builder.GetPartitions();
         }
 
-        internal void AddDependencyBundle(string p_BundleName)
+        internal void AddDependencyBundle(string p_BundleName, bool p_Walked = false)
         {
             m_Builder.WithDependencyBundle(p_BundleName);
+            if (p_Walked)
+                m_WalkedDependencyBundles.Add(p_BundleName);
         }
+
+        /// <summary>
+        /// Dependency bundles that are loaded but not self-contained: what they carry is left out,
+        /// and what that content references is not, unless another dependency carries it.
+        /// </summary>
+        internal IReadOnlySet<string> GetWalkedDependencyBundles() => m_WalkedDependencyBundles;
+
+        private readonly HashSet<string> m_WalkedDependencyBundles = new(StringComparer.OrdinalIgnoreCase);
 
         internal IEnumerable<string> GetDependencyBundles()
         {

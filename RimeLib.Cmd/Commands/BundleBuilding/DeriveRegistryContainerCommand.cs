@@ -58,12 +58,26 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             var s_Result = s_Deriver.Derive(s_Root, null, p_Writer);
             var s_Entries = s_Result.Entries.ToDictionary(p_P => p_P.Key, p_P => p_P.Value.Select(s_Deriver.ToReference).ToList());
+            var s_OwnPartition = s_Deriver.Rules.GetRegistryPartitionName(s_Root).ToLowerInvariant();
+            if (s_Entries.Values.All(p_E => p_E.Count == 0) && s_Deriver.Rules.OmitsEmptyRegistry && s_OwnPartition != s_Root)
+            {
+                s_BundleContext.RemovePartition(s_OwnPartition);
+                p_Writer.WriteLine($"No entries; '{s_OwnPartition}' is left out, as the engine ships no empty registry.");
+                return true;
+            }
             s_BundleContext.SetDerivedRegistry(s_Deriver.Rules.CreateRegistry(s_Entries));
 
-            // Registries that are partitions of their own get written into the bundle.
-            if (s_Deriver.Rules.GetRegistryPartitionName(s_Root) is { } s_RegistryName)
+            // The partition that holds the registry gets rewritten with it: the level partition
+            // itself, or the registry's own partition.
             {
+                var s_RegistryName = s_Deriver.Rules.GetRegistryPartitionName(s_Root).ToLowerInvariant();
                 var s_Template = s_Deriver.Parse(s_RegistryName);
+                if (s_Template == null && s_RegistryName == s_Root)
+                {
+                    p_Writer.WriteLine($"Could not read '{s_RegistryName}'.");
+                    return false;
+                }
+
                 if (s_Template == null)
                 {
                     var s_Any = s_Mounter.GetPartitions().Keys.FirstOrDefault(p_N => p_N.EndsWith("_networkregistry_win32", StringComparison.OrdinalIgnoreCase));
