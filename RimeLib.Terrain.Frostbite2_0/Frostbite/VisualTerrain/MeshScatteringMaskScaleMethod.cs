@@ -23,6 +23,13 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
         public bool DestructionMaskEnable;
         public byte Level;
 
+        public MeshScatteringMaskScaleMethod()
+        {
+        }
+
+        /// <summary>Whether the method stores its own DestructionMaskEnable; a later engine keeps one per resource.</summary>
+        protected virtual bool HasDestructionMaskEnable => true;
+
         public MeshScatteringMaskScaleMethod(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
@@ -43,7 +50,8 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
                 p_Writer.Write(s_Order);
 
             p_Writer.WriteNullTerminatedString(ShaderName);
-            p_Writer.Write(DestructionMaskEnable);
+            if (HasDestructionMaskEnable)
+                p_Writer.Write(DestructionMaskEnable);
             p_Writer.Write(Level);
 
             return true;
@@ -62,7 +70,8 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
                 OutputLayerOrder[i] = p_Reader.ReadUByte();
 
             ShaderName = p_Reader.ReadNullTerminatedString();
-            DestructionMaskEnable = p_Reader.ReadBool();
+            if (HasDestructionMaskEnable)
+                DestructionMaskEnable = p_Reader.ReadBool();
             Level = p_Reader.ReadUByte();
         }
 

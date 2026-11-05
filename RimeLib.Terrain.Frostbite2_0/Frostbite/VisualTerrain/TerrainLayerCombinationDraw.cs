@@ -38,6 +38,15 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
         public uint Surface3dMethodCount;
         public Surface3dDrawMethod[] Surface3dDrawMethods { get; set; } = new Surface3dDrawMethod[0];
 
+        public TerrainLayerCombinationDraw()
+        {
+        }
+
+        /// <summary>The draw methods' records: a later engine brings its own.</summary>
+        protected virtual MeshScatteringMaskScaleMethod ReadMaskScaleMethod(RimeReader p_Reader) => new(p_Reader);
+        protected virtual Surface2dDrawMethod ReadSurface2dMethod(RimeReader p_Reader) => new(p_Reader);
+        protected virtual Surface3dDrawMethod ReadSurface3dMethod(RimeReader p_Reader) => new(p_Reader);
+
         public TerrainLayerCombinationDraw(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
@@ -89,17 +98,17 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
 
             MeshScatteringMaskScaleDrawMethods = new MeshScatteringMaskScaleMethod[MeshScatteringMaskScaleDrawMethodCount];
             for (var i = 0; i < MeshScatteringMaskScaleDrawMethodCount; i++)
-                MeshScatteringMaskScaleDrawMethods[i] = new MeshScatteringMaskScaleMethod(p_Reader);
+                MeshScatteringMaskScaleDrawMethods[i] = ReadMaskScaleMethod(p_Reader);
 
             Surface2dMethodCount = p_Reader.ReadUInt32();
             Surface2dDrawMethods = new Surface2dDrawMethod[Surface2dMethodCount];
             for (var i = 0; i < Surface2dMethodCount; i++)
-                Surface2dDrawMethods[i] = new Surface2dDrawMethod(p_Reader);
+                Surface2dDrawMethods[i] = ReadSurface2dMethod(p_Reader);
 
             Surface3dMethodCount = p_Reader.ReadUInt32();
             Surface3dDrawMethods = new Surface3dDrawMethod[Surface3dMethodCount];
             for (var i = 0; i < Surface3dMethodCount; i++)
-                Surface3dDrawMethods[i] = new Surface3dDrawMethod(p_Reader);
+                Surface3dDrawMethods[i] = ReadSurface3dMethod(p_Reader);
         }
 
         public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)

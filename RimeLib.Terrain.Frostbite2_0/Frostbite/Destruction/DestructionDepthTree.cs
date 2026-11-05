@@ -84,12 +84,7 @@ public class DestructionDepthTree : RasterTree
 
             for(var i=0; i < 4; i++)
             {
-                var s_ChildNodeId = new QuadtreeNodeId(p_NodeId);
-                ++s_ChildNodeId.Level;
-
-                s_ChildNodeId.IndexX = (ushort)(QuadtreeNodeId.m_QuadtreeNodeChildOffsetX[i] + 2 * s_ChildNodeId.IndexX);
-                s_ChildNodeId.IndexY = (ushort)(QuadtreeNodeId.m_QuadtreeNodeChildOffsetY[i] + 2 * s_ChildNodeId.IndexY);
-
+                var s_ChildNodeId = p_NodeId.Child(i);
                 
                 var s_ChildCoverage = new AxisAlignedBox();
 

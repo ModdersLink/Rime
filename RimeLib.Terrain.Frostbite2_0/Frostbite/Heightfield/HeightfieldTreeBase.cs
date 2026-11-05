@@ -1,4 +1,3 @@
-﻿
 namespace RimeLib.Terrain.Frostbite2_0.Frostbite.Heightfield;
 public abstract class HeightfieldTreeBase : RasterTree
 {
@@ -50,5 +49,43 @@ public abstract class HeightfieldTreeBase : RasterTree
     public ushort FirstChildIndex { get; set; }
 
     public HeightfieldTreeNode? HeightfieldRootNode => RootNode as HeightfieldTreeNode;
+
+    /// <summary>
+    /// The sizes of a node's min/max stack (two values per sample, each level half the side of the
+    /// one before) and occluder grid stack (one value per grid point), from their depths.
+    /// </summary>
+    protected void ComputeStackSizes()
+    {
+        MinMaxStackSize = 0;
+        for (var i = 0; i < MinMaxStackDepth; ++i)
+        {
+            var s_Side = (1u << ((int)MinMaxStackDepth - 1)) >> i;
+            MinMaxStackSize += 2 * s_Side * s_Side;
+        }
+
+        OccluderGridStackSize = 0;
+        for (var i = 0; i < OccluderGridStackDepth; ++i)
+        {
+            var s_Side = ((1u << ((int)OccluderGridStackDepth - 1)) >> i) + 1;
+            OccluderGridStackSize += s_Side * s_Side;
+        }
+    }
+
+    /// <summary>The heightfield node with the given id, or null when the tree has none.</summary>
+    public HeightfieldTreeNode? TryFindNode(QuadtreeNodeId p_Id) => HeightfieldRootNode == null ? null : Find(HeightfieldRootNode, p_Id);
+
+    private static HeightfieldTreeNode? Find(HeightfieldTreeNode p_Node, QuadtreeNodeId p_Id)
+    {
+        if (p_Node.ID == p_Id)
+            return p_Node;
+
+        foreach (var s_Child in p_Node.Children ?? [])
+        {
+            if (s_Child is HeightfieldTreeNode s_Node && Find(s_Node, p_Id) is { } s_Found)
+                return s_Found;
+        }
+
+        return null;
+    }
 }
 
