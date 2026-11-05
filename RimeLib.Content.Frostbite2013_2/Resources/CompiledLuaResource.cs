@@ -34,8 +34,8 @@ namespace RimeLib.Content.Frostbite2013_2.Resources
             if (24L + s_NameSize + s_ArgsSize + s_PayloadSize != s_Size)
                 throw new InvalidDataException($"A compiled Lua resource of {s_Size} bytes with a {s_NameSize}, {s_ArgsSize} and {s_PayloadSize} byte body.");
 
-            SignatureName = Terminated(p_Reader.ReadBytes(s_NameSize));
-            SignatureArgs = Terminated(p_Reader.ReadBytes(s_ArgsSize));
+            SignatureName = ReadString(p_Reader, s_NameSize);
+            SignatureArgs = ReadString(p_Reader, s_ArgsSize);
             Payload = p_Reader.ReadBytes(s_PayloadSize);
         }
 
@@ -45,25 +45,28 @@ namespace RimeLib.Content.Frostbite2013_2.Resources
             Deserialize(s_Reader);
         }
 
-        private static string Terminated(byte[] p_Bytes)
+        /// <summary>A signature string, which fills its size with its terminator.</summary>
+        private static string ReadString(RimeReader p_Reader, int p_Size)
         {
-            if (p_Bytes.Length == 0 || p_Bytes[^1] != 0)
-                throw new InvalidDataException("A compiled Lua signature string without its terminator.");
-            return Encoding.ASCII.GetString(p_Bytes, 0, p_Bytes.Length - 1);
+            var s_End = p_Reader.Position + p_Size;
+            var s_String = p_Reader.ReadNullTerminatedString();
+            if (p_Reader.Position != s_End)
+                throw new InvalidDataException("A compiled Lua signature string that does not end at its size.");
+            return s_String;
         }
+
+        private static uint StringSize(string p_Value) => (uint)Encoding.UTF8.GetByteCount(p_Value) + 1;
 
         public bool Serialize(RimeWriter p_Writer)
         {
-            var s_Name = Encoding.ASCII.GetBytes(SignatureName + "\0");
-            var s_Args = Encoding.ASCII.GetBytes(SignatureArgs + "\0");
             p_Writer.Write(Version);
             p_Writer.Write(IsByteCode);
-            p_Writer.Write((uint)s_Name.Length);
-            p_Writer.Write((uint)s_Args.Length);
+            p_Writer.Write(StringSize(SignatureName));
+            p_Writer.Write(StringSize(SignatureArgs));
             p_Writer.Write(SignatureArgCount);
             p_Writer.Write((uint)Payload.Length);
-            p_Writer.Write(s_Name);
-            p_Writer.Write(s_Args);
+            p_Writer.WriteNullTerminatedString(SignatureName);
+            p_Writer.WriteNullTerminatedString(SignatureArgs);
             p_Writer.Write(Payload);
             return true;
         }
