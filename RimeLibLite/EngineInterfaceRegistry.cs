@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using RimeLib.Frostbite;
 
 namespace RimeLib;
@@ -47,33 +48,50 @@ public static class EngineInterfaceRegistry
         return Registry[typeof(T)].ContainsKey(p_Type);
     }
 
-    private static Type? RefreshInterfaces<T>(EngineType p_Type) where T : IEngineInterface
+    /// <summary>
+    /// A new instance of every implementation that lists the engine, the newest engine's first. For
+    /// interfaces several subsystems implement side by side, each for part of the work.
+    /// </summary>
+    public static IReadOnlyList<T> CreateAll<T>(EngineType p_Type) where T : IEngineInterface
     {
-        var s_InterfaceTypes = AppDomain.CurrentDomain.GetAssemblies()
-            .SelectMany(a => a.GetTypes())
-            .Where(t => typeof(T).IsAssignableFrom(t) && t.IsClass);
-        
-        Registry[typeof(T)].Clear();
+        return FindImplementations<T>()
+            .Where(p_C => p_C.Supported.Contains(p_Type))
+            .OrderByDescending(p_C => p_C.Own)
+            .Select(p_C => (T)Activator.CreateInstance(p_C.Type)!)
+            .ToList();
+    }
 
-        // Each implementation's supported engines, and its own engine: the oldest it supports.
+    /// <summary>Each loaded implementation of T, its supported engines, and its own engine: the oldest it supports.</summary>
+    private static List<(Type Type, EngineType Own, EngineType[] Supported)> FindImplementations<T>() where T : IEngineInterface
+    {
         var s_Candidates = new List<(Type Type, EngineType Own, EngineType[] Supported)>();
-        foreach (var s_InterfaceType in s_InterfaceTypes)
+        foreach (var s_Assembly in AppDomain.CurrentDomain.GetAssemblies())
         {
-            // We only want types with 0-arg constructors.
-            if (s_InterfaceType.IsAbstract || s_InterfaceType.GetConstructor(Type.EmptyTypes) == null)
-                continue;
-
+            Type[] s_Types;
             try
             {
-                var s_Supported = ((T) Activator.CreateInstance(s_InterfaceType)!).GetSupportedEngines();
+                s_Types = s_Assembly.GetTypes();
+            }
+            catch (ReflectionTypeLoadException s_Ex)
+            {
+                s_Types = s_Ex.Types.Where(p_T => p_T != null).ToArray()!;
+            }
+
+            foreach (var s_InterfaceType in s_Types.Where(p_T => typeof(T).IsAssignableFrom(p_T) && p_T.IsClass && !p_T.IsAbstract && p_T.GetConstructor(Type.EmptyTypes) != null))
+            {
+                var s_Supported = ((T)Activator.CreateInstance(s_InterfaceType)!).GetSupportedEngines();
                 if (s_Supported.Length > 0)
                     s_Candidates.Add((s_InterfaceType, s_Supported.Min(), s_Supported));
             }
-            catch
-            {
-                // Ignored.
-            }
         }
+
+        return s_Candidates;
+    }
+
+    private static Type? RefreshInterfaces<T>(EngineType p_Type) where T : IEngineInterface
+    {
+        Registry[typeof(T)].Clear();
+        var s_Candidates = FindImplementations<T>();
 
         // An engine gets the implementation of the newest engine at or below it that supports it:
         // a struct lives in the oldest engine project with its layout and names the later engines
