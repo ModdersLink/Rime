@@ -1,218 +1,105 @@
-﻿using System;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using fb;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
+using Matrix4x4 = System.Numerics.Matrix4x4;
+using Vector4 = System.Numerics.Vector4;
 
 namespace RimeLib.Mesh.Frostbite2_0.Frostbite
 {
     /// <summary>
-    /// Venice (Battlefield 3) Mesh layout
+    /// A mesh LOD (fb::MeshLayout). It ends in a bone or part count and, by mesh type, the arrays
+    /// that count sizes; the layout is padded to 16 bytes.
     /// </summary>
     public class MeshLayout : IFbSerializable
     {
-        /// <summary>
-        /// Flags for the mesh layout
-        /// </summary>
-        [Flags]
-        public enum MeshLayoutFlags
-        {
-            /// <summary>
-            /// Is this a base level of detail
-            /// </summary>
-            IsBaseLod = 0x1,
+        /// <summary>The bytes a part mask takes per subset.</summary>
+        public const int PartMaskSize = 24;
 
-            /// <summary>
-            /// Is streaming enabled
-            /// </summary>
-            StreamingEnable = 0x40,
-
-            /// <summary>
-            /// Is stream instancing enabled
-            /// </summary>
-            StreamInstancingEnable = 0x10,
-
-            /// <summary>
-            /// Vertex animation enabled
-            /// </summary>
-            VertexAnimationEnable = 0x80,
-
-            /// <summary>
-            /// Is the data available
-            /// </summary>
-            IsDataAvailable = 0x20000000,
-        };
-
-        /// <summary>
-        /// Mesh Type
-        /// </summary>
         public MeshType Type { get; set; }
-        //public uint m_subsetCount { get; set; } // Testing removal and converting below to RelocArray to auto-read
-
-        /// <summary>
-        /// Subsets within this layout
-        /// </summary>
-        public RelocArray<MeshSubset> Subsets { get; set; } = new RelocArray<MeshSubset>(); // RelocPtr
-
-        /// <summary>
-        /// Category subset indices
-        /// </summary>
-        public RelocArray<byte>[] CategorySubsetIndices { get; set; } = new RelocArray<byte>[4]; // Len4
-
-        /// <summary>
-        /// Mesh layout flags
-        /// </summary>
+        public RelocArray<MeshSubset> Subsets { get; set; } = new();
+        public RelocArray<byte>[] CategorySubsetIndices { get; set; } = Array.Empty<RelocArray<byte>>();
         public MeshLayoutFlags Flags { get; set; }
-
-        /// <summary>
-        /// Index buffer format
-        /// </summary>
         public IndexBufferFormat IndexBufferFormat { get; set; }
-
-        /// <summary>
-        /// Index data size
-        /// </summary>
         public uint IndexDataSize { get; set; }
-
-        /// <summary>
-        /// Vertex data size
-        /// </summary>
         public uint VertexDataSize { get; set; }
-
-        /// <summary>
-        /// Unknown what this really does...
-        /// </summary>
         public uint EdgePartitionBufferSize { get; set; }
-
-        /// <summary>
-        /// Guid that contains the chunk data
-        /// </summary>
-        public GUID DataChunkId { get; set; } = Guid.Empty;
-
-        /// <summary>
-        /// Vertex index data offset
-        /// </summary>
+        public GUID DataChunkId { get; set; } = GUID.Empty;
         public uint AuxVertexIndexDataOffset { get; set; }
-
-        /// <summary>
-        /// Unknown what this really does
-        /// </summary>
-        public RelocPtr<byte> EmbeddedEdgeData { get; set; } = new RelocPtr<byte>(); // RelocPtr
-
-        /// <summary>
-        /// Shader debug name
-        /// </summary>
-        public RelocPtr<string> ShaderDebugName { get; set; } = new RelocPtr<string>(); // RelocPtr
-
-        /// <summary>
-        /// Full name of the mesh
-        /// </summary>
-        public RelocPtr<string> Name { get; set; } = new RelocPtr<string>(); // RelocPtr
-
-        /// <summary>
-        /// Short name of the mesh
-        /// </summary>
-        public RelocPtr<string> ShortName { get; set; } = new RelocPtr<string>(); // RelocPtr
-
-        /// <summary>
-        /// Name hash
-        /// </summary>
+        public RelocPtr<byte> EmbeddedEdgeData { get; set; } = new();
+        public RelocPtr<string> ShaderDebugName { get; set; } = new();
+        public RelocPtr<string> Name { get; set; } = new();
+        public RelocPtr<string> ShortName { get; set; } = new();
         public uint NameHash { get; set; }
 
-        /// <summary>
-        /// RelocPtr to the data
-        /// </summary>
-        public ulong Data { get; set; } // RelocPtr
+        /// <summary>m_data, a pointer the engine fills at runtime.</summary>
+        public ulong Data { get; set; }
 
-        /// <summary>
-        /// Count of parts to this mesh
-        /// </summary>
-        public uint PartCount { get; set; }
+        /// <summary>m_boneCount (skinned) or m_partCount (composite).</summary>
+        public uint BoneOrPartCount { get; set; }
 
-        /// <summary>
-        /// This could be the bone index array or the parts bounding boxes, who knows
-        /// </summary>
-        public RelocPtr<uint> BoneIndexArrayPartBoundingBoxes { get; set; } = new RelocPtr<uint>(); // RelocPtr
+        public RelocPtrArray<uint> BoneIndexArray { get; set; } = new();
+        public RelocPtrArray<uint> BoneShortNameArray { get; set; } = new();
 
-        /// <summary>
-        /// This could be the bones short name or the part transforms, who knows
-        /// </summary>
-        public RelocPtr<uint> BoneShortNameArrayPartTransforms { get; set; } = new RelocPtr<uint>(); // RelocPtr
+        /// <summary>Two per part: min and max.</summary>
+        public RelocPtrArray<Vector4> PartBoundingBoxes { get; set; } = new();
 
-        /// <summary>
-        /// Subset's parts indices
-        /// </summary>
-        public ulong SubsetPartIndices { get; set; } // RelocPtr
+        public RelocPtrArray<Matrix4x4> PartTransforms { get; set; } = new();
 
-        /// <summary>
-        /// Default constructor
-        /// </summary>
-        public MeshLayout()
+        /// <summary><see cref="PartMaskSize"/> bytes per subset.</summary>
+        public RelocPtrArray<byte> SubsetPartIndices { get; set; } = new();
+
+        /// <summary>The bytes a later engine adds after the mesh type.</summary>
+        protected virtual int TypeExtraSize => 0;
+
+        /// <summary>The bytes the layout takes: its fields, padded to 16.</summary>
+        public int Size
         {
-
+            get
+            {
+                var s_Arrays = Type switch
+                {
+                    MeshType.MeshType_Rigid => 0,
+                    MeshType.MeshType_Skinned => 16,
+                    MeshType.MeshType_Composite => 24,
+                    _ => throw new InvalidDataException($"unknown mesh type {Type}"),
+                };
+                return (152 + TypeExtraSize + s_Arrays + 15) & ~15;
+            }
         }
 
-        /// <summary>
-        /// Constructor that reads out a mesh layout from an opened reader
-        /// </summary>
-        /// <param name="p_Reader">Reader opened to the position of the mesh layout</param>
+        public MeshLayout()
+        {
+        }
+
         public MeshLayout(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
         }
 
-        /// <summary>
-        /// Writes the mesh layout to an opened writer
-        /// </summary>
-        /// <param name="p_Writer">Writer opened to the position of the mesh layout</param>
-        public bool Serialize(RimeWriter p_Writer)
+        /// <summary>The fields a later engine adds after the mesh type.</summary>
+        protected virtual void DeserializeAfterType(RimeReader p_Reader)
         {
-            p_Writer.Write((uint)Type);
-
-            Subsets.Serialize(p_Writer);
-
-            foreach (var s_Indices in CategorySubsetIndices)
-                s_Indices.Serialize(p_Writer);
-
-            p_Writer.Write((uint)Flags);
-            p_Writer.Write((uint)IndexBufferFormat);
-            p_Writer.Write(IndexDataSize);
-            p_Writer.Write(VertexDataSize);
-            p_Writer.Write(EdgePartitionBufferSize);
-            p_Writer.Write(DataChunkId.Id);
-            p_Writer.Write(AuxVertexIndexDataOffset);
-            p_Writer.Write(EmbeddedEdgeData.BaseAddress);
-            p_Writer.Write(ShaderDebugName.BaseAddress);
-            p_Writer.Write(Name.BaseAddress);
-            p_Writer.Write(ShortName.BaseAddress);
-            p_Writer.Write(NameHash);
-            p_Writer.Write(Data);
-            p_Writer.Write(PartCount);
-            p_Writer.Write(BoneIndexArrayPartBoundingBoxes.BaseAddress);
-            p_Writer.Write(BoneShortNameArrayPartTransforms.BaseAddress);
-            p_Writer.Write(SubsetPartIndices);
-
-            return true;
         }
 
-        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+        protected virtual void SerializeAfterType(RimeWriter p_Writer)
         {
-            p_Data = null;
-            throw new NotImplementedException();
         }
 
-        /// <inheritdoc />
+        /// <summary>A subset of this engine's layout.</summary>
+        protected virtual RelocArray<MeshSubset> ReadSubsets(RimeReader p_Reader) => new(p_Reader);
+
         public void Deserialize(RimeReader p_Reader)
         {
             Type = (MeshType)p_Reader.ReadUInt32();
-            //m_subsetCount = p_Reader.ReadUInt32();
-            Subsets = new RelocArray<MeshSubset>(p_Reader);
+            DeserializeAfterType(p_Reader);
+            Subsets = ReadSubsets(p_Reader);
 
-            CategorySubsetIndices = new RelocArray<byte>[4];
-
-            for (var i = 0; i < 4; ++i)
+            CategorySubsetIndices = new RelocArray<byte>[(int)MeshSubsetCategory.Count];
+            for (var i = 0; i < CategorySubsetIndices.Length; ++i)
                 CategorySubsetIndices[i] = new RelocArray<byte>(p_Reader);
 
             Flags = (MeshLayoutFlags)p_Reader.ReadUInt32();
@@ -228,16 +115,71 @@ namespace RimeLib.Mesh.Frostbite2_0.Frostbite
             ShortName = new RelocPtr<string>(p_Reader);
             NameHash = p_Reader.ReadUInt32();
             Data = p_Reader.ReadUInt64();
-            PartCount = p_Reader.ReadUInt32();
-            BoneIndexArrayPartBoundingBoxes = new RelocPtr<uint>(p_Reader);
-            BoneShortNameArrayPartTransforms = new RelocPtr<uint>(p_Reader);
-            SubsetPartIndices = p_Reader.ReadUInt64();
+            BoneOrPartCount = p_Reader.ReadUInt32();
+
+            switch (Type)
+            {
+                case MeshType.MeshType_Skinned:
+                    BoneIndexArray = new RelocPtrArray<uint>(p_Reader, BoneOrPartCount);
+                    BoneShortNameArray = new RelocPtrArray<uint>(p_Reader, BoneOrPartCount);
+                    break;
+                case MeshType.MeshType_Composite:
+                    PartBoundingBoxes = new RelocPtrArray<Vector4>(p_Reader, 2 * BoneOrPartCount);
+                    PartTransforms = new RelocPtrArray<Matrix4x4>(p_Reader, BoneOrPartCount);
+                    SubsetPartIndices = new RelocPtrArray<byte>(p_Reader, (uint)(PartMaskSize * Subsets.Count));
+                    break;
+            }
         }
 
-        /// <inheritdoc />
+        /// <summary>Writes the layout, padded to <see cref="Size"/>; the MeshSet places what its pointers point at.</summary>
+        public bool Serialize(RimeWriter p_Writer)
+        {
+            var s_Start = p_Writer.Position;
+            p_Writer.Write((uint)Type);
+            SerializeAfterType(p_Writer);
+            Subsets.Serialize(p_Writer);
+            foreach (var s_Indices in CategorySubsetIndices)
+                s_Indices.Serialize(p_Writer);
+
+            p_Writer.Write((uint)Flags);
+            p_Writer.Write((uint)IndexBufferFormat);
+            p_Writer.Write(IndexDataSize);
+            p_Writer.Write(VertexDataSize);
+            p_Writer.Write(EdgePartitionBufferSize);
+            DataChunkId.Serialize(p_Writer);
+            p_Writer.Write(AuxVertexIndexDataOffset);
+            EmbeddedEdgeData.Serialize(p_Writer);
+            ShaderDebugName.Serialize(p_Writer);
+            Name.Serialize(p_Writer);
+            ShortName.Serialize(p_Writer);
+            p_Writer.Write(NameHash);
+            p_Writer.Write(Data);
+            p_Writer.Write(BoneOrPartCount);
+
+            switch (Type)
+            {
+                case MeshType.MeshType_Skinned:
+                    BoneIndexArray.Serialize(p_Writer);
+                    BoneShortNameArray.Serialize(p_Writer);
+                    break;
+                case MeshType.MeshType_Composite:
+                    PartBoundingBoxes.Serialize(p_Writer);
+                    PartTransforms.Serialize(p_Writer);
+                    SubsetPartIndices.Serialize(p_Writer);
+                    break;
+            }
+
+            p_Writer.WriteNullBytes((uint)(s_Start + Size - p_Writer.Position));
+            return true;
+        }
+
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data) =>
+            throw new NotSupportedException("A mesh layout is written as part of its MeshSet.");
+
         public void Deserialize(byte[] p_Data)
         {
-            Deserialize(new RimeReader(new MemoryStream(p_Data)));
+            using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
+            Deserialize(s_Reader);
         }
     }
 }

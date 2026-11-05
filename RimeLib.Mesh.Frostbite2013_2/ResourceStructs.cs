@@ -5,7 +5,7 @@ using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Mesh.Frostbite2013_2.Frostbite;
-using RimeLib.Mesh.Frostbite2_0.Frostbite;
+using MeshLayoutCookie = RimeLib.Mesh.Frostbite2_0.Frostbite.MeshLayoutCookie;
 
 namespace RimeLib.Mesh.Frostbite2013_2;
 
