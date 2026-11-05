@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -34,6 +35,15 @@ public class HavokConverter : IHavokConverter, IHavokMaterials
     public IEnumerable<hkpCollisionShape> GetShapes(IResourceObject p_Resource, IEngineMounter p_Mounter) => Read(p_Resource).GetShapes(CreateShapeReader());
 
     public IReadOnlyList<uint> GetMaterialFlagsAndIndices(IResourceObject p_Resource) => Read(p_Resource).MaterialFlagsAndIndices;
+
+    public byte[] WithMaterialFlagsAndIndices(byte[] p_Resource, Func<uint, uint> p_Map)
+    {
+        var s_Physics = new HavokPhysicsData(new RimeReader(new MemoryStream(p_Resource)));
+        s_Physics.MaterialFlagsAndIndices = s_Physics.MaterialFlagsAndIndices.Select(p_Map).ToList();
+        if (!s_Physics.Serialize(out var s_Data))
+            throw new InvalidDataException("The physics resource could not be written.");
+        return s_Data;
+    }
 
     public hkpPhysicsWrapper GetWrapper(IResourceObject p_Resource, IEngineMounter p_Mounter)
     {

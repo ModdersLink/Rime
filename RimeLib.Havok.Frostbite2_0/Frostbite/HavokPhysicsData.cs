@@ -19,7 +19,7 @@ public class HavokPhysicsData : IFbSerializable
     public List<Vector4> PartTranslations { get; private set; } = [];
     public List<HavokAabb> LocalAabbs { get; private set; } = [];
     public List<byte> MaterialIndices { get; private set; } = [];
-    public List<uint> MaterialFlagsAndIndices { get; private set; } = [];
+    public List<uint> MaterialFlagsAndIndices { get; internal set; } = [];
     public HavokInstance HavokInstance32 { get; internal set; } = new();
     public HavokInstance HavokInstance64 { get; internal set; } = new();
 
@@ -63,6 +63,11 @@ public class HavokPhysicsData : IFbSerializable
     /// read back and written back.
     /// </summary>
     public int[] Relocations { get; private set; } = new int[4];
+
+    /// <summary>Where the 32-bit packfile, the 64-bit packfile and the fixups after them start, as read.</summary>
+    public long Instance32Offset { get; private set; }
+    public long Instance64Offset { get; private set; }
+    public long FixupsOffset { get; private set; }
 
     public HavokPhysicsData()
     {
@@ -390,10 +395,13 @@ public class HavokPhysicsData : IFbSerializable
                                     + s_PartTranslationsSize + s_LocalAabbsSize
                                     + s_MaterialIndicesSize + s_MaterialFlagsAndIndicesSize, 16);
         p_Reader.Seek(s_HavokOffset, SeekOrigin.Begin);
+        Instance32Offset = s_HavokOffset;
         HavokInstance32 = new HavokInstance(p_Reader);
         p_Reader.Align(16);
+        Instance64Offset = p_Reader.Position;
         HavokInstance64 = new HavokInstance(p_Reader);
         p_Reader.Align(16);
+        FixupsOffset = p_Reader.Position;
 
         var fixupSize32 = p_Reader.ReadInt32();
         var fixupSize64 = p_Reader.ReadInt32();

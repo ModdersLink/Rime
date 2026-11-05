@@ -10,4 +10,7 @@ namespace RimeLib.Havok;
 public interface IHavokMaterials : IEngineInterface
 {
     IReadOnlyList<uint> GetMaterialFlagsAndIndices(IResourceObject p_Resource);
+
+    /// <summary>The resource with each packed material value of its header replaced by what the map gives for it.</summary>
+    byte[] WithMaterialFlagsAndIndices(byte[] p_Resource, System.Func<uint, uint> p_Map);
 }

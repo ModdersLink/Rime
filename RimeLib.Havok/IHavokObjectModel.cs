@@ -17,6 +17,9 @@ namespace RimeLib.Havok
         /// <exception cref="System.NotSupportedException">A shape has no counterpart in this engine's Havok.</exception>
         byte[] Rewrite(byte[] p_Resource, System.Collections.Generic.IReadOnlyList<hkpCollisionShape> p_Shapes);
 
+        /// <summary>The meta a physics resource ships with: the sizes of its parts, which the loader reads them by.</summary>
+        byte[] Meta(byte[] p_Resource);
+
         /// <summary>
         /// Queries each MOPP in the resource with the bounds of each child or triangle it is over, and
         /// a MOPP Rime builds over the same ones: each query has to find its key. What it could not

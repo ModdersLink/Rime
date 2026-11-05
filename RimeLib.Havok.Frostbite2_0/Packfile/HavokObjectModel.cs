@@ -26,6 +26,8 @@ public class HavokObjectModel : IHavokObjectModel
 
     public byte[] Rewrite(byte[] p_Resource, IReadOnlyList<hkpCollisionShape> p_Shapes) => HkPackfile.Rewrite(p_Resource, HkPhysicsBuilder.Build(p_Shapes));
 
+    public byte[] Meta(byte[] p_Resource) => HavokResourceCookie.Of(p_Resource).ToArray();
+
     public IReadOnlyList<string> CheckMopps(byte[] p_Resource, out int p_Trees)
     {
         var s_Physics = new HavokPhysicsData(new RimeReader(new MemoryStream(p_Resource)));

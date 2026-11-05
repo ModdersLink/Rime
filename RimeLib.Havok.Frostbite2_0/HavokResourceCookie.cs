@@ -1,4 +1,5 @@
 using RimeLib.Frostbite;
+using RimeLib.Havok.Frostbite2_0.Frostbite;
 using RimeLib.IO;
 
 namespace RimeLib.Havok.Frostbite2_0;
@@ -13,6 +14,19 @@ public class HavokResourceCookie : ResourceCookie
     public uint Size32 { get; set; }
     public uint Size64 { get; set; }
     public uint FixupSize { get; set; }
+
+    /// <summary>The cookie of a physics resource's payload: where its parts start, and its size.</summary>
+    public static HavokResourceCookie Of(byte[] p_Payload)
+    {
+        var s_Physics = new HavokPhysicsData(new RimeReader(new System.IO.MemoryStream(p_Payload)));
+        return new HavokResourceCookie
+        {
+            HeaderSize = (uint)s_Physics.Instance32Offset,
+            Size32 = (uint)(s_Physics.Instance64Offset - s_Physics.Instance32Offset),
+            Size64 = (uint)(s_Physics.FixupsOffset - s_Physics.Instance64Offset),
+            FixupSize = (uint)(p_Payload.Length - s_Physics.FixupsOffset),
+        };
+    }
 
     public override long PayloadSize => (long)HeaderSize + Size32 + Size64 + FixupSize;
 
