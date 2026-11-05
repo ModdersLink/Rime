@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using RimeLib.Frostbite;
 
 namespace RimeLib.Cmd
 {
@@ -16,5 +17,18 @@ namespace RimeLib.Cmd
         /// <param name="p_Writer">A text writer that can be used to write textual command output.</param>
         /// <returns>Returns `true` if the command execution succeeded, `false` otherwise.</returns>
         public abstract bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer);
+
+        /// <summary>
+        /// The engine's implementation of <typeparamref name="T"/>, or null after writing that this
+        /// command is not supported on the engine.
+        /// </summary>
+        protected T? Require<T>(EngineType p_Engine, TextWriter p_Writer) where T : class, IEngineInterface
+        {
+            if (EngineInterfaceRegistry.IsSupported<T>(p_Engine))
+                return EngineInterfaceRegistry.Create<T>(p_Engine);
+
+            p_Writer.WriteLine($"{CommandUtils.GetCommandName(GetType())}: not supported on {p_Engine}.");
+            return null;
+        }
     }
 }
