@@ -84,6 +84,8 @@ namespace RimeLib.Cmd.Contexts
             // RegisterCommand<DumpAnimTrackDataCommand>(); // class not in repo
             RegisterCommand<BuildCasCatalogCommand>();
             RegisterCommand<MountExternalCatCommand>();
+            RegisterCommand<DumpEnlightenCommand>();
+            RegisterCommand<DumpLevelEnlightenCommand>();
 
             var s_EngineType = m_Mounter.GetEngineType();
 
