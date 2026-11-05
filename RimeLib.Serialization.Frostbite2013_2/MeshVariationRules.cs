@@ -37,6 +37,18 @@ public class MeshVariationRules : IMeshVariationRules
         }
     }
 
+    public IEnumerable<(CtrRefBase Mesh, uint VariationHash, object Entry)> ReadRedirectEntries(DatabasePartitionBase p_Partition)
+    {
+        if (p_Partition.PrimaryInstance is not fb.Render.MeshVariationDatabase s_Database)
+            yield break;
+
+        foreach (var s_Entry in s_Database.RedirectEntries)
+        {
+            if (s_Entry != null)
+                yield return (s_Entry.Mesh, s_Entry.VariationAssetNameHash, s_Entry);
+        }
+    }
+
     public bool PlainEntryWithVariations => true;
 
     // Retail sub-worlds without meshes (gameplay, all_gamemodes_except_dm) have no database.
@@ -54,6 +66,13 @@ public class MeshVariationRules : IMeshVariationRules
         s_Database.Entries.Clear();
         s_Database.RedirectEntries.Clear();
         s_Database.Entries.AddRange(p_Entries.Cast<fb.Render.MeshVariationDatabaseEntry>());
+    }
+
+    public void AddEntries(DatabasePartitionBase p_Database, IReadOnlyList<object> p_Entries, IReadOnlyList<object> p_Redirects)
+    {
+        var s_Database = (fb.Render.MeshVariationDatabase)p_Database.PrimaryInstance;
+        s_Database.Entries.AddRange(p_Entries.Cast<fb.Render.MeshVariationDatabaseEntry>());
+        s_Database.RedirectEntries.AddRange(p_Redirects.Cast<fb.Render.MeshVariationDatabaseRedirectEntry>());
     }
 
     // Static model groups are measured on Frostbite 2 only so far.

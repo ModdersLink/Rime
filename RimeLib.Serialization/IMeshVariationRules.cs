@@ -15,6 +15,9 @@ public interface IMeshVariationRules : IEngineInterface
     /// <summary>The entries a database redirects (shares from another), as mesh and variation hash.</summary>
     IEnumerable<(CtrRefBase Mesh, uint VariationHash)> ReadRedirects(DatabasePartitionBase p_Partition);
 
+    /// <summary>The redirect entries of a mesh variation database partition, as <see cref="ReadEntries"/> gives its entries.</summary>
+    IEnumerable<(CtrRefBase Mesh, uint VariationHash, object Entry)> ReadRedirectEntries(DatabasePartitionBase p_Partition);
+
     bool IsMesh(DataContainerBase p_Instance);
 
     /// <summary>Whether a bundle whose database would have no entries ships none.</summary>
@@ -50,6 +53,12 @@ public interface IMeshVariationRules : IEngineInterface
     /// <see cref="ReadEntries"/>) and drops its redirects, keeping its primary instance.
     /// </summary>
     void SetEntries(DatabasePartitionBase p_Database, IReadOnlyList<object> p_Entries);
+
+    /// <summary>
+    /// Adds entries and redirect entries (read from another database with <see cref="ReadEntries"/>
+    /// and <see cref="ReadRedirectEntries"/>) to a database after its own.
+    /// </summary>
+    void AddEntries(DatabasePartitionBase p_Database, IReadOnlyList<object> p_Entries, IReadOnlyList<object> p_Redirects);
 
     /// <summary>Whether a mesh used with a variation also gets its plain entry (Frostbite 2013.2), or only when used plainly.</summary>
     bool PlainEntryWithVariations { get; }
