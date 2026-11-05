@@ -60,7 +60,7 @@ public class CasBundleManifestBuilder
         return s_Stream.ToArray();
     }
 
-    public DbObject GetDbObject()
+    public CasBundle GetBundle()
     {
         var s_Bundle = new CasBundle
         {
@@ -78,7 +78,7 @@ public class CasBundleManifestBuilder
         s_Bundle.DbxTotalSize = s_Bundle.ResourceEntries.Sum(p_R => p_R.Size)
             + (s_Bundle.ChunkEntries ?? Array.Empty<CasBundle.Chunk>()).Sum(p_C => p_C.RangeStart is { } s_Start && p_C.RangeEnd is { } s_End ? s_End - s_Start : p_C.Size);
         s_Bundle.TotalSize = s_Bundle.EbxEntries.Sum(p_E => p_E.Size) + s_Bundle.DbxTotalSize.Value;
-        return DbObjectConverter.ToDbObject(s_Bundle);
+        return s_Bundle;
     }
 
     private CasBundle.Ebx Ebx(string p_Name, IReadableObject p_Object)
