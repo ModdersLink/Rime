@@ -1,3 +1,4 @@
+using RimeLib.Frostbite.Core;
 using System;
 using System.Collections.Generic;
 using RimeLib.Frostbite;
@@ -42,6 +43,25 @@ public sealed class ConversionRules
     /// the resource by the partition's name, which the source's resource has.
     /// </summary>
     public IReadOnlySet<string> NamedResources { get; init; } = new HashSet<string>();
+
+    /// <summary>
+    /// Lists of references, by type and field, whose entries line up with another list's: a
+    /// reference the target cannot resolve is left a null in its place rather than left out.
+    /// </summary>
+    public IReadOnlySet<string> PositionalLists { get; init; } = new HashSet<string>();
+
+    /// <summary>
+    /// Instances of the source the target has its own of, which game logic compares against its
+    /// own: by partition and instance in the source, the target's partition and instance.
+    /// </summary>
+    public IReadOnlyDictionary<(GUID Partition, GUID Instance), (GUID Partition, GUID Instance)> EquivalentReferences { get; init; } =
+        new Dictionary<(GUID, GUID), (GUID, GUID)>();
+
+    /// <summary>
+    /// Keywords of the assets a source material's grid row references, and the target material each
+    /// names, for a source that ships no material names: see <see cref="MaterialMapping"/>.
+    /// </summary>
+    public IReadOnlyList<(string Keyword, string Material)> MaterialKeywords { get; init; } = [];
 }
 
 /// <summary>

@@ -1,9 +1,11 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using fb;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Conversion;
+using RimeLib.Serialization.Frostbite2_0.Ebx;
 
 namespace RimeLib.Serialization.Frostbite2_0;
 
@@ -13,12 +15,17 @@ public class DerivedFields : IDerivedFields
     private const string c_IndexInBlueprint = "GameObjectData.IndexInBlueprint";
     private const string c_TemplateName = "EmitterTemplateData.Name";
     private const string c_NameHash = "SoundDataAsset.NameHash";
+    private const string c_MeshNameHash = "MeshAsset.NameHash";
+    private const string c_ScaleIndex = "GroupHavokAsset.ExternalAssetScaleIndex";
+    private const string c_ScaledAssets = "PhysicsEntityData.ScaledAssets";
+    private const string c_ConstrainedObject = "PhysicsConstraintData.ConstrainedObject";
+    private const string c_MeshEntityType = "StaticModelGroupMemberData.MeshEntityType";
     private const string c_Normals = "VectorShapeData.Normals";
     private const ushort c_NoIndex = ushort.MaxValue;
 
     public EngineType[] GetSupportedEngines() => [EngineType.Frostbite2_0];
 
-    public IReadOnlySet<string> Fields { get; } = new HashSet<string> { c_RuntimeComponentCount, c_IndexInBlueprint, c_TemplateName, c_NameHash, c_Normals };
+    public IReadOnlySet<string> Fields { get; } = new HashSet<string> { c_RuntimeComponentCount, c_IndexInBlueprint, c_TemplateName, c_NameHash, c_MeshNameHash, c_ScaleIndex, c_ScaledAssets, c_ConstrainedObject, c_MeshEntityType, c_Normals };
 
     public void Derive(DatabasePartitionBase p_Partition, ConversionReport p_Report)
     {
@@ -27,19 +34,59 @@ public class DerivedFields : IDerivedFields
         NumberObjects(p_Partition, s_Partition, 0);
         Name(p_Partition);
 
+        // The game reads every mesh variation entry's mesh and each of its materials, so an entry
+        // missing one the closure left out goes.
+        bool Missing(CtrRef<MeshVariationDatabaseEntry> p_Entry) =>
+            s_Partition.Find(p_Entry) is MeshVariationDatabaseEntry s_Entry
+            && (s_Entry.Mesh.IsNull() || s_Entry.Materials.Any(p_M => p_M.Material.IsNull()));
+
         // A redirect takes the materials of its mesh's plain entry in the same database, which the
         // game reads without checking it is there.
         foreach (var s_Database in s_Partition.Instances.Values.OfType<MeshVariationDatabase>())
         {
+            s_Database.Entries.RemoveAll(Missing);
             var s_Plain = s_Database.Entries.Select(p_E => s_Partition.Find(p_E)).OfType<MeshVariationDatabaseEntry>()
                 .Where(p_E => p_E.VariationAssetNameHash == 0).Select(p_E => (p_E.Mesh.PartitionGuid, p_E.Mesh.InstanceId)).ToHashSet();
-            s_Database.RedirectEntries.RemoveAll(p_R =>
-                s_Partition.Find(p_R) is MeshVariationDatabaseEntry s_Redirect && !s_Plain.Contains((s_Redirect.Mesh.PartitionGuid, s_Redirect.Mesh.InstanceId)));
+            s_Database.RedirectEntries.RemoveAll(p_R => Missing(p_R)
+                || s_Partition.Find(p_R) is MeshVariationDatabaseEntry s_Redirect && !s_Plain.Contains((s_Redirect.Mesh.PartitionGuid, s_Redirect.Mesh.InstanceId)));
+        }
+
+        // An object's physics keeps its assets by scale, the unscaled one first; only a static model
+        // group's own physics refers to its group asset directly.
+        var s_GroupPhysics = s_Partition.Instances.Values.OfType<StaticModelGroupEntityData>()
+            .Select(p_G => s_Partition.Find(p_G.PhysicsData)).ToHashSet();
+        foreach (var s_Physics in s_Partition.Instances.Values.OfType<PhysicsEntityData>())
+        {
+            if (s_GroupPhysics.Contains(s_Physics) || s_Physics.ScaledAssets.Count > 0 || s_Physics.Asset.IsNull())
+                continue;
+
+            s_Physics.ScaledAssets.Add(new CtrRef<HavokAsset>(s_Physics.Asset.PartitionGuid, s_Physics.Asset.InstanceId));
+            s_Physics.Asset = new CtrRef<HavokAsset>();
+        }
+
+        // A constraint names the object it constrains; where it has none, a link from it to an object
+        // says which, and is the constraint's field rather than a connection.
+        foreach (var s_Bus in s_Partition.Instances.Values.OfType<DataBusData>())
+        {
+            var s_Named = s_Bus.LinkConnections.Where(p_Link =>
+                s_Partition.Find(p_Link.Source) is PhysicsConstraintData { ConstrainedObject: var s_Object } && s_Object.IsNull()
+                && s_Partition.Find(p_Link.Target) is ReferenceObjectData).ToList();
+            foreach (var s_Link in s_Named)
+            {
+                ((PhysicsConstraintData)s_Partition.Find(s_Link.Source)!).ConstrainedObject =
+                    new CtrRef<ReferenceObjectData>(s_Link.Target.PartitionGuid, s_Link.Target.InstanceId);
+                s_Bus.LinkConnections.Remove(s_Link);
+            }
         }
 
         // A shape has a normal per point, up for the flat areas a level's shapes are.
         foreach (var s_Shape in s_Partition.Instances.Values.OfType<VectorShapeData>().Where(p_S => p_S.Normals.Count != p_S.Points.Count))
             s_Shape.Normals = s_Shape.Points.Select(_ => new Vec3 { y = 1 }).ToList();
+
+        // One scale index per external asset, the unscaled one where the source gives none.
+        foreach (var s_Group in s_Partition.Instances.Values.OfType<GroupHavokAsset>())
+            while (s_Group.ExternalAssetScaleIndex.Count < s_Group.ExternalAssets.Count)
+                s_Group.ExternalAssetScaleIndex.Add(0);
 
         foreach (var s_Entity in s_Partition.Instances.Values.OfType<GameEntityData>())
         {
@@ -57,8 +104,10 @@ public class DerivedFields : IDerivedFields
     /// Numbers the objects of each level's or sub-world's layers after its own, layer by layer in the
     /// order it references them.
     /// </summary>
-    public void DeriveAcross(IReadOnlyCollection<DatabasePartitionBase> p_Partitions, ConversionReport p_Report)
+    public void DeriveAcross(IReadOnlyCollection<DatabasePartitionBase> p_Partitions, Func<GUID, DatabasePartitionBase?> p_Earlier, ConversionReport p_Report)
     {
+        MemberMeshes(p_Partitions, p_Earlier, p_Report);
+
         var s_Partitions = p_Partitions.ToDictionary(p_P => p_P.PartitionGuid);
         var s_Numbered = new HashSet<GUID>();
         foreach (var s_World in p_Partitions.Where(p_P => p_P.PrimaryInstance is SubWorldData))
@@ -76,6 +125,59 @@ public class DerivedFields : IDerivedFields
 
         foreach (var s_Part in p_Partitions.Where(p_P => p_P.PrimaryInstance is WorldPartData && !s_Numbered.Contains(p_P.PartitionGuid)))
             ConversionReport.Count(p_Report.Underived, $"{c_IndexInBlueprint}: a world part no level converted with it references, numbered from 0");
+    }
+
+    /// <summary>
+    /// Gives each static model group member the mesh entity it is drawn with, in the group's own
+    /// partition: composite or rigid after the mesh of the member's type, which is all an engine that
+    /// draws the member type itself sets.
+    /// </summary>
+    private static void MemberMeshes(IReadOnlyCollection<DatabasePartitionBase> p_Partitions, Func<GUID, DatabasePartitionBase?> p_Earlier, ConversionReport p_Report)
+    {
+        var s_Converted = p_Partitions.ToDictionary(p_P => p_P.PartitionGuid);
+        var s_Scopes = new Dictionary<GUID, Scope?>();
+        DataContainerBase? Find(CtrRefBase p_Ref)
+        {
+            if (!s_Scopes.TryGetValue(p_Ref.PartitionGuid, out var s_Scope))
+                s_Scopes[p_Ref.PartitionGuid] = s_Scope = (s_Converted.GetValueOrDefault(p_Ref.PartitionGuid) ?? p_Earlier(p_Ref.PartitionGuid)) is { } s_Partition ? Scope.Of(s_Partition) : null;
+            return s_Scope?.Find(p_Ref);
+        }
+
+        foreach (var s_Partition in p_Partitions.OfType<DatabasePartition>())
+        {
+            foreach (var s_Group in s_Partition.InstanceMap.Values.OfType<StaticModelGroupEntityData>().ToList())
+            {
+                for (var i = 0; i < s_Group.MemberDatas.Count; ++i)
+                {
+                    var s_Member = s_Group.MemberDatas[i];
+                    if (!s_Member.MeshEntityType.IsNull())
+                        continue;
+
+                    if (Find(s_Member.MemberType) is not StaticModelEntityData { Mesh: var s_Mesh } || s_Mesh.IsNull())
+                    {
+                        ConversionReport.Count(p_Report.Underived, $"{c_MeshEntityType}: a member whose type's mesh is not converted with it");
+                        continue;
+                    }
+
+                    SpatialEntityData s_Entity = Find(s_Mesh) is CompositeMeshAsset
+                        ? new CompositeMeshEntityData { Mesh = new CtrRef<CompositeMeshAsset>(s_Mesh.PartitionGuid, s_Mesh.InstanceId) }
+                        : new RigidMeshEntityData { Mesh = new CtrRef<RigidMeshAsset>(s_Mesh.PartitionGuid, s_Mesh.InstanceId) };
+                    var s_Guid = PartitionConversion.Derived(s_Partition.PartitionGuid, $"{c_MeshEntityType}/{s_Group.InstanceId}/{i}");
+                    s_Entity.InstanceId = new DataContainerId.Guid(s_Guid);
+                    s_Entity.Transform = new LinearTransform
+                    {
+                        right = new Vec3 { x = 1 },
+                        up = new Vec3 { y = 1 },
+                        forward = new Vec3 { z = 1 },
+                    };
+                    s_Entity.IndexInBlueprint = c_NoIndex;
+                    s_Entity.IsEventConnectionTarget = 3;
+                    s_Entity.IsPropertyConnectionTarget = 3;
+                    s_Partition.InstanceMap[s_Guid] = s_Entity;
+                    s_Member.MeshEntityType = new CtrRef<EntityData>(s_Partition.PartitionGuid, s_Guid);
+                }
+            }
+        }
     }
 
     private sealed record Scope(GUID Partition, Dictionary<DataContainerId, DataContainerBase> Instances)
@@ -109,6 +211,10 @@ public class DerivedFields : IDerivedFields
 
         foreach (var s_Sound in p_Partition.Instances.OfType<SoundDataAsset>())
             s_Sound.NameHash = Frostbite.Utils.HashQuick(s_Sound.Name);
+
+        // A mesh asset finds its MeshSet by the hash of its name in lower case.
+        foreach (var s_Mesh in p_Partition.Instances.OfType<MeshAsset>())
+            s_Mesh.NameHash = Frostbite.Utils.HashQuickLowerCase(s_Mesh.Name);
     }
 
     /// <summary>

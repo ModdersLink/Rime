@@ -20,7 +20,7 @@ namespace RimeLib.Serialization.Conversion;
 /// differently, fields it takes from elsewhere, structs it keeps one field of and primary instances
 /// it has elsewhere. Fields the target's build derives are set by its <see cref="IDerivedFields"/>.
 /// Instances without a GUID that nothing references any more are dropped, and a list leaves out the
-/// references it can no longer resolve. What the target cannot hold is dropped and counted in
+/// references it can no longer resolve, or keeps them as nulls where its positions matter. What the target cannot hold is dropped and counted in
 /// <see cref="Report"/>.
 /// </summary>
 public sealed class PartitionConversion
@@ -51,6 +51,19 @@ public sealed class PartitionConversion
     /// content under another name, say.
     /// </summary>
     public Func<string, string>? Strings { get; set; }
+
+    /// <summary>
+    /// The name a resource the source references has in the target, for a target that names the
+    /// resources it references; none where the target does not get it, which leaves the name empty.
+    /// </summary>
+    public Func<ResourceRef, string?>? ResourceNames { get; set; }
+
+    /// <summary>
+    /// A value the target holds otherwise, given the source value and the target field's type: a
+    /// material, say, which the target keeps as a reference where the source keeps a struct. None
+    /// leaves the value to the conversion by name.
+    /// </summary>
+    public Func<object, Type, object?>? Values { get; set; }
 
     public PartitionConversion(IEbxTypeLibrary p_Target, ConversionRules? p_Rules = null, IDerivedFields? p_Derived = null)
     {
@@ -127,7 +140,9 @@ public sealed class PartitionConversion
     /// Sets the target's fields that depend on other partitions, once the partitions converted
     /// together (a level's, say) are.
     /// </summary>
-    public void DeriveAcross(IReadOnlyCollection<DatabasePartitionBase> p_Converted) => m_Derived?.DeriveAcross(p_Converted, Report);
+    /// <param name="p_Earlier">A partition converted before, which the converted ones may refer to, by GUID.</param>
+    public void DeriveAcross(IReadOnlyCollection<DatabasePartitionBase> p_Converted, Func<GUID, DatabasePartitionBase?>? p_Earlier = null) =>
+        m_Derived?.DeriveAcross(p_Converted, p_Earlier ?? (_ => null), Report);
 
     /// <summary>
     /// The partition being converted, its instances by id, the ids of those that convert and the
@@ -199,20 +214,17 @@ public sealed class PartitionConversion
     private bool Follow(object p_Object, string p_Path, Scope p_Scope, out object? p_Value)
     {
         p_Value = p_Object;
+        if (p_Path.Length == 0 && p_Value is CtrRefBase s_End)
+            return Instance(s_End, p_Scope, out p_Value);
+
         foreach (var s_Name in p_Path.Length == 0 ? [] : p_Path.Split('.'))
         {
             if (p_Value is CtrRefBase s_Ref)
             {
-                if (s_Ref.IsNull())
-                {
-                    p_Value = null;
-                    return true;
-                }
-
-                var s_Instances = s_Ref.PartitionGuid == p_Scope.Partition ? p_Scope.Sources : SourceInstances(s_Ref.PartitionGuid);
-                if (s_Instances == null || !s_Instances.TryGetValue(s_Ref.InstanceId, out var s_Instance))
+                if (!Instance(s_Ref, p_Scope, out p_Value))
                     return false;
-                p_Value = s_Instance;
+                if (p_Value == null)
+                    return true;
             }
 
             var s_Field = p_Value!.GetType().GetProperty(s_Name)
@@ -223,6 +235,20 @@ public sealed class PartitionConversion
         return true;
     }
 
+    /// <summary>The source instance a reference leads to: none for a null reference, false when its partition is not found.</summary>
+    private bool Instance(CtrRefBase p_Ref, Scope p_Scope, out object? p_Instance)
+    {
+        p_Instance = null;
+        if (p_Ref.IsNull())
+            return true;
+
+        var s_Instances = p_Ref.PartitionGuid == p_Scope.Partition ? p_Scope.Sources : SourceInstances(p_Ref.PartitionGuid);
+        if (s_Instances == null || !s_Instances.TryGetValue(p_Ref.InstanceId, out var s_Instance))
+            return false;
+        p_Instance = s_Instance;
+        return true;
+    }
+
     /// <summary>The instances of another source partition by id, if <see cref="SourcePartitions"/> has it.</summary>
     private Dictionary<DataContainerId, DataContainerBase>? SourceInstances(GUID p_Partition)
     {
@@ -230,6 +256,12 @@ public sealed class PartitionConversion
             m_SourceInstances[p_Partition] = s_Instances = SourcePartitions?.Invoke(p_Partition)?.Instances.ToDictionary(p_I => p_I.InstanceId);
         return s_Instances;
     }
+
+    /// <summary>The rules the conversion follows.</summary>
+    public ConversionRules Rules => m_Rules;
+
+    /// <summary>Whether instances of the source type convert to the target.</summary>
+    public bool Converts(Type p_Source) => ContainerType(p_Source) != null;
 
     private Type? ContainerType(Type p_Source)
     {
@@ -262,7 +294,8 @@ public sealed class PartitionConversion
         foreach (var (s_From, s_To) in s_Map.Sourced)
         {
             var s_Field = $"{s_SourceType.Name}.{(s_From.Path.Length > 0 ? s_From.Path : s_To.Name)}";
-            if (!Follow(p_Source, s_From.Path, p_Scope, out var s_Value))
+            if (!Follow(p_Source, s_From.Path, p_Scope, out var s_Value)
+                || (s_From.Map != null && s_Value is CtrRefBase && !typeof(CtrRefBase).IsAssignableFrom(s_To.PropertyType) && !Follow(s_Value, "", p_Scope, out s_Value)))
                 ConversionReport.Count(Report.UnconvertedValues, $"{s_Field}: a reference on the way to a partition not found");
             else if (s_Value != null)
                 Set(p_Target, s_To, s_From.Map == null ? s_Value : s_From.Map(s_Value), p_Scope, s_Field);
@@ -281,9 +314,20 @@ public sealed class PartitionConversion
     {
         p_Reason = "";
         p_Result = null;
+        if (p_Value != null && Values?.Invoke(p_Value, p_Type) is { } s_Given)
+        {
+            p_Result = s_Given;
+            return true;
+        }
+
         switch (p_Value)
         {
             case null:
+                return true;
+
+            case ResourceRef s_Resource when p_Type == typeof(string):
+                p_Result = ResourceNames?.Invoke(s_Resource) ?? "";
+                ConversionReport.Count(p_Result is "" ? Report.UnnamedResources : Report.NamedResourceReferences, p_Field);
                 return true;
 
             case CtrRefBase s_Ref when typeof(CtrRefBase).IsAssignableFrom(p_Type):
@@ -300,8 +344,10 @@ public sealed class PartitionConversion
                     if (!TryConvert(s_Item, s_ElementType, p_Scope, p_Field, out var s_Converted, out p_Reason))
                         return false;
 
-                    // A reference whose instance the target lacks is left out rather than left a hole.
-                    if (s_Item is CtrRefBase s_ItemRef && !s_ItemRef.IsNull() && s_Converted is CtrRefBase { } s_ConvertedRef && s_ConvertedRef.IsNull())
+                    // A reference whose instance the target lacks is left out rather than left a hole,
+                    // unless the list's positions are what its entries mean.
+                    if (s_Item is CtrRefBase s_ItemRef && !s_ItemRef.IsNull() && s_Converted is CtrRefBase { } s_ConvertedRef && s_ConvertedRef.IsNull()
+                        && !m_Rules.PositionalLists.Contains(p_Field))
                         continue;
                     s_Items.Add(s_Converted);
                 }
@@ -391,13 +437,25 @@ public sealed class PartitionConversion
     }
 
     /// <summary>Where a reference points in the target: none when it is null or its instance is dropped.</summary>
-    private (GUID Partition, GUID Instance)? Resolve(CtrRefBase p_Ref, Scope p_Scope, string p_Field)
+    private (GUID Partition, GUID Instance)? Resolve(CtrRefBase p_Ref, Scope p_Scope, string p_Field, int p_Spliced = 0)
     {
         if (p_Ref.IsNull())
             return null;
 
+        if (p_Ref.InstanceId is DataContainerId.Guid s_Id && m_Rules.EquivalentReferences.TryGetValue((p_Ref.PartitionGuid, s_Id.Id), out var s_Equivalent))
+            return s_Equivalent;
+
         if (p_Ref.PartitionGuid == p_Scope.Partition && !p_Scope.Converted.Contains(p_Ref.InstanceId))
         {
+            // A chain (an emitter's processors) leads past a dropped link to the link it leads to.
+            var s_Name = p_Field[(p_Field.LastIndexOf('.') + 1)..];
+            if (p_Scope.Sources.TryGetValue(p_Ref.InstanceId, out var s_Dropped) && s_Dropped.GetType().GetProperty(s_Name)?.GetValue(s_Dropped) is CtrRefBase s_Next
+                && p_Spliced < p_Scope.Sources.Count)
+            {
+                ConversionReport.Count(Report.SplicedReferences, p_Field);
+                return Resolve(s_Next, p_Scope, p_Field, p_Spliced + 1);
+            }
+
             ConversionReport.Count(Report.DroppedReferences, p_Field);
             return null;
         }
@@ -492,6 +550,7 @@ public sealed class PartitionConversion
         _ => Equals(p_Value, p_Default),
     };
 
-    private static GUID Derived(GUID p_Partition, string p_Key) =>
+    /// <summary>A GUID that stays the same for the same partition and key.</summary>
+    public static GUID Derived(GUID p_Partition, string p_Key) =>
         new(new Guid(MD5.HashData(Encoding.UTF8.GetBytes($"{p_Partition}/{p_Key}"))));
 }

@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using fb.Audio;
+using fb.Core;
 using fb.Emitter;
 using RimeLib.Frostbite;
+using RimeLib.Frostbite.Core;
 using RimeLib.Serialization.Conversion;
 using FbUtils = RimeLib.Frostbite.Utils;
 
@@ -47,6 +49,17 @@ public class ConversionRules : IConversionRules
             [("LevelData", "GameConfigurationName")] = new("", _ => "gameconfigurations/game") { Reads = ["GameConfigurationName"] },
             // Processors here have no switch to turn them off.
             [("ProcessorData", "Enable")] = new("", _ => true),
+            // Frostbite 2 finds a particle's texture by name in the level's emitter system, with the
+            // atlas texture's animation layout; normal maps come from the system's default one.
+            [("UpdateTextureCoordsData", "TextureInfo1")] = new("BaseTexture", p_Asset => p_Asset) { Reads = ["NormalTexture"] },
+            [("UpdateTextureCoordsData", "TextureBlendValue")] = new("", _ => 1f),
+            [("UpdateTextureCoordsData", "DefaultValues")] = new("", _ => new Vec4 { x = 1f }),
+            // Frostbite 2 names a track's keys resource.
+            [("TransformPartPropertyTrackData", "ResourceName")] = new("Resource"),
+            [("AtlasTextureAsset", "TextureName")] = new("Name"),
+            [("AtlasTextureAsset", "NormalmapName")] = new("", _ => "Systems/Emitter/DefaultNormalmap"),
+            [("AtlasTextureAsset", "AnimationFrameColumnCount")] = new("AnimationColumnCount"),
+            [("AtlasTextureAsset", "EnableAnimation")] = new("AnimationFrameCount", p_Count => (int)p_Count > 1),
             [("DataBusData", "Descriptor")] = new("Interface"),
             // The bus flags' bits, in the order Frostbite 2 has the fields: bit 1 is set where a
             // connection uses the interface; the others follow from that order.
@@ -91,8 +104,30 @@ public class ConversionRules : IConversionRules
             "EnlightenShaderDatabaseAsset.DatabaseResource",
             "TerrainData.VisualResource",
         },
+        // A static model group's external assets line up with its members and part bounds.
+        PositionalLists = new HashSet<string> { "GroupHavokAsset.ExternalAssets" },
         // Evaluators and connections name the parameters of fx/globaleffectparameterlist instead.
         HeldByReferrers = new HashSet<string> { "EffectParameterList" },
+        // BF4 ships no material names; the impact effects, sounds and decals of a material's row say
+        // what surface it is, and Frostbite 2 names its materials after the surface. Earlier keywords
+        // win among equals, so the specific come before the general.
+        MaterialKeywords =
+        [
+            ("steampipe", "Steampipe"), ("chickenwire", "ChickenWire"), ("fence", "Fences"),
+            ("concrete", "Concrete"), ("brick", "Brick"), ("marble", "Marble"), ("ceramic", "Tile"), ("tile", "Tile"),
+            ("plaster", "Plaster"), ("metal", "Metal"), ("wood", "Wood"), ("glass", "Glass"), ("plastic", "Plastic"),
+            ("cloth", "Cloth"), ("gravel", "Gravel"), ("sand", "Sand"), ("stone", "Stone"), ("grass", "Grass"),
+            ("foliage", "Foliage"), ("leaves", "Leafs"), ("tarmac", "Tarmac"), ("asphalt", "Tarmac"), ("water", "Water"),
+            ("mud", "Mud"), ("dirt", "Dirt"), ("earth", "Dirt"), ("snow", "Snow"), ("ice", "Ice"),
+            ("hithead", "Head"), ("head", "Head"), ("hitbody", "Body"), ("limbs", "Body"), ("body", "Body"), ("soldier", "Body"),
+        ],
+        // A sub-world is included by game mode through Frostbite 2's own level layer inclusion
+        // (levellayerinclusion), not a converted copy of levels/mp/levellayerinclusion.
+        EquivalentReferences = new Dictionary<(GUID, GUID), (GUID, GUID)>
+        {
+            [(new GUID("9694af88-7a9a-4740-b714-5cacdcabbc25"), new GUID("24727b40-75c3-433c-8603-e4faa1205be4"))] =
+                (new GUID("8553f314-33c6-11de-9a60-82a633f14a46"), new GUID("8b89e816-f442-4194-a093-1f82487cf732")),
+        },
     };
 
     /// <summary>

@@ -1,4 +1,6 @@
+using System;
 using System.Collections.Generic;
+using RimeLib.Frostbite.Core;
 
 namespace RimeLib.Serialization.Conversion;
 
@@ -18,5 +20,6 @@ public interface IDerivedFields : IEngineInterface
     /// Sets the fields that depend on other partitions, such as those of a level's layers, on
     /// partitions converted together.
     /// </summary>
-    void DeriveAcross(IReadOnlyCollection<DatabasePartitionBase> p_Partitions, ConversionReport p_Report);
+    /// <param name="p_Earlier">A partition converted before, which the partitions may refer to, by GUID.</param>
+    void DeriveAcross(IReadOnlyCollection<DatabasePartitionBase> p_Partitions, Func<GUID, DatabasePartitionBase?> p_Earlier, ConversionReport p_Report);
 }

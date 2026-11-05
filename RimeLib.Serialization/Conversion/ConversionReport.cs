@@ -40,6 +40,15 @@ public sealed class ConversionReport
     /// <summary>References to a dropped instance, by type and field.</summary>
     public SortedDictionary<string, int> DroppedReferences { get; } = new();
 
+    /// <summary>Resource references the target keeps as the resource's name, by field.</summary>
+    public SortedDictionary<string, int> NamedResourceReferences { get; } = new();
+
+    /// <summary>Resource references to a resource the target does not get, left without a name, by field.</summary>
+    public SortedDictionary<string, int> UnnamedResources { get; } = new();
+
+    /// <summary>References that led to a dropped link of a chain and now lead past it, by field.</summary>
+    public SortedDictionary<string, int> SplicedReferences { get; } = new();
+
     public int Instances { get; set; }
     public int ConvertedInstances { get; set; }
 
@@ -60,6 +69,9 @@ public sealed class ConversionReport
         Write(p_Writer, "Instances nothing references any more, dropped", Unreferenced, p_Top);
         Write(p_Writer, "References to a partition not shipped, left null", UnshippedReferences, p_Top);
         Write(p_Writer, "References to a dropped instance", DroppedReferences, p_Top);
+        Write(p_Writer, "References led past a dropped link of a chain", SplicedReferences, p_Top);
+        Write(p_Writer, "Resource references kept as the resource's name", NamedResourceReferences, p_Top);
+        Write(p_Writer, "Resource references left without a name, the resource not shipped", UnnamedResources, p_Top);
         Write(p_Writer, "Structs made instances, as the target references them", StructsMadeInstances, p_Top);
         Write(p_Writer, "Structs the target keeps one field of", Unwrapped, p_Top);
     }

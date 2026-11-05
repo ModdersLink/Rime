@@ -146,6 +146,9 @@ public class MaterialGridRules : IMaterialGridRules
     private List<(uint Material, uint Property)>? m_Pairs;
     private List<string>? m_Names;
 
+    /// <summary>Each pair's packed value and reference, by material and property.</summary>
+    private Dictionary<(uint, uint), (uint Packed, CtrRef<fb.MaterialContainerPair> Ref)>? m_PairsByMaterial;
+
     private void LoadContainer(Func<string, DatabasePartitionBase?> p_Parse)
     {
         if (m_Pairs != null)
@@ -153,15 +156,22 @@ public class MaterialGridRules : IMaterialGridRules
 
         m_Pairs = new List<(uint, uint)>();
         m_Names = new List<string>();
+        m_PairsByMaterial = new Dictionary<(uint, uint), (uint, CtrRef<fb.MaterialContainerPair>)>();
         if (p_Parse(c_ContainerPartition) is not { PrimaryInstance: fb.MaterialContainerAsset s_Container } s_Partition)
             return;
 
         var s_Instances = s_Partition.Instances.Where(p_I => p_I != null).GroupBy(p_I => p_I.InstanceId).ToDictionary(p_G => p_G.Key, p_G => p_G.First());
         foreach (var s_Ref in s_Container.MaterialPairs)
         {
-            m_Pairs.Add(s_Instances.GetValueOrDefault(s_Ref.InstanceId) is fb.MaterialContainerPair s_Pair
-                ? ((uint)(byte)s_Pair.PhysicsMaterialIndex, (uint)(byte)s_Pair.PhysicsPropertyIndex)
-                : (uint.MaxValue, uint.MaxValue));
+            if (s_Instances.GetValueOrDefault(s_Ref.InstanceId) is not fb.MaterialContainerPair s_Pair)
+            {
+                m_Pairs.Add((uint.MaxValue, uint.MaxValue));
+                continue;
+            }
+
+            var s_Key = ((uint)(byte)s_Pair.PhysicsMaterialIndex, (uint)(byte)s_Pair.PhysicsPropertyIndex);
+            m_Pairs.Add(s_Key);
+            m_PairsByMaterial.TryAdd(s_Key, (s_Pair.FlagsAndIndex, new CtrRef<fb.MaterialContainerPair>(s_Partition.PartitionGuid, s_Ref.InstanceId)));
         }
 
         m_Names.AddRange(s_Container.MaterialNames);
@@ -196,6 +206,28 @@ public class MaterialGridRules : IMaterialGridRules
     {
         LoadContainer(p_Parse);
         return p_Material < m_Names!.Count ? m_Names[(int)p_Material] : null;
+    }
+
+    public bool TryUnpack(uint p_Packed, Func<string, DatabasePartitionBase?> p_Parse, out uint p_Material, out uint p_Property)
+    {
+        LoadContainer(p_Parse);
+        var s_Index = (int)(p_Packed & 0xFFFF);
+        (p_Material, p_Property) = s_Index < m_Pairs!.Count ? m_Pairs[s_Index] : (uint.MaxValue, uint.MaxValue);
+        return p_Material != uint.MaxValue;
+    }
+
+    /// <summary>The shared container's pair of the material and property, its packed value and a reference to it.</summary>
+    public bool TryPack(uint p_Material, uint p_Property, Func<string, DatabasePartitionBase?> p_Parse, out uint p_Packed, out object p_Value)
+    {
+        LoadContainer(p_Parse);
+        if (m_PairsByMaterial!.TryGetValue((p_Material, p_Property), out var s_Pair))
+        {
+            (p_Packed, p_Value) = s_Pair;
+            return true;
+        }
+
+        (p_Packed, p_Value) = (0, null!);
+        return false;
     }
 
     private static IEnumerable<uint> Used(fb.MaterialGridData p_Grid)

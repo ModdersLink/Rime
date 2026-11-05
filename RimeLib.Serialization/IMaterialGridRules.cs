@@ -44,4 +44,14 @@ public interface IMaterialGridRules : IEngineInterface
 
     /// <summary>A global material index's name, where the game ships one.</summary>
     string? GetMaterialName(uint p_Material, Func<string, DatabasePartitionBase?> p_Parse);
+
+    /// <summary>The material and the property a packed material value names, where it names a pair.</summary>
+    bool TryUnpack(uint p_Packed, Func<string, DatabasePartitionBase?> p_Parse, out uint p_Material, out uint p_Property);
+
+    /// <summary>
+    /// A material and a property as this engine stores the pair: the packed value Havok physics data
+    /// keeps, and the EBX value (a MaterialContainerPair reference or a MaterialDecl). False where
+    /// the engine has no such pair.
+    /// </summary>
+    bool TryPack(uint p_Material, uint p_Property, Func<string, DatabasePartitionBase?> p_Parse, out uint p_Packed, out object p_Value);
 }
