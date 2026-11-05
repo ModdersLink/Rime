@@ -4,6 +4,7 @@ using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Content.Scaleform;
 using RimeLib.Frostbite;
+using RimeLib.IO;
 
 namespace RimeLib.Content.Frostbite2_0.Resources
 {
@@ -17,10 +18,17 @@ namespace RimeLib.Content.Frostbite2_0.Resources
         public byte[] RoundTrip(ResourceType p_Type, byte[] p_Data, byte[]? p_Meta)
         {
             var s_Movie = new SwfFile();
-            s_Movie.Deserialize(p_Data);
-            if (!s_Movie.Serialize(out var s_Written))
-                throw new InvalidDataException("the movie writer refused");
-            return s_Written;
+            using (var s_Reader = new RimeReader(new MemoryStream(p_Data, false)))
+                s_Movie.Deserialize(s_Reader);
+
+            var s_Stream = new MemoryStream();
+            using (var s_Writer = new RimeWriter(s_Stream))
+            {
+                if (!s_Movie.Serialize(s_Writer))
+                    throw new InvalidDataException("the movie writer refused");
+            }
+
+            return s_Stream.ToArray();
         }
     }
 }
