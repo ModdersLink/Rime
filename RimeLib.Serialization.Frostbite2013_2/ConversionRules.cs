@@ -108,6 +108,8 @@ public class ConversionRules : IConversionRules
         PositionalLists = new HashSet<string> { "GroupHavokAsset.ExternalAssets" },
         // Evaluators and connections name the parameters of fx/globaleffectparameterlist instead.
         HeldByReferrers = new HashSet<string> { "EffectParameterList" },
+        // A sub-world's network registry is a partition beside it.
+        NetworkRegistrySuffix = "_networkregistry_win32",
         // BF4 ships no material names; the impact effects, sounds and decals of a material's row say
         // what surface it is, and Frostbite 2 names its materials after the surface. Earlier keywords
         // win among equals, so the specific come before the general.

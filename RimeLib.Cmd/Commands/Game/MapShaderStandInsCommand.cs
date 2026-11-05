@@ -34,7 +34,7 @@ namespace RimeLib.Cmd.Commands.Game
 
             var s_Engine = s_Target.GetEngineType();
             var s_Bindings = EngineInterfaceRegistry.Create<IShaderBindings>(s_Engine);
-            var s_StandIns = Learn(s_Target, s_Bindings);
+            var s_StandIns = MountedShaders.StandIns(s_Target, s_Bindings);
             p_Writer.WriteLine($"{s_StandIns.Count} shader(s) used by the target's mesh materials.");
 
             var s_Picks = Used(s_Source, s_Target, s_Bindings)
@@ -60,23 +60,6 @@ namespace RimeLib.Cmd.Commands.Game
             var s_Without = s_Picks.Count(p_P => p_P.StandIn == null);
             p_Writer.WriteLine($"map_shader_stand_ins: {s_Picks.Count - s_Without}/{s_Picks.Count} shader(s) the target lacks have a stand-in.");
             return true;
-        }
-
-        /// <summary>The shaders of the target's own mesh materials, with the textures its mesh variation databases bind.</summary>
-        private static ShaderStandIns Learn(IEngineMounter p_Target, IShaderBindings p_Bindings)
-        {
-            var s_Primary = EngineInterfaceRegistry.Create<IPartitionImportReader>(p_Target.GetEngineType());
-            var s_Reader = EngineInterfaceRegistry.Create<IPartitionConverter>(p_Target.GetEngineType());
-            var s_Shaders = new MaterialShaders();
-            foreach (var (s_Name, s_Partition) in p_Target.GetPartitions().OrderBy(p_P => p_P.Key, StringComparer.Ordinal))
-            {
-                var s_Variant = s_Partition.FirstVariant;
-                var s_Type = s_Primary.ReadPrimaryTypeName(s_Variant);
-                if (s_Type != null && (s_Type.EndsWith("MeshAsset", StringComparison.Ordinal) || s_Type == "MeshVariationDatabase"))
-                    s_Shaders.Add(p_Bindings, s_Reader.FromPartitionObject(s_Name, s_Variant));
-            }
-
-            return new ShaderStandIns(s_Shaders.ByShader());
         }
 
         /// <summary>The shaders the bundle's mesh materials use once converted to the target's types.</summary>

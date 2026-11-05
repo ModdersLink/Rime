@@ -62,6 +62,12 @@ public sealed class ConversionRules
     /// names, for a source that ships no material names: see <see cref="MaterialMapping"/>.
     /// </summary>
     public IReadOnlyList<(string Keyword, string Material)> MaterialKeywords { get; init; } = [];
+
+    /// <summary>
+    /// What a source sub-world's network registry is named after the sub-world, for a source that
+    /// keeps its registries apart from its sub-worlds; none for one that keeps them inside.
+    /// </summary>
+    public string? NetworkRegistrySuffix { get; init; }
 }
 
 /// <summary>

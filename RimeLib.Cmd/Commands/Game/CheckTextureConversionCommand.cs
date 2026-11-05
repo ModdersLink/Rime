@@ -6,6 +6,7 @@ using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
+using RimeLib.Frostbite.Core;
 using RimeLib.Texture.Images;
 
 namespace RimeLib.Cmd.Commands.Game
@@ -19,6 +20,9 @@ namespace RimeLib.Cmd.Commands.Game
         [CommandArgument(Description = "How many textures to list per failure.", Optional = true)]
         public int List { get; set; } = 3;
 
+        [CommandArgument(Description = "Also read each texture's chunk, which must be the size its header gives.", Optional = true)]
+        public bool Chunks { get; set; }
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             var s_Game = (GameContext)p_Context;
@@ -31,22 +35,25 @@ namespace RimeLib.Cmd.Commands.Game
 
             var s_From = EngineInterfaceRegistry.Create<ITextureCodec>(s_Source.GetEngineType());
             var s_To = EngineInterfaceRegistry.Create<ITextureCodec>(s_Target.GetEngineType());
-            var s_Groups = TargetGroups(s_Target, s_To);
+            var s_Groups = MountedTextures.Groups(s_Target, s_To);
 
             var s_Conversions = new SortedDictionary<string, int>(StringComparer.Ordinal);
             var s_GroupMappings = new Dictionary<string, int>(StringComparer.Ordinal);
             var s_Failures = new Dictionary<string, List<string>>(StringComparer.Ordinal);
             int s_Textures = 0, s_Converted = 0;
 
-            foreach (var (s_Name, s_Resource) in Textures(s_Source))
+            foreach (var (s_Name, s_Resource) in MountedTextures.All(s_Source))
             {
                 s_Textures++;
-                var s_Header = Read(s_Resource.FirstVariant);
+                var s_Header = MountedTextures.Read(s_Resource.FirstVariant);
                 try
                 {
                     var s_Image = s_From.Decode(s_Name, s_Header, Array.Empty<byte>());
+                    if (Chunks && s_Image.ChunkId != GUID.Empty
+                        && MountedTextures.Read(MountedTextures.WholeChunk(s_Source, s_Image.ChunkId)).Length is var s_Size && s_Size != s_From.ChunkSize(s_Image))
+                        throw new InvalidDataException($"A {s_Size} byte chunk where the header gives {s_From.ChunkSize(s_Image)}.");
                     if (TextureConversion.NeedsData(s_Image.Format, s_To.Formats))
-                        s_Image = s_From.Decode(s_Name, s_Header, ReadChunk(s_Source, s_Image));
+                        s_Image = s_From.Decode(s_Name, s_Header, MountedTextures.Read(MountedTextures.WholeChunk(s_Source, s_Image.ChunkId)));
 
                     var s_Fitted = TextureConversion.ToFormats(s_Image, s_To.Formats).Copy();
                     s_Fitted.Group = TextureConversion.ToGroups(s_Image.Group, s_Groups);
@@ -85,45 +92,6 @@ namespace RimeLib.Cmd.Commands.Game
 
             p_Writer.WriteLine($"check_texture_conversion: {s_Converted}/{s_Textures} converted to {s_Target.GetEngineType()}.");
             return s_Converted == s_Textures;
-        }
-
-        private static IEnumerable<KeyValuePair<string, IMountedObject<IResourceVariant>>> Textures(IEngineMounter p_Mounter) =>
-            p_Mounter.GetResources()
-                .Where(p_R => p_R.Value.FirstVariant.GetResourceType() == ResourceType.DxTexture)
-                .OrderBy(p_R => p_R.Key, StringComparer.Ordinal);
-
-        /// <summary>The streaming groups the target game's textures are in.</summary>
-        private static HashSet<string> TargetGroups(IEngineMounter p_Target, ITextureCodec p_Codec)
-        {
-            var s_Groups = new HashSet<string>(StringComparer.Ordinal);
-            foreach (var (s_Name, s_Resource) in Textures(p_Target))
-            {
-                try
-                {
-                    s_Groups.Add(p_Codec.Decode(s_Name, Read(s_Resource.FirstVariant), Array.Empty<byte>()).Group);
-                }
-                catch (InvalidDataException)
-                {
-                    // A header the codec refuses names no group to convert to.
-                }
-            }
-
-            return s_Groups;
-        }
-
-        private static byte[] Read(IObjectVariant p_Variant)
-        {
-            using var s_Reader = p_Variant.GetReader();
-            return s_Reader.ReadBytes((int)s_Reader.Length);
-        }
-
-        /// <summary>The full chunk: the variant read from its start, the others hold a range of it.</summary>
-        private static byte[] ReadChunk(IEngineMounter p_Mounter, TextureImage p_Image)
-        {
-            if (!p_Mounter.TryGetChunk(p_Image.ChunkId, out var s_Chunk))
-                throw new InvalidDataException($"Chunk {p_Image.ChunkId} is not mounted.");
-
-            return Read(s_Chunk.Variants.FirstOrDefault(p_V => p_V.GetLogicalOffset() == 0) ?? s_Chunk.FirstVariant);
         }
 
         private static void Count(IDictionary<string, int> p_Counts, string p_Key) =>

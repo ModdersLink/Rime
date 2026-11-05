@@ -14,6 +14,7 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using RimeLib.Serialization;
+using RimeLib.Serialization.Conversion;
 using RimeLib.Shader;
 using RimeLib.Terrain.Resources;
 using RimeLib.Texture.Generation;
@@ -183,6 +184,12 @@ namespace RimeLib.Cmd.Contexts
                 EngineInterfaceRegistry.IsSupported<IPartitionGenerator>(s_EngineType))
             {
                 RegisterCommand<AddJsonPartitionCommand>();
+            }
+
+            if (EngineInterfaceRegistry.IsSupported<IEbxTypeLibrary>(s_EngineType) &&
+                EngineInterfaceRegistry.IsSupported<IPartitionGenerator>(s_EngineType))
+            {
+                RegisterCommand<ReferenceConvertedPartitionCommand>();
             }
 
             if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))

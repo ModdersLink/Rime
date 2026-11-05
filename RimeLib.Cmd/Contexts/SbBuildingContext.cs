@@ -141,6 +141,40 @@ namespace RimeLib.Cmd.Contexts
         /// <summary>The shaders the bundles built so far draw with, for a shader database built after them.</summary>
         internal HashSet<string> DrawnShaders { get; } = new(StringComparer.OrdinalIgnoreCase);
 
+        /// <summary>
+        /// The partitions converted from another engine into the bundles built so far, by name: a later
+        /// bundle loads with them and so references them rather than adding them, and derives its
+        /// fields from what they hold.
+        /// </summary>
+        internal Dictionary<string, RimeLib.Serialization.DatabasePartitionBase> ConvertedPartitions { get; } = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// The bundle whose converted partitions the others share: the first to convert, the level's,
+        /// which the game loads before its sub-worlds. Sub-world bundles load beside each other and do
+        /// not see each other's partitions, so each converts its own.
+        /// </summary>
+        internal string? SharedConversionBundle { get; set; }
+
+        /// <summary>
+        /// How the converted partitions' materials map to this engine's, once a converted closure
+        /// has made it: the bundles share it, so the grid can be built for every material they use.
+        /// </summary>
+        internal RimeLib.Serialization.Conversion.MaterialMapping? ConvertedMaterials { get; set; }
+
+        /// <summary>
+        /// This engine's shaders, to stand in for the converted mesh materials' shaders, once a
+        /// converted closure has learned them from the game of this engine mounted beside the source,
+        /// by the kind of mesh they draw (see <see cref="MountedShaders.ByMesh"/>).
+        /// </summary>
+        internal IReadOnlyDictionary<string, RimeLib.Serialization.Conversion.ShaderStandIns>? ShaderStandIns { get; set; }
+
+        /// <summary>
+        /// The source resources the converted closures met of a type not converted, by their name in
+        /// the source, for a command that builds what they hold in this engine's form (an emitter
+        /// system's atlas from the atlas textures).
+        /// </summary>
+        internal Dictionary<string, RimeLib.Content.Frostbite.ResourceType> UnconvertedResources { get; } = new(StringComparer.OrdinalIgnoreCase);
+
         protected string m_OutPath;
         protected string m_SbName;
 
