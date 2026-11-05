@@ -28,6 +28,9 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "The id of the mounted game.", Optional = true)]
         public int Id { get; set; } = 1;
 
+        [CommandArgument(Description = "Comma-separated shader name prefixes to hold however the content draws, for shaders the engine asks for by name, e.g. systems/emitter/.", Optional = true)]
+        public string? Always { get; set; }
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             var s_BundleContext = (BundleBuildingContext)p_Context;
@@ -41,7 +44,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             if (string.IsNullOrWhiteSpace(Name))
             {
-                p_Writer.WriteLine("usage: build_shader_database <name> [all_solutions] [id]");
+                p_Writer.WriteLine("usage: build_shader_database <name> [all_solutions] [id] [always]");
                 return false;
             }
 
@@ -79,6 +82,11 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             }
 
             IEnumerable<string> Names(IEnumerable<uint> p_Keys) => p_Keys.Where(s_Index.Names.ContainsKey).Select(p_K => s_Index.Names[p_K]);
+
+            // Shaders the engine asks for by name (the emitter renderer's), which content that does not
+            // draw with them never brings: a converted level's effects are another engine's.
+            var s_Prefixes = (Always ?? "").Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries);
+            s_Defaults.UnionWith(s_Index.Names.Values.Where(p_N => s_Prefixes.Any(p_P => p_N.StartsWith(p_P, StringComparison.OrdinalIgnoreCase))));
             var s_DefaultNames = s_Defaults.Where(p_N => !s_Used.Contains(p_N) && !s_Generated.Contains(p_N)).ToHashSet();
 
             var s_Shaders = s_Used.Concat(s_DefaultNames).Concat(s_Generated).OrderBy(p_N => p_N, StringComparer.Ordinal).ToList();

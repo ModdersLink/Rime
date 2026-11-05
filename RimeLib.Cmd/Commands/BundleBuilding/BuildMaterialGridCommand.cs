@@ -20,14 +20,17 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
     [CommandDescription("Builds a material grid partition from the mounted game's grids, for the materials of the given grids or of all of them.")]
     public class BuildMaterialGridCommand : Command
     {
-        [CommandArgument(Description = "The grid partition to build, e.g. levels/mp_subway/mp_subway/materialgrid_win32/grid (BF3) or levels/mp/mp_siege/mp_siege/materialgrid_win32 (BF4).")]
+        [CommandArgument(Description = "The grid partition to build, cased as its asset is named, e.g. Levels/MP_Subway/MP_Subway/MaterialGrid_Win32/Grid (BF3) or levels/mp/mp_siege/mp_siege/materialgrid_win32 (BF4).")]
         public string? Partition { get; set; }
 
-        [CommandArgument(Description = "Whose materials the grid gets rows for: 'all', or comma-separated grid partition names.")]
+        [CommandArgument(Description = "Whose materials the grid gets rows for: 'all', or comma-separated grid partition names and 'converted', the materials converted bundles map theirs to.")]
         public string? Materials { get; set; }
 
         [CommandArgument(Description = "The id of the mounted game.", Optional = true)]
         public int Id { get; set; } = 1;
+
+        [CommandArgument(Description = "A level partition of this bundle to point at the grid, through its world's RuntimeMaterialGrid.", Optional = true)]
+        public string? Level { get; set; }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
@@ -81,6 +84,21 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 s_Materials = new HashSet<uint>();
                 foreach (var s_Source in Materials!.Split(',').Select(p_S => p_S.Trim().ToLowerInvariant()))
                 {
+                    if (s_Source == "converted")
+                    {
+                        if (s_SbContext.ConvertedMaterials is not { } s_Mapping)
+                        {
+                            p_Writer.WriteLine("No converted bundle has mapped materials.");
+                            return false;
+                        }
+
+                        s_Materials.Add(s_Mapping.DefaultMaterial);
+                        s_Materials.UnionWith(s_Mapping.Materials.Values);
+                        foreach (var (s_From, s_To) in s_Mapping.Materials.OrderBy(p_M => p_M.Key))
+                            p_Writer.WriteLine($"  material {s_From} -> {s_To} {s_Rules.GetMaterialName(s_To, Parse)}{(s_Mapping.Unnamed.Contains(s_From) ? " (unnamed, default)" : "")}");
+                        continue;
+                    }
+
                     if (Parse(s_Source) is not { } s_Grid)
                     {
                         p_Writer.WriteLine($"No grid named '{s_Source}'.");
@@ -99,6 +117,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 s_Target.PartitionGuid = new GUID(Guid.NewGuid());
             }
             s_Target.Name = s_Name;
+
+            // The game finds the grid by its asset's name, which a template's would leave the template's.
+            if (s_Target.PrimaryInstance.GetType().GetProperty("Name") is { } s_AssetName && s_AssetName.PropertyType == typeof(string))
+                s_AssetName.SetValue(s_Target.PrimaryInstance, Partition);
 
             var s_Unrelated = s_Rules.Merge(s_Target, s_Grids.Select(p_G => p_G.Grid!).ToList(), s_Materials);
             var s_Rows = s_Rules.GetMaterials(s_Target).Count;
@@ -136,7 +158,37 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 p_Writer.WriteLine($"The game's '{s_Name}': {s_Shipped.Count} relations and properties, {s_Same} the same in the built grid, {s_Built.Count - s_Built.Keys.Count(s_Shipped.ContainsKey)} only in the built one.");
             }
 
+            if (!string.IsNullOrWhiteSpace(Level) && !PointLevelAt(s_BundleContext, s_Converter, s_Generator, Level!.ToLowerInvariant(), s_Reread, p_Writer))
+                return false;
+
             p_Writer.WriteLine($"Built '{s_Name}' from {s_Grids.Count} grids: {s_Rows} materials, {s_Unrelated} material pairs no grid relates (given the default material's relation), {s_External.Count} partitions referenced, {s_Bytes.Length} bytes.");
+            return true;
+        }
+
+        /// <summary>Points the bundle's level partition's world at the grid, which the game creates the level's material grid from.</summary>
+        private static bool PointLevelAt(BundleBuildingContext p_Bundle, IPartitionConverter p_Converter, IPartitionGenerator p_Generator,
+            string p_Level, DatabasePartitionBase p_Grid, TextWriter p_Writer)
+        {
+            if (!BundlePartitionVariant.All(p_Bundle).TryGetValue(p_Level, out var s_Variant))
+            {
+                p_Writer.WriteLine($"The bundle has no partition '{p_Level}'.");
+                return false;
+            }
+
+            var s_Level = p_Converter.FromPartitionObject(p_Level, s_Variant);
+            if (s_Level.PrimaryInstance.GetType().GetProperty("RuntimeMaterialGrid")?.GetValue(s_Level.PrimaryInstance) is not CtrRefBase s_Ref)
+            {
+                p_Writer.WriteLine($"'{p_Level}' has no world whose RuntimeMaterialGrid could point at the grid.");
+                return false;
+            }
+
+            s_Ref.SetValue(p_Grid.PartitionGuid, p_Grid.PrimaryInstance.InstanceId);
+            var s_Stream = new MemoryStream();
+            using (var s_Writer = new RimeWriter(s_Stream))
+                p_Generator.Generate(s_Level, s_Writer);
+            p_Bundle.RemovePartition(p_Level);
+            p_Bundle.AddRawPartitionBytes(p_Level, s_Stream.ToArray());
+            p_Writer.WriteLine($"'{p_Level}' now creates its material grid from the built one.");
             return true;
         }
     }

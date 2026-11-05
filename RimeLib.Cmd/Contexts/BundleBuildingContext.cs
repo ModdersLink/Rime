@@ -179,6 +179,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<AddRawPartitionCommand>();
             RegisterCommand<RaiseWaterPhysicsCommand>();
             RegisterCommand<SetReferenceCommand>();
+            RegisterCommand<AddMinimapCommand>();
             RegisterCommand<ClonePartitionFreshCommand>();
             RegisterCommand<MeshVariationDbAddEntryCommand>();
             RegisterCommand<MeshVariationDbAddAllCommand>();
@@ -197,6 +198,7 @@ namespace RimeLib.Cmd.Contexts
                 EngineInterfaceRegistry.IsSupported<IPartitionGenerator>(s_EngineType))
             {
                 RegisterCommand<ReferenceConvertedPartitionCommand>();
+                RegisterCommand<AddConvertedShadersCommand>();
             }
 
             if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))
