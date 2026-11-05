@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.IO;
 using RimeLib.Frostbite;
 using RimeLib.IO;
 using RimeLib.Terrain.Resources;
@@ -55,6 +57,26 @@ namespace RimeLib.Terrain.Frostbite2013_2
             p_Writer.Write(p_Block.VertexBegin);
             p_Writer.Write(p_Block.VertexEnd);
             p_Writer.Write(p_Block.TangentSpaceEnable);
+        }
+
+        /// <summary>
+        /// A 2d or 3d block's vertices, which have Frostbite 2's layout; none for a block with tangent
+        /// space. The block's indices index these.
+        /// </summary>
+        public static List<DecalVertex>? BlockVertices(DecalGeometry p_Geometry, DecalBlock p_Block, DecalGeometryKind p_Kind)
+        {
+            if (p_Kind == DecalGeometryKind.Water || p_Block.TangentSpaceEnable || p_Geometry.VertexData == null)
+                return null;
+
+            var s_Size = VertexSize(p_Kind);
+            var s_PosCount = p_Kind == DecalGeometryKind.Decal2d ? 2 : 3;
+            var s_Vertices = new List<DecalVertex>((int)(p_Block.VertexEnd / s_Size));
+
+            using var s_Reader = new RimeReader(new MemoryStream(p_Geometry.VertexData, false));
+            s_Reader.Seek(p_Block.VertexBegin, SeekOrigin.Begin);
+            for (var i = 0; i < p_Block.VertexEnd / s_Size; ++i)
+                s_Vertices.Add(ReadVertex(s_Reader, s_PosCount));
+            return s_Vertices;
         }
     }
 }

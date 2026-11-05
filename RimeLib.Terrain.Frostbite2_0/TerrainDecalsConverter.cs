@@ -202,7 +202,7 @@ namespace RimeLib.Terrain.Frostbite2_0
                 p_Writer.Write(s_Index);
         }
 
-        private static DecalVertex ReadVertex(RimeReader p_Reader, int p_PosCount)
+        protected static DecalVertex ReadVertex(RimeReader p_Reader, int p_PosCount)
         {
             var s_Vertex = new DecalVertex { Position = new float[p_PosCount] };
             for (var i = 0; i < p_PosCount; ++i) s_Vertex.Position[i] = p_Reader.ReadSingle();
