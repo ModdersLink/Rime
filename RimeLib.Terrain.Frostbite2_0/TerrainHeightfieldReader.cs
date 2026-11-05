@@ -1,12 +1,12 @@
-﻿using RimeLib.Terrain.Frostbite.Destruction;
+﻿using RimeLib.Terrain.Frostbite2_0.Frostbite.Destruction;
 using System.Collections.Generic;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.IO;
-using RimeLib.Terrain.Frostbite;
-using RimeLib.Terrain.Frostbite.Heightfield;
-using RimeLib.Terrain.Frostbite.TerrainMask;
-using RimeLib.Terrain.Frostbite.TerrainMaterial;
+using RimeLib.Terrain.Frostbite2_0.Frostbite;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.Heightfield;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainMask;
+using RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainMaterial;
 using RimeLib.Terrain.Resources;
 
 namespace RimeLib.Terrain.Frostbite2_0;

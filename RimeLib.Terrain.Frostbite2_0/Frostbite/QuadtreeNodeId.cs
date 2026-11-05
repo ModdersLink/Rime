@@ -2,7 +2,7 @@
 using RimeLib.Frostbite;
 using RimeLib.IO;
 
-namespace RimeLib.Terrain.Frostbite;
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite;
 
 public class QuadtreeNodeId : IFbSerializable
 {

@@ -1,6 +1,8 @@
-﻿using System.Collections.Generic;
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
+using System.Collections.Generic;
 using System.IO;
-using RimeLib.Terrain.Frostbite;
+using RimeLib.Terrain.Frostbite2_0.Frostbite;
 using Newtonsoft.Json;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
@@ -8,7 +10,7 @@ using RimeLib.IO;
 using RimeLib;
 using RimeLib.Terrain.Resources;
 
-namespace RimeLib.Cmd.Commands.Game
+namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 {
     /// <summary>
     /// Writes a level's terrain heightfield quadtree as JSON: every node's bounds and the chunk that
@@ -19,6 +21,7 @@ namespace RimeLib.Cmd.Commands.Game
     /// and height range, that is everything needed to rebuild the terrain surface -- dump_chunk
     /// fetches the samples themselves.
     /// </summary>
+    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Dumps a terrain streaming tree's heightfield nodes (bounds + chunk ids) as JSON.")]
     public class DumpTerrainNodesCommand : Command
     {

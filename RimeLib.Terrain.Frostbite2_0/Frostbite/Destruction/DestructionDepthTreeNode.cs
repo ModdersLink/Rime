@@ -1,7 +1,7 @@
 ﻿using fb;
 using RimeLib.IO;
 
-namespace RimeLib.Terrain.Frostbite.Destruction;
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite.Destruction;
 
 public class DestructionDepthTreeNode : RasterTreeNode
 {

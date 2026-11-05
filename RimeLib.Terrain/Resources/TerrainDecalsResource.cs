@@ -22,13 +22,21 @@ namespace RimeLib.Terrain.Resources
     {
         public string SurfaceShaderName { get; set; } = "";
         public string ZOnlySurfaceShaderName { get; set; } = "";
+
+        /// <summary>Frostbite 2013.2: the shader that draws the decal into the mesh scattering mask, empty for none.</summary>
+        public string MeshScatteringMaskSurfaceShaderName { get; set; } = "";
+
         public uint StartIndex { get; set; }
         public uint PrimitiveCount { get; set; }
         public float[] BoundingBox { get; set; } = new float[6];  // minXYZ, maxXYZ (world space)
         public float[] BoundingBox2 { get; set; } = new float[6]; // bbox snapped to the 64m decal-cell grid
         public float DrawDistance { get; set; }
+        /// <summary>The block's vertex range; in Frostbite 2013.2 a byte offset and a byte size.</summary>
         public uint VertexBegin { get; set; }
         public uint VertexEnd { get; set; }
+
+        /// <summary>Frostbite 2013.2: whether the block's vertices carry a tangent space.</summary>
+        public bool TangentSpaceEnable { get; set; }
     }
 
     /// <summary>2d/3d render vertex. Positions are WORLD-space; userMasks are 4 raw 16-bit values (half-floats).</summary>
@@ -60,6 +68,13 @@ namespace RimeLib.Terrain.Resources
         public List<DecalBlock> Blocks { get; set; } = new();
         public List<DecalVertex>? Vertices { get; set; }
         public List<DecalWaterVertex>? WaterVertices { get; set; }
+
+        /// <summary>
+        /// The vertex buffer as bytes, for an engine whose blocks each have their own vertex layout
+        /// (Frostbite 2013.2, where a block's vertex layout depends on its tangent space flag).
+        /// Set instead of <see cref="Vertices"/> and <see cref="WaterVertices"/>.
+        /// </summary>
+        public byte[]? VertexData { get; set; }
         public List<uint> Indices { get; set; } = new();
     }
 

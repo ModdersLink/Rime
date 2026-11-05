@@ -1,6 +1,6 @@
 using System;
 
-namespace RimeLib.Terrain.Frostbite;
+namespace RimeLib.Terrain.Frostbite2_0.Frostbite;
 
 /// <summary>The bits of <see cref="RasterTreeNode.Flags"/>.</summary>
 [Flags]
