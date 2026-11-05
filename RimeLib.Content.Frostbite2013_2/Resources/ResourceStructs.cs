@@ -3,6 +3,7 @@ using System.IO;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
+using RimeLib.IO;
 
 namespace RimeLib.Content.Frostbite2013_2.Resources
 {
@@ -16,10 +17,17 @@ namespace RimeLib.Content.Frostbite2013_2.Resources
         public byte[] RoundTrip(ResourceType p_Type, byte[] p_Data, byte[]? p_Meta)
         {
             var s_Lua = new CompiledLuaResource();
-            s_Lua.Deserialize(p_Data);
-            if (!s_Lua.Serialize(out var s_Written))
-                throw new InvalidDataException("the compiled Lua writer refused");
-            return s_Written;
+            using (var s_Reader = new RimeReader(new MemoryStream(p_Data, false)))
+                s_Lua.Deserialize(s_Reader);
+
+            var s_Stream = new MemoryStream();
+            using (var s_Writer = new RimeWriter(s_Stream))
+            {
+                if (!s_Lua.Serialize(s_Writer))
+                    throw new InvalidDataException("the compiled Lua writer refused");
+            }
+
+            return s_Stream.ToArray();
         }
     }
 }
