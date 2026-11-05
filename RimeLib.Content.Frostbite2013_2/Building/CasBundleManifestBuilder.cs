@@ -8,7 +8,9 @@ using RimeLib.Content.Frostbite2013_2.Mounting;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
+using RimeLib.Frostbite.Codec;
 using RimeLib.Frostbite.Db;
+using RimeLib.IO;
 
 namespace RimeLib.Content.Frostbite2013_2.Building;
 
@@ -47,6 +49,15 @@ public class CasBundleManifestBuilder
         var s_Bytes = new MemoryStream();
         s_Reader.CopyTo(s_Bytes);
         return s_Bytes.ToArray();
+    }
+
+    /// <summary>The bytes in the codec blocks a compressed cas payload is stored in.</summary>
+    private static byte[] Encode(byte[] p_Raw)
+    {
+        var s_Stream = new MemoryStream();
+        using (var s_Writer = new CodecRimeWriter(s_Stream, CodecSettings.Zlib))
+            s_Writer.Write(p_Raw);
+        return s_Stream.ToArray();
     }
 
     public DbObject GetDbObject()
@@ -90,7 +101,7 @@ public class CasBundleManifestBuilder
         }
 
         var s_Raw = ReadAll(p_Object);
-        var s_Stored = CodecEncoder.Encode(s_Raw);
+        var s_Stored = Encode(s_Raw);
         Count(s_Stored);
         return new CasBundle.Ebx { Name = p_Name, Hash = Sha1.FromData(s_Stored), Size = s_Stored.Length, OriginalSize = s_Raw.Length, InlineData = s_Stored };
     }
@@ -118,7 +129,7 @@ public class CasBundleManifestBuilder
         }
 
         var s_Raw = ReadAll(p_Object);
-        var s_Stored = CodecEncoder.Encode(s_Raw);
+        var s_Stored = Encode(s_Raw);
         Count(s_Stored);
         return new CasBundle.Resource
         {
@@ -157,7 +168,7 @@ public class CasBundleManifestBuilder
 
         // A chunk says it is compressed only through the flag in its guid.
         var s_Raw = ReadAll(p_Object);
-        var s_Stored = p_Id.HasCompressionFlag() ? CodecEncoder.Encode(s_Raw) : s_Raw;
+        var s_Stored = p_Id.HasCompressionFlag() ? Encode(s_Raw) : s_Raw;
         Count(s_Stored);
         return new CasBundle.Chunk
         {
