@@ -1,30 +1,37 @@
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using fb;
+using System.Numerics;
+using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
-using RimeLib.Serialization.Frostbite2_0.Extensions;
 
 namespace RimeLib.Enlighten.Frostbite2013_2.Frostbite;
 
 /// <summary>
-/// A Frostbite 2013.2 EnlightenMaterial: the Frostbite 2 fields aligned to 48 bytes, with padding
-/// after the colour and after the emissive flag.
+/// A Frostbite 2013.2 EnlightenMaterial, 48 bytes: colour, four bytes of padding, guid, shader id,
+/// the emissive flag and seven bytes of padding.
 /// </summary>
-public class EnlightenMaterial : Frostbite2_0.EnlightenMaterial
+public class EnlightenMaterial : IFbSerializable
 {
     public const int Size = 48;
+
+    public Vector3 Color { get; set; }
+    public GUID Guid { get; set; } = GUID.Empty;
+    public ulong ShaderId { get; set; }
+    public bool Emissive { get; set; }
 
     public EnlightenMaterial()
     {
     }
 
-    public EnlightenMaterial(RimeReader p_Reader) : base(p_Reader)
+    public EnlightenMaterial(RimeReader p_Reader)
     {
+        Deserialize(p_Reader);
     }
 
-    public override bool Serialize(RimeWriter p_Writer)
+    public bool Serialize(RimeWriter p_Writer)
     {
-        p_Writer.Write(Color.ToVec());
+        p_Writer.Write(Color);
         p_Writer.Write(0u);
         Guid.Serialize(p_Writer);
         p_Writer.Write(ShaderId);
@@ -33,10 +40,18 @@ public class EnlightenMaterial : Frostbite2_0.EnlightenMaterial
         return true;
     }
 
-    public override void Deserialize(RimeReader p_Reader)
+    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
     {
-        Color = new Vec3();
-        Color.Set(p_Reader.ReadVector3());
+        var s_Stream = new MemoryStream();
+        using var s_Writer = new RimeWriter(s_Stream);
+        Serialize(s_Writer);
+        p_Data = s_Stream.ToArray();
+        return true;
+    }
+
+    public void Deserialize(RimeReader p_Reader)
+    {
+        Color = p_Reader.ReadVector3();
         var s_ColorPad = p_Reader.ReadUInt32();
         Guid = new GUID(p_Reader);
         ShaderId = p_Reader.ReadUInt64();
@@ -46,5 +61,11 @@ public class EnlightenMaterial : Frostbite2_0.EnlightenMaterial
             throw new InvalidDataException("a material with padding that is not zero");
 
         Emissive = s_Emissive != 0;
+    }
+
+    public void Deserialize(byte[] p_Data)
+    {
+        using var s_Reader = new RimeReader(new MemoryStream(p_Data));
+        Deserialize(s_Reader);
     }
 }

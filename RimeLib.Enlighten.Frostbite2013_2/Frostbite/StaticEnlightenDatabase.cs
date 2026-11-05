@@ -1,17 +1,20 @@
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using RimeLib.Enlighten.Frostbite2_0;
+using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
 namespace RimeLib.Enlighten.Frostbite2013_2.Frostbite;
 
 /// <summary>
-/// A Frostbite 2013.2 EnlightenStaticDatabase: the Frostbite 2 database as a relocatable image (atlas
-/// size and a RelocArray of the probes) with its one-entry relocation table. Reading takes whether
-/// it is enabled and the sizes from <see cref="Cookie"/>; writing sets them.
+/// A Frostbite 2013.2 EnlightenStaticDatabase: a relocatable image (atlas size and a RelocArray of
+/// Frostbite 2's <see cref="StaticEnlightenProbe"/>) with its one-entry relocation table. Reading
+/// takes whether it is enabled and the sizes from <see cref="Cookie"/>; writing sets them.
 /// </summary>
-public class StaticEnlightenDatabase : Frostbite2_0.StaticEnlightenDatabase
+public class StaticEnlightenDatabase : IFbSerializable
 {
     private const int c_HeaderSize = 0x20;
 
@@ -21,13 +24,21 @@ public class StaticEnlightenDatabase : Frostbite2_0.StaticEnlightenDatabase
     /// <summary>Where the probes pointer sits, after the atlas size and the array's count: the relocation table's one entry.</summary>
     private const uint c_ProbesPointer = 12;
 
+    public bool Enabled { get; set; }
+
+    /// <summary>The atlas the bake was made against.</summary>
+    public uint OutputAtlasWidth { get; set; }
+    public uint OutputAtlasHeight { get; set; }
+
+    public List<StaticEnlightenProbe> Probes { get; set; } = new();
+
     public EnlightenStaticDatabaseCookie Cookie { get; set; } = new();
 
     /// <summary>
     /// Reads the payload <see cref="Cookie"/> describes: for a disabled database a single marker
     /// word, else the image and its relocation table, whose one entry is the probes pointer.
     /// </summary>
-    public override void Deserialize(RimeReader p_Reader)
+    public void Deserialize(RimeReader p_Reader)
     {
         Enabled = Cookie.Enabled != 0;
         if (!Enabled)
@@ -51,7 +62,13 @@ public class StaticEnlightenDatabase : Frostbite2_0.StaticEnlightenDatabase
             throw new InvalidDataException("the relocation table is not the probes pointer alone");
     }
 
-    public override bool Serialize(RimeWriter p_Writer)
+    public void Deserialize(byte[] p_Data)
+    {
+        using var s_Reader = new RimeReader(new MemoryStream(p_Data));
+        Deserialize(s_Reader);
+    }
+
+    public bool Serialize(RimeWriter p_Writer)
     {
         Cookie.Enabled = Enabled ? 1u : 0u;
         if (!Enabled)
@@ -74,6 +91,15 @@ public class StaticEnlightenDatabase : Frostbite2_0.StaticEnlightenDatabase
         Cookie.DataSize = (uint)(p_Writer.Position - s_Start);
         Cookie.RelocSize = sizeof(uint);
         p_Writer.Write(c_ProbesPointer);
+        return true;
+    }
+
+    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+    {
+        var s_Stream = new MemoryStream();
+        using var s_Writer = new RimeWriter(s_Stream);
+        Serialize(s_Writer);
+        p_Data = s_Stream.ToArray();
         return true;
     }
 }
