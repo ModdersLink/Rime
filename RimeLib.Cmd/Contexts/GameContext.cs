@@ -57,6 +57,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListDuplicateChunksCommand>();
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<ListResourcesOfTypeCommand>();
+            RegisterCommand<DeriveMaterialsCommand>();
             RegisterCommand<DumpShaderDbCommand>();
             RegisterCommand<DumpShaderTexturesCommand>();
             RegisterCommand<WhereIsCommand>();
