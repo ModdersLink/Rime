@@ -1,4 +1,5 @@
-﻿using System;
+using RimeLib.Cmd;
+using System;
 using System.IO;
 using Newtonsoft.Json;
 using RimeLib.Cmd.Attributes;
@@ -8,7 +9,7 @@ using RimeLib.Enlighten.Frostbite2_0;
 using RimeLib.Frostbite;
 using RimeLib.IO;
 
-namespace RimeLib.Cmd.Commands.Game
+namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 {
     /// <summary>
     /// Writes an Enlighten resource as JSON: the global-illumination bake a level carries.
@@ -25,6 +26,7 @@ namespace RimeLib.Cmd.Commands.Game
     /// carry it unchanged. Measuring that here, with the original bytes still in hand, is what
     /// separates carrying it from approximating it.
     /// </summary>
+    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Dumps an Enlighten database, probe set or shader database as JSON.")]
     public class DumpEnlightenCommand : Command
     {

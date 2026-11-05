@@ -1,11 +1,14 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using System.IO;
 using System.Linq;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Frostbite2_0.Mounting;
 
-namespace RimeLib.Cmd.Commands.SbBuilding
+namespace RimeLib.Cmd.Frostbite2_0.Commands.SbBuilding
 {
+    [EngineCommand(typeof(SbBuildingContext), EngineType.Frostbite2_0)]
     [CommandDescription("Clones a mounted superbundle's toc-level chunk list into the one being built, as bare sha1 refs. A level superbundle override without them hangs while loading terrain.")]
     public class CloneSbChunksCommand : Command
     {

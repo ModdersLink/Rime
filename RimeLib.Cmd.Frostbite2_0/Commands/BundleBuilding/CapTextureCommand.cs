@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using System;
 using System.IO;
 using System.Linq;
@@ -7,8 +9,9 @@ using RimeLib.Content;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Frostbite2_0.Mounting;
 
-namespace RimeLib.Cmd.Commands.BundleBuilding
+namespace RimeLib.Cmd.Frostbite2_0.Commands.BundleBuilding
 {
+    [EngineCommand(typeof(BundleBuildingContext), EngineType.Frostbite2_0)]
     [CommandDescription("Mip-caps a catalog-backed texture: ships its retail header with Streaming set and MipmapBaseIndex raised to <mip>. Needs a matching tail-range chunk, and only suits art that never renders.")]
     internal class CapTextureCommand : Command
     {

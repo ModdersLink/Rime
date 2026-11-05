@@ -45,6 +45,7 @@ namespace RimeLib.Cmd
             var s_Entries = 0;
 
             var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(p_Mounter.GetEngineType());
+            var s_Rules = EngineInterfaceRegistry.Create<IMeshVariationRules>(p_Mounter.GetEngineType());
 
             // One database per bundle, always named `<bundlePath>/MeshVariationDb_<platform>`. Match
             // on the name, so only a few hundred partitions are parsed instead of the whole game.
@@ -57,37 +58,25 @@ namespace RimeLib.Cmd
                 {
                     var s_Variant = s_Mounted.Variants.FirstOrDefault(p_V => p_V.GetContainedBundle() != null)
                                     ?? s_Mounted.FirstVariant;
-
                     var s_Db = s_Converter.FromPartitionObject(s_Name, s_Variant);
                     s_Databases++;
 
-                    foreach (var s_Instance in s_Db.Instances)
+                    // Redirect entries alias the mesh's variation-0 set and bind nothing of their own.
+                    foreach (var (s_Mesh, _, s_Entry) in s_Rules.ReadEntries(s_Db))
                     {
-                        if (s_Instance is not fb.MeshVariationDatabaseEntry s_Entry)
+                        if (s_Mesh.IsNull())
                             continue;
-
-                        if (s_Entry.Mesh.IsNull())
-                            continue;
-
                         s_Entries++;
 
-                        // A redirect entry has no Materials and aliases the mesh's variation-0 set, so
-                        // it binds nothing of its own.
-                        foreach (var s_Material in s_Entry.Materials)
+                        foreach (var s_Texture in s_Rules.GetTextures(s_Entry))
                         {
-                            foreach (var s_Parameter in s_Material.TextureParameters)
+                            if (!m_Textures.TryGetValue(s_Mesh.PartitionGuid, out var s_Set))
                             {
-                                if (s_Parameter?.Value == null || s_Parameter.Value.IsNull())
-                                    continue;
-
-                                if (!m_Textures.TryGetValue(s_Entry.Mesh.PartitionGuid, out var s_Set))
-                                {
-                                    s_Set = new HashSet<GUID>();
-                                    m_Textures[s_Entry.Mesh.PartitionGuid] = s_Set;
-                                }
-
-                                s_Set.Add(s_Parameter.Value.PartitionGuid);
+                                s_Set = new HashSet<GUID>();
+                                m_Textures[s_Mesh.PartitionGuid] = s_Set;
                             }
+
+                            s_Set.Add(s_Texture.PartitionGuid);
                         }
                     }
                 }

@@ -1,11 +1,14 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using System.IO;
 using System.Linq;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Frostbite2_0.Mounting;
 
-namespace RimeLib.Cmd.Commands.Game
+namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 {
+    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Chains an external cas.cat onto the mounted base, so builds emit cas refs to its sha1s instead of embedding the bytes. Build time only.")]
     public class MountExternalCatCommand : Command
     {

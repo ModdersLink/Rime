@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Frostbite2_0.Mounting;
@@ -5,8 +7,9 @@ using RimeLib.Frostbite.Core;
 using System.IO;
 using System.Linq;
 
-namespace RimeLib.Cmd.Commands.BundleBuilding
+namespace RimeLib.Cmd.Frostbite2_0.Commands.BundleBuilding
 {
+    [EngineCommand(typeof(BundleBuildingContext), EngineType.Frostbite2_0)]
     [CommandDescription("Adds a catalog-backed chunk from an id and sha1 pair, with its range and chunkMeta given explicitly and no need to mount the bundle it came from. Replaces any chunk already under that id.")]
     internal class AddCasChunkCommand : Command
     {

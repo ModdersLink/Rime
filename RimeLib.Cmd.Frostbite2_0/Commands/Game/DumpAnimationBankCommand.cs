@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,7 +12,7 @@ using RimeLib.Content.Mounting;
 using RimeLib.IO;
 using RimeLib.Serialization;
 
-namespace RimeLib.Cmd.Commands.Game
+namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 {
     /// <summary>
     /// Loads an Ant animation package (an <c>AntPackageAsset</c> EBX partition plus the chunk it
@@ -30,6 +32,7 @@ namespace RimeLib.Cmd.Commands.Game
     /// fb::SkeletonAsset. That is what turns a channel from "DOF 37" into a named joint, and it
     /// rides along here because a full game mount is too expensive to pay for twice.
     /// </summary>
+    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Loads an Ant animation package (AntPackageAsset partition + its streamed chunk) and dumps the bank's objects as JSON.")]
     public class DumpAnimationBankCommand : Command
     {

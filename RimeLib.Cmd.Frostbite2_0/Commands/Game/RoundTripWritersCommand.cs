@@ -1,3 +1,4 @@
+using RimeLib.Cmd;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 using RimeLib.Shader;
 
-namespace RimeLib.Cmd.Commands.Game
+namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 {
     /// <summary>
     /// Reads a shipped structure, writes it back, and diffs the BYTES.
@@ -25,6 +26,7 @@ namespace RimeLib.Cmd.Commands.Game
     /// reader consumed them from -- not against a re-parse of our own output, which would only
     /// prove the writer agrees with itself.
     /// </summary>
+    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Round-trips the newly-written Serialize implementations against the mounted game and reports byte equality.")]
     public class RoundTripWritersCommand : Command
     {

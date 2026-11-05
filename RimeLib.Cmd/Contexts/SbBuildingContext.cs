@@ -4,8 +4,6 @@ using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using RimeLib.Cmd.Commands.SbBuilding;
 using RimeLib.Content.Building;
-using RimeLib.Content.Frostbite2_0.Frostbite.Chunks;
-using RimeLib.Content.Frostbite2_0.Mounting;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
@@ -63,17 +61,20 @@ namespace RimeLib.Cmd.Contexts
             private readonly string? m_AssetName;
             private readonly int? m_AssetHash;
             private readonly int? m_FirstMip;
+            private readonly EngineType m_Engine;
 
-            public ChunkFileReader(string p_Path, string? p_AssetName, int? p_FirstMip = null) :
+            public ChunkFileReader(EngineType p_Engine, string p_Path, string? p_AssetName, int? p_FirstMip = null) :
                 base(p_Path)
             {
+                m_Engine = p_Engine;
                 m_AssetName = p_AssetName;
                 m_FirstMip = p_FirstMip;
             }
 
-            public ChunkFileReader(string p_Path, int? p_AssetHash, int? p_FirstMip = null) :
+            public ChunkFileReader(EngineType p_Engine, string p_Path, int? p_AssetHash, int? p_FirstMip = null) :
                 base(p_Path)
             {
+                m_Engine = p_Engine;
                 m_AssetHash = p_AssetHash;
                 m_FirstMip = p_FirstMip;
             }
@@ -96,13 +97,7 @@ namespace RimeLib.Cmd.Contexts
                 if (m_FirstMip == null)
                     return false;
 
-                var s_Entry = new ChunkEntry.ChunkMetaEntry();
-
-                if (m_AssetHash.HasValue)
-                    s_Entry.AssetNameHash = m_AssetHash.Value;
-
-                s_Entry.Payload.FirstMip = m_FirstMip;
-                p_Meta = DbObjectConverter.ToDbObject(s_Entry);
+                p_Meta = EngineInterfaceRegistry.Create<IChunkMetaWriter>(m_Engine).Create(m_AssetHash, m_FirstMip);
                 return true;
             }
 
@@ -158,7 +153,6 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<RemoveChunkCommand>();
             RegisterCommand<ListChunksCommand>();
             RegisterCommand<BuildBundleCommand>();
-            RegisterCommand<CloneSbChunksCommand>();
             RegisterCommand<RemoveBundleCommand>();
             RegisterCommand<ListBundlesCommand>();
             RegisterCommand<BuildCommand>();
@@ -200,7 +194,7 @@ namespace RimeLib.Cmd.Contexts
 
         internal void AddChunk(GUID p_Guid, FileInfo p_File, string? p_AssetName)
         {
-            m_Builder.WithChunk(p_Guid, new ChunkFileReader(p_File.FullName, p_AssetName));
+            m_Builder.WithChunk(p_Guid, new ChunkFileReader(EngineType, p_File.FullName, p_AssetName));
         }
 
         internal void AddChunk(GUID p_Guid, IChunkObject p_ChunkObject)
@@ -251,9 +245,9 @@ namespace RimeLib.Cmd.Contexts
                 // sha1 ref whenever the player's own catalog already holds the identical stored frame.
                 foreach (var s_MounterEntry in s_BaseContext.GetMounters())
                 {
-                    if (s_MounterEntry.Value is EngineMounter s_Fb2Mounter)
+                    if (s_MounterEntry.Value is ICatalogProbe s_Probe && s_MounterEntry.Value.GetEngineType() == EngineType)
                     {
-                        m_Builder.WithCatalogProbe(s_Fb2Mounter.CatalogContainsEntry);
+                        m_Builder.WithCatalogProbe(s_Probe.CatalogContainsEntry);
                         break;
                     }
                 }

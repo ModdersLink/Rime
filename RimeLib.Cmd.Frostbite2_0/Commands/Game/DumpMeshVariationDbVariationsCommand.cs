@@ -1,3 +1,5 @@
+using RimeLib.Frostbite;
+using RimeLib.Cmd;
 using System.IO;
 using System.Linq;
 using fb;
@@ -6,8 +8,9 @@ using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Serialization;
 
-namespace RimeLib.Cmd.Commands.Game
+namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 {
+    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Dumps the MVDB entries for meshes matching a filter: mesh name, VariationAssetNameHash and material count. Hash 0 is the base appearance.")]
     public class DumpMeshVariationDbVariationsCommand : Command
     {
