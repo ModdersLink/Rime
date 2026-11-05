@@ -84,6 +84,7 @@ namespace RimeLib.Cmd.Contexts
             // RegisterCommand<DumpAnimTrackDataCommand>(); // class not in repo
             RegisterCommand<BuildCasCatalogCommand>();
             RegisterCommand<MountExternalCatCommand>();
+            RegisterCommand<RoundTripWritersCommand>();
             RegisterCommand<DumpEnlightenCommand>();
             RegisterCommand<DumpLevelEnlightenCommand>();
 
@@ -106,6 +107,7 @@ namespace RimeLib.Cmd.Contexts
                 RegisterCommand<PatchAnimationBankCommand>();
                 RegisterCommand<DumpAnimCodecClipsCommand>();
                 // RegisterCommand<DumpSoundWaveCommand>(); // class not in repo
+                RegisterCommand<DumpNameSourcesCommand>();
                 RegisterCommand<DumpIntFieldsCommand>();
             }
 

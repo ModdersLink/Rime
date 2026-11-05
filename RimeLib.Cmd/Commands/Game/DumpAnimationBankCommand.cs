@@ -15,12 +15,9 @@ namespace RimeLib.Cmd.Commands.Game
     /// animation types the numbers a keyframe exporter needs -- key count, channel counts, frame
     /// rate.
     ///
-    /// This is the reconnaissance step for animation export. Rime already has the whole Ant object
-    /// model (RimeLib.Animation.Frostbite2_0/ant, 258 generated types) and an AssetBank reader, but
-    /// nothing in the command layer ever called them, so it was unknown whether they run on shipped
-    /// BF3 data at all. The JSON reports <c>parsed</c> and <c>failed</c> counts rather than
-    /// throwing, because "how much of this game's animation can Rime actually read" is the
-    /// question, and an exception on object 40 of 4000 would otherwise hide the answer.
+    /// The JSON reports <c>parsed</c> and <c>failed</c> counts rather than throwing, because how
+    /// much of the game's animation can be read is the question, and an exception on object 40 of
+    /// 4000 would otherwise hide the answer.
     ///
     /// It also dumps the bank's STRUCTURE, not only its clips: the rig, its DOF-set layouts and the
     /// ant::SkeletonAsset joints, plus the EBX AntAnimationSetAsset rows that bind a set to an

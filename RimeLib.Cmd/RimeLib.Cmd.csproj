@@ -38,9 +38,4 @@
     </Reference>
   </ItemGroup>
 
-  <ItemGroup>
-    <!-- Engine projects contribute commands that use the contexts' internals. -->
-    <InternalsVisibleTo Include="RimeLib.Cmd.Frostbite2_0" />
-  </ItemGroup>
-
 </Project>
