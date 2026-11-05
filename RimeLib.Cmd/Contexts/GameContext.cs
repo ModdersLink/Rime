@@ -87,6 +87,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<CheckResourceCookiesCommand>();
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<RoundTripPartitionsCommand>();
+            RegisterCommand<CheckPartitionConversionCommand>();
             RegisterCommand<DumpPartitionByGuidCommand>();
             // RegisterCommand<DumpAnimTrackDataCommand>(); // class not in repo
 
