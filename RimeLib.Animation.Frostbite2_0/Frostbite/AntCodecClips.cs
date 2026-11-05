@@ -1,21 +1,18 @@
-using RimeLib.Frostbite;
-using RimeLib.Cmd;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
-using Rimelib.Animation.Frostbite2_0.Frostbite;
-using RimeLib.Cmd.Attributes;
-using RimeLib.Cmd.Contexts;
+using RimeLib.Animation;
+using RimeLib.Content.Mounting;
 
-namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
+namespace Rimelib.Animation.Frostbite2_0.Frostbite
 {
     /// <summary>
     /// Dumps every VBR and CURV clip the game ships, header fields and raw payload alike, so the
     /// two codecs that have no decoder can be reverse-engineered OFFLINE.
     ///
-    /// It sweeps the mounted partitions itself rather than taking one name, because a full BF3
+    /// It sweeps a list of partitions rather than taking one name, because a full BF3
     /// mount is expensive enough that the codec work cannot afford to pay for it once per bank --
     /// and because the interesting question ("what do 2,225 VBR clips have in common") is a
     /// corpus question, not a per-bank one.
@@ -25,33 +22,12 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
     /// VectorOffsetSize / FloatOffsetSize and a per-frame-block size table, and whether those
     /// account for <c>Data</c> exactly is a sum that can be checked without the game running.
     /// </summary>
-    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
-    [CommandDescription("Dumps every VBR and CURV clip in every mounted Ant bank as JSON, payload included.")]
-    public class DumpAnimCodecClipsCommand : Command
+    internal static class AntCodecClips
     {
-        [CommandArgument(Description = "Directory to write one <bank>.json per bank into")]
-        public DirectoryInfo? Destination { get; set; }
-
-        [CommandArgument(Description = "Partition name prefix. Default animations/antanimations/", Optional = true)]
-        public string Prefix { get; set; } = "animations/antanimations/";
-
-        public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
+        public static AnimationBankReport Dump(IEngineMounter p_Mounter, IReadOnlyList<string> p_Partitions, Action<string, object> p_Bank)
         {
-            if (Destination is null)
-            {
-                p_Writer.WriteLine("Usage: dump_anim_codec_clips <outdir> [prefix]");
-                return false;
-            }
-
-            Destination.Create();
-
-            var s_Context = (GameContext)p_Context;
-            var s_Mounter = s_Context.GetMounter();
-
-            var s_Names = s_Context.GetMountedPartitions()
-                .Where(x => x.StartsWith(Prefix, StringComparison.OrdinalIgnoreCase))
-                .OrderBy(x => x, StringComparer.Ordinal)
-                .ToList();
+            var s_Mounter = p_Mounter;
+            var s_Names = p_Partitions;
 
             var s_Banks = 0;
             var s_Vbr = 0;
@@ -65,7 +41,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
                 if (s_Data == null)
                     continue;
 
-                Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank s_Bank;
+                AssetBank s_Bank;
 
                 try
                 {
@@ -101,30 +77,28 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 
                 s_Banks += 1;
 
-                var s_File = Path.Combine(Destination.FullName,
-                                          s_Name.Replace('/', '_') + ".json");
-
-                File.WriteAllText(s_File, JsonConvert.SerializeObject(new
+                p_Bank(s_Name, new
                 {
                     partition = s_Name,
                     source = s_Source,
                     blobLength = s_Data.Length,
                     objectCount = s_Bank.Objects.Count,
                     clips = s_Clips,
-                }, Formatting.None));
+                });
             }
 
-            p_Writer.WriteLine($"dump_anim_codec_clips: {s_Banks} bank(s) with clips, {s_Vbr} VBR, "
-                               + $"{s_Curve} CURV, {s_Failed} bank(s) failed to parse, over "
-                               + $"{s_Names.Count} partition(s) -> {Destination.FullName}");
-
-            return s_Vbr + s_Curve > 0;
+            return new AnimationBankReport
+            {
+                Succeeded = s_Vbr + s_Curve > 0,
+                Message = $"{s_Banks} bank(s) with clips, {s_Vbr} VBR, {s_Curve} CURV, "
+                          + $"{s_Failed} bank(s) failed to parse, over {s_Names.Count} partition(s)",
+            };
         }
 
 
         private static Dictionary<string, object?> Common(
             ant.AnimationAsset p_Clip, int p_Index,
-            Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank p_Bank)
+            AssetBank p_Bank)
         {
             var s_Row = new Dictionary<string, object?>
             {
@@ -162,7 +136,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 
 
         private static object Vbr(ant.VbrAnimationAsset p_Clip, int p_Index,
-                                  Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank p_Bank)
+                                  AssetBank p_Bank)
         {
             var s_Row = Common(p_Clip, p_Index, p_Bank);
 
@@ -200,7 +174,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 
 
         private static object Curve(ant.CurveAnimationAsset p_Clip, int p_Index,
-                                    Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank p_Bank)
+                                    AssetBank p_Bank)
         {
             var s_Row = Common(p_Clip, p_Index, p_Bank);
 

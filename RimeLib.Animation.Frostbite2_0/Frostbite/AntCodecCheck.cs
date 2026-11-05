@@ -1,5 +1,3 @@
-using RimeLib.Frostbite;
-using RimeLib.Cmd;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -9,12 +7,11 @@ using RimeLib.Animation.EA.Compression.DCT;
 using RimeLib.Animation.Frostbite2_0.EA.Compression.Curve;
 using RimeLib.Animation.Frostbite2_0.EA.Compression.DCT;
 using RimeLib.Animation.Frostbite2_0.EA.Compression.Vbr;
-using Rimelib.Animation.Frostbite2_0.Frostbite;
-using RimeLib.Cmd.Attributes;
-using RimeLib.Cmd.Contexts;
+using RimeLib.Animation;
+using RimeLib.Content.Mounting;
 using RimeLib.IO;
 
-namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
+namespace Rimelib.Animation.Frostbite2_0.Frostbite
 {
     /// <summary>
     /// Re-encodes every clip in an Ant bank and compares the result against the bytes the game
@@ -36,52 +33,13 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
     /// It also round-trips the standalone <see cref="Header"/>/<see cref="DofTable"/> writers,
     /// which had no call site at all, against every clip's own bit-allocation table.
     /// </summary>
-    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
-    [CommandDescription("Re-encodes every clip in an Ant bank and reports how many re-encode to the shipped bytes.")]
-    public class CheckAnimationCodecCommand : Command
+    internal static class AntCodecCheck
     {
-        [CommandArgument(Description = "The AntPackageAsset partition, e.g. animations/antanimations/ak74, or * for every one the mount holds")]
-        public string? Name { get; set; }
-
-        [CommandArgument(Description = "The output .json report")]
-        public FileInfo? Destination { get; set; }
-
-        [CommandArgument(Description = "Also write an edits .json here that nudges one clip, ready for patch_animation_bank.", Optional = true)]
-        public FileInfo? EditProbe { get; set; }
-
-        public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
+        public static AnimationBankReport Check(IEngineMounter p_Mounter, IReadOnlyList<string> p_Partitions, bool p_Sweep, bool p_WithEditProbe)
         {
-            if (string.IsNullOrWhiteSpace(Name) || Destination is null)
-            {
-                p_Writer.WriteLine("Usage: check_animation_codec <antpackage-partition> <report.json>");
-                return false;
-            }
-
-            var s_Context = (GameContext)p_Context;
-            var s_Mounter = s_Context.GetMounter();
-
-            // One mount is expensive enough that "does this hold over the whole game" cannot be
-            // asked 322 times. `*` sweeps every AntPackageAsset partition the mount holds and
-            // aggregates into one report, which is how the per-codec totals below were measured.
-            var s_Names = new List<string>();
-
-            if (Name == "*")
-            {
-                foreach (var s_Partition in s_Context.GetMountedPartitions())
-                {
-                    if (s_Partition.StartsWith("animations/antanimations/",
-                                               StringComparison.OrdinalIgnoreCase))
-                    {
-                        s_Names.Add(s_Partition);
-                    }
-                }
-
-                s_Names.Sort(StringComparer.Ordinal);
-            }
-            else
-            {
-                s_Names.Add(Name!);
-            }
+            var s_Mounter = p_Mounter;
+            var s_Names = p_Partitions;
+            var s_Label = p_Sweep ? "*" : p_Partitions.Count > 0 ? p_Partitions[0] : "";
 
             var s_Rows = new List<object>();
             var s_Decompressor = new Decompressor();
@@ -91,7 +49,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
             var s_BankErrors = 0;
             var s_Source = "";
             byte[]? s_ProbeData = null;
-            Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank? s_ProbeBank = null;
+            AssetBank? s_ProbeBank = null;
             var s_ProbeName = "";
 
             var s_Dct = 0;
@@ -125,16 +83,13 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 
             if (s_Data == null)
             {
-                if (Name != "*")
-                {
-                    p_Writer.WriteLine(s_ReadError);
-                    return false;
-                }
+                if (!p_Sweep)
+                    return new AnimationBankReport { Message = s_ReadError ?? $"No bank for {s_Name}." };
 
                 continue;
             }
 
-            Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank s_Bank;
+            AssetBank s_Bank;
 
             try
             {
@@ -142,12 +97,8 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
             }
             catch (Exception s_Ex)
             {
-                if (Name != "*")
-                {
-                    p_Writer.WriteLine($"'{s_Name}' did not parse: {s_Ex.GetType().Name}: "
-                                       + s_Ex.Message);
-                    return false;
-                }
+                if (!p_Sweep)
+                    return new AnimationBankReport { Message = $"'{s_Name}' did not parse: {s_Ex.GetType().Name}: " + s_Ex.Message };
 
                 s_BankErrors += 1;
                 continue;
@@ -157,7 +108,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 
             // In sweep mode the probe should land on a bank that exercises the new
             // codecs; asked for ONE bank, the probe is for that bank whatever it holds.
-            if (s_ProbeBank == null && (Name != "*" || HasProbeableClip(s_Bank)))
+            if (s_ProbeBank == null && (!p_Sweep || HasProbeableClip(s_Bank)))
             {
                 s_ProbeBank = s_Bank;
                 s_ProbeData = s_Data;
@@ -173,7 +124,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
                 if (s_Object is ant.DctAnimationAsset s_Clip)
                 {
                     s_Dct += 1;
-                    Record(s_Rows, s_Name, Name == "*", CheckDct(s_Clip, s_Index, s_Bank, s_Data, s_Decompressor, s_Compressor,
+                    Record(s_Rows, s_Name, p_Sweep, CheckDct(s_Clip, s_Index, s_Bank, s_Data, s_Decompressor, s_Compressor,
                                         ref s_BitExact, ref s_LengthMismatch, ref s_HeaderOk,
                                         ref s_Patchable, ref s_MaxValueError,
                                         ref s_TotalBytes, ref s_IdenticalBytes));
@@ -183,7 +134,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
                 if (s_Object is ant.CurveAnimationAsset s_CurveClip)
                 {
                     s_Curve += 1;
-                    Record(s_Rows, s_Name, Name == "*", CheckCurve(s_CurveClip, s_Index, s_Bank, s_Data, ref s_CurveExact,
+                    Record(s_Rows, s_Name, p_Sweep, CheckCurve(s_CurveClip, s_Index, s_Bank, s_Data, ref s_CurveExact,
                                           ref s_CurvePatchable, ref s_CurveKeyTimes,
                                           ref s_TotalBytes, ref s_IdenticalBytes));
                     continue;
@@ -192,7 +143,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
                 if (s_Object is ant.VbrAnimationAsset s_VbrClip)
                 {
                     s_Vbr += 1;
-                    Record(s_Rows, s_Name, Name == "*", CheckVbr(s_VbrClip, s_Index, s_Bank, s_Data, ref s_VbrExact,
+                    Record(s_Rows, s_Name, p_Sweep, CheckVbr(s_VbrClip, s_Index, s_Bank, s_Data, ref s_VbrExact,
                                         ref s_VbrPatchable, ref s_VbrAccounted,
                                         ref s_VbrConstComponents, ref s_VbrAnimComponents,
                                         ref s_VbrUnitQuats, ref s_VbrQuats,
@@ -218,7 +169,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
                     if (s_Located)
                         s_RawPatchable += 1;
 
-                    Record(s_Rows, s_Name, Name == "*", new Dictionary<string, object?>
+                    Record(s_Rows, s_Name, p_Sweep, new Dictionary<string, object?>
                     {
                         { "index", s_Index },
                         { "type", s_Object.GetType().Name },
@@ -233,17 +184,15 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
             }
 
             if (s_Banks == 0)
-            {
-                p_Writer.WriteLine($"'{Name}' matched no Ant bank.");
-                return false;
-            }
+                return new AnimationBankReport { Message = $"'{s_Label}' matched no Ant bank." };
 
-            if (EditProbe != null && s_ProbeBank != null)
-                WriteProbe(s_ProbeBank, s_ProbeName, s_Decompressor, EditProbe, p_Writer);
+            object? s_EditProbe = null;
+            if (p_WithEditProbe && s_ProbeBank != null)
+                s_EditProbe = Probe(s_ProbeBank, s_ProbeName, s_Decompressor);
 
-            File.WriteAllText(Destination.FullName, JsonConvert.SerializeObject(new
+            var s_Report = new
             {
-                partition = Name,
+                partition = s_Label,
                 source = s_Source,
                 banks = s_Banks,
                 bankParseErrors = s_BankErrors,
@@ -272,9 +221,9 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
                 vbrConstantsApproximated = s_VbrApproximated,
                 vbrMaxConstValueError = s_VbrMaxConstError,
                 clips = s_Rows,
-            }, Formatting.Indented));
+            };
 
-            p_Writer.WriteLine($"{Name}: {s_BitExact}/{s_Dct} DCT clip(s) re-encode byte-identical "
+            var s_Message = ($"{s_Label}: {s_BitExact}/{s_Dct} DCT clip(s) re-encode byte-identical "
                                + $"({s_IdenticalBytes}/{s_TotalBytes} payload byte(s)), "
                                + $"{s_HeaderOk}/{s_Dct} header(s) round-trip, "
                                + $"max value error {s_MaxValueError:G6}, "
@@ -287,11 +236,17 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 
             // A pass has to mean CONTENT as well as agreement: a bank with no clips at all would
             // otherwise satisfy every equality below.
-            return s_Dct + s_Raw + s_Curve + s_Vbr > 0
-                   && s_BitExact == s_Dct && s_RawPatchable == s_Raw
-                   && s_CurveExact == s_Curve && s_CurvePatchable == s_Curve
-                   && s_VbrExact == s_Vbr && s_VbrPatchable == s_Vbr
-                   && s_VbrAccounted == s_Vbr;
+            return new AnimationBankReport
+            {
+                Report = s_Report,
+                EditProbe = s_EditProbe,
+                Message = s_Message,
+                Succeeded = s_Dct + s_Raw + s_Curve + s_Vbr > 0
+                            && s_BitExact == s_Dct && s_RawPatchable == s_Raw
+                            && s_CurveExact == s_Curve && s_CurvePatchable == s_Curve
+                            && s_VbrExact == s_Vbr && s_VbrPatchable == s_Vbr
+                            && s_VbrAccounted == s_Vbr,
+            };
         }
 
 
@@ -327,7 +282,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
         /// bank that exercises the CURV and VBR write paths rather than the first bank it meets.
         /// 62 of BF3's 322 banks qualify.</summary>
         private static bool HasProbeableClip(
-            Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank p_Bank)
+            AssetBank p_Bank)
         {
             var s_Dct = false;
             var s_Raw = false;
@@ -347,7 +302,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 
 
         /// <summary>
-        /// Writes an edit file that changes ONE value in one DCT clip and one value in one
+        /// An edit file that changes ONE value in one DCT clip and one value in one
         /// uncompressed clip, so patch_animation_bank can be run against real data in the same
         /// mount. A hand-written edit file would need every frame of every DOF typed out; deriving
         /// it from the decode is the only way the write path gets exercised on a shipped clip.
@@ -355,9 +310,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
         /// The nudge is deliberately large (+0.25 on one component) so that a patch which wrote
         /// nothing, or wrote to the wrong offset, cannot hide inside quantisation error.
         /// </summary>
-        private static void WriteProbe(Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank p_Bank,
-                                       string p_Partition, Decompressor p_Decompressor,
-                                       FileInfo p_Path, TextWriter p_Writer)
+        private static object Probe(AssetBank p_Bank, string p_Partition, Decompressor p_Decompressor)
         {
             var s_Clips = new List<object>();
 
@@ -502,11 +455,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
                 break;
             }
 
-            File.WriteAllText(p_Path.FullName, JsonConvert.SerializeObject(
-                new { partition = p_Partition, clips = s_Clips }, Formatting.None));
-
-            p_Writer.WriteLine($"probe: {s_Clips.Count} clip edit(s) in {p_Partition} -> "
-                               + p_Path.FullName);
+            return new { partition = p_Partition, clips = s_Clips };
         }
 
 
@@ -522,7 +471,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
         /// is what catches that.
         /// </summary>
         private static Dictionary<string, object?> CheckCurve(ant.CurveAnimationAsset p_Clip, int p_Index,
-                                         Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank p_Bank,
+                                         AssetBank p_Bank,
                                          byte[] p_Blob, ref int p_Exact, ref int p_Patchable,
                                          ref int p_KeyTimes, ref long p_TotalBytes,
                                          ref long p_IdenticalBytes)
@@ -664,7 +613,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
         /// wrong the bytes would still round-trip and the values would be nonsense.
         /// </summary>
         private static Dictionary<string, object?> CheckVbr(ant.VbrAnimationAsset p_Clip, int p_Index,
-                                       Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank p_Bank,
+                                       AssetBank p_Bank,
                                        byte[] p_Blob, ref int p_Exact, ref int p_Patchable,
                                        ref int p_Accounted, ref long p_ConstComponents,
                                        ref long p_AnimComponents, ref int p_UnitQuats,
@@ -784,7 +733,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 
 
         private static Dictionary<string, object?> CheckDct(ant.DctAnimationAsset p_Clip, int p_Index,
-                                       Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank p_Bank,
+                                       AssetBank p_Bank,
                                        byte[] p_Blob,
                                        Decompressor p_Decompressor, Compressor p_Compressor,
                                        ref int p_BitExact, ref int p_LengthMismatch,
@@ -979,8 +928,8 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
                 return new byte[0];
 
             var s_Stream = new MemoryStream();
-            var s_Endianness = p_BigEndian ? IO.Conversion.Endianness.BigEndian
-                                           : IO.Conversion.Endianness.LittleEndian;
+            var s_Endianness = p_BigEndian ? RimeLib.IO.Conversion.Endianness.BigEndian
+                                           : RimeLib.IO.Conversion.Endianness.LittleEndian;
 
             using (var s_Writer = new RimeWriter(s_Stream, s_Endianness, false))
             {
@@ -996,8 +945,8 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
         private static byte[] FloatBytes(float[] p_Values, bool p_BigEndian)
         {
             var s_Stream = new MemoryStream();
-            var s_Endianness = p_BigEndian ? IO.Conversion.Endianness.BigEndian
-                                           : IO.Conversion.Endianness.LittleEndian;
+            var s_Endianness = p_BigEndian ? RimeLib.IO.Conversion.Endianness.BigEndian
+                                           : RimeLib.IO.Conversion.Endianness.LittleEndian;
 
             using (var s_Writer = new RimeWriter(s_Stream, s_Endianness, false))
             {

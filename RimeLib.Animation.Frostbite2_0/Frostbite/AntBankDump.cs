@@ -1,18 +1,14 @@
-using RimeLib.Frostbite;
-using RimeLib.Cmd;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using RimeLib.Animation.EA.Types;
-using Rimelib.Animation.Frostbite2_0.Frostbite;
-using RimeLib.Cmd.Attributes;
-using RimeLib.Cmd.Contexts;
+using RimeLib.Animation;
 using RimeLib.Content.Mounting;
 using RimeLib.IO;
 using RimeLib.Serialization;
 
-namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
+namespace Rimelib.Animation.Frostbite2_0.Frostbite
 {
     /// <summary>
     /// Loads an Ant animation package (an <c>AntPackageAsset</c> EBX partition plus the chunk it
@@ -32,43 +28,22 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
     /// fb::SkeletonAsset. That is what turns a channel from "DOF 37" into a named joint, and it
     /// rides along here because a full game mount is too expensive to pay for twice.
     /// </summary>
-    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
-    [CommandDescription("Loads an Ant animation package (AntPackageAsset partition + its streamed chunk) and dumps the bank's objects as JSON.")]
-    public class DumpAnimationBankCommand : Command
+    internal static class AntBankDump
     {
-        [CommandArgument(Description = "The AntPackageAsset partition, e.g. animations/antanimations/xp1_l96")]
-        public string? Name { get; set; }
-
-        [CommandArgument(Description = "The output .json file")]
-        public FileInfo? Destination { get; set; }
-
-        [CommandArgument(Description = "How many decoded frames to include per clip, for eyeballing the values. Default 0.", Optional = true)]
-        public int Samples { get; set; } = 0;
-
-        public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
+        public static AnimationBankReport Dump(IEngineMounter p_Mounter, string p_Partition, int p_Samples)
         {
-            if (string.IsNullOrWhiteSpace(Name) || Destination is null)
-            {
-                p_Writer.WriteLine("Usage: dump_animation_bank <antpackage-partition> <destination.json>");
-                return false;
-            }
+            var s_Mounter = p_Mounter;
 
-            var s_Context = (GameContext)p_Context;
-            var s_Mounter = s_Context.GetMounter();
-
-            var s_Location = AntBankFile.Locate(s_Mounter, Name!);
+            var s_Location = AntBankFile.Locate(s_Mounter, p_Partition);
             if (s_Location.Data == null)
-            {
-                p_Writer.WriteLine(s_Location.Error);
-                return false;
-            }
+                return new AnimationBankReport { Message = s_Location.Error ?? $"No bank for {p_Partition}." };
 
             var s_Partition = s_Location.Partition!;
             var s_Guid = s_Location.StreamingGuid;
             var s_Data = s_Location.Data;
             var s_Source = s_Location.Source;
 
-            var s_Bank = new Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank();
+            var s_Bank = new AssetBank();
             string? s_LoadError = null;
 
             try
@@ -144,8 +119,8 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
                         s_Row["dofs"] = s_Frames.Length > 0 ? s_Frames[0].Length : 0;
                         s_Decoded += 1;
 
-                        if (Samples > 0)
-                            s_Row["sample"] = Sample(s_Frames, s_Dct.NumQuats, Samples);
+                        if (p_Samples > 0)
+                            s_Row["sample"] = Sample(s_Frames, s_Dct.NumQuats, p_Samples);
                     }
                     catch (Exception s_Ex)
                     {
@@ -173,7 +148,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
                     else
                         s_Failed += 1;
 
-                    if (Samples > 0 && s_Frame.Data.Count >= 4)
+                    if (p_Samples > 0 && s_Frame.Data.Count >= 4)
                         s_Row["sample"] = s_Frame.Data.GetRange(0, System.Math.Min(16, s_Frame.Data.Count));
                 }
                 else if (s_Object is ant.CurveAnimationAsset s_Curve)
@@ -192,9 +167,9 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
                 s_Rows.Add(s_Row);
             }
 
-            File.WriteAllText(Destination.FullName, JsonConvert.SerializeObject(new
+            var s_Report = new
             {
-                partition = Name,
+                partition = p_Partition,
                 chunk = s_Guid.ToString("D"),
                 source = s_Source,
                 chunkLength = s_Data.Length,
@@ -205,14 +180,17 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
                 byType = s_ByType,
                 animationSets = AnimationSets(s_Partition, s_Mounter),
                 objects = s_Rows,
-            }, Formatting.Indented));
+            };
 
-            p_Writer.WriteLine(s_LoadError == null
-                ? $"Loaded {s_Bank.Objects.Count} Ant objects from {Name}, {s_Decoded} clip(s) "
-                  + $"decoded, {s_Failed} failed."
-                : $"Loaded {s_Bank.Objects.Count} Ant objects from {Name}, then stopped: {s_LoadError}");
-
-            return s_LoadError == null;
+            return new AnimationBankReport
+            {
+                Report = s_Report,
+                Succeeded = s_LoadError == null,
+                Message = s_LoadError == null
+                    ? $"Loaded {s_Bank.Objects.Count} Ant objects from {p_Partition}, {s_Decoded} clip(s) "
+                      + $"decoded, {s_Failed} failed."
+                    : $"Loaded {s_Bank.Objects.Count} Ant objects from {p_Partition}, then stopped: {s_LoadError}",
+            };
         }
 
         private static object Sample(System.Numerics.Vector4[][] p_Frames, int p_Quats, int p_Count)

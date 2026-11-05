@@ -101,6 +101,10 @@ namespace RimeLib.Cmd.Contexts
                 RegisterCommand<DumpPartitionJsonByGuidCommand>();
                 RegisterCommand<DumpMountedPartitionsJsonCommand>();
                 // RegisterCommand<DumpSkeletonCommand>(); // class not in repo
+                RegisterCommand<DumpAnimationBankCommand>();
+                RegisterCommand<CheckAnimationCodecCommand>();
+                RegisterCommand<PatchAnimationBankCommand>();
+                RegisterCommand<DumpAnimCodecClipsCommand>();
                 // RegisterCommand<DumpSoundWaveCommand>(); // class not in repo
                 RegisterCommand<DumpIntFieldsCommand>();
             }
