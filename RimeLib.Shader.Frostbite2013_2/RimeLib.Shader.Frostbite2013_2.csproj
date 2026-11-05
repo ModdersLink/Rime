@@ -15,6 +15,7 @@
         <ProjectReference Include="..\RimeLib.Shader\RimeLib.Shader.csproj" />
         <ProjectReference Include="..\RimeLib.Shader.Frostbite2_0\RimeLib.Shader.Frostbite2_0.csproj" />
         <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
+        <ProjectReference Include="..\RimeLib.Serialization.Frostbite2013_2\RimeLib.Serialization.Frostbite2013_2.csproj" />
         <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
     </ItemGroup>
 
