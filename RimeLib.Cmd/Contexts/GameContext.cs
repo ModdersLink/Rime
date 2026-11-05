@@ -67,6 +67,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<FindPartitionsCommand>();
             RegisterCommand<RoundTripResourcesCommand>();
             RegisterCommand<RoundTripTerrainCommand>();
+            RegisterCommand<RoundTripHavokObjectsCommand>();
+            RegisterCommand<ConvertHavokPhysicsCommand>();
             RegisterCommand<DumpShaderBytecodeCommand>();
             RegisterCommand<RoundTripTextureCodecsCommand>();
             RegisterCommand<CheckTextureConversionCommand>();

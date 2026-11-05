@@ -20,8 +20,8 @@ public class HavokPhysicsData : IFbSerializable
     public List<HavokAabb> LocalAabbs { get; private set; } = [];
     public List<byte> MaterialIndices { get; private set; } = [];
     public List<uint> MaterialFlagsAndIndices { get; private set; } = [];
-    public HavokInstance HavokInstance32 { get; private set; } = new();
-    public HavokInstance HavokInstance64 { get; private set; } = new();
+    public HavokInstance HavokInstance32 { get; internal set; } = new();
+    public HavokInstance HavokInstance64 { get; internal set; } = new();
 
     /// <summary>
     /// Where each array sits in the file. These are stored rather than recomputed because they are
@@ -75,14 +75,14 @@ public class HavokPhysicsData : IFbSerializable
 
     public class HavokInstance : IFbSerializable
     {
-        public byte PointerSize { get; private set; } = 4;
-        public byte EndianType { get; private set; } = 1;
-        public hkPackfileHeader HkPackfile { get; private set; } = new();
-        public hkPackfileSectionHeader ClassNamesSection { get; private set; } = new();
-        public hkPackfileSectionHeader TypesSection { get; private set; } = new();
-        public hkPackfileSectionHeader DataSection { get; private set; } = new();
-        public List<hkDescriptor> Descriptors { get; private set; } = [];
-        public List<hkDescriptorInfo> DescriptorInfos { get; private set; } = [];
+        public byte PointerSize { get; internal set; } = 4;
+        public byte EndianType { get; internal set; } = 1;
+        public hkPackfileHeader HkPackfile { get; internal set; } = new();
+        public hkPackfileSectionHeader ClassNamesSection { get; internal set; } = new();
+        public hkPackfileSectionHeader TypesSection { get; internal set; } = new();
+        public hkPackfileSectionHeader DataSection { get; internal set; } = new();
+        public List<hkDescriptor> Descriptors { get; internal set; } = [];
+        public List<hkDescriptorInfo> DescriptorInfos { get; internal set; } = [];
         public LimitedRimeReader Reader { get; private set; }
         public Dictionary<long, long> ArrayOffsets { get; internal set; } = [];
         public Dictionary<long, long> ObjectOffsets { get; internal set; } = [];
@@ -529,7 +529,16 @@ public class HavokPhysicsData : IFbSerializable
     /// it is all of them, and the honest answer for hkpMoppCode or hkpCompressedMeshShape is that
     /// they are baked by the Havok SDK and are not modelled here.
     /// </param>
-    public List<hkpCollisionShape> GetShapes(ShapeReader p_Shapes, out Dictionary<string, int> p_Unread)
+    public List<hkpCollisionShape> GetShapes(ShapeReader p_Shapes, out Dictionary<string, int> p_Unread) =>
+        GetShapes(p_Shapes, null, out p_Unread);
+
+    /// <summary>
+    /// The leaves under one shape of the 32-bit packfile, by its offset in the data section, placed
+    /// as the shape places them: a breakable shape's physics, say, rather than the container's.
+    /// </summary>
+    public List<hkpCollisionShape> GetShapesUnder(ShapeReader p_Shapes, long p_Offset) => GetShapes(p_Shapes, p_Offset, out _);
+
+    private List<hkpCollisionShape> GetShapes(ShapeReader p_Shapes, long? p_Root, out Dictionary<string, int> p_Unread)
     {
         var s_Shapes = new List<hkpCollisionShape>();
         var s_Instance = HavokInstance32;
@@ -569,6 +578,9 @@ public class HavokPhysicsData : IFbSerializable
             return s_Children;
         }
 
+        // Which of the container's shapes the walk is under.
+        var s_Root = 0;
+
         void Note(string p_Name)
         {
             s_Unread[p_Name] = s_Unread.TryGetValue(p_Name, out var s_Count) ? s_Count + 1 : 1;
@@ -576,7 +588,7 @@ public class HavokPhysicsData : IFbSerializable
 
         // Depth is bounded because a list can hold a list -- 325 of BF3's do -- and a malformed
         // fixup could otherwise loop forever.
-        void Visit(long p_Offset, hkpPlacement p_Placement, long p_PlacedBy, int p_Depth)
+        void Visit(long p_Offset, WalkPlacement p_Placement, long p_PlacedBy, int p_Depth)
         {
             if (p_Depth > 32)
                 return;
@@ -620,7 +632,7 @@ public class HavokPhysicsData : IFbSerializable
                     }
 
                     Visit(s_Wrapper.Value.Child,
-                          p_Placement.Compose(hkpPlacement.FromTranslation(s_Wrapper.Value.Centre)),
+                          p_Placement.Then(hkpPlacement.FromTranslation(s_Wrapper.Value.Centre)),
                           p_Offset, p_Depth + 1);
 
                     return;
@@ -635,8 +647,15 @@ public class HavokPhysicsData : IFbSerializable
                         return;
                     }
 
-                    foreach (var (s_Placed, s_Child, s_At) in s_Instances)
-                        Visit(s_Child, p_Placement.Compose(s_Placed), s_At, p_Depth + 1);
+                    for (var i = 0; i < s_Instances.Count; ++i)
+                    {
+                        var (s_Placed, s_Child, s_At, s_UserData) = s_Instances[i];
+                        var s_Member = p_Placement.Instance == null
+                            ? p_Shapes.InstanceOf(i, p_Placement.Placement.Compose(s_Placed), s_UserData)
+                            : null;
+                        Visit(s_Child, s_Member != null ? new WalkPlacement(s_Member.Placement, s_Member, hkpPlacement.Identity) : p_Placement.Then(s_Placed),
+                              s_At, p_Depth + 1);
+                    }
 
                     return;
                 }
@@ -662,7 +681,7 @@ public class HavokPhysicsData : IFbSerializable
                         return;
                     }
 
-                    Visit(s_Wrapper.Value.Child, p_Placement.Compose(s_Wrapper.Value.Placement),
+                    Visit(s_Wrapper.Value.Child, p_Placement.Then(s_Wrapper.Value.Placement),
                           p_Offset, p_Depth + 1);
 
                     return;
@@ -714,11 +733,22 @@ public class HavokPhysicsData : IFbSerializable
                     return;
             }
 
-            s_Leaf.Centre = p_Placement.Translation;
-            s_Leaf.Placement = p_Placement;
+            s_Leaf.Centre = p_Placement.Placement.Translation;
+            s_Leaf.Placement = p_Placement.Placement;
+            s_Leaf.Instance = p_Placement.Instance;
+            s_Leaf.LocalPlacement = p_Placement.Local;
             s_Leaf.PlacementOffset = p_PlacedBy;
+            s_Leaf.Root = s_Root;
+            s_Instance.Reader.Seek(s_DataStart + p_Offset + p_Shapes.UserDataOffset, SeekOrigin.Begin);
+            s_Leaf.UserData = s_Instance.Reader.ReadUInt32();
 
             s_Shapes.Add(s_Leaf);
+        }
+
+        if (p_Root is { } s_Start)
+        {
+            Visit(s_Start, new WalkPlacement(hkpPlacement.Identity, null, hkpPlacement.Identity), s_Start, 0);
+            return s_Shapes;
         }
 
         // The roots are whatever HavokPhysicsContainer points at. Its shape slots start at +32 and
@@ -728,11 +758,22 @@ public class HavokPhysicsData : IFbSerializable
         foreach (var l_Object in s_ObjectStarts)
         {
             if (s_ClassOf.TryGetValue(l_Object, out var l_Name) && l_Name == "HavokPhysicsContainer")
+            {
                 foreach (var l_Root in ChildrenOf(l_Object))
-                    Visit(l_Root, hkpPlacement.Identity, l_Root, 0);
+                {
+                    Visit(l_Root, new WalkPlacement(hkpPlacement.Identity, null, hkpPlacement.Identity), l_Root, 0);
+                    ++s_Root;
+                }
+            }
         }
 
         return s_Shapes;
+    }
+
+    /// <summary>Where the shape walk places what it reaches: in the resource, and within the instance it is under.</summary>
+    private readonly record struct WalkPlacement(hkpPlacement Placement, hkpShapeInstance? Instance, hkpPlacement Local)
+    {
+        public WalkPlacement Then(hkpPlacement p_Next) => new(Placement.Compose(p_Next), Instance, Local.Compose(p_Next));
     }
 
     /// <summary>Class name per object offset, plus those offsets sorted.</summary>

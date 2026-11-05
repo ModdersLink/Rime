@@ -16,6 +16,7 @@ public class ShapeReader : Frostbite2_0.Frostbite.ShapeReader
 {
     protected override int PlanesOffset => 84;
     protected override int ConnectivityOffset => 96;
+    public override int UserDataOffset => 12;
 
     // Havok 2012: hkpConvexTransformShape holds an hkQsTransform (translation, rotation quaternion,
     // scale) at +32 and an extra scale at +80, in place of Havok 2010's hkTransform.
@@ -46,13 +47,14 @@ public class ShapeReader : Frostbite2_0.Frostbite.ShapeReader
     private const int c_CompoundInstancesOffset = 32;
     private const int c_CompoundInstanceSize = 64;
     private const int c_CompoundInstanceShapeOffset = 48;
+    private const int c_CompoundInstanceUserDataOffset = 60;
 
-    /// <summary>The instances of an hkpStaticCompoundShape: each one's placement and child shape.</summary>
-    public override List<(hkpPlacement Placement, long Child, long Instance)>? ReadStaticCompound(
+    /// <summary>The instances of an hkpStaticCompoundShape: each one's placement, child shape and user data.</summary>
+    public override List<(hkpPlacement Placement, long Child, long Instance, uint UserData)>? ReadStaticCompound(
         LimitedRimeReader p_Reader, long p_DataStart, long p_Offset,
         IReadOnlyDictionary<long, long> p_ArrayOffsets, IReadOnlyDictionary<long, long> p_ObjectOffsets)
     {
-        var s_Result = new List<(hkpPlacement, long, long)>();
+        var s_Result = new List<(hkpPlacement, long, long, uint)>();
         var s_Count = At(p_Reader, p_DataStart + p_Offset + c_CompoundInstancesOffset + 4).ReadUInt32();
         if (s_Count == 0 || !p_ArrayOffsets.TryGetValue(p_Offset + c_CompoundInstancesOffset, out var s_Instances))
             return s_Result;
@@ -61,11 +63,17 @@ public class ShapeReader : Frostbite2_0.Frostbite.ShapeReader
         {
             var s_Instance = s_Instances + i * c_CompoundInstanceSize;
             if (p_ObjectOffsets.TryGetValue(s_Instance + c_CompoundInstanceShapeOffset, out var s_Child))
-                s_Result.Add((ReadQsTransform(p_Reader, p_DataStart + s_Instance), s_Child, s_Instance));
+                s_Result.Add((ReadQsTransform(p_Reader, p_DataStart + s_Instance), s_Child, s_Instance,
+                    At(p_Reader, p_DataStart + s_Instance + c_CompoundInstanceUserDataOffset).ReadUInt32()));
         }
 
         return s_Result;
     }
+
+    /// <summary>A static model group's member keeps its part count in the top byte of its user data and its first part below.</summary>
+    public override hkpShapeInstance? InstanceOf(int p_Index, hkpPlacement p_Placement, uint p_UserData) => p_UserData >> 24 == 0
+        ? null
+        : new hkpShapeInstance { Index = p_Index, Placement = p_Placement, FirstPart = (int)(p_UserData & 0xFFFFFF), PartCount = (int)(p_UserData >> 24) };
 
     // hkpBvCompressedMeshShape: its hkpBvCompressedMeshShapeTree inline at +80, an
     // hkcdStaticMeshTree<CommonConfig<u32, u64, 11, 21>> over hkcdStaticMeshTreeBase.

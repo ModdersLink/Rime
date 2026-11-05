@@ -53,6 +53,9 @@ public class ShapeReader
     protected virtual int PlanesOffset => 80;
     protected virtual int ConnectivityOffset => 92;
 
+    /// <summary>Where hkpShape's user data sits: after the object header, and in Havok 2012 after the type bytes too.</summary>
+    public virtual int UserDataOffset => 8;
+
     // hkpStorageExtendedMeshShapeMeshSubpartStorage. Its hkArrays start at +8 with a 12-byte
     // stride (pointer, size, capacity), and the payloads sit inline after a 112-byte header.
     private const int c_SubpartVerticesSlot = 8;
@@ -293,9 +296,15 @@ public class ShapeReader
         => ReadTransform(p_Reader, p_DataStart, p_Offset, p_ObjectOffsets);
 
     /// <summary>The instances of an hkpStaticCompoundShape, which Havok 2010 does not have; null when not read.</summary>
-    public virtual List<(hkpPlacement Placement, long Child, long Instance)>? ReadStaticCompound(
+    public virtual List<(hkpPlacement Placement, long Child, long Instance, uint UserData)>? ReadStaticCompound(
         LimitedRimeReader p_Reader, long p_DataStart, long p_Offset,
         IReadOnlyDictionary<long, long> p_ArrayOffsets, IReadOnlyDictionary<long, long> p_ObjectOffsets) => null;
+
+    /// <summary>
+    /// The instance a static compound shape's instance is, when its user data numbers parts; none
+    /// otherwise. Havok 2010 has no static compound shapes.
+    /// </summary>
+    public virtual hkpShapeInstance? InstanceOf(int p_Index, hkpPlacement p_Placement, uint p_UserData) => null;
 
     /// <summary>An hkpBvCompressedMeshShape, which Havok 2010 does not have; null when not read.</summary>
     public virtual hkpCollisionShape? ReadBvCompressedMesh(LimitedRimeReader p_Reader, long p_DataStart, long p_Offset,
