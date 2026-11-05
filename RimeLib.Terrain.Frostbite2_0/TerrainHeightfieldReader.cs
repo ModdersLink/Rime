@@ -18,6 +18,23 @@ public class TerrainHeightfieldReader : ITerrainHeightfield
         return [EngineType.Frostbite2_0];
     }
 
+    public byte[]? DecodeSamples(TerrainMaterialSamples p_Node, int p_SamplesPerSide, out bool p_ReEncodes)
+    {
+        var s_BytesPerLine = TerrainRle.BytesPerLine(p_SamplesPerSide);
+        var s_Packed = TerrainRle.Decode(p_Node.Rle, p_Node.LineSizes, s_BytesPerLine);
+
+        p_ReEncodes = false;
+        if (s_Packed == null)
+            return null;
+
+        // The node's bytes may be followed by padding the tree does not hand back, so compare the
+        // prefix the encoder writes rather than the whole buffer.
+        var s_Coded = TerrainRle.Encode(s_Packed, s_BytesPerLine, p_Node.LineSizes.Length, out _);
+        p_ReEncodes = s_Coded.Length <= p_Node.Rle.Length && FirstDiff(s_Coded, p_Node.Rle) < 0;
+
+        return TerrainRle.UnpackRows(s_Packed, p_SamplesPerSide, p_Node.LineSizes.Length);
+    }
+
     /// <summary>Index of the first differing byte, or -1 when they match to the shorter length.</summary>
     private static int FirstDiff(byte[] p_A, byte[]? p_B)
     {

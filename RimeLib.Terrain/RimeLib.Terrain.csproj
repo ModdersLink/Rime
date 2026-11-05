@@ -9,8 +9,6 @@
 	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <Platforms>AnyCPU</Platforms>
     <Configurations>Release;Debug</Configurations>
-    <!-- The Frostbite 2 terrain trees are still read here, through Serialization.Frostbite2_0. -->
-    <AllowEngineReferences>true</AllowEngineReferences>
   </PropertyGroup>
 
   <ItemGroup>
