@@ -11,19 +11,17 @@ public class EnlightenShaderDatabase : Frostbite2_0.EnlightenShaderDatabase
 {
     public uint[] CookiePadding { get; set; } = new uint[2];
 
-    public static EnlightenShaderDatabase Read(byte[] p_Data, byte[] p_Meta)
+    /// <summary>Reads the database from its payload and its meta, each from the reader's position.</summary>
+    public void Deserialize(RimeReader p_Data, RimeReader p_Meta)
     {
-        using var s_Meta = new RimeReader(new MemoryStream(p_Meta, false));
-        var s_Size = s_Meta.ReadUInt32();
-        var s_Database = new EnlightenShaderDatabase { MaterialCount = s_Meta.ReadUInt32() };
-        if (s_Size != p_Data.Length || p_Data.Length != EnlightenMaterial.Size * s_Database.MaterialCount)
+        var s_Size = p_Meta.ReadUInt32();
+        MaterialCount = p_Meta.ReadUInt32();
+        var s_Remaining = p_Data.Length - p_Data.Position;
+        if (s_Size != s_Remaining || s_Remaining != (long)EnlightenMaterial.Size * MaterialCount)
             throw new InvalidDataException("the shader database size does not match its material count");
 
-        s_Database.CookiePadding = [s_Meta.ReadUInt32(), s_Meta.ReadUInt32()];
-
-        using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
-        s_Database.Deserialize(s_Reader);
-        return s_Database;
+        CookiePadding = [p_Meta.ReadUInt32(), p_Meta.ReadUInt32()];
+        Deserialize(p_Data);
     }
 
     /// <summary>Reads <see cref="Frostbite2_0.EnlightenShaderDatabase.MaterialCount"/> materials, the count the meta gave.</summary>
@@ -42,26 +40,16 @@ public class EnlightenShaderDatabase : Frostbite2_0.EnlightenShaderDatabase
         return true;
     }
 
-    /// <summary>The resource and its meta.</summary>
-    public (byte[] Data, byte[] Meta) Write()
+    /// <summary>Writes the payload and its meta.</summary>
+    public bool Serialize(RimeWriter p_Data, RimeWriter p_Meta)
     {
-        var s_Data = new MemoryStream();
-        var s_DataSize = 0u;
-        using (var s_Writer = new RimeWriter(s_Data))
-        {
-            Serialize(s_Writer);
-            s_DataSize = (uint)s_Writer.Position;
-        }
+        var s_Start = p_Data.Position;
+        Serialize(p_Data);
 
-        var s_Meta = new MemoryStream();
-        using (var s_Writer = new RimeWriter(s_Meta))
-        {
-            s_Writer.Write(s_DataSize);
-            s_Writer.Write(MaterialCount);
-            s_Writer.Write(CookiePadding[0]);
-            s_Writer.Write(CookiePadding[1]);
-        }
-
-        return (s_Data.ToArray(), s_Meta.ToArray());
+        p_Meta.Write((uint)(p_Data.Position - s_Start));
+        p_Meta.Write(MaterialCount);
+        p_Meta.Write(CookiePadding[0]);
+        p_Meta.Write(CookiePadding[1]);
+        return true;
     }
 }

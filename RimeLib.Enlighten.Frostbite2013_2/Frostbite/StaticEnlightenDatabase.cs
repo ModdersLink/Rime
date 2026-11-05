@@ -23,23 +23,22 @@ public class StaticEnlightenDatabase : Frostbite2_0.StaticEnlightenDatabase
     /// <summary>Where <see cref="Serialize"/> wrote the probes pointer, the relocation table's one entry.</summary>
     private long m_ProbesPointer;
 
-    public static StaticEnlightenDatabase Read(byte[] p_Data, byte[] p_Meta)
+    /// <summary>Reads the database from its payload and its meta, each from the reader's position.</summary>
+    public void Deserialize(RimeReader p_Data, RimeReader p_Meta)
     {
-        using var s_Meta = new RimeReader(new MemoryStream(p_Meta, false));
-        var s_Database = new StaticEnlightenDatabase { Enabled = s_Meta.ReadUInt32() != 0 };
-        s_Meta.Seek(12, SeekOrigin.Begin);
-        s_Database.CookiePad = s_Meta.ReadUInt32();
+        Enabled = p_Meta.ReadUInt32() != 0;
+        // The image and relocation table sizes, which writing works out.
+        p_Meta.Seek(8, SeekOrigin.Current);
+        CookiePad = p_Meta.ReadUInt32();
 
-        using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
-        if (!s_Database.Enabled)
+        if (!Enabled)
         {
-            if (p_Data.Length != 4 || s_Reader.ReadUInt32() != c_Disabled)
+            if (p_Data.Length - p_Data.Position != 4 || p_Data.ReadUInt32() != c_Disabled)
                 throw new InvalidDataException("a disabled static database with a payload");
-            return s_Database;
+            return;
         }
 
-        s_Database.Deserialize(s_Reader);
-        return s_Database;
+        Deserialize(p_Data);
     }
 
     public override void Deserialize(RimeReader p_Reader)
@@ -55,13 +54,14 @@ public class StaticEnlightenDatabase : Frostbite2_0.StaticEnlightenDatabase
 
     public override bool Serialize(RimeWriter p_Writer)
     {
+        var s_Start = p_Writer.Position;
         p_Writer.Write(OutputAtlasWidth);
         p_Writer.Write(OutputAtlasHeight);
 
         // The pointer follows the count in the slot.
-        m_ProbesPointer = p_Writer.Position + sizeof(uint);
+        m_ProbesPointer = p_Writer.Position - s_Start + sizeof(uint);
         new RelocArray<StaticEnlightenProbe> { Count = (uint)Probes.Count, BaseAddress = c_HeaderSize }.Serialize(p_Writer);
-        p_Writer.WriteNullBytes((uint)(c_HeaderSize - p_Writer.Position));
+        p_Writer.WriteNullBytes((uint)(c_HeaderSize - (p_Writer.Position - s_Start)));
 
         foreach (var s_Probe in Probes)
             s_Probe.Serialize(p_Writer);
@@ -69,34 +69,26 @@ public class StaticEnlightenDatabase : Frostbite2_0.StaticEnlightenDatabase
         return true;
     }
 
-    /// <summary>The resource and its meta.</summary>
-    public (byte[] Data, byte[] Meta) Write()
+    /// <summary>Writes the payload and its meta.</summary>
+    public bool Serialize(RimeWriter p_Data, RimeWriter p_Meta)
     {
-        var s_Data = new MemoryStream();
-        var s_DataSize = 0;
-        using (var s_Writer = new RimeWriter(s_Data))
+        var s_DataSize = 0u;
+        if (!Enabled)
         {
-            if (!Enabled)
-            {
-                s_Writer.Write(c_Disabled);
-            }
-            else
-            {
-                Serialize(s_Writer);
-                s_DataSize = (int)s_Writer.Position;
-                s_Writer.Write((uint)m_ProbesPointer);
-            }
+            p_Data.Write(c_Disabled);
+        }
+        else
+        {
+            var s_Start = p_Data.Position;
+            Serialize(p_Data);
+            s_DataSize = (uint)(p_Data.Position - s_Start);
+            p_Data.Write((uint)m_ProbesPointer);
         }
 
-        var s_Meta = new MemoryStream();
-        using (var s_Writer = new RimeWriter(s_Meta))
-        {
-            s_Writer.Write(Enabled ? 1u : 0u);
-            s_Writer.Write((uint)s_DataSize);
-            s_Writer.Write(Enabled ? 4u : 0u);
-            s_Writer.Write(CookiePad);
-        }
-
-        return (s_Data.ToArray(), s_Meta.ToArray());
+        p_Meta.Write(Enabled ? 1u : 0u);
+        p_Meta.Write(s_DataSize);
+        p_Meta.Write(Enabled ? 4u : 0u);
+        p_Meta.Write(CookiePad);
+        return true;
     }
 }
