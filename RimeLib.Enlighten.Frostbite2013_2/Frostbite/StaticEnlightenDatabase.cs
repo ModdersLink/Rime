@@ -1,22 +1,33 @@
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.Linq;
 using RimeLib.Enlighten.Frostbite2_0;
+using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.IO;
 
 namespace RimeLib.Enlighten.Frostbite2013_2.Frostbite;
 
 /// <summary>
-/// A Frostbite 2013.2 EnlightenStaticDatabase: the Frostbite 2 database as a relocatable image (atlas
-/// size and a RelocArray of the probes) with its one-entry relocation table. The meta is the
-/// cookie: enabled, image size, relocation table size and a last word stored as found.
+/// A Frostbite 2013.2 EnlightenStaticDatabase: a relocatable image (atlas size and a RelocArray of
+/// Frostbite 2's <see cref="StaticEnlightenProbe"/>) with its one-entry relocation table. The meta
+/// is the cookie: enabled, image size, relocation table size and a last word stored as found.
 /// </summary>
-public class StaticEnlightenDatabase : Frostbite2_0.StaticEnlightenDatabase
+public class StaticEnlightenDatabase : IFbSerializable
 {
     private const int c_HeaderSize = 0x20;
 
     /// <summary>The whole payload of a disabled database.</summary>
     private const uint c_Disabled = 0xDEADBEEF;
+
+    public bool Enabled { get; set; }
+
+    /// <summary>The atlas the bake was made against.</summary>
+    public uint OutputAtlasWidth { get; set; }
+    public uint OutputAtlasHeight { get; set; }
+
+    public List<StaticEnlightenProbe> Probes { get; set; } = new();
 
     public uint CookiePad { get; set; }
 
@@ -41,7 +52,7 @@ public class StaticEnlightenDatabase : Frostbite2_0.StaticEnlightenDatabase
         Deserialize(p_Data);
     }
 
-    public override void Deserialize(RimeReader p_Reader)
+    public void Deserialize(RimeReader p_Reader)
     {
         OutputAtlasWidth = p_Reader.ReadUInt32();
         OutputAtlasHeight = p_Reader.ReadUInt32();
@@ -52,7 +63,7 @@ public class StaticEnlightenDatabase : Frostbite2_0.StaticEnlightenDatabase
         Probes = s_Probes.Get.ToList();
     }
 
-    public override bool Serialize(RimeWriter p_Writer)
+    public bool Serialize(RimeWriter p_Writer)
     {
         var s_Start = p_Writer.Position;
         p_Writer.Write(OutputAtlasWidth);
@@ -66,6 +77,21 @@ public class StaticEnlightenDatabase : Frostbite2_0.StaticEnlightenDatabase
         foreach (var s_Probe in Probes)
             s_Probe.Serialize(p_Writer);
 
+        return true;
+    }
+
+    public void Deserialize(byte[] p_Data)
+    {
+        using var s_Reader = new RimeReader(new MemoryStream(p_Data));
+        Deserialize(s_Reader);
+    }
+
+    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+    {
+        var s_Stream = new MemoryStream();
+        using var s_Writer = new RimeWriter(s_Stream);
+        Serialize(s_Writer);
+        p_Data = s_Stream.ToArray();
         return true;
     }
 

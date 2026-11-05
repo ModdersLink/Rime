@@ -1,14 +1,22 @@
+using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using RimeLib.Frostbite;
 using RimeLib.IO;
 
 namespace RimeLib.Enlighten.Frostbite2013_2.Frostbite;
 
 /// <summary>
-/// A Frostbite 2013.2 EnlightenShaderDatabase: the Frostbite 2 database without its count, which
-/// moved to the meta (the cookie: data size, material count and two padding words stored as found).
+/// A Frostbite 2013.2 EnlightenShaderDatabase: its materials and nothing else, as the count is in
+/// the meta (the cookie: data size, material count and two padding words stored as found).
 /// </summary>
-public class EnlightenShaderDatabase : Frostbite2_0.EnlightenShaderDatabase
+public class EnlightenShaderDatabase : IFbSerializable
 {
+    /// <summary>The number of materials the payload holds, from the meta.</summary>
+    public uint MaterialCount { get; set; }
+
+    public List<EnlightenMaterial> Materials { get; set; } = new();
+
     public uint[] CookiePadding { get; set; } = new uint[2];
 
     /// <summary>Reads the database from its payload and its meta, each from the reader's position.</summary>
@@ -24,19 +32,34 @@ public class EnlightenShaderDatabase : Frostbite2_0.EnlightenShaderDatabase
         Deserialize(p_Data);
     }
 
-    /// <summary>Reads <see cref="Frostbite2_0.EnlightenShaderDatabase.MaterialCount"/> materials, the count the meta gave.</summary>
-    public override void Deserialize(RimeReader p_Reader)
+    /// <summary>Reads <see cref="MaterialCount"/> materials, the count the meta gave.</summary>
+    public void Deserialize(RimeReader p_Reader)
     {
         Materials.Clear();
         for (var i = 0; i < MaterialCount; ++i)
             Materials.Add(new EnlightenMaterial(p_Reader));
     }
 
-    public override bool Serialize(RimeWriter p_Writer)
+    public void Deserialize(byte[] p_Data)
+    {
+        using var s_Reader = new RimeReader(new MemoryStream(p_Data));
+        Deserialize(s_Reader);
+    }
+
+    public bool Serialize(RimeWriter p_Writer)
     {
         MaterialCount = (uint)Materials.Count;
         foreach (var s_Material in Materials)
             s_Material.Serialize(p_Writer);
+        return true;
+    }
+
+    public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+    {
+        var s_Stream = new MemoryStream();
+        using var s_Writer = new RimeWriter(s_Stream);
+        Serialize(s_Writer);
+        p_Data = s_Stream.ToArray();
         return true;
     }
 
