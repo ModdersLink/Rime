@@ -219,6 +219,15 @@ namespace RimeLib.Cmd.Contexts
             return m_Builder.GetChunks();
         }
 
+        /// <summary>A bundle already built into this superbundle, by name in any case.</summary>
+        internal BundleDescriptor? GetBuiltBundle(string p_Name)
+        {
+            foreach (var (s_Name, s_Bundle) in m_Builder.GetBundles())
+                if (string.Equals(s_Name, p_Name, StringComparison.OrdinalIgnoreCase))
+                    return s_Bundle;
+            return null;
+        }
+
         internal void AddBundle(BundleDescriptor p_BundleDescriptor)
         {
             m_Builder.WithBundle(p_BundleDescriptor);
