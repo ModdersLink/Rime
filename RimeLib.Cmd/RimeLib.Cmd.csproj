@@ -17,6 +17,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
+    <ProjectReference Include="..\RimeLib.Animation\RimeLib.Animation.csproj" />
+    <ProjectReference Include="..\RimeLib.Enlighten\RimeLib.Enlighten.csproj" />
 	<ProjectReference Include="..\RimeLib.Havok\RimeLib.Havok.csproj" />
 	<ProjectReference Include="..\RimeLib.Mesh\RimeLib.Mesh.csproj" />
     <ProjectReference Include="..\RimeLib.Serialization\RimeLib.Serialization.csproj" />
@@ -34,11 +36,6 @@
     <Reference Include="SharpGLTF.Toolkit">
       <HintPath>..\..\..\.nuget\packages\sharpgltf.toolkit\1.0.5\lib\net8.0\SharpGLTF.Toolkit.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <!-- Engine projects contribute commands that use the contexts' internals. -->
-    <InternalsVisibleTo Include="RimeLib.Cmd.Frostbite2_0" />
   </ItemGroup>
 
 </Project>

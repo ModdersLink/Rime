@@ -151,6 +151,7 @@ namespace RimeLib.Cmd.Contexts
 
             RegisterCommand<AddChunkCommand>();
             RegisterCommand<AddExistingChunkCommand>();
+            RegisterCommand<AddCasChunkCommand>();
             RegisterCommand<RemoveChunkCommand>();
             RegisterCommand<ListChunksCommand>();
             RegisterCommand<AddResourceCommand>();
@@ -169,7 +170,10 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<AddRawPartitionCommand>();
             RegisterCommand<RaiseWaterPhysicsCommand>();
             RegisterCommand<ClonePartitionFreshCommand>();
+            RegisterCommand<MeshVariationDbAddEntryCommand>();
+            RegisterCommand<MeshVariationDbAddAllCommand>();
             RegisterCommand<StripSbLevelChunksCommand>();
+            RegisterCommand<CapTextureCommand>();
 
             var s_EngineType = p_Parent.EngineType;
 
@@ -204,9 +208,12 @@ namespace RimeLib.Cmd.Contexts
             }
 
             RegisterCommand<ExportBundleContentsCommand>();
+            RegisterCommand<GenerateRegistryContainerCommand>();
             RegisterCommand<DeriveRegistryContainerCommand>();
             RegisterCommand<BuildMeshVariationDbCommand>();
             RegisterCommand<BuildMaterialGridCommand>();
+            RegisterCommand<CompareRegistryContainersCommand>();
+            RegisterCommand<EmitSubworldRegistryCommand>();
             RegisterCommand<KeepOnlyPartitionCommand>();
 
             RegisterEngineCommands(s_EngineType);
