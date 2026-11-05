@@ -75,8 +75,8 @@ public class RimePatchManifestReader : RimeReader
         if (PatchReader.Length < 4)
             throw new InvalidDataException("Manifest patch size cant be below 4. cant read manifest size!");
         
-        // TODO: this might need to be written out. 
-        var s_OrigManifestDataRemaining = BaseReader.ReadUInt32();
+        // A base bundle that has reached its end has no manifest left to patch.
+        var s_OrigManifestDataRemaining = BaseReader.Position + 4 <= BaseReader.Length ? BaseReader.ReadUInt32() : 0u;
         var s_BaseReaderStartPos = BaseReader.Position;
         
         //var s_PatchManifestDataBegin = PatchReader.Position;

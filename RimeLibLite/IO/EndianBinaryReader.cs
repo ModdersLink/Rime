@@ -94,8 +94,7 @@ namespace RimeLib.IO
 		/// <returns>The byte read</returns>
         public override int ReadByte()
 		{
-			ReadInternal(m_Buffer, 0, 1);
-			return m_Buffer[0];
+			return ReadFully(m_Buffer, 0, 1) == 1 ? m_Buffer[0] : -1;
 		}
 
 		/// <summary>
@@ -104,7 +103,7 @@ namespace RimeLib.IO
 		/// <returns>The byte read</returns>
         public byte ReadUByte()
 		{
-			ReadInternal(m_Buffer, 0, 1);
+			FillBuffer(1);
 			return m_Buffer[0];
 		}
 
@@ -114,7 +113,7 @@ namespace RimeLib.IO
 		/// <returns>The byte read</returns>
         public sbyte ReadSByte()
 		{
-			ReadInternal(m_Buffer, 0, 1);
+			FillBuffer(1);
 			return unchecked((sbyte) m_Buffer[0]);
 		}
 
@@ -124,7 +123,7 @@ namespace RimeLib.IO
 		/// <returns>The boolean read</returns>
         public bool ReadBool()
 		{
-			ReadInternal(m_Buffer, 0, 1);
+			FillBuffer(1);
 			return BitConverter.ToBoolean(m_Buffer, 0);
 		}
 
@@ -135,7 +134,7 @@ namespace RimeLib.IO
 		/// <returns>The 16-bit integer read</returns>
         public short ReadInt16()
 		{
-			ReadInternal(m_Buffer, 0, 2);
+			FillBuffer(2);
 			return BitConverter.ToInt16(m_Buffer, 0);
 		}
 
@@ -146,7 +145,7 @@ namespace RimeLib.IO
 		/// <returns>The 32-bit integer read</returns>
         public int ReadInt32()
 		{
-			ReadInternal(m_Buffer, 0, 4);
+			FillBuffer(4);
 			return BitConverter.ToInt32(m_Buffer, 0);
 		}
 
@@ -157,7 +156,7 @@ namespace RimeLib.IO
 		/// <returns>The 64-bit integer read</returns>
         public long ReadInt64()
 		{
-			ReadInternal(m_Buffer, 0, 8);
+			FillBuffer(8);
 			return BitConverter.ToInt64(m_Buffer, 0);
 		}
 
@@ -168,7 +167,7 @@ namespace RimeLib.IO
 		/// <returns>The 16-bit unsigned integer read</returns>
         public ushort ReadUInt16()
 		{
-			ReadInternal(m_Buffer, 0, 2);
+			FillBuffer(2);
 			return BitConverter.ToUInt16(m_Buffer, 0);
 		}
 
@@ -179,7 +178,7 @@ namespace RimeLib.IO
 		/// <returns>The 32-bit unsigned integer read</returns>
         public uint ReadUInt32()
 		{
-			ReadInternal(m_Buffer, 0, 4);
+			FillBuffer(4);
 			return BitConverter.ToUInt32(m_Buffer, 0);
 		}
 
@@ -190,7 +189,7 @@ namespace RimeLib.IO
 		/// <returns>The 64-bit unsigned integer read</returns>
         public ulong ReadUInt64()
 		{
-			ReadInternal(m_Buffer, 0, 8);
+			FillBuffer(8);
 			return BitConverter.ToUInt64(m_Buffer, 0);
 		}
 
@@ -201,7 +200,7 @@ namespace RimeLib.IO
 		/// <returns>The floating point value read</returns>
         public float ReadSingle()
 		{
-			ReadInternal(m_Buffer, 0, 4);
+			FillBuffer(4);
 			return BitConverter.ToSingle(m_Buffer, 0);
 		}
 
@@ -212,7 +211,7 @@ namespace RimeLib.IO
 		/// <returns>The floating point value read</returns>
         public double ReadDouble()
 		{
-			ReadInternal(m_Buffer, 0, 8);
+			FillBuffer(8);
 			return BitConverter.ToDouble(m_Buffer, 0);
 		}
 
@@ -223,7 +222,7 @@ namespace RimeLib.IO
 		/// <returns>The decimal value read</returns>
         public decimal ReadDecimal()
 		{
-			ReadInternal(m_Buffer, 0, 16);
+			FillBuffer(16);
 			return BitConverter.ToDecimal(m_Buffer, 0);
 		}
 
@@ -250,7 +249,7 @@ namespace RimeLib.IO
 			if (p_Count + p_Offset > p_Data.Length)
                 throw new ArgumentException("Not enough space in buffer for specified number of bytes starting at specified offset.");
 
-            return ReadInternal(p_Data, p_Offset, p_Count);
+            return ReadFully(p_Data, p_Offset, p_Count);
         }
 
 	    /// <summary>
@@ -268,7 +267,7 @@ namespace RimeLib.IO
                 throw new ArgumentOutOfRangeException(nameof(p_Count));
 
             var s_Buffer = new byte[p_Count];
-            var s_BytesRead = ReadInternal(s_Buffer, 0, p_Count);
+            var s_BytesRead = ReadFully(s_Buffer, 0, p_Count);
 
             // If we didn't read the required amount of bytes then throw an exception.
             if (s_BytesRead != p_Count)
@@ -361,6 +360,34 @@ namespace RimeLib.IO
         {
             CheckDisposed();
             return BaseStream.Read(p_Buffer, p_Offset, p_Count);
+        }
+
+        /// <summary>
+        /// Reads until <paramref name="p_Count"/> bytes are in or the stream ends: a stream may
+        /// return fewer bytes than asked for before its end.
+        /// </summary>
+        /// <returns>The number of bytes read, less than asked for only at the end of the stream.</returns>
+        private int ReadFully(byte[] p_Buffer, int p_Offset, int p_Count)
+        {
+            var s_Total = 0;
+            while (s_Total < p_Count)
+            {
+                var s_Read = ReadInternal(p_Buffer, p_Offset + s_Total, p_Count - s_Total);
+                if (s_Read <= 0)
+                    break;
+
+                s_Total += s_Read;
+            }
+
+            return s_Total;
+        }
+
+        /// <summary>Reads exactly <paramref name="p_Count"/> bytes into the value buffer.</summary>
+        private void FillBuffer(int p_Count)
+        {
+            var s_Read = ReadFully(m_Buffer, 0, p_Count);
+            if (s_Read != p_Count)
+                throw new EndOfStreamException($"End of stream reached with {p_Count - s_Read} of {p_Count} byte(s) left to read.");
         }
     }
 }
