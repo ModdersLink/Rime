@@ -73,6 +73,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpEbxLayoutCommand>();
             RegisterCommand<ListResourcesOfTypeJsonCommand>();
             RegisterCommand<DumpShaderSolutionsCommand>();
+            RegisterCommand<CheckMeshConversionCommand>();
             RegisterCommand<ListPartitionsCommand>();
             RegisterCommand<ListSbChunksCommand>();
             RegisterCommand<ListBundleChunksCommand>();

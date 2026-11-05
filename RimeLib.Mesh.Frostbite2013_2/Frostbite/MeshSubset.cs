@@ -32,7 +32,9 @@ public class MeshSubset : IFbSerializable
     public RelocPtrArray<ushort> BoneIndices { get; set; } = new();
     public GeometryDeclarationDesc GeometryDeclarationDesc { get; set; } = new();
     public Array<float> TexCoordRatios { get; set; } = new(); // float[6]
-    public byte[] Trailing { get; set; } = Array.Empty<byte>();
+
+    /// <summary>The <see cref="TrailingSize"/> bytes after the ratios, by default those most subsets end in.</summary>
+    public byte[] Trailing { get; set; } = Convert.FromHexString("000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFFFFFFFFFF00000000");
 
     public MeshSubset()
     {
