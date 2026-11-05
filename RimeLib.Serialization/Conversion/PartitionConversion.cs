@@ -180,7 +180,7 @@ public sealed class PartitionConversion
     }
 
     /// <summary>The references in an instance's or struct's fields, those of its structs and lists included.</summary>
-    private static IEnumerable<CtrRefBase> References(object p_Object) =>
+    public static IEnumerable<CtrRefBase> References(object p_Object) =>
         EbxFields(p_Object.GetType()).SelectMany(p_F => ReferencesIn(p_F.GetValue(p_Object)));
 
     private static IEnumerable<CtrRefBase> ReferencesIn(object? p_Value) => p_Value switch
