@@ -1,4 +1,5 @@
 ﻿using RimeLib.Content.Building;
+using RimeLib.Content.Frostbite2013_2.Frostbite.Bundles;
 using RimeLib.Content.Frostbite2013_2.Frostbite.Sb;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
@@ -122,7 +123,7 @@ namespace RimeLib.Content.Frostbite2013_2.Building
             // manifest by its offset, which depends on the varint sizes before it, so the whole
             // list is serialized first and each manifest is found by its bytes (unique, since they
             // carry its path).
-            var s_BundlesList = new DbObject();
+            var s_Bundles = new List<CasBundle>();
             var s_BundleData = new List<(string Id, byte[] Data)>();
             var s_References = 0;
             var s_Inline = 0;
@@ -130,25 +131,19 @@ namespace RimeLib.Content.Frostbite2013_2.Building
             foreach (var s_Pair in p_Descriptor.Bundles)
             {
                 var s_Builder = new CasBundleManifestBuilder(s_Pair.Value);
-                var s_Element = new DbObjectElement(s_Builder.GetDbObject(), false);
-                s_BundlesList.AddElement(s_Element);
+                var s_Bundle = s_Builder.GetBundle();
+                s_Bundles.Add(s_Bundle);
                 s_References += s_Builder.References;
                 s_Inline += s_Builder.Inline;
 
-                var s_Alone = new DbObject();
-                s_Alone.AddElement(s_Element);
-                s_BundleData.Add((s_Pair.Value.BundleName, s_Alone.Serialize()));
+                if (!DbObjectConverter.ToDbObjectBytes(s_Bundle, out var s_Data))
+                    throw new Exception($"Failed to serialize cas bundle '{s_Pair.Value.BundleName}'.");
+                s_BundleData.Add((s_Pair.Value.BundleName, s_Data));
             }
 
-            s_BundlesList.AddElement(new DbObjectElement());
-
-            var s_Root = new DbObject();
-            s_Root.AddElement(new DbObjectElement("bundles", s_BundlesList, true));
-            s_Root.AddElement(new DbObjectElement());
-
-            var s_Sb = new DbObject();
-            s_Sb.AddElement(new DbObjectElement(s_Root, false));
-            var s_AllBytes = s_Sb.Serialize();
+            var s_Superbundle = new CasSuperbundle { Bundles = s_Bundles.ToArray() };
+            if (!DbObjectConverter.ToDbObjectBytes(s_Superbundle, out var s_AllBytes))
+                throw new Exception("Failed to serialize the cas superbundle.");
 
             var s_SearchStart = 0;
             foreach (var (s_Id, s_Data) in s_BundleData)

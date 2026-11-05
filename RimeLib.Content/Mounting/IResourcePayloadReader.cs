@@ -44,7 +44,7 @@ namespace RimeLib.Content.Mounting
         /// </summary>
         public static string ReadCString(RimeReader p_Reader)
         {
-            var s_Bytes = new List<byte>(64);
+            var s_Bytes = new List<byte>();
 
             while (true)
             {
