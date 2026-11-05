@@ -52,6 +52,33 @@ namespace RimeLib.Shader.Frostbite2_0
             return shaderNames;
         }
 
+        public IReadOnlyDictionary<string, ISet<string>> GetTexturesByShader()
+        {
+            var s_Result = new Dictionary<string, ISet<string>>(StringComparer.OrdinalIgnoreCase);
+            if (ShaderDatabaseContainer == null)
+                return s_Result;
+
+            // A shader's streamable textures, and the textures its solutions' constants bind.
+            foreach (var s_Database in ShaderDatabaseContainer.Databases.Values)
+            foreach (var (s_Name, s_Shader) in s_Database.Shaders)
+            {
+                if (!s_Result.TryGetValue(s_Name, out var s_Textures))
+                    s_Result[s_Name] = s_Textures = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                foreach (var s_Texture in s_Shader.StreamableTextures)
+                    s_Textures.Add(s_Texture.Name);
+
+                foreach (var s_Solution in s_Shader.Solutions)
+                foreach (var s_Constants in new[] { s_Solution.VertexConstants, s_Solution.PixelConstants })
+                {
+                    foreach (var s_Texture in s_Constants?.Textures ?? Array.Empty<Frostbite.ShaderConstants.TextureConstant>())
+                        s_Textures.Add(s_Texture.Name);
+                }
+            }
+
+            return s_Result;
+        }
+
         public void Initialize(IResourceObject resource, IEngineMounter mounter)
         {
             if (resource == null)

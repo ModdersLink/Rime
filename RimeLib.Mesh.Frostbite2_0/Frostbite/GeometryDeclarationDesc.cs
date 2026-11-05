@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
+using System.Linq;
 using System.Runtime.InteropServices;
 using fb;
 using RimeLib.Extensions;
@@ -205,6 +206,10 @@ public class GeometryDeclarationDesc : IFbSerializable
 
     public List<Element> Elements { get; set; } = new();
     public List<Stream> Streams { get; set; } = new();
+
+    /// <summary>The slots after the used ones, as read; written back in place of empty ones.</summary>
+    public List<Element> UnusedElements { get; set; } = new();
+    public List<Stream> UnusedStreams { get; set; } = new();
     
     public uint Hash
     {
@@ -240,13 +245,13 @@ public class GeometryDeclarationDesc : IFbSerializable
                 return false;
 
         for (var i = Elements.Count; i < 16; ++i)
-            new Element().Serialize(p_Writer);
+            (UnusedElements.ElementAtOrDefault(i - Elements.Count) ?? new Element()).Serialize(p_Writer);
 
         foreach (var s_Stream in Streams)
             p_Writer.Write(s_Stream.Serialize());
 
         for (var i = Streams.Count; i < 4; ++i)
-            new Stream().Serialize(p_Writer);
+            (UnusedStreams.ElementAtOrDefault(i - Streams.Count) ?? new Stream()).Serialize(p_Writer);
 
         p_Writer.Write((byte) Elements.Count);
         p_Writer.Write((byte) Streams.Count);
@@ -257,8 +262,12 @@ public class GeometryDeclarationDesc : IFbSerializable
 
     public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
     {
-        p_Data = null;
-        throw new System.NotImplementedException();
+        var s_Stream = new MemoryStream();
+        using (var s_Writer = new RimeWriter(s_Stream))
+            Serialize(s_Writer);
+
+        p_Data = s_Stream.ToArray();
+        return true;
     }
 
     public void Deserialize(RimeReader p_Reader)
@@ -275,15 +284,19 @@ public class GeometryDeclarationDesc : IFbSerializable
         var s_ElementCount = p_Reader.ReadUByte();
         var s_StreamCount = p_Reader.ReadUByte();
         p_Reader.ReadBytes(2); // padding
-            
+
+        UnusedElements = Elements.GetRange(s_ElementCount, 16 - s_ElementCount);
+        UnusedStreams = Streams.GetRange(s_StreamCount, 4 - s_StreamCount);
         Elements.RemoveRange(s_ElementCount, 16 - s_ElementCount);
         Streams.RemoveRange(s_StreamCount, 4 - s_StreamCount);
     }
 
     public void Deserialize(byte[] p_Data)
     {
-        throw new System.NotImplementedException();
+        using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
+        Deserialize(s_Reader);
     }
+
     public Element? GetByUsage(VertexElementUsage usage)
     {
         for (int i = 0; i < Elements.Count; i++)

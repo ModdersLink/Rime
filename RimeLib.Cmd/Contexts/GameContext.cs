@@ -61,6 +61,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DeriveMaterialsCommand>();
             RegisterCommand<DumpShaderDbCommand>();
             RegisterCommand<DumpShaderTexturesCommand>();
+            RegisterCommand<RoundTripShaderDatabasesCommand>();
+            RegisterCommand<RebuildShaderDatabaseCommand>();
             RegisterCommand<WhereIsCommand>();
             RegisterCommand<RoundTripResourcesCommand>();
             RegisterCommand<RoundTripTerrainCommand>();
