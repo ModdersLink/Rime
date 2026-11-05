@@ -1,16 +1,12 @@
-using RimeLib.Frostbite;
-using RimeLib.Cmd;
 using System.IO;
 using System.Linq;
-using fb;
 using RimeLib;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Serialization;
 
-namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
+namespace RimeLib.Cmd.Commands.Game
 {
-    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Dumps the MVDB entries for meshes matching a filter: mesh name, VariationAssetNameHash and material count. Hash 0 is the base appearance.")]
     public class DumpMeshVariationDbVariationsCommand : Command
     {
@@ -31,6 +27,10 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
             }
 
             var s_Mounter = ((GameContext)p_Context).GetMounter();
+            var s_Rules = Require<IMeshVariationRules>(s_Mounter.GetEngineType(), p_Writer);
+            if (s_Rules == null)
+                return false;
+
             var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(s_Mounter.GetEngineType());
 
             if (!s_Mounter.TryGetPartition(Name!, out var s_SrcMounted))
@@ -45,15 +45,14 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
             var s_Needle = Mesh!.ToLowerInvariant();
             var s_Matched = 0;
 
-            foreach (var s_Instance in s_Db.Instances)
+            foreach (var (s_Mesh, s_Hash, s_Entry) in s_Rules.ReadEntries(s_Db))
             {
-                if (s_Instance is not MeshVariationDatabaseEntry s_Entry) continue;
-                if (!s_Mounter.TryGetPartitionByGuid(s_Entry.Mesh.PartitionGuid, out var s_MeshName, out _) || s_MeshName == null) continue;
+                if (!s_Mounter.TryGetPartitionByGuid(s_Mesh.PartitionGuid, out var s_MeshName, out _) || s_MeshName == null) continue;
                 if (!s_MeshName.ToLowerInvariant().Contains(s_Needle)) continue;
 
                 s_Matched++;
-                p_Writer.WriteLine($"MVDBVAR: mesh={s_MeshName} variationHash={s_Entry.VariationAssetNameHash} " +
-                                   $"(0x{s_Entry.VariationAssetNameHash:X8}) materials={s_Entry.Materials.Count}");
+                p_Writer.WriteLine($"MVDBVAR: mesh={s_MeshName} variationHash={s_Hash} " +
+                                   $"(0x{s_Hash:X8}) materials={s_Rules.GetMaterials(s_Entry).Count}");
             }
 
             p_Writer.WriteLine($"MVDBVAR-DONE: {Name} '{Mesh}' matched={s_Matched}");
