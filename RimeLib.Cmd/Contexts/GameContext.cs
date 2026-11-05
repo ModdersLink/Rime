@@ -80,6 +80,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<RoundTripPartitionsCommand>();
             RegisterCommand<DumpPartitionByGuidCommand>();
             // RegisterCommand<DumpAnimTrackDataCommand>(); // class not in repo
+            RegisterCommand<BuildCasCatalogCommand>();
+            RegisterCommand<MountExternalCatCommand>();
 
             var s_EngineType = m_Mounter.GetEngineType();
 

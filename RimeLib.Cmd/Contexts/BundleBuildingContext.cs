@@ -151,6 +151,7 @@ namespace RimeLib.Cmd.Contexts
 
             RegisterCommand<AddChunkCommand>();
             RegisterCommand<AddExistingChunkCommand>();
+            RegisterCommand<AddCasChunkCommand>();
             RegisterCommand<RemoveChunkCommand>();
             RegisterCommand<ListChunksCommand>();
             RegisterCommand<AddResourceCommand>();
@@ -170,6 +171,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<RaiseWaterPhysicsCommand>();
             RegisterCommand<ClonePartitionFreshCommand>();
             RegisterCommand<StripSbLevelChunksCommand>();
+            RegisterCommand<CapTextureCommand>();
 
             var s_EngineType = p_Parent.EngineType;
 

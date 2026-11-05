@@ -1,5 +1,3 @@
-using RimeLib.Frostbite;
-using RimeLib.Cmd;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,13 +6,12 @@ using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content;
 using RimeLib.Content.Frostbite;
-using RimeLib.Content.Frostbite2_0.Mounting;
+using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using RimeLib.Texture;
 
-namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
+namespace RimeLib.Cmd.Commands.Game
 {
-    [EngineCommand(typeof(GameContext), EngineType.Frostbite2_0)]
     [CommandDescription("Builds a cas.cat and its cas files from the stored frames of the named objects that no mounted catalog already holds, so a mod can cas-ref them instead of shipping the bytes.")]
     public class BuildCasCatalogCommand : Command
     {
@@ -33,12 +30,10 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             var s_GameContext = (GameContext)p_Context;
-            var s_Mounter = s_GameContext.GetMounter() as EngineMounter;
-            if (s_Mounter == null)
-            {
-                p_Writer.WriteLine("build_cas_catalog: no Frostbite2_0 mounter.");
+            var s_Mounter = s_GameContext.GetMounter();
+            var s_Catalog = Require<ICasCatalogWriter>(s_Mounter.GetEngineType(), p_Writer);
+            if (s_Catalog == null)
                 return false;
-            }
 
             var s_Lines = File.ReadAllLines(NameList!.FullName)
                 .Select(p_L => p_L.Trim())
@@ -81,7 +76,7 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.Game
 
             s_ChunkGuids.AddRange(s_ExplicitChunks);
 
-            p_Writer.WriteLine(s_Mounter.BuildCasCatalog(s_Names, OutDir!.FullName, (uint)StartIndex, s_ChunkGuids));
+            p_Writer.WriteLine(s_Catalog.BuildCatalog(s_Mounter, s_Names, OutDir!.FullName, (uint)StartIndex, s_ChunkGuids));
             return true;
         }
     }
