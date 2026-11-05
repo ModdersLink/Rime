@@ -11,6 +11,7 @@ using RimeLib.Terrain.Frostbite2_0.Frostbite;
 using RimeLib.Terrain.Frostbite2_0.Frostbite.Heightfield;
 using RimeLib.Terrain.Frostbite2013_2.Frostbite;
 using RimeLib.Terrain.Resources;
+using HeightfieldTreeNode = RimeLib.Terrain.Frostbite2_0.Frostbite.Heightfield.HeightfieldTreeNode;
 using Frostbite2ColorTree = RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainColor.TerrainColorTree;
 using TerrainDecalsBuilder = RimeLib.Terrain.Frostbite2_0.TerrainDecalsBuilder;
 using Frostbite2Heightfield = RimeLib.Terrain.Frostbite2_0.HeightfieldTree;

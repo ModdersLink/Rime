@@ -8,7 +8,8 @@ using RimeLib.IO;
 namespace RimeLib.Enlighten.Frostbite2_0;
 
 /// <summary>
-/// One baked probe: four Vec4, sixty-four bytes.
+/// One baked probe: four Vec4, sixty-four bytes. Frostbite 2013.2's static database holds the same
+/// probes.
 ///
 /// Each is shaped like a first-order spherical harmonic -- three signed directional terms and a
 /// fourth that is never negative. MEASURED over MP_001's probes: components 0-2 of each vector run

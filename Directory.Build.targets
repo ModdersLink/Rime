@@ -1,0 +1,24 @@
+<Project>
+
+  <!--
+    A base project (RimeLib.X) holds interfaces, engine-neutral models and the algorithms over them,
+    and reaches engine code only through EngineInterfaceRegistry. Engine projects (RimeLib.X.FrostbiteN)
+    hold the layouts and the implementations. So a RimeLib project whose name has no "Frostbite" in it
+    must not reference one that has. Test projects and applications may. A project's references
+    are copied at evaluation, so only its own count, not the transitive ones.
+  -->
+  <ItemGroup>
+    <_DirectProjectReference Include="@(ProjectReference)" />
+  </ItemGroup>
+
+  <Target Name="CheckNoEngineReferences"
+          BeforeTargets="ResolveProjectReferences"
+          Condition="$(MSBuildProjectName.StartsWith('RimeLib')) and !$(MSBuildProjectName.Contains('Frostbite')) and !$(MSBuildProjectName.EndsWith('.Tests')) and '$(AllowEngineReferences)' != 'true'">
+    <ItemGroup>
+      <_EngineReference Include="@(_DirectProjectReference)" Condition="$([System.String]::Copy('%(Filename)').Contains('Frostbite'))" />
+    </ItemGroup>
+    <Error Condition="'@(_EngineReference)' != ''"
+           Text="$(MSBuildProjectName) is a base project and must not reference the engine project(s) @(_EngineReference->'%(Filename)', ', '). Put the engine's code behind an interface declared here and implemented in the engine project." />
+  </Target>
+
+</Project>

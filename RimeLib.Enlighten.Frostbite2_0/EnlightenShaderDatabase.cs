@@ -28,7 +28,7 @@ public class EnlightenShaderDatabase : IFbSerializable
     /// a material would otherwise write a header that disagrees with the body, and the reader
     /// following it walks off the end.
     /// </summary>
-    public virtual bool Serialize(RimeWriter p_Writer)
+    public bool Serialize(RimeWriter p_Writer)
     {
         MaterialCount = (uint) Materials.Count;
         p_Writer.Write(MaterialCount);
@@ -55,7 +55,7 @@ public class EnlightenShaderDatabase : IFbSerializable
         return false;
     }
 
-    public virtual void Deserialize(RimeReader p_Reader)
+    public void Deserialize(RimeReader p_Reader)
     {
         MaterialCount = p_Reader.ReadUInt32();
         Materials = new List<EnlightenMaterial>((int) MaterialCount);
