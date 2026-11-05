@@ -42,6 +42,35 @@ public class ShaderDatabaseBuilder : IShaderDatabaseBuilder
 
     public uint GetShaderKey(string p_Name) => RimeLib.Frostbite.Utils.HashQuickLowerCase(p_Name);
 
+    public ShaderDeclarations GetDeclarations(byte[] p_Data)
+    {
+        var s_ByShader = new Dictionary<uint, HashSet<uint>>();
+        var s_Declarations = new Dictionary<uint, byte[]>();
+        var s_Mismatches = 0;
+        foreach (var s_Database in Read(p_Data).Databases.Values)
+        {
+            foreach (var s_Shader in s_Database.ShaderInfos)
+            {
+                if (!s_ByShader.TryGetValue(s_Shader.Key, out var s_Hashes))
+                    s_ByShader[s_Shader.Key] = s_Hashes = new HashSet<uint>();
+                foreach (var s_Solution in s_Shader.Solutions)
+                {
+                    s_Hashes.Add(s_Solution.State.GeometryDeclarationHash);
+                    if (s_Solution.State.Hash != s_Solution.StateHash)
+                        ++s_Mismatches;
+                }
+            }
+
+            foreach (var s_Declaration in s_Database.Declarations)
+            {
+                if (s_Declaration.Desc.Serialize(out var s_Bytes))
+                    s_Declarations.TryAdd(s_Declaration.Hash, s_Bytes);
+            }
+        }
+
+        return new ShaderDeclarations(s_ByShader.ToDictionary(p_P => p_P.Key, p_P => (IReadOnlySet<uint>)p_P.Value), s_Declarations, s_Mismatches);
+    }
+
     public byte[] Build(IEnumerable<Func<byte[]>> p_Sources, IReadOnlyCollection<string> p_Shaders, bool p_AllSolutions,
         TextWriter p_Log, out List<string> p_Missing)
     {
