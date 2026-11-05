@@ -9,13 +9,18 @@ namespace RimeLib.Mesh.Sets;
 /// <summary>A subset's vertex layout: its elements, all in one per-vertex stream, and the stride. Equal by content.</summary>
 public sealed record VertexLayout(IReadOnlyList<VertexElement> Elements, byte Stride)
 {
-    public static VertexLayout Of(MeshSubsetModel p_Subset)
-    {
-        if (p_Subset.Streams.Count != 1 || p_Subset.Streams[0].Classification != VertexClassification.PerVertex
-            || p_Subset.Elements.Any(p_E => p_E.StreamIndex != 0))
-            throw new NotSupportedException($"a subset of {p_Subset.Streams.Count} vertex streams");
-        return new VertexLayout(p_Subset.Elements, p_Subset.VertexStride);
-    }
+    public static VertexLayout Of(MeshSubsetModel p_Subset) =>
+        OneStream(p_Subset) ?? throw new NotSupportedException($"a subset of {p_Subset.Streams.Count} vertex streams");
+
+    /// <summary>The subset's layout; none where its vertices are not in one per-vertex stream.</summary>
+    public static VertexLayout? OneStream(MeshSubsetModel p_Subset) =>
+        OneStream(p_Subset.Elements, p_Subset.Streams) is { } s_Layout ? s_Layout with { Stride = p_Subset.VertexStride } : null;
+
+    /// <summary>The layout of a declaration; none where it has other than one per-vertex stream.</summary>
+    public static VertexLayout? OneStream(IReadOnlyList<VertexElement> p_Elements, IReadOnlyList<VertexStream> p_Streams) =>
+        p_Streams.Count == 1 && p_Streams[0].Classification == VertexClassification.PerVertex && p_Elements.All(p_E => p_E.StreamIndex == 0)
+            ? new VertexLayout(p_Elements, p_Streams[0].Stride)
+            : null;
 
     public bool Equals(VertexLayout? p_Other) => p_Other != null && Stride == p_Other.Stride && Elements.SequenceEqual(p_Other.Elements);
 

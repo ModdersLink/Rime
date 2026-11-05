@@ -5,6 +5,7 @@ using System.Linq;
 using fb;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
+using RimeLib.IO;
 using RimeLib.Mesh.Frostbite2_0.Frostbite;
 using RimeLib.Mesh.Sets;
 using Matrix4x4 = System.Numerics.Matrix4x4;
@@ -227,24 +228,40 @@ public class MeshSetCodec : IMeshSetCodec
             BoneIndices = p_Subset.BoneIndices == null
                 ? new RelocPtrArray<ushort>()
                 : new RelocPtrArray<ushort> { BaseAddress = Placed, Get = p_Subset.BoneIndices },
-            GeometryDeclarationDesc = new GeometryDeclarationDesc
-            {
-                Elements = p_Subset.Elements.Select(p_E => new GeometryDeclarationDesc.Element
-                {
-                    Usage = EngineEnums.ToEngine<VertexElementUsage>(p_E.Usage),
-                    Format = EngineEnums.ToEngine<VertexElementFormat>(p_E.Format),
-                    Offset = p_E.Offset,
-                    StreamIndex = p_E.StreamIndex,
-                }).ToList(),
-                Streams = p_Subset.Streams.Select(p_S => new GeometryDeclarationDesc.Stream
-                {
-                    Stride = p_S.Stride,
-                    Classification = EngineEnums.ToEngine<VertexElementClassification>(p_S.Classification),
-                }).ToList(),
-            },
+            GeometryDeclarationDesc = Declaration(p_Subset),
             TexCoordRatios = new Array<float>(p_Subset.TexCoordRatios.ToList()),
         };
     }
+
+    public uint DeclarationHash(MeshSubsetModel p_Subset) => Declaration(p_Subset).Hash;
+
+    public (IReadOnlyList<VertexElement> Elements, IReadOnlyList<VertexStream> Streams) ReadDeclaration(byte[] p_Declaration)
+    {
+        using var s_Reader = new RimeReader(new MemoryStream(p_Declaration, false));
+        var s_Declaration = new GeometryDeclarationDesc(s_Reader);
+        return (s_Declaration.Elements
+                .Select(p_E => new VertexElement(EngineEnums.ToModel<VertexUsage>(p_E.Usage), EngineEnums.ToModel<VertexFormat>(p_E.Format), p_E.Offset, p_E.StreamIndex))
+                .ToList(),
+            s_Declaration.Streams
+                .Select(p_S => new VertexStream(p_S.Stride, EngineEnums.ToModel<VertexClassification>(p_S.Classification)))
+                .ToList());
+    }
+
+    private static GeometryDeclarationDesc Declaration(MeshSubsetModel p_Subset) => new()
+    {
+        Elements = p_Subset.Elements.Select(p_E => new GeometryDeclarationDesc.Element
+        {
+            Usage = EngineEnums.ToEngine<VertexElementUsage>(p_E.Usage),
+            Format = EngineEnums.ToEngine<VertexElementFormat>(p_E.Format),
+            Offset = p_E.Offset,
+            StreamIndex = p_E.StreamIndex,
+        }).ToList(),
+        Streams = p_Subset.Streams.Select(p_S => new GeometryDeclarationDesc.Stream
+        {
+            Stride = p_S.Stride,
+            Classification = EngineEnums.ToEngine<VertexElementClassification>(p_S.Classification),
+        }).ToList(),
+    };
 
     private static string Required(RelocPtr<string> p_String, string p_What) =>
         p_String.Object ?? throw new InvalidDataException($"a MeshSet without a {p_What}");
