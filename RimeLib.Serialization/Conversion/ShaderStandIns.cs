@@ -94,16 +94,51 @@ public sealed class ShaderStandIns
     /// The shader whose parameters are most like <paramref name="p_Parameters"/>, the more used one
     /// of equally alike ones; none when no shader shares a parameter name.
     /// </summary>
-    public ShaderStandIn? Choose(ShaderParameters p_Parameters)
+    public ShaderStandIn? Choose(ShaderParameters p_Parameters) => Choose(p_Parameters, _ => 0);
+
+    /// <summary>
+    /// Of the shaders nearly as alike to <paramref name="p_Parameters"/> as the most alike one (by
+    /// at most <see cref="AlikeMargin"/> of its similarity less), the one that draws most, by
+    /// <paramref name="p_Draws"/>, then the most alike, then the more used one; none when no shader
+    /// shares a parameter name.
+    /// </summary>
+    public ShaderStandIn? Choose(ShaderParameters p_Parameters, Func<InstanceRef, int> p_Draws)
     {
-        var s_Best = m_Shaders
+        var s_Alike = m_Shaders
             .Select(p_S => (Shader: p_S.Key, p_S.Value.Parameters, p_S.Value.Materials, Similarity: p_Parameters.Similarity(p_S.Value.Parameters)))
             .Where(p_S => p_S.Similarity > 0)
-            .OrderByDescending(p_S => p_S.Similarity)
+            .ToList();
+        if (s_Alike.Count == 0)
+            return null;
+
+        var s_Least = s_Alike.Max(p_S => p_S.Similarity) * (1 - AlikeMargin);
+        var s_Best = s_Alike
+            .Where(p_S => p_S.Similarity >= s_Least)
+            .Select(p_S => (p_S.Shader, p_S.Parameters, p_S.Materials, p_S.Similarity, Draws: p_Draws(p_S.Shader)))
+            .OrderByDescending(p_S => p_S.Draws)
+            .ThenByDescending(p_S => p_S.Similarity)
             .ThenByDescending(p_S => p_S.Materials)
             .ThenBy(p_S => p_S.Shader.Partition)
+            .First();
+
+        return new ShaderStandIn(s_Best.Shader, s_Best.Parameters, s_Best.Similarity);
+    }
+
+    /// <summary>
+    /// The shader that takes the texture used by the most materials, as a plain stand-in for a
+    /// shader no shader is alike to; none when no shader takes it.
+    /// </summary>
+    public ShaderStandIn? MostUsed(string p_Texture)
+    {
+        var s_Best = m_Shaders
+            .Where(p_S => p_S.Value.Parameters.Textures.Contains(p_Texture))
+            .OrderByDescending(p_S => p_S.Value.Materials)
+            .ThenBy(p_S => p_S.Key.Partition)
             .FirstOrDefault();
 
-        return s_Best.Shader == null ? null : new ShaderStandIn(s_Best.Shader, s_Best.Parameters, s_Best.Similarity);
+        return s_Best.Key == null ? null : new ShaderStandIn(s_Best.Key, s_Best.Value.Parameters, 0);
     }
+
+    /// <summary>How much less alike than the most alike shader one may be to be taken for drawing more.</summary>
+    public const double AlikeMargin = 0.25;
 }

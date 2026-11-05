@@ -12,6 +12,12 @@ public interface IShaderBindings : IEngineInterface
     IEnumerable<(InstanceRef Material, IEnumerable<string> Textures)> VariationTextures(DatabasePartitionBase p_Partition);
 
     /// <summary>
+    /// The shader of each material of the partition's mesh asset, in the order its mesh's subsets
+    /// index them: none for a material without one, and none at all for a partition without a mesh asset.
+    /// </summary>
+    IReadOnlyList<InstanceRef?> MeshShaders(DatabasePartitionBase p_Partition);
+
+    /// <summary>
     /// Points each mesh material whose shader has a stand-in at it, dropping the parameters the
     /// stand-in does not take, and returns the dropped parameters' names.
     /// </summary>
