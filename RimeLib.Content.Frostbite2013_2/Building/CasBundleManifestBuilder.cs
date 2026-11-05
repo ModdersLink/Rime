@@ -1,204 +1,189 @@
-﻿using RimeLib.Content.Building;
+using System;
+using System.IO;
+using System.Linq;
+using RimeLib.Content.Building;
 using RimeLib.Content.Frostbite2013_2.Frostbite.Bundles;
 using RimeLib.Content.Frostbite2013_2.Frostbite.Chunks;
 using RimeLib.Content.Frostbite2013_2.Mounting;
+using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 
-namespace RimeLib.Content.Frostbite2013_2.Building
-{
-    public class CasBundleManifestBuilder
-    {
-        protected CasBundle m_Header;
-        protected BundleDescriptor m_Descriptor;
+namespace RimeLib.Content.Frostbite2013_2.Building;
 
-        public CasBundleManifestBuilder(BundleDescriptor p_Descriptor)
+/// <summary>
+/// The manifest of a bundle in a cas superbundle. Content mounted from the game's cas bundles is
+/// copied as a reference to its catalog entry (with the patch base and delta, if patched); anything
+/// else is stored inline as codec blocks, a chunk raw unless its guid carries the compression flag.
+/// </summary>
+public class CasBundleManifestBuilder
+{
+    private readonly BundleDescriptor m_Descriptor;
+
+    /// <summary>How many entries are references to the game's catalogs, and how many inline.</summary>
+    public int References { get; private set; }
+
+    public int Inline { get; private set; }
+
+    public CasBundleManifestBuilder(BundleDescriptor p_Descriptor)
+    {
+        m_Descriptor = p_Descriptor;
+    }
+
+    private static IReadableObject Resolve(IReadableObject p_Object) => p_Object is ObjectVariant s_Variant ? s_Variant.GetReadable() : p_Object;
+
+    /// <summary>The entry a mounted cas object came from, and its inline data if it had any.</summary>
+    private static (IPatchableEntry Entry, byte[]? Inline)? Source(IReadableObject p_Object) => Resolve(p_Object) switch
+    {
+        CatalogReadable { Entry: { } s_Entry } => (s_Entry, null),
+        InlineReadable { Entry: { } s_Entry } s_Inline => (s_Entry, s_Inline.GetCompressedData()),
+        _ => null,
+    };
+
+    private static byte[] ReadAll(IReadableObject p_Object)
+    {
+        using var s_Reader = p_Object.GetReader();
+        var s_Bytes = new MemoryStream();
+        s_Reader.CopyTo(s_Bytes);
+        return s_Bytes.ToArray();
+    }
+
+    public DbObject GetDbObject()
+    {
+        var s_Bundle = new CasBundle
         {
-            m_Descriptor = p_Descriptor;
-            m_Header = new CasBundle
+            Path = m_Descriptor.BundleName,
+            EbxEntries = m_Descriptor.Partitions.Select(p_P => Ebx(p_P.Key, p_P.Value)).ToArray(),
+            ResourceEntries = m_Descriptor.Resources.Select(p_R => Resource(p_R.Key, p_R.Value)).ToArray(),
+            // A bundle without chunks has neither list.
+            ChunkEntries = m_Descriptor.Chunks.Count == 0 ? null : m_Descriptor.Chunks.Select(p_C => Chunk(p_C.Key, p_C.Value)).ToArray(),
+            ChunkMeta = m_Descriptor.Chunks.Count == 0 ? null : m_Descriptor.Chunks.Select(p_C => ChunkMeta(p_C.Value)).ToArray(),
+        };
+
+        // The bytes the bundle reads from cas: dbxTotalSize those of its resources and chunks (a
+        // ranged chunk counts its range), totalSize those and its EBX. Measured exact on every
+        // bundle of mp_siege.
+        s_Bundle.DbxTotalSize = s_Bundle.ResourceEntries.Sum(p_R => p_R.Size)
+            + (s_Bundle.ChunkEntries ?? Array.Empty<CasBundle.Chunk>()).Sum(p_C => p_C.RangeStart is { } s_Start && p_C.RangeEnd is { } s_End ? s_End - s_Start : p_C.Size);
+        s_Bundle.TotalSize = s_Bundle.EbxEntries.Sum(p_E => p_E.Size) + s_Bundle.DbxTotalSize.Value;
+        return DbObjectConverter.ToDbObject(s_Bundle);
+    }
+
+    private CasBundle.Ebx Ebx(string p_Name, IReadableObject p_Object)
+    {
+        if (Source(p_Object) is ({ } s_Entry, var s_Inline) && s_Entry is CasBundle.Ebx s_Ebx)
+        {
+            Count(s_Inline);
+            return new CasBundle.Ebx
             {
-                Path = p_Descriptor.BundleName,
-                ResourceEntries = new CasBundle.Resource[p_Descriptor.Resources.Count],
-                EbxEntries = new CasBundle.Ebx[p_Descriptor.Partitions.Count],
-                ChunkEntries = p_Descriptor.Chunks.Count != 0 ? new CasBundle.Chunk[p_Descriptor.Chunks.Count] : null,
-                ChunkMeta = p_Descriptor.Chunks.Count != 0 ? new ChunkEntry.ChunkMetaEntry[p_Descriptor.Chunks.Count] : null
+                Name = p_Name,
+                Hash = s_Ebx.Hash,
+                Size = s_Ebx.Size,
+                OriginalSize = s_Ebx.OriginalSize,
+                InlineData = s_Inline,
+                CasPatchType = s_Ebx.CasPatchType,
+                BaseHash = s_Ebx.BaseHash,
+                DeltaIndex = s_Ebx.DeltaIndex,
+                DeltaHash = s_Ebx.DeltaHash,
             };
         }
-        long GetCompressedSize(IReadableObject p_Object)
-        {
-            if (p_Object is CatalogReadable s_Catalog) return s_Catalog.GetCompressedSize();
-            if (p_Object is InlineReadable s_Inline) return s_Inline.GetCompressedSize();
-            // These are not supported right now. The add commands also don't allow adding any of these.
-            // TODO: make sure the same rules apply to the resolving commands.
-            if (p_Object is ResourceEntry s_Resource) throw new InvalidDataException();
-            if (p_Object is EbxEntry s_Ebx) throw new InvalidDataException();
-            if (p_Object is BundleChunkEntry s_Chunk) throw new InvalidDataException();
-            if (p_Object is CasChunkEntry s_CasChunk) throw new InvalidDataException();
-            // File/memory-backed: size is the raw file size (stored as inline data)
-            return p_Object.GetSize();
-        }
 
-        Sha1 GetCompressedHash(IReadableObject p_Object)
-        {
-            if (p_Object is CatalogReadable s_Catalog) return s_Catalog.GetCompressedHash()!;
-            if (p_Object is InlineReadable s_Inline) return s_Inline.GetCompressedHash()!;
-            if (p_Object is ResourceEntry s_Resource) return s_Resource.Hash;
-            if (p_Object is EbxEntry s_Ebx) return s_Ebx.Hash;
-            if (p_Object is BundleChunkEntry s_Chunk) return s_Chunk.Hash;
-            if (p_Object is CasChunkEntry s_CasChunk) return s_CasChunk.Hash;
-            // File/memory-backed: compute hash from raw data
-            using var s_HashReader = p_Object.GetReader();
-            var s_Bytes = s_HashReader.ReadBytes((int)s_HashReader.Length);
-            return Sha1.FromData(s_Bytes);
-        }
+        var s_Raw = ReadAll(p_Object);
+        var s_Stored = CodecEncoder.Encode(s_Raw);
+        Count(s_Stored);
+        return new CasBundle.Ebx { Name = p_Name, Hash = Sha1.FromData(s_Stored), Size = s_Stored.Length, OriginalSize = s_Raw.Length, InlineData = s_Stored };
+    }
 
-        byte[]? GetInlineData(IReadableObject p_Object)
+    private CasBundle.Resource Resource(string p_Name, IResourceObject p_Object)
+    {
+        if (Source(p_Object) is ({ } s_Entry, var s_Inline) && s_Entry is CasBundle.Resource s_Resource)
         {
-            if (p_Object is InlineReadable s_Inline) return s_Inline.GetCompressedData();
-            // File-backed / memory-backed objects: read data directly and embed as inline
-            if (p_Object is not CatalogReadable && p_Object is not ResourceEntry && p_Object is not EbxEntry && p_Object is not BundleChunkEntry && p_Object is not CasChunkEntry)
+            Count(s_Inline);
+            return new CasBundle.Resource
             {
-                using var s_Reader = p_Object.GetReader();
-                return s_Reader.ReadBytes((int)s_Reader.Length);
-            }
-            return null;
+                Name = p_Name,
+                Hash = s_Resource.Hash,
+                Size = s_Resource.Size,
+                OriginalSize = s_Resource.OriginalSize,
+                ResourceType = s_Resource.ResourceType,
+                Meta = s_Resource.Meta,
+                ResourceIdInt = s_Resource.ResourceIdInt,
+                InlineData = s_Inline,
+                CasPatchType = s_Resource.CasPatchType,
+                BaseHash = s_Resource.BaseHash,
+                DeltaIndex = s_Resource.DeltaIndex,
+                DeltaHash = s_Resource.DeltaHash,
+            };
         }
 
-        // Helper to resolve the underlying IReadableObject from an IReadableObject that may be
-        // wrapped inside an ObjectVariant, or may itself be a file/memory-backed reader.
-        IReadableObject ResolveReadable(IReadableObject p_Object)
+        var s_Raw = ReadAll(p_Object);
+        var s_Stored = CodecEncoder.Encode(s_Raw);
+        Count(s_Stored);
+        return new CasBundle.Resource
         {
-            if (p_Object is ObjectVariant s_Variant) return s_Variant.GetReadable();
-            return p_Object; // FileReader, ChunkFileReader, ResourceFileReader, MemoryReader, etc.
-        }
+            Name = p_Name,
+            Hash = Sha1.FromData(s_Stored),
+            Size = s_Stored.Length,
+            OriginalSize = s_Raw.Length,
+            ResourceType = (int)p_Object.GetResourceType(),
+            Meta = p_Object.TryGetMeta(out var s_Meta) ? s_Meta : Array.Empty<byte>(),
+            ResourceIdInt = (long)p_Object.GetId(p_Name).Id,
+            InlineData = s_Stored,
+        };
+    }
 
-        public DbObject GetDbObject()
+    private CasBundle.Chunk Chunk(GUID p_Id, IChunkObject p_Object)
+    {
+        if (Source(p_Object) is ({ } s_Entry, var s_Inline) && s_Entry is CasBundle.Chunk s_Chunk)
         {
-            for (var s_ResourceIndex = 0; s_ResourceIndex < m_Descriptor.Resources.Count; s_ResourceIndex++)
+            Count(s_Inline);
+            return new CasBundle.Chunk
             {
-                var s_ResourcePair = m_Descriptor.Resources.ElementAt(s_ResourceIndex);
-
-                var s_ResourceName = s_ResourcePair.Key;
-                var s_ResourceObject = s_ResourcePair.Value;
-
-                // Resolve the underlying readable - supports both mounted ObjectVariant/ResourceVariant
-                // and file/memory-backed objects (ResourceFileReader, ResourceMemoryReader, etc.)
-                var s_Readable = ResolveReadable(s_ResourceObject);
-
-                // Get the metadata (if it exists)
-                var s_ResourceMetadata = new byte[0];
-                if (s_ResourceObject.TryGetMeta(out var s_MetaData))
-                {
-                    // This file has meta
-                    s_ResourceMetadata = s_MetaData;
-                }
-
-                var s_CompressedSize = GetCompressedSize(s_Readable);
-
-                m_Header.ResourceEntries[s_ResourceIndex] = new CasBundle.Resource
-                {
-                    Name = s_ResourceName,
-                    Hash = GetCompressedHash(s_Readable),
-                    Size = s_CompressedSize,
-                    OriginalSize = s_Readable.GetSize(),
-                    ResourceType = (int)s_ResourceObject.GetResourceType(),
-                    Meta = s_ResourceMetadata,
-                    ResourceIdInt = (long)s_ResourceObject.GetId().Id,
-                    InlineData = GetInlineData(s_Readable)
-                };
-
-                // Update the total size
-                m_Header.TotalSize += s_CompressedSize;
-            }
-
-            // Write all of the entries for chunks
-            for (var s_ChunkIndex = 0; s_ChunkIndex < m_Descriptor.Chunks.Count; s_ChunkIndex++)
-            {
-                var s_ChunkPair = m_Descriptor.Chunks.ElementAt(s_ChunkIndex);
-
-                var s_ChunkId = s_ChunkPair.Key;
-                var s_ChunkObject = s_ChunkPair.Value;
-
-                var s_Readable = ResolveReadable(s_ChunkObject);
-
-                var s_ReadableSize = GetCompressedSize(s_Readable);
-
-                var s_RangeStart = s_ChunkObject.GetRangeStart();
-                var s_RangeEnd = s_ChunkObject.GetRangeEnd();
-                var s_LogicalOffset = s_ChunkObject.GetLogicalOffset();
-                var s_LogicalSize = s_ChunkObject.GetLogicalSize();
-                var s_ShouldWriteEntry = s_RangeStart != 0 || s_Readable is InlineReadable || GetInlineData(s_Readable) != null;
-
-                m_Header.ChunkEntries![s_ChunkIndex] = new CasBundle.Chunk
-                {
-                    Id = s_ChunkId,
-                    Hash = GetCompressedHash(s_Readable),
-                    Size = s_ReadableSize,
-                    RangeStart = s_ShouldWriteEntry ? s_RangeStart : null,
-                    RangeEnd = s_ShouldWriteEntry ? s_RangeEnd : null,
-                    LogicalOffset = s_LogicalOffset,
-                    LogicalSize = s_LogicalSize,
-                    InlineData = GetInlineData(s_Readable)
-                };
-
-                // Update totalSize
-                m_Header.TotalSize += s_ReadableSize;
-
-                // Copy the chunk meta if it exists
-                if (s_ChunkObject.TryGetMeta(out DbObject? s_MetaData))
-                {
-                    var s_DbObject = DbObjectConverter.FromDbObject<ChunkEntry.ChunkMetaEntry>(s_MetaData);
-                    m_Header.ChunkMeta![s_ChunkIndex] = s_DbObject;
-                }
-                else
-                    m_Header.ChunkMeta![s_ChunkIndex] = new ChunkEntry.ChunkMetaEntry(); // TODO: Fix this
-
-                /*
-                 * NOTE FOR FUTURE ME:
-                 * Currently the serialization works, and Rime can at least read the cas superbundle, with the cas bundles
-                 * with a chunk added to the bundle from existing CAS
-                 * 
-                 * This was mounted using the mount_standalone_sb
-                 * 
-                 * There are a few points that have to be investigated before this can be set as "working"
-                 * 
-                 * 1. Investigate why ChunkMeta != ChunkEntries for our built bundles, for whatever reason the above code in TryGetMeta returns null
-                 * for certain chunks, that when loading *should* exist from retail bf3 bundles
-                 * 
-                 * 2. For the ebx entries, check if the OriginalSize == Size always, or if they differ and under what circumstances they differ
-                 * and fix that in the serialization code
-                 */
-            }
-
-            for (var s_PartitionIndex = 0; s_PartitionIndex < m_Descriptor.Partitions.Count; ++s_PartitionIndex)
-            {
-                var s_PartitionPair = m_Descriptor.Partitions.ElementAt(s_PartitionIndex);
-
-                var s_PartitionName = s_PartitionPair.Key;
-                var s_PartitionObject = s_PartitionPair.Value;
-
-                var s_Readable = ResolveReadable(s_PartitionObject);
-
-                var s_PartitionReader = s_PartitionObject.GetReader();
-
-                var s_PartitionSize = GetCompressedSize(s_Readable);
-                var s_PartitionHash = GetCompressedHash(s_Readable);
-
-                m_Header.EbxEntries[s_PartitionIndex] = new CasBundle.Ebx
-                {
-                    Name = s_PartitionName,
-                    Hash = s_PartitionHash,
-                    Size = s_PartitionSize,
-                    OriginalSize = s_Readable.GetSize(),
-                    InlineData = GetInlineData(s_Readable)
-                };
-
-                // Update totalSize
-                m_Header.TotalSize += s_PartitionSize;
-            }
-
-            return DbObjectConverter.ToDbObject(m_Header);
+                Id = p_Id,
+                Hash = s_Chunk.Hash,
+                Size = s_Chunk.Size,
+                RangeStart = s_Chunk.RangeStart,
+                RangeEnd = s_Chunk.RangeEnd,
+                LogicalOffset = s_Chunk.LogicalOffset,
+                LogicalSize = s_Chunk.LogicalSize,
+                InlineData = s_Inline,
+                CasPatchType = s_Chunk.CasPatchType,
+                BaseHash = s_Chunk.BaseHash,
+                DeltaIndex = s_Chunk.DeltaIndex,
+                DeltaHash = s_Chunk.DeltaHash,
+            };
         }
+
+        // A chunk says it is compressed only through the flag in its guid.
+        var s_Raw = ReadAll(p_Object);
+        var s_Stored = p_Id.HasCompressionFlag() ? CodecEncoder.Encode(s_Raw) : s_Raw;
+        Count(s_Stored);
+        return new CasBundle.Chunk
+        {
+            Id = p_Id,
+            Hash = Sha1.FromData(s_Stored),
+            Size = s_Stored.Length,
+            LogicalOffset = 0,
+            LogicalSize = (uint)s_Raw.Length,
+            InlineData = s_Stored,
+        };
+    }
+
+    private static ChunkEntry.ChunkMetaEntry ChunkMeta(IChunkObject p_Object)
+    {
+        if (p_Object.TryGetMeta(out var s_Meta))
+            return DbObjectConverter.FromDbObject<ChunkEntry.ChunkMetaEntry>(s_Meta);
+
+        // A texture's chunk is found by the asset name hash; without it the texture never streams in.
+        return new ChunkEntry.ChunkMetaEntry { AssetNameHash = p_Object.GetAssetNameHash() ?? 0 };
+    }
+
+    private void Count(byte[]? p_Inline)
+    {
+        if (p_Inline == null)
+            References++;
+        else
+            Inline++;
     }
 }

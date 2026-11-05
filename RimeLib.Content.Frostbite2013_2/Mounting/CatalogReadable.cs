@@ -10,6 +10,9 @@ internal class CatalogReadable : IReadableObjectWithHash
 {
 	protected Catalog m_Catalog;
 	protected IPatchableEntry? m_PatchEntry;
+
+	/// <summary>The bundle entry this was mounted from, which a cas build copies as a reference.</summary>
+	public IPatchableEntry? Entry => m_PatchEntry;
 	protected Sha1 m_Hash;
 	protected bool m_Compressed;
 

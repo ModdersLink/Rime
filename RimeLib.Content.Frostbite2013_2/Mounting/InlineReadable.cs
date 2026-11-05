@@ -13,8 +13,12 @@ namespace RimeLib.Content.Frostbite2013_2.Mounting
         protected long m_CompressedSize;
         protected Sha1? m_CompressedHash;
 
-        public InlineReadable(byte[] p_Data, Sha1 p_Hash, bool p_Compressed)
+        /// <summary>The bundle entry this was mounted from, which a cas build copies.</summary>
+        public RimeLib.Content.Frostbite2013_2.Frostbite.Bundles.IPatchableEntry? Entry { get; }
+
+        public InlineReadable(byte[] p_Data, Sha1 p_Hash, bool p_Compressed, RimeLib.Content.Frostbite2013_2.Frostbite.Bundles.IPatchableEntry? p_Entry = null)
         {
+            Entry = p_Entry;
             m_Data = p_Data;
             m_Hash = p_Hash;
             m_Compressed = p_Compressed;

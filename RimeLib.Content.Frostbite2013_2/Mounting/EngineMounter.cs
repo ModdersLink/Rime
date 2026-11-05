@@ -903,7 +903,7 @@ public class EngineMounter : IEngineMounter
             // Create variant.
             IReadableObjectWithHash? s_Readable = null;
             if (s_Resource.InlineData != null)
-                s_Readable = new InlineReadable(s_Resource.InlineData, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size);
+                s_Readable = new InlineReadable(s_Resource.InlineData, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size, s_Resource);
             else
                 s_Readable = new CatalogReadable(m_Catalog!, s_Resource.Hash, s_Resource.OriginalSize != s_Resource.Size, s_Resource);
 
@@ -955,7 +955,7 @@ public class EngineMounter : IEngineMounter
             // Create variant.
             IReadableObjectWithHash? s_Readable = null;
             if (s_Chunk.InlineData != null)
-                s_Readable = new InlineReadable(s_Chunk.InlineData, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag());
+                s_Readable = new InlineReadable(s_Chunk.InlineData, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag(), s_Chunk);
             else
                 s_Readable = new CatalogReadable(m_Catalog!, s_Chunk.Hash, s_Chunk.Id.HasCompressionFlag(), s_Chunk);
 
@@ -982,7 +982,7 @@ public class EngineMounter : IEngineMounter
             // Create variant.
             IReadableObjectWithHash? s_Readable = null;
             if (s_Partition.InlineData != null)
-                s_Readable = new InlineReadable(s_Partition.InlineData, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size);
+                s_Readable = new InlineReadable(s_Partition.InlineData, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
             else
                 s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
             
@@ -1019,7 +1019,7 @@ public class EngineMounter : IEngineMounter
             // Create variant.
             IReadableObjectWithHash? s_Readable = null;
             if (s_Partition.InlineData != null)
-                s_Readable = new InlineReadable(s_Partition.InlineData, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size);
+                s_Readable = new InlineReadable(s_Partition.InlineData, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
             else
                 s_Readable = new CatalogReadable(m_Catalog!, s_Partition.Hash, s_Partition.OriginalSize != s_Partition.Size, s_Partition);
             

@@ -35,11 +35,10 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 Path = p_Descriptor.BundleName,
                 ResourceEntries = new CasBundle.Resource[p_Descriptor.Resources.Count],
                 EbxEntries = new CasBundle.Ebx[p_Descriptor.Partitions.Count],
-                // A retail manifest always carries the chunks and chunkMeta keys, even when they are
-                // empty arrays. Omitting them yields a bundle Rime can parse but the game's own loader
-                // never reads the content of.
-                ChunkEntries = new CasBundle.Chunk[p_Descriptor.Chunks.Count],
-                ChunkMeta = new ChunkEntry.ChunkMetaEntry[p_Descriptor.Chunks.Count], // NOTE: This matches the amount of chunk entries
+                // A retail manifest without chunks has neither list (mp_subway's patch superbundle:
+                // the 5 bundles without chunks).
+                ChunkEntries = p_Descriptor.Chunks.Count == 0 ? null : new CasBundle.Chunk[p_Descriptor.Chunks.Count],
+                ChunkMeta = p_Descriptor.Chunks.Count == 0 ? null : new ChunkEntry.ChunkMetaEntry[p_Descriptor.Chunks.Count],
             };
         }
 
@@ -314,22 +313,6 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     s_ChunkInline = GetInlineData(s_Readable);
                 }
 
-                var s_ShouldWriteEntry = s_RangeStart != 0 || s_Readable is InlineReadable || s_ChunkInline != null;
-
-                m_Header.ChunkEntries![s_ChunkIndex] = new CasBundle.Chunk
-                {
-                    Id = s_ChunkId,
-                    Hash = s_ChunkHash,
-                    Size = s_ReadableSize,
-                    RangeStart = s_ShouldWriteEntry ? s_RangeStart : null,
-                    RangeEnd = s_ShouldWriteEntry ? s_RangeEnd : null,
-                    LogicalOffset = s_ShouldWriteEntry ? s_LogicalOffset : null,
-                    InlineData = s_ChunkInline
-                };
-
-                // Update totalSize
-                m_Header.TotalSize += s_ReadableSize;
-
                 // Copy the chunk meta if it exists
                 if (s_ChunkObject.TryGetMeta(out DbObject? s_MetaData))
                 {
@@ -347,6 +330,24 @@ namespace RimeLib.Content.Frostbite2_0.Building
                         s_Entry.AssetNameHash = s_NameHash.Value;
                     m_Header.ChunkMeta![s_ChunkIndex] = s_Entry;
                 }
+
+                // The game lists a chunk's range exactly when it is a texture's, i.e. its meta names a
+                // first mip (all 6684 chunks of BF3's mp_subway).
+                var s_ShouldWriteEntry = m_Header.ChunkMeta![s_ChunkIndex].Payload.FirstMip != null;
+
+                m_Header.ChunkEntries![s_ChunkIndex] = new CasBundle.Chunk
+                {
+                    Id = s_ChunkId,
+                    Hash = s_ChunkHash,
+                    Size = s_ReadableSize,
+                    RangeStart = s_ShouldWriteEntry ? s_RangeStart : null,
+                    RangeEnd = s_ShouldWriteEntry ? s_RangeEnd : null,
+                    LogicalOffset = s_ShouldWriteEntry ? s_LogicalOffset : null,
+                    InlineData = s_ChunkInline
+                };
+
+                // Update totalSize
+                m_Header.TotalSize += s_ReadableSize;
 
                 /*
                  * NOTE FOR FUTURE ME:
@@ -420,6 +421,14 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 // Update totalSize
                 m_Header.TotalSize += s_PartitionSize;
             }
+
+            // Dbx entries, the editor's text form of the EBX, listed as the game's bundle lists them.
+            m_Header.DbxEntries = m_Descriptor.Dbx
+                .Select(p_Pair => ResolveReadable(p_Pair.Value) is DbxReadable s_Dbx
+                    ? s_Dbx.Entry
+                    : throw new InvalidDataException($"The dbx '{p_Pair.Key}' was not mounted from a cas bundle."))
+                .ToArray();
+            m_Header.TotalSize += m_Header.DbxEntries.Sum(p_Dbx => p_Dbx.Size);
 
             return DbObjectConverter.ToDbObject(m_Header);
         }

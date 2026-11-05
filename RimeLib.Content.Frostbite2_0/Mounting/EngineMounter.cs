@@ -41,6 +41,10 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         private readonly ConcurrentDictionary<uint, string> m_MountedResourceLowerNameHashes = new();
         
         private readonly ConcurrentDictionary<string, MountedObject> m_MountedPartitions = new();
+
+        // A cas bundle's dbx entries, the editor's text form of its EBX: kept so a rebuilt bundle can
+        // list them as the game's does.
+        private readonly ConcurrentDictionary<string, MountedObject> m_MountedDbx = new();
         private readonly ConcurrentDictionary<uint, string> m_MountedPartitionsLowerNameHashes = new();
         private readonly ConcurrentDictionary<GUID, string> m_MountedPartitionsGuids = new();
 
@@ -404,7 +408,16 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
         
         public IReadOnlyDictionary<string, IMountedObject>  GetDbxPartitions()
         {
-            return new Dictionary<string, IMountedObject>();
+            return m_MountedDbx.ToDictionary(p_Pair => p_Pair.Key, p_Pair => p_Pair.Value as IMountedObject);
+        }
+
+        public IEnumerable<string> GetDbxPartitionsInBundle(string p_Bundle)
+        {
+            if (m_CasBundles.TryGetValue(p_Bundle.ToLowerInvariant(), out var s_CasBundle))
+            {
+                foreach (var s_Dbx in s_CasBundle.Bundle.DbxEntries)
+                    yield return s_Dbx.Name;
+            }
         }
 
 
@@ -1050,6 +1063,18 @@ namespace RimeLib.Content.Frostbite2_0.Mounting
                         return p_MountedObject;
                     });
                 }
+            }
+
+            foreach (var s_Dbx in p_Bundle.Bundle.DbxEntries)
+            {
+                var s_DbxReadable = new DbxReadable(s_Dbx, m_Catalog);
+                var s_DbxVariant = new ObjectVariant(s_DbxReadable, p_Bundle.ContainedSuperbundle.Name, p_Bundle.Bundle.Path);
+                var s_DbxObject = new MountedObject(s_DbxVariant, s_Dbx.Name);
+                m_MountedDbx.AddOrUpdate(s_Dbx.Name.ToLowerInvariant(), s_DbxObject, (_, p_Existing) =>
+                {
+                    p_Existing.AddVariant(s_DbxVariant);
+                    return p_Existing;
+                });
             }
 
             // Mount all partitions.
