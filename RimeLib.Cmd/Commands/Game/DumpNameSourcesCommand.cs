@@ -324,7 +324,11 @@ namespace RimeLib.Cmd.Commands.Game
                                     ?? s_Object.FirstVariant;
                     var s_Db = s_Converter.FromPartitionObject(s_Name, s_Variant);
 
-                    foreach (var (s_Mesh, s_Hash, _) in s_Rules!.ReadEntries(s_Db))
+                    // Redirect entries state a variation hash as well as entries do.
+                    var s_Rows = s_Rules!.ReadEntries(s_Db).Select(p_E => (p_E.Mesh, p_E.VariationHash))
+                        .Concat(s_Rules.ReadRedirects(s_Db));
+
+                    foreach (var (s_Mesh, s_Hash) in s_Rows)
                     {
                         if (s_Hash == 0)
                             continue;

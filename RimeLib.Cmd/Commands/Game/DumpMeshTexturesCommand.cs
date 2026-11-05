@@ -142,6 +142,21 @@ namespace RimeLib.Cmd.Commands.Game
                 s_Variations[s_Hash.ToString()] = s_Materials;
             }
 
+            // A redirect entry aliases the mesh's variation-0 entry and binds nothing of its own.
+            foreach (var (s_Mesh, s_Hash) in s_Rules.ReadRedirects(s_Db))
+            {
+                if (!s_Mounter.TryGetPartitionByGuid(s_Mesh.PartitionGuid, out var s_MeshName, out _) || s_MeshName == null)
+                    s_MeshName = "unresolved:" + s_Mesh.PartitionGuid;
+
+                if (!s_Meshes.TryGetValue(s_MeshName, out var s_Variations))
+                {
+                    s_Variations = new Dictionary<string, List<Dictionary<string, string>>>();
+                    s_Meshes[s_MeshName] = s_Variations;
+                }
+
+                s_Variations.TryAdd(s_Hash.ToString(), new List<Dictionary<string, string>>());
+            }
+
             File.WriteAllText(Destination.FullName, JsonConvert.SerializeObject(new { meshes = s_Meshes }));
             p_Writer.WriteLine($"Mesh textures for {Name} written to {Destination.FullName} ({s_Meshes.Count} meshes).");
 
