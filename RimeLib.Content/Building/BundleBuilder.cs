@@ -19,6 +19,17 @@ namespace RimeLib.Content.Building
             m_Descriptor = new BundleDescriptor(p_BundleName);
         }
 
+        /// <summary>A builder that adds to a bundle built before.</summary>
+        public static BundleBuilder From(BundleDescriptor p_Bundle)
+        {
+            return new BundleBuilder(p_Bundle);
+        }
+
+        protected BundleBuilder(BundleDescriptor p_Bundle)
+        {
+            m_Descriptor = p_Bundle;
+        }
+
         public BundleDescriptor Build()
         {
             return m_Descriptor;

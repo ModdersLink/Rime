@@ -17,19 +17,20 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
         [CommandArgument(Description = "The name of the bundle.")]
         public string? Bundle { get; set; }
 
+        [CommandArgument(Description = "Id returned by mount_game, of the game the bundle is in.", Optional = true)]
+        public int Id { get; set; } = 1;
+
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
-            // Expects to have a mounted game already.
-            // Mount the game with the Id 1.
             var s_BaseContext = (BaseContext)p_Context.Parent!.Parent!;
-            if (!(s_BaseContext).TryGetMounterById(1, out var s_Mounter))
+            if (!(s_BaseContext).TryGetMounterById(Id, out var s_Mounter))
             {
-                p_Writer.WriteLine($"Could not find a mounted game with the specified id '{1}'. Use the 'list_games' command to see a list of currently mounted games.");
+                p_Writer.WriteLine($"Could not find a mounted game with the specified id '{Id}'. Use the 'list_games' command to see a list of currently mounted games.");
                 return false;
             }
 
             // Create a new GameContext to get the content of the bundle.
-            var s_GameContext = new GameContext(s_BaseContext, p_Id: 1, p_Mounter: s_Mounter!);
+            var s_GameContext = new GameContext(s_BaseContext, p_Id: Id, p_Mounter: s_Mounter!);
             var s_BundleBuildingContext = (BundleBuildingContext)p_Context;
 
             // Each object as this bundle ships it, not as the first bundle that has it does.
