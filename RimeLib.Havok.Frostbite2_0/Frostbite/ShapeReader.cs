@@ -1,11 +1,14 @@
-﻿using System.Numerics;
+using System.Collections.Generic;
+using System.IO;
+using System.Numerics;
+using RimeLib.Havok;
 using RimeLib.IO;
 
-namespace RimeLib.Havok;
+namespace RimeLib.Havok.Frostbite2_0.Frostbite;
 
 /// <summary>
-/// Reads hkpBoxShape / hkpConvexVerticesShape / hkpConvexTranslateShape out of a packfile's data
-/// section.
+/// Reads the collision shapes of a Havok 2010.2 packfile's data section (Frostbite 2). An engine
+/// whose Havok lays a shape out differently derives from this and overrides it.
 ///
 /// The offsets are the 32-bit pointer layout, which is the instance BF3 ships and the one Rime's
 /// transform reader already walks. They were measured against real resources rather than taken from
@@ -13,14 +16,14 @@ namespace RimeLib.Havok;
 /// vertices are hkFourTransposedPoints -- four points as three vectors (all x, then all y, then all
 /// z), which is why vertex counts are padded to a multiple of four.
 /// </summary>
-public static class hkpShapeReader
+public class ShapeReader
 {
     // hkpConvexShape
     private const int c_RadiusOffset = 16;
 
     // hkpConvexTranslateShape / hkpConvexTransformShape share hkpConvexTransformShapeBase, so the
     // child pointer sits at the same place in both.
-    private const int c_ChildOffset = 24;
+    protected const int c_ChildOffset = 24;
     private const int c_TranslationOffset = 32;
 
     // hkpConvexTransformShape: an hkTransform, which is three rotation COLUMNS then the
@@ -45,8 +48,10 @@ public static class hkpShapeReader
     // hkpConvexVerticesShape
     private const int c_RotatedVerticesOffset = 64;
     private const int c_VertexCountOffset = 76;
-    private const int c_PlanesOffset = 80;
-    private const int c_ConnectivityOffset = 92;
+
+    /// <summary>Where hkpConvexVerticesShape's planes and connectivity arrays sit.</summary>
+    protected virtual int PlanesOffset => 80;
+    protected virtual int ConnectivityOffset => 92;
 
     // hkpStorageExtendedMeshShapeMeshSubpartStorage. Its hkArrays start at +8 with a 12-byte
     // stride (pointer, size, capacity), and the payloads sit inline after a 112-byte header.
@@ -59,40 +64,26 @@ public static class hkpShapeReader
     /// <summary>Four points held as three vectors: 12 floats.</summary>
     private const int c_FourTransposedPoints = 48;
 
-    private static Vector3 ReadVector3(LimitedRimeReader p_Reader, long p_At)
+    /// <summary>The reader, moved to <paramref name="p_At"/>.</summary>
+    protected static LimitedRimeReader At(LimitedRimeReader p_Reader, long p_At)
     {
         p_Reader.Seek(p_At, SeekOrigin.Begin);
-
-        return new Vector3(p_Reader.ReadSingle(), p_Reader.ReadSingle(), p_Reader.ReadSingle());
+        return p_Reader;
     }
 
-    private static float ReadSingleAt(LimitedRimeReader p_Reader, long p_At)
-    {
-        p_Reader.Seek(p_At, SeekOrigin.Begin);
-
-        return p_Reader.ReadSingle();
-    }
-
-    private static uint ReadUInt32At(LimitedRimeReader p_Reader, long p_At)
-    {
-        p_Reader.Seek(p_At, SeekOrigin.Begin);
-
-        return p_Reader.ReadUInt32();
-    }
-
-    public static hkpCollisionShape ReadBox(LimitedRimeReader p_Reader, long p_DataStart,
+    public hkpCollisionShape ReadBox(LimitedRimeReader p_Reader, long p_DataStart,
                                             long p_Offset)
     {
         return new hkpCollisionShape
         {
             Kind = "box",
             Offset = p_Offset,
-            Radius = ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_RadiusOffset),
-            HalfExtents = ReadVector3(p_Reader, p_DataStart + p_Offset + c_HalfExtentsOffset)
+            Radius = At(p_Reader, p_DataStart + p_Offset + c_RadiusOffset).ReadSingle(),
+            HalfExtents = At(p_Reader, p_DataStart + p_Offset + c_HalfExtentsOffset).ReadVector3()
         };
     }
 
-    public static hkpCollisionShape ReadConvex(LimitedRimeReader p_Reader, long p_DataStart,
+    public hkpCollisionShape ReadConvex(LimitedRimeReader p_Reader, long p_DataStart,
                                                long p_Offset,
                                                IReadOnlyDictionary<long, long> p_ArrayOffsets,
                                                IReadOnlyDictionary<long, long>? p_ObjectOffsets = null)
@@ -101,19 +92,19 @@ public static class hkpShapeReader
         {
             Kind = "convex",
             Offset = p_Offset,
-            Radius = ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_RadiusOffset),
+            Radius = At(p_Reader, p_DataStart + p_Offset + c_RadiusOffset).ReadSingle(),
 
             // A null connectivity pointer has no fixup, so the fixup table is the record of whether
             // there is one -- reading the slot itself would only ever see the zero the relocation
             // has not been applied to.
             HasConnectivity = p_ObjectOffsets != null
-                              && p_ObjectOffsets.ContainsKey(p_Offset + c_ConnectivityOffset)
+                              && p_ObjectOffsets.ContainsKey(p_Offset + ConnectivityOffset)
         };
 
         // Planes first: hkArray is pointer then count, and the count lives one pointer in.
-        var s_PlaneCount = ReadUInt32At(p_Reader, p_DataStart + p_Offset + c_PlanesOffset + 4);
+        var s_PlaneCount = At(p_Reader, p_DataStart + p_Offset + PlanesOffset + 4).ReadUInt32();
 
-        if (s_PlaneCount > 0 && p_ArrayOffsets.TryGetValue(p_Offset + c_PlanesOffset,
+        if (s_PlaneCount > 0 && p_ArrayOffsets.TryGetValue(p_Offset + PlanesOffset,
                                                            out var s_PlanesAt))
         {
             for (var i = 0; i < s_PlaneCount; i++)
@@ -124,7 +115,7 @@ public static class hkpShapeReader
             }
         }
 
-        var s_Count = ReadUInt32At(p_Reader, p_DataStart + p_Offset + c_VertexCountOffset);
+        var s_Count = At(p_Reader, p_DataStart + p_Offset + c_VertexCountOffset).ReadUInt32();
 
         if (s_Count == 0 || !p_ArrayOffsets.TryGetValue(p_Offset + c_RotatedVerticesOffset,
                                                         out var s_Blocks))
@@ -154,43 +145,43 @@ public static class hkpShapeReader
     /// The convex radius and the CYLINDER radius are two different numbers 0.16 and 3.81 apart on
     /// BigRadioTower's masts, so they are kept apart here too.
     /// </summary>
-    public static hkpCollisionShape ReadCylinder(LimitedRimeReader p_Reader, long p_DataStart,
+    public hkpCollisionShape ReadCylinder(LimitedRimeReader p_Reader, long p_DataStart,
                                                  long p_Offset)
     {
         return new hkpCollisionShape
         {
             Kind = "cylinder",
             Offset = p_Offset,
-            Radius = ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_RadiusOffset),
-            CylinderRadius = ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_CylinderRadiusOffset),
-            VertexA = ReadVector3(p_Reader, p_DataStart + p_Offset + c_VertexAOffset),
-            VertexB = ReadVector3(p_Reader, p_DataStart + p_Offset + c_VertexBOffset)
+            Radius = At(p_Reader, p_DataStart + p_Offset + c_RadiusOffset).ReadSingle(),
+            CylinderRadius = At(p_Reader, p_DataStart + p_Offset + c_CylinderRadiusOffset).ReadSingle(),
+            VertexA = At(p_Reader, p_DataStart + p_Offset + c_VertexAOffset).ReadVector3(),
+            VertexB = At(p_Reader, p_DataStart + p_Offset + c_VertexBOffset).ReadVector3()
         };
     }
 
     /// <summary>hkpCapsuleShape: a cylinder whose ends are the convex radius rounded off.</summary>
-    public static hkpCollisionShape ReadCapsule(LimitedRimeReader p_Reader, long p_DataStart,
+    public hkpCollisionShape ReadCapsule(LimitedRimeReader p_Reader, long p_DataStart,
                                                 long p_Offset)
     {
         return new hkpCollisionShape
         {
             Kind = "capsule",
             Offset = p_Offset,
-            Radius = ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_RadiusOffset),
-            VertexA = ReadVector3(p_Reader, p_DataStart + p_Offset + c_VertexAOffset),
-            VertexB = ReadVector3(p_Reader, p_DataStart + p_Offset + c_VertexBOffset)
+            Radius = At(p_Reader, p_DataStart + p_Offset + c_RadiusOffset).ReadSingle(),
+            VertexA = At(p_Reader, p_DataStart + p_Offset + c_VertexAOffset).ReadVector3(),
+            VertexB = At(p_Reader, p_DataStart + p_Offset + c_VertexBOffset).ReadVector3()
         };
     }
 
     /// <summary>hkpSphereShape: 32 bytes, and the convex radius IS the sphere.</summary>
-    public static hkpCollisionShape ReadSphere(LimitedRimeReader p_Reader, long p_DataStart,
+    public hkpCollisionShape ReadSphere(LimitedRimeReader p_Reader, long p_DataStart,
                                                long p_Offset)
     {
         return new hkpCollisionShape
         {
             Kind = "sphere",
             Offset = p_Offset,
-            Radius = ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_RadiusOffset)
+            Radius = At(p_Reader, p_DataStart + p_Offset + c_RadiusOffset).ReadSingle()
         };
     }
 
@@ -205,7 +196,7 @@ public static class hkpShapeReader
     /// rejected instead of producing confident garbage. MEASURED: all 92 subpart storages BF3 ships
     /// decode, 0 rejected, 14,017 vertices and 16,306 triangles.
     /// </summary>
-    public static hkpCollisionShape? ReadStorageMesh(LimitedRimeReader p_Reader, long p_DataStart,
+    public hkpCollisionShape? ReadStorageMesh(LimitedRimeReader p_Reader, long p_DataStart,
                                                      long p_Offset, long p_ObjectEnd,
                                                      IReadOnlyDictionary<long, long> p_ArrayOffsets)
     {
@@ -226,7 +217,7 @@ public static class hkpShapeReader
         if (!p_ArrayOffsets.TryGetValue(p_Offset + c_SubpartVerticesSlot, out var s_VerticesAt))
             return null;
 
-        var s_VertexCount = (int) ReadUInt32At(p_Reader, p_DataStart + p_Offset + c_SubpartVerticesSlot + 4);
+        var s_VertexCount = (int) At(p_Reader, p_DataStart + p_Offset + c_SubpartVerticesSlot + 4).ReadUInt32();
 
         if (s_VertexCount <= 0 || EndOf(s_VerticesAt) - s_VerticesAt < (long) s_VertexCount * 16)
             return null;
@@ -234,14 +225,14 @@ public static class hkpShapeReader
         var s_Shape = new hkpCollisionShape { Kind = "mesh", Offset = p_Offset };
 
         for (var i = 0; i < s_VertexCount; ++i)
-            s_Shape.Vertices.Add(ReadVector3(p_Reader, p_DataStart + s_VerticesAt + i * 16));
+            s_Shape.Vertices.Add(At(p_Reader, p_DataStart + s_VerticesAt + i * 16).ReadVector3());
 
         foreach (var l_Slot in s_SubpartIndexSlots)
         {
             if (!p_ArrayOffsets.TryGetValue(p_Offset + l_Slot, out var s_IndicesAt))
                 continue;
 
-            var s_Count = (int) ReadUInt32At(p_Reader, p_DataStart + p_Offset + l_Slot + 4);
+            var s_Count = (int) At(p_Reader, p_DataStart + p_Offset + l_Slot + 4).ReadUInt32();
 
             // Four indices per triangle, of which three are corners.
             if (s_Count <= 0 || s_Count % 4 != 0)
@@ -295,10 +286,26 @@ public static class hkpShapeReader
     }
 
     /// <summary>
+    /// The placement and child of an hkpConvexTransformShape: Havok 2010 stores an hkTransform.
+    /// </summary>
+    public virtual (hkpPlacement Placement, long Child)? ReadTransformShape(
+        LimitedRimeReader p_Reader, long p_DataStart, long p_Offset, IReadOnlyDictionary<long, long> p_ObjectOffsets)
+        => ReadTransform(p_Reader, p_DataStart, p_Offset, p_ObjectOffsets);
+
+    /// <summary>The instances of an hkpStaticCompoundShape, which Havok 2010 does not have; null when not read.</summary>
+    public virtual List<(hkpPlacement Placement, long Child, long Instance)>? ReadStaticCompound(
+        LimitedRimeReader p_Reader, long p_DataStart, long p_Offset,
+        IReadOnlyDictionary<long, long> p_ArrayOffsets, IReadOnlyDictionary<long, long> p_ObjectOffsets) => null;
+
+    /// <summary>An hkpBvCompressedMeshShape, which Havok 2010 does not have; null when not read.</summary>
+    public virtual hkpCollisionShape? ReadBvCompressedMesh(LimitedRimeReader p_Reader, long p_DataStart, long p_Offset,
+        IReadOnlyDictionary<long, long> p_ArrayOffsets) => null;
+
+    /// <summary>
     /// The rotation, translation and child of an hkpConvexTransformShape, or null if the child
     /// resolves to nothing.
     /// </summary>
-    public static (hkpPlacement Placement, long Child)? ReadTransform(
+    public (hkpPlacement Placement, long Child)? ReadTransform(
         LimitedRimeReader p_Reader, long p_DataStart, long p_Offset,
         IReadOnlyDictionary<long, long> p_ObjectOffsets)
     {
@@ -309,24 +316,24 @@ public static class hkpShapeReader
 
         // 16 apart because each column is an hkVector4 whose w is padding.
         var s_Placement = new hkpPlacement(
-            ReadVector3(p_Reader, s_At),
-            ReadVector3(p_Reader, s_At + 16),
-            ReadVector3(p_Reader, s_At + 32),
-            ReadVector3(p_Reader, p_DataStart + p_Offset + c_TransformTranslationOffset));
+            At(p_Reader, s_At).ReadVector3(),
+            At(p_Reader, s_At + 16).ReadVector3(),
+            At(p_Reader, s_At + 32).ReadVector3(),
+            At(p_Reader, p_DataStart + p_Offset + c_TransformTranslationOffset).ReadVector3());
 
         return (s_Placement, s_Child);
     }
 
     /// <summary>The translation and the child this wrapper places, or null if it resolves to nothing.</summary>
-    public static (Vector3 Centre, float Radius, long Child)? ReadTranslate(
+    public (Vector3 Centre, float Radius, long Child)? ReadTranslate(
         LimitedRimeReader p_Reader, long p_DataStart, long p_Offset,
         IReadOnlyDictionary<long, long> p_ObjectOffsets)
     {
         if (!p_ObjectOffsets.TryGetValue(p_Offset + c_ChildOffset, out var s_Child))
             return null;
 
-        return (ReadVector3(p_Reader, p_DataStart + p_Offset + c_TranslationOffset),
-                ReadSingleAt(p_Reader, p_DataStart + p_Offset + c_RadiusOffset),
+        return (At(p_Reader, p_DataStart + p_Offset + c_TranslationOffset).ReadVector3(),
+                At(p_Reader, p_DataStart + p_Offset + c_RadiusOffset).ReadSingle(),
                 s_Child);
     }
 }
