@@ -22,6 +22,12 @@ public sealed class ConversionRules
     /// </summary>
     public IReadOnlyDictionary<string, string> Primary { get; init; } = new Dictionary<string, string>();
 
+    /// <summary>
+    /// Partitions the target has no counterpart of, as it holds what they say in what references
+    /// them: by the type of their primary instance. A closure leaves them out.
+    /// </summary>
+    public IReadOnlySet<string> HeldByReferrers { get; init; } = new HashSet<string>();
+
     /// <summary>Enum values the target names differently: by enum type and source value, the target's value.</summary>
     public IReadOnlyDictionary<(string Enum, string Value), string> EnumValues { get; init; } = new Dictionary<(string, string), string>();
 
