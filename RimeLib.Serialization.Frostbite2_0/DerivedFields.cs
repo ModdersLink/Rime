@@ -25,6 +25,16 @@ public class DerivedFields : IDerivedFields
         NumberObjects(p_Partition, s_Partition, 0);
         Name(p_Partition);
 
+        // A redirect takes the materials of its mesh's plain entry in the same database, which the
+        // game reads without checking it is there.
+        foreach (var s_Database in s_Partition.Instances.Values.OfType<MeshVariationDatabase>())
+        {
+            var s_Plain = s_Database.Entries.Select(p_E => s_Partition.Find(p_E)).OfType<MeshVariationDatabaseEntry>()
+                .Where(p_E => p_E.VariationAssetNameHash == 0).Select(p_E => (p_E.Mesh.PartitionGuid, p_E.Mesh.InstanceId)).ToHashSet();
+            s_Database.RedirectEntries.RemoveAll(p_R =>
+                s_Partition.Find(p_R) is MeshVariationDatabaseEntry s_Redirect && !s_Plain.Contains((s_Redirect.Mesh.PartitionGuid, s_Redirect.Mesh.InstanceId)));
+        }
+
         foreach (var s_Entity in s_Partition.Instances.Values.OfType<GameEntityData>())
         {
             // A component in another partition would have to be counted with its own; the value converted is kept.

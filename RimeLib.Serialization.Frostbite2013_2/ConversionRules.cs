@@ -17,8 +17,13 @@ public class ConversionRules : IConversionRules
     /// </summary>
     private static readonly Conversion.ConversionRules s_ToFrostbite2 = new()
     {
-        // Frostbite 2 has one emitter template, which is the partition's primary instance.
-        Types = new Dictionary<string, string> { ["ScalableEmitterDocument"] = "EmitterDocument" },
+        // Frostbite 2 has one emitter template, which is the partition's primary instance. Its mesh
+        // variation redirects are entries without materials, which take the mesh's plain entry's.
+        Types = new Dictionary<string, string>
+        {
+            ["ScalableEmitterDocument"] = "EmitterDocument",
+            ["MeshVariationDatabaseRedirectEntry"] = "MeshVariationDatabaseEntry",
+        },
         Primary = new Dictionary<string, string> { ["ScalableEmitterDocument"] = "TemplateDataHigh" },
         Fields = new Dictionary<(string, string), FieldSource>
         {
