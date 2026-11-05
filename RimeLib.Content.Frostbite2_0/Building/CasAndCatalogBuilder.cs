@@ -59,6 +59,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             for (var s_CasStreamIndex = 0; s_CasStreamIndex < m_CasStreams.Count; ++s_CasStreamIndex)
             {
                 var s_CasFileName = $"{p_CasPath}/cas_{m_StartIndex + s_CasStreamIndex:D2}.cas";
+                SharedFileStream.Release(s_CasFileName);
 
                 using var s_CasFileStream = new FileStream(s_CasFileName, FileMode.Create, FileAccess.ReadWrite);
 

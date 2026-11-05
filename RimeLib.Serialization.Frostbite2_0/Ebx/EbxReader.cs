@@ -299,6 +299,10 @@ public class EbxReader : IDisposable
         ProcessPayloads();
     }
         
+    private static readonly System.Collections.Concurrent.ConcurrentDictionary<string, Type?> s_FbTypes = new();
+
+    private static Type? FbType(string p_Name) => s_FbTypes.GetOrAdd(p_Name, p_N => Type.GetType($"fb.{p_N}"));
+
     private void ProcessPayloads()
     {
         m_Reader.Seek((int)(m_Header.MetaSize + m_Header.StringTableSize), SeekOrigin.Begin);
@@ -309,7 +313,7 @@ public class EbxReader : IDisposable
                 throw new Exception("Unhandled Internal Data for Instance Entry.");
 
             var s_Descriptor = m_TypeDescriptors[(int)s_Entry.TypeDescriptorIndex];
-            var s_ContainerType = Type.GetType($"fb.{s_Descriptor.Name}");
+            var s_ContainerType = FbType(s_Descriptor.Name);
 
             if (s_ContainerType == null)
                 throw new Exception($"Could not find container of type {s_Descriptor.Name}.");
@@ -319,14 +323,6 @@ public class EbxReader : IDisposable
                 var s_Guid = new GUID(m_Reader);
 
                 //Console.WriteLine($"Parsing {s_ContainerType} with GUID {s_Guid}.");
-
-                var s_ContainerAttribute = s_ContainerType.GetCustomAttribute<ContainerTypeAttribute>()!;
-
-                if (s_ContainerAttribute.AlignedSize != s_Descriptor.Size ||
-                    s_ContainerAttribute.DataAlignment != s_Descriptor.Alignment)
-                {
-                    //Console.WriteLine($"Expected size of {s_ContainerType} of {s_ContainerAttribute.AlignedSize} bytes does not match in-file size of {s_Descriptor.Size} bytes. Probably means the game was updated but the data was not.");
-                }
 
                 var s_Instance = (DataContainerBase) Activator.CreateInstance(s_ContainerType)!;
                 s_Instance.InstanceId = new DataContainerId.Guid(s_Guid);
@@ -358,7 +354,7 @@ public class EbxReader : IDisposable
 
             // See if this field exists in the type binding.
             // TODO: This will not work for types with duplicate property names.
-            var s_PropertyType = p_InstanceType.GetProperty(s_FieldDescriptor.Name);
+            var (s_PropertyType, s_IsField) = ContainerFields.Named(p_InstanceType, s_FieldDescriptor.Name);
 
             if (s_PropertyType == null)
             {
@@ -366,9 +362,7 @@ public class EbxReader : IDisposable
                 continue;
             }
 
-            var s_ContainerFieldAttribute = s_PropertyType.GetCustomAttribute<ContainerFieldAttribute>();
-
-            if (s_ContainerFieldAttribute == null)
+            if (!s_IsField)
             {
                 Console.WriteLine($"Field {s_FieldDescriptor.Name} of type {p_InstanceType.Name} has no ContainerField attribute. Is this intentional?");
                 continue;
@@ -378,7 +372,7 @@ public class EbxReader : IDisposable
             {
                 case FieldType.ValueType:
                     var s_StructDescriptor = m_TypeDescriptors[s_FieldDescriptor.FieldType];
-                    var s_StructType = Type.GetType($"fb.{s_StructDescriptor.Name}");
+                    var s_StructType = FbType(s_StructDescriptor.Name);
 
                     if (s_StructType == null)
                         throw new Exception($"Could not find container of type {s_StructDescriptor.Name}.");
@@ -442,7 +436,7 @@ public class EbxReader : IDisposable
             case FieldType.ValueType:
             {
                 var s_List = p_PropertyType.GetValue(p_Instance) as IList;
-                var s_ArrayStructType = Type.GetType($"fb.{s_ArrayElementDescriptor.Name}");
+                var s_ArrayStructType = FbType(s_ArrayElementDescriptor.Name);
 
                 if (s_ArrayStructType == null)
                     throw new Exception($"Could not find container of type {s_ArrayElementDescriptor.Name}.");

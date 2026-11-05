@@ -73,6 +73,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
             for (var s_I = 0; s_I < m_CasStreams.Count; ++s_I)
             {
                 var s_Path = Path.Combine(p_Directory, $"cas_{m_StartIndex + s_I:D2}.cas");
+                SharedFileStream.Release(s_Path);
                 using var s_File = new FileStream(s_Path, FileMode.Create, FileAccess.Write);
                 m_CasStreams[s_I].WriteTo(s_File);
             }
@@ -94,6 +95,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             // The obfuscation header has the XOR disabled, so the body is stored as it is.
             var s_CatalogPath = Path.Combine(p_Directory, p_CatalogName);
+            SharedFileStream.Release(s_CatalogPath);
             using var s_CatFile = new FileStream(s_CatalogPath, FileMode.Create, FileAccess.Write);
             using var s_CatWriter = new RimeWriter(s_CatFile, Endianness.LittleEndian, false);
             FileObfuscation.Serialize(s_CatWriter, s_Body);

@@ -1,4 +1,4 @@
-using System.Collections.Concurrent;
+using System.Collections.Frozen;
 using System.Reflection;
 using RimeLib.Serialization.Attributes;
 
@@ -6,40 +6,31 @@ namespace RimeLib.Serialization.Frostbite2013_2;
 
 public static class DataContainerTypeRegistry
 {
-    private static readonly ConcurrentDictionary<string, Type> NameRegistry = new();
+    // Built once, in full, on first use; parsers on other threads wait for it.
+    private static readonly Lazy<FrozenDictionary<string, Type>> s_Registry = new(Build);
 
-    public static Type FindByName(string p_Name) 
+    public static Type FindByName(string p_Name)
     {
-        if (!NameRegistry.TryGetValue(p_Name, out var s_InterfaceType))
-        {
-            // If it doesn't exist, then refresh and try again.
-            // only refresh if registry is empty, otherwise seems like an annoying performance hit
-            if (NameRegistry.Count == 0)
-                RefreshTypes();
-            
-            NameRegistry.TryGetValue(p_Name, out s_InterfaceType);
-        }
-
-        // Still doesn't exist. Throw an exception.
-        if (s_InterfaceType == null)
+        if (!s_Registry.Value.TryGetValue(p_Name, out var s_Type))
             throw new ArgumentException($"The type you provided does not exist, or is not loaded: {p_Name}");
 
-        return s_InterfaceType;
+        return s_Type;
     }
 
-    private static void RefreshTypes()
+    private static FrozenDictionary<string, Type> Build()
     {
         // Other engines' assemblies define the same type names; this assembly's types take precedence.
         var s_Own = typeof(DataContainerTypeRegistry).Assembly;
+        var s_Registry = new Dictionary<string, Type>();
 
         foreach (var s_Type in ContainerTypes(s_Own))
-            NameRegistry.TryAdd(s_Type.Name, s_Type);
+            s_Registry.TryAdd(s_Type.Name, s_Type);
 
-        foreach (var s_Assembly in AppDomain.CurrentDomain.GetAssemblies().Where(a => a != s_Own))
-        {
-            foreach (var s_Type in ContainerTypes(s_Assembly))
-                NameRegistry.TryAdd(s_Type.Name, s_Type);
-        }
+        foreach (var s_Assembly in AppDomain.CurrentDomain.GetAssemblies().Where(p_A => p_A != s_Own))
+        foreach (var s_Type in ContainerTypes(s_Assembly))
+            s_Registry.TryAdd(s_Type.Name, s_Type);
+
+        return s_Registry.ToFrozenDictionary();
     }
 
     private static IEnumerable<Type> ContainerTypes(Assembly p_Assembly)
@@ -51,9 +42,9 @@ public static class DataContainerTypeRegistry
         }
         catch (ReflectionTypeLoadException s_Ex)
         {
-            s_Types = s_Ex.Types.Where(t => t != null).ToArray()!;
+            s_Types = s_Ex.Types.Where(p_T => p_T != null).ToArray()!;
         }
 
-        return s_Types.Where(t => t.GetCustomAttribute<ContainerTypeAttribute>() != null);
+        return s_Types.Where(p_T => p_T.GetCustomAttribute<ContainerTypeAttribute>() != null);
     }
 }

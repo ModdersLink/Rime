@@ -282,14 +282,6 @@ public class EbxReader : IDisposable
                     };
                 }
 
-                var s_ContainerAttribute = s_ContainerType.GetCustomAttribute<ContainerTypeAttribute>()!;
-
-                if (s_ContainerAttribute.AlignedSize != s_Descriptor.Size ||
-                    s_ContainerAttribute.DataAlignment != s_Descriptor.Alignment)
-                {
-                    //Console.WriteLine($"Expected size of {s_ContainerType} of {s_ContainerAttribute.AlignedSize} bytes does not match in-file size of {s_Descriptor.Size} bytes. Probably means the game was updated but the data was not.");
-                }
-
                 var s_Instance = (DataContainerBase) Activator.CreateInstance(s_ContainerType)!;
                 s_Instance.InstanceId = s_InstanceId;
                 s_Instance.Partition = m_Partition;
@@ -313,10 +305,6 @@ public class EbxReader : IDisposable
             {
                 var s_InstanceId = m_InstanceIds[s_CurrentInstanceEntry];
                 var s_Instance = m_Partition.InstanceMap[s_InstanceId];
-
-                var s_ContainerAttribute = s_Instance.GetType().GetCustomAttribute<ContainerTypeAttribute>()!;
-                if (s_ContainerAttribute == null)
-                    throw new InvalidDataException();
 
                 m_Reader.Seek(m_InstanceOffsets[s_CurrentInstanceEntry], SeekOrigin.Begin);
                 using var s_LimitedReader = new LimitedRimeReader(m_Reader, s_Descriptor.Size, false);
@@ -350,7 +338,7 @@ public class EbxReader : IDisposable
 
             // See if this field exists in the type binding.
             // TODO: This will not work for types with duplicate property names.
-            var s_PropertyType = p_InstanceType.GetProperty(s_FieldDescriptor.Name);
+            var (s_PropertyType, s_IsField) = ContainerFields.Named(p_InstanceType, s_FieldDescriptor.Name);
 
             if (s_PropertyType == null)
             {
@@ -360,9 +348,7 @@ public class EbxReader : IDisposable
                 continue;
             }
 
-            var s_ContainerFieldAttribute = s_PropertyType.GetCustomAttribute<ContainerFieldAttribute>();
-
-            if (s_ContainerFieldAttribute == null)
+            if (!s_IsField)
             {
                 Console.WriteLine($"Field {s_FieldDescriptor.Name} of type {p_InstanceType.Name} has no ContainerField attribute. Is this intentional?");
                 continue;

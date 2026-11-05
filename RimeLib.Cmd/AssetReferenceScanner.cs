@@ -276,11 +276,7 @@ namespace RimeLib.Cmd
             if (p_Object == null)
                 return;
 
-            var s_Properties = p_Object.GetType()
-                .GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                .Where(p_P => p_P.GetCustomAttribute<ContainerFieldAttribute>() != null);
-
-            foreach (var s_Property in s_Properties)
+            foreach (var s_Property in ContainerFields.Of(p_Object.GetType()))
             {
                 object? s_Value;
                 try
