@@ -1,7 +1,17 @@
 using System.Collections.Generic;
+using System.Numerics;
 using RimeLib.Frostbite;
 
 namespace RimeLib.Serialization;
+
+/// <summary>
+/// A material slot of a mesh variation entry: the mesh material, the material variation and the
+/// textures the entry itself binds, by parameter name.
+/// </summary>
+public sealed record MeshVariationMaterial(CtrRefBase Material, CtrRefBase MaterialVariation, IReadOnlyList<(string Name, CtrRefBase Texture)> Textures);
+
+/// <summary>A surface shader instance: its shader and the textures and vectors it sets, by parameter name.</summary>
+public sealed record ShaderInstanceModel(CtrRefBase Shader, IReadOnlyList<(string Name, CtrRefBase Texture)> Textures, IReadOnlyList<(string Name, Vector4 Value)> Vectors);
 
 /// <summary>
 /// How an engine's mesh variation databases are laid out: the entries a database holds, keyed by
@@ -34,6 +44,12 @@ public interface IMeshVariationRules : IEngineInterface
 
     /// <summary>The textures an entry binds; the only place a shipped mesh's texture bindings exist.</summary>
     IEnumerable<CtrRefBase> GetTextures(object p_Entry);
+
+    /// <summary>An entry's material slots, in the order a mesh subset's material index counts them.</summary>
+    IReadOnlyList<MeshVariationMaterial> GetMaterials(object p_Entry);
+
+    /// <summary>The shader instance of a mesh material or a mesh material variation, or null for other instances.</summary>
+    ShaderInstanceModel? GetShaderInstance(DataContainerBase p_Instance);
 
     /// <summary>
     /// What an instance places with which variation: the meshes under each placed asset or entity

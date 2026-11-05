@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using Newtonsoft.Json;
 using RimeLib.Frostbite;
 
@@ -59,6 +60,28 @@ public class MeshVariationRules : IMeshVariationRules
     public IEnumerable<CtrRefBase> GetTextures(object p_Entry) =>
         ((fb.Render.MeshVariationDatabaseEntry)p_Entry).Materials.SelectMany(p_M => p_M.TextureParameters)
             .Where(p_P => p_P?.Value != null && !p_P.Value.IsNull()).Select(p_P => (CtrRefBase)p_P.Value);
+
+    public IReadOnlyList<MeshVariationMaterial> GetMaterials(object p_Entry) =>
+        ((fb.Render.MeshVariationDatabaseEntry)p_Entry).Materials.Select(p_M => new MeshVariationMaterial(p_M.Material, p_M.MaterialVariation, Textures(p_M.TextureParameters))).ToList();
+
+    public ShaderInstanceModel? GetShaderInstance(DataContainerBase p_Instance)
+    {
+        var s_Shader = p_Instance switch
+        {
+            fb.Render.MeshMaterial s_Material => s_Material.Shader,
+            fb.Render.MeshMaterialVariation s_Variation => s_Variation.Shader,
+            _ => null,
+        };
+
+        if (s_Shader == null)
+            return null;
+
+        return new ShaderInstanceModel(s_Shader.Shader, Textures(s_Shader.TextureParameters),
+            s_Shader.VectorParameters.Where(p_P => p_P != null).Select(p_P => (p_P.ParameterName, new Vector4(p_P.Value.x, p_P.Value.y, p_P.Value.z, p_P.Value.w))).ToList());
+    }
+
+    private static List<(string Name, CtrRefBase Texture)> Textures(IEnumerable<fb.Render.TextureShaderParameter> p_Parameters) =>
+        p_Parameters.Where(p_P => p_P?.Value != null).Select(p_P => (p_P.ParameterName, (CtrRefBase)p_P.Value)).ToList();
 
     public void SetEntries(DatabasePartitionBase p_Database, IReadOnlyList<object> p_Entries)
     {
