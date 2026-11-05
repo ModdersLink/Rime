@@ -10,7 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using RimeLib;
-using GFxTool.Scaleform;
+using RimeLib.Content.Scaleform;
 using GFxTool.Scaleform.TagTypes;
 
 namespace GFxTool

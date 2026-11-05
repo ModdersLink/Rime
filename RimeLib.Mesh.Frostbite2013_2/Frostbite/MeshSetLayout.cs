@@ -17,6 +17,7 @@ namespace RimeLib.Mesh.Frostbite2013_2.Frostbite;
 public class MeshSetLayout : IFbSerializable
 {
     public const int MaxLodCount = 6;
+    public const int Size = 0x70;
 
     public AxisAlignedBox BoundingBox { get; set; } = new();
     public RelocPtr<MeshLayout>[] Lods { get; set; } = new RelocPtr<MeshLayout>[MaxLodCount];
@@ -59,9 +60,31 @@ public class MeshSetLayout : IFbSerializable
 
     public void Deserialize(byte[] p_Data) => Deserialize(new RimeReader(new MemoryStream(p_Data)));
 
-    public bool Serialize(RimeWriter p_Writer) =>
-        throw new NotSupportedException("Writing a Frostbite 2013.2 MeshSet is not supported.");
+    /// <summary>Writes the header; the MeshSet places what its pointers point at.</summary>
+    public bool Serialize(RimeWriter p_Writer)
+    {
+        p_Writer.Write(BoundingBox.min.x);
+        p_Writer.Write(BoundingBox.min.y);
+        p_Writer.Write(BoundingBox.min.z);
+        p_Writer.Write(0f); // padding
+        p_Writer.Write(BoundingBox.max.x);
+        p_Writer.Write(BoundingBox.max.y);
+        p_Writer.Write(BoundingBox.max.z);
+        p_Writer.Write(0f); // padding
+
+        foreach (var s_Lod in Lods)
+            s_Lod.Serialize(p_Writer);
+
+        Name.Serialize(p_Writer);
+        ShortName.Serialize(p_Writer);
+        p_Writer.Write(NameHash);
+        p_Writer.Write((uint)MeshType);
+        p_Writer.Write((uint)Flags);
+        p_Writer.Write(LodCount);
+        p_Writer.Write(TotalSubsetCount);
+        return true;
+    }
 
     public bool Serialize([NotNullWhen(true)] out byte[]? p_Data) =>
-        throw new NotSupportedException("Writing a Frostbite 2013.2 MeshSet is not supported.");
+        throw new NotSupportedException("A MeshSet header is written as part of its MeshSet.");
 }
