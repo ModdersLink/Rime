@@ -67,11 +67,11 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             // The bundle's own database, or the game's of that name, keeps its guids; any other one
             // serves as a template under a new partition guid.
-            var s_Template = s_Deriver.Parse(s_Name);
+            var s_Template = s_Deriver.ParseCopy(s_Name);
             if (s_Template == null)
             {
                 var s_Any = s_MeshDeriver.Pool.Values.First()[0].Database;
-                s_Template = s_Deriver.Parse(s_Any)!;
+                s_Template = s_Deriver.ParseCopy(s_Any)!;
                 s_Template.PartitionGuid = new GUID(Guid.NewGuid());
             }
 

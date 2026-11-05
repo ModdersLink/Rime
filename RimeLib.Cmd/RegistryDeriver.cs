@@ -151,14 +151,20 @@ namespace RimeLib.Cmd
             return Mounter.TryGetPartition(p_Name, out var s_Mounted) ? s_Mounted.FirstVariant : null;
         }
 
-        public DatabasePartitionBase? Parse(string p_Name)
+        /// <summary>The partition parsed, shared with the other readers of a build_level run; not to be changed.</summary>
+        public DatabasePartitionBase? Parse(string p_Name) => Parse(p_Name, true);
+
+        /// <summary>A copy of the partition of its own, for a caller that fills it in.</summary>
+        public DatabasePartitionBase? ParseCopy(string p_Name) => Parse(p_Name, false);
+
+        private DatabasePartitionBase? Parse(string p_Name, bool p_Shared)
         {
             if (GetVariant(p_Name) is not { } s_Variant)
                 return null;
 
             try
             {
-                return m_Converter.FromPartitionObject(p_Name, s_Variant);
+                return p_Shared ? PartitionCache.Parse(m_Converter, p_Name, s_Variant) : m_Converter.FromPartitionObject(p_Name, s_Variant);
             }
             catch (Exception)
             {
