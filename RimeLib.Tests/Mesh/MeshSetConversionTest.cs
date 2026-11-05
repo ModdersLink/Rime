@@ -120,4 +120,18 @@ public class MeshSetConversionTest
         Assert.Equal(VertexUsage.RadiosityTexCoord, EngineEnums.ToModel<VertexUsage>((fb.Render.VertexElementUsage)42));
         Assert.False(EngineEnums.TryToEngine<fb.VertexElementUsage>(VertexUsage.DisplacementMapTexCoord, out _));
     }
+
+    [Fact]
+    public void RenamedHashesNamesAsTheOriginalDoes()
+    {
+        var s_Model = Bf4Crate() with { NameHash = Frostbite.Utils.HashQuickLowerCase("objects/crate/crate_mesh") };
+        s_Model = s_Model with { Lods = s_Model.Lods.Select(p_Lod => p_Lod with { Name = p_Lod.Name.ToUpperInvariant(), NameHash = Frostbite.Utils.HashQuick(p_Lod.Name.ToUpperInvariant()) }).ToList() };
+
+        var s_Renamed = MeshSetConversion.Renamed(s_Model, p_Name => p_Name.Replace("crate", "Box").Replace("CRATE", "BOX"));
+
+        Assert.Equal("objects/Box/Box_mesh", s_Renamed.Name);
+        Assert.Equal(Frostbite.Utils.HashQuickLowerCase("objects/Box/Box_mesh"), s_Renamed.NameHash);
+        Assert.Equal("BOX_MESH/LOD0", s_Renamed.Lods[0].Name);
+        Assert.Equal(Frostbite.Utils.HashQuick("BOX_MESH/LOD0"), s_Renamed.Lods[0].NameHash);
+    }
 }
