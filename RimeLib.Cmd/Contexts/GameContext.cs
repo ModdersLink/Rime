@@ -77,6 +77,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListResourcesOfTypeJsonCommand>();
             RegisterCommand<DumpShaderSolutionsCommand>();
             RegisterCommand<CheckMeshConversionCommand>();
+            RegisterCommand<CheckMeshSolutionsCommand>();
+            RegisterCommand<CheckMeshVariationsCommand>();
             RegisterCommand<ListPartitionsCommand>();
             RegisterCommand<ListSbChunksCommand>();
             RegisterCommand<ListBundleChunksCommand>();
