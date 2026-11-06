@@ -55,16 +55,23 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             }
 
             var s_MeshDeriver = new MeshVariationDeriver(s_Deriver);
-            var s_Result = s_MeshDeriver.Derive(s_Root, s_Partitions.Keys.Where(p_N => p_N != s_Name), p_Writer);
+            var s_Result = s_MeshDeriver.Derive(s_Root, s_Partitions.Keys.Where(p_N => p_N != s_Name), p_Writer, s_SbContext.DerivedMeshes.GetValueOrDefault);
+            s_SbContext.DerivedMeshes[s_Root] = s_Result.Keys.Select(p_K => p_K.Mesh).ToHashSet();
             var s_Entries = s_MeshDeriver.EntriesFor(s_Result.Keys);
+            if (s_Entries.Count == 0 && s_MeshDeriver.Rules.OmitsEmptyDatabase)
+            {
+                s_BundleContext.RemovePartition(s_Name);
+                p_Writer.WriteLine($"No entries; '{s_Name}' is left out, as the engine ships no empty database.");
+                return true;
+            }
 
             // The bundle's own database, or the game's of that name, keeps its guids; any other one
             // serves as a template under a new partition guid.
-            var s_Template = s_Deriver.Parse(s_Name);
+            var s_Template = s_Deriver.ParseCopy(s_Name);
             if (s_Template == null)
             {
                 var s_Any = s_MeshDeriver.Pool.Values.First()[0].Database;
-                s_Template = s_Deriver.Parse(s_Any)!;
+                s_Template = s_Deriver.ParseCopy(s_Any)!;
                 s_Template.PartitionGuid = new GUID(Guid.NewGuid());
             }
 
@@ -93,6 +100,24 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             if (s_Template.PrimaryInstance.InstanceId is DataContainerId.Guid s_Primary)
                 s_BundleContext.AddMeshVariationDbRegistryRef(s_Template.PartitionGuid, s_Primary.Id);
 
+            // What the entries bind (textures above all) has to ship too, with its own closure;
+            // whatever the bundle or its dependencies already carry is skipped there.
+            var s_Needed = s_Entries
+                .SelectMany(p_E => Game.AnalyzeRegistryCommand.References(p_E, p_E.GetType().Name, 0))
+                .Select(p_R => p_R.Ref.PartitionGuid).Distinct()
+                .Select(p_G => s_Mounter.TryGetPartitionByGuid(p_G, out var s_N, out _) ? s_N.ToLowerInvariant() : null)
+                .Where(p_N => p_N != null && !s_BundleContext.GetPartitions().ContainsKey(p_N!))
+                .OrderBy(p_N => p_N, StringComparer.Ordinal).ToList();
+            if (PartitionClosure.Create((BundleBuildingContext)p_Context, Id, [], TextWriter.Null) is not { } s_Adder)
+            {
+                p_Writer.WriteLine($"No game {Id} of this bundle's engine is mounted to add their closure from.");
+                return false;
+            }
+
+            s_Adder.AddAll(s_Needed, p_Writer);
+            if (s_Needed.Count > 0)
+                p_Writer.WriteLine($"Added {s_Needed.Count} partition(s) the entries bind, with their closure.");
+
             p_Writer.WriteLine($"Built '{s_Name}' with {s_Entries.Count} entries ({s_Bytes.Length} bytes).");
 
             // Against the game's database of that name, when there is one.
@@ -101,6 +126,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 var s_Shipped = s_Converter.FromPartitionObject(s_Name, s_Retail.FirstVariant);
                 var s_ShippedKeys = s_MeshDeriver.Rules.ReadEntries(s_Shipped).Select(p_E => (s_Deriver.Key(p_E.Mesh.PartitionGuid, p_E.Mesh.InstanceId), p_E.VariationHash)).ToHashSet();
                 p_Writer.WriteLine($"The game's '{s_Name}': {s_ShippedKeys.Count} entries, {s_ShippedKeys.Count(s_Result.Keys.Contains)} of them built, {s_Result.Keys.Count(p_K => !s_ShippedKeys.Contains(p_K))} built that it lacks.");
+                foreach (var (s_Key, s_Hash) in s_ShippedKeys.Where(p_K => !s_Result.Keys.Contains(p_K)))
+                    p_Writer.WriteLine($"  MISSING {s_Deriver.PartitionName(s_Key) ?? s_Key} variation {s_Hash}");
             }
             return true;
         }

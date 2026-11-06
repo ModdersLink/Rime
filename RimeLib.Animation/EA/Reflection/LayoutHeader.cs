@@ -62,36 +62,51 @@ namespace RimeLib.Animation.EA.Reflection
 
 
 
+        /// <summary>The bytes <see cref="Serialize(RimeWriter)"/> writes: the header, the fields and the string table.</summary>
+        public uint SerializedSize => c_HeaderSize + c_FieldSize * (uint)Fields.Length + (uint)StringTable(out _).Length;
+
+        private const uint c_HeaderSize = 0x20;
+        private const uint c_FieldSize = 0x20;
+
+        /// <summary>
+        /// The layout's name and its fields' names, each NUL-terminated after a leading NUL that
+        /// unnamed fields point at. Names keep the order of the offsets they were read at; a field
+        /// without one follows in slot order.
+        /// </summary>
+        private byte[] StringTable(out uint[] p_NameOffsets)
+        {
+            using var s_Stream = new MemoryStream();
+            using var s_Writer = new RimeWriter(s_Stream);
+
+            s_Writer.Write((byte)0x00);
+            s_Writer.WriteNullTerminatedString(Name);
+
+            p_NameOffsets = new uint[Fields.Length];
+            var s_Order = Fields.Select((p_Field, p_Index) => (p_Field, p_Index))
+                .OrderBy(p_Pair => p_Pair.p_Field.NameOffset == 0 ? uint.MaxValue : p_Pair.p_Field.NameOffset);
+
+            foreach (var (s_Field, s_Index) in s_Order)
+            {
+                if (s_Field.Name.Length == 0)
+                    continue;
+
+                p_NameOffsets[s_Index] = (uint)s_Writer.Position;
+                s_Writer.WriteNullTerminatedString(s_Field.Name);
+            }
+
+            s_Writer.Flush();
+            return s_Stream.ToArray();
+        }
+
         public bool Serialize(RimeWriter p_Writer)
         {
-            using var s_StringTableStream = new MemoryStream();
-            using var s_StringTableWriter = new RimeWriter(s_StringTableStream);
+            var s_StringTable = StringTable(out var s_NameOffsets);
 
-            s_StringTableWriter.Write((byte)0x00);
-            s_StringTableWriter.WriteNullTerminatedString(Name);
-            foreach (var s_Field in Fields)
-            {
-                s_Field.NameOffset = (uint) s_StringTableWriter.Position;
-                p_Writer.WriteNullTerminatedString(s_Field.Name);
-            }
+            for (var i = 0; i < Fields.Length; i++)
+                Fields[i].NameOffset = s_NameOffsets[i];
 
-            StringTableSize = (uint) s_StringTableStream.Length;
-
-
-            MinSlot = Fields.Min(x => x.Id);
-            MaxSlot = Fields.Max(x => x.Id);
-
-
-            using var s_FieldsStream = new MemoryStream();
-            using var s_FieldsWriter = new RimeWriter(s_StringTableStream);
-
-            foreach (var s_Field in Fields)
-            {
-                s_Field.Serialize(s_FieldsWriter);
-            }
-
-
-            StringTableOffset = (uint)s_FieldsStream.Length + 0x20;
+            StringTableOffset = c_HeaderSize + c_FieldSize * (uint)Fields.Length;
+            StringTableSize = (uint)s_StringTable.Length;
 
             p_Writer.Write(MinSlot);
             p_Writer.Write(MaxSlot);
@@ -101,20 +116,15 @@ namespace RimeLib.Animation.EA.Reflection
             p_Writer.Write(StringTableSize);
             p_Writer.Write(Recorded);
             p_Writer.Write(Native);
-
-            //0x001A
-            p_Writer.Write(new byte[2]);
+            p_Writer.Write((ushort)0);
             p_Writer.Write(Hash);
 
+            foreach (var s_Field in Fields)
+                s_Field.Serialize(p_Writer);
 
-
-            p_Writer.Write(s_FieldsStream.ToArray());
-
-            p_Writer.Write(s_StringTableStream.ToArray());
-
+            p_Writer.Write(s_StringTable);
 
             return true;
-            //throw new NotImplementedException();
         }
 
         public void Deserialize(RimeReader p_Reader)

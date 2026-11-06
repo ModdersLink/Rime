@@ -24,10 +24,23 @@ public class SamplerState : IFbSerializable
 
     public bool Serialize(RimeWriter p_Writer)
     {
-        throw new System.NotImplementedException();
+        p_Writer.Write(Index);
+        p_Writer.Write((int)Desc.Filter);
+        p_Writer.Write((int)Desc.AddressU);
+        p_Writer.Write((int)Desc.AddressV);
+        p_Writer.Write((int)Desc.AddressW);
+        p_Writer.Write(Desc.MipLodBias);
+        p_Writer.Write(Desc.MaximumAnisotropy);
+        p_Writer.Write((int)Desc.ComparisonFunction);
+        p_Writer.Write(Desc.BorderColor.R);
+        p_Writer.Write(Desc.BorderColor.G);
+        p_Writer.Write(Desc.BorderColor.B);
+        p_Writer.Write(Desc.BorderColor.A);
+        p_Writer.Write(Desc.MinimumLod);
+        p_Writer.Write(Desc.MaximumLod);
+        p_Writer.Write(new byte[8]);
+        return true;
     }
-
-        
 
     public void Deserialize(RimeReader p_Reader)
     {
@@ -57,12 +70,17 @@ public class SamplerState : IFbSerializable
 
     public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
     {
-        p_Data = null;
-        throw new System.NotImplementedException();
-    }
-    public void Deserialize(byte[] p_Data)
-    {
-        throw new System.NotImplementedException();
+        var s_Stream = new MemoryStream();
+        using (var s_Writer = new RimeWriter(s_Stream))
+            Serialize(s_Writer);
+
+        p_Data = s_Stream.ToArray();
+        return true;
     }
 
+    public void Deserialize(byte[] p_Data)
+    {
+        using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
+        Deserialize(s_Reader);
+    }
 }

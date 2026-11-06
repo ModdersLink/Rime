@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
 using RimeLib.IO;
 
 namespace RimeLib.Frostbite.Core
@@ -35,6 +37,13 @@ namespace RimeLib.Frostbite.Core
             // Fuck yo couch
         }
 
+        /// <summary>An array of <paramref name="p_Items"/>, whose place the owning layout sets.</summary>
+        public RelocArray(IEnumerable<T> p_Items)
+        {
+            m_Objects = new Array<T>(new List<T>(p_Items));
+            Count = (uint)m_Objects.Count;
+        }
+
         /// <summary>
         /// Constructor reading a array from an opened stream
         /// </summary>
@@ -54,89 +63,7 @@ namespace RimeLib.Frostbite.Core
 
             for (var i = 0; i < Count; ++i)
             {
-                T s_Object;
-                var s_Type = typeof(T);
-                
-                // Builtin FieldType
-                switch (Type.GetTypeCode(s_Type))
-                {
-                    case TypeCode.String:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadNullTerminatedString(), typeof(T)); // This could be problematic later, time will tell
-                        break;
-
-                    case TypeCode.Boolean:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadUByte(), typeof(T));
-                        break;
-
-                    case TypeCode.Byte:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadUByte(), typeof(T));
-                        break;
-
-                    case TypeCode.SByte:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadSByte(), typeof(T));
-                        break;
-
-                    case TypeCode.Char:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadChar(), typeof(T));
-                        break;
-
-                    case TypeCode.Decimal:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadDecimal(), typeof(T));
-                        break;
-
-                    case TypeCode.Double:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadDouble(), typeof(T));
-                        break;
-
-                    case TypeCode.Single:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadSingle(), typeof(T));
-                        break;
-
-                    case TypeCode.Int32:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadInt32(), typeof(T));
-                        break;
-
-                    case TypeCode.UInt32:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadUInt32(), typeof(T));
-                        break;
-
-                    case TypeCode.Int64:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadInt64(), typeof(T));
-                        break;
-
-                    case TypeCode.UInt64:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadUInt64(), typeof(T));
-                        break;
-
-                    case TypeCode.Int16:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadInt16(), typeof(T));
-                        break;
-
-                    case TypeCode.UInt16:
-                        s_Object = (T) Convert.ChangeType(p_Reader.ReadUInt16(), typeof(T));
-                        break;
-
-                    case TypeCode.Object:
-                        // Check if IFbSerializable this is an IFbSerializable.
-                        if (!typeof(IFbSerializable).IsAssignableFrom(typeof(T)))
-                        {
-                            // TODO: Exception message
-                            throw new NotImplementedException();
-                        }
-
-                        s_Object = (T) Activator.CreateInstance(typeof(T), new object[] { });
-                        (s_Object as IFbSerializable)?.Deserialize(p_Reader);
-                        //((IFbSerializable) s_Object).Deserialize(p_Reader); // C# 9 refactoring
-
-                        break;
-
-                    default:
-                        // TODO: Exception message
-                        throw new NotImplementedException();
-                }
-
-                // C# 9 refactoring
-                if (s_Object != null)
+                if (RelocElement.Read<T>(p_Reader) is { } s_Object)
                     m_Objects.Add(s_Object);
             }
 
@@ -153,6 +80,8 @@ namespace RimeLib.Frostbite.Core
         public bool Serialize(RimeWriter p_Writer)
         {
             p_Writer.Write(Count);
+            if (BaseAddress != 0)
+                (p_Writer as RelocationRimeWriter)?.RecordPointer();
             p_Writer.Write(BaseAddress);
 
             return true;
@@ -186,7 +115,8 @@ namespace RimeLib.Frostbite.Core
 
         public void Deserialize(byte[] p_Data)
         {
-            throw new NotImplementedException();
+            using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
+            Deserialize(s_Reader);
         }
     }
 }

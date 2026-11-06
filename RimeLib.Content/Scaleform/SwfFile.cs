@@ -1,87 +1,218 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.IO;
-using System.Linq;
 using System.Numerics;
-using System.Text;
 using ICSharpCode.SharpZipLib.Zip.Compression.Streams;
+using RimeLib.Frostbite;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
 
 namespace RimeLib.Content.Scaleform
 {
-    // Minimal SWF/GFX reader: parses the header and splits the body into tags
-    // (handles CFX/SWC zlib compression). Copied from Utils/GFxTool so the REPL
-    // can dump gfx structure. Tag bodies are kept raw (not field-decoded).
-    public class SwfFile
+    /// <summary>
+    /// A SWF or GFx movie that reads and writes (FWS, CWS, GFX or CFX; C for a zlib compressed
+    /// body). Tag bodies are not decoded.
+    /// </summary>
+    public class SwfFile : IFbSerializable
     {
+        /// <summary>Signature, version and file length.</summary>
+        private const int c_HeaderSize = 8;
+
+        public string Signature { get; set; } = "GFX";
         public byte Version { get; set; } = 8;
 
-        public double Fps { get; set; } = 0;
-        public ushort FrameCount { get; set; } = 0;
+        public bool IsCompressed => Signature[0] == 'C';
 
-        public bool IsStripped { get; set; } = false;
-        public bool IsCompressed { get; set; } = false;
+        /// <summary>GFx (GFX, CFX) rather than SWF.</summary>
+        public bool IsStripped => Signature[2] == 'X';
 
-        public Vector4 Rect { get; set; }
+        /// <summary>The width of each frame rectangle field, which need not be the fewest bits that fit.</summary>
+        public int RectBits { get; set; }
 
+        /// <summary>The frame rectangle in twips.</summary>
+        public int Left { get; set; }
+        public int Right { get; set; }
+        public int Top { get; set; }
+        public int Bottom { get; set; }
+
+        /// <summary>The frame rectangle: left, top, right, bottom.</summary>
+        public Vector4 Rect => new(Left, Top, Right, Bottom);
+
+        /// <summary>8.8 fixed point.</summary>
+        public ushort FrameRate { get; set; }
+
+        public double Fps => FrameRate / 256.0;
+        public ushort FrameCount { get; set; }
         public List<SwfTagSection> Tags { get; set; } = new();
+
+        // A compressed movie writes back its original stream while its body is unchanged: zlib
+        // output depends on the compressor, so recompressing would not give back the shipped bytes.
+        private byte[]? m_CompressedBody;
+        private byte[]? m_Body;
+
+        public SwfFile()
+        {
+        }
 
         public SwfFile(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
         }
 
-        void Deserialize(RimeReader p_Reader)
+        /// <summary>Reads the movie from the reader's position; a compressed one runs to the reader's end.</summary>
+        public void Deserialize(RimeReader p_Reader)
         {
-            var s_TempHeader = Encoding.ASCII.GetString(p_Reader.ReadBytes(3));
-            var s_Magic = new string(s_TempHeader.Reverse().ToArray());
-
-            if (s_Magic != "SWF" &&
-                s_Magic != "SWC" && // compressed
-                s_Magic != "XFG" && // GFX
-                s_Magic != "XFC")   // CFX - compressed
-                throw new InvalidDataException("Swf file contains invalid header!");
-
-            IsStripped = s_Magic[0] == 'X';
-            IsCompressed = s_Magic[2] == 'C';
-
+            var s_Start = p_Reader.Position;
+            Signature = p_Reader.ReadFixedLengthString(3);
             Version = p_Reader.ReadUByte();
 
-            var s_FileSize = p_Reader.ReadUInt32();
+            if (Signature is not ("FWS" or "CWS" or "GFX" or "CFX"))
+                throw new InvalidDataException($"Not a SWF or GFx movie ({Signature}).");
 
-            Stream s_Stream = p_Reader;
+            var s_FileLength = p_Reader.ReadUInt32();
+            var s_BodySize = (int)(s_FileLength - (p_Reader.Position - s_Start));
+
+            m_CompressedBody = null;
+            m_Body = null;
+            RimeReader s_Body;
             if (IsCompressed)
-                s_Stream = new InflaterInputStream(new LimitedRimeReader(p_Reader, s_FileSize - 0x8, false));
-
-            using var s_Reader = new RimeReader(s_Stream);
-
-            ReadRect(s_Reader);
-            Fps = (double)s_Reader.ReadUInt16() / 256.0;
-            FrameCount = s_Reader.ReadUInt16();
-
-            while (true)
             {
-                var s_Section = new SwfTagSection(s_Reader);
-
-                Tags.Add(s_Section);
-
-                if (s_Section.Tag == SwfTag.End)
-                    break;
+                m_CompressedBody = p_Reader.ReadBytes((int)(p_Reader.Length - p_Reader.Position));
+                m_Body = Inflate(m_CompressedBody, s_BodySize);
+                s_Body = new RimeReader(new MemoryStream(m_Body, false));
             }
+            else
+            {
+                if (p_Reader.Length - p_Reader.Position < s_BodySize)
+                    throw new InvalidDataException($"A movie of {s_FileLength} bytes that ends early.");
+
+                s_Body = new LimitedRimeReader(p_Reader, s_BodySize, false);
+            }
+
+            using (s_Body)
+                DeserializeBody(s_Body);
         }
 
-        void ReadRect(RimeReader p_Reader)
+        /// <summary>The header gives the inflated size; the stream must inflate to exactly that.</summary>
+        private static byte[] Inflate(byte[] p_Compressed, int p_Size)
         {
-            using var s_BitReader = new BitReader(p_Reader, 8, Endianness.BigEndian, false);
+            var s_Body = new byte[p_Size];
+            using var s_Inflater = new InflaterInputStream(new MemoryStream(p_Compressed, false));
+            try
+            {
+                s_Inflater.ReadExactly(s_Body);
+            }
+            catch (EndOfStreamException)
+            {
+                throw new InvalidDataException($"A compressed movie that inflates to less than its {p_Size} byte body.");
+            }
 
-            var s_IntBitCount = s_BitReader.ReadUIntHigh(5);
+            if (s_Inflater.ReadByte() != -1)
+                throw new InvalidDataException($"A compressed movie that inflates to more than its {p_Size} byte body.");
 
-            var s_Left = s_BitReader.ReadIntHigh((int)s_IntBitCount);
-            var s_Right = s_BitReader.ReadIntHigh((int)s_IntBitCount);
-            var s_Top = s_BitReader.ReadIntHigh((int)s_IntBitCount);
-            var s_Bottom = s_BitReader.ReadIntHigh((int)s_IntBitCount);
+            return s_Body;
+        }
 
-            Rect = new Vector4(s_Left, s_Top, s_Right, s_Bottom);
+        private void DeserializeBody(RimeReader p_Reader)
+        {
+            // Five bits of field width, then the four fields, padded to a byte.
+            using (var s_Bits = new BitReader(p_Reader, 8, Endianness.BigEndian, false))
+            {
+                RectBits = (int)s_Bits.ReadUIntHigh(5);
+                Left = (int)s_Bits.ReadIntHigh(RectBits);
+                Right = (int)s_Bits.ReadIntHigh(RectBits);
+                Top = (int)s_Bits.ReadIntHigh(RectBits);
+                Bottom = (int)s_Bits.ReadIntHigh(RectBits);
+            }
+
+            FrameRate = p_Reader.ReadUInt16();
+            FrameCount = p_Reader.ReadUInt16();
+
+            Tags.Clear();
+            while (p_Reader.Position < p_Reader.Length)
+            {
+                var s_Tag = new SwfTagSection(p_Reader);
+                s_Tag.Offset += c_HeaderSize;
+                Tags.Add(s_Tag);
+
+                if (s_Tag.Tag == SwfTag.End)
+                    break;
+            }
+
+            if (p_Reader.Position != p_Reader.Length)
+                throw new InvalidDataException($"A movie with {p_Reader.Length - p_Reader.Position} bytes after its end tag.");
+        }
+
+        public void Deserialize(byte[] p_Data)
+        {
+            using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
+            Deserialize(s_Reader);
+        }
+
+        private void SerializeBody(RimeWriter p_Writer)
+        {
+            var s_RectBits = RectBits;
+            foreach (var s_Field in new[] { Left, Right, Top, Bottom })
+                s_RectBits = System.Math.Max(s_RectBits, FieldBits(s_Field));
+
+            using (var s_Bits = new BitWriter(p_Writer))
+            {
+                s_Bits.WriteUIntHigh((ulong)s_RectBits, 5);
+                s_Bits.WriteIntHigh(Left, s_RectBits);
+                s_Bits.WriteIntHigh(Right, s_RectBits);
+                s_Bits.WriteIntHigh(Top, s_RectBits);
+                s_Bits.WriteIntHigh(Bottom, s_RectBits);
+            }
+
+            p_Writer.Write(FrameRate);
+            p_Writer.Write(FrameCount);
+            foreach (var s_Tag in Tags)
+                s_Tag.Serialize(p_Writer);
+        }
+
+        /// <summary>The bits a signed rectangle field needs; none for zero.</summary>
+        private static int FieldBits(int p_Value) =>
+            p_Value == 0 ? 0 : 33 - BitOperations.LeadingZeroCount((uint)(p_Value < 0 ? ~p_Value : p_Value));
+
+        public bool Serialize(RimeWriter p_Writer)
+        {
+            var s_Stream = new MemoryStream();
+            using (var s_Writer = new RimeWriter(s_Stream))
+                SerializeBody(s_Writer);
+            var s_Body = s_Stream.ToArray();
+
+            p_Writer.WriteFixedLengthString(Signature, 3);
+            p_Writer.Write(Version);
+            p_Writer.Write((uint)(s_Body.Length + c_HeaderSize));
+
+            if (!IsCompressed)
+            {
+                p_Writer.Write(s_Body);
+            }
+            else if (m_CompressedBody != null && m_Body != null && m_Body.AsSpan().SequenceEqual(s_Body))
+            {
+                p_Writer.Write(m_CompressedBody);
+            }
+            else
+            {
+                var s_Compressed = new MemoryStream();
+                using (var s_Deflater = new DeflaterOutputStream(s_Compressed) { IsStreamOwner = false })
+                    s_Deflater.Write(s_Body);
+                p_Writer.Write(s_Compressed.ToArray());
+            }
+
+            return true;
+        }
+
+        public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
+        {
+            var s_Stream = new MemoryStream();
+            using (var s_Writer = new RimeWriter(s_Stream))
+                Serialize(s_Writer);
+
+            p_Data = s_Stream.ToArray();
+            return true;
         }
     }
 }

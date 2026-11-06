@@ -21,6 +21,8 @@ public class RegistryRules : IRegistryRules
 
     public bool CoversBundle => true;
 
+    public bool OmitsEmptyRegistry => true;
+
     public EngineType[] GetSupportedEngines()
     {
         return new[] { EngineType.Frostbite2013_2 };
@@ -49,7 +51,7 @@ public class RegistryRules : IRegistryRules
         return s_Registry;
     }
 
-    public string? GetRegistryPartitionName(string p_LevelPartition) => $"{p_LevelPartition}_networkregistry_win32";
+    public string GetRegistryPartitionName(string p_LevelPartition) => $"{p_LevelPartition}_networkregistry_win32";
 
     public void SetRegistry(DatabasePartitionBase p_Partition, IReadOnlyDictionary<string, List<CtrRefBase>> p_Entries)
     {

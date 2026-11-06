@@ -32,6 +32,15 @@ public class MeshVariationRules : IMeshVariationRules
             yield return (s_Entry.Mesh, s_Entry.VariationAssetNameHash);
     }
 
+    public IEnumerable<(CtrRefBase Mesh, uint VariationHash, object Entry)> ReadRedirectEntries(DatabasePartitionBase p_Partition)
+    {
+        if (p_Partition.PrimaryInstance is not fb.MeshVariationDatabase s_Database)
+            yield break;
+
+        foreach (var s_Entry in Entries(p_Partition, s_Database.RedirectEntries))
+            yield return (s_Entry.Mesh, s_Entry.VariationAssetNameHash, s_Entry);
+    }
+
     public bool PlainEntryWithVariations => false;
 
     public bool IsMesh(DataContainerBase p_Instance) => p_Instance is fb.MeshAsset;
@@ -80,6 +89,23 @@ public class MeshVariationRules : IMeshVariationRules
         }
     }
 
+    public void AddEntries(DatabasePartitionBase p_Database, IReadOnlyList<object> p_Entries, IReadOnlyList<object> p_Redirects)
+    {
+        var s_Partition = (Ebx.DatabasePartition)p_Database;
+        var s_Database = (fb.MeshVariationDatabase)s_Partition.PrimaryInstance;
+        Add(p_Entries, s_Database.Entries);
+        Add(p_Redirects, s_Database.RedirectEntries);
+
+        void Add(IReadOnlyList<object> p_Added, RefArray<fb.MeshVariationDatabaseEntry> p_List)
+        {
+            foreach (var s_Entry in p_Added.Cast<fb.MeshVariationDatabaseEntry>())
+            {
+                if (s_Entry.InstanceId is DataContainerId.Guid s_Id && s_Partition.InstanceMap.TryAdd(s_Id.Id, s_Entry))
+                    p_List.AddRef(new CtrRef<fb.MeshVariationDatabaseEntry>(s_Partition.PartitionGuid, s_Entry.InstanceId));
+            }
+        }
+    }
+
     public bool UsesMeshesUnvaried(DataContainerBase p_Instance) => p_Instance is fb.EmitterTemplateData;
 
     public IEnumerable<(CtrRefBase Placed, uint VariationHash)> GetPlacements(DataContainerBase p_Instance, System.Func<CtrRefBase, DataContainerBase?> p_Resolve)
@@ -120,6 +146,9 @@ public class MeshVariationRules : IMeshVariationRules
             Textures = p_M.TextureParameters.Select(p_T => $"{p_T.ParameterName}={Ref(p_T.Value)}"),
         }));
     }
+
+    public IEnumerable<CtrRefBase> GetDrawnMaterials(object p_Entry) =>
+        ((fb.MeshVariationDatabaseEntry)p_Entry).Materials.Select(p_M => p_M.MaterialVariation.IsNull() ? (CtrRefBase)p_M.Material : p_M.MaterialVariation).Where(p_R => !p_R.IsNull());
 
     private static string Ref(CtrRefBase p_Ref) => p_Ref.IsNull() ? "" : $"{p_Ref.PartitionGuid}/{p_Ref.InstanceId}";
 

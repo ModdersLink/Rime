@@ -271,9 +271,8 @@ namespace RimeLib.Frostbite.Core
         /// <returns>Whether the compression flag is set or not.</returns>
         public bool HasCompressionFlag()
         {
-            if (!Serialize(out var s_Data))
-                return false;
-
+            Span<byte> s_Data = stackalloc byte[16];
+            m_Guid.TryWriteBytes(s_Data);
             return (s_Data[15] & 0x01) != 0;
         }
 
@@ -283,16 +282,16 @@ namespace RimeLib.Frostbite.Core
         /// <param name="p_Compressed">Compression flag</param>
         public void SetCompressionFlag(bool p_Compressed)
         {
-            if (!Serialize(out var s_Data))
-                return;
+            // The guid's bytes in the order it is serialized in.
+            Span<byte> s_Data = stackalloc byte[16];
+            m_Guid.TryWriteBytes(s_Data);
 
             if (p_Compressed)
                 s_Data[15] |= 0x01;
             else
                 s_Data[15] &= 0xFE;
 
-            using (var s_Reader = new RimeReader(new MemoryStream(s_Data)))
-                Deserialize(s_Reader);
+            m_Guid = new Guid(s_Data);
         }
     }
 }

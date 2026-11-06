@@ -1,36 +1,53 @@
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using System.Numerics;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
+using RimeLib.Havok.Frostbite2_0.Frostbite;
 using RimeLib.IO;
 
 namespace RimeLib.Havok.Frostbite2_0.Converters;
 
-public class HavokConverter : IHavokConverter
+/// <summary>
+/// Reads HavokPhysicsData resources: the Frostbite header and both Havok packfiles. A later engine
+/// whose Havok lays shapes out differently derives from this and brings its own shape reader.
+/// </summary>
+public class HavokConverter : IHavokConverter, IHavokMaterials
 {
-    public EngineType[] GetSupportedEngines()
+    public virtual EngineType[] GetSupportedEngines() => new[] { EngineType.Frostbite2_0 };
+
+    /// <summary>How this engine's Havok lays its shapes out.</summary>
+    protected virtual ShapeReader CreateShapeReader() => new();
+
+    /// <summary>The resource read from a copy in memory, which its packfiles' readers go on reading after this returns.</summary>
+    private HavokPhysicsData Read(IResourceObject p_Resource)
     {
-        return new[] { EngineType.Frostbite2_0 };
+        byte[] s_Data;
+        using (var s_Reader = p_Resource.GetReader())
+            s_Data = s_Reader.ReadBytes((int)s_Reader.Length);
+        return new HavokPhysicsData(new RimeReader(new MemoryStream(s_Data)));
     }
 
-    public IEnumerable<hkpTransform> GetTransforms(IResourceObject p_Resource, IEngineMounter p_Mounter)
-    {
-        using var s_Reader = p_Resource.GetReader();
-        var s_PhysicsData = new HavokPhysicsData(s_Reader);
-        return s_PhysicsData.GetTransforms();
-    }
+    public IEnumerable<hkpTransform> GetTransforms(IResourceObject p_Resource, IEngineMounter p_Mounter) => Read(p_Resource).GetTransforms();
 
-    public IEnumerable<hkpCollisionShape> GetShapes(IResourceObject p_Resource, IEngineMounter p_Mounter)
+    public IEnumerable<hkpCollisionShape> GetShapes(IResourceObject p_Resource, IEngineMounter p_Mounter) => Read(p_Resource).GetShapes(CreateShapeReader());
+
+    public IReadOnlyList<uint> GetMaterialFlagsAndIndices(IResourceObject p_Resource) => Read(p_Resource).MaterialFlagsAndIndices;
+
+    public byte[] WithMaterialFlagsAndIndices(byte[] p_Resource, Func<uint, uint> p_Map)
     {
-        using var s_Reader = p_Resource.GetReader();
-        var s_PhysicsData = new HavokPhysicsData(s_Reader);
-        return s_PhysicsData.GetShapes();
+        var s_Physics = new HavokPhysicsData(new RimeReader(new MemoryStream(p_Resource)));
+        s_Physics.MaterialFlagsAndIndices = s_Physics.MaterialFlagsAndIndices.Select(p_Map).ToList();
+        if (!s_Physics.Serialize(out var s_Data))
+            throw new InvalidDataException("The physics resource could not be written.");
+        return s_Data;
     }
 
     public hkpPhysicsWrapper GetWrapper(IResourceObject p_Resource, IEngineMounter p_Mounter)
     {
-        using var s_Reader = p_Resource.GetReader();
-        var s_PhysicsData = new HavokPhysicsData(s_Reader);
+        var s_PhysicsData = Read(p_Resource);
 
         return new hkpPhysicsWrapper
         {
@@ -38,12 +55,10 @@ public class HavokConverter : IHavokConverter
             Scale = s_PhysicsData.Scale,
             MaterialCountUsed = s_PhysicsData.MaterialCountUsed,
             HighestMaterialIndex = s_PhysicsData.HighestMaterialIndex,
-            PartTranslations = s_PhysicsData.PartTranslations
-                .Select(t => new System.Numerics.Vector3(t.x, t.y, t.z)).ToList(),
-            LocalAabbs = s_PhysicsData.LocalAabbs
-                .Select(a => new[] { a.min.x, a.min.y, a.min.z, a.max.x, a.max.y, a.max.z }).ToList(),
+            PartTranslations = s_PhysicsData.PartTranslations.Select(p_T => new Vector3(p_T.X, p_T.Y, p_T.Z)).ToList(),
+            LocalAabbs = s_PhysicsData.LocalAabbs.Select(p_A => new[] { p_A.Min.X, p_A.Min.Y, p_A.Min.Z, p_A.Max.X, p_A.Max.Y, p_A.Max.Z }).ToList(),
             MaterialIndices = s_PhysicsData.MaterialIndices.ToList(),
-            MaterialFlagsAndIndices = s_PhysicsData.MaterialFlagsAndIndices.ToList()
+            MaterialFlagsAndIndices = s_PhysicsData.MaterialFlagsAndIndices.ToList(),
         };
     }
 }

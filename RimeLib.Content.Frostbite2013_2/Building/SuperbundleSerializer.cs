@@ -1,4 +1,5 @@
 ﻿using RimeLib.Content.Building;
+using RimeLib.Content.Frostbite2013_2.Frostbite.Bundles;
 using RimeLib.Content.Frostbite2013_2.Frostbite.Sb;
 using RimeLib.Content.Mounting;
 using RimeLib.Frostbite;
@@ -15,8 +16,10 @@ namespace RimeLib.Content.Frostbite2013_2.Building
         private List<ChunkInfo> m_Chunks = [];
         private List<BundleInfo> m_Bundles = [];
 
-        // This serializer aborts on a bad bundle rather than carrying on, so it has nothing to report.
-        public IReadOnlyList<string> Warnings => [];
+        private List<string> m_Warnings = [];
+
+        // Bad bundles abort; what is reported is how much of a cas build is stored inline.
+        public IReadOnlyList<string> Warnings => m_Warnings;
 
         public void Serialize(SuperbundleDescriptor p_Descriptor, Stream p_OutputSbStream, Stream p_OutputTocStream)
         {
@@ -24,6 +27,7 @@ namespace RimeLib.Content.Frostbite2013_2.Building
             m_Toc = new(new SuperbundleLayout());
             m_Chunks = [];
             m_Bundles = [];
+            m_Warnings = [];
 
             // Set up an sb writer to use.
             using var s_SbWriter = new RimeWriter(p_OutputSbStream, Endianness.BigEndian, false);
@@ -38,8 +42,7 @@ namespace RimeLib.Content.Frostbite2013_2.Building
 
             if (p_Descriptor.Cas)
             {
-                throw new Exception("Cas bundle building not supported for FB2013_2 yet.");
-                //SerializeCasBundles(p_Descriptor, s_SbWriter);
+                SerializeCasBundles(p_Descriptor, s_SbWriter);
             }
             else
             {
@@ -50,10 +53,13 @@ namespace RimeLib.Content.Frostbite2013_2.Building
                 }
             }
 
-            // TODO: Validate that this code produces in the toc not sb for cas bundles?
             // Serialize chunks.
             foreach (var s_Pair in p_Descriptor.Chunks)
                 SerializeChunk(s_Pair.Key, s_Pair.Value, s_SbWriter);
+
+            // Toc chunks of a cas superbundle are bare id and sha1 references into the catalogs.
+            foreach (var s_Pair in p_Descriptor.CasTocChunks)
+                m_Chunks.Add(new ChunkInfo { Id = s_Pair.Key, Sha1 = s_Pair.Value });
 
             // Assign final chunk and bundle info.
             m_Toc.Layout.Chunks = m_Chunks.ToArray();
@@ -111,57 +117,56 @@ namespace RimeLib.Content.Frostbite2013_2.Building
             m_Bundles.Add(s_BundleInfo);
         }
 
-        //private void SerializeCasBundles(SuperbundleDescriptor p_Descriptor, RimeWriter p_SbWriter)
-        //{
-        //    // Bundles
-        //    var s_BundlesListObject = new DbObject();
+        private void SerializeCasBundles(SuperbundleDescriptor p_Descriptor, RimeWriter p_SbWriter)
+        {
+            // The sb is one DbObject holding the list of bundle manifests. The toc points at each
+            // manifest by its offset, which depends on the varint sizes before it, so the whole
+            // list is serialized first and each manifest is found by its bytes (unique, since they
+            // carry its path).
+            var s_Bundles = new List<CasBundle>();
+            var s_BundleData = new List<(string Id, byte[] Data)>();
+            var s_References = 0;
+            var s_Inline = 0;
 
-        //    var s_GenPos = (long)18;
+            foreach (var s_Pair in p_Descriptor.Bundles)
+            {
+                var s_Builder = new CasBundleManifestBuilder(s_Pair.Value);
+                var s_Bundle = s_Builder.GetBundle();
+                s_Bundles.Add(s_Bundle);
+                s_References += s_Builder.References;
+                s_Inline += s_Builder.Inline;
 
-        //    foreach (var s_Pair in p_Descriptor.Bundles)
-        //    {
-        //        var s_Desc = s_Pair.Value;
+                if (!DbObjectConverter.ToDbObjectBytes(s_Bundle, out var s_Data))
+                    throw new Exception($"Failed to serialize cas bundle '{s_Pair.Value.BundleName}'.");
+                s_BundleData.Add((s_Pair.Value.BundleName, s_Data));
+            }
 
-        //        var s_Builder = new CasBundleManifestBuilder(s_Pair.Value);
-        //        var s_Object = s_Builder.GetDbObject();
+            var s_Superbundle = new CasSuperbundle { Bundles = s_Bundles.ToArray() };
+            if (!DbObjectConverter.ToDbObjectBytes(s_Superbundle, out var s_AllBytes))
+                throw new Exception("Failed to serialize the cas superbundle.");
 
-        //        // Has the Object | Anon
-        //        var s_AnonDbObjectElement = new DbObjectElement(s_Object, false);
+            var s_SearchStart = 0;
+            foreach (var (s_Id, s_Data) in s_BundleData)
+            {
+                var s_Offset = s_AllBytes.AsSpan(s_SearchStart).IndexOf(s_Data);
+                if (s_Offset < 0)
+                    throw new Exception($"Failed to locate cas bundle '{s_Id}' within the serialized superbundle.");
+                s_Offset += s_SearchStart;
 
-        //        s_BundlesListObject.AddElement(s_AnonDbObjectElement);
+                m_Bundles.Add(new BundleInfo
+                {
+                    Id = s_Id,
+                    Offset = s_Offset,
+                    Size = s_Data.Length,
+                    Checksum = Sha1.FromData(s_Data),
+                });
 
-        //        var s_FullObject = new DbObject();
-        //        s_FullObject.AddElement(s_AnonDbObjectElement);
-        //        var s_ObjectData = s_FullObject.Serialize();
+                s_SearchStart = s_Offset + s_Data.Length;
+            }
 
-        //        var s_BundleInfo = new BundleInfo
-        //        {
-        //            Id = s_Pair.Value.BundleName,
-        //            Offset = s_GenPos,
-        //            Size = s_ObjectData.Length,
-        //            Checksum = Sha1.FromData(s_ObjectData)
-        //        };
-
-        //        m_Bundles.Add(s_BundleInfo);
-
-        //        s_GenPos += s_BundleInfo.Size;
-        //    }
-
-        //    s_BundlesListObject.AddElement(new DbObjectElement());
-
-
-        //    var s_CasBundleListObject = new DbObject();
-        //    s_CasBundleListObject.AddElement(new DbObjectElement("bundles", s_BundlesListObject, true));
-        //    s_CasBundleListObject.AddElement(new DbObjectElement());
-
-        //    var s_Anon = new DbObjectElement(s_CasBundleListObject, false);
-
-        //    // Create the parent object
-        //    var s_CasDbObject = new DbObject();
-        //    s_CasDbObject.AddElement(s_Anon);
-
-        //    p_SbWriter.Write(s_CasDbObject.Serialize());
-        //}
+            p_SbWriter.Write(s_AllBytes);
+            m_Warnings.Add($"{s_References} entries reference the game's catalogs, {s_Inline} are stored inline.");
+        }
 
         public EngineType[] GetSupportedEngines()
         {

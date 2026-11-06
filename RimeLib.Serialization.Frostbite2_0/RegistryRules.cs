@@ -152,11 +152,25 @@ public class RegistryRules : IRegistryRules
         };
     }
 
-    public string? GetRegistryPartitionName(string p_LevelPartition) => null;
+    // The registry is embedded in the level partition.
+    public string? GetRegistryPartitionName(string p_LevelPartition) => p_LevelPartition;
 
+    /// <summary>Puts the entries into the level partition's RegistryContainer, adding one if it has none.</summary>
     public void SetRegistry(DatabasePartitionBase p_Partition, IReadOnlyDictionary<string, List<CtrRefBase>> p_Entries)
     {
-        throw new NotSupportedException("Frostbite 2 registries are embedded in the level partition.");
+        var s_Partition = (Ebx.DatabasePartition)p_Partition;
+        if (s_Partition.PrimaryInstance is not fb.SubWorldData s_Level)
+            throw new ArgumentException($"'{p_Partition.Name}' is not a level partition.", nameof(p_Partition));
+
+        var s_Registry = (fb.RegistryContainer)CreateRegistry(p_Entries);
+        var s_Guid = s_Level.RegistryContainer.InstanceId is DataContainerId.Guid s_Existing && s_Partition.InstanceMap.ContainsKey(s_Existing.Id)
+            ? s_Existing.Id
+            : new GUID(Guid.NewGuid());
+
+        s_Registry.InstanceId = new DataContainerId.Guid(s_Guid);
+        s_Registry.Partition = s_Partition;
+        s_Partition.InstanceMap[s_Guid] = s_Registry;
+        s_Level.RegistryContainer = new CtrRef<fb.RegistryContainer>(s_Partition.PartitionGuid, s_Registry.InstanceId);
     }
 
     public bool IsDescriptionOnly(DataContainerBase p_Instance)
@@ -181,7 +195,7 @@ public class RegistryRules : IRegistryRules
                 or fb.SyncedBoolEntityData or fb.SyncedSequenceEntityData or fb.SyncedTransformEntityData or fb.EventSyncEntityData
                 or fb.CoopLobbyEntityData
                 or fb.ObjectiveEntityData or fb.CapturePointEntityData or fb.MapMarkerEntityData or fb.CombatAreaTriggerEntityData
-                or fb.GameInteractionEntityData or fb.LifeCounterEntityData or fb.TicketCounterEntityData
+                or fb.GameInteractionEntityData or fb.LifeCounterEntityData or fb.TicketCounterEntityData or fb.KillCounterEntityData
                 or fb.PreRoundEntityData or fb.RoundOverEntityData => true,
             _ => false,
         };

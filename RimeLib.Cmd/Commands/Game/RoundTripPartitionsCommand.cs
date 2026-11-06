@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
+using RimeLib.Content.Mounting;
 using RimeLib.IO;
 using RimeLib.Serialization;
 
@@ -37,7 +38,7 @@ namespace RimeLib.Cmd.Commands.Game
             if (Limit > 0)
                 s_Names = s_Names.Take(Limit).ToList();
 
-            int s_Same = 0, s_Different = 0, s_Failed = 0;
+            int s_Same = 0, s_Different = 0, s_Failed = 0, s_SameContent = 0;
             var s_Reasons = new Dictionary<string, int>();
             foreach (var s_Name in s_Names)
             {
@@ -63,6 +64,16 @@ namespace RimeLib.Cmd.Commands.Game
                     }
 
                     ++s_Different;
+
+                    // Different bytes can still hold the same content: read the written partition
+                    // back and compare what both parse to.
+                    var s_Reread = s_Converter.FromPartitionObject(s_Name, new BytesVariant(s_Written));
+                    if (s_Reread.ToJsonString() == s_Partition.ToJsonString())
+                    {
+                        ++s_SameContent;
+                        continue;
+                    }
+
                     var s_First = 0;
                     while (s_First < System.Math.Min(s_Written.Length, s_Shipped.Length) && s_Written[s_First] == s_Shipped[s_First])
                         ++s_First;
@@ -75,7 +86,7 @@ namespace RimeLib.Cmd.Commands.Game
                         File.WriteAllBytes(s_File + ".shipped", s_Shipped);
                         File.WriteAllBytes(s_File + ".written", s_Written);
                     }
-                    if (s_Different <= 15)
+                    if (s_Different - s_SameContent <= 15)
                         p_Writer.WriteLine($"  DIFF {s_Name}: {s_Shipped.Length} shipped, {s_Written.Length} written, first difference at {s_First}");
                 }
                 catch (Exception s_Exception)
@@ -88,10 +99,28 @@ namespace RimeLib.Cmd.Commands.Game
                 }
             }
 
-            p_Writer.WriteLine($"{s_Same} identical, {s_Different} different, {s_Failed} failed of {s_Names.Count}.");
+            p_Writer.WriteLine($"{s_Same} identical, {s_Different} different ({s_SameContent} of them with the same content), {s_Failed} failed of {s_Names.Count}.");
             foreach (var (s_Reason, s_Count) in s_Reasons.OrderByDescending(p_R => p_R.Value).Take(10))
                 p_Writer.WriteLine($"  {s_Count,6}  {s_Reason}");
             return true;
+        }
+    
+        /// <summary>Written bytes, readable like a mounted partition.</summary>
+        private class BytesVariant : IObjectVariant
+        {
+            private readonly byte[] m_Data;
+
+            public BytesVariant(byte[] p_Data)
+            {
+                m_Data = p_Data;
+            }
+
+            public bool Cas => false;
+            public RimeReader GetReader() => new(new MemoryStream(m_Data, false));
+            public long GetSize() => m_Data.Length;
+            public RimeLib.Frostbite.Core.Sha1? GetSha1() => null;
+            public string GetContainedSuperbundle() => "";
+            public string? GetContainedBundle() => null;
         }
     }
 }

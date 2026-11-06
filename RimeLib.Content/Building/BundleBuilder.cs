@@ -42,6 +42,12 @@ namespace RimeLib.Content.Building
             return this;
         }
 
+        public BundleBuilder WithDbx(string p_Name, IReadableObject p_Dbx)
+        {
+            m_Descriptor.Dbx[p_Name] = p_Dbx;
+            return this;
+        }
+
         public BundleBuilder WithDependencyBundle(string p_BundleName)
         {
             m_Descriptor.DependencyBundles.Add(p_BundleName.ToLowerInvariant());

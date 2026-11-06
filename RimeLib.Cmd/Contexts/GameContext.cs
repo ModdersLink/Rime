@@ -49,6 +49,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<MountSbCommand>();
             RegisterCommand<MountStandaloneSbCommand>();
             RegisterCommand<ListMountedSbCommand>();
+            RegisterCommand<VerifySuperbundleCommand>();
             RegisterCommand<ListBundlesCommand>();
             RegisterCommand<MountBundleCommand>();
             RegisterCommand<MountAllBundlesCommand>();
@@ -57,14 +58,25 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListDuplicateChunksCommand>();
             RegisterCommand<ListResourcesCommand>();
             RegisterCommand<ListResourcesOfTypeCommand>();
+            RegisterCommand<DeriveMaterialsCommand>();
             RegisterCommand<DumpShaderDbCommand>();
             RegisterCommand<DumpShaderTexturesCommand>();
+            RegisterCommand<RoundTripShaderDatabasesCommand>();
+            RegisterCommand<RebuildShaderDatabaseCommand>();
             RegisterCommand<WhereIsCommand>();
+            RegisterCommand<FindPartitionsCommand>();
             RegisterCommand<RoundTripResourcesCommand>();
+            RegisterCommand<RoundTripTerrainCommand>();
+            RegisterCommand<RoundTripHavokObjectsCommand>();
+            RegisterCommand<ConvertHavokPhysicsCommand>();
             RegisterCommand<DumpShaderBytecodeCommand>();
+            RegisterCommand<RoundTripTextureCodecsCommand>();
+            RegisterCommand<CheckTextureConversionCommand>();
+            RegisterCommand<ConvertAnimationBankCommand>();
             RegisterCommand<DumpEbxLayoutCommand>();
             RegisterCommand<ListResourcesOfTypeJsonCommand>();
             RegisterCommand<DumpShaderSolutionsCommand>();
+            RegisterCommand<CheckMeshConversionCommand>();
             RegisterCommand<DumpMeshVariationDbVariationsCommand>();
             RegisterCommand<DumpMeshTexturesCommand>();
             RegisterCommand<ListPartitionsCommand>();
@@ -78,8 +90,11 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListSbBundlesCommand>();
             RegisterCommand<DumpResourceWithChunksCommand>();
             RegisterCommand<DumpSwfJsonCommand>();
+            RegisterCommand<CheckResourceCookiesCommand>();
             RegisterCommand<DumpPartitionCommand>();
             RegisterCommand<RoundTripPartitionsCommand>();
+            RegisterCommand<CheckPartitionConversionCommand>();
+            RegisterCommand<MapShaderStandInsCommand>();
             RegisterCommand<DumpPartitionByGuidCommand>();
             // RegisterCommand<DumpAnimTrackDataCommand>(); // class not in repo
             RegisterCommand<BuildCasCatalogCommand>();

@@ -122,6 +122,9 @@ namespace RimeLib.IO
             Encode7Bit((ulong) ((p_Value >> 63) ^ (p_Value << 1)));
         }
 
+        /// <summary>A 16-bit float, in the writer's byte order.</summary>
+        public void WriteHalf(Half p_Value) => Write(System.BitConverter.HalfToUInt16Bits(p_Value));
+
         public void Write(Vector3 p_Value)
         {
             Write(p_Value.X);

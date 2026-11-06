@@ -196,12 +196,16 @@ public class ShaderSolutionState : IFbSerializable
     }
 
 
+    public ShaderSolutionState()
+    {
+    }
+
     public ShaderSolutionState(RimeReader p_Reader)
     {
         Deserialize(p_Reader);
     }
 
-    public bool Serialize(RimeWriter p_Writer)
+    public virtual bool Serialize(RimeWriter p_Writer)
     {
         p_Writer.Write(SurfaceShaderNameHash);
         p_Writer.Write(VertexShaderFragmentNameHash);
@@ -235,7 +239,7 @@ public class ShaderSolutionState : IFbSerializable
         return true;
     }
 
-    public void Deserialize(RimeReader p_Reader)
+    public virtual void Deserialize(RimeReader p_Reader)
     {
         SurfaceShaderNameHash = p_Reader.ReadUInt32();
         VertexShaderFragmentNameHash = p_Reader.ReadUInt32();
@@ -265,14 +269,17 @@ public class ShaderSolutionState : IFbSerializable
 
     public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
     {
-        p_Data = null;
-        throw new System.NotImplementedException();
+        var s_Stream = new MemoryStream();
+        using (var s_Writer = new RimeWriter(s_Stream))
+            Serialize(s_Writer);
+
+        p_Data = s_Stream.ToArray();
+        return true;
     }
-        
+
     public void Deserialize(byte[] p_Data)
     {
-        throw new System.NotImplementedException();
+        using var s_Reader = new RimeReader(new MemoryStream(p_Data, false));
+        Deserialize(s_Reader);
     }
-
-
 }

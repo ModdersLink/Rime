@@ -9,12 +9,10 @@
 	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
     <Platforms>AnyCPU</Platforms>
     <Configurations>Release;Debug</Configurations>
-    <!-- The Frostbite 2 terrain trees are still read here, through Serialization.Frostbite2_0. -->
-    <AllowEngineReferences>true</AllowEngineReferences>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RimeLib.Serialization.Frostbite2_0\RimeLib.Serialization.Frostbite2_0.csproj" />
+    <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
     <ProjectReference Include="..\RimeLibLite\RimeLibLite.csproj" />
   </ItemGroup>
 

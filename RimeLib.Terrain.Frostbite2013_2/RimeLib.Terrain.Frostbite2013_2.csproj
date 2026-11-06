@@ -1,0 +1,19 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>default</LangVersion>
+    <Nullable>enable</Nullable>
+    <OutputPath>$(SolutionDir)\bin\$(Configuration)</OutputPath>
+	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <Platforms>AnyCPU</Platforms>
+    <Configurations>Release;Debug</Configurations>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\RimeLib.Terrain\RimeLib.Terrain.csproj" />
+    <ProjectReference Include="..\RimeLib.Terrain.Frostbite2_0\RimeLib.Terrain.Frostbite2_0.csproj" />
+  </ItemGroup>
+
+</Project>

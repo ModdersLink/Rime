@@ -10,7 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using RimeLib;
-using GFxTool.Scaleform;
+using RimeLib.Content.Scaleform;
 using GFxTool.Scaleform.TagTypes;
 
 namespace GFxTool
@@ -75,7 +75,8 @@ namespace GFxTool
             
             foreach (var s_ExternalImageTag in s_SwfFile.Tags.Where(x => x.Tag == SwfTag.GFX_DefineExternalImage2))
             {
-                var s_ExternalImage = new TagExternalImage2(s_ExternalImageTag.GetReader());
+                using var s_Reader = new RimeReader(new MemoryStream(s_ExternalImageTag.Data, false));
+                var s_ExternalImage = new TagExternalImage2(s_Reader);
                 
                 
             }

@@ -36,6 +36,9 @@ namespace RimeLib.Content.Mounting
 
         string GetContainedSuperbundle();
         string? GetContainedBundle();
+
+        /// <summary>Whether this is the variant the bundle ships; bundle names ignore case.</summary>
+        bool IsInBundle(string p_Bundle) => string.Equals(GetContainedBundle(), p_Bundle, System.StringComparison.OrdinalIgnoreCase);
     }
 
     public interface IResourceVariant : IResourceObject, IObjectVariant {}
@@ -56,6 +59,18 @@ namespace RimeLib.Content.Mounting
         IEnumerable<T> Variants { get; }
         T FirstVariant { get; }
         string OriginalName { get; }
+
+        /// <summary>The variant the bundle ships, or <see cref="FirstVariant"/> when it ships none.</summary>
+        T VariantIn(string p_Bundle)
+        {
+            foreach (var s_Variant in Variants)
+            {
+                if (s_Variant.IsInBundle(p_Bundle))
+                    return s_Variant;
+            }
+
+            return FirstVariant;
+        }
     }
 
     public interface IMountedObject : IMountedObject<IObjectVariant> {}
@@ -234,6 +249,9 @@ namespace RimeLib.Content.Mounting
         /// </summary>
         /// <returns>A dictionary of partition name keys and mounted object values.</returns>
         IReadOnlyDictionary<string, IMountedObject> GetDbxPartitions();
+
+        /// <summary>The names of a bundle's dbx entries, in bundle order; none where dbx is not mounted.</summary>
+        IEnumerable<string> GetDbxPartitionsInBundle(string p_Bundle) => System.Array.Empty<string>();
 
         /// <summary>
         /// Gets a list of bundles that are contained within a specific superbundle.

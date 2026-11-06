@@ -1,92 +1,66 @@
 ﻿using RimeLib.Frostbite;
 using RimeLib.IO;
-using System;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 
 namespace RimeLib.Animation.EA.GenericData
 {
+    /// <summary>
+    /// The header of an object in a data blob, EA::GD::LayoutData: 64-bit slots for the vtable,
+    /// which holds an id on disk, the allocator and the layout, which holds the layout's hash; then
+    /// the reference count, where the object's data starts and whether it may change.
+    /// </summary>
     public class Data : IFbSerializable
     {
         private const uint c_kIID = 0x030E6205; // EA::GD::DataId const EA::GD::LayoutData::kIID
 
+        /// <summary>The header's size, which the object's data follows.</summary>
+        public const ushort c_Size = 0x20;
+
         public uint LayoutHash { get; set; } = 0;
 
-        public uint DataOffset { get; set; } = 0;
+        public uint RefCount { get; set; } = 0;
+
+        public uint DataOffset { get; set; } = c_Size;
 
         public bool Mutable { get; set; } = false;
 
-
+        public Data()
+        {
+        }
 
         public Data(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
         }
 
-
-
         public bool Serialize(RimeWriter p_Writer)
         {
-            // vtable / magic
-            p_Writer.Write(c_kIID);
-            p_Writer.WriteNullBytes(0x4);
-
-            // allocator
-            p_Writer.WriteNullBytes(0x8);
-
-            // layout ptr
-            p_Writer.Write(LayoutHash);
-            p_Writer.WriteNullBytes(0x4);
-
-            // refcount
-            p_Writer.WriteNullBytes(0x4);
-
-            // dataoffset
+            p_Writer.Write((ulong)c_kIID);
+            p_Writer.Write(0UL);
+            p_Writer.Write((ulong)LayoutHash);
+            p_Writer.Write(RefCount);
             p_Writer.Write((ushort)DataOffset);
             p_Writer.Write(Mutable);
+            p_Writer.Write((byte)0);
 
-            throw new NotImplementedException();
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)
         {
-            /*
-struct __declspec(align(2)) EA::GD::LayoutData
-{
-  EA::GD::LayoutDataVtbl *vfptr; //0x0000
-  EA::GD::Ptr64<EA::Allocator::ICoreAllocator> mAllocator; 
-  EA::GD::Ptr64<EA::GD::Layout const > mLayout;
-  EA::Thread::AtomicInt<int> mRefCount;
-  unsigned __int16 mDataOffset;
-  bool mMutable;
-};
-
-            */
-
-            var s_Magic = p_Reader.ReadUInt32();
-            p_Reader.Seek(0x4, SeekOrigin.Current);
-
+            var s_Magic = (uint)p_Reader.ReadUInt64();
 
             if (s_Magic != c_kIID)
                 throw new InvalidDataException("Invalid Data magic. Data is either already read or something is wrong!");
 
-
-            //0x0008 - EA::GD::Ptr64<EA::Allocator::ICoreAllocator> mAllocator;
-            p_Reader.Seek(0x8, SeekOrigin.Current);
-
-            //0x0010
-            LayoutHash = p_Reader.ReadUInt32();
-            p_Reader.Seek(0x4, SeekOrigin.Current);
-
-            //0x0018
-            p_Reader.Seek(0x4, SeekOrigin.Current);
-
+            p_Reader.ReadUInt64();
+            LayoutHash = (uint)p_Reader.ReadUInt64();
+            RefCount = p_Reader.ReadUInt32();
             DataOffset = p_Reader.ReadUInt16();
             Mutable = p_Reader.ReadBool();
-
+            p_Reader.ReadUByte();
         }
-
-        
 
         public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
         {

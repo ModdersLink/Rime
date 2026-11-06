@@ -140,6 +140,44 @@ public class MaterialGridRules : IMaterialGridRules
         return s_Result;
     }
 
+    public bool TryGetPackedMaterial(object p_Value, Func<CtrRefBase, DataContainerBase?> p_Resolve, out uint p_Packed)
+    {
+        p_Packed = 0;
+        if (p_Value is not fb.Entity.MaterialDecl s_Decl)
+            return false;
+
+        p_Packed = s_Decl.Packed;
+        return true;
+    }
+
+    /// <summary>
+    /// The two high bytes are global material indices (a material and a property); the low 16
+    /// bits are flags. There is no shared material container.
+    /// </summary>
+    public IReadOnlyCollection<uint> GetMaterials(uint p_Packed, Func<string, DatabasePartitionBase?> p_Parse)
+    {
+        var s_Material = p_Packed >> 24;
+        var s_Property = (p_Packed >> 16) & 0xFF;
+        return s_Material == s_Property ? new[] { s_Material } : new[] { s_Material, s_Property };
+    }
+
+    // BF4 ships no material names.
+    public string? GetMaterialName(uint p_Material, Func<string, DatabasePartitionBase?> p_Parse) => null;
+
+    public bool TryUnpack(uint p_Packed, Func<string, DatabasePartitionBase?> p_Parse, out uint p_Material, out uint p_Property)
+    {
+        (p_Material, p_Property) = (p_Packed >> 24, (p_Packed >> 16) & 0xFF);
+        return true;
+    }
+
+    /// <summary>The pair packed as BF4 does, in the two high bytes and no flags, and as a MaterialDecl.</summary>
+    public bool TryPack(uint p_Material, uint p_Property, Func<string, DatabasePartitionBase?> p_Parse, out uint p_Packed, out object p_Value)
+    {
+        p_Packed = (p_Material & 0xFF) << 24 | (p_Property & 0xFF) << 16;
+        p_Value = new fb.Entity.MaterialDecl { Packed = p_Packed };
+        return p_Material <= 0xFF && p_Property <= 0xFF;
+    }
+
     private static IEnumerable<uint> Used(fb.Entity.MaterialGridData p_Grid)
     {
         for (var i = 0; i < p_Grid.MaterialIndexMap.Count; ++i)

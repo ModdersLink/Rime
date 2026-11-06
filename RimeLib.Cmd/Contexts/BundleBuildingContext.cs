@@ -14,6 +14,7 @@ using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
 using RimeLib.Serialization;
+using RimeLib.Serialization.Conversion;
 using RimeLib.Shader;
 using RimeLib.Terrain.Resources;
 using RimeLib.Texture.Generation;
@@ -142,6 +143,12 @@ namespace RimeLib.Cmd.Contexts
 
         protected DataContainerBase? m_GeneratedRegistry;
 
+        /// <summary>
+        /// Whether added meshes bring the textures that any mounted mesh variation database binds
+        /// for them. Off when the bundle derives its own database, which adds what its entries bind.
+        /// </summary>
+        public bool BindMeshVariationTextures { get; set; } = true;
+
         public BundleBuildingContext(SbBuildingContext p_Parent, string p_BundleName)
         {
             Parent = p_Parent;
@@ -183,6 +190,12 @@ namespace RimeLib.Cmd.Contexts
                 RegisterCommand<AddJsonPartitionCommand>();
             }
 
+            if (EngineInterfaceRegistry.IsSupported<IEbxTypeLibrary>(s_EngineType) &&
+                EngineInterfaceRegistry.IsSupported<IPartitionGenerator>(s_EngineType))
+            {
+                RegisterCommand<ReferenceConvertedPartitionCommand>();
+            }
+
             if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))
             {
                 RegisterCommand<ReferenceExistingPartitionCommand>();
@@ -211,6 +224,11 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<GenerateRegistryContainerCommand>();
             RegisterCommand<DeriveRegistryContainerCommand>();
             RegisterCommand<BuildMeshVariationDbCommand>();
+            RegisterCommand<AddShaderTexturesCommand>();
+            RegisterCommand<HoistContentCommand>();
+            RegisterCommand<AddVariationEntriesCommand>();
+            RegisterCommand<BuildShaderDatabaseCommand>();
+            RegisterCommand<CollectDrawnShadersCommand>();
             RegisterCommand<BuildMaterialGridCommand>();
             RegisterCommand<CompareRegistryContainersCommand>();
             RegisterCommand<EmitSubworldRegistryCommand>();
@@ -307,6 +325,11 @@ namespace RimeLib.Cmd.Contexts
             m_Builder.WithPartition(p_Name, p_Partition);
         }
 
+        internal void AddDbx(string p_Name, IObjectVariant p_Dbx)
+        {
+            m_Builder.WithDbx(p_Name, p_Dbx);
+        }
+
         internal void AddJsonPartition(string p_Name, FileInfo p_File)
         {
             var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(((SbBuildingContext)Parent!).EngineType);
@@ -394,10 +417,24 @@ namespace RimeLib.Cmd.Contexts
             return m_Builder.GetPartitions();
         }
 
-        internal void AddDependencyBundle(string p_BundleName)
+        internal void AddDependencyBundle(string p_BundleName, bool p_Walked = false)
         {
             m_Builder.WithDependencyBundle(p_BundleName);
+            if (p_Walked)
+                m_WalkedDependencyBundles.Add(p_BundleName);
+            Coverage = null;
         }
+
+        /// <summary>What the dependency and scenario bundles carry; cleared when one is added.</summary>
+        internal DependencyCoverage? Coverage { get; set; }
+
+        /// <summary>
+        /// Dependency bundles that are loaded but not self-contained: what they carry is left out,
+        /// and what that content references is not, unless another dependency carries it.
+        /// </summary>
+        internal IReadOnlySet<string> GetWalkedDependencyBundles() => m_WalkedDependencyBundles;
+
+        private readonly HashSet<string> m_WalkedDependencyBundles = new(StringComparer.OrdinalIgnoreCase);
 
         internal IEnumerable<string> GetDependencyBundles()
         {
@@ -414,6 +451,7 @@ namespace RimeLib.Cmd.Contexts
                 m_Scenarios[p_Scenario] = s_Bundles = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
             s_Bundles.Add(p_BundleName);
+            Coverage = null;
         }
 
         internal IReadOnlyDictionary<string, HashSet<string>> GetScenarios()

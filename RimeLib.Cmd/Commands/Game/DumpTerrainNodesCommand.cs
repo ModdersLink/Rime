@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using RimeLib.Terrain.Frostbite;
 using Newtonsoft.Json;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
@@ -28,29 +27,7 @@ namespace RimeLib.Cmd.Commands.Game
         [CommandArgument(Description = "The output .json file")]
         public FileInfo? Destination { get; set; }
 
-        /// <summary>
-    /// Does encoding <paramref name="p_Payload"/> give back exactly the bytes it was decoded from?
-    /// </summary>
-    private static bool ReEncodes(byte[] p_Payload, byte[] p_Original, int p_BytesPerLine,
-        int p_Lines)
-    {
-        var s_Coded = TerrainRle.Encode(p_Payload, p_BytesPerLine, p_Lines, out _);
-
-        if (s_Coded.Length > p_Original.Length)
-            return false;
-
-        // The node's bytes may be followed by padding the tree does not hand back, so compare the
-        // prefix the encoder claims rather than the whole buffer.
-        for (var i = 0; i < s_Coded.Length; ++i)
-        {
-            if (s_Coded[i] != p_Original[i])
-                return false;
-        }
-
-        return true;
-    }
-
-    public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
+        public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             if (string.IsNullOrWhiteSpace(Name) || Destination is null)
             {
@@ -66,7 +43,9 @@ namespace RimeLib.Cmd.Commands.Game
                 return false;
             }
 
-            var s_Reader = EngineInterfaceRegistry.Create<ITerrainHeightfield>(s_Mounter.GetEngineType());
+            var s_Reader = Require<ITerrainHeightfield>(s_Mounter.GetEngineType(), p_Writer);
+            if (s_Reader == null)
+                return false;
 
             if (!s_Reader.ReadHeightfield(s_Resource.FirstVariant, s_Mounter, out var s_Heightfield) || s_Heightfield == null)
             {
@@ -148,12 +127,9 @@ namespace RimeLib.Cmd.Commands.Game
                 }),
                 materialNodes = s_Heightfield.MaterialNodes.ConvertAll(p_Node =>
                 {
-                    // Decoded here rather than handed over encoded: every consumer wanted the
-                    // samples, and each was reimplementing the same run-length walk to get them.
-                    // One material index per sample, indexing materialPairIndices.
-                    var s_MatSide = (int)s_Heightfield.MaterialSamplesPerSide;
-                    var s_Packed = TerrainRle.Decode(p_Node.Rle, p_Node.LineSizes,
-                        TerrainRle.BytesPerLine(s_MatSide));
+                    // Decoded here rather than handed over encoded: every consumer wants the
+                    // samples. One material index per sample, indexing materialPairIndices.
+                    var s_Samples = s_Reader.DecodeSamples(p_Node, (int)s_Heightfield.MaterialSamplesPerSide, out var s_ReEncodes);
 
                     return (object)new
                     {
@@ -166,24 +142,19 @@ namespace RimeLib.Cmd.Commands.Game
                         // Null when the run-length walk did not land exactly on a line boundary,
                         // so a caller sees "this did not decode" instead of a plausible-looking
                         // buffer that is quietly wrong.
-                        samples = s_Packed == null
-                            ? null
-                            : System.Convert.ToBase64String(
-                                TerrainRle.UnpackRows(s_Packed, s_MatSide, p_Node.LineSizes.Length)),
+                        samples = s_Samples == null ? null : System.Convert.ToBase64String(s_Samples),
                         // Whether the ENCODER reproduces the shipped bytes for this node. A writer
                         // that cannot round-trip the game's own data byte for byte is a writer that
                         // is guessing, so measure it here where the original bytes are still in
                         // hand rather than asserting it from the decoded samples alone.
-                        reencodesExactly = s_Packed != null && ReEncodes(s_Packed, p_Node.Rle,
-                            TerrainRle.BytesPerLine(s_MatSide), p_Node.LineSizes.Length)
+                        reencodesExactly = s_Samples != null && s_ReEncodes
                     };
                 }),
                 destructionSamplesPerSide = s_Heightfield.DestructionSamplesPerSide,
                 destructionNodes = s_Heightfield.DestructionNodes.ConvertAll(p_Node =>
                 {
                     var s_Side = (int)s_Heightfield.DestructionSamplesPerSide;
-                    var s_Depths = TerrainRle.Decode(p_Node.Rle, p_Node.LineSizes,
-                        TerrainRle.BytesPerLine(s_Side));
+                    var s_Depths = s_Reader.DecodeSamples(p_Node, s_Side, out _);
 
                     return (object)new
                     {
@@ -193,10 +164,7 @@ namespace RimeLib.Cmd.Commands.Game
                         min = p_Node.Min,
                         max = p_Node.Max,
                         samplesPerSide = s_Side,
-                        samples = s_Depths == null
-                            ? null
-                            : System.Convert.ToBase64String(
-                                TerrainRle.UnpackRows(s_Depths, s_Side, p_Node.LineSizes.Length))
+                        samples = s_Depths == null ? null : System.Convert.ToBase64String(s_Depths)
                     };
                 }),
                 nodes = s_Nodes

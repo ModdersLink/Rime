@@ -17,8 +17,15 @@ public readonly struct hkpPlacement
     public Vector3 Column2 { get; }
     public Vector3 Translation { get; }
 
-    public static readonly hkpPlacement Identity =
-        new(new Vector3(1, 0, 0), new Vector3(0, 1, 0), new Vector3(0, 0, 1), Vector3.Zero);
+    /// <summary>
+    /// Set for a placement that is an hkQsTransform (a rotation and a per-axis scale, Havok 2012):
+    /// two of those compose as Havok composes them, rotations multiplied and scales multiplied per
+    /// axis, which a product of matrices does not reproduce once a scale is not uniform.
+    /// </summary>
+    public Quaternion? Rotation { get; }
+    public Vector3 Scale { get; }
+
+    public static readonly hkpPlacement Identity = FromQsTransform(Vector3.Zero, Quaternion.Identity, Vector3.One);
 
     public hkpPlacement(Vector3 p_Column0, Vector3 p_Column1, Vector3 p_Column2, Vector3 p_Translation)
     {
@@ -26,11 +33,29 @@ public readonly struct hkpPlacement
         Column1 = p_Column1;
         Column2 = p_Column2;
         Translation = p_Translation;
+        Rotation = null;
+        Scale = Vector3.One;
+    }
+
+    private hkpPlacement(Vector3 p_Translation, Quaternion p_Rotation, Vector3 p_Scale)
+    {
+        Column0 = Vector3.Transform(Vector3.UnitX, p_Rotation) * p_Scale.X;
+        Column1 = Vector3.Transform(Vector3.UnitY, p_Rotation) * p_Scale.Y;
+        Column2 = Vector3.Transform(Vector3.UnitZ, p_Rotation) * p_Scale.Z;
+        Translation = p_Translation;
+        Rotation = p_Rotation;
+        Scale = p_Scale;
+    }
+
+    /// <summary>An hkQsTransform: scale, then rotate, then translate.</summary>
+    public static hkpPlacement FromQsTransform(Vector3 p_Translation, Quaternion p_Rotation, Vector3 p_Scale)
+    {
+        return new hkpPlacement(p_Translation, p_Rotation, p_Scale);
     }
 
     public static hkpPlacement FromTranslation(Vector3 p_Translation)
     {
-        return new hkpPlacement(Identity.Column0, Identity.Column1, Identity.Column2, p_Translation);
+        return FromQsTransform(p_Translation, Quaternion.Identity, Vector3.One);
     }
 
     public Vector3 Apply(Vector3 p_Local)
@@ -41,6 +66,12 @@ public readonly struct hkpPlacement
     /// <summary>This placement applied on TOP of <paramref name="p_Child"/>: outer(inner(v)).</summary>
     public hkpPlacement Compose(hkpPlacement p_Child)
     {
+        // hkQsTransform::setMul: the child's translation scaled and rotated by this one, rotations
+        // and scales multiplied.
+        if (Rotation is { } s_Rotation && p_Child.Rotation is { } s_ChildRotation)
+            return FromQsTransform(Translation + Vector3.Transform(Scale * p_Child.Translation, s_Rotation),
+                                   s_Rotation * s_ChildRotation, Scale * p_Child.Scale);
+
         return new hkpPlacement(
             Column0 * p_Child.Column0.X + Column1 * p_Child.Column0.Y + Column2 * p_Child.Column0.Z,
             Column0 * p_Child.Column1.X + Column1 * p_Child.Column1.Y + Column2 * p_Child.Column1.Z,
@@ -49,9 +80,9 @@ public readonly struct hkpPlacement
     }
 
     /// <summary>
-    /// The determinant of the rotation part. A guard, not a feature: a real Havok placement is a
-    /// rigid transform, so this is 1 -- anything else means the columns were read at the wrong
-    /// offset, which no amount of plausible-looking geometry would reveal.
+    /// The determinant of the rotation part. A guard, not a feature: a Havok 2010 placement is a
+    /// rigid transform, so this is 1, and a Havok 2012 one the product of its scale; anything else
+    /// means the columns were read at the wrong offset.
     /// </summary>
     public float Determinant()
     {

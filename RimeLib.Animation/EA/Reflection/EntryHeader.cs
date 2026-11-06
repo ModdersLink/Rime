@@ -50,6 +50,10 @@ namespace RimeLib.Animation.EA.Reflection
         public override string ToString() => $"{Name} - {Layout?.Name} | 0x{Offset:X04} - 0x{(Offset + ElementSize):X04}";
 
 
+        public EntryHeader()
+        {
+        }
+
         public EntryHeader(RimeReader p_Reader, int p_Id)
         {
             Id = p_Id;
@@ -59,6 +63,7 @@ namespace RimeLib.Animation.EA.Reflection
      
 
 
+        /// <summary>Writes the field; the layout it points at is written at that layout's <see cref="LayoutHeader.Position"/>.</summary>
         public bool Serialize(RimeWriter p_Writer)
         {
             p_Writer.Write(LayoutHash);
@@ -67,13 +72,13 @@ namespace RimeLib.Animation.EA.Reflection
             p_Writer.Write(NameOffset);
 
             p_Writer.Write(Count);
-            p_Writer.Write((short)Flags);
+            p_Writer.Write((ushort)Flags);
             p_Writer.Write(ElementAlign);
             p_Writer.Write(RLE);
 
-            p_Writer.Write(LayoutOffset);;
+            p_Writer.Write(Layout != null ? (ulong)Layout.Position : 0UL);
 
-            throw new NotImplementedException();
+            return true;
         }
 
         public void Deserialize(RimeReader p_Reader)

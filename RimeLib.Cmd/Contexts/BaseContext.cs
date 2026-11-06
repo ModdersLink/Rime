@@ -16,6 +16,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<ListGamesCommand>();
             RegisterCommand<SelectGameCommand>();
             RegisterCommand<BuildSbCommand>();
+            RegisterCommand<BuildLevelCommand>();
         }
 
         public override string GetShortDescription()

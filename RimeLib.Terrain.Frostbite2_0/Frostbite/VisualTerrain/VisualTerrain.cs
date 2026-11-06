@@ -40,6 +40,10 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
 
         public TerrainLayerCombinationDraw[] TerrainLayerCombinationDraws { get; set; } = new TerrainLayerCombinationDraw[0];
 
+        public VisualTerrain()
+        {
+        }
+
         public VisualTerrain(RimeReader p_Reader)
         {
             Deserialize(p_Reader);

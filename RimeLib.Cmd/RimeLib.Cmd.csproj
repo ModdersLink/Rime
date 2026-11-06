@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\RimeLib.Animation\RimeLib.Animation.csproj" />
     <ProjectReference Include="..\RimeLib.Content\RimeLib.Content.csproj" />
     <ProjectReference Include="..\RimeLib.Animation\RimeLib.Animation.csproj" />
     <ProjectReference Include="..\RimeLib.Enlighten\RimeLib.Enlighten.csproj" />

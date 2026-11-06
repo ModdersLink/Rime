@@ -1,0 +1,492 @@
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using RimeLib.Cmd.Contexts;
+using RimeLib.Content.Frostbite;
+using RimeLib.Content.Mounting;
+using RimeLib.Frostbite.Core;
+using RimeLib.Mesh;
+using RimeLib.Serialization;
+using RimeLib.Texture;
+
+namespace RimeLib.Cmd
+{
+    /// <summary>
+    /// Adds existing partitions to a bundle with everything the game reaches for once they load.
+    ///
+    /// The closure has three layers. A bundle that stops after the first one still crashes:
+    ///  1. EBX instance fields: other partitions, resources named after an Asset, chunk guids.
+    ///  2. Chunk guids read out of a resource payload (MeshSet lods, DxTexture mips).
+    ///  3. Resource names read out of a resource payload (terrain, Enlighten).
+    ///
+    /// Anything a dependency bundle already carries is skipped, so the level's own copy wins and
+    /// nothing is registered twice. What the bundle already holds counts as done, so adding a
+    /// second root does not re-walk the first one's closure.
+    /// </summary>
+    internal sealed class PartitionClosure
+    {
+        /// <summary>What one root added, and the references it could not resolve.</summary>
+        public sealed record Result(int Partitions, int Resources, int Chunks, int Meshes, int Skipped, int Walked, IReadOnlyList<string> Unresolved);
+
+        private readonly Queue<string> m_PartitionQueue = new();
+        private readonly Queue<string> m_ResourceQueue = new();
+        // AssetName picks the variant, and is set only for a chunk named by a resource payload.
+        // Origin is for the log, so a chunk traces back to whatever asked for it.
+        private readonly Queue<(GUID Id, string? AssetName, string Origin)> m_ChunkQueue = new();
+
+        private readonly HashSet<string> m_SeenPartitions = new(StringComparer.OrdinalIgnoreCase);
+        // The partition that first referenced each queued one, for the log.
+        private readonly Dictionary<string, string> m_ReferencedFrom = new(StringComparer.OrdinalIgnoreCase);
+        private readonly HashSet<string> m_SeenResources = new(StringComparer.OrdinalIgnoreCase);
+        private readonly HashSet<GUID> m_SeenChunks = new();
+
+        private readonly List<string> m_Unresolved = new();
+
+        private HashSet<string> m_ExcludedPartitions = new(StringComparer.OrdinalIgnoreCase);
+        private HashSet<string> m_ExcludedResources = new(StringComparer.OrdinalIgnoreCase);
+
+        // Excluded partitions whose references are still walked: those only walked dependency
+        // bundles carry.
+        private HashSet<string> m_WalkedPartitions = new(StringComparer.OrdinalIgnoreCase);
+        private readonly string[] m_SkipPrefixes;
+
+        private readonly BundleBuildingContext m_Context;
+        private readonly IEngineMounter m_Mounter;
+        private readonly AssetReferenceScanner m_Scanner;
+        private readonly TextWriter m_Log;
+
+        private int m_AddedPartitions;
+        private int m_AddedResources;
+        private int m_AddedChunks;
+        private int m_AddedMeshes;
+        private int m_Skipped;
+        private int m_Walked;
+
+        private PartitionClosure(BundleBuildingContext p_Context, IEngineMounter p_Mounter, AssetReferenceScanner p_Scanner, string[] p_SkipPrefixes, TextWriter p_Log)
+        {
+            m_Context = p_Context;
+            m_Mounter = p_Mounter;
+            m_Scanner = p_Scanner;
+            m_SkipPrefixes = p_SkipPrefixes;
+            m_Log = p_Log;
+        }
+
+        /// <summary>
+        /// A closure over the bundle being built, from the game mounted as <paramref name="p_Id"/>.
+        /// Null, with the reason written to <paramref name="p_Log"/>, when there is no such game or it
+        /// is another engine's.
+        /// </summary>
+        /// <param name="p_SkipPrefixes">Partition name prefixes left out of the closure.</param>
+        /// <param name="p_Log">Each item added, and the warnings.</param>
+        public static PartitionClosure? Create(BundleBuildingContext p_Context, int p_Id, IReadOnlyList<string> p_SkipPrefixes, TextWriter p_Log)
+        {
+            var s_SbBuildingContext = (SbBuildingContext)p_Context.Parent!;
+            var s_BaseContext = (BaseContext)s_SbBuildingContext.Parent!;
+
+            if (!s_BaseContext.GetMounters().TryGetValue(p_Id, out var s_Mounter))
+            {
+                p_Log.WriteLine($"Id ({p_Id}) is not valid, ensure you mounted a game first.");
+                return null;
+            }
+
+            if (s_Mounter.GetEngineType() != s_SbBuildingContext.EngineType)
+            {
+                p_Log.WriteLine($"Cross-engine support has not been added, ({s_Mounter.GetEngineType()} != {s_SbBuildingContext.EngineType})");
+                return null;
+            }
+
+            var s_PartitionConverter = EngineInterfaceRegistry.Create<IPartitionConverter>(s_Mounter.GetEngineType());
+
+            ITextureConverter? s_TextureConverter = null;
+            try
+            {
+                s_TextureConverter = EngineInterfaceRegistry.Create<ITextureConverter>(s_SbBuildingContext.EngineType);
+            }
+            catch (Exception s_Ex)
+            {
+                // Without it every texture ships its header and no pixels, so warn instead of
+                // quietly building a bundle of blank textures.
+                p_Log.WriteLine($"WARN: no texture converter ({s_Ex.Message}). Texture chunks will not be resolved.");
+            }
+
+            IMeshConverter? s_MeshConverter = null;
+            try
+            {
+                s_MeshConverter = EngineInterfaceRegistry.Create<IMeshConverter>(s_SbBuildingContext.EngineType);
+            }
+            catch (Exception s_Ex)
+            {
+                // Same as textures: without it every mesh ships without its streamed geometry.
+                p_Log.WriteLine($"WARN: no mesh converter ({s_Ex.Message}). Mesh chunks will not be resolved.");
+            }
+
+            var s_Scanner = new AssetReferenceScanner(s_Mounter, s_PartitionConverter, s_TextureConverter, s_MeshConverter)
+            {
+                BindMeshVariationTextures = p_Context.BindMeshVariationTextures,
+            };
+
+            var s_Closure = new PartitionClosure(p_Context, s_Mounter, s_Scanner, p_SkipPrefixes.ToArray(), p_Log);
+            s_Closure.WarnOnPartialMount(p_Log);
+            s_Closure.CollectExclusions();
+            MeshVariationDbIndex.Build(s_Mounter, p_Log);
+            return s_Closure;
+        }
+
+        /// <summary>Adds the named partition, even if the bundle already holds it, and its closure.</summary>
+        public Result Add(string p_Name)
+        {
+            m_PartitionQueue.Clear();
+            m_ResourceQueue.Clear();
+            m_ChunkQueue.Clear();
+            m_ReferencedFrom.Clear();
+            m_Unresolved.Clear();
+            m_AddedPartitions = m_AddedResources = m_AddedChunks = m_AddedMeshes = m_Skipped = m_Walked = 0;
+
+            m_SeenPartitions.Clear();
+            m_SeenResources.Clear();
+            m_SeenChunks.Clear();
+            m_SeenPartitions.UnionWith(m_Context.GetPartitions().Keys);
+            m_SeenResources.UnionWith(m_Context.GetResources().Keys);
+            m_SeenChunks.UnionWith(m_Context.GetChunks().Keys);
+
+            var s_Root = p_Name.ToLowerInvariant();
+            m_SeenPartitions.Remove(s_Root);
+            m_PartitionQueue.Enqueue(s_Root);
+
+            while (m_PartitionQueue.Count > 0 || m_ResourceQueue.Count > 0 || m_ChunkQueue.Count > 0)
+            {
+                while (m_PartitionQueue.Count > 0)
+                    ProcessPartition(m_PartitionQueue.Dequeue());
+
+                while (m_ResourceQueue.Count > 0)
+                    ProcessResource(m_ResourceQueue.Dequeue());
+
+                while (m_ChunkQueue.Count > 0)
+                {
+                    var (s_Id, s_AssetName, s_Origin) = m_ChunkQueue.Dequeue();
+                    ProcessChunk(s_Id, s_AssetName, s_Origin);
+                }
+            }
+
+            return new Result(m_AddedPartitions, m_AddedResources, m_AddedChunks, m_AddedMeshes, m_Skipped, m_Walked, m_Unresolved.ToList());
+        }
+
+        /// <summary>
+        /// Adds each of the named partitions with its closure, and reports what they could not
+        /// resolve to <paramref name="p_Writer"/>. For commands that add what another step found.
+        /// </summary>
+        public void AddAll(IEnumerable<string> p_Names, TextWriter p_Writer)
+        {
+            var s_Unresolved = new List<string>();
+            foreach (var s_Name in p_Names)
+                s_Unresolved.AddRange(Add(s_Name).Unresolved);
+
+            if (s_Unresolved.Count == 0)
+                return;
+
+            p_Writer.WriteLine($"{s_Unresolved.Count} reference(s) in their closure could not be resolved:");
+            foreach (var s_Line in s_Unresolved.Distinct())
+                p_Writer.WriteLine($"  {s_Line}");
+        }
+
+        /// <summary>
+        /// A partial mount makes the closure wrong in two ways, and only one of them is visible.
+        /// A referenced partition in an unmounted superbundle is reported as unresolved, which strict
+        /// mode catches. A MeshVariationDatabase in an unmounted superbundle is simply absent from the
+        /// index, so the meshes it binds ship without their textures and nothing reports it.
+        /// </summary>
+        private void WarnOnPartialMount(TextWriter p_Writer)
+        {
+            var s_Mounted = m_Mounter.GetMountedSuperbundles().Count();
+            var s_Available = m_Mounter.GetAvailableSuperbundles().Count();
+
+            if (s_Mounted >= s_Available)
+                return;
+
+            p_Writer.WriteLine($"WARN: {s_Mounted} of {s_Available} superbundles mounted. References and mesh textures outside them cannot be found. Mount the game with automount for a complete closure.");
+        }
+
+        /// <summary>
+        /// A dependency bundle is declared loaded before ours, so everything it carries is already
+        /// there and a second copy registers it twice.
+        ///
+        /// Chunks are deliberately not excluded. A bundle-resident chunk resolves through a hash
+        /// table the engine builds per bundle, so a chunk in the level's bundle is not reachable
+        /// from ours, and a miss on that path hangs retail instead of failing.
+        /// </summary>
+        private void CollectExclusions()
+        {
+            // The same for every root of the bundle, so worked out once.
+            if (m_Context.Coverage is { } s_Coverage && s_Coverage.Mounter == m_Mounter)
+            {
+                (m_ExcludedPartitions, m_ExcludedResources, m_WalkedPartitions) = (s_Coverage.Partitions, s_Coverage.Resources, s_Coverage.Walked);
+                return;
+            }
+
+            var s_Walked = m_Context.GetWalkedDependencyBundles();
+            var s_SelfContained = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var s_Bundle in m_Context.GetDependencyBundles())
+            {
+                AddBundleCoverage(s_Bundle, m_ExcludedPartitions, m_ExcludedResources);
+                if (s_Walked.Contains(s_Bundle))
+                    AddBundleCoverage(s_Bundle, m_WalkedPartitions, new HashSet<string>());
+                else
+                    AddBundleCoverage(s_Bundle, s_SelfContained, new HashSet<string>());
+            }
+            m_WalkedPartitions.ExceptWith(s_SelfContained);
+
+            CollectScenarioExclusions();
+
+            if (m_ExcludedPartitions.Count > 0 || m_ExcludedResources.Count > 0)
+                m_Log.WriteLine($"Dependency bundles cover {m_ExcludedPartitions.Count} partition(s) and {m_ExcludedResources.Count} resource(s).");
+
+            m_Context.Coverage = new DependencyCoverage(m_Mounter, m_ExcludedPartitions, m_ExcludedResources, m_WalkedPartitions);
+        }
+
+        /// <summary>
+        /// Scenarios are mutually exclusive loadouts, so only what every one of them carries is
+        /// certain to be there. That is the intersection, not the union: anything a single scenario
+        /// lacks has to ship, or the bundle breaks on that one.
+        /// </summary>
+        private void CollectScenarioExclusions()
+        {
+            var s_Scenarios = m_Context.GetScenarios();
+
+            if (s_Scenarios.Count == 0)
+                return;
+
+            HashSet<string>? s_Shared = null;
+            HashSet<string>? s_SharedResources = null;
+
+            foreach (var s_Scenario in s_Scenarios)
+            {
+                var s_Partitions = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                var s_Resources = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                foreach (var s_Bundle in s_Scenario.Value)
+                {
+                    if (!BundleExists(s_Bundle, s_Scenario.Key))
+                        continue;
+
+                    AddBundleCoverage(s_Bundle, s_Partitions, s_Resources);
+                }
+
+                if (s_Shared == null)
+                {
+                    s_Shared = s_Partitions;
+                    s_SharedResources = s_Resources;
+                    continue;
+                }
+
+                s_Shared.IntersectWith(s_Partitions);
+                s_SharedResources!.IntersectWith(s_Resources);
+            }
+
+            m_ExcludedPartitions.UnionWith(s_Shared!);
+            m_ExcludedResources.UnionWith(s_SharedResources!);
+
+            m_Log.WriteLine(
+                $"{s_Scenarios.Count} scenario(s) all carry {s_Shared!.Count} partition(s) and {s_SharedResources!.Count} resource(s).");
+        }
+
+        /// <summary>
+        /// An unknown bundle enumerates as empty rather than failing, which would silently empty the
+        /// intersection and turn the whole gate off. A named scenario bundle has to exist.
+        /// </summary>
+        private bool BundleExists(string p_Bundle, string p_Scenario)
+        {
+            if (m_Mounter.GetAvailableBundles().Contains(p_Bundle, StringComparer.OrdinalIgnoreCase))
+                return true;
+
+            if (m_Mounter.GetAvailableSuperbundles().Contains(p_Bundle, StringComparer.OrdinalIgnoreCase))
+            {
+                m_Log.WriteLine(
+                    $"WARN: scenario '{p_Scenario}' names superbundle '{p_Bundle}', which is not a bundle. Only some of a superbundle's bundles load at once. Name the bundles that load.");
+            }
+            else
+            {
+                m_Log.WriteLine($"WARN: scenario '{p_Scenario}' names unknown bundle '{p_Bundle}'.");
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// What a dependency bundle carries: one built earlier into this superbundle (a level's main
+        /// bundle, for its sub-worlds), or the mounted game's.
+        /// </summary>
+        private void AddBundleCoverage(string p_Bundle, HashSet<string> p_Partitions, HashSet<string> p_Resources)
+        {
+            if (((SbBuildingContext)m_Context.Parent!).GetBuiltBundle(p_Bundle) is { } s_Built)
+            {
+                p_Partitions.UnionWith(s_Built.Partitions.Keys);
+                p_Resources.UnionWith(s_Built.Resources.Keys);
+                return;
+            }
+
+            try
+            {
+                foreach (var s_Partition in m_Mounter.GetPartitionsInBundle(p_Bundle))
+                    p_Partitions.Add(s_Partition);
+
+                foreach (var s_Resource in m_Mounter.GetResourcesInBundle(p_Bundle))
+                    p_Resources.Add(s_Resource.Name);
+            }
+            catch (Exception s_Ex)
+            {
+                m_Log.WriteLine($"WARN: could not enumerate dependency bundle '{p_Bundle}': {s_Ex.Message}");
+            }
+        }
+
+        private void ProcessPartition(string p_Name)
+        {
+            if (!m_SeenPartitions.Add(p_Name))
+                return;
+
+            if (IsSkippedByPrefix(p_Name))
+            {
+                m_Skipped++;
+                return;
+            }
+
+            // A self-contained dependency bundle brings its own closure, so there is nothing left to
+            // walk here. A walked one does not: its content's references still ship with us.
+            if (m_ExcludedPartitions.Contains(p_Name))
+            {
+                m_Skipped++;
+                if (m_WalkedPartitions.Contains(p_Name) && m_Mounter.TryGetPartition(p_Name, out var s_Walked))
+                {
+                    m_Walked++;
+                    Enqueue(m_Scanner.ScanPartition(p_Name, s_Walked.FirstVariant), p_Name);
+                }
+                return;
+            }
+
+            if (!m_Mounter.TryGetPartition(p_Name, out var s_Partition))
+            {
+                m_Unresolved.Add($"partition {p_Name}");
+                return;
+            }
+
+            var s_Variant = m_Context.Cas()
+                ? s_Partition.Variants.FirstOrDefault(p_V => p_V.Cas && p_V.GetContainedBundle() != null) ?? s_Partition.FirstVariant
+                : s_Partition.FirstVariant;
+
+            m_Context.AddPartition(p_Name, s_Variant);
+            m_AddedPartitions++;
+            m_Log.WriteLine(m_ReferencedFrom.TryGetValue(p_Name, out var s_From) ? $"PART {p_Name} <- {s_From}" : $"PART {p_Name}");
+
+            Enqueue(m_Scanner.ScanPartition(p_Name, s_Variant), p_Name);
+        }
+
+        private void ProcessResource(string p_Name)
+        {
+            if (!m_SeenResources.Add(p_Name))
+                return;
+
+            if (IsSkippedByPrefix(p_Name) || m_ExcludedResources.Contains(p_Name))
+            {
+                m_Skipped++;
+                return;
+            }
+
+            if (!m_Mounter.TryGetResource(p_Name, out var s_Resource))
+            {
+                // Most names tried here are speculative suffixes, so a miss is normal and not worth
+                // reporting.
+                return;
+            }
+
+            var s_Variant = m_Context.Cas()
+                ? s_Resource.Variants.FirstOrDefault(p_V => p_V.Cas && p_V.GetContainedBundle() != null) ?? s_Resource.FirstVariant
+                : s_Resource.Variants.FirstOrDefault(p_V => p_V.GetContainedBundle() != null) ?? s_Resource.FirstVariant;
+
+            m_Context.AddResource(p_Name, s_Variant);
+            m_AddedResources++;
+
+            var s_Type = s_Variant.GetResourceType();
+            m_Log.WriteLine($"RES  {p_Name} ({s_Type})");
+
+            if (s_Type == ResourceType.MeshSet)
+                m_AddedMeshes++;
+
+            var s_References = m_Scanner.ScanResource(p_Name, s_Variant);
+
+            foreach (var s_PayloadResource in s_References.PayloadResources)
+                m_Log.WriteLine($"PAY  {p_Name} -> res {s_PayloadResource}");
+
+            Enqueue(s_References, $"res {p_Name}");
+        }
+
+        private void ProcessChunk(GUID p_Id, string? p_AssetName, string p_Origin)
+        {
+            if (!m_SeenChunks.Add(p_Id))
+                return;
+
+            if (!m_Mounter.TryGetChunk(p_Id, out var s_Chunk))
+            {
+                m_Unresolved.Add($"chunk {p_Id} (from {p_Origin})");
+                return;
+            }
+
+            // A chunk that only chunk superbundles carry, outside any bundle (BF4's localisation
+            // and mpchunks voice-over), loads with them, not with a bundle. A level's own
+            // superbundle-level chunks, which other levels borrow, are not such.
+            if (s_Chunk.Variants.All(p_V => p_V.GetContainedBundle() == null && !p_V.GetContainedSuperbundle().Contains("/levels/", StringComparison.OrdinalIgnoreCase)))
+            {
+                m_Skipped++;
+                return;
+            }
+
+            // The variant that carries the owner's name hash is the one the game's own bundle ships.
+            // It is ranged to exactly the slice that resource asks for. Any other variant is a
+            // different slice of the same payload and reads the wrong bytes.
+            IChunkVariant? s_Variant = null;
+            if (!string.IsNullOrEmpty(p_AssetName))
+            {
+                var s_Hash = (int)RimeLib.Frostbite.Utils.HashQuick(p_AssetName!);
+                s_Variant = s_Chunk.Variants.FirstOrDefault(p_V => p_V.GetAssetNameHash() == s_Hash);
+            }
+
+            s_Variant ??= s_Chunk.Variants.FirstOrDefault(p_V => p_V.GetAssetNameHash() != null) ?? s_Chunk.FirstVariant;
+
+            m_Context.AddChunk(p_Id, s_Variant);
+            m_AddedChunks++;
+            m_Log.WriteLine($"CHNK {p_Id} <- {p_Origin}");
+        }
+
+        /// <summary>Queues everything one scanned item references, and records what it could not scan.</summary>
+        private void Enqueue(AssetReferenceScanner.References p_References, string? p_From)
+        {
+            foreach (var s_Partition in p_References.Partitions)
+            {
+                if (p_From != null)
+                    m_ReferencedFrom.TryAdd(s_Partition, p_From);
+                m_PartitionQueue.Enqueue(s_Partition);
+            }
+
+            foreach (var s_Resource in p_References.Resources)
+                m_ResourceQueue.Enqueue(s_Resource);
+
+            foreach (var s_Chunk in p_References.Chunks)
+                m_ChunkQueue.Enqueue(s_Chunk);
+
+            m_Unresolved.AddRange(p_References.Problems);
+        }
+
+        private bool IsSkippedByPrefix(string p_Name)
+        {
+            foreach (var s_Prefix in m_SkipPrefixes)
+            {
+                if (p_Name.StartsWith(s_Prefix, StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+
+            return false;
+        }
+    }
+
+    /// <summary>The partitions and resources a bundle's dependencies carry, and those of them still walked.</summary>
+    internal sealed record DependencyCoverage(IEngineMounter Mounter, HashSet<string> Partitions, HashSet<string> Resources, HashSet<string> Walked);
+}

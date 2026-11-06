@@ -15,6 +15,7 @@ namespace RimeLib.Mesh.Frostbite2013_2.Frostbite;
 /// </remarks>
 public class MeshSubset : IFbSerializable
 {
+    public const int Size = 0xC0;
     public const int TrailingSize = 44;
 
     public ulong GeometryDeclarations { get; set; } // RelocPtr
@@ -28,10 +29,12 @@ public class MeshSubset : IFbSerializable
     public PrimitiveType PrimitiveType { get; set; }
     public byte BonesPerVertex { get; set; }
     public byte BoneCount { get; set; }
-    public RelocPtr<ushort> BoneIndices { get; set; } = new();
+    public RelocPtrArray<ushort> BoneIndices { get; set; } = new();
     public GeometryDeclarationDesc GeometryDeclarationDesc { get; set; } = new();
     public Array<float> TexCoordRatios { get; set; } = new(); // float[6]
-    public byte[] Trailing { get; set; } = Array.Empty<byte>();
+
+    /// <summary>The <see cref="TrailingSize"/> bytes after the ratios, by default those most subsets end in.</summary>
+    public byte[] Trailing { get; set; } = Convert.FromHexString("000000000000000000000000FFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFFFFFFFFFF00000000");
 
     public MeshSubset()
     {
@@ -55,7 +58,7 @@ public class MeshSubset : IFbSerializable
         PrimitiveType = (PrimitiveType)p_Reader.ReadUByte();
         BonesPerVertex = p_Reader.ReadUByte();
         BoneCount = p_Reader.ReadUByte();
-        BoneIndices = new RelocPtr<ushort>(p_Reader);
+        BoneIndices = new RelocPtrArray<ushort>(p_Reader, BoneCount);
         GeometryDeclarationDesc = new GeometryDeclarationDesc(p_Reader);
 
         for (var i = 0; i < 6; ++i)
@@ -66,9 +69,30 @@ public class MeshSubset : IFbSerializable
 
     public void Deserialize(byte[] p_Data) => Deserialize(new RimeReader(new MemoryStream(p_Data)));
 
-    public bool Serialize(RimeWriter p_Writer) =>
-        throw new NotSupportedException("Writing a Frostbite 2013.2 mesh subset is not supported.");
+    /// <summary>Writes the subset; the pointers are the slots, whose targets the MeshSet places.</summary>
+    public bool Serialize(RimeWriter p_Writer)
+    {
+        p_Writer.Write(GeometryDeclarations);
+        MaterialName.Serialize(p_Writer);
+        p_Writer.Write(MaterialIndex);
+        p_Writer.Write(PrimitiveCount);
+        p_Writer.Write(StartIndex);
+        p_Writer.Write(VertexOffset);
+        p_Writer.Write(VertexCount);
+        p_Writer.Write(VertexStride);
+        p_Writer.Write((byte)PrimitiveType);
+        p_Writer.Write(BonesPerVertex);
+        p_Writer.Write(BoneCount);
+        BoneIndices.Serialize(p_Writer);
+        GeometryDeclarationDesc.Serialize(p_Writer);
+
+        foreach (var s_Ratio in TexCoordRatios.AsList)
+            p_Writer.Write(s_Ratio);
+
+        p_Writer.Write(Trailing);
+        return true;
+    }
 
     public bool Serialize([NotNullWhen(true)] out byte[]? p_Data) =>
-        throw new NotSupportedException("Writing a Frostbite 2013.2 mesh subset is not supported.");
+        throw new NotSupportedException("A mesh subset is written as part of its MeshSet.");
 }

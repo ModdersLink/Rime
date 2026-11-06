@@ -18,6 +18,10 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
 
         //TerrainLayerCombinationDrawDatabase
 
+        public VisualTerrainLayer()
+        {
+        }
+
         public VisualTerrainLayer(RimeReader p_Reader)
         {
             Deserialize(p_Reader);

@@ -7,8 +7,11 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
     [CommandDescription("Adds a bundle that definitely gets loaded before the bundle that gets built.")]
     internal class AddDependencyBundleCommand : Command
     {
-        [CommandArgument(Description = "The name of the dependency bundle.")]
+        [CommandArgument(Description = "The name of the dependency bundle: the mounted game's, or one built earlier into this superbundle.")]
         public string? Name { get; set; }
+
+        [CommandArgument(Description = "The bundle is loaded but not self-contained: leave out what it carries, but still add what that content references.", Optional = true)]
+        public bool Walked { get; set; }
 
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
@@ -19,7 +22,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             }
 
             var s_BundleContext = (BundleBuildingContext)p_Context;
-            s_BundleContext.AddDependencyBundle(Name);
+            s_BundleContext.AddDependencyBundle(Name, Walked);
 
             return true;
         }

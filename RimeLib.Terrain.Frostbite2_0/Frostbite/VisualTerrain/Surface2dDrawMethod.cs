@@ -28,6 +28,13 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
 
         public bool DestructionMaskEnable;
        
+        public Surface2dDrawMethod()
+        {
+        }
+
+        /// <summary>Whether the method stores its own DestructionMaskEnable; a later engine keeps one per resource.</summary>
+        protected virtual bool HasDestructionMaskEnable => true;
+
         public Surface2dDrawMethod(RimeReader p_Reader)
         {
             Deserialize(p_Reader);
@@ -46,7 +53,8 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
                 p_Writer.Write(s_Index);
 
             p_Writer.WriteNullTerminatedString(ShaderName);
-            p_Writer.Write(DestructionMaskEnable);
+            if (HasDestructionMaskEnable)
+                p_Writer.Write(DestructionMaskEnable);
 
             return true;
         }
@@ -60,7 +68,8 @@ namespace RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain
                 MaskedTerrainLayerIndices[i] = p_Reader.ReadUByte();
 
             ShaderName = p_Reader.ReadNullTerminatedString();
-            DestructionMaskEnable = p_Reader.ReadBool();
+            if (HasDestructionMaskEnable)
+                DestructionMaskEnable = p_Reader.ReadBool();
         }
 
         public bool Serialize([NotNullWhen(true)] out byte[]? p_Data)
