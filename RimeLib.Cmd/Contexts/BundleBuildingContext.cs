@@ -239,7 +239,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<EmitSubworldRegistryCommand>();
             RegisterCommand<KeepOnlyPartitionCommand>();
 
-            RegisterEngineCommands(s_EngineType);
+            // RegisterEngineCommands(s_EngineType);
         }
 
         public bool Cas()

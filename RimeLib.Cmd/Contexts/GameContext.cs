@@ -160,7 +160,7 @@ namespace RimeLib.Cmd.Contexts
                 }
             }
 
-            RegisterEngineCommands(s_EngineType);
+            // RegisterEngineCommands(s_EngineType);
         }
 
         public override string GetShortDescription()
