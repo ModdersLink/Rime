@@ -61,6 +61,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<DumpShaderTexturesCommand>();
             RegisterCommand<WhereIsCommand>();
             RegisterCommand<RoundTripResourcesCommand>();
+            RegisterCommand<RoundTripHavokObjectsCommand>();
+            RegisterCommand<ConvertHavokPhysicsCommand>();
             RegisterCommand<DumpShaderBytecodeCommand>();
             RegisterCommand<DumpEbxLayoutCommand>();
             RegisterCommand<ListResourcesOfTypeJsonCommand>();
