@@ -8,12 +8,9 @@ using RimeLib.Content.Frostbite;
 using RimeLib.Frostbite;
 using RimeLib.IO;
 using RimeLib.IO.Conversion;
-using RimeLib.Terrain.Frostbite2_0;
-using RimeLib.Terrain.Frostbite2_0.Frostbite.TerrainMask;
-using RimeLib.Terrain.Frostbite2_0.Frostbite.VisualTerrain;
 using RimeLib.Terrain.Resources;
 
-namespace RimeLib.Cmd.Frostbite2_0.Commands.BundleBuilding
+namespace RimeLib.Cmd.Commands.BundleBuilding
 {
     /// <summary>
     /// Gives a terrain the visuals of one of this engine's own: its visual terrain, renamed to draw
@@ -28,7 +25,6 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.BundleBuilding
     /// each layer becomes the template layer that leaves the most nodes such a combination with a
     /// surface draw, and an exact one where it can.
     /// </summary>
-    [EngineCommand(typeof(BundleBuildingContext), EngineType.Frostbite2_0)]
     [CommandDescription("Gives a terrain a template terrain's visuals: its visual terrain, renamed and without scattering, and the terrain's own decals drawn with the template's decal shaders (or empty decals).")]
     public class AddTemplateVisualTerrainCommand : Command
     {

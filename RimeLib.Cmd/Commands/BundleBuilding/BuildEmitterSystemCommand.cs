@@ -2,13 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using fb;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Building;
 using RimeLib.Content.Frostbite;
 using RimeLib.Content.Mounting;
-using RimeLib.Frostbite;
 using RimeLib.Frostbite.Core;
 using RimeLib.Frostbite.Db;
 using RimeLib.IO;
@@ -16,7 +14,7 @@ using RimeLib.Serialization;
 using RimeLib.Serialization.Conversion;
 using RimeLib.Texture.Images;
 
-namespace RimeLib.Cmd.Frostbite2_0.Commands.BundleBuilding
+namespace RimeLib.Cmd.Commands.BundleBuilding
 {
     /// <summary>
     /// Builds a level's emitter system from a template level's and the atlas textures the converted
@@ -26,7 +24,6 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.BundleBuilding
     /// template entry keeps its texels at half its height; the atlas textures go into the bottom half
     /// of the base atlas.
     /// </summary>
-    [EngineCommand(typeof(BundleBuildingContext), EngineType.Frostbite2_0)]
     [CommandDescription("Builds an emitter system and its atlases from a template level's and the atlas textures the converted closures met.")]
     public class BuildEmitterSystemCommand : Command
     {

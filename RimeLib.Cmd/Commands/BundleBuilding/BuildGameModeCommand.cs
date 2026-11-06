@@ -5,7 +5,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using fb;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Mounting;
@@ -15,7 +14,7 @@ using RimeLib.IO;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Conversion;
 
-namespace RimeLib.Cmd.Frostbite2_0.Commands.BundleBuilding
+namespace RimeLib.Cmd.Commands.BundleBuilding
 {
     /// <summary>
     /// Builds a game mode's sub-world from a template sub-world of this engine: the template's
@@ -24,7 +23,6 @@ namespace RimeLib.Cmd.Frostbite2_0.Commands.BundleBuilding
     /// partitions of this bundle hold, and fed the source mode's interface values. The template's
     /// own map content is left out.
     /// </summary>
-    [EngineCommand(typeof(BundleBuildingContext), EngineType.Frostbite2_0)]
     [CommandDescription("Builds a game mode's sub-world from a template sub-world's setups, linked to the objects a source map's mode is linked to.")]
     public class BuildGameModeCommand : Command
     {

@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using fb;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Frostbite;
@@ -11,14 +10,13 @@ using RimeLib.IO;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Conversion;
 
-namespace RimeLib.Cmd.Frostbite2_0.Commands.BundleBuilding
+namespace RimeLib.Cmd.Commands.BundleBuilding
 {
     /// <summary>
     /// Adds a reference to a sub-world's bundle to a level of this bundle, loaded as a template
     /// level loads one of its own: with that reference's inclusion settings (the game modes it
     /// loads in) and autoload.
     /// </summary>
-    [EngineCommand(typeof(BundleBuildingContext), EngineType.Frostbite2_0)]
     [CommandDescription("Adds a sub-world bundle to a level of this bundle, included as a template level includes one of its sub-worlds.")]
     public class AddSubWorldCommand : Command
     {
