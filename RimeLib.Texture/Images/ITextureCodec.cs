@@ -2,8 +2,11 @@ using System.Collections.Generic;
 
 namespace RimeLib.Texture.Images;
 
-/// <summary>A texture resource's payload and the streaming chunk it names.</summary>
-public sealed record TextureResource(byte[] Header, byte[] Chunk);
+/// <summary>
+/// A texture resource's payload, the streaming chunk it names and the resource meta the engine
+/// ships it with, or none where the engine's meta is not known.
+/// </summary>
+public sealed record TextureResource(byte[] Header, byte[] Chunk, byte[]? Meta = null);
 
 /// <summary>
 /// Reads an engine's texture header and chunk into a <see cref="TextureImage"/> and writes them back.
