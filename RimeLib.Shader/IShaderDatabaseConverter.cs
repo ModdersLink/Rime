@@ -10,6 +10,14 @@ namespace RimeLib.Shader
     /// <param name="TemplateKey">The key of the template shader in the template database.</param>
     public sealed record ConvertedShader(string Name, uint TemplateKey);
 
+    /// <summary>
+    /// A shader whose g-buffer pixel shader was translated into the target's: its name in the target, the source
+    /// solution the translation was made from, the target's shader it is drawn as, and the translated bytecode for
+    /// each of that template's solutions (by index, in the render path it was translated for).
+    /// </summary>
+    public sealed record TranslatedShader(string Name, uint SourceKey, int SourceSolution, uint TemplateKey,
+        string RenderPath, IReadOnlyDictionary<int, byte[]> Pixels);
+
     /// <summary>Converts shaders of this engine's shader databases to another engine's.</summary>
     public interface IShaderDatabaseConverter : IEngineInterface
     {
@@ -25,6 +33,17 @@ namespace RimeLib.Shader
         /// <param name="p_Template">A shaderdb resource of the target's engine holding the templates.</param>
         /// <param name="p_MoveName">A texture's name as it is named in the target.</param>
         byte[] Convert(byte[] p_Source, IReadOnlyDictionary<uint, ConvertedShader> p_Shaders, byte[] p_Template, EngineType p_Target,
+            Func<string, string> p_MoveName, TextWriter p_Log);
+
+        /// <summary>
+        /// A shader database of the target's engine holding each translated shader under its name: its template's
+        /// solutions, states and vertex shaders, with the translated pixel shaders in the solutions they were made
+        /// for, bound by the source solution's constants - its textures and parameters - and the template's engine
+        /// functions. The template's other solutions keep its own pixel shaders.
+        /// </summary>
+        /// <param name="p_Source">This engine's shaderdb resource, holding the translated shaders.</param>
+        /// <param name="p_Template">A shaderdb resource of the target's engine holding the templates.</param>
+        byte[] ConvertTranslated(byte[] p_Source, IReadOnlyList<TranslatedShader> p_Shaders, byte[] p_Template, EngineType p_Target,
             Func<string, string> p_MoveName, TextWriter p_Log);
     }
 }

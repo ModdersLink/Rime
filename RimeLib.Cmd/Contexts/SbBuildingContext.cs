@@ -169,6 +169,18 @@ namespace RimeLib.Cmd.Contexts
         internal IReadOnlyDictionary<string, RimeLib.Serialization.Conversion.ShaderStandIns>? ShaderStandIns { get; set; }
 
         /// <summary>
+        /// The shader translator (RimeShaderEditor) that translates converted shaders' g-buffer pixel shaders onto
+        /// their stand-ins' (set_shader_translator); null to only stand in.
+        /// </summary>
+        internal string? ShaderTranslator { get; set; }
+
+        /// <summary>
+        /// The converted shaders whose pixel shaders were translated, with the source shader database each is in,
+        /// for add_translated_shaders to give them their entries. Their materials keep their own shaders.
+        /// </summary>
+        internal List<(string SourceDatabase, RimeLib.Content.Mounting.IEngineMounter Source, RimeLib.Shader.TranslatedShader Shader)> TranslatedShaders { get; } = new();
+
+        /// <summary>
         /// The source resources the converted closures met of a type not converted, by their name in
         /// the source, for a command that builds what they hold in this engine's form (an emitter
         /// system's atlas from the atlas textures).
@@ -198,6 +210,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<RemoveBundleCommand>();
             RegisterCommand<ListBundlesCommand>();
             RegisterCommand<BuildCommand>();
+            RegisterCommand<SetShaderTranslatorCommand>();
         }
 
         internal void AddCasTocChunk(GUID p_Id, Sha1 p_Sha1)

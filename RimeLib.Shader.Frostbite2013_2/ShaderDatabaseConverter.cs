@@ -91,27 +91,208 @@ public class ShaderDatabaseConverter : IShaderDatabaseConverter
         return s_Result.Serialize(out var s_Data) ? s_Data : [];
     }
 
+    public byte[] ConvertTranslated(byte[] p_Source, IReadOnlyList<TranslatedShader> p_Shaders, byte[] p_Template, EngineType p_Target,
+        Func<string, string> p_MoveName, TextWriter p_Log)
+    {
+        if (p_Target != EngineType.Frostbite2_0)
+            throw new NotSupportedException($"shaders are converted to Frostbite 2 only, not {p_Target}");
+
+        var s_Source = new ShaderDatabaseContainer();
+        s_Source.Deserialize(p_Source);
+        var s_Template = new BaseContainer();
+        s_Template.Deserialize(p_Template);
+
+        var s_Result = new BaseContainer();
+        foreach (var (s_Path, s_Templates) in s_Template.Databases)
+        {
+            // Every render path of the template gets the shader: its own pixel shaders where none was translated.
+            var s_From = s_Source.Databases.GetValueOrDefault(s_Path) as ShaderDatabase;
+            var s_Into = new BaseDatabase { RenderPath = s_Path };
+            var s_Writer = new Writer(s_From, s_Into, p_MoveName, p_Log, s_Templates);
+            foreach (var s_Shader in p_Shaders)
+            {
+                var s_TemplateInfo = s_Templates.ShaderInfos.FirstOrDefault(p_I => p_I.Key == s_Shader.TemplateKey);
+                if (s_TemplateInfo == null)
+                {
+                    p_Log.WriteLine($"  {s_Shader.Name} ({s_Path}): the template database has no shader 0x{s_Shader.TemplateKey:X8}; left out.");
+                    continue;
+                }
+
+                var s_Info = s_From?.ShaderInfos.FirstOrDefault(p_I => p_I.Key == s_Shader.SourceKey);
+                var s_Translated = s_Path.ToString() == s_Shader.RenderPath && s_Info != null && s_Shader.SourceSolution < s_Info.Solutions.Length
+                    ? (ShaderSolution)s_Info.Solutions[s_Shader.SourceSolution] : null;
+                s_Writer.AddTranslated(s_Info, s_Translated, s_TemplateInfo, s_Shader.Name,
+                    s_Translated == null ? new Dictionary<int, byte[]>() : s_Shader.Pixels);
+            }
+
+            s_Into.ShaderInfos = s_Into.ShaderInfos.OrderBy(p_I => p_I.Key).ToList();
+            s_Into.Resolve();
+            s_Result.Databases.Add(s_Path, s_Into);
+            p_Log.WriteLine($"render path {s_Path}: {s_Into.ShaderInfos.Count} translated shader(s), {s_Into.Solutions.Count} solution(s), " +
+                $"{s_Writer.Translated} with a translated pixel shader.");
+        }
+
+        return s_Result.Serialize(out var s_Data) ? s_Data : [];
+    }
+
     /// <summary>Writes converted shaders of one source render path into a Frostbite 2 database.</summary>
     private sealed class Writer
     {
-        private readonly ShaderDatabase m_From;
+        private readonly ShaderDatabase? m_From;
         private readonly BaseDatabase m_Into;
         private readonly Func<string, string> m_MoveName;
         private readonly TextWriter m_Log;
+        private readonly BaseDatabase? m_Template;
         private readonly HashSet<uint> m_Declarations = new();
 
-        public Writer(ShaderDatabase p_From, BaseDatabase p_Into, Func<string, string> p_MoveName, TextWriter p_Log)
+        /// <summary>The solutions written with a translated pixel shader.</summary>
+        public int Translated { get; private set; }
+
+        public Writer(ShaderDatabase? p_From, BaseDatabase p_Into, Func<string, string> p_MoveName, TextWriter p_Log, BaseDatabase? p_Template = null)
         {
             m_From = p_From;
             m_Into = p_Into;
             m_MoveName = p_MoveName;
             m_Log = p_Log;
+            m_Template = p_Template;
+        }
+
+        /// <summary>
+        /// The template shader under the translated shader's name, solution for solution: the template's state,
+        /// vertex shader and constants, and, where a translation was made for a solution, its pixel shader bound
+        /// by the source solution's constants and the template's engine functions; the template's own elsewhere.
+        /// </summary>
+        public void AddTranslated(BaseInfo? p_Info, ShaderSolution? p_Source, BaseInfo p_Template, string p_Name, IReadOnlyDictionary<int, byte[]> p_Pixels)
+        {
+            var s_Key = RimeLib.Frostbite.Utils.HashQuickLowerCase(p_Name);
+            var s_Solutions = new List<ushort>();
+            for (var i = 0; i < p_Template.Solutions.Length; i++)
+            {
+                var s_Template = p_Template.Solutions[i];
+                if (s_Template.GeometryPermutation != null)
+                {
+                    m_Log.WriteLine($"  {p_Name}: the template's solution {i} has a geometry shader; left out.");
+                    continue;
+                }
+
+                var s_State = BaseDatabase.Clone(s_Template.State);
+                s_State.SurfaceShaderNameHash = s_Key;
+                if (m_Declarations.Add(s_State.GeometryDeclarationHash))
+                    m_Into.Declarations.AddRange(m_Template!.Declarations.Where(p_D => p_D.Hash == s_State.GeometryDeclarationHash).Select(BaseDatabase.Clone));
+
+                long s_Pixel, s_PixelConstants;
+                if (p_Source?.PixelPermutation != null && p_Pixels.TryGetValue(i, out var s_Bytecode) && s_Template.PixelPermutation != null &&
+                    TranslatedPixel(p_Source.PixelPermutation, s_Template.PixelPermutation, s_Bytecode, p_Name) is { } s_Translated)
+                {
+                    s_Pixel = s_Translated;
+                    s_PixelConstants = Constant(p_Source.PixelConstants);
+                    ++Translated;
+                }
+                else
+                {
+                    s_Pixel = s_Template.PixelPermutation == null ? -1 : TemplatePermutation(s_Template.PixelPermutation, new PixelPermutation(), m_Into.PixelPermutations);
+                    s_PixelConstants = TemplateConstant(s_Template.PixelConstants);
+                }
+
+                var s_Converted = new BaseSolution
+                {
+                    StateHash = s_State.Hash,
+                    Flags = s_Template.Flags,
+                    SurfaceType = s_Template.SurfaceType,
+                    BlendMode = s_Template.BlendMode,
+                    AlphaRef = s_Template.AlphaRef,
+                    VertexPermutationIndex = s_Template.VertexPermutation == null ? -1
+                        : TemplatePermutation(s_Template.VertexPermutation, new BaseVertex
+                        {
+                            InputSignatureBytecode = s_Template.VertexPermutation.InputSignatureBytecode,
+                            Elements = s_Template.VertexPermutation.Elements,
+                        }, m_Into.VertexPermutations),
+                    PixelPermutationIndex = s_Pixel,
+                    VertexConstantsIndex = TemplateConstant(s_Template.VertexConstants),
+                    PixelConstantsIndex = s_PixelConstants,
+                    State = s_State,
+                };
+
+                if (m_Into.Solutions.Count > ushort.MaxValue)
+                    throw new InvalidOperationException("More solutions than a shader database can index.");
+                m_Into.Solutions.Add(s_Converted);
+                s_Solutions.Add((ushort)(m_Into.Solutions.Count - 1));
+            }
+
+            if (s_Solutions.Count == 0)
+                return;
+
+            // The template's streamed textures for its own pixel shaders, the source's for the translated ones.
+            var s_Streamable = p_Template.StreamableTextures.Select(BaseDatabase.Clone).ToList();
+            var s_StreamableExternal = p_Template.StreamableExternalTextures.Select(BaseDatabase.Clone).ToList();
+            if (p_Info != null && p_Source != null)
+            {
+                s_Streamable.AddRange(StreamableTextures(p_Info, p_Name).Where(p_T => s_Streamable.All(p_S => p_S.Name != p_T.Name)));
+                s_StreamableExternal.AddRange(StreamableExternalTextures(p_Info, p_Name).Where(p_T => s_StreamableExternal.All(p_S => p_S.ParameterName != p_T.ParameterName)));
+            }
+
+            m_Into.ShaderInfos.Add(new BaseInfo
+            {
+                Key = s_Key,
+                SurfaceShaderType = p_Template.SurfaceShaderType,
+                Flags = p_Template.Flags,
+                BoolParameterCount = p_Template.BoolParameterCount,
+                BoolParameterDefaultMask = p_Template.BoolParameterDefaultMask,
+                BoolParameterRequiredMask = p_Template.BoolParameterRequiredMask,
+                BoolParameterIds = (uint[])p_Template.BoolParameterIds.Clone(),
+                StreamableTextures = s_Streamable.ToArray(),
+                StreamableExternalTextures = s_StreamableExternal.ToArray(),
+                SolutionIndices = s_Solutions,
+            });
+        }
+
+        /// <summary>
+        /// The translated bytecode as a pixel permutation: the source permutation's own constant block (the
+        /// translation keeps its parameter layout), the template's engine functions (it speaks the template's
+        /// contract). Null where the source's block has a function the target lacks.
+        /// </summary>
+        private long? TranslatedPixel(Permutation p_Source, Permutation p_Template, byte[] p_Bytecode, string p_Name)
+        {
+            var s_Pixel = new PixelPermutation();
+            if (!Fill(s_Pixel, p_Source, p_Name))
+                return null;
+
+            s_Pixel.ShaderBytecode = p_Bytecode;
+            m_Into.ConstantFunctions[s_Pixel.ConstantFunctionIndex] = BaseDatabase.Clone(p_Template.ConstantFunction);
+            m_Into.TextureFunctions[s_Pixel.TextureFunctionIndex] = BaseDatabase.Clone(p_Template.TextureFunction);
+            m_Into.PixelPermutations.Add(s_Pixel);
+            return m_Into.PixelPermutations.Count - 1;
+        }
+
+        /// <summary>A copy of a template permutation, already the target's, with copies of its blocks.</summary>
+        private long TemplatePermutation<T>(Permutation p_Template, T p_Into, List<T> p_List) where T : Permutation
+        {
+            p_Into.Guid = p_Template.Guid;
+            p_Into.ShaderBytecode = p_Template.ShaderBytecode;
+            p_Into.InstructionCount = p_Template.InstructionCount;
+            p_Into.ConstantIndex = (int)TemplateConstant(p_Template.Constant);
+            m_Into.ConstantFunctions.Add(BaseDatabase.Clone(p_Template.ConstantFunction));
+            p_Into.ConstantFunctionIndex = m_Into.ConstantFunctions.Count - 1;
+            m_Into.TextureFunctions.Add(BaseDatabase.Clone(p_Template.TextureFunction));
+            p_Into.TextureFunctionIndex = m_Into.TextureFunctions.Count - 1;
+            p_List.Add(p_Into);
+            return p_List.Count - 1;
+        }
+
+        /// <summary>A copy of a template block, -1 for none.</summary>
+        private long TemplateConstant(ShaderConstant? p_Constant)
+        {
+            if (p_Constant == null)
+                return -1;
+
+            m_Into.Constants.Add(BaseDatabase.Clone(p_Constant));
+            return m_Into.Constants.Count - 1;
         }
 
         /// <summary>The shader, its solutions paired with the template's in order, or nothing where they do not pair.</summary>
         public void Add(BaseInfo p_Info, BaseInfo p_Template, string p_Name)
         {
-            var s_Path = m_From.RenderPath;
+            var s_Path = m_From!.RenderPath;
             var s_Untessellated = p_Info.Solutions.Cast<ShaderSolution>()
                 .Where(p_S => p_S.HullPermutation == null && p_S.DomainPermutation == null).ToList();
 
@@ -174,7 +355,7 @@ public class ShaderDatabaseConverter : IShaderDatabaseConverter
             }
 
             if (m_Declarations.Add(s_State.GeometryDeclarationHash))
-                m_Into.Declarations.AddRange(m_From.Declarations.Where(p_D => p_D.Hash == s_State.GeometryDeclarationHash).Select(BaseDatabase.Clone));
+                m_Into.Declarations.AddRange(m_From!.Declarations.Where(p_D => p_D.Hash == s_State.GeometryDeclarationHash).Select(BaseDatabase.Clone));
 
             var s_Converted = new BaseSolution
             {

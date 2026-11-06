@@ -14,6 +14,7 @@ using RimeLib.Frostbite.Db;
 using RimeLib.Havok;
 using RimeLib.IO;
 using RimeLib.Mesh.Sets;
+using RimeLib.Shader;
 using RimeLib.Serialization;
 using RimeLib.Serialization.Conversion;
 using RimeLib.Terrain.Resources;
@@ -839,11 +840,111 @@ namespace RimeLib.Cmd
 
             p_Log.WriteLine($"Shaders: of {s_All} converted mesh subset(s), their shader has a solution for {s_AsAlike} with the most alike stand-ins, {s_AsPicked} as picked, " +
                 $"and {s_Drawn} with {s_Repacked} repacked to a layout it has one for.");
-            var s_Dropped = p_Converted.Sum(p_C => s_Bindings.Rebind(p_C.Partition, s_Picks).Count);
-            p_Log.WriteLine($"Shaders: {s_Picks.Count} stood in for, {s_Plainly} of them by the most used diffuse shader, {s_Owned} of the target's own for drawing more; " +
+            // A translated shader keeps its own shader and parameters: it draws with its stand-in's solutions, so
+            // its subsets were repacked like the stand-in's above, but its materials are not pointed at it.
+            var s_Translated = s_SbContext.ShaderTranslator is { } s_Translator
+                ? TranslateShaders(s_Picks, s_Alike, s_Game, s_Translator, p_Log)
+                : new HashSet<InstanceRef>();
+            var s_StandingIn = s_Picks.Where(p_P => !s_Translated.Contains(p_P.Key)).ToDictionary(p_P => p_P.Key, p_P => p_P.Value);
+
+            var s_Dropped = p_Converted.Sum(p_C => s_Bindings.Rebind(p_C.Partition, s_StandingIn).Count);
+            p_Log.WriteLine($"Shaders: {s_StandingIn.Count} stood in for, {s_Translated.Count} translated, {s_Plainly} of them by the most used diffuse shader, {s_Owned} of the target's own for drawing more; " +
                 $"{s_Skinned.Count} used by skinned meshes, {s_Composite.Count} by composite ones; {s_Dropped} parameter(s) the stand-ins do not take dropped.");
-            return s_Picks.Values.Select(p_S => s_Game.TryGetPartitionByGuid(p_S.Shader.Partition, out var s_Name, out _) ? s_Name : null)
+            return s_StandingIn.Values.Select(p_S => s_Game.TryGetPartitionByGuid(p_S.Shader.Partition, out var s_Name, out _) ? s_Name : null)
                 .OfType<string>().Distinct(StringComparer.OrdinalIgnoreCase).ToList();
+        }
+
+        /// <summary>
+        /// Translates each stood-in source shader's g-buffer pixel shader onto every g-buffer solution of its
+        /// stand-in (the render path the translator speaks, DX11) and records those with any solution translated
+        /// for add_translated_shaders. A solution whose translation would lose its lightmap keeps the stand-in's.
+        /// The source shaders translated.
+        /// </summary>
+        private HashSet<InstanceRef> TranslateShaders(IReadOnlyDictionary<InstanceRef, ShaderStandIn> p_Picks, IReadOnlyDictionary<InstanceRef, InstanceRef> p_Alike,
+            IEngineMounter p_Game, string p_Translator, TextWriter p_Log)
+        {
+            const string c_RenderPath = "ShaderRenderPath_Dx11";
+            var s_Translated = new HashSet<InstanceRef>();
+            if (!EngineInterfaceRegistry.IsSupported<IShaderSolutionReader>(m_Mounter.GetEngineType()) ||
+                !EngineInterfaceRegistry.IsSupported<IShaderSolutionReader>(p_Game.GetEngineType()))
+            {
+                p_Log.WriteLine("Shaders are not translated: their solutions are not read for these engines.");
+                return s_Translated;
+            }
+
+            var s_SourceIndex = ShaderDatabaseIndex.Get(m_Mounter);
+            var s_TargetIndex = ShaderDatabaseIndex.Get(p_Game);
+            var s_SourceReader = EngineInterfaceRegistry.Create<IShaderSolutionReader>(m_Mounter.GetEngineType());
+            var s_TargetReader = EngineInterfaceRegistry.Create<IShaderSolutionReader>(p_Game.GetEngineType());
+            var s_Loaded = new Dictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
+
+            // The DX11 solutions of a shader that write the g-buffer, and the database it is in.
+            (string Database, List<ShaderSolutionPixel> GBuffer)? GBuffer(ShaderDatabaseIndex p_Index, IShaderSolutionReader p_Reader, uint p_Key)
+            {
+                foreach (var (s_Name, s_Load, s_Keys) in p_Index.Databases)
+                {
+                    if (!s_Keys.Contains(p_Key))
+                        continue;
+
+                    if (!s_Loaded.TryGetValue(s_Name, out var s_Data))
+                        s_Loaded[s_Name] = s_Data = s_Load();
+
+                    var s_Pixels = p_Reader.GetPixelShaders(s_Data, p_Key)
+                        .Where(p_P => p_P.RenderPath == c_RenderPath && ShaderTranslation.Outputs(p_P.Bytecode) == 4).ToList();
+                    return (s_Name, s_Pixels);
+                }
+
+                return null;
+            }
+
+            var s_Jobs = new List<ShaderTranslation.Job>();
+            var s_Plans = new List<(InstanceRef Shader, string Database, string Name, uint Key, int SourceSolution, uint TemplateKey, List<(int Solution, int Job)> Targets)>();
+            foreach (var (s_Shader, s_StandIn) in p_Picks)
+            {
+                // A stand-in for the target's own shader draws more of its subsets; there is nothing to translate.
+                if (p_Alike.TryGetValue(s_Shader, out var s_Alike) && s_Alike == s_Shader)
+                    continue;
+
+                var s_Name = Name(m_Mounter, s_Shader);
+                var s_Key = s_SourceIndex.Builder.GetShaderKey(s_Name);
+                var s_TemplateKey = s_TargetIndex.Builder.GetShaderKey(Name(p_Game, s_StandIn.Shader));
+                if (GBuffer(s_SourceIndex, s_SourceReader, s_Key) is not var (s_Database, s_Sources) || s_Sources.Count == 0 ||
+                    GBuffer(s_TargetIndex, s_TargetReader, s_TemplateKey) is not var (_, s_Templates) || s_Templates.Count == 0)
+                    continue;
+
+                var s_Targets = new List<(int, int)>();
+                foreach (var s_Template in s_Templates)
+                {
+                    s_Targets.Add((s_Template.Index, s_Jobs.Count));
+                    s_Jobs.Add(new ShaderTranslation.Job(s_Sources[0].Bytecode, s_Template.Bytecode));
+                }
+
+                s_Plans.Add((s_Shader, s_Database, s_Name, s_Key, s_Sources[0].Index, s_TemplateKey, s_Targets));
+            }
+
+            var s_Results = ShaderTranslation.Run(p_Translator, s_Jobs, p_Log);
+            var s_SbContext = (SbBuildingContext)m_Context.Parent!;
+            foreach (var s_Plan in s_Plans)
+            {
+                var s_Pixels = new Dictionary<int, byte[]>();
+                foreach (var (s_Solution, s_Job) in s_Plan.Targets)
+                {
+                    if (s_Results[s_Job] is { LightmapTermMissing: false } s_Result)
+                        s_Pixels[s_Solution] = s_Result.Bytecode;
+                }
+
+                p_Log.WriteLine(s_Pixels.Count == 0
+                    ? $"STANDIN KEPT {s_Plan.Name}: none of its stand-in's {s_Plan.Targets.Count} g-buffer solution(s) translated"
+                    : $"TRANSLATED {s_Plan.Name}: {s_Pixels.Count} of its stand-in's {s_Plan.Targets.Count} g-buffer solution(s)");
+                if (s_Pixels.Count == 0)
+                    continue;
+
+                s_Translated.Add(s_Plan.Shader);
+                s_SbContext.TranslatedShaders.Add((s_Plan.Database, m_Mounter,
+                    new TranslatedShader(Moved(s_Plan.Name).ToLowerInvariant(), s_Plan.Key, s_Plan.SourceSolution, s_Plan.TemplateKey, c_RenderPath, s_Pixels)));
+            }
+
+            return s_Translated;
         }
 
         /// <summary>The name of the partition of an instance, or its GUID where the game has none.</summary>
