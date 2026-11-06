@@ -54,8 +54,12 @@ public static class HkPhysicsBuilder
         var s_Convex = p_Leaves.Where(p_L => p_L.Kind != "mesh").Select(p_L => Convex(p_L, p_L.Placement)).ToList<HkpShape>();
         var s_Meshes = p_Leaves.Where(p_L => p_L.Kind == "mesh" && p_L.Indices.Count > 0).ToList();
 
-        if (s_Meshes.Count > 0)
-            s_Convex.Insert(0, Mesh(s_Meshes));
+        // In a list each child is read as a part, so each part's triangles are a mesh of their own there.
+        if (s_Meshes.Count > 0 && s_Convex.Count == 0)
+            s_Convex.Add(Mesh(s_Meshes));
+        else if (s_Meshes.Count > 0)
+            s_Convex.InsertRange(0, s_Meshes.GroupBy(p_M => p_M.UserData).OrderBy(p_G => p_G.Key)
+                .Select(p_Part => WithUserData(Mesh([.. p_Part]), p_Part.Key)));
 
         return s_Convex.Count switch
         {
@@ -428,15 +432,23 @@ public static class HkPhysicsBuilder
 
     /// <summary>
     /// Several shapes in a list, behind a MOPP over them where there are many; more than a list
-    /// holds go into lists of their own first.
+    /// holds go into lists of their own first, a list per part where that makes fewer, each behind
+    /// a MOPP: Frostbite reads a hit list child that is a list again at the hit's key, which only
+    /// the outer list numbers. Each such MOPP keeps its part, or the first of its parts.
     /// </summary>
-    private static HkpShape List(List<HkpShape> p_Children)
+    private static HkpShape List(List<HkpShape> p_Children, bool p_Mopp = false)
     {
         if (p_Children.Count > c_ListCapacity)
-            return List(p_Children.Chunk(c_ListCapacity).Select(p_Chunk => p_Chunk.Length == 1 ? p_Chunk[0] : List([.. p_Chunk])).ToList());
+        {
+            var s_Parts = p_Children.GroupBy(p_C => p_C.UserData).OrderBy(p_P => p_P.Key).ToList();
+            var s_Groups = s_Parts.Count > 1 && s_Parts.Count < p_Children.Count
+                ? s_Parts.Select(p_P => p_P.ToArray())
+                : p_Children.OrderBy(p_C => p_C.UserData).Chunk(c_ListCapacity);
+            return List(s_Groups.Select(p_Group => p_Group.Length == 1 ? p_Group[0] : WithUserData(List([.. p_Group], true), p_Group.Min(p_C => p_C.UserData))).ToList(), p_Mopp);
+        }
 
         var s_List = PlainList(p_Children, out var s_Bounds);
-        return p_Children.Count > c_ListMoppThreshold
+        return p_Mopp || p_Children.Count > c_ListMoppThreshold
             ? Mopp(s_List, s_Bounds.Select((p_B, p_Key) => new MoppPrimitive((uint)p_Key, p_B.Min, p_B.Max)).ToList())
             : s_List;
     }

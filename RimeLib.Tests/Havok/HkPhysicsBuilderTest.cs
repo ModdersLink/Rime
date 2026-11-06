@@ -23,6 +23,43 @@ public class HkPhysicsBuilderTest
     };
 
     [Fact]
+    public void GivesEachListChildAPartOfItsResourceAndNoListChildIsAList()
+    {
+        // More boxes than a list holds, of two parts, and a mesh of each part beside them.
+        var s_Leaves = Enumerable.Range(0, 600).Select(p_I =>
+        {
+            var s_Box = Box(hkpPlacement.FromTranslation(new Vector3(p_I, 0, 0)));
+            s_Box.UserData = (uint)(p_I % 2);
+            return s_Box;
+        }).ToList();
+        s_Leaves.AddRange(Enumerable.Range(0, 2).Select(p_Part => new hkpCollisionShape
+        {
+            Kind = "mesh", Vertices = [Vector3.Zero, Vector3.UnitX, Vector3.UnitZ], Indices = [0, 1, 2],
+            Placement = hkpPlacement.FromTranslation(Vector3.Zero), UserData = (uint)p_Part,
+        }));
+
+        var s_Children = new List<HkpShape>();
+        void Collect(HkpShape? p_Shape)
+        {
+            if (p_Shape is HkpMoppBvTreeShape s_Tree)
+                Collect(s_Tree.Child);
+            else if (p_Shape is HkpListShape s_List)
+                foreach (var s_Child in s_List.Children)
+                {
+                    s_Children.Add(s_Child.Shape!);
+                    Collect(s_Child.Shape);
+                }
+        }
+
+        Collect(Only(s_Leaves));
+        Assert.Equal(600, s_Children.Count(p_C => p_C is HkpConvexShape));
+        Assert.Equal(2, s_Children.Count(p_C => p_C is HkpMoppBvTreeShape { Child: HkpCompressedMeshShape }));
+        // A hit list child that is a list is read again at the outer key, so none is; the convex ones keep their part.
+        Assert.DoesNotContain(s_Children, p_C => p_C is HkpListShape);
+        Assert.All(s_Children, p_C => Assert.True(p_C.UserData < 2));
+    }
+
+    [Fact]
     public void PlacesARotatedBoxWithItsScaleInItsHalfExtents()
     {
         var s_Transform = Assert.IsType<HkpConvexTransformShape>(Only([Box(s_Turned)]));
