@@ -178,7 +178,7 @@ namespace RimeLib.Cmd.Contexts
         /// The converted shaders whose pixel shaders were translated, with the source shader database each is in,
         /// for add_translated_shaders to give them their entries. Their materials keep their own shaders.
         /// </summary>
-        internal List<(string SourceDatabase, RimeLib.Content.Mounting.IEngineMounter Source, RimeLib.Shader.TranslatedShader Shader)> TranslatedShaders { get; } = new();
+        internal List<(string SourceDatabase, RimeLib.Content.Mounting.IEngineMounter Source, string SourceName, (string From, string To)? Move, RimeLib.Shader.TranslatedShader Shader)> TranslatedShaders { get; } = new();
 
         /// <summary>
         /// The source resources the converted closures met of a type not converted, by their name in

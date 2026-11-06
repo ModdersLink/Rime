@@ -65,10 +65,15 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_Translated = new List<string>();
 
             // One conversion per source database and the template database holding the stand-ins of its shaders.
+            var s_Mounters = ((BaseContext)s_SbContext.Parent!).GetMounters();
+            var s_TexturesAdded = 0;
             foreach (var s_Group in s_SbContext.TranslatedShaders
-                         .GroupBy(p_T => (p_T.SourceDatabase, p_T.Source, Template: s_Index.Databases.FindIndex(p_D => p_D.Keys.Contains(p_T.Shader.TemplateKey)))))
+                         .GroupBy(p_T => (p_T.SourceDatabase, p_T.Source, p_T.Move, Template: s_Index.Databases.FindIndex(p_D => p_D.Keys.Contains(p_T.Shader.TemplateKey)))))
             {
-                var (s_SourceDatabase, s_Source, s_Template) = s_Group.Key;
+                var (s_SourceDatabase, s_Source, s_Move, s_Template) = s_Group.Key;
+                string Moved(string p_Name) =>
+                    s_Move is var (s_From, s_To) && p_Name.StartsWith(s_From, StringComparison.OrdinalIgnoreCase) ? s_To + p_Name[s_From.Length..] : p_Name;
+
                 var s_Shaders = s_Group.Select(p_T => p_T.Shader).ToList();
                 if (s_Template < 0)
                 {
@@ -84,10 +89,52 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
                 var s_Converter = EngineInterfaceRegistry.Create<IShaderDatabaseConverter>(s_Source.GetEngineType());
                 var s_Converted = s_Converter.ConvertTranslated(Read(s_SourceResource.FirstVariant), s_Shaders, s_Index.Databases[s_Template].Load(),
-                    s_SbContext.EngineType, p_N => p_N, p_Writer);
+                    s_SbContext.EngineType, Moved, p_Writer);
                 s_Parts.Add(() => s_Converted);
                 s_Translated.AddRange(s_Shaders.Select(p_S => p_S.Name));
+
+                // The textures their constants bind by name, which the engine resolves when it draws them - a
+                // missing one is a null texture in the draw, not a blank surface.
+                var s_Resolver = EngineInterfaceRegistry.Create<IShaderResolver>(s_Source.GetEngineType());
+                s_Resolver.Initialize(s_SourceResource.FirstVariant, s_Source);
+                var s_ByShader = s_Resolver.GetTexturesByShader();
+                var s_Textures = s_Group.Select(p_T => p_T.SourceName.ToLowerInvariant())
+                    .SelectMany(p_S => s_ByShader.TryGetValue(p_S, out var s_T) ? s_T : Enumerable.Empty<string>())
+                    .Select(p_T => p_T.ToLowerInvariant()).Distinct().Order(StringComparer.Ordinal).ToList();
+                var s_SourceId = s_Mounters.FirstOrDefault(p_M => ReferenceEquals(p_M.Value, s_Source)).Key;
+                if (s_Textures.Count > 0 && ConvertedClosure.Create(s_BundleContext, s_SourceId, [], s_Move, p_Writer) is { } s_Closure)
+                {
+                    var s_Result = s_Closure.Add(s_Textures, p_Writer);
+                    foreach (var s_Line in s_Result.Unresolved)
+                        p_Writer.WriteLine($"  {s_Line}");
+                    s_TexturesAdded += s_Textures.Count;
+                }
             }
+
+            // The stand-ins' own textures: their pixel shaders and constants stay in the solutions not translated
+            // (depth-only, the other render path, a lightmap the translation would lose), and the engine binds the
+            // textures those constants name when it draws them - for shaders the bundle's materials no longer use.
+            var s_TemplateTextures = new HashSet<string>(StringComparer.Ordinal);
+            foreach (var s_Group in s_SbContext.TranslatedShaders.GroupBy(p_T => s_Index.Databases.FindIndex(p_D => p_D.Keys.Contains(p_T.Shader.TemplateKey))))
+            {
+                if (s_Group.Key < 0 || !s_TargetGame.TryGetResource(s_Index.Databases[s_Group.Key].Name.ToLowerInvariant(), out var s_TemplateResource))
+                    continue;
+
+                var s_TemplateResolver = EngineInterfaceRegistry.Create<IShaderResolver>(s_SbContext.EngineType);
+                s_TemplateResolver.Initialize(s_TemplateResource.FirstVariant, s_TargetGame);
+                var s_ByTemplate = s_TemplateResolver.GetTexturesByShader();
+                foreach (var s_Key in s_Group.Select(p_T => p_T.Shader.TemplateKey).Distinct())
+                {
+                    if (s_Index.Names.TryGetValue(s_Key, out var s_TemplateName) && s_ByTemplate.TryGetValue(s_TemplateName.ToLowerInvariant(), out var s_Bound))
+                        s_TemplateTextures.UnionWith(s_Bound.Select(p_T => p_T.ToLowerInvariant()));
+                }
+            }
+
+            var s_Missing2 = s_TemplateTextures.Where(p_T => !s_BundleContext.GetPartitions().ContainsKey(p_T) && s_TargetGame.TryGetPartition(p_T, out _))
+                .Order(StringComparer.Ordinal).ToList();
+            if (s_Missing2.Count > 0 && PartitionClosure.Create(s_BundleContext, TemplateId, [], TextWriter.Null) is { } s_Adder)
+                s_Adder.AddAll(s_Missing2, p_Writer);
+            p_Writer.WriteLine($"{s_Missing2.Count} texture(s) the stand-ins bind added for their solutions the translated shaders keep.");
 
             // The built database's shaders, then the translated ones.
             var s_Data = Read(s_Built);
@@ -100,7 +147,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_Meta = s_Built.TryGetMeta(out var s_BuiltMeta) ? s_BuiltMeta : null;
             s_BundleContext.RemoveResource(s_Name);
             s_BundleContext.AddGeneratedResource(s_Name, s_Merged, ResourceType.IShaderDatabase, s_Meta);
-            p_Writer.WriteLine($"Added {s_Translated.Count - s_Missing.Count(s_Translated.Contains)} translated shader(s) to '{s_Name}' ({s_Merged.Length} bytes).");
+            p_Writer.WriteLine($"Added {s_Translated.Count - s_Missing.Count(s_Translated.Contains)} translated shader(s) to '{s_Name}' ({s_Merged.Length} bytes), with {s_TexturesAdded} texture(s) they bind.");
             return true;
         }
     }

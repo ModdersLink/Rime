@@ -940,7 +940,7 @@ namespace RimeLib.Cmd
                     continue;
 
                 s_Translated.Add(s_Plan.Shader);
-                s_SbContext.TranslatedShaders.Add((s_Plan.Database, m_Mounter,
+                s_SbContext.TranslatedShaders.Add((s_Plan.Database, m_Mounter, s_Plan.Name, m_Move,
                     new TranslatedShader(Moved(s_Plan.Name).ToLowerInvariant(), s_Plan.Key, s_Plan.SourceSolution, s_Plan.TemplateKey, c_RenderPath, s_Pixels)));
             }
 

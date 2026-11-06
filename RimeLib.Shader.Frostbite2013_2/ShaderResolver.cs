@@ -65,8 +65,10 @@ public class ShaderResolver : IShaderResolver
                 if (!m_TexturesByShader.TryGetValue(s_Name, out var s_Textures))
                     m_TexturesByShader[s_Name] = s_Textures = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
+                // The solution's constants and its permutations' own: the engine binds both by name when it draws.
                 foreach (var s_Solution in s_Shader.Solutions)
-                foreach (var s_Constants in new[] { s_Solution.VertexConstants, s_Solution.PixelConstants })
+                foreach (var s_Constants in new[] { s_Solution.VertexConstants, s_Solution.PixelConstants,
+                             s_Solution.VertexPermutation?.Constant, s_Solution.PixelPermutation?.Constant })
                 foreach (var s_Texture in s_Constants?.Textures ?? [])
                     s_Textures.Add(s_Texture.Name);
             }
