@@ -154,7 +154,9 @@ namespace RimeLib.Cmd.Contexts
             Parent = p_Parent;
             m_BundleName = p_BundleName;
 
-            m_Builder = BundleBuilder.Create(m_BundleName);
+            // A bundle built before into the superbundle is added to, as a level's main bundle gets its
+            // shader database once its sub-worlds have noted the shaders they draw.
+            m_Builder = p_Parent.GetBuiltBundle(p_BundleName) is { } s_Built ? BundleBuilder.From(s_Built) : BundleBuilder.Create(m_BundleName);
 
             RegisterCommand<AddChunkCommand>();
             RegisterCommand<AddExistingChunkCommand>();
@@ -176,6 +178,7 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<AddPartitionCommand>();
             RegisterCommand<AddRawPartitionCommand>();
             RegisterCommand<RaiseWaterPhysicsCommand>();
+            RegisterCommand<SetReferenceCommand>();
             RegisterCommand<ClonePartitionFreshCommand>();
             RegisterCommand<MeshVariationDbAddEntryCommand>();
             RegisterCommand<MeshVariationDbAddAllCommand>();
