@@ -85,6 +85,8 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<BuildCasCatalogCommand>();
             RegisterCommand<MountExternalCatCommand>();
             RegisterCommand<RoundTripWritersCommand>();
+            RegisterCommand<DumpEnlightenCommand>();
+            RegisterCommand<DumpLevelEnlightenCommand>();
 
             var s_EngineType = m_Mounter.GetEngineType();
 
@@ -118,8 +120,6 @@ namespace RimeLib.Cmd.Contexts
             {
                 RegisterCommand<DumpTerrainDecalsJsonCommand>();
                 RegisterCommand<DumpTerrainNodesCommand>();
-                RegisterCommand<DumpEnlightenCommand>();
-                RegisterCommand<DumpLevelEnlightenCommand>();
                 RegisterCommand<CompareResourceCommand>();
                 RegisterCommand<CompareResourcesCommand>();
             }

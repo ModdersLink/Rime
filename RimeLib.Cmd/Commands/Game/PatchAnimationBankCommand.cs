@@ -1,16 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Numerics;
+using System.Linq;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using RimeLib.Animation.Frostbite2_0.EA.Compression.Curve;
-using RimeLib.Animation.Frostbite2_0.EA.Compression.DCT;
-using RimeLib.Animation.Frostbite2_0.EA.Compression.Vbr;
-using Rimelib.Animation.Frostbite2_0.Frostbite;
+using RimeLib.Animation;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
-using RimeLib.IO;
 
 namespace RimeLib.Cmd.Commands.Game
 {
@@ -65,16 +60,10 @@ namespace RimeLib.Cmd.Commands.Game
                 return false;
             }
 
-            var s_Context = (GameContext)p_Context;
-            var s_Mounter = s_Context.GetMounter();
-
-            var s_Data = AntBankFile.Read(s_Mounter, Name!, out var s_Source, out var s_ReadError);
-
-            if (s_Data == null)
-            {
-                p_Writer.WriteLine(s_ReadError);
+            var s_Mounter = ((GameContext)p_Context).GetMounter();
+            var s_Codec = Require<IAnimationBankCodec>(s_Mounter.GetEngineType(), p_Writer);
+            if (s_Codec == null)
                 return false;
-            }
 
             if (!Edits.Exists)
             {
@@ -82,50 +71,21 @@ namespace RimeLib.Cmd.Commands.Game
                 return false;
             }
 
-            var s_Bank = AntBankFile.Load(s_Data);
-            var s_Doc = JObject.Parse(File.ReadAllText(Edits.FullName));
-            var s_Clips = s_Doc["clips"] as JArray;
+            var s_Result = s_Codec.Patch(s_Mounter, Name!, File.ReadAllText(Edits.FullName), p_Writer);
 
-            if (s_Clips == null || s_Clips.Count == 0)
+            if (s_Result.Bank == null)
             {
-                p_Writer.WriteLine("The edit file names no clips. Refusing to write a blob that "
-                                   + "changes nothing -- an untouched bank should keep referencing "
-                                   + "the game's own resource.");
+                p_Writer.WriteLine(s_Result.Message);
                 return false;
             }
 
-            var s_Result = AntBankPatcher.Patch(s_Data, s_Bank, s_Clips, p_Writer);
-            if (s_Result == null)
-                return false;
+            File.WriteAllBytes(Destination.FullName, s_Result.Bank);
 
-            var s_Patched = s_Result.Patched;
-            var s_Verify = s_Result.Verify;
-            File.WriteAllBytes(Destination.FullName, s_Patched);
+            if (Report && s_Result.Report != null)
+                File.WriteAllText(Destination.FullName + ".json", JsonConvert.SerializeObject(s_Result.Report, Formatting.Indented));
 
-            if (Report)
-            {
-                File.WriteAllText(Destination.FullName + ".json", JsonConvert.SerializeObject(new
-                {
-                    partition = Name,
-                    source = s_Source,
-                    blobLength = s_Patched.Length,
-                    sameLength = s_Patched.Length == s_Data.Length,
-                    clipsEdited = s_Result.Applied,
-                    bytesChanged = s_Result.BytesChanged,
-                    reload = s_Verify,
-                    clips = s_Result.Rows,
-                }, Formatting.Indented));
-            }
-
-            p_Writer.WriteLine($"{Name}: patched {s_Result.Applied} clip(s), {s_Result.BytesChanged} byte(s) "
-                               + $"changed of {s_Patched.Length}, reloaded "
-                               + $"{s_Verify.Objects} object(s), {s_Verify.EditsLanded}/"
-                               + $"{s_Verify.EditsChecked} edit(s) landed (max error "
-                               + $"{s_Verify.MaxEditError:G6}), {s_Verify.ClipsUnchanged}/"
-                               + $"{s_Verify.ClipsCompared} untouched clip(s) byte-identical "
-                               + $"-> {Destination.FullName}");
-
-            return s_Result.Applied > 0 && s_Result.BytesChanged > 0 && s_Verify.Ok;
+            p_Writer.WriteLine($"{s_Result.Message} -> {Destination.FullName}");
+            return s_Result.Succeeded;
         }
     }
 }

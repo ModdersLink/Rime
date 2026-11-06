@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using fb;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Mounting;
@@ -29,7 +28,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_SbContext = (SbBuildingContext)s_BundleContext.Parent!;
             var s_Partitions = s_BundleContext.GetPartitions();
 
-            var s_GeneratedRegistry = s_BundleContext.GetGeneratedRegistry();
+            var s_Builder = Require<IRegistryContainerBuilder>(s_SbContext.EngineType, p_Writer);
+            if (s_Builder == null)
+                return false;
+
+            var s_Generated = s_BundleContext.GetGeneratedRegistry();
+            var s_GeneratedRegistry = s_Generated == null ? null : s_Builder.Read(s_Generated);
             if (s_GeneratedRegistry == null)
             {
                 p_Writer.WriteLine("Error: No RegistryContainer has been generated yet. Run 'build GenerateRegistryContainer' first.");
@@ -47,7 +51,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             try
             {
                 var s_ExistingPartition = s_Converter.FromPartitionObject(PartitionName, (IObjectVariant)s_ExistingObject);
-                var s_ExistingRegistry = s_ExistingPartition.Instances.OfType<RegistryContainer>().FirstOrDefault();
+                var s_ExistingRegistry = s_ExistingPartition.Instances.Select(s_Builder.Read).FirstOrDefault(p_R => p_R != null);
 
                 if (s_ExistingRegistry == null)
                 {
@@ -55,10 +59,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     return false;
                 }
 
-                CompareRegistries(p_Writer, "EntityRegistry", s_GeneratedRegistry.EntityRegistry, s_ExistingRegistry.EntityRegistry, "Generated", PartitionName);
-                CompareRegistries(p_Writer, "AssetRegistry", s_GeneratedRegistry.AssetRegistry, s_ExistingRegistry.AssetRegistry, "Generated", PartitionName);
-                CompareRegistries(p_Writer, "BlueprintRegistry", s_GeneratedRegistry.BlueprintRegistry, s_ExistingRegistry.BlueprintRegistry, "Generated", PartitionName);
-                CompareRegistries(p_Writer, "ReferenceObjectRegistry", s_GeneratedRegistry.ReferenceObjectRegistry, s_ExistingRegistry.ReferenceObjectRegistry, "Generated", PartitionName);
+                CompareRegistries(p_Writer, "EntityRegistry", s_GeneratedRegistry.Entities, s_ExistingRegistry.Entities, "Generated", PartitionName);
+                CompareRegistries(p_Writer, "AssetRegistry", s_GeneratedRegistry.Assets, s_ExistingRegistry.Assets, "Generated", PartitionName);
+                CompareRegistries(p_Writer, "BlueprintRegistry", s_GeneratedRegistry.Blueprints, s_ExistingRegistry.Blueprints, "Generated", PartitionName);
+                CompareRegistries(p_Writer, "ReferenceObjectRegistry", s_GeneratedRegistry.ReferenceObjects, s_ExistingRegistry.ReferenceObjects, "Generated", PartitionName);
 
                 return true;
             }

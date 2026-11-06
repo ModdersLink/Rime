@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Frostbite;
+using RimeLib.Enlighten;
 
 namespace RimeLib.Cmd.Commands.Game
 {
@@ -61,7 +62,12 @@ namespace RimeLib.Cmd.Commands.Game
             }
 
             var s_Prefix = Level!.Contains('/') ? Level! : "levels/" + Level + "/";
-            var s_Resources = ((GameContext)p_Context).GetMountedResourceVariations();
+            var s_GameContext = (GameContext)p_Context;
+            var s_Codec = Require<IEnlightenCodec>(s_GameContext.GetMounter().GetEngineType(), p_Writer);
+            if (s_Codec == null)
+                return false;
+
+            var s_Resources = s_GameContext.GetMountedResourceVariations();
 
             var s_Rows = new List<object>();
             var s_Counts = new Dictionary<string, int>();
@@ -89,16 +95,13 @@ namespace RimeLib.Cmd.Commands.Game
                 using (var s_Source = s_Variant.GetReader())
                     s_Data = s_Source.ReadBytes((int)s_Source.Length);
 
-                // Parse returns null for the types nothing here decodes; the payload still goes out.
-                var s_Parsed = DumpEnlightenCommand.Parse(s_Type, s_Data);
+                // The codec returns null for the types it does not decode; the payload still goes out.
+                var s_Parsed = s_Codec.Dump(s_Type, s_Data);
                 bool? s_ReEncodes = null;
 
                 if (s_Parsed != null)
                 {
-                    // Read off the anonymous object rather than re-serialising: the parse already
-                    // measured this against the original bytes and there is one answer, not two.
-                    var s_Field = s_Parsed.GetType().GetProperty("reencodesExactly");
-                    s_ReEncodes = s_Field?.GetValue(s_Parsed) as bool?;
+                    s_ReEncodes = s_Parsed.ReEncodesExactly;
                     s_Checked += 1;
 
                     if (s_ReEncodes == true)
@@ -123,7 +126,7 @@ namespace RimeLib.Cmd.Commands.Game
                     meta = s_Meta,
                     payload = Convert.ToBase64String(s_Data),
                     reencodesExactly = s_ReEncodes,
-                    data = s_Parsed,
+                    data = s_Parsed?.Fields,
                 });
             }
 

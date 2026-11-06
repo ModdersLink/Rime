@@ -1,6 +1,6 @@
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
-using RimeLib.Content.Frostbite2_0.Mounting;
+using RimeLib.Content.Mounting;
 using RimeLib.Frostbite.Core;
 using System.IO;
 using System.Linq;
@@ -54,12 +54,16 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            var s_Mounter = s_BaseContext.GetMounters().Values.FirstOrDefault() as EngineMounter;
+            var s_Mounter = s_BaseContext.GetMounters().Values.FirstOrDefault();
             if (s_Mounter == null)
             {
-                p_Writer.WriteLine("add_cas_chunk: no Frostbite2_0 mounter.");
+                p_Writer.WriteLine("add_cas_chunk: no game mounted.");
                 return false;
             }
+
+            var s_Catalog = Require<ICasCatalogWriter>(s_Mounter.GetEngineType(), p_Writer);
+            if (s_Catalog == null)
+                return false;
 
             var s_H32 = ParseInt(H32);
             var s_FirstMip = ParseInt(FirstMip);
@@ -67,7 +71,7 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_RangeEnd = ParseUInt(RangeEnd);
             var s_LogicalOffset = ParseUInt(LogicalOffset);
 
-            if (!s_Mounter.TryMakeCasChunkVariant(ChunkId, Sha1!, out var s_Variant,
+            if (!s_Catalog.TryMakeChunkVariant(s_Mounter, ChunkId, Sha1!, out var s_Variant,
                     s_H32, s_FirstMip, s_RangeStart, s_RangeEnd, s_LogicalOffset))
             {
                 p_Writer.WriteLine($"add_cas_chunk: sha1 not in catalog for chunk {ChunkId} ({Sha1}).");

@@ -5,7 +5,7 @@ using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content;
 using RimeLib.Content.Frostbite;
-using RimeLib.Content.Frostbite2_0.Mounting;
+using RimeLib.Texture;
 
 namespace RimeLib.Cmd.Commands.BundleBuilding
 {
@@ -38,12 +38,16 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             var s_SbBuildingContext = (SbBuildingContext)s_BundleContext.Parent!;
             var s_BaseContext = (BaseContext)s_SbBuildingContext.Parent!;
-            var s_Mounter = s_BaseContext.GetMounters().Values.FirstOrDefault() as EngineMounter;
+            var s_Mounter = s_BaseContext.GetMounters().Values.FirstOrDefault();
             if (s_Mounter == null)
             {
-                p_Writer.WriteLine("cap_texture: no Frostbite2_0 mounter.");
+                p_Writer.WriteLine("cap_texture: no game mounted.");
                 return false;
             }
+
+            var s_Cap = Require<ITextureMipCap>(s_Mounter.GetEngineType(), p_Writer);
+            if (s_Cap == null)
+                return false;
 
             if (!s_Mounter.TryGetResource(Name!, out var s_Resource))
             {
@@ -54,31 +58,29 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             byte[] s_Header;
             using (var s_Reader = s_Resource.FirstVariant.GetReader())
             {
-                if (s_Reader.Length < 128)
+                if (s_Reader.Length < s_Cap.HeaderSize)
                 {
-                    p_Writer.WriteLine($"cap_texture: {Name} is not a 128-byte DxTexture header ({s_Reader.Length}).");
+                    p_Writer.WriteLine($"cap_texture: {Name} is shorter than a texture header ({s_Reader.Length} bytes).");
                     return false;
                 }
 
-                s_Header = s_Reader.ReadBytes(128);
+                s_Header = s_Reader.ReadBytes(s_Cap.HeaderSize);
             }
 
-            var s_MipCount = s_Header[26];
-            if (s_Mip >= s_MipCount)
+            string s_Change;
+            try
             {
-                p_Writer.WriteLine($"cap_texture: {Name} has {s_MipCount} mips, cannot cap at {s_Mip}.");
+                s_Header = s_Cap.CapResidentMips(s_Header, s_Mip, out s_Change);
+            }
+            catch (Exception s_Ex)
+            {
+                p_Writer.WriteLine($"cap_texture: {Name}: {s_Ex.Message}");
                 return false;
             }
 
-            var s_Flags = BitConverter.ToUInt32(s_Header, 12);
-            var s_NewFlags = s_Flags | 0x1u;
-            BitConverter.GetBytes(s_NewFlags).CopyTo(s_Header, 12);
-            var s_OldBase = s_Header[27];
-            s_Header[27] = (byte)s_Mip;
-
             try { s_BundleContext.RemoveResource(Name!); } catch { }
-            s_BundleContext.AddGeneratedResource(Name!, s_Header, ResourceType.DxTexture, new byte[16]);
-            p_Writer.WriteLine($"cap_texture {Name}: flags 0x{s_Flags:X} to 0x{s_NewFlags:X}, mipBase {s_OldBase} to {s_Mip} (of {s_MipCount}).");
+            s_BundleContext.AddGeneratedResource(Name!, s_Header, s_Resource.FirstVariant.GetResourceType(), new byte[16]);
+            p_Writer.WriteLine($"cap_texture {Name}: {s_Change}.");
             return true;
         }
     }

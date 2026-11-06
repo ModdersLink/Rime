@@ -1,5 +1,3 @@
-using fb;
-using Newtonsoft.Json;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Frostbite.Core;
@@ -38,88 +36,33 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             var s_BundleContext = (BundleBuildingContext)p_Context;
             var s_SbContext = (SbBuildingContext)s_BundleContext.Parent!;
 
-            var s_Registry = s_BundleContext.GetGeneratedRegistry();
+            var s_Builder = Require<IRegistryContainerBuilder>(s_SbContext.EngineType, p_Writer);
+            if (s_Builder == null)
+                return false;
+
+            var s_Generated = s_BundleContext.GetGeneratedRegistry();
+            var s_Registry = s_Generated == null ? null : s_Builder.Read(s_Generated);
             if (s_Registry == null)
             {
                 p_Writer.WriteLine("No RegistryContainer generated yet. Run 'generate_registry_container' first.");
                 return false;
             }
 
-            // The loader resolves the SubWorld by name, so these guids are internal only, but they still
-            // have to be unique across the level's loaded partitions or two sidecars collide.
-            var s_PartGuid = new GUID(Guid.NewGuid());
-            var s_SubWorldGuid = new GUID(Guid.NewGuid());
-            var s_DescriptorGuid = new GUID(Guid.NewGuid());
-            var s_RegistryGuid = new GUID(Guid.NewGuid());
-
             var s_MvdbRefs = s_BundleContext.GetMvdbRegistryRefs();
             var s_MvdbOnly = string.Equals(Mode, "mvdbonly", StringComparison.OrdinalIgnoreCase);
-            var s_Empty = new RefArray<DataContainer>();
+            var s_Empty = new List<CtrRefBase>();
 
-            var s_Entities = BuildRegistryArray(s_MvdbOnly ? s_Empty : s_Registry.EntityRegistry, null);
-            var s_Assets = BuildRegistryArray(s_MvdbOnly ? s_Empty : s_Registry.AssetRegistry, s_MvdbRefs);
-            var s_Blueprints = BuildRegistryArray(s_MvdbOnly ? s_Empty : s_Registry.BlueprintRegistry, null);
-            var s_RefObjects = BuildRegistryArray(s_MvdbOnly ? s_Empty : s_Registry.ReferenceObjectRegistry, null);
+            var s_Emitted = new RegistryContainerModel();
+            s_Emitted.Entities.AddRange(Distinct(s_MvdbOnly ? s_Empty : s_Registry.Entities, null));
+            s_Emitted.Assets.AddRange(Distinct(s_MvdbOnly ? s_Empty : s_Registry.Assets, s_MvdbRefs));
+            s_Emitted.Blueprints.AddRange(Distinct(s_MvdbOnly ? s_Empty : s_Registry.Blueprints, null));
+            s_Emitted.ReferenceObjects.AddRange(Distinct(s_MvdbOnly ? s_Empty : s_Registry.ReferenceObjects, null));
 
-            var s_SubWorld = new Dictionary<string, object?>
-            {
-                ["$type"] = "SubWorldData",
-                ["Name"] = SubWorldName,
-                ["PropertyConnections"] = Array.Empty<object>(),
-                ["LinkConnections"] = Array.Empty<object>(),
-                ["EventConnections"] = Array.Empty<object>(),
-                ["Descriptor"] = MakeRef(s_PartGuid, s_DescriptorGuid),
-                ["NeedNetworkId"] = false,
-                ["InterfaceHasConnections"] = false,
-                ["AlwaysCreateEntityBusClient"] = false,
-                ["AlwaysCreateEntityBusServer"] = false,
-                ["Objects"] = Array.Empty<object>(),
-                ["RegistryContainer"] = MakeRef(s_PartGuid, s_RegistryGuid),
-                ["IsWin32SubLevel"] = true,
-                ["IsXenonSubLevel"] = true,
-                ["IsPs3SubLevel"] = true,
-                ["RememberStateOnStreamOut"] = false,
-            };
-
-            var s_Descriptor = new Dictionary<string, object?>
-            {
-                ["$type"] = "InterfaceDescriptorData",
-                ["Fields"] = Array.Empty<object>(),
-                ["InputEvents"] = Array.Empty<object>(),
-                ["OutputEvents"] = Array.Empty<object>(),
-                ["InputLinks"] = Array.Empty<object>(),
-                ["OutputLinks"] = Array.Empty<object>(),
-            };
-
-            var s_RegistryContainer = new Dictionary<string, object?>
-            {
-                ["$type"] = "RegistryContainer",
-                ["EntityRegistry"] = s_Entities,
-                ["AssetRegistry"] = s_Assets,
-                ["BlueprintRegistry"] = s_Blueprints,
-                ["ReferenceObjectRegistry"] = s_RefObjects,
-            };
-
-            var s_Json = JsonConvert.SerializeObject(new
-            {
-                PartitionGuid = s_PartGuid.ToString(),
-                PrimaryInstanceGuid = s_SubWorldGuid.ToString(),
-                Name = PartitionName,
-                Instances = new Dictionary<string, object?>
-                {
-                    [s_SubWorldGuid.ToString()] = s_SubWorld,
-                    [s_DescriptorGuid.ToString()] = s_Descriptor,
-                    [s_RegistryGuid.ToString()] = s_RegistryContainer,
-                },
-            }, Formatting.Indented);
-
-            var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(s_SbContext.EngineType);
             var s_Generator = EngineInterfaceRegistry.Create<IPartitionGenerator>(s_SbContext.EngineType);
 
             try
             {
-                using var s_JsonReader = new StringReader(s_Json);
-                var s_Partition = s_Converter.FromJsonStream(s_JsonReader);
+                var s_Partition = s_Builder.CreateSubWorld(PartitionName!, SubWorldName!, s_Emitted);
 
                 var s_Stream = new MemoryStream();
                 using var s_Writer = new RimeWriter(s_Stream);
@@ -132,37 +75,29 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
-            p_Writer.WriteLine($"SUBWORLD-REG: '{PartitionName}' entities={s_Entities.Count} assets={s_Assets.Count} " +
-                               $"blueprints={s_Blueprints.Count} refobjs={s_RefObjects.Count} (mvdb={s_MvdbRefs.Count})");
+            p_Writer.WriteLine($"SUBWORLD-REG: '{PartitionName}' entities={s_Emitted.Entities.Count} assets={s_Emitted.Assets.Count} " +
+                               $"blueprints={s_Emitted.Blueprints.Count} refobjs={s_Emitted.ReferenceObjects.Count} (mvdb={s_MvdbRefs.Count})");
             return true;
         }
 
-        private static object MakeRef(GUID p_Partition, GUID p_Instance) => new
+        /// <summary>The guid-addressed references, each once, then the extra ones not listed yet.</summary>
+        private static IEnumerable<CtrRefBase> Distinct(IEnumerable<CtrRefBase> p_Refs, IReadOnlyList<(GUID Part, GUID Inst)>? p_Extra)
         {
-            PartitionGuid = p_Partition.ToString(),
-            InstanceGuid = p_Instance.ToString(),
-        };
-
-        private static List<object> BuildRegistryArray(RefArray<DataContainer> p_Refs, IReadOnlyList<(GUID Part, GUID Inst)>? p_Extra)
-        {
-            var s_Entries = new List<object>();
             var s_Seen = new HashSet<string>();
 
             foreach (var s_Ref in p_Refs)
             {
                 if (s_Ref.InstanceId is not DataContainerId.Guid s_G) continue;
                 if (!s_Seen.Add($"{s_Ref.PartitionGuid}|{s_G.Id}")) continue;
-                s_Entries.Add(MakeRef(s_Ref.PartitionGuid, s_G.Id));
+                yield return s_Ref;
             }
 
             if (p_Extra != null)
                 foreach (var s_X in p_Extra)
                 {
                     if (!s_Seen.Add($"{s_X.Part}|{s_X.Inst}")) continue;
-                    s_Entries.Add(MakeRef(s_X.Part, s_X.Inst));
+                    yield return new CtrRef<DataContainerBase>(s_X.Part, s_X.Inst);
                 }
-
-            return s_Entries;
         }
     }
 }

@@ -56,6 +56,10 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 return false;
             }
 
+            var s_Rules = Require<IMeshVariationRules>(s_SbBuildingContext.EngineType, p_Writer);
+            if (s_Rules == null)
+                return false;
+
             var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(s_SbBuildingContext.EngineType);
             var s_Generator = EngineInterfaceRegistry.Create<IPartitionGenerator>(s_SbBuildingContext.EngineType);
 
@@ -99,13 +103,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 }
             }
 
-            var s_Keep = new List<fb.MeshVariationDatabaseEntry>();
+            var s_Keep = new List<object>();
             var s_KeptMeshes = new List<string>();
             var s_TexNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-            foreach (var s_Inst in s_SrcDb.Instances)
+            foreach (var (s_Mesh, _, s_E) in s_Rules.ReadEntries(s_SrcDb))
             {
-                if (s_Inst is not fb.MeshVariationDatabaseEntry s_E) continue;
-                if (!s_EngineMounter.TryGetPartitionByGuid(s_E.Mesh.PartitionGuid, out var s_MName, out _) || s_MName == null)
+                if (!s_EngineMounter.TryGetPartitionByGuid(s_Mesh.PartitionGuid, out var s_MName, out _) || s_MName == null)
                     continue;
                 if (!s_InBundle.Contains(s_MName)) continue;
 
@@ -139,14 +142,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
                 s_Keep.Add(s_E);
                 s_KeptMeshes.Add(s_MName);
-                foreach (var s_Mat in s_E.Materials)
-                    foreach (var s_Tp in s_Mat.TextureParameters)
-                    {
-                        if (s_Tp?.Value == null) continue;
-                        if (s_EngineMounter.TryGetPartitionByGuid(s_Tp.Value.PartitionGuid, out var s_TexName, out _)
-                            && !string.IsNullOrWhiteSpace(s_TexName))
-                            s_TexNames.Add(s_TexName);
-                    }
+                foreach (var s_Texture in s_Rules.GetTextures(s_E))
+                {
+                    if (s_EngineMounter.TryGetPartitionByGuid(s_Texture.PartitionGuid, out var s_TexName, out _)
+                        && !string.IsNullOrWhiteSpace(s_TexName))
+                        s_TexNames.Add(s_TexName);
+                }
             }
 
             if (s_Keep.Count == 0)
@@ -156,22 +157,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             }
 
             // Strip the source down to its primary instance plus the kept entries.
-            var s_SrcConcrete = (RimeLib.Serialization.Frostbite2_0.Ebx.DatabasePartition)s_SrcDb;
-            var s_SrcMvdb = (fb.MeshVariationDatabase)s_SrcConcrete.PrimaryInstance;
-            var s_PrimG = s_SrcConcrete.PrimaryInstanceGuid;
-
-            var s_KeepGuids = new HashSet<GUID> { s_PrimG };
-            foreach (var s_E in s_Keep)
-                if (s_E.InstanceId is DataContainerId.Guid s_G) s_KeepGuids.Add(s_G.Id);
-
-            var s_ToRemove = s_SrcConcrete.InstanceMap.Keys.Where(p_K => !s_KeepGuids.Contains(p_K)).ToList();
-            foreach (var s_K in s_ToRemove)
-                s_SrcConcrete.InstanceMap.Remove(s_K);
-
-            s_SrcMvdb.Entries.Clear();
-            foreach (var s_E in s_Keep)
-                s_SrcMvdb.Entries.AddRef(new CtrRef<fb.MeshVariationDatabaseEntry>(s_SrcConcrete.PartitionGuid, s_E.InstanceId));
-            s_SrcMvdb.RedirectEntries.Clear();
+            s_Rules.SetEntries(s_SrcDb, s_Keep);
+            var s_PrimG = s_SrcDb.PrimaryInstance.InstanceId is DataContainerId.Guid s_Primary ? s_Primary.Id : GUID.Empty;
 
             var s_Stream = new MemoryStream();
             using var s_ResWriter = new RimeWriter(s_Stream);
@@ -185,8 +172,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
 
             // The generated MVDB is a sliced clone, so it keeps the source partition's guids. Report them
             // and hand them to emit_subworld_registry, which cannot parse the raw-added partition itself.
-            p_Writer.WriteLine($"MVDB-GUID: {s_SrcConcrete.PartitionGuid} {s_PrimG}");
-            s_BundleContext.AddMeshVariationDbRegistryRef(s_SrcConcrete.PartitionGuid, s_PrimG);
+            p_Writer.WriteLine($"MVDB-GUID: {s_SrcDb.PartitionGuid} {s_PrimG}");
+            s_BundleContext.AddMeshVariationDbRegistryRef(s_SrcDb.PartitionGuid, s_PrimG);
 
             p_Writer.WriteLine($"Built MVDB '{TargetName}' with {s_Keep.Count} entr(ies) for bundle meshes ({s_Bytes.Length} bytes):");
             foreach (var s_M in s_KeptMeshes.Distinct())

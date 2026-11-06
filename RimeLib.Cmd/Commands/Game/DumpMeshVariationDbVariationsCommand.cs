@@ -1,6 +1,5 @@
 using System.IO;
 using System.Linq;
-using fb;
 using RimeLib;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
@@ -28,6 +27,10 @@ namespace RimeLib.Cmd.Commands.Game
             }
 
             var s_Mounter = ((GameContext)p_Context).GetMounter();
+            var s_Rules = Require<IMeshVariationRules>(s_Mounter.GetEngineType(), p_Writer);
+            if (s_Rules == null)
+                return false;
+
             var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(s_Mounter.GetEngineType());
 
             if (!s_Mounter.TryGetPartition(Name!, out var s_SrcMounted))
@@ -42,15 +45,18 @@ namespace RimeLib.Cmd.Commands.Game
             var s_Needle = Mesh!.ToLowerInvariant();
             var s_Matched = 0;
 
-            foreach (var s_Instance in s_Db.Instances)
+            // Redirect entries alias the mesh's variation-0 entry and list no materials.
+            var s_Rows = s_Rules.ReadEntries(s_Db).Select(p_E => (p_E.Mesh, p_E.VariationHash, Materials: s_Rules.GetMaterials(p_E.Entry).Count))
+                .Concat(s_Rules.ReadRedirects(s_Db).Select(p_R => (p_R.Mesh, p_R.VariationHash, Materials: 0)));
+
+            foreach (var (s_Mesh, s_Hash, s_MaterialCount) in s_Rows)
             {
-                if (s_Instance is not MeshVariationDatabaseEntry s_Entry) continue;
-                if (!s_Mounter.TryGetPartitionByGuid(s_Entry.Mesh.PartitionGuid, out var s_MeshName, out _) || s_MeshName == null) continue;
+                if (!s_Mounter.TryGetPartitionByGuid(s_Mesh.PartitionGuid, out var s_MeshName, out _) || s_MeshName == null) continue;
                 if (!s_MeshName.ToLowerInvariant().Contains(s_Needle)) continue;
 
                 s_Matched++;
-                p_Writer.WriteLine($"MVDBVAR: mesh={s_MeshName} variationHash={s_Entry.VariationAssetNameHash} " +
-                                   $"(0x{s_Entry.VariationAssetNameHash:X8}) materials={s_Entry.Materials.Count}");
+                p_Writer.WriteLine($"MVDBVAR: mesh={s_MeshName} variationHash={s_Hash} " +
+                                   $"(0x{s_Hash:X8}) materials={s_MaterialCount}");
             }
 
             p_Writer.WriteLine($"MVDBVAR-DONE: {Name} '{Mesh}' matched={s_Matched}");

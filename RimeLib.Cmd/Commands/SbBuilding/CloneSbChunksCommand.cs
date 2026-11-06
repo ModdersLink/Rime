@@ -2,7 +2,7 @@ using System.IO;
 using System.Linq;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
-using RimeLib.Content.Frostbite2_0.Mounting;
+using RimeLib.Content.Mounting;
 
 namespace RimeLib.Cmd.Commands.SbBuilding
 {
@@ -28,15 +28,19 @@ namespace RimeLib.Cmd.Commands.SbBuilding
             }
 
             var s_BaseContext = (BaseContext)s_SbBuildingContext.Parent!;
-            var s_Mounter = s_BaseContext.GetMounters().Values.FirstOrDefault() as EngineMounter;
+            var s_Mounter = s_BaseContext.GetMounters().Values.FirstOrDefault();
             if (s_Mounter == null)
             {
-                p_Writer.WriteLine("clone_sb_chunks: no Frostbite2_0 mounter found (mount_game first).");
+                p_Writer.WriteLine("clone_sb_chunks: no game mounted (mount_game first).");
                 return false;
             }
 
+            var s_Catalog = Require<ICasCatalogWriter>(s_Mounter.GetEngineType(), p_Writer);
+            if (s_Catalog == null)
+                return false;
+
             int s_Added = 0, s_Skipped = 0;
-            foreach (var (s_Id, s_Sha1) in s_Mounter.GetSuperbundleTocChunks(Superbundle!))
+            foreach (var (s_Id, s_Sha1) in s_Catalog.GetTocChunks(s_Mounter, Superbundle!))
             {
                 if (s_Sha1 == null)
                 {

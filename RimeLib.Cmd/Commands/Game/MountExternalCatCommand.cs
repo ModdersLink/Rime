@@ -2,7 +2,7 @@ using System.IO;
 using System.Linq;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
-using RimeLib.Content.Frostbite2_0.Mounting;
+using RimeLib.Content.Mounting;
 
 namespace RimeLib.Cmd.Commands.Game
 {
@@ -20,19 +20,23 @@ namespace RimeLib.Cmd.Commands.Game
         {
             // Accepts both contexts so a build script can call this straight after mount_game, without
             // the select_game and exit dance.
-            EngineMounter? s_Mounter = null;
+            IEngineMounter? s_Mounter = null;
             if (p_Context is GameContext s_GameContext)
-                s_Mounter = s_GameContext.GetMounter() as EngineMounter;
+                s_Mounter = s_GameContext.GetMounter();
             else if (p_Context is BaseContext s_BaseContext)
-                s_Mounter = s_BaseContext.GetMounters().Values.FirstOrDefault() as EngineMounter;
+                s_Mounter = s_BaseContext.GetMounters().Values.FirstOrDefault();
 
             if (s_Mounter == null)
             {
-                p_Writer.WriteLine("mount_external_cat: no Frostbite2_0 mounter (mount_game first).");
+                p_Writer.WriteLine("mount_external_cat: no game mounted (mount_game first).");
                 return false;
             }
 
-            p_Writer.WriteLine(s_Mounter.MountExternalCatalog(CatPath!.FullName));
+            var s_Catalog = Require<ICasCatalogWriter>(s_Mounter.GetEngineType(), p_Writer);
+            if (s_Catalog == null)
+                return false;
+
+            p_Writer.WriteLine(s_Catalog.MountExternalCatalog(s_Mounter, CatPath!.FullName));
             return true;
         }
     }

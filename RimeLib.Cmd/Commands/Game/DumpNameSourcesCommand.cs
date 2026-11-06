@@ -1,11 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Buffers.Binary;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Newtonsoft.Json;
-using Rimelib.Animation.Frostbite2_0.Frostbite;
+using RimeLib.Animation;
 using RimeLib.Cmd.Attributes;
 using RimeLib.Cmd.Contexts;
 using RimeLib.Content.Mounting;
@@ -50,10 +49,6 @@ namespace RimeLib.Cmd.Commands.Game
         [CommandArgument(Description = "Stop after this many partitions (0 = all). For smoke tests.", Optional = true)]
         public int MaxPartitions { get; set; } = 0;
 
-        private const int c_HeaderSize = 80;
-        private const int c_ImportSize = 32;
-        private const int c_DescriptorSize = 16;
-
         public override bool Execute(ref ExecutionContext p_Context, TextWriter p_Writer)
         {
             if (Destination is null)
@@ -64,6 +59,9 @@ namespace RimeLib.Cmd.Commands.Game
 
             var s_Context = (GameContext)p_Context;
             var s_Mounter = s_Context.GetMounter();
+            var s_NameTables = Require<IEbxNameTable>(s_Mounter.GetEngineType(), p_Writer);
+            if (s_NameTables == null)
+                return false;
 
             Directory.CreateDirectory(Destination.FullName);
 
@@ -176,89 +174,39 @@ namespace RimeLib.Cmd.Commands.Game
                     continue;
                 }
 
-                if (s_Data.Length < c_HeaderSize)
-                {
-                    s_Failed++;
-                    continue;
-                }
-
-                if (!(s_Data[0] == 0xCE && s_Data[1] == 0xD1 && s_Data[2] == 0xB2 && s_Data[3] == 0x0F))
-                {
-                    // Big-endian (console) partitions would need byte-swapped reads. BF3 PC is
-                    // little-endian throughout; counted rather than silently skipped.
-                    s_NotLittleEndian++;
-                    continue;
-                }
-
                 try
                 {
-                    var s_MetaSize = BinaryPrimitives.ReadUInt32LittleEndian(s_Data.AsSpan(4));
-                    var s_ImportCount = BinaryPrimitives.ReadUInt32LittleEndian(s_Data.AsSpan(12));
-                    var s_TypeDescriptorCount = BinaryPrimitives.ReadUInt32LittleEndian(s_Data.AsSpan(24));
-                    var s_FieldDescriptorCount = BinaryPrimitives.ReadUInt32LittleEndian(s_Data.AsSpan(28));
-                    var s_TypeStringTableSize = BinaryPrimitives.ReadUInt32LittleEndian(s_Data.AsSpan(32));
-                    var s_StringTableSize = BinaryPrimitives.ReadUInt32LittleEndian(s_Data.AsSpan(36));
+                    var s_Table = s_NameTables.Read(s_Data);
 
-                    var s_TypeStringStart = c_HeaderSize + (int)s_ImportCount * c_ImportSize;
-                    var s_TypeStringEnd = s_TypeStringStart + (int)s_TypeStringTableSize;
-
-                    if (s_TypeStringEnd > s_Data.Length ||
-                        s_MetaSize + s_StringTableSize > s_Data.Length)
+                    if (s_Table == null)
                     {
-                        s_Failed++;
+                        // Partitions in the other byte order (console) are counted rather than
+                        // silently skipped.
+                        s_NotLittleEndian++;
                         continue;
                     }
 
-                    var s_Local = new List<string>();
-                    AppendNullTerminated(s_Data, s_TypeStringStart, (int)s_TypeStringTableSize, s_Local);
-
                     var s_LocalByHash = new Dictionary<uint, string>();
 
-                    foreach (var s_String in s_Local)
+                    foreach (var s_String in s_Table.TypeStrings)
                     {
                         s_TypeStrings.Add(s_String);
                         s_LocalByHash[RimeLib.Frostbite.Utils.HashQuick(s_String)] = s_String;
                     }
 
-                    // Field descriptors, then 16-byte padding, then type descriptors. Each one's
-                    // first uint32 is fb::hashQuick of its name; the name is in the table above.
-                    var s_Cursor = s_TypeStringEnd;
-
-                    for (var i = 0; i < s_FieldDescriptorCount; ++i)
+                    // Each field and type descriptor states fb::hashQuick of its name; the name is
+                    // in the type string table.
+                    foreach (var s_Hash in s_Table.DescriptorHashes)
                     {
-                        if (s_Cursor + c_DescriptorSize > s_Data.Length)
-                            break;
-
-                        var s_Hash = BinaryPrimitives.ReadUInt32LittleEndian(s_Data.AsSpan(s_Cursor));
                         s_DescriptorHashes.Add(s_Hash);
                         s_DescriptorHashStatements++;
 
                         if (!s_LocalByHash.ContainsKey(s_Hash))
                             s_DescriptorHashUnresolved++;
-
-                        s_Cursor += c_DescriptorSize;
-                    }
-
-                    while (s_Cursor % 16 != 0)
-                        s_Cursor++;
-
-                    for (var i = 0; i < s_TypeDescriptorCount; ++i)
-                    {
-                        if (s_Cursor + c_DescriptorSize > s_Data.Length)
-                            break;
-
-                        var s_Hash = BinaryPrimitives.ReadUInt32LittleEndian(s_Data.AsSpan(s_Cursor));
-                        s_DescriptorHashes.Add(s_Hash);
-                        s_DescriptorHashStatements++;
-
-                        if (!s_LocalByHash.ContainsKey(s_Hash))
-                            s_DescriptorHashUnresolved++;
-
-                        s_Cursor += c_DescriptorSize;
                     }
 
                     // The value string table: every CString field in every instance points into it.
-                    AppendNullTerminated(s_Data, (int)s_MetaSize, (int)s_StringTableSize, s_ValueStrings);
+                    s_ValueStrings.UnionWith(s_Table.ValueStrings);
 
                     // Which partitions are worth a full (expensive, throwing) parse later.
                     if (s_LocalByHash.ContainsValue("ObjectVariation"))
@@ -309,6 +257,18 @@ namespace RimeLib.Cmd.Commands.Game
             // ---- 4. ObjectVariation: name and hash on the SAME instance ------------------------
             var s_Converter = EngineInterfaceRegistry.Create<IPartitionConverter>(s_Mounter.GetEngineType());
 
+            // The mesh variation and Ant passes need their engine interfaces; without one, its
+            // partitions are left out.
+            var s_Engine = s_Mounter.GetEngineType();
+            var s_Rules = EngineInterfaceRegistry.IsSupported<IMeshVariationRules>(s_Engine) ? EngineInterfaceRegistry.Create<IMeshVariationRules>(s_Engine) : null;
+            var s_Codec = EngineInterfaceRegistry.IsSupported<IAnimationBankCodec>(s_Engine) ? EngineInterfaceRegistry.Create<IAnimationBankCodec>(s_Engine) : null;
+
+            if (s_Rules == null)
+                s_MvdbPartitions.Clear();
+
+            if (s_Codec == null)
+                s_AntPartitions.Clear();
+
             var s_VariationRows = new List<string>();
             var s_VariationFailed = 0;
 
@@ -323,12 +283,10 @@ namespace RimeLib.Cmd.Commands.Game
 
                     foreach (var s_Instance in s_Db.Instances)
                     {
-                        if (s_Instance is not fb.ObjectVariation s_Variation)
-                            continue;
-
                         // Not through WriteLines' escaping by accident: these rows are TSV, so the
                         // name column has to be escaped BEFORE the tabs that structure the row.
-                        s_VariationRows.Add($"{s_Variation.NameHash:X8}\t{Escape(s_Variation.Name)}\t{Escape(s_Name)}");
+                        foreach (var (s_Hash, s_HashName) in s_NameTables.GetNamedHashes(s_Instance))
+                            s_VariationRows.Add($"{s_Hash:X8}\t{Escape(s_HashName)}\t{Escape(s_Name)}");
                     }
                 }
                 catch (Exception)
@@ -366,18 +324,19 @@ namespace RimeLib.Cmd.Commands.Game
                                     ?? s_Object.FirstVariant;
                     var s_Db = s_Converter.FromPartitionObject(s_Name, s_Variant);
 
-                    foreach (var s_Instance in s_Db.Instances)
+                    // Redirect entries state a variation hash as well as entries do.
+                    var s_Rows = s_Rules!.ReadEntries(s_Db).Select(p_E => (p_E.Mesh, p_E.VariationHash))
+                        .Concat(s_Rules.ReadRedirects(s_Db));
+
+                    foreach (var (s_Mesh, s_Hash) in s_Rows)
                     {
-                        if (s_Instance is not fb.MeshVariationDatabaseEntry s_Row)
+                        if (s_Hash == 0)
                             continue;
 
-                        if (s_Row.VariationAssetNameHash == 0)
-                            continue;
+                        s_MvdbHashes.Add(s_Hash);
 
-                        s_MvdbHashes.Add(s_Row.VariationAssetNameHash);
-
-                        s_Mounter.TryGetPartitionByGuid(s_Row.Mesh.PartitionGuid, out var s_MeshName, out _);
-                        s_MvdbRows.Add($"{s_Row.VariationAssetNameHash:X8}\t{Escape(s_MeshName ?? "?")}\t{Escape(s_Name)}");
+                        s_Mounter.TryGetPartitionByGuid(s_Mesh.PartitionGuid, out var s_MeshName, out _);
+                        s_MvdbRows.Add($"{s_Hash:X8}\t{Escape(s_MeshName ?? "?")}\t{Escape(s_Name)}");
                     }
                 }
                 catch (Exception)
@@ -408,12 +367,13 @@ namespace RimeLib.Cmd.Commands.Game
 
             foreach (var s_Name in s_AntPartitions)
             {
-                byte[]? s_Blob;
-                string? s_BlobError;
+                IReadOnlyCollection<string>? s_Names;
+                long s_Objects;
+                string? s_BankError;
 
                 try
                 {
-                    s_Blob = AntBankFile.Read(s_Mounter, s_Name, out _, out s_BlobError);
+                    s_Names = s_Codec!.ReadNames(s_Mounter, s_Name, out s_Objects, out s_BankError);
                 }
                 catch (Exception s_Ex)
                 {
@@ -424,47 +384,16 @@ namespace RimeLib.Cmd.Commands.Game
                     continue;
                 }
 
-                if (s_Blob == null)
+                if (s_Names == null)
                 {
                     s_AntFailed++;
-                    s_AntFailures.Add($"{s_Name}\t{s_BlobError ?? "no bank blob"}");
+                    s_AntFailures.Add($"{s_Name}\t{s_BankError}");
                     continue;
                 }
 
-                try
-                {
-                    var s_Bank = new Rimelib.Animation.Frostbite2_0.Frostbite.AssetBank();
-                    s_Bank.SetLocalResolver(new RimeLib.Animation.Frostbite.Resolver.LocalAssetResolver());
-
-                    using (var s_BankReader = new RimeReader(new MemoryStream(s_Blob)))
-                        s_Bank.Load(s_BankReader, s_Bank);
-
-                    foreach (var s_Object in s_Bank.Objects)
-                    {
-                        s_AntObjects++;
-
-                        Add(s_AntNames, s_Object.ObjectName);
-                        Add(s_AntNames, TryGetString(s_Object, "Name"));
-
-                        if (s_Object is ant.LayoutAsset s_Layout)
-                        {
-                            foreach (var s_Slot in s_Layout.Slots)
-                                Add(s_AntNames, s_Slot.Name);
-                        }
-                        else if (s_Object is ant.SkeletonAsset s_Skeleton)
-                        {
-                            foreach (var s_Joint in s_Skeleton.Joints)
-                                Add(s_AntNames, s_Joint.JointName);
-                        }
-                    }
-
-                    s_AntBanks++;
-                }
-                catch (Exception s_Ex)
-                {
-                    s_AntFailed++;
-                    s_AntFailures.Add($"{s_Name}\t{s_Ex.GetType().Name}: {s_Ex.Message}");
-                }
+                s_AntObjects += s_Objects;
+                s_AntNames.UnionWith(s_Names);
+                s_AntBanks++;
             }
 
             WriteLines(Path.Combine(Destination.FullName, "ant_names.txt"), s_AntNames);
@@ -483,42 +412,6 @@ namespace RimeLib.Cmd.Commands.Game
 
             p_Writer.WriteLine($"NAMESRC-DONE: {Destination.FullName}");
             return true;
-        }
-
-        private static void Add(HashSet<string> p_Set, string? p_Value)
-        {
-            if (!string.IsNullOrEmpty(p_Value))
-                p_Set.Add(p_Value!);
-        }
-
-        private static string? TryGetString(object p_Object, string p_Property)
-        {
-            var s_Property = p_Object.GetType().GetProperty(p_Property);
-            return s_Property?.GetValue(p_Object) as string;
-        }
-
-        /// <summary>
-        /// Splits a NUL-separated blob into the strings it holds. Empty runs are dropped: a string
-        /// table starts with a NUL so that offset 0 means the empty string.
-        /// </summary>
-        private static void AppendNullTerminated(byte[] p_Data, int p_Start, int p_Length,
-                                                 ICollection<string> p_Out)
-        {
-            var s_End = p_Start + p_Length;
-            var s_Cursor = p_Start;
-
-            while (s_Cursor < s_End)
-            {
-                var s_Stop = s_Cursor;
-
-                while (s_Stop < s_End && p_Data[s_Stop] != 0)
-                    s_Stop++;
-
-                if (s_Stop > s_Cursor)
-                    p_Out.Add(Encoding.UTF8.GetString(p_Data, s_Cursor, s_Stop - s_Cursor));
-
-                s_Cursor = s_Stop + 1;
-            }
         }
 
         /// <summary>
