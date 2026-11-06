@@ -180,6 +180,10 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<RaiseWaterPhysicsCommand>();
             RegisterCommand<SetReferenceCommand>();
             RegisterCommand<AddMinimapCommand>();
+            RegisterCommand<AddSubWorldCommand>();
+            RegisterCommand<BuildGameModeCommand>();
+            RegisterCommand<BuildEmitterSystemCommand>();
+            RegisterCommand<AddTemplateVisualTerrainCommand>();
             RegisterCommand<ClonePartitionFreshCommand>();
             RegisterCommand<MeshVariationDbAddEntryCommand>();
             RegisterCommand<MeshVariationDbAddAllCommand>();
@@ -238,8 +242,6 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<CompareRegistryContainersCommand>();
             RegisterCommand<EmitSubworldRegistryCommand>();
             RegisterCommand<KeepOnlyPartitionCommand>();
-
-            // RegisterEngineCommands(s_EngineType);
         }
 
         public bool Cas()

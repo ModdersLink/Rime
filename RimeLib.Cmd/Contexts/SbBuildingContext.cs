@@ -198,8 +198,6 @@ namespace RimeLib.Cmd.Contexts
             RegisterCommand<RemoveBundleCommand>();
             RegisterCommand<ListBundlesCommand>();
             RegisterCommand<BuildCommand>();
-
-            // RegisterEngineCommands(p_EngineType);
         }
 
         internal void AddCasTocChunk(GUID p_Id, Sha1 p_Sha1)

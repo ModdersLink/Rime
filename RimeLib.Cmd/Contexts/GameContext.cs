@@ -159,8 +159,6 @@ namespace RimeLib.Cmd.Contexts
                     RegisterCommand<DumpLevelPlacementsCommand>();
                 }
             }
-
-            // RegisterEngineCommands(s_EngineType);
         }
 
         public override string GetShortDescription()
