@@ -136,10 +136,24 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                 s_Adder.AddAll(s_Missing2, p_Writer);
             p_Writer.WriteLine($"{s_Missing2.Count} texture(s) the stand-ins bind added for their solutions the translated shaders keep.");
 
-            // The built database's shaders, then the translated ones.
+            // The built database's shaders, then the translated ones. A shader the database got from another engine
+            // (add_converted_shaders: the terrain's) is no partition of this engine's game but one of the bundle's.
             var s_Data = Read(s_Built);
             var s_Keys = s_Builder.GetShaderKeys(s_Data);
-            var s_Names = s_Keys.Where(s_Index.Names.ContainsKey).Select(p_K => s_Index.Names[p_K]).Concat(s_Translated).Distinct().ToList();
+            var s_BundleNames = new Dictionary<uint, string>();
+            foreach (var s_Partition in s_BundleContext.GetPartitions().Keys)
+                s_BundleNames.TryAdd(s_Builder.GetShaderKey(s_Partition), s_Partition.ToLowerInvariant());
+
+            var s_Names = new List<string>();
+            foreach (var s_Key in s_Keys)
+            {
+                if (s_Index.Names.TryGetValue(s_Key, out var s_Known) || s_BundleNames.TryGetValue(s_Key, out s_Known))
+                    s_Names.Add(s_Known);
+                else
+                    p_Writer.WriteLine($"  DROPPED 0x{s_Key:X8}: no partition names this shader of the database, so it is not merged.");
+            }
+
+            s_Names = s_Names.Concat(s_Translated).Distinct().ToList();
             var s_Merged = s_Builder.Build(new List<Func<byte[]>> { () => s_Data }.Concat(s_Parts).ToList(), s_Names, false, p_Writer, out var s_Missing);
             foreach (var s_Shader in s_Missing)
                 p_Writer.WriteLine($"  NOT TRANSLATED {s_Shader}");

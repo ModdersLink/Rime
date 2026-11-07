@@ -1,4 +1,4 @@
-using RimeLib.Content.Frostbite2013_2.Frostbite.Bundles;
+﻿using RimeLib.Content.Frostbite2013_2.Frostbite.Bundles;
 using RimeLib.Content.Frostbite2013_2.Frostbite.Cas;
 using RimeLib.Content.Frostbite2013_2.IO;
 using RimeLib.Frostbite.Core;
@@ -94,6 +94,11 @@ internal class CatalogReadable : IReadableObjectWithHash
     {
         return m_CompressedSize;
     }
+
+    /// <summary>The sha1 the bundle names the payload by: the same payload, the same hash.</summary>
+
+    internal Sha1 PayloadHash => m_Hash;
+
 
     public Sha1? GetCompressedHash()
     {

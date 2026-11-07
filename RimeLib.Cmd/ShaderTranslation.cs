@@ -62,24 +62,30 @@ namespace RimeLib.Cmd
                     s_Lines.Add($"{s_Source}\t{s_Target}\t{Path.Combine(s_Directory.FullName, i.ToString())}");
                 }
 
-                var s_JobFile = Path.Combine(s_Directory.FullName, "jobs.tsv");
-                File.WriteAllLines(s_JobFile, s_Lines);
-
-                var s_Start = new ProcessStartInfo(p_Translator)
+                // The translator takes its jobs one after another, each independent of the others and
+                // writing its own files: a batch per core translates them side by side.
+                var s_Batches = System.Math.Clamp(s_Lines.Count / 16, 1, Environment.ProcessorCount);
+                System.Threading.Tasks.Parallel.For(0, s_Batches, new System.Threading.Tasks.ParallelOptions { MaxDegreeOfParallelism = s_Batches }, b =>
                 {
-                    RedirectStandardOutput = true,
-                    RedirectStandardError = true,
-                    UseShellExecute = false,
-                    CreateNoWindow = true,
-                };
-                s_Start.ArgumentList.Add("--retarget-batch");
-                s_Start.ArgumentList.Add(s_JobFile);
+                    var s_JobFile = Path.Combine(s_Directory.FullName, $"jobs.{b}.tsv");
+                    File.WriteAllLines(s_JobFile, s_Lines.Where((_, i) => i % s_Batches == b));
 
-                using var s_Process = Process.Start(s_Start) ?? throw new InvalidOperationException($"could not start {p_Translator}");
-                var s_Error = s_Process.StandardError.ReadToEndAsync();
-                var s_Output = s_Process.StandardOutput.ReadToEnd();
-                s_Process.WaitForExit();
-                File.WriteAllText(Path.Combine(s_Directory.FullName, "output.txt"), s_Output + s_Error.Result);
+                    var s_Start = new ProcessStartInfo(p_Translator)
+                    {
+                        RedirectStandardOutput = true,
+                        RedirectStandardError = true,
+                        UseShellExecute = false,
+                        CreateNoWindow = true,
+                    };
+                    s_Start.ArgumentList.Add("--retarget-batch");
+                    s_Start.ArgumentList.Add(s_JobFile);
+
+                    using var s_Process = Process.Start(s_Start) ?? throw new InvalidOperationException($"could not start {p_Translator}");
+                    var s_Error = s_Process.StandardError.ReadToEndAsync();
+                    var s_Output = s_Process.StandardOutput.ReadToEnd();
+                    s_Process.WaitForExit();
+                    File.WriteAllText(Path.Combine(s_Directory.FullName, $"output.{b}.txt"), s_Output + s_Error.Result);
+                });
 
                 for (var i = 0; i < p_Jobs.Count; i++)
                 {
