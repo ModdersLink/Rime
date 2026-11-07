@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
@@ -879,9 +879,16 @@ namespace RimeLib.Cmd
             var s_Loaded = new Dictionary<string, byte[]>(StringComparer.OrdinalIgnoreCase);
 
             // The DX11 solutions of a shader that write the g-buffer, and the database it is in.
+            // The source level's own databases first: another level's holds the shader compiled for its own use, and
+            // that compile is not the one this level's materials draw with.
+            var s_SourceLevel = m_Move is var (s_MoveFrom, _) ? s_MoveFrom.ToLowerInvariant() : null;
+
             (string Database, List<ShaderSolutionPixel> GBuffer)? GBuffer(ShaderDatabaseIndex p_Index, IShaderSolutionReader p_Reader, uint p_Key)
             {
-                foreach (var (s_Name, s_Load, s_Keys) in p_Index.Databases)
+                var s_Databases = p_Index == s_SourceIndex && s_SourceLevel != null
+                    ? p_Index.Databases.OrderBy(p_D => p_D.Name.StartsWith(s_SourceLevel, StringComparison.Ordinal) ? 0 : 1).ToList()
+                    : p_Index.Databases;
+                foreach (var (s_Name, s_Load, s_Keys) in s_Databases)
                 {
                     if (!s_Keys.Contains(p_Key))
                         continue;

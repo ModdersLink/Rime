@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.IO;
 using RimeLib.Frostbite.Core;
@@ -13,7 +13,7 @@ namespace RimeLib.Content.Frostbite2013_2.Mounting;
 internal sealed class PartitionGuidCache
 {
     private const uint c_Magic = 0x43475052; // "RPGC"
-    private const int c_Version = 1;
+    private const int c_Version = 3;
 
     private static readonly object s_Lock = new();
     private static PartitionGuidCache? s_Instance;
@@ -44,7 +44,7 @@ internal sealed class PartitionGuidCache
                     {
                         var s_Count = s_Reader.ReadInt32();
                         for (var i = 0; i < s_Count; i++)
-                            s_Cache.m_Guids[Convert.ToHexString(s_Reader.ReadBytes(20))] = new Guid(s_Reader.ReadBytes(16));
+                            s_Cache.m_Guids[s_Reader.ReadString()] = new Guid(s_Reader.ReadBytes(16));
                     }
                 }
             }
@@ -58,11 +58,17 @@ internal sealed class PartitionGuidCache
         }
     }
 
-    public bool TryGet(Sha1 p_Hash, out GUID p_Guid)
+    // By partition and payload: a hash alone is not unique to one partition's payload for every kind of entry (a
+    // patched one can be named by its base), and two partitions sharing an entry would share a GUID.
+    private static string Key(string p_Name, Sha1 p_Hash) => p_Name.ToLowerInvariant() + "|" + Convert.ToHexString(p_Hash.Hash);
+
+    public bool TryGet(string p_Name, Sha1 p_Hash, out GUID p_Guid)
     {
-        if (m_Guids.TryGetValue(Convert.ToHexString(p_Hash.Hash), out var s_Guid))
+        if (m_Guids.TryGetValue(Key(p_Name, p_Hash), out var s_Guid))
         {
-            p_Guid = new GUID(s_Guid);
+            // Not GUID(Guid): that clears the bit chunk ids keep their compression flag in, and a partition GUID with
+            // it set would then name no partition.
+            p_Guid = new GUID(s_Guid.ToString("D"));
             return true;
         }
 
@@ -70,7 +76,7 @@ internal sealed class PartitionGuidCache
         return false;
     }
 
-    public void Add(Sha1 p_Hash, GUID p_Guid) => m_Guids[Convert.ToHexString(p_Hash.Hash)] = new Guid(p_Guid.Id);
+    public void Add(string p_Name, Sha1 p_Hash, GUID p_Guid) => m_Guids[Key(p_Name, p_Hash)] = new Guid(p_Guid.Id);
 
     public void Save()
     {
@@ -88,7 +94,7 @@ internal sealed class PartitionGuidCache
                     s_Writer.Write(s_Entries.Length);
                     foreach (var (s_Hash, s_Guid) in s_Entries)
                     {
-                        s_Writer.Write(Convert.FromHexString(s_Hash));
+                        s_Writer.Write(s_Hash);
                         s_Writer.Write(s_Guid.ToByteArray());
                     }
                 }

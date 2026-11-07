@@ -326,12 +326,21 @@ public class EngineMounter : IEngineMounter
     }
 
     /// <summary>The sha1 a partition's payload is named by, where its readable has one.</summary>
-    private static Sha1? PayloadHash(IObjectVariant p_Variant) => (p_Variant as ObjectVariant)?.GetReadable() switch
+    private static Sha1? PayloadHash(IObjectVariant p_Variant)
     {
-        CatalogReadable s_Catalog => s_Catalog.PayloadHash,
-        InlineReadable s_Inline => s_Inline.PayloadHash,
-        _ => null,
-    };
+        var s_Hash = (p_Variant as ObjectVariant)?.GetReadable() switch
+        {
+            CatalogReadable s_Catalog => s_Catalog.PayloadHash,
+            // Inline data is not named by a catalog entry, and its entry's sha1 can be empty: its own bytes are.
+            InlineReadable s_Inline => Sha1.FromData(s_Inline.GetCompressedData()),
+            // A noncas bundle's partition, delta-patched ones included: the most expensive to read for the GUID.
+            EbxEntry s_Ebx => s_Ebx.Hash,
+            _ => null,
+        };
+
+        // An empty hash names no payload: every partition without one would share its GUID.
+        return s_Hash == null || s_Hash.Hash.All(p_B => p_B == 0) ? null : s_Hash;
+    }
 
     /// <summary>
     /// Reads the GUIDs of partitions mounted since the last call into the GUID index.
@@ -358,7 +367,7 @@ public class EngineMounter : IEngineMounter
             Parallel.For(0, s_Pending.Count, i =>
             {
                 var s_Hash = PayloadHash(s_Pending[i].Variant);
-                if (s_Hash != null && s_Cache.TryGet(s_Hash, out var s_Cached))
+                if (s_Hash != null && s_Cache.TryGet(s_Pending[i].Name, s_Hash, out var s_Cached))
                 {
                     s_Guids[i] = s_Cached;
                     return;
@@ -369,7 +378,7 @@ public class EngineMounter : IEngineMounter
                     s_Guids[i] = EbxReader.GetPartitionGuid(s_Pending[i].Variant);
                     Interlocked.Increment(ref s_Read);
                     if (s_Hash != null)
-                        s_Cache.Add(s_Hash, s_Guids[i]!);
+                        s_Cache.Add(s_Pending[i].Name, s_Hash, s_Guids[i]!);
                 }
                 catch (Exception s_Exception)
                 {
