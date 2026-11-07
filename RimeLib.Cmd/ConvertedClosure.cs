@@ -897,6 +897,7 @@ namespace RimeLib.Cmd
                 return null;
             }
 
+            var s_SbContext = (SbBuildingContext)m_Context.Parent!;
             var s_Jobs = new List<ShaderTranslation.Job>();
             var s_Plans = new List<(InstanceRef Shader, string Database, string Name, uint Key, int SourceSolution, uint TemplateKey, List<(int Solution, int Job)> Targets)>();
             foreach (var (s_Shader, s_StandIn) in p_Picks)
@@ -908,6 +909,20 @@ namespace RimeLib.Cmd
                 var s_Name = Name(m_Mounter, s_Shader);
                 var s_Key = s_SourceIndex.Builder.GetShaderKey(s_Name);
                 var s_TemplateKey = s_TargetIndex.Builder.GetShaderKey(Name(p_Game, s_StandIn.Shader));
+
+                // A translated shader keeps its name, so the database holds one entry for it, drawn with one
+                // stand-in's solutions: an earlier bundle's translation serves this one when it is onto the
+                // stand-in this bundle's meshes were fitted to. Onto another, those meshes may have a layout it
+                // has no solution for, and are not drawn; they keep their stand-in.
+                var s_Moved = Moved(s_Name).ToLowerInvariant();
+                if (s_SbContext.TranslatedShaders.FirstOrDefault(p_T => p_T.Shader.Name == s_Moved) is { Shader: { } s_Earlier })
+                {
+                    if (s_Earlier.TemplateKey == s_TemplateKey)
+                        s_Translated.Add(s_Shader);
+                    else
+                        p_Log.WriteLine($"STANDIN KEPT {s_Name}: translated onto another stand-in by an earlier bundle, this one's meshes are fitted to {Name(p_Game, s_StandIn.Shader)}");
+                    continue;
+                }
                 if (GBuffer(s_SourceIndex, s_SourceReader, s_Key) is not var (s_Database, s_Sources) || s_Sources.Count == 0 ||
                     GBuffer(s_TargetIndex, s_TargetReader, s_TemplateKey) is not var (_, s_Templates) || s_Templates.Count == 0)
                     continue;
@@ -923,7 +938,6 @@ namespace RimeLib.Cmd
             }
 
             var s_Results = ShaderTranslation.Run(p_Translator, s_Jobs, p_Log);
-            var s_SbContext = (SbBuildingContext)m_Context.Parent!;
             foreach (var s_Plan in s_Plans)
             {
                 var s_Pixels = new Dictionary<int, byte[]>();
