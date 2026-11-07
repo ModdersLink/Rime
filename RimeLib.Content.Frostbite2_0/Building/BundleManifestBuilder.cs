@@ -284,7 +284,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     uint s_CompressedSize;
                     if (s_ChunkReader.BaseStream is ZlibRimeReader s_ZlibReader)
                     {
-                        var s_ByteBuffer = s_ZlibReader.GetRawBytes();
+                        var s_ByteBuffer = Ranged(s_ZlibReader.GetRawBytes(), s_Chunk.Value);
                         p_Writer.Write(s_ByteBuffer);
                         s_CompressedSize = (uint)s_ByteBuffer.Length;
                     }
@@ -305,9 +305,10 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 }
                 else
                 {
-                    s_ChunkReader.CopyTo(s_HashWriter);
+                    var s_Length = (int)(s_ChunkReader.Length - s_ChunkReader.Position);
+                    s_HashWriter.Write(Ranged(s_Length > 0 ? s_ChunkReader.ReadBytes(s_Length) : [], s_Chunk.Value));
                 }
-                
+
                 var s_Hash = s_HashWriter.GetHash();
                 s_Hashes.Add(s_Hash);
                 s_Hash.Serialize(s_ChecksumWriter);
@@ -329,6 +330,23 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             // Return back to the end of the stream.
             p_Writer.Seek(s_FinalOffset, SeekOrigin.Begin);
+        }
+
+        /// <summary>
+        /// The bytes a bundle stores for a chunk: its range of the chunk's stored stream. A chunk mounted
+        /// from a cas bundle reads its whole catalog entry, while the bundle entry ranges only a slice of
+        /// it (a texture's tail mips, at the range's logical offset); storing all of it under that entry
+        /// has the engine take the first mips' bytes for the tail's. A chunk mounted from a noncas bundle
+        /// already reads its slice, which is shorter than the range's end, so it is kept as it is.
+        /// </summary>
+        private static byte[] Ranged(byte[] p_Stored, IChunkObject p_Chunk)
+        {
+            var s_Start = p_Chunk.GetRangeStart();
+            var s_End = p_Chunk.GetRangeEnd();
+            if (s_End > p_Stored.Length || s_End <= s_Start || (s_Start == 0 && s_End == p_Stored.Length))
+                return p_Stored;
+
+            return p_Stored[(int)s_Start..(int)s_End];
         }
 
         private void SerializeEntry(string p_Name, IReadableObject p_Object, RimeWriter p_TextWriter, RimeWriter p_ManifestWriter)
