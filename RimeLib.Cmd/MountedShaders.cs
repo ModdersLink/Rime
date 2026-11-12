@@ -52,7 +52,11 @@ namespace RimeLib.Cmd
                     s_Pools[s_Pool].Add(p_Bindings, s_Parsed);
             }
 
-            return s_Pools.ToDictionary(p_P => p_P.Key, p_P => new ShaderStandIns(p_P.Value.ByShader()));
+            // The raw content an expansion shipped beside its levels is not drawn by them: its textures need not stream
+            // (traincargo_01's create a level of one texel the device refuses).
+            bool Drawn(InstanceRef p_Shader) =>
+                !p_Game.TryGetPartitionByGuid(p_Shader.Partition, out var s_Name, out _) || !s_Name.StartsWith("xp_raw/", StringComparison.OrdinalIgnoreCase);
+            return s_Pools.ToDictionary(p_P => p_P.Key, p_P => new ShaderStandIns(p_P.Value.ByShader().Where(p_S => Drawn(p_S.Key)).ToDictionary(p_S => p_S.Key, p_S => p_S.Value)));
         }
     }
 }

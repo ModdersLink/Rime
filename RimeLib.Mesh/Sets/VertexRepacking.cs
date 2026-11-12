@@ -22,6 +22,16 @@ public sealed record VertexLayout(IReadOnlyList<VertexElement> Elements, byte St
             ? new VertexLayout(p_Elements, p_Streams[0].Stride)
             : null;
 
+    /// <summary>
+    /// The per-vertex layout of an instanced declaration: its first stream, per vertex, beside streams per instance
+    /// that the engine fills from the instances' transforms. None for any other declaration.
+    /// </summary>
+    public static VertexLayout? PerVertexOfInstanced(IReadOnlyList<VertexElement> p_Elements, IReadOnlyList<VertexStream> p_Streams) =>
+        p_Streams.Count > 1 && p_Streams[0].Classification == VertexClassification.PerVertex &&
+        p_Streams.Skip(1).All(p_S => p_S.Classification == VertexClassification.PerInstance)
+            ? new VertexLayout(p_Elements.Where(p_E => p_E.StreamIndex == 0).ToList(), p_Streams[0].Stride)
+            : null;
+
     public bool Equals(VertexLayout? p_Other) => p_Other != null && Stride == p_Other.Stride && Elements.SequenceEqual(p_Other.Elements);
 
     public override int GetHashCode() => HashCode.Combine(Stride, Elements.Count);

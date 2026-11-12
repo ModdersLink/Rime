@@ -56,13 +56,41 @@ namespace RimeLib.Shader
         IReadOnlyDictionary<uint, byte[]> Declarations,
         int StateHashMismatches)
     {
+        /// <summary>
+        /// Per shader key the declarations with the skinning method of a solution for each, as
+        /// <see cref="Skinned"/> packs them: a mesh draws with the solution for both.
+        /// </summary>
+        public IReadOnlyDictionary<uint, IReadOnlySet<ulong>> BySkinning { get; init; } = new Dictionary<uint, IReadOnlySet<ulong>>();
+
+        /// <summary>Per shader key the declarations with the instancing method of a solution for each, packed alike.</summary>
+        public IReadOnlyDictionary<uint, IReadOnlySet<ulong>> ByInstancing { get; init; } = new Dictionary<uint, IReadOnlySet<ulong>>();
+
+        /// <summary>A declaration and a skinning method as one key.</summary>
+        public static ulong Skinned(uint p_Declaration, int p_Skinning) => ((ulong)p_Declaration << 8) | (byte)p_Skinning;
+
         public static ShaderDeclarations Merge(IEnumerable<ShaderDeclarations> p_All)
         {
             var s_ByShader = new Dictionary<uint, HashSet<uint>>();
             var s_Declarations = new Dictionary<uint, byte[]>();
+            var s_BySkinning = new Dictionary<uint, HashSet<ulong>>();
+            var s_ByInstancing = new Dictionary<uint, HashSet<ulong>>();
             var s_Mismatches = 0;
             foreach (var s_One in p_All)
             {
+                foreach (var (s_Key, s_Pairs) in s_One.ByInstancing)
+                {
+                    if (!s_ByInstancing.TryGetValue(s_Key, out var s_Known))
+                        s_ByInstancing[s_Key] = s_Known = new HashSet<ulong>();
+                    s_Known.UnionWith(s_Pairs);
+                }
+
+                foreach (var (s_Key, s_Pairs) in s_One.BySkinning)
+                {
+                    if (!s_BySkinning.TryGetValue(s_Key, out var s_Known))
+                        s_BySkinning[s_Key] = s_Known = new HashSet<ulong>();
+                    s_Known.UnionWith(s_Pairs);
+                }
+
                 foreach (var (s_Key, s_Hashes) in s_One.ByShader)
                 {
                     if (!s_ByShader.TryGetValue(s_Key, out var s_Known))
@@ -75,10 +103,30 @@ namespace RimeLib.Shader
                 s_Mismatches += s_One.StateHashMismatches;
             }
 
-            return new ShaderDeclarations(s_ByShader.ToDictionary(p_P => p_P.Key, p_P => (IReadOnlySet<uint>)p_P.Value), s_Declarations, s_Mismatches);
+            return new ShaderDeclarations(s_ByShader.ToDictionary(p_P => p_P.Key, p_P => (IReadOnlySet<uint>)p_P.Value), s_Declarations, s_Mismatches)
+            {
+                BySkinning = s_BySkinning.ToDictionary(p_P => p_P.Key, p_P => (IReadOnlySet<ulong>)p_P.Value),
+                ByInstancing = s_ByInstancing.ToDictionary(p_P => p_P.Key, p_P => (IReadOnlySet<ulong>)p_P.Value),
+            };
         }
 
         /// <summary>Whether the shader has a solution for the declaration.</summary>
         public bool Draws(uint p_Shader, uint p_Declaration) => ByShader.TryGetValue(p_Shader, out var s_Hashes) && s_Hashes.Contains(p_Declaration);
+
+        /// <summary>
+        /// Whether the shader has a solution for the declaration with the skinning method, any where it is null: a
+        /// skinned mesh's varies with its bones.
+        /// </summary>
+        public bool Draws(uint p_Shader, uint p_Declaration, int? p_Skinning) => p_Skinning is not { } s_Skinning
+            ? Draws(p_Shader, p_Declaration)
+            : BySkinning.TryGetValue(p_Shader, out var s_Pairs) && s_Pairs.Contains(Skinned(p_Declaration, s_Skinning));
+
+        /// <summary>
+        /// Whether the shader has a solution for the declaration with the skinning method and with the instancing method,
+        /// either one any where null.
+        /// </summary>
+        public bool Draws(uint p_Shader, uint p_Declaration, int? p_Skinning, int? p_Instancing) =>
+            Draws(p_Shader, p_Declaration, p_Skinning) && (p_Instancing is not { } s_Instancing ||
+                ByInstancing.TryGetValue(p_Shader, out var s_Pairs) && s_Pairs.Contains(Skinned(p_Declaration, s_Instancing)));
     }
 }
