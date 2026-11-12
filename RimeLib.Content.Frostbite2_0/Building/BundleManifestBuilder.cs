@@ -305,8 +305,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 }
                 else
                 {
-                    var s_Length = (int)(s_ChunkReader.Length - s_ChunkReader.Position);
-                    s_HashWriter.Write(Ranged(s_Length > 0 ? s_ChunkReader.ReadBytes(s_Length) : [], s_Chunk.Value));
+                    // The reader gives the payload, not its stored stream, which the range is a slice of.
+                    s_ChunkReader.CopyTo(s_HashWriter);
                 }
 
                 var s_Hash = s_HashWriter.GetHash();
@@ -333,7 +333,8 @@ namespace RimeLib.Content.Frostbite2_0.Building
         }
 
         /// <summary>
-        /// The bytes a bundle stores for a chunk: its range of the chunk's stored stream. A chunk mounted
+        /// The bytes a bundle stores for a compressed chunk: its range of the chunk's stored stream, in whose
+        /// positions the range is given. A chunk mounted
         /// from a cas bundle reads its whole catalog entry, while the bundle entry ranges only a slice of
         /// it (a texture's tail mips, at the range's logical offset); storing all of it under that entry
         /// has the engine take the first mips' bytes for the tail's. A chunk mounted from a noncas bundle
@@ -343,7 +344,10 @@ namespace RimeLib.Content.Frostbite2_0.Building
         {
             var s_Start = p_Chunk.GetRangeStart();
             var s_End = p_Chunk.GetRangeEnd();
-            if (s_End > p_Stored.Length || s_End <= s_Start || (s_Start == 0 && s_End == p_Stored.Length))
+            // A whole chunk, or a range the stored stream does not reach: kept as it is. Without a range of its own
+            // the entry's end is the payload's size, not a position in the stream, so only a slice past either
+            // start (the tail a bundle ships of a texture) is taken.
+            if ((s_Start == 0 && p_Chunk.GetLogicalOffset() == 0) || s_End > p_Stored.Length || s_End <= s_Start)
                 return p_Stored;
 
             return p_Stored[(int)s_Start..(int)s_End];
