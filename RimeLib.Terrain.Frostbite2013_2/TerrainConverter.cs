@@ -37,6 +37,14 @@ public class TerrainConverter : ITerrainConverter
     private const string c_StreamingTreeSuffix = ".streamingtree_win32";
     private const string c_Frostbite2StreamingTreeSuffix = ".streamingtree";
 
+    /// <summary>
+    /// The footer after a streaming tree whose zero samples are holes, which Venice Unleashed reads
+    /// and the engine's loader never reaches: flags, version, magic "VUTH".
+    /// </summary>
+    private const uint c_FooterZeroIsHole = 1;
+    private const uint c_FooterVersion = 1;
+    private const uint c_FooterMagic = 0x48545556;
+
     public EngineType[] GetSupportedEngines() => [EngineType.Frostbite2013_2];
 
     public IReadOnlyList<ConvertedTerrainResource> Convert(IResourceObject p_Resource, string p_Name, IEngineMounter p_Mounter, EngineType p_Target,
@@ -246,8 +254,11 @@ public class TerrainConverter : ITerrainConverter
         if (!s_Tree.Serialize(out var s_Data))
             throw new InvalidDataException("the converted streaming tree did not serialize");
 
+        if (s_Counts.Holes > 0)
+            s_Data = [.. s_Data, .. BitConverter.GetBytes(c_FooterZeroIsHole), .. BitConverter.GetBytes(c_FooterVersion), .. BitConverter.GetBytes(c_FooterMagic)];
+
         p_Log.WriteLine($"TERRAIN {p_Name}: {s_Counts.Persistent} heightfield node(s) with samples ({s_Counts.FromChildren} from their children), {s_Counts.Missing} without their block pruned, " +
-            $"{s_Counts.Holes} hole sample(s) filled; {s_Counts.MaskMissing} mask subtile(s) without samples left out, {s_Counts.ColorMissing} colour tile(s) missing, {s_Counts.ColorFromChildren} from their children.");
+            $"{s_Counts.Holes} hole sample(s) kept, {s_Counts.GroundAtZero} ground sample(s) at zero raised; {s_Counts.MaskMissing} mask subtile(s) without samples left out, {s_Counts.ColorMissing} colour tile(s) missing, {s_Counts.ColorFromChildren} from their children.");
         var s_Name = p_Name.EndsWith(c_StreamingTreeSuffix, StringComparison.Ordinal) ? p_Name[..^c_StreamingTreeSuffix.Length] + c_Frostbite2StreamingTreeSuffix : p_Name;
         return new ConvertedTerrainResource(s_Name, ResourceType.TerrainStreamingTree, s_Data);
     }
@@ -317,6 +328,7 @@ public class TerrainConverter : ITerrainConverter
         public int Persistent;
         public int Missing;
         public int Holes;
+        public int GroundAtZero;
         public int FromChildren;
         public int MaskMissing;
         public int ColorMissing;
@@ -459,8 +471,9 @@ public class TerrainConverter : ITerrainConverter
 
     /// <summary>
     /// The node as Frostbite 2 keeps it, its samples in the tree. A node whose block is missing is
-    /// kept as pruned, so its children stay; a node that marks some samples as no ground has them
-    /// raised to its lowest ground, which Frostbite 2 would otherwise read as ground at zero.
+    /// kept as pruned, so its children stay. A node that marks some samples as no ground keeps them
+    /// at zero, which Venice Unleashed reads as a hole when the tree's footer says so; ground
+    /// at zero in any node is raised to one, so zero means no ground only.
     /// </summary>
     private static HeightfieldTreeNode Node(HeightfieldTreeNode p_Source, HeightfieldTree p_Heights, Dictionary<(int, int, int), byte[]> p_Blocks, Counts p_Counts)
     {
@@ -490,7 +503,7 @@ public class TerrainConverter : ITerrainConverter
             var s_Occluder = (int)(p_Heights.OccluderGridStackSize * 2);
             s_Node.HasData = true;
             s_Node.HasPersistent = true;
-            s_Node.EmbeddedData = p_Source.PartialNonPhysics ? WithoutHoles(s_Block[..s_Samples], p_Counts) : s_Block[..s_Samples];
+            s_Node.EmbeddedData = WithHoles(s_Block[..s_Samples], p_Source.PartialNonPhysics, p_Counts);
             s_Node.MinMaxData = s_Block[s_Samples..(s_Samples + s_MinMax)];
             s_Node.OccluderGridData = s_Block[(s_Samples + s_MinMax)..(s_Samples + s_MinMax + s_Occluder)];
             ++p_Counts.Persistent;
@@ -586,23 +599,28 @@ public class TerrainConverter : ITerrainConverter
         p_Node.OccluderGridData = new byte[p_Heights.OccluderGridStackSize * 2];
     }
 
-    /// <summary>The samples with each zero, no ground, raised to the lowest ground sample.</summary>
-    private static byte[] WithoutHoles(byte[] p_Samples, Counts p_Counts)
+    /// <summary>
+    /// The samples with zero for no ground only: a node with holes keeps its zeros, any other has
+    /// them raised by one step of the height scale.
+    /// </summary>
+    private static byte[] WithHoles(byte[] p_Samples, bool p_HasHoles, Counts p_Counts)
     {
-        var s_Samples = new ushort[p_Samples.Length / 2];
-        Buffer.BlockCopy(p_Samples, 0, s_Samples, 0, p_Samples.Length);
-        var s_Ground = s_Samples.Where(p_S => p_S != 0).DefaultIfEmpty().Min();
-        for (var i = 0; i < s_Samples.Length; ++i)
+        var s_Data = (byte[])p_Samples.Clone();
+        for (var i = 0; i < s_Data.Length; i += 2)
         {
-            if (s_Samples[i] != 0)
+            if (s_Data[i] != 0 || s_Data[i + 1] != 0)
                 continue;
 
-            s_Samples[i] = s_Ground;
-            ++p_Counts.Holes;
+            if (p_HasHoles)
+            {
+                ++p_Counts.Holes;
+                continue;
+            }
+
+            s_Data[i] = 1;
+            ++p_Counts.GroundAtZero;
         }
 
-        var s_Data = new byte[p_Samples.Length];
-        Buffer.BlockCopy(s_Samples, 0, s_Data, 0, s_Data.Length);
         return s_Data;
     }
 
