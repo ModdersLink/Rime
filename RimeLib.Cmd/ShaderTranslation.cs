@@ -79,6 +79,12 @@ namespace RimeLib.Cmd
                     };
                     s_Start.ArgumentList.Add("--retarget-batch");
                     s_Start.ArgumentList.Add(s_JobFile);
+                    // Frostbite 2013's materials are authored for its own lighting, on a larger scale than Frostbite 2's:
+                    // the median SpecularScale of a level's materials is 2.5 against 0.3 over Frostbite 2's own, and
+                    // SmoothnessScale 2.0 against 1.0. Taken as they are, every surface reflects the sky about eight
+                    // times as strongly as the target's own do, and the level reads milky white.
+                    s_Start.Environment["RIME_SPECULAR_SCALE"] = (0.3 / 2.5).ToString(System.Globalization.CultureInfo.InvariantCulture);
+                    s_Start.Environment["RIME_SMOOTHNESS_SCALE"] = (1.0 / 2.0).ToString(System.Globalization.CultureInfo.InvariantCulture);
 
                     using var s_Process = Process.Start(s_Start) ?? throw new InvalidOperationException($"could not start {p_Translator}");
                     var s_Error = s_Process.StandardError.ReadToEndAsync();

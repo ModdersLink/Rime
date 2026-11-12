@@ -43,7 +43,11 @@ namespace RimeLib.Shader
         /// </summary>
         /// <param name="p_Source">This engine's shaderdb resource, holding the translated shaders.</param>
         /// <param name="p_Template">A shaderdb resource of the target's engine holding the templates.</param>
+        /// <param name="p_MoreTemplates">
+        /// The target's other shaderdb resources holding the templates: their solutions for states the first has none
+        /// for are added too, each with the translation of the first's solution whose pixel shader is the same.
+        /// </param>
         byte[] ConvertTranslated(byte[] p_Source, IReadOnlyList<TranslatedShader> p_Shaders, byte[] p_Template, EngineType p_Target,
-            Func<string, string> p_MoveName, TextWriter p_Log);
+            Func<string, string> p_MoveName, TextWriter p_Log, IReadOnlyList<byte[]>? p_MoreTemplates = null, Func<uint, bool>? p_Used = null);
     }
 }

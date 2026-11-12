@@ -17,6 +17,18 @@ public interface IShaderBindings : IEngineInterface
     /// </summary>
     IReadOnlyList<InstanceRef?> MeshShaders(DatabasePartitionBase p_Partition);
 
+    /// <summary>The materials of the partition's mesh asset, in the order its mesh's subsets index them.</summary>
+    IReadOnlyList<InstanceRef> MeshMaterials(DatabasePartitionBase p_Partition);
+
+    /// <summary>
+    /// The material variations the partition's mesh variation database entries set: the mesh, its material and the
+    /// variation of it, whose shader the mesh's subsets of that material draw with in the variation.
+    /// </summary>
+    IEnumerable<(InstanceRef Mesh, InstanceRef Material, InstanceRef Variation)> MaterialVariations(DatabasePartitionBase p_Partition);
+
+    /// <summary>The shader of a material variation of the partition, if it is one with a shader.</summary>
+    InstanceRef? VariationShader(DatabasePartitionBase p_Partition, InstanceRef p_Variation);
+
     /// <summary>
     /// Points each mesh material whose shader has a stand-in at it, dropping the parameters the
     /// stand-in does not take, and returns the dropped parameters' names.

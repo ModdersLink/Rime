@@ -756,14 +756,36 @@ namespace RimeLib.Cmd
             // alike stand-ins the one with a declaration of most subsets' elements is taken.
             var s_To = EngineInterfaceRegistry.Create<IMeshSetCodec>(s_SbContext.EngineType);
             var s_Declarations = new SolutionLayouts(ShaderDatabaseIndex.Get(s_Game), s_Game, s_To);
-            var s_Subsets = ConvertedSubsets(p_Converted, s_Bindings, s_To).ToLookup(p_S => p_S.Shader);
+            var s_AllSubsets = ConvertedSubsets(p_Converted, s_Bindings, s_To).ToList();
+            var s_Subsets = s_AllSubsets.Where(p_S => !p_S.Variation).ToLookup(p_S => p_S.Shader);
             bool Fits(InstanceRef p_StandIn, ConvertedSubset p_Subset) =>
-                s_Declarations.Draws(p_StandIn, p_Subset.Declaration) || p_Subset.Repackable && s_Declarations.Fits(p_StandIn, p_Subset) != null;
+                s_Declarations.Draws(p_StandIn, p_Subset) || p_Subset.Repackable && s_Declarations.Fits(p_StandIn, p_Subset) != null;
             int Draws(InstanceRef p_StandIn, InstanceRef p_Shader) => s_Subsets[p_Shader].Count(p_S => Fits(p_StandIn, p_S));
             // Whether a subset draws with a shader as it is or repacked to any layout the shader has a solution for.
             bool Reaches(InstanceRef p_StandIn, ConvertedSubset p_Subset) =>
                 Fits(p_StandIn, p_Subset) || p_Subset.Repackable && s_Declarations.Closest(p_StandIn, p_Subset) != null;
             int Reached(InstanceRef p_StandIn, InstanceRef p_Shader) => s_Subsets[p_Shader].Count(p_S => Reaches(p_StandIn, p_S));
+            // A stand-in draws a subset it reaches at all before one it draws as it is: one with no solution for a
+            // subset's skinning method cannot be repacked to one either.
+            long Score(InstanceRef p_StandIn, InstanceRef p_Shader) => (long)Reached(p_StandIn, p_Shader) * 100000 + Draws(p_StandIn, p_Shader);
+
+            // The stand-in an earlier bundle translated a shader onto, from any pool.
+            var s_GameIndex = ShaderDatabaseIndex.Get(s_Game);
+            ShaderStandIn? Translated(InstanceRef p_Shader, ShaderParameters p_Parameters)
+            {
+                var s_Moved = Moved(Name(m_Mounter, p_Shader)).ToLowerInvariant();
+                if (s_SbContext.TranslatedShaders.FirstOrDefault(p_T => p_T.Shader.Name == s_Moved) is not { Shader: { } s_Translation })
+                    return null;
+
+                foreach (var s_Pool in s_Pools.Values)
+                foreach (var s_Candidate in s_Pool.Shaders)
+                {
+                    if (s_GameIndex.Builder.GetShaderKey(Name(s_Game, s_Candidate)) == s_Translation.TemplateKey)
+                        return s_Pool.Of(s_Candidate, p_Parameters);
+                }
+
+                return null;
+            }
 
             var s_Picks = new Dictionary<InstanceRef, ShaderStandIn>();
             var s_Alike = new Dictionary<InstanceRef, InstanceRef>();
@@ -786,10 +808,28 @@ namespace RimeLib.Cmd
                     continue;
                 }
 
-                if (s_From.Choose(s_Parameters, p_S => Draws(p_S, s_Shader)) is { } s_StandIn)
+                var s_Chosen = s_From.Choose(s_Parameters, p_S => Score(p_S, s_Shader));
+                // None of the alike ones reaches every subset (no solution for a composite mesh's skinning, say): any
+                // shader of the kind that reaches more, the most alike of those.
+                var s_SubsetCount = s_Subsets[s_Shader].Count();
+                if ((s_Chosen == null || Reached(s_Chosen.Shader, s_Shader) < s_SubsetCount) &&
+                    (s_Pools[Kind(s_Shader)].ChooseDrawing(s_Parameters, p_S => Score(p_S, s_Shader)) is { } s_OfKind &&
+                     Reached(s_OfKind.Shader, s_Shader) == s_SubsetCount ? s_OfKind
+                        : s_Pools[""].ChooseDrawing(s_Parameters, p_S => Score(p_S, s_Shader))) is { } s_Reaching &&
+                    Reached(s_Reaching.Shader, s_Shader) > (s_Chosen == null ? 0 : Reached(s_Chosen.Shader, s_Shader)))
+                    s_Chosen = s_Reaching;
+                if (Translated(s_Shader, s_Parameters) is { } s_Earlier &&
+                    Score(s_Earlier.Shader, s_Shader) >= (s_Chosen == null ? 0 : Score(s_Chosen.Shader, s_Shader)))
+                {
+                    // An earlier bundle translated the shader onto this stand-in: the database holds that entry under
+                    // the shader's name, so this bundle's meshes are fitted to the same stand-in and draw with it.
+                    s_Picks[s_Shader] = s_Earlier;
+                    s_Alike[s_Shader] = s_From.Choose(s_Parameters)?.Shader ?? s_Earlier.Shader;
+                }
+                else if (s_Chosen is { } s_StandIn)
                 {
                     s_Picks[s_Shader] = s_StandIn;
-                    s_Alike[s_Shader] = s_From.Choose(s_Parameters)!.Shader;
+                    s_Alike[s_Shader] = s_From.Choose(s_Parameters)?.Shader ?? s_StandIn.Shader;
                 }
                 else if ((s_Pools[Kind(s_Shader)].MostUsed(c_Diffuse) ?? s_Pools[""].MostUsed(c_Diffuse)) is { } s_Plain)
                 {
@@ -817,9 +857,9 @@ namespace RimeLib.Cmd
                 foreach (var s_Subset in s_Group)
                 {
                     ++s_All;
-                    if (s_Declarations.Draws(s_AlikeShader, s_Subset.Declaration))
+                    if (s_Declarations.Draws(s_AlikeShader, s_Subset))
                         ++s_AsAlike;
-                    if (s_Declarations.Draws(s_Shader, s_Subset.Declaration))
+                    if (s_Declarations.Draws(s_Shader, s_Subset))
                     {
                         ++s_AsPicked;
                         ++s_Drawn;
@@ -827,19 +867,92 @@ namespace RimeLib.Cmd
                     }
 
                     if (!s_Subset.Repackable || (s_Declarations.Fits(s_Shader, s_Subset) ?? s_Declarations.Closest(s_Shader, s_Subset)) is not { } s_Layout)
+                    {
+                        p_Log.WriteLine($"UNDRAWN {s_Subset.Mesh} LOD {s_Subset.Lod} subset {s_Subset.Index}: {Name(s_Game, s_Shader)} has no solution for " +
+                            $"{s_Subset.Declaration:X8} with skinning {s_Subset.Skinning?.ToString() ?? "any"}, " +
+                            (s_Subset.Repackable ? "nor for a layout to repack it to" : "and it is not repackable"));
                         continue;
+                    }
 
                     if (!m_Layouts.TryGetValue(s_Subset.Mesh, out var s_Mesh))
                         m_Layouts[s_Subset.Mesh] = s_Mesh = new Dictionary<(int, int), VertexLayout>();
                     s_Mesh[(s_Subset.Lod, s_Subset.Index)] = s_Layout;
                     ++s_Repacked;
-                    if (s_Declarations.Draws(s_Shader, s_To.DeclarationHash(s_Subset.Subset with { Elements = s_Layout.Elements, VertexStride = s_Layout.Stride, Streams = [new VertexStream(s_Layout.Stride, VertexClassification.PerVertex)] })))
+                    if (s_Subset.Instancing != null ||
+                        s_Declarations.Draws(s_Shader, s_To.DeclarationHash(s_Subset.Subset with { Elements = s_Layout.Elements, VertexStride = s_Layout.Stride, Streams = [new VertexStream(s_Layout.Stride, VertexClassification.PerVertex)] }), s_Subset.Skinning))
                         ++s_Drawn;
                 }
             }
 
             p_Log.WriteLine($"Shaders: of {s_All} converted mesh subset(s), their shader has a solution for {s_AsAlike} with the most alike stand-ins, {s_AsPicked} as picked, " +
                 $"and {s_Drawn} with {s_Repacked} repacked to a layout it has one for.");
+
+            // Every subset as it is written: a shader draws its own material's subsets in the layouts fitted above, and a
+            // material variation's in the layout their own material's shader left them in. A shader whose stand-in does
+            // not draw all of them so stands in by the one that draws most, where one draws more.
+            var s_Final = s_AllSubsets.Select(p_S =>
+                m_Layouts.TryGetValue(p_S.Mesh, out var s_Mesh) && s_Mesh.TryGetValue((p_S.Lod, p_S.Index), out var s_Layout)
+                    ? p_S with
+                    {
+                        Subset = p_S.Subset with { Elements = s_Layout.Elements, VertexStride = s_Layout.Stride, Streams = [new VertexStream(s_Layout.Stride, VertexClassification.PerVertex)] },
+                        Declaration = s_To.DeclarationHash(p_S.Subset with { Elements = s_Layout.Elements, VertexStride = s_Layout.Stride, Streams = [new VertexStream(s_Layout.Stride, VertexClassification.PerVertex)] }),
+                    }
+                    : p_S).ToLookup(p_S => p_S.Shader);
+            var s_BoundShaders = s_Used.ByShader();
+            int s_VariationAll = 0, s_VariationDrawn = 0, s_Repicked = 0;
+            foreach (var s_Group in s_Final)
+            {
+                var s_Shader = s_Group.Key;
+                int DrawnBy(InstanceRef p_StandIn) => s_Group.Count(p_S => s_Declarations.Draws(p_StandIn, p_S));
+                var s_Count = s_Group.Count();
+                var s_Current = s_Picks.TryGetValue(s_Shader, out var s_Was) ? DrawnBy(s_Was.Shader) : -1;
+                if (s_Current < s_Count && !s_Game.TryGetPartitionByGuid(s_Shader.Partition, out _, out _) &&
+                    s_BoundShaders.TryGetValue(s_Shader, out var s_Bound))
+                {
+                    var s_From = Pool(s_Shader, s_Bound.Parameters);
+                    var s_Best = s_From.Choose(s_Bound.Parameters, p_S => DrawnBy(p_S));
+                    if ((s_Best == null || DrawnBy(s_Best.Shader) < s_Count) &&
+                        s_Pools[""].ChooseDrawing(s_Bound.Parameters, p_S => DrawnBy(p_S)) is { } s_Any &&
+                        DrawnBy(s_Any.Shader) > (s_Best == null ? 0 : DrawnBy(s_Best.Shader)))
+                        s_Best = s_Any;
+                    if (s_Best != null && DrawnBy(s_Best.Shader) > s_Current)
+                    {
+                        if (s_Was != null)
+                            p_Log.WriteLine($"RESTANDIN {Name(m_Mounter, s_Shader)}: {Name(s_Game, s_Was.Shader)} draws {s_Current}/{s_Count} subset(s) as written, " +
+                                $"{Name(s_Game, s_Best.Shader)} {DrawnBy(s_Best.Shader)}");
+                        s_Picks[s_Shader] = s_Best;
+                        s_Alike[s_Shader] = s_From.Choose(s_Bound.Parameters)?.Shader ?? s_Best.Shader;
+                        ++s_Repicked;
+                    }
+                }
+
+                var s_DrawnWith = s_Picks.TryGetValue(s_Shader, out var s_Pick) ? s_Pick.Shader : s_Shader;
+                foreach (var s_Subset in s_Group.Where(p_S => p_S.Variation))
+                {
+                    ++s_VariationAll;
+                    if (s_Declarations.Draws(s_DrawnWith, s_Subset))
+                        ++s_VariationDrawn;
+                }
+
+                foreach (var s_Subset in s_Group.Where(p_S => !s_Declarations.Draws(s_DrawnWith, p_S)))
+                    p_Log.WriteLine($"UNDRAWN{(s_Subset.Variation ? " VARIATION" : "")} {s_Subset.Mesh} LOD {s_Subset.Lod} subset {s_Subset.Index}: {Name(s_Game, s_DrawnWith)} has no solution for " +
+                        $"{s_Subset.Declaration:X8} with skinning {s_Subset.Skinning?.ToString() ?? "any"}");
+            }
+
+            p_Log.WriteLine($"Shaders: {s_Repicked} stand-in(s) picked again for the subsets as written.");
+            p_Log.WriteLine($"Shaders: {s_VariationDrawn} of {s_VariationAll} subset(s) as material variations draw them have a solution.");
+
+            // The declarations the subsets are written with: a translated shader takes only their solutions from the
+            // target's databases beyond the first.
+            foreach (var s_Subset in s_AllSubsets)
+                s_SbContext.UsedDeclarations.Add(m_Layouts.TryGetValue(s_Subset.Mesh, out var s_Written) && s_Written.TryGetValue((s_Subset.Lod, s_Subset.Index), out var s_WrittenLayout)
+                    ? s_To.DeclarationHash(s_Subset.Subset with { Elements = s_WrittenLayout.Elements, VertexStride = s_WrittenLayout.Stride, Streams = [new VertexStream(s_WrittenLayout.Stride, VertexClassification.PerVertex)] })
+                    : s_Subset.Declaration);
+            foreach (var s_Subset in s_Final.SelectMany(p_G => p_G).Where(p_S => p_S.Instancing != null))
+            {
+                if (VertexLayout.OneStream(s_Subset.Subset) is { } s_Own)
+                    s_SbContext.UsedDeclarations.UnionWith(s_Declarations.InstancedDeclarations(s_Own));
+            }
             // A translated shader keeps its own shader and parameters: it draws with its stand-in's solutions, so
             // its subsets were repacked like the stand-in's above, but its materials are not pointed at it.
             var s_Translated = s_SbContext.ShaderTranslator is { } s_Translator
@@ -922,12 +1035,12 @@ namespace RimeLib.Cmd
                 // stand-in this bundle's meshes were fitted to. Onto another, those meshes may have a layout it
                 // has no solution for, and are not drawn; they keep their stand-in.
                 var s_Moved = Moved(s_Name).ToLowerInvariant();
-                if (s_SbContext.TranslatedShaders.FirstOrDefault(p_T => p_T.Shader.Name == s_Moved) is { Shader: { } s_Earlier })
+                // Translated onto this stand-in by an earlier bundle: that entry draws this bundle's meshes too. Onto
+                // another, this bundle's meshes are fitted to theirs, and its translation adds that stand-in's
+                // solutions to the shader's entry (add_translated_shaders merges them by state).
+                if (s_SbContext.TranslatedShaders.Any(p_T => p_T.Shader.Name == s_Moved && p_T.Shader.TemplateKey == s_TemplateKey))
                 {
-                    if (s_Earlier.TemplateKey == s_TemplateKey)
-                        s_Translated.Add(s_Shader);
-                    else
-                        p_Log.WriteLine($"STANDIN KEPT {s_Name}: translated onto another stand-in by an earlier bundle, this one's meshes are fitted to {Name(p_Game, s_StandIn.Shader)}");
+                    s_Translated.Add(s_Shader);
                     continue;
                 }
                 if (GBuffer(s_SourceIndex, s_SourceReader, s_Key) is not var (s_Database, s_Sources) || s_Sources.Count == 0 ||
@@ -974,15 +1087,51 @@ namespace RimeLib.Cmd
 
         /// <summary>A subset of a converted MeshSet as the target writes it, with its material's shader and its vertex declaration's hash.</summary>
         /// <param name="Repackable">Whether its vertices are in one stream of a LOD's chunk, which can be repacked.</param>
-        private sealed record ConvertedSubset(string Mesh, int Lod, int Index, InstanceRef Shader, MeshSubsetModel Subset, uint Declaration, bool Repackable);
+        /// <param name="Skinning">
+        /// The skinning method the target draws it with (fb::ShaderSkinningMethod): none for a rigid mesh, for a composite one
+        /// null, or one bone where its LOD moves its parts (MeshRenderer); unknown (null) for a skinned one, by its bones.
+        /// </param>
+        /// <param name="Variation">Whether its shader is a material variation's, not its own material's.</param>
+        /// <param name="Instancing">
+        /// The instancing method the target draws it with, where only one does: an effect's mesh is drawn as particles,
+        /// instanced by their world transforms (fb::ShaderInstancingMethod_WorldTransform4x3Float).
+        /// </param>
+        private sealed record ConvertedSubset(string Mesh, int Lod, int Index, InstanceRef Shader, MeshSubsetModel Subset, uint Declaration, bool Repackable,
+            int? Skinning, bool Variation = false, int? Instancing = null);
+
+        private const int c_InstancingWorldTransform = 4;
+
+        // fb::ShaderSkinningMethod, and fb::MeshLayoutFlags' MovablePartsEnable.
+        private const int c_SkinningNone = 0, c_SkinningLinear1Bone = 1, c_SkinningNull = 9;
+        private const uint c_MovablePartsEnable = 0x20;
 
         /// <summary>The subsets of the converted mesh assets' MeshSets whose material has a shader.</summary>
         private IEnumerable<ConvertedSubset> ConvertedSubsets(List<(string Name, DatabasePartitionBase Partition)> p_Converted, IShaderBindings p_Bindings, IMeshSetCodec p_To)
         {
             var s_From = EngineInterfaceRegistry.Create<IMeshSetCodec>(m_Mounter.GetEngineType());
+            // A mesh variation draws a material's subsets with its material variation's shader: they are its subsets too.
+            var s_ByGuid = new Dictionary<GUID, DatabasePartitionBase>();
+            foreach (var (_, s_Partition) in p_Converted)
+                s_ByGuid.TryAdd(s_Partition.PartitionGuid, s_Partition);
+            var s_Variations = new Dictionary<GUID, List<(InstanceRef Material, InstanceRef Shader)>>();
+            foreach (var (_, s_Partition) in p_Converted)
+            foreach (var (s_Mesh, s_Material, s_Variation) in p_Bindings.MaterialVariations(s_Partition))
+            {
+                if (!s_ByGuid.TryGetValue(s_Variation.Partition, out var s_VariationPartition) ||
+                    p_Bindings.VariationShader(s_VariationPartition, s_Variation) is not { } s_VariationShader)
+                    continue;
+
+                if (!s_Variations.TryGetValue(s_Mesh.Partition, out var s_List))
+                    s_Variations[s_Mesh.Partition] = s_List = new List<(InstanceRef, InstanceRef)>();
+                if (!s_List.Contains((s_Material, s_VariationShader)))
+                    s_List.Add((s_Material, s_VariationShader));
+            }
+
             foreach (var (s_Name, s_Partition) in p_Converted)
             {
                 var s_Shaders = p_Bindings.MeshShaders(s_Partition);
+                var s_MeshMaterials = p_Bindings.MeshMaterials(s_Partition);
+                var s_Varied = s_Variations.GetValueOrDefault(s_Partition.PartitionGuid);
                 if (s_Shaders.Count == 0 || !m_Mounter.TryGetResource(s_Name, out var s_Resource)
                     || s_Resource.FirstVariant.GetResourceType() != ResourceType.MeshSet || !s_Resource.FirstVariant.TryGetMeta(out var s_Meta))
                     continue;
@@ -1003,9 +1152,27 @@ namespace RimeLib.Cmd
                     for (var i = 0; i < s_Lod.Subsets.Count; ++i)
                     {
                         var s_Subset = s_Lod.Subsets[i];
+                        int? s_Skinning = s_Model.Kind switch
+                        {
+                            MeshKind.Rigid => c_SkinningNone,
+                            MeshKind.Composite => ((uint)s_Lod.Flags & c_MovablePartsEnable) != 0 ? c_SkinningLinear1Bone : c_SkinningNull,
+                            _ => null,
+                        };
+                        var s_Repackable = s_Lod.ChunkId != GUID.Empty && VertexLayout.OneStream(s_Subset) != null;
+                        int? s_Instancing = s_Name.StartsWith("fx/mesh/", StringComparison.OrdinalIgnoreCase) ? c_InstancingWorldTransform : null;
                         if (s_Subset.MaterialIndex < s_Shaders.Count && s_Shaders[(int)s_Subset.MaterialIndex] is { } s_Shader)
-                            yield return new ConvertedSubset(s_Name, l, i, s_Shader, s_Subset, p_To.DeclarationHash(s_Subset),
-                                s_Lod.ChunkId != GUID.Empty && VertexLayout.OneStream(s_Subset) != null);
+                            yield return new ConvertedSubset(s_Name, l, i, s_Shader, s_Subset, p_To.DeclarationHash(s_Subset), s_Repackable, s_Skinning,
+                                Instancing: s_Instancing);
+
+                        if (s_Varied == null || s_Subset.MaterialIndex >= s_MeshMaterials.Count)
+                            continue;
+
+                        foreach (var (s_Material, s_VariationShader) in s_Varied)
+                        {
+                            if (s_Material.Equals(s_MeshMaterials[(int)s_Subset.MaterialIndex]))
+                                // Its layout is the one its own material's shader draws it with.
+                                yield return new ConvertedSubset(s_Name, l, i, s_VariationShader, s_Subset, p_To.DeclarationHash(s_Subset), false, s_Skinning, true, s_Instancing);
+                        }
                     }
                 }
             }
@@ -1017,17 +1184,53 @@ namespace RimeLib.Cmd
             private readonly Dictionary<GUID, uint?> m_Keys = new();
             private readonly Dictionary<uint, VertexLayout?> m_Layouts = new();
 
-            /// <summary>Whether the shader has a solution for the declaration.</summary>
-            public bool Draws(InstanceRef p_Shader, uint p_Declaration) => Key(p_Shader) is { } s_Key && p_Index.Declarations.Draws(s_Key, p_Declaration);
+            /// <summary>Whether the shader has a solution for the declaration with the skinning method (any where null).</summary>
+            public bool Draws(InstanceRef p_Shader, uint p_Declaration, int? p_Skinning, int? p_Instancing = null) =>
+                Key(p_Shader) is { } s_Key && p_Index.Declarations.Draws(s_Key, p_Declaration, p_Skinning, p_Instancing);
+
+            /// <summary>
+            /// Whether the shader has a solution for the subset as it is: for an instanced one, for an instanced
+            /// declaration whose per-vertex stream is its layout.
+            /// </summary>
+            public bool Draws(InstanceRef p_Shader, ConvertedSubset p_Subset) => p_Subset.Instancing != null
+                ? VertexLayout.OneStream(p_Subset.Subset) is { } s_Own && Layouts(p_Shader, p_Subset.Skinning, p_Subset.Instancing).Contains(s_Own)
+                : Draws(p_Shader, p_Subset.Declaration, p_Subset.Skinning);
+
+            /// <summary>The instanced declarations whose per-vertex stream is the layout, by hash.</summary>
+            public IEnumerable<uint> InstancedDeclarations(VertexLayout p_Layout)
+            {
+                foreach (var (s_Hash, s_Bytes) in p_Index.Declarations.Declarations)
+                {
+                    if (Layout(s_Hash, true) is { } s_Layout && s_Layout.Equals(p_Layout))
+                        yield return s_Hash;
+                }
+            }
+
+            private readonly Dictionary<uint, VertexLayout?> m_InstancedLayouts = new();
+
+            /// <summary>A declaration's one-stream layout, or for an instanced one its per-vertex stream's.</summary>
+            private VertexLayout? Layout(uint p_Hash, bool p_Instanced)
+            {
+                var s_Cache = p_Instanced ? m_InstancedLayouts : m_Layouts;
+                if (!s_Cache.TryGetValue(p_Hash, out var s_Layout))
+                {
+                    s_Cache[p_Hash] = s_Layout = p_Index.Declarations.Declarations.TryGetValue(p_Hash, out var s_Bytes)
+                        && p_Codec.ReadDeclaration(s_Bytes) is var (s_Elements, s_Streams)
+                        ? p_Instanced ? VertexLayout.PerVertexOfInstanced(s_Elements, s_Streams) : VertexLayout.OneStream(s_Elements, s_Streams)
+                        : null;
+                }
+
+                return s_Layout;
+            }
 
             /// <summary>The layout of a declaration the shader has a solution for with the subset's elements, if any.</summary>
             public VertexLayout? Fits(InstanceRef p_Shader, ConvertedSubset p_Subset) =>
-                Draws(p_Shader, p_Subset.Declaration) ? VertexLayout.OneStream(p_Subset.Subset)
-                : Layouts(p_Shader).FirstOrDefault(p_L => p_L.Elements.SequenceEqual(p_Subset.Subset.Elements));
+                Draws(p_Shader, p_Subset) ? VertexLayout.OneStream(p_Subset.Subset)
+                : Layouts(p_Shader, p_Subset.Skinning, p_Subset.Instancing).FirstOrDefault(p_L => p_L.Elements.SequenceEqual(p_Subset.Subset.Elements));
 
             /// <summary>The layout of a declaration the shader has a solution for that the subset's vertices fit best.</summary>
             public VertexLayout? Closest(InstanceRef p_Shader, ConvertedSubset p_Subset) =>
-                VertexLayout.OneStream(p_Subset.Subset) is { } s_Own ? VertexLayoutChoice.Closest(s_Own, Layouts(p_Shader)) : null;
+                VertexLayout.OneStream(p_Subset.Subset) is { } s_Own ? VertexLayoutChoice.Closest(s_Own, Layouts(p_Shader, p_Subset.Skinning, p_Subset.Instancing)) : null;
 
             private uint? Key(InstanceRef p_Shader)
             {
@@ -1036,23 +1239,21 @@ namespace RimeLib.Cmd
                 return s_Key;
             }
 
-            /// <summary>The one-stream layouts of the declarations the shader has solutions for, in hash order.</summary>
-            private IEnumerable<VertexLayout> Layouts(InstanceRef p_Shader)
+            /// <summary>
+            /// The one-stream layouts of the declarations the shader has solutions for with the skinning method (any
+            /// where null), in hash order.
+            /// </summary>
+            private IEnumerable<VertexLayout> Layouts(InstanceRef p_Shader, int? p_Skinning, int? p_Instancing)
             {
                 if (Key(p_Shader) is not { } s_Key || !p_Index.Declarations.ByShader.TryGetValue(s_Key, out var s_Hashes))
                     yield break;
 
                 foreach (var s_Hash in s_Hashes.Order())
                 {
-                    if (!m_Layouts.TryGetValue(s_Hash, out var s_Layout))
-                    {
-                        m_Layouts[s_Hash] = s_Layout = p_Index.Declarations.Declarations.TryGetValue(s_Hash, out var s_Bytes)
-                            && p_Codec.ReadDeclaration(s_Bytes) is var (s_Elements, s_Streams)
-                            ? VertexLayout.OneStream(s_Elements, s_Streams)
-                            : null;
-                    }
+                    if (!p_Index.Declarations.Draws(s_Key, s_Hash, p_Skinning, p_Instancing))
+                        continue;
 
-                    if (s_Layout != null)
+                    if (Layout(s_Hash, p_Instancing != null) is { } s_Layout)
                         yield return s_Layout;
                 }
             }

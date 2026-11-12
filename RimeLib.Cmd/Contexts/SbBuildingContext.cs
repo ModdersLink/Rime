@@ -180,6 +180,9 @@ namespace RimeLib.Cmd.Contexts
         /// </summary>
         internal List<(string SourceDatabase, RimeLib.Content.Mounting.IEngineMounter Source, string SourceName, (string From, string To)? Move, RimeLib.Shader.TranslatedShader Shader)> TranslatedShaders { get; } = new();
 
+        /// <summary>The vertex declarations the converted meshes' subsets are drawn with, as written.</summary>
+        internal HashSet<uint> UsedDeclarations { get; } = new();
+
         /// <summary>
         /// The source resources the converted closures met of a type not converted, by their name in
         /// the source, for a command that builds what they hold in this engine's form (an emitter

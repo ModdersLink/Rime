@@ -46,6 +46,8 @@ public class ShaderDatabaseBuilder : IShaderDatabaseBuilder
     {
         var s_ByShader = new Dictionary<uint, HashSet<uint>>();
         var s_Declarations = new Dictionary<uint, byte[]>();
+        var s_BySkinning = new Dictionary<uint, HashSet<ulong>>();
+        var s_ByInstancing = new Dictionary<uint, HashSet<ulong>>();
         var s_Mismatches = 0;
         foreach (var s_Database in Read(p_Data).Databases.Values)
         {
@@ -53,9 +55,15 @@ public class ShaderDatabaseBuilder : IShaderDatabaseBuilder
             {
                 if (!s_ByShader.TryGetValue(s_Shader.Key, out var s_Hashes))
                     s_ByShader[s_Shader.Key] = s_Hashes = new HashSet<uint>();
+                if (!s_BySkinning.TryGetValue(s_Shader.Key, out var s_Pairs))
+                    s_BySkinning[s_Shader.Key] = s_Pairs = new HashSet<ulong>();
+                if (!s_ByInstancing.TryGetValue(s_Shader.Key, out var s_Instanced))
+                    s_ByInstancing[s_Shader.Key] = s_Instanced = new HashSet<ulong>();
                 foreach (var s_Solution in s_Shader.Solutions)
                 {
                     s_Hashes.Add(s_Solution.State.GeometryDeclarationHash);
+                    s_Pairs.Add(ShaderDeclarations.Skinned(s_Solution.State.GeometryDeclarationHash, (int)s_Solution.State.SkinningMethod));
+                    s_Instanced.Add(ShaderDeclarations.Skinned(s_Solution.State.GeometryDeclarationHash, (int)s_Solution.State.InstancingMethod));
                     if (s_Solution.State.Hash != s_Solution.StateHash)
                         ++s_Mismatches;
                 }
@@ -68,7 +76,11 @@ public class ShaderDatabaseBuilder : IShaderDatabaseBuilder
             }
         }
 
-        return new ShaderDeclarations(s_ByShader.ToDictionary(p_P => p_P.Key, p_P => (IReadOnlySet<uint>)p_P.Value), s_Declarations, s_Mismatches);
+        return new ShaderDeclarations(s_ByShader.ToDictionary(p_P => p_P.Key, p_P => (IReadOnlySet<uint>)p_P.Value), s_Declarations, s_Mismatches)
+        {
+            BySkinning = s_BySkinning.ToDictionary(p_P => p_P.Key, p_P => (IReadOnlySet<ulong>)p_P.Value),
+            ByInstancing = s_ByInstancing.ToDictionary(p_P => p_P.Key, p_P => (IReadOnlySet<ulong>)p_P.Value),
+        };
     }
 
     public byte[] Build(IEnumerable<Func<byte[]>> p_Sources, IReadOnlyCollection<string> p_Shaders, bool p_AllSolutions,

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -92,7 +92,7 @@ public class ShaderDatabaseConverter : IShaderDatabaseConverter
     }
 
     public byte[] ConvertTranslated(byte[] p_Source, IReadOnlyList<TranslatedShader> p_Shaders, byte[] p_Template, EngineType p_Target,
-        Func<string, string> p_MoveName, TextWriter p_Log)
+        Func<string, string> p_MoveName, TextWriter p_Log, IReadOnlyList<byte[]>? p_MoreTemplates = null, Func<uint, bool>? p_Used = null)
     {
         if (p_Target != EngineType.Frostbite2_0)
             throw new NotSupportedException($"shaders are converted to Frostbite 2 only, not {p_Target}");
@@ -101,6 +101,13 @@ public class ShaderDatabaseConverter : IShaderDatabaseConverter
         s_Source.Deserialize(p_Source);
         var s_Template = new BaseContainer();
         s_Template.Deserialize(p_Template);
+        // A mesh draws with the solution for its declaration, which another of the target's databases may hold.
+        var s_More = (p_MoreTemplates ?? []).Select(p_D =>
+        {
+            var s_Container = new BaseContainer();
+            s_Container.Deserialize(p_D);
+            return s_Container;
+        }).ToList();
 
         var s_Result = new BaseContainer();
         foreach (var (s_Path, s_Templates) in s_Template.Databases)
@@ -121,8 +128,34 @@ public class ShaderDatabaseConverter : IShaderDatabaseConverter
                 var s_Info = s_From?.ShaderInfos.FirstOrDefault(p_I => p_I.Key == s_Shader.SourceKey);
                 var s_Translated = s_Path.ToString() == s_Shader.RenderPath && s_Info != null && s_Shader.SourceSolution < s_Info.Solutions.Length
                     ? (ShaderSolution)s_Info.Solutions[s_Shader.SourceSolution] : null;
-                s_Writer.AddTranslated(s_Info, s_Translated, s_TemplateInfo, s_Shader.Name,
-                    s_Translated == null ? new Dictionary<int, byte[]>() : s_Shader.Pixels);
+                var s_Pixels = s_Translated == null ? new Dictionary<int, byte[]>() : s_Shader.Pixels;
+                s_Writer.AddTranslated(s_Info, s_Translated, s_TemplateInfo, s_Shader.Name, s_Pixels);
+
+                // The translations by the template pixel shader they replace, for the same pixel shader in another
+                // database's solutions.
+                var s_ByPixel = new Dictionary<string, byte[]>();
+                foreach (var (i, s_Bytecode) in s_Pixels)
+                {
+                    if (i < s_TemplateInfo.Solutions.Length && s_TemplateInfo.Solutions[i].PixelPermutation?.ShaderBytecode is { } s_Own)
+                        s_ByPixel.TryAdd(System.Convert.ToBase64String(System.Security.Cryptography.SHA1.HashData(s_Own)), s_Bytecode);
+                }
+
+                foreach (var s_Other in s_More)
+                {
+                    if (s_Other.Databases.GetValueOrDefault(s_Path) is not { } s_OtherDatabase ||
+                        s_OtherDatabase.ShaderInfos.FirstOrDefault(p_I => p_I.Key == s_Shader.TemplateKey) is not { } s_OtherInfo)
+                        continue;
+
+                    var s_OtherPixels = new Dictionary<int, byte[]>();
+                    for (var j = 0; j < s_OtherInfo.Solutions.Length; j++)
+                    {
+                        if (s_OtherInfo.Solutions[j].PixelPermutation?.ShaderBytecode is { } s_Own &&
+                            s_ByPixel.TryGetValue(System.Convert.ToBase64String(System.Security.Cryptography.SHA1.HashData(s_Own)), out var s_Bytecode))
+                            s_OtherPixels[j] = s_Bytecode;
+                    }
+
+                    s_Writer.AddTranslated(s_Info, s_Translated, s_OtherInfo, s_Shader.Name, s_OtherPixels, s_OtherDatabase, true, p_Used);
+                }
             }
 
             s_Into.ShaderInfos = s_Into.ShaderInfos.OrderBy(p_I => p_I.Key).ToList();
@@ -162,26 +195,76 @@ public class ShaderDatabaseConverter : IShaderDatabaseConverter
         /// vertex shader and constants, and, where a translation was made for a solution, its pixel shader bound
         /// by the source solution's constants and the template's engine functions; the template's own elsewhere.
         /// </summary>
-        public void AddTranslated(BaseInfo? p_Info, ShaderSolution? p_Source, BaseInfo p_Template, string p_Name, IReadOnlyDictionary<int, byte[]> p_Pixels)
+        public void AddTranslated(BaseInfo? p_Info, ShaderSolution? p_Source, BaseInfo p_Template, string p_Name, IReadOnlyDictionary<int, byte[]> p_Pixels,
+            BaseDatabase? p_TemplateDatabase = null, bool p_OnlyNewLayouts = false, Func<uint, bool>? p_Used = null)
         {
+            var s_TemplateDatabase = p_TemplateDatabase ?? m_Template!;
             var s_Key = RimeLib.Frostbite.Utils.HashQuickLowerCase(p_Name);
             var s_Solutions = new List<ushort>();
+            // A shader translated onto another stand-in before has an entry already: its solutions are kept, these
+            // are added for the states it has none for.
+            var s_Existing = m_Into.ShaderInfos.FirstOrDefault(p_I => p_I.Key == s_Key);
+            // A solution's state includes the bool permutation the entry's bool parameters compute: another stand-in's
+            // solutions only draw under this entry if it declares the same ones.
+            if (s_Existing != null && (s_Existing.BoolParameterCount != p_Template.BoolParameterCount ||
+                                       !s_Existing.BoolParameterIds.SequenceEqual(p_Template.BoolParameterIds)))
+            {
+                m_Log.WriteLine($"  WARNING {p_Name}: translated onto stand-ins with other bool parameters; the later one's solutions are left out.");
+                return;
+            }
+
+            var s_States = s_Existing == null ? new HashSet<ulong>()
+                : s_Existing.SolutionIndices.Select(p_I => m_Into.Solutions[p_I].StateHash).ToHashSet();
+            // The layouts with skinning methods the entry draws already: another database's solutions add only others.
+            var s_Layouts = s_Existing == null ? new HashSet<(uint, int)>()
+                : s_Existing.SolutionIndices.Select(p_I => m_Into.Solutions[p_I].State)
+                    .Select(p_S => (p_S.GeometryDeclarationHash, (int)p_S.SkinningMethod)).ToHashSet();
+            // A lightmapped solution is not translated (the translation does not sample the lightmap): it draws with the
+            // translated solution of its state without object lighting, whose shaders take no lightmap, so the surface
+            // keeps its material rather than taking the stand-in's pixel shader with parameters it does not know.
+            ulong Unlit(BaseSolution p_Solution)
+            {
+                var s_Unlit = BaseDatabase.Clone(p_Solution.State);
+                s_Unlit.ObjectLighting = fb.ShaderObjectLighting.ShaderObjectLighting_None;
+                return s_Unlit.Hash;
+            }
+
+            var s_TranslatedUnlit = new Dictionary<ulong, int>();
             for (var i = 0; i < p_Template.Solutions.Length; i++)
             {
-                var s_Template = p_Template.Solutions[i];
+                if (p_Source?.PixelPermutation != null && p_Pixels.ContainsKey(i) && p_Template.Solutions[i].PixelPermutation != null &&
+                    p_Template.Solutions[i].State.ObjectLighting == fb.ShaderObjectLighting.ShaderObjectLighting_None)
+                    s_TranslatedUnlit.TryAdd(Unlit(p_Template.Solutions[i]), i);
+            }
+
+            for (var i = 0; i < p_Template.Solutions.Length; i++)
+            {
+                var s_Own = p_Template.Solutions[i];
+                // The solution whose shaders draw this state: its own, or for an untranslated lightmapped one the
+                // translated one without object lighting.
+                var s_Drawn = !p_Pixels.ContainsKey(i) && s_Own.State.ObjectLighting == fb.ShaderObjectLighting.ShaderObjectLighting_LightMap &&
+                              s_TranslatedUnlit.TryGetValue(Unlit(s_Own), out var s_UnlitIndex)
+                    ? s_UnlitIndex
+                    : i;
+                var s_Template = p_Template.Solutions[s_Drawn];
                 if (s_Template.GeometryPermutation != null)
                 {
                     m_Log.WriteLine($"  {p_Name}: the template's solution {i} has a geometry shader; left out.");
                     continue;
                 }
 
-                var s_State = BaseDatabase.Clone(s_Template.State);
+                var s_State = BaseDatabase.Clone(s_Own.State);
                 s_State.SurfaceShaderNameHash = s_Key;
+                if (s_States.Contains(s_State.Hash) ||
+                    p_OnlyNewLayouts && s_Layouts.Contains((s_State.GeometryDeclarationHash, (int)s_State.SkinningMethod)) ||
+                    p_Used != null && !p_Used(s_State.GeometryDeclarationHash))
+                    continue;
+
                 if (m_Declarations.Add(s_State.GeometryDeclarationHash))
-                    m_Into.Declarations.AddRange(m_Template!.Declarations.Where(p_D => p_D.Hash == s_State.GeometryDeclarationHash).Select(BaseDatabase.Clone));
+                    m_Into.Declarations.AddRange(s_TemplateDatabase.Declarations.Where(p_D => p_D.Hash == s_State.GeometryDeclarationHash).Select(BaseDatabase.Clone));
 
                 long s_Pixel, s_PixelConstants;
-                if (p_Source?.PixelPermutation != null && p_Pixels.TryGetValue(i, out var s_Bytecode) && s_Template.PixelPermutation != null &&
+                if (p_Source?.PixelPermutation != null && p_Pixels.TryGetValue(s_Drawn, out var s_Bytecode) && s_Template.PixelPermutation != null &&
                     TranslatedPixel(p_Source.PixelPermutation, s_Template.PixelPermutation, s_Bytecode, p_Name) is { } s_Translated)
                 {
                     s_Pixel = s_Translated;
@@ -215,6 +298,9 @@ public class ShaderDatabaseConverter : IShaderDatabaseConverter
 
                 if (m_Into.Solutions.Count > ushort.MaxValue)
                     throw new InvalidOperationException("More solutions than a shader database can index.");
+                if (!s_States.Add(s_Converted.StateHash))
+                    continue;
+
                 m_Into.Solutions.Add(s_Converted);
                 s_Solutions.Add((ushort)(m_Into.Solutions.Count - 1));
             }
@@ -229,6 +315,12 @@ public class ShaderDatabaseConverter : IShaderDatabaseConverter
             {
                 s_Streamable.AddRange(StreamableTextures(p_Info, p_Name).Where(p_T => s_Streamable.All(p_S => p_S.Name != p_T.Name)));
                 s_StreamableExternal.AddRange(StreamableExternalTextures(p_Info, p_Name).Where(p_T => s_StreamableExternal.All(p_S => p_S.ParameterName != p_T.ParameterName)));
+            }
+
+            if (s_Existing != null)
+            {
+                s_Existing.SolutionIndices = s_Existing.SolutionIndices.Concat(s_Solutions).ToList();
+                return;
             }
 
             m_Into.ShaderInfos.Add(new BaseInfo

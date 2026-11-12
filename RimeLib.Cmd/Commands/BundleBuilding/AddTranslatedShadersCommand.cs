@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -87,9 +87,12 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
                     continue;
                 }
 
+                // The stand-ins' solutions in every database: whether a mesh draws was decided over all of them.
+                var s_TemplateKeys = s_Shaders.Select(p_S => p_S.TemplateKey).ToHashSet();
+                var s_More = s_Index.Databases.Where((p_D, i) => i != s_Template && p_D.Keys.Overlaps(s_TemplateKeys)).Select(p_D => p_D.Load()).ToList();
                 var s_Converter = EngineInterfaceRegistry.Create<IShaderDatabaseConverter>(s_Source.GetEngineType());
                 var s_Converted = s_Converter.ConvertTranslated(Read(s_SourceResource.FirstVariant), s_Shaders, s_Index.Databases[s_Template].Load(),
-                    s_SbContext.EngineType, Moved, p_Writer);
+                    s_SbContext.EngineType, Moved, p_Writer, s_More, s_SbContext.UsedDeclarations.Contains);
                 s_Parts.Add(() => s_Converted);
                 s_Translated.AddRange(s_Shaders.Select(p_S => p_S.Name));
 
@@ -154,7 +157,8 @@ namespace RimeLib.Cmd.Commands.BundleBuilding
             }
 
             s_Names = s_Names.Concat(s_Translated).Distinct().ToList();
-            var s_Merged = s_Builder.Build(new List<Func<byte[]>> { () => s_Data }.Concat(s_Parts).ToList(), s_Names, false, p_Writer, out var s_Missing);
+            // Every part's solutions: a shader translated onto several stand-ins, for bundles fitted to each, holds them all.
+            var s_Merged = s_Builder.Build(new List<Func<byte[]>> { () => s_Data }.Concat(s_Parts).ToList(), s_Names, true, p_Writer, out var s_Missing);
             foreach (var s_Shader in s_Missing)
                 p_Writer.WriteLine($"  NOT TRANSLATED {s_Shader}");
 
