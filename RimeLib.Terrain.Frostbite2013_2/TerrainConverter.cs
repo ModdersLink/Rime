@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -206,6 +206,8 @@ public class TerrainConverter : ITerrainConverter
             RootNode = Node(s_Root, s_Heights, s_Blocks, s_Counts),
         };
         s_Target.PersistentNodeCount = (uint)s_Counts.Persistent;
+        s_Target.ResourceAtlasSampleCountX = s_Target.ResourceAtlasSampleCountY =
+            OnePageAtlas(s_Heights.NodeSamplesPerSide, s_Target.PersistentNodeCount, System.Math.Max(s_Heights.ResourceAtlasSampleCountX, s_Heights.ResourceAtlasSampleCountY));
 
         // One streaming node without chunks: every node's samples are in the tree.
         var s_Tree = new Frostbite2StreamingTree
@@ -434,8 +436,8 @@ public class TerrainConverter : ITerrainConverter
         {
             NodeSamplesPerSide = p_Source.NodeSamplesPerSide,
             TileBorderWidth = p_Source.TileBorderWidth,
-            ResourceAtlasSampleCountX = p_Source.ResourceAtlasSampleCountX,
-            ResourceAtlasSampleCountY = p_Source.ResourceAtlasSampleCountY,
+            ResourceAtlasSampleCountX = OnePageAtlas(p_Source.NodeSamplesPerSide, s_Persistent, System.Math.Max(p_Source.ResourceAtlasSampleCountX, p_Source.ResourceAtlasSampleCountY)),
+            ResourceAtlasSampleCountY = OnePageAtlas(p_Source.NodeSamplesPerSide, s_Persistent, System.Math.Max(p_Source.ResourceAtlasSampleCountX, p_Source.ResourceAtlasSampleCountY)),
             BlurrinessFactorExponent = p_Source.BlurrinessFactorExponent,
             TreeCoverage = p_Source.TreeCoverage,
             AtlasTextureFormat = p_Source.AtlasTextureFormat,
@@ -444,6 +446,25 @@ public class TerrainConverter : ITerrainConverter
             PersistentNodeCount = s_Persistent,
             RootNode = s_Root,
         };
+    }
+
+    /// <summary>
+    /// The atlas side, in samples, that holds every persistent node of a tree on one page. Frostbite 2 adds
+    /// atlas pages when a tree has at least as many persistent nodes as a page has tiles, but the visual terrain
+    /// draws the heightfield and colour from the first page only (VisualTerrain::setHeightfieldShaderParams,
+    /// drawPatch), so the nodes on any other page would be drawn with the first page's samples. A converted tree
+    /// keeps every node persistent, far more than the source's atlas, which streamed them, holds.
+    /// </summary>
+    private static uint OnePageAtlas(uint p_NodeSamplesPerSide, uint p_Persistent, uint p_SourceSamplesPerSide)
+    {
+        var s_Tiles = System.Math.Max(p_SourceSamplesPerSide / p_NodeSamplesPerSide, 1u);
+        while (s_Tiles * s_Tiles <= p_Persistent)
+            ++s_Tiles;
+
+        var s_Samples = s_Tiles * p_NodeSamplesPerSide;
+        if (s_Samples > 0x2000)
+            throw new InvalidDataException($"{p_Persistent} persistent node(s) of {p_NodeSamplesPerSide} samples do not fit one atlas page");
+        return s_Samples;
     }
 
     private static (int, int, int) Key(QuadtreeNodeId p_Id) => (p_Id.Level, p_Id.IndexX, p_Id.IndexY);
