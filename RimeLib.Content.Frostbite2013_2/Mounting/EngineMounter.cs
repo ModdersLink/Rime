@@ -342,25 +342,38 @@ public class EngineMounter : IEngineMounter
             // Superbundles mounted in parallel queue their partitions interleaved.
             s_Pending = s_Pending.OrderBy(p_P => SuperbundleIndex(p_P.Variant)).ToList();
 
-            // Read in parallel, then apply in mount order, so a GUID shared by two partitions resolves
-            // to the one mounted last.
-            var s_Guids = new GUID?[s_Pending.Count];
-            Parallel.For(0, s_Pending.Count, i =>
+            // One read per partition: a partition ships in many bundles, and every copy carries the same header. The
+            // cas copy where there is one, read directly rather than replayed from a patched superbundle. Kept in mount
+            // order (a partition's last copy), so a GUID shared by two partitions resolves to the one mounted last.
+            var s_Last = new Dictionary<string, int>(StringComparer.Ordinal);
+            var s_Best = new Dictionary<string, IObjectVariant>(StringComparer.Ordinal);
+            for (var i = 0; i < s_Pending.Count; i++)
+            {
+                var (s_Variant, s_Name) = s_Pending[i];
+                s_Last[s_Name] = i;
+                if (!s_Best.TryGetValue(s_Name, out var s_Kept) || (!s_Kept.Cas && s_Variant.Cas))
+                    s_Best[s_Name] = s_Variant;
+            }
+            var s_Order = s_Last.OrderBy(p_P => p_P.Value).Select(p_P => p_P.Key).ToList();
+
+            // Read in parallel, then apply in mount order.
+            var s_Guids = new GUID?[s_Order.Count];
+            Parallel.For(0, s_Order.Count, i =>
             {
                 try
                 {
-                    s_Guids[i] = EbxReader.GetPartitionGuid(s_Pending[i].Variant);
+                    s_Guids[i] = EbxReader.GetPartitionGuid(s_Best[s_Order[i]]);
                 }
                 catch (Exception s_Exception)
                 {
-                    Debug.WriteLine($"Could not read the partition GUID of {s_Pending[i].Name}: {s_Exception.Message}");
+                    Debug.WriteLine($"Could not read the partition GUID of {s_Order[i]}: {s_Exception.Message}");
                 }
             });
 
-            for (var i = 0; i < s_Pending.Count; i++)
+            for (var i = 0; i < s_Order.Count; i++)
             {
                 if (s_Guids[i] is { } s_Guid)
-                    m_MountedEbxPartitionsGuids[s_Guid] = s_Pending[i].Name;
+                    m_MountedEbxPartitionsGuids[s_Guid] = s_Order[i];
             }
         }
     }
