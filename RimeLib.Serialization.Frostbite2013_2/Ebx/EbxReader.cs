@@ -142,6 +142,16 @@ public class EbxReader : IDisposable
         // The endian wrapper below does not dispose the source, so without this using every call
         // leaks the source's file handle; the GUID index calls this once per mounted partition.
         using var s_Source = p_Variant.GetReader();
+        return GetPartitionGuid(s_Source);
+    }
+
+    /// <summary>
+    /// Reads the partition GUID from the header of the partition <paramref name="p_Source"/> is positioned at.
+    /// Leaves the source open.
+    /// </summary>
+    public static GUID GetPartitionGuid(RimeReader p_Source)
+    {
+        var s_Source = p_Source;
 
         var s_Magic = s_Source.ReadBytes(4);
         s_Source.Seek(-4, SeekOrigin.Current);
