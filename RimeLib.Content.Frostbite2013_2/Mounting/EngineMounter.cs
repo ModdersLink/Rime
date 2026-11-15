@@ -1,4 +1,4 @@
-using System.Collections.Concurrent;
+﻿using System.Collections.Concurrent;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using RimeLib.Content.Frostbite;
@@ -325,6 +325,23 @@ public class EngineMounter : IEngineMounter
         return false;
     }
 
+    /// <summary>The sha1 a partition's payload is named by, where its readable has one.</summary>
+    private static Sha1? PayloadHash(IObjectVariant p_Variant)
+    {
+        var s_Hash = (p_Variant as ObjectVariant)?.GetReadable() switch
+        {
+            CatalogReadable s_Catalog => s_Catalog.PayloadHash,
+            // Inline data is not named by a catalog entry, and its entry's sha1 can be empty: its own bytes are.
+            InlineReadable s_Inline => Sha1.FromData(s_Inline.GetCompressedData()),
+            // A noncas bundle's partition, delta-patched ones included: the most expensive to read for the GUID.
+            EbxEntry s_Ebx => s_Ebx.Hash,
+            _ => null,
+        };
+
+        // An empty hash names no payload: every partition without one would share its GUID.
+        return s_Hash == null || s_Hash.Hash.All(p_B => p_B == 0) ? null : s_Hash;
+    }
+
     /// <summary>
     /// Reads the GUIDs of partitions mounted since the last call into the GUID index.
     /// </summary>
@@ -345,17 +362,32 @@ public class EngineMounter : IEngineMounter
             // Read in parallel, then apply in mount order, so a GUID shared by two partitions resolves
             // to the one mounted last.
             var s_Guids = new GUID?[s_Pending.Count];
+            var s_Cache = PartitionGuidCache.Load();
+            var s_Read = 0;
             Parallel.For(0, s_Pending.Count, i =>
             {
+                var s_Hash = PayloadHash(s_Pending[i].Variant);
+                if (s_Hash != null && s_Cache.TryGet(s_Pending[i].Name, s_Hash, out var s_Cached))
+                {
+                    s_Guids[i] = s_Cached;
+                    return;
+                }
+
                 try
                 {
                     s_Guids[i] = EbxReader.GetPartitionGuid(s_Pending[i].Variant);
+                    Interlocked.Increment(ref s_Read);
+                    if (s_Hash != null)
+                        s_Cache.Add(s_Pending[i].Name, s_Hash, s_Guids[i]!);
                 }
                 catch (Exception s_Exception)
                 {
                     Debug.WriteLine($"Could not read the partition GUID of {s_Pending[i].Name}: {s_Exception.Message}");
                 }
             });
+
+            if (s_Read > 0)
+                s_Cache.Save();
 
             for (var i = 0; i < s_Pending.Count; i++)
             {

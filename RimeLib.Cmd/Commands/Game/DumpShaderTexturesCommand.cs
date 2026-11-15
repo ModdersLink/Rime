@@ -74,7 +74,8 @@ namespace RimeLib.Cmd.Commands.Game
 
                 foreach (var s_ShaderKey in s_Set.Keys)
                 {
-                    var s_ShaderName = s_ShaderKey?.ToString() ?? "";
+                    // Per render path: a shader translated for one keeps its template's textures in the others.
+                    var s_ShaderName = s_Databases.Count > 1 ? $"{s_Key}:{s_ShaderKey}" : s_ShaderKey?.ToString() ?? "";
                     var s_Info = s_Set[s_ShaderKey];
 
                     if (s_Info!.GetType().GetProperty("StreamableTextures")?.GetValue(s_Info) is not System.Array s_Textures)

@@ -119,6 +119,7 @@ namespace Rime.Utils.RimeREPL
                 // Echo the command and mark where its output ends, so a caller reading the
                 // output stream can tell which output belongs to which command.
                 s_Output.WriteLine($"> {s_Line}");
+                var s_Started = System.Diagnostics.Stopwatch.StartNew();
 
                 try
                 {
@@ -129,6 +130,7 @@ namespace Rime.Utils.RimeREPL
                     s_Output.WriteLine($"[error] {s_Exception}");
                 }
 
+                s_Output.WriteLine($"[time] {s_Started.Elapsed.TotalSeconds:0.0}s");
                 s_Output.WriteLine("<<< done");
                 s_Output.Flush();
 

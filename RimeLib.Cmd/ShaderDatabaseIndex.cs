@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimeLib.Content.Frostbite;
@@ -12,7 +12,8 @@ namespace RimeLib.Cmd
     /// <summary>The mounted shader databases and which shaders each holds, read once per mounter.</summary>
     internal sealed class ShaderDatabaseIndex
     {
-        private static ShaderDatabaseIndex? m_Index;
+        // One per mounter: converting reads the source game's and the target game's in turn.
+        private static readonly System.Runtime.CompilerServices.ConditionalWeakTable<IEngineMounter, ShaderDatabaseIndex> m_Indices = new();
 
         public IEngineMounter Mounter { get; }
         public IShaderDatabaseBuilder Builder { get; }
@@ -56,9 +57,8 @@ namespace RimeLib.Cmd
 
         public static ShaderDatabaseIndex Get(IEngineMounter p_Mounter)
         {
-            if (m_Index == null || !ReferenceEquals(m_Index.Mounter, p_Mounter))
-                m_Index = new ShaderDatabaseIndex(p_Mounter);
-            return m_Index;
+            lock (m_Indices)
+                return m_Indices.GetValue(p_Mounter, p_M => new ShaderDatabaseIndex(p_M));
         }
 
         private ShaderDeclarations? m_Declarations;
