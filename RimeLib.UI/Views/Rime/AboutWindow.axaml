@@ -1,0 +1,98 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:vm="using:RimeLib.UI.ViewModels.Rime"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="RimeLib.UI.Views.Rime.AboutWindow"
+        x:DataType="vm:AboutViewModel"
+        Title="About Rime"
+        CanMaximize="False"
+        CanMinimize="False">
+  <LayoutTransformControl x:Name="ZoomHost">
+    <Grid Margin="16" RowDefinitions="Auto,12,Auto" ColumnDefinitions="*,Auto">
+
+      <!-- ───────────── Product info ───────────── -->
+      <GroupBox Grid.Row="0" Grid.Column="0"
+                              Theme="{StaticResource GroupBox}"
+                              Header="Rime">
+        <StackPanel Spacing="12">
+          <StackPanel Spacing="2">
+            <TextBlock TextWrapping="Wrap" Text="This is open-source software under the MIT license." />
+            <TextBlock TextWrapping="Wrap" Text="This project is not affiliated with EA nor EA Digital Illusions CE AB." />
+            <TextBlock TextWrapping="Wrap" Text="Battlefield Series and Frostbite are trademarks of EA Digital Illusions CE AB. All other trademarks are the property of their respective owners." />
+          </StackPanel>
+
+          <!-- Four equal-width buttons that stretch together. The underscore gives an access key (Alt+W, etc.) -->
+          <UniformGrid Classes="links" Rows="1">
+            <Button Content="_Website" Command="{Binding OpenUrlCommand}" CommandParameter="{Binding WebsiteUrl}" />
+            <Button Content="_GitHub"  Command="{Binding OpenUrlCommand}" CommandParameter="{Binding GitHubUrl}" />
+            <Button Content="_Discord" Command="{Binding OpenUrlCommand}" CommandParameter="{Binding DiscordUrl}" />
+            <Button Content="_Licenses" Command="{Binding ShowLicensesCommand}" />
+          </UniformGrid>
+        </StackPanel>
+      </GroupBox>
+
+      <!-- ───────────── Logo ───────────── -->
+      <Viewbox Grid.Row="0" Grid.Column="1"
+               Width="140" Height="140"
+               Margin="16,0,4,0"
+               Stretch="Uniform"
+               VerticalAlignment="Center">
+        <!-- For a crisp logo at any scale use an SVG (package Svg.Controls.Skia.Avalonia):
+             <Svg Path="/Assets/logo.svg" />                                             -->
+        <Image Source="/Assets/avalonia-logo.ico" RenderOptions.BitmapInterpolationMode="HighQuality" />
+      </Viewbox>
+
+      <!-- ───────────── Version ───────────── -->
+      <GroupBox Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"
+                              Theme="{StaticResource GroupBox}"
+                              Header="Version">
+        <Grid RowDefinitions="Auto,Auto,16,Auto,10,Auto"
+              ColumnDefinitions="*,8,*">
+
+          <!-- Version labels + copy button -->
+          <Grid Grid.Row="0" Grid.RowSpan="2" Grid.ColumnSpan="3"
+                RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,*,Auto"
+                RowSpacing="12">
+            <TextBlock Grid.Row="0" Grid.Column="0" Classes="label" Text="Current version:" />
+            <TextBlock Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"
+                       FontWeight="Bold" Text="{Binding CurrentVersion}" />
+
+            <TextBlock Grid.Row="1" Grid.Column="0" Classes="label" Text="New version:" />
+            <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"
+                       FontWeight="Bold" Text="{Binding NewVersionText}" />
+
+            <Button Grid.Row="0" Grid.RowSpan="2" Grid.Column="2"
+                    HorizontalAlignment="Right" VerticalAlignment="Center"
+                    Content="Copy _version"
+                    Command="{Binding CopyVersionCommand}" />
+          </Grid>
+
+          <!-- Update / release notes (two equal columns) -->
+          <Button Grid.Row="3" Grid.Column="0"
+                  Content="{Binding UpdateButtonText}"
+                  Command="{Binding CheckForUpdatesCommand}" />
+          <Button Grid.Row="3" Grid.Column="2"
+                  Content="View release notes"
+                  Command="{Binding OpenUrlCommand}"
+                  CommandParameter="{Binding ReleaseNotesUrl}" />
+
+          <!-- Auto-update + channel -->
+          <CheckBox Grid.Row="5" Grid.Column="0"
+                    VerticalAlignment="Center"
+                    IsChecked="{Binding AutoCheckForUpdates}"
+                    Content="Automatically check for updates daily" />
+
+          <Grid Grid.Row="5" Grid.Column="2" ColumnDefinitions="Auto,*">
+            <TextBlock Grid.Column="0" Classes="label" Text="Update channel:" />
+            <ComboBox Grid.Column="1"
+                      HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding UpdateChannels}"
+                      SelectedItem="{Binding SelectedUpdateChannel}" />
+          </Grid>
+        </Grid>
+      </GroupBox>
+    </Grid>
+  </LayoutTransformControl>
+</Window>
