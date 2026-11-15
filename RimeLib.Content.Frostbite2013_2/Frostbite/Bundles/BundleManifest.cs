@@ -36,8 +36,51 @@ namespace RimeLib.Content.Frostbite2013_2.Frostbite.Bundles;
         m_OriginalSize = p_Record.OriginalSize;
     }
 
+    /// <summary>
+    /// Whether this entry is read out of its bundle rebuilt from the bundle's patch.
+    /// </summary>
+    internal bool IsPatched => ContainedBundle.PatchBundle != null && !ContainedBundle.InUpdate;
+
+    /// <summary>
+    /// Opens the bundle this patched entry is in, rebuilt from its patch. Rebuilding it walks the whole bundle, so
+    /// open it once to read several of its entries with <see cref="GetReader(RimePatchReader)"/>.
+    /// </summary>
+    internal RimePatchReader OpenPatchedBundle()
+    {
+        // Figure out which endianness our readers should have.
+        var s_Endianness = (ContainedSuperbundle.Toc.Layout.Cas.HasValue && ContainedSuperbundle.Toc.Layout.Cas.Value) ? Endianness.LittleEndian : Endianness.BigEndian;
+
+        var s_Reader = new RimeReader(File.Open(ContainedSuperbundle.Path + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+        s_Reader.Seek(ContainedBundle.ContainedBundle.Offset, SeekOrigin.Begin);
+        s_Reader = new LimitedRimeReader(s_Reader, ContainedBundle.ContainedBundle.Size);
+
+        var s_PatchReader = new RimeReader(File.Open(ContainedSuperbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
+        s_PatchReader.Seek(ContainedBundle.PatchBundle!.Offset, SeekOrigin.Begin);
+        s_PatchReader = new LimitedRimeReader(s_PatchReader, ContainedBundle.PatchBundle.Size);
+
+        //TODO: confirm if bigendian is needed
+        return new RimePatchReader(s_Reader, s_PatchReader, Endianness.BigEndian);
+    }
+
+    /// <summary>
+    /// Reads this patched entry out of its bundle opened with <see cref="OpenPatchedBundle"/>, leaving the bundle open.
+    /// </summary>
+    internal RimeReader GetReader(RimePatchReader p_Bundle)
+    {
+        p_Bundle.Seek(m_SeekOffset, SeekOrigin.Begin);
+        return new LimitedRimeReader(p_Bundle, m_OriginalSize, false);
+    }
+
     public RimeReader GetReader()
     {
+        // If this is patched we'll need to make a multiplexed reader.
+        if (IsPatched)
+        {
+            var s_Bundle = OpenPatchedBundle();
+            s_Bundle.Seek(m_SeekOffset, SeekOrigin.Begin);
+            return new LimitedRimeReader(s_Bundle, m_OriginalSize);
+        }
+
         // Figure out which endianness our readers should have.
         var s_Endianness = (ContainedSuperbundle.Toc.Layout.Cas.HasValue && ContainedSuperbundle.Toc.Layout.Cas.Value) ? Endianness.LittleEndian : Endianness.BigEndian;
 
@@ -49,25 +92,6 @@ namespace RimeLib.Content.Frostbite2013_2.Frostbite.Bundles;
         var s_Reader = new RimeReader(File.Open(s_SbPath, FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
         s_Reader.Seek(ContainedBundle.ContainedBundle.Offset, SeekOrigin.Begin);
         s_Reader = new LimitedRimeReader(s_Reader, ContainedBundle.ContainedBundle.Size);
-        
-        
-        // If this is patched we'll need to make a multiplexed reader.
-        if (ContainedBundle.PatchBundle != null && !ContainedBundle.InUpdate)
-        {
-            var s_PatchReader = new RimeReader(File.Open(ContainedSuperbundle.PatchPath + ".sb", FileMode.Open, FileAccess.Read, FileShare.Read), s_Endianness);
-            s_PatchReader.Seek(ContainedBundle.PatchBundle.Offset, SeekOrigin.Begin);
-            s_PatchReader = new LimitedRimeReader(s_PatchReader, ContainedBundle.PatchBundle.Size);
-
-            //throw new NotImplementedException("No deltas");
-
-            //TODO: confirm if bigendian is needed
-            s_Reader = new RimePatchReader(s_Reader, s_PatchReader, Endianness.BigEndian);
-            s_Reader.Seek(m_SeekOffset, SeekOrigin.Begin);
-
-            s_Reader = new LimitedRimeReader(s_Reader, m_OriginalSize);
-            return s_Reader;
-            //s_Reader = new RimeMultiplexedReader(s_PatchReader, s_Reader, Endianness.BigEndian);
-        }
 
         // Seek to this entry.
         s_Reader.Seek(m_SeekOffset, SeekOrigin.Current);
