@@ -284,7 +284,7 @@ namespace RimeLib.Content.Frostbite2_0.Building
                     uint s_CompressedSize;
                     if (s_ChunkReader.BaseStream is ZlibRimeReader s_ZlibReader)
                     {
-                        var s_ByteBuffer = s_ZlibReader.GetRawBytes();
+                        var s_ByteBuffer = Ranged(s_ZlibReader.GetRawBytes(), s_Chunk.Value);
                         p_Writer.Write(s_ByteBuffer);
                         s_CompressedSize = (uint)s_ByteBuffer.Length;
                     }
@@ -305,9 +305,10 @@ namespace RimeLib.Content.Frostbite2_0.Building
                 }
                 else
                 {
+                    // The reader gives the payload, not its stored stream, which the range is a slice of.
                     s_ChunkReader.CopyTo(s_HashWriter);
                 }
-                
+
                 var s_Hash = s_HashWriter.GetHash();
                 s_Hashes.Add(s_Hash);
                 s_Hash.Serialize(s_ChecksumWriter);
@@ -329,6 +330,27 @@ namespace RimeLib.Content.Frostbite2_0.Building
 
             // Return back to the end of the stream.
             p_Writer.Seek(s_FinalOffset, SeekOrigin.Begin);
+        }
+
+        /// <summary>
+        /// The bytes a bundle stores for a compressed chunk: its range of the chunk's stored stream, in whose
+        /// positions the range is given. A chunk mounted
+        /// from a cas bundle reads its whole catalog entry, while the bundle entry ranges only a slice of
+        /// it (a texture's tail mips, at the range's logical offset); storing all of it under that entry
+        /// has the engine take the first mips' bytes for the tail's. A chunk mounted from a noncas bundle
+        /// already reads its slice, which is shorter than the range's end, so it is kept as it is.
+        /// </summary>
+        private static byte[] Ranged(byte[] p_Stored, IChunkObject p_Chunk)
+        {
+            var s_Start = p_Chunk.GetRangeStart();
+            var s_End = p_Chunk.GetRangeEnd();
+            // A whole chunk, or a range the stored stream does not reach: kept as it is. Without a range of its own
+            // the entry's end is the payload's size, not a position in the stream, so only a slice past either
+            // start (the tail a bundle ships of a texture) is taken.
+            if ((s_Start == 0 && p_Chunk.GetLogicalOffset() == 0) || s_End > p_Stored.Length || s_End <= s_Start)
+                return p_Stored;
+
+            return p_Stored[(int)s_Start..(int)s_End];
         }
 
         private void SerializeEntry(string p_Name, IReadableObject p_Object, RimeWriter p_TextWriter, RimeWriter p_ManifestWriter)
