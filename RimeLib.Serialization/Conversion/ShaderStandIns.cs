@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimeLib.Frostbite.Core;
@@ -94,7 +94,16 @@ public sealed class ShaderStandIns
     /// The shader whose parameters are most like <paramref name="p_Parameters"/>, the more used one
     /// of equally alike ones; none when no shader shares a parameter name.
     /// </summary>
-    public ShaderStandIn? Choose(ShaderParameters p_Parameters) => Choose(p_Parameters, _ => 0);
+    public ShaderStandIn? Choose(ShaderParameters p_Parameters) => Choose(p_Parameters, _ => 0L);
+
+    /// <summary>The shaders that can stand in.</summary>
+    public IEnumerable<InstanceRef> Shaders => m_Shaders.Keys;
+
+    /// <summary>One of the shaders as a stand-in for a shader of <paramref name="p_Parameters"/>; none if it is not one of them.</summary>
+    public ShaderStandIn? Of(InstanceRef p_Shader, ShaderParameters p_Parameters) =>
+        m_Shaders.TryGetValue(p_Shader, out var s_Shader)
+            ? new ShaderStandIn(p_Shader, s_Shader.Parameters, p_Parameters.Similarity(s_Shader.Parameters))
+            : null;
 
     /// <summary>
     /// Of the shaders nearly as alike to <paramref name="p_Parameters"/> as the most alike one (by
@@ -102,7 +111,7 @@ public sealed class ShaderStandIns
     /// <paramref name="p_Draws"/>, then the most alike, then the more used one; none when no shader
     /// shares a parameter name.
     /// </summary>
-    public ShaderStandIn? Choose(ShaderParameters p_Parameters, Func<InstanceRef, int> p_Draws)
+    public ShaderStandIn? Choose(ShaderParameters p_Parameters, Func<InstanceRef, long> p_Draws)
     {
         var s_Alike = m_Shaders
             .Select(p_S => (Shader: p_S.Key, p_S.Value.Parameters, p_S.Value.Materials, Similarity: p_Parameters.Similarity(p_S.Value.Parameters)))
@@ -114,6 +123,27 @@ public sealed class ShaderStandIns
         var s_Least = s_Alike.Max(p_S => p_S.Similarity) * (1 - AlikeMargin);
         var s_Best = s_Alike
             .Where(p_S => p_S.Similarity >= s_Least)
+            .Select(p_S => (p_S.Shader, p_S.Parameters, p_S.Materials, p_S.Similarity, Draws: p_Draws(p_S.Shader)))
+            .OrderByDescending(p_S => p_S.Draws)
+            .ThenByDescending(p_S => p_S.Similarity)
+            .ThenByDescending(p_S => p_S.Materials)
+            .ThenBy(p_S => p_S.Shader.Partition)
+            .First();
+
+        return new ShaderStandIn(s_Best.Shader, s_Best.Parameters, s_Best.Similarity);
+    }
+
+    /// <summary>
+    /// Of all the shaders, however little alike, the one that draws most by <paramref name="p_Draws"/>, then the
+    /// most alike, then the more used one: for a shader none of the alike ones draws all of.
+    /// </summary>
+    public ShaderStandIn? ChooseDrawing(ShaderParameters p_Parameters, Func<InstanceRef, long> p_Draws)
+    {
+        if (m_Shaders.Count == 0)
+            return null;
+
+        var s_Best = m_Shaders
+            .Select(p_S => (Shader: p_S.Key, p_S.Value.Parameters, p_S.Value.Materials, Similarity: p_Parameters.Similarity(p_S.Value.Parameters)))
             .Select(p_S => (p_S.Shader, p_S.Parameters, p_S.Materials, p_S.Similarity, Draws: p_Draws(p_S.Shader)))
             .OrderByDescending(p_S => p_S.Draws)
             .ThenByDescending(p_S => p_S.Similarity)

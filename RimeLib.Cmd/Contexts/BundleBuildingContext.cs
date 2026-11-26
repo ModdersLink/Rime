@@ -203,6 +203,7 @@ namespace RimeLib.Cmd.Contexts
             {
                 RegisterCommand<ReferenceConvertedPartitionCommand>();
                 RegisterCommand<AddConvertedShadersCommand>();
+                RegisterCommand<AddTranslatedShadersCommand>();
             }
 
             if (EngineInterfaceRegistry.IsSupported<IPartitionConverter>(s_EngineType))

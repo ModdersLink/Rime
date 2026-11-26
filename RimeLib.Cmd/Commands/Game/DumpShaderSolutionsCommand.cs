@@ -75,7 +75,10 @@ namespace RimeLib.Cmd.Commands.Game
                         p_Writer.WriteLine(
                             $"  SHSOL: tech={Get("Technique")} colorScale={Get("ColorScale")} " +
                             $"boolPerm={Get("BoolPermutation")} mode={Get("Mode")} " +
-                            $"objLight={Get("ObjectLighting")} stateHash=0x{s_StateHash:X}");
+                            $"objLight={Get("ObjectLighting")} decl=0x{Get("GeometryDeclarationHash"):X} space={Get("GeometrySpace")} " +
+                            $"skin={Get("SkinningMethod")} inst={Get("InstancingMethod")} outdoor={Get("OutdoorLightEnable")}/{Get("OutdoorLightShadowmapMethod")}/" +
+                            $"{Get("OutdoorLightShadowmapQuality")}/{Get("OutdoorLightTransparencyShadowmapEnable")}/{Get("OutdoorLightMultisampleCount")} " +
+                            $"vsf=0x{Get("VertexShaderFragmentNameHash"):X} stateHash=0x{s_StateHash:X}");
 
                         // The COMPILED BYTECODE. It is not in systems/shaderprogramdb -- that
                         // holds only engine passes (Sky, deferred lighting, tonemap). Each surface
