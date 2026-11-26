@@ -342,25 +342,85 @@ public class EngineMounter : IEngineMounter
             // Superbundles mounted in parallel queue their partitions interleaved.
             s_Pending = s_Pending.OrderBy(p_P => SuperbundleIndex(p_P.Variant)).ToList();
 
-            // Read in parallel, then apply in mount order, so a GUID shared by two partitions resolves
-            // to the one mounted last.
-            var s_Guids = new GUID?[s_Pending.Count];
-            Parallel.For(0, s_Pending.Count, i =>
+            // One read per partition: a partition ships in many bundles, and every copy carries the same header. The
+            // cas copy where there is one, read directly rather than replayed from a patched superbundle. Kept in mount
+            // order (a partition's last copy), so a GUID shared by two partitions resolves to the one mounted last.
+            var s_Last = new Dictionary<string, int>(StringComparer.Ordinal);
+            var s_Best = new Dictionary<string, IObjectVariant>(StringComparer.Ordinal);
+            for (var i = 0; i < s_Pending.Count; i++)
+            {
+                var (s_Variant, s_Name) = s_Pending[i];
+                s_Last[s_Name] = i;
+                if (!s_Best.TryGetValue(s_Name, out var s_Kept) || (!s_Kept.Cas && s_Variant.Cas))
+                    s_Best[s_Name] = s_Variant;
+            }
+            var s_Order = s_Last.OrderBy(p_P => p_P.Value).Select(p_P => p_P.Key).ToList();
+
+            // A partition in a patched bundle is read out of the bundle rebuilt from its patch, and rebuilding it walks
+            // the whole bundle. Rebuild each such bundle once and read all of its partitions from it.
+            var s_Single = new List<int>();
+            var s_ByBundle = new Dictionary<BundleManifest, List<(int Index, EbxEntry Entry)>>(ReferenceEqualityComparer.Instance);
+            for (var i = 0; i < s_Order.Count; i++)
+            {
+                if ((s_Best[s_Order[i]] as ObjectVariant)?.GetReadable() is EbxEntry { IsPatched: true } s_Entry)
+                {
+                    if (!s_ByBundle.TryGetValue(s_Entry.ContainedBundle, out var s_Entries))
+                        s_ByBundle[s_Entry.ContainedBundle] = s_Entries = new List<(int Index, EbxEntry Entry)>();
+                    s_Entries.Add((i, s_Entry));
+                }
+                else
+                {
+                    s_Single.Add(i);
+                }
+            }
+
+            // Read in parallel, then apply in mount order.
+            var s_Guids = new GUID?[s_Order.Count];
+
+            void Read(int i, Func<GUID> p_Read)
             {
                 try
                 {
-                    s_Guids[i] = EbxReader.GetPartitionGuid(s_Pending[i].Variant);
+                    s_Guids[i] = p_Read();
                 }
                 catch (Exception s_Exception)
                 {
-                    Debug.WriteLine($"Could not read the partition GUID of {s_Pending[i].Name}: {s_Exception.Message}");
+                    Debug.WriteLine($"Could not read the partition GUID of {s_Order[i]}: {s_Exception.Message}");
+                }
+            }
+
+            // The biggest bundles first, so one is not left running alone at the end.
+            var s_Bundles = s_ByBundle.Values.OrderByDescending(p_E => p_E.Count).ToList();
+            Parallel.ForEach(Partitioner.Create(s_Bundles, EnumerablePartitionerOptions.NoBuffering), s_Entries =>
+            {
+                RimePatchReader s_Bundle;
+                try
+                {
+                    s_Bundle = s_Entries[0].Entry.OpenPatchedBundle();
+                }
+                catch (Exception s_Exception)
+                {
+                    Debug.WriteLine($"Could not open the patched bundle {s_Entries[0].Entry.ContainedBundle.ContainedBundle.Id}: {s_Exception.Message}");
+                    return;
+                }
+
+                using (s_Bundle)
+                {
+                    foreach (var (s_Index, s_Entry) in s_Entries)
+                        Read(s_Index, () =>
+                        {
+                            using var s_Reader = s_Entry.GetReader(s_Bundle);
+                            return EbxReader.GetPartitionGuid(s_Reader);
+                        });
                 }
             });
 
-            for (var i = 0; i < s_Pending.Count; i++)
+            Parallel.ForEach(s_Single, i => Read(i, () => EbxReader.GetPartitionGuid(s_Best[s_Order[i]])));
+
+            for (var i = 0; i < s_Order.Count; i++)
             {
                 if (s_Guids[i] is { } s_Guid)
-                    m_MountedEbxPartitionsGuids[s_Guid] = s_Pending[i].Name;
+                    m_MountedEbxPartitionsGuids[s_Guid] = s_Order[i];
             }
         }
     }
